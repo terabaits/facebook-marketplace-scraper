@@ -546,7 +546,7 @@ def _test_url_ssd(args: argparse.Namespace) -> int:
     
     try:
         scraper = SSDScraper(config)
-        scraper._ensure_matcher_loaded()
+        scraper.initialize()
         
         listing = scraper.scrape_single(args.url)
         

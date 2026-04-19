@@ -1,0 +1,338 @@
+{% extends "base.html" %}
+
+{% block title %}GPU Listings - SS-Crawler{% endblock %}
+
+{% block content %}<div class="section">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
+        <h2>GPU Listings</h2>
+        <div class="filters" style="margin: 0;">
+            <label>
+                <input type="checkbox" id="active-only" checked onchange="loadListings()">
+                Active only
+            </label>
+            <label>
+                <input type="checkbox" id="high-confidence" checked onchange="loadListings()">
+                High confidence (≥70%)
+            </label>
+            <label>
+                Sort:
+                <select id="sort-by" onchange="loadListings()">
+                    <option value="date_posted">Date Posted</option>
+                    <option value="price">Price</option>
+                </select>
+            </label>
+            <label>
+                Order:
+                <select id="sort-order" onchange="loadListings()">
+                    <option value="desc">Descending</option>
+                    <option value="asc">Ascending</option>
+                </select>
+            </label>
+            <label>
+                Time:
+                <select id="time-filter" onchange="loadListings()">
+                    <option value="all_time">All Time</option>
+                    <option value="month">Last Month</option>
+                    <option value="week">Last Week</option>
+                </select>
+            </label>
+        </div>
+    </div>
+    
+    <div id="listings-container">
+        <div class="loading">Loading GPU listings...</div>
+    </div>
+</div>
+
+<div class="section">
+    <h2>Price Distribution</h2>
+    <div class="chart-container">
+        <canvas id="priceDistChart"></canvas>
+    </div>
+</div>
+
+<!-- Model History Modal -->
+<div id="history-modal" class="modal-overlay">
+    <div class="modal">
+        <div class="modal-header">
+            <h3 id="history-title">Model Price History</h3>
+            <button class="modal-close" onclick="closeModal()">&times;</button>
+        </div>
+        <div id="history-content">
+            <div class="history-chart">
+                <canvas id="historyChart"></canvas>
+            </div>
+            <div id="history-listings"></div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}<script>
+let priceChart = null;
+let historyChart = null;
+
+async function loadListings() {
+    const activeOnly = document.getElementById('active-only').checked;
+    const highConfidence = document.getElementById('high-confidence').checked;
+    const sortBy = document.getElementById('sort-by').value;
+    const sortOrder = document.getElementById('sort-order').value;
+    const timeFilter = document.getElementById('time-filter').value;
+    
+    const params = new URLSearchParams();
+    params.append('active', activeOnly);
+    params.append('sort', sortBy);
+    params.append('order', sortOrder);
+    params.append('time', timeFilter);
+    if (highConfidence) params.append('min_confidence', '0.70');
+    
+    try {
+        const response = await fetch('/api/gpus?' + params.toString());
+        const listings = await response.json();
+        
+        const container = document.getElementById('listings-container');
+        
+        if (listings.length === 0) {
+            container.innerHTML = '<div class="loading">No listings found</div>';
+            return;
+        }
+        
+        let html = `
+            <table>
+                <thead>
+                    <tr>
+                        <th>GPU</th>
+                        <th>VRAM</th>
+                        <th>Price</th>
+                        <th>Market Position</th>
+                        <th>Location</th>
+                        <th>Date</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+        `;
+        
+        listings.forEach(item => {
+            const gpuName = item.gpu_model ? `${item.vendor} ${item.gpu_model}` : item.title;
+            const vram = item.vram_gb ? `${item.vram_gb}GB` : 'N/A';
+            const modelId = item.matched_gpu_id;
+            
+            let priceClass = 'price';
+            let priceIndicator = '';
+            
+            if (item.price_stats) {
+                if (item.price_stats.below_avg) {
+                    priceClass = 'price-below-avg';
+                    priceIndicator = '↓ Below avg';
+                } else {
+                    priceClass = 'price-above-avg';
+                    priceIndicator = '↑ Above avg';
+                }
+            }
+            
+            const confidence = item.confidence_score || 0;
+            let confidenceClass = 'confidence-high';
+            if (confidence < 0.70) confidenceClass = 'confidence-medium';
+            if (confidence < 0.50) confidenceClass = 'confidence-low';
+            
+            const rowClass = modelId ? 'clickable' : '';
+            const clickHandler = modelId ? `onclick="showModelHistory(${modelId}, '${item.vendor} ${item.gpu_model}')"` : '';
+            
+            html += `
+                <tr class="${rowClass}" ${clickHandler} title="${modelId ? 'Click to view model history' : ''}">
+                    <td>
+                        <strong>${gpuName}</strong>
+                        ${item.match_method ? `<br><small class="${confidenceClass}">${(confidence*100).toFixed(0)}% confidence</small>` : ''}
+                    </td>
+                    <td>${vram}</td>
+                    <td>
+                        <span class="${priceClass}">€${item.price_eur}</span>
+                        ${priceIndicator ? `<br><small>${priceIndicator}</small>` : ''}
+                    </td>
+                    <td>
+                        ${item.price_stats ? `
+                            <div style="font-size: 0.875rem;">
+                                Avg: €${item.price_stats.avg}<br>
+                                Range: €${item.price_stats.min} - €${item.price_stats.max}
+                            </div>
+                            <div class="price-bar" title="Price percentile: ${item.price_stats.percentile}%">
+                                <div class="price-bar-fill" style="width: ${item.price_stats.percentile}%"></div>
+                            </div>
+                        ` : '<small>No price data</small>'}
+                    </td>
+                    <td>${item.seller_location || 'N/A'}</td>
+                    <td>${item.date_posted ? new Date(item.date_posted).toLocaleDateString() : 'N/A'}</td>
+                    <td>
+                        <a href="${item.listing_url}" target="_blank" class="btn btn-small" onclick="event.stopPropagation()">View →</a>
+                    </td>
+                </tr>
+            `;
+        });
+        
+        html += '</tbody></table>';
+        container.innerHTML = html;
+        
+        // Update chart
+        updatePriceChart(listings);
+        
+    } catch (error) {
+        document.getElementById('listings-container').innerHTML = 
+            `<div class="error">Failed to load listings: ${error.message}</div>`;
+    }
+}
+
+function updatePriceChart(listings) {
+    const ctx = document.getElementById('priceDistChart').getContext('2d');
+    
+    // Group by price ranges
+    const ranges = {
+        'Under €50': 0,
+        '€50-100': 0,
+        '€100-200': 0,
+        '€200-500': 0,
+        'Over €500': 0
+    };
+    
+    listings.forEach(item => {
+        const price = item.price_eur;
+        if (price < 50) ranges['Under €50']++;
+        else if (price < 100) ranges['€50-100']++;
+        else if (price < 200) ranges['€100-200']++;
+        else if (price < 500) ranges['€200-500']++;
+        else ranges['Over €500']++;
+    });
+    
+    if (priceChart) {
+        priceChart.destroy();
+    }
+    
+    priceChart = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            labels: Object.keys(ranges),
+            datasets: [{
+                data: Object.values(ranges),
+                backgroundColor: [
+                    '#27ae60',
+                    '#3498db',
+                    '#9b59b6',
+                    '#f39c12',
+                    '#e74c3c'
+                ]
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { position: 'right' }
+            }
+        }
+    });
+}
+
+async function showModelHistory(modelId, modelName) {
+    if (!modelId) return;
+    
+    try {
+        const response = await fetch(`/api/model-history/gpu/${modelId}`);
+        const listings = await response.json();
+        
+        document.getElementById('history-title').textContent = `${modelName} - Price History`;
+        
+        // Prepare chart data
+        const sorted = [...listings].sort((a, b) => new Date(a.date_posted) - new Date(b.date_posted));
+        const dates = sorted.map(l => new Date(l.date_posted).toLocaleDateString());
+        const prices = sorted.map(l => l.price_eur);
+        
+        // Destroy existing chart
+        if (historyChart) {
+            historyChart.destroy();
+        }
+        
+        // Create new chart
+        const ctx = document.getElementById('historyChart').getContext('2d');
+        historyChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: dates,
+                datasets: [{
+                    label: 'Price (€)',
+                    data: prices,
+                    borderColor: '#667eea',
+                    backgroundColor: 'rgba(102, 126, 234, 0.1)',
+                    fill: true,
+                    tension: 0.4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            callback: function(value) {
+                                return '€' + value;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+        
+        // Show listings table
+        const listingsHtml = `
+            <h4 style="margin-top: 2rem;">All Listings (${listings.length})</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Price</th>
+                        <th>Location</th>
+                        <th>Date</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${listings.map(item => `
+                        <tr>
+                            <td><a href="${item.listing_url}" target="_blank">${item.title}</a></td>
+                            <td class="price">€${item.price_eur}</td>
+                            <td>${item.seller_location || 'N/A'}</td>
+                            <td>${new Date(item.date_posted).toLocaleDateString()}</td>
+                            <td>${item.is_active ? '<span class="badge badge-success">Active</span>' : '<span class="badge badge-danger">Inactive</span>'}</td>
+                        </tr>
+                    `).join('')}
+                </tbody>
+            </table>
+        `;
+        
+        document.getElementById('history-listings').innerHTML = listingsHtml;
+        
+        document.getElementById('history-modal').classList.add('active');
+        
+    } catch (error) {
+        console.error('Error loading history:', error);
+    }
+}
+
+function closeModal() {
+    document.getElementById('history-modal').classList.remove('active');
+}
+
+// Close modal on outside click
+document.getElementById('history-modal').addEventListener('click', function(e) {
+    if (e.target === this) {
+        closeModal();
+    }
+});
+
+// Load on page load
+document.addEventListener('DOMContentLoaded', loadListings);
+</script>
+{% endblock %}

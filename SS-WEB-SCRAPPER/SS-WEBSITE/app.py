@@ -23,6 +23,22 @@ def get_db_connection():
     return psycopg2.connect(**DB_CONFIG)
 
 
+def format_vram(vram_mb):
+    """Convert VRAM from MB to GB for display."""
+    if vram_mb is None:
+        return None
+    return round(vram_mb / 1024)
+
+
+def get_time_filter_sql(time_filter, table_alias='l'):
+    """Generate SQL time filter clause."""
+    if time_filter == 'week':
+        return f" AND {table_alias}.date_posted > NOW() - INTERVAL '7 days'"
+    elif time_filter == 'month':
+        return f" AND {table_alias}.date_posted > NOW() - INTERVAL '30 days'"
+    return ""  # all_time
+
+
 @app.route('/')
 def index():
     """Dashboard homepage."""
@@ -82,7 +98,7 @@ def get_stats():
 
 @app.route('/api/gpus')
 def get_gpus():
-    """Get GPU listings with filters."""
+    """Get GPU listings with filters and sorting."""
     try:
         conn = get_db_connection()
     except Exception as e:
@@ -93,6 +109,9 @@ def get_gpus():
     # Get query parameters
     show_active = request.args.get('active', 'true').lower() == 'true'
     min_confidence = float(request.args.get('min_confidence', 0))
+    time_filter = request.args.get('time', 'all_time')  # week, month, all_time
+    sort_by = request.args.get('sort', 'date_posted')  # price, date_posted
+    sort_order = request.args.get('order', 'desc')  # asc, desc
     
     query = """
         SELECT 
@@ -123,7 +142,13 @@ def get_gpus():
         query += " AND l.confidence_score >= %s"
         params.append(min_confidence)
     
-    query += " ORDER BY l.date_posted DESC LIMIT 100"
+    # Add time filter
+    query += get_time_filter_sql(time_filter)
+    
+    # Add sorting
+    sort_column = 'l.price_eur' if sort_by == 'price' else 'l.date_posted'
+    sort_dir = 'ASC' if sort_order == 'asc' else 'DESC'
+    query += f" ORDER BY {sort_column} {sort_dir} LIMIT 100"
     
     try:
         cursor.execute(query, params)
@@ -149,10 +174,13 @@ def get_gpus():
         for row in cursor.fetchall():
             gpu_stats[row['id']] = dict(row)
         
-        # Enhance listings with price comparison
+        # Enhance listings with price comparison and format VRAM
         enhanced_listings = []
         for listing in listings:
             listing_dict = dict(listing)
+            # Format VRAM from MB to GB
+            if listing_dict.get('vram_gb'):
+                listing_dict['vram_gb'] = format_vram(listing_dict['vram_gb'])
             if listing['matched_gpu_id'] and listing['matched_gpu_id'] in gpu_stats:
                 stats = gpu_stats[listing['matched_gpu_id']]
                 listing_dict['price_stats'] = {
@@ -185,6 +213,9 @@ def get_cpus():
     
     show_active = request.args.get('active', 'true').lower() == 'true'
     min_confidence = float(request.args.get('min_confidence', 0))
+    time_filter = request.args.get('time', 'all_time')
+    sort_by = request.args.get('sort', 'date_posted')
+    sort_order = request.args.get('order', 'desc')
     
     query = """
         SELECT 
@@ -218,7 +249,11 @@ def get_cpus():
         query += " AND l.cpu_confidence_score >= %s"
         params.append(min_confidence)
     
-    query += " ORDER BY l.date_posted DESC LIMIT 100"
+    query += get_time_filter_sql(time_filter)
+    
+    sort_column = 'l.price_eur' if sort_by == 'price' else 'l.date_posted'
+    sort_dir = 'ASC' if sort_order == 'asc' else 'DESC'
+    query += f" ORDER BY {sort_column} {sort_dir} LIMIT 100"
     
     cursor.execute(query, params)
     listings = cursor.fetchall()
@@ -287,13 +322,70 @@ def get_price_history(listing_id):
     return jsonify([dict(row) for row in history])
 
 
-@app.route('/api/gpu-models')
-def get_gpu_models():
-    """Get aggregated GPU model statistics."""
+@app.route('/api/model-history/<model_type>/<int:model_id>')
+def get_model_history(model_type, model_id):
+    """Get all historical prices for a specific model."""
     conn = get_db_connection()
     cursor = conn.cursor(cursor_factory=RealDictCursor)
     
-    cursor.execute("""
+    if model_type == 'gpu':
+        cursor.execute("""
+            SELECT 
+                l.listing_id,
+                l.title,
+                l.price_eur,
+                l.seller_location,
+                l.date_posted,
+                l.is_active,
+                l.listing_url
+            FROM listings l
+            WHERE l.matched_gpu_id = %s AND l.category = 'gpu'
+            ORDER BY l.date_posted DESC
+        """, (model_id,))
+    else:
+        cursor.execute("""
+            SELECT 
+                l.listing_id,
+                l.title,
+                l.price_eur,
+                l.seller_location,
+                l.date_posted,
+                l.is_active,
+                l.listing_url
+            FROM listings l
+            WHERE l.matched_cpu_id = %s AND l.category = 'cpu'
+            ORDER BY l.date_posted DESC
+        """, (model_id,))
+    
+    listings = cursor.fetchall()
+    
+    cursor.close()
+    conn.close()
+    
+    return jsonify([dict(row) for row in listings])
+
+
+@app.route('/api/gpu-models')
+def get_gpu_models():
+    """Get aggregated GPU model statistics with sorting."""
+    conn = get_db_connection()
+    cursor = conn.cursor(cursor_factory=RealDictCursor)
+    
+    sort = request.args.get('sort', 'price_desc')
+    time_filter = request.args.get('time', 'all_time')
+    
+    # Build ORDER BY clause
+    order_map = {
+        'price_desc': 'avg_price DESC',
+        'price_asc': 'avg_price ASC',
+        'listings_desc': 'active_listings DESC',
+        'listings_asc': 'active_listings ASC'
+    }
+    order_by = order_map.get(sort, 'avg_price DESC')
+    
+    time_clause = get_time_filter_sql(time_filter, 'l')
+    
+    cursor.execute(f"""
         SELECT 
             g.id,
             g.vendor,
@@ -311,26 +403,47 @@ def get_gpu_models():
         WHERE l.category = 'gpu' 
             AND l.is_active = true
             AND l.confidence_score >= 0.70
+            {time_clause}
         GROUP BY g.id, g.vendor, g.model, g.vram_gb, g.year_released
         HAVING COUNT(l.id) >= 1
-        ORDER BY avg_price DESC
+        ORDER BY {order_by}
     """)
     
     models = cursor.fetchall()
     
+    # Format VRAM
+    formatted_models = []
+    for model in models:
+        model_dict = dict(model)
+        model_dict['vram_gb'] = format_vram(model_dict['vram_gb'])
+        formatted_models.append(model_dict)
+    
     cursor.close()
     conn.close()
     
-    return jsonify([dict(row) for row in models])
+    return jsonify(formatted_models)
 
 
 @app.route('/api/cpu-models')
 def get_cpu_models():
-    """Get aggregated CPU model statistics."""
+    """Get aggregated CPU model statistics with sorting."""
     conn = get_db_connection()
     cursor = conn.cursor(cursor_factory=RealDictCursor)
     
-    cursor.execute("""
+    sort = request.args.get('sort', 'price_desc')
+    time_filter = request.args.get('time', 'all_time')
+    
+    order_map = {
+        'price_desc': 'avg_price DESC',
+        'price_asc': 'avg_price ASC',
+        'listings_desc': 'active_listings DESC',
+        'listings_asc': 'active_listings ASC'
+    }
+    order_by = order_map.get(sort, 'avg_price DESC')
+    
+    time_clause = get_time_filter_sql(time_filter, 'l')
+    
+    cursor.execute(f"""
         SELECT 
             c.id,
             c.producer,
@@ -348,9 +461,10 @@ def get_cpu_models():
         WHERE l.category = 'cpu' 
             AND l.is_active = true
             AND l.cpu_confidence_score >= 0.70
+            {time_clause}
         GROUP BY c.id, c.producer, c.cpu_name, c.processor_number, c.cores, c.threads, c.socket
         HAVING COUNT(l.id) >= 1
-        ORDER BY avg_price DESC
+        ORDER BY {order_by}
     """)
     
     models = cursor.fetchall()
@@ -359,6 +473,117 @@ def get_cpu_models():
     conn.close()
     
     return jsonify([dict(row) for row in models])
+
+
+@app.route('/api/unmatched')
+def get_unmatched():
+    """Get unmatched listings that need manual review."""
+    conn = get_db_connection()
+    cursor = conn.cursor(cursor_factory=RealDictCursor)
+    
+    category = request.args.get('category', 'all')  # gpu, cpu, all
+    
+    query = """
+        SELECT 
+            l.listing_id,
+            l.title,
+            l.price_eur,
+            l.seller_location,
+            l.date_posted,
+            l.is_active,
+            l.category,
+            l.image_url,
+            l.listing_url,
+            l.matched_gpu_id,
+            l.matched_cpu_id,
+            l.confidence_score,
+            l.cpu_confidence_score
+        FROM listings l
+        WHERE (
+            (l.category = 'gpu' AND l.matched_gpu_id IS NULL)
+            OR (l.category = 'cpu' AND l.matched_cpu_id IS NULL)
+        )
+    """
+    
+    if category != 'all':
+        query += f" AND l.category = '{category}'"
+    
+    query += " ORDER BY l.date_posted DESC LIMIT 100"
+    
+    cursor.execute(query)
+    listings = cursor.fetchall()
+    
+    # Get available models for matching
+    cursor.execute("SELECT id, vendor, model FROM gpu_reference ORDER BY vendor, model")
+    gpu_models = cursor.fetchall()
+    
+    cursor.execute("SELECT id, producer, cpu_name FROM cpu_reference ORDER BY cpu_name")
+    cpu_models = cursor.fetchall()
+    
+    cursor.close()
+    conn.close()
+    
+    return jsonify({
+        'listings': [dict(row) for row in listings],
+        'gpu_models': [dict(row) for row in gpu_models],
+        'cpu_models': [dict(row) for row in cpu_models]
+    })
+
+
+@app.route('/api/update-match', methods=['POST'])
+def update_match():
+    """Update listing match manually."""
+    data = request.get_json()
+    
+    listing_id = data.get('listing_id')
+    action = data.get('action')  # 'match_gpu', 'match_cpu', 'ignore'
+    model_id = data.get('model_id')  # For match actions
+    
+    if not listing_id or not action:
+        return jsonify({'error': 'Missing required fields'}), 400
+    
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    
+    try:
+        if action == 'match_gpu' and model_id:
+            cursor.execute("""
+                UPDATE listings 
+                SET matched_gpu_id = %s,
+                    confidence_score = 1.0,
+                    match_method = 'manual',
+                    is_active = true
+                WHERE listing_id = %s AND category = 'gpu'
+            """, (model_id, listing_id))
+        elif action == 'match_cpu' and model_id:
+            cursor.execute("""
+                UPDATE listings 
+                SET matched_cpu_id = %s,
+                    cpu_confidence_score = 1.0,
+                    cpu_match_method = 'manual',
+                    is_active = true
+                WHERE listing_id = %s AND category = 'cpu'
+            """, (model_id, listing_id))
+        elif action == 'ignore':
+            cursor.execute("""
+                UPDATE listings 
+                SET is_active = false
+                WHERE listing_id = %s
+            """, (listing_id,))
+        else:
+            return jsonify({'error': 'Invalid action'}), 400
+        
+        conn.commit()
+        cursor.close()
+        conn.close()
+        
+        return jsonify({'success': True, 'message': 'Listing updated successfully'})
+        
+    except Exception as e:
+        conn.rollback()
+        cursor.close()
+        conn.close()
+        return jsonify({'error': str(e)}), 500
 
 
 @app.route('/gpu')
@@ -377,6 +602,12 @@ def cpu_page():
 def models_page():
     """Model statistics page."""
     return render_template('models.html')
+
+
+@app.route('/unmatched')
+def unmatched_page():
+    """Unmatched listings page."""
+    return render_template('unmatched.html')
 
 
 if __name__ == '__main__':

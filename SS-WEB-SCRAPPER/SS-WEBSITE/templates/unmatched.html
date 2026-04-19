@@ -1,0 +1,226 @@
+{% extends "base.html" %}
+
+{% block title %}Unmatched Listings - SS-Crawler{% endblock %}
+
+{% block content %}<div class="section">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
+        <h2>Unmatched Listings</h2>
+        <div class="filters" style="margin: 0;">
+            <label>
+                Category:
+                <select id="category-filter" onchange="loadUnmatched()">
+                    <option value="all">All</option>
+                    <option value="gpu">GPU</option>
+                    <option value="cpu">CPU</option>
+                </select>
+            </label>
+        </div>
+    </div>
+    
+    <div id="unmatched-container">
+        <div class="loading">Loading unmatched listings...</div>
+    </div>
+</div>
+
+<!-- Match Modal -->
+<div id="match-modal" class="modal-overlay">
+    <div class="modal">
+        <div class="modal-header">
+            <h3>Assign Model to Listing</h3>
+            <button class="modal-close" onclick="closeModal()">&times;</button>
+        </div>
+        
+        <div id="match-content">
+            <div class="form-group">
+                <label>Listing:</label>
+                <p id="match-listing-title" style="background: #f5f5f5; padding: 0.75rem; border-radius: 6px;"></p>
+            </div>
+            
+            <div class="form-group">
+                <label>Select Model:</label>
+                <select id="model-select" size="10" style="max-height: 300px;">
+                    <!-- Populated by JavaScript -->
+                </select>
+            </div>
+            
+            <div style="display: flex; gap: 1rem; margin-top: 1.5rem;">
+                <button class="btn btn-success" onclick="submitMatch()">Assign Model</button>
+                <button class="btn btn-danger" onclick="submitIgnore()">Ignore Listing</button>
+                <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}<script>
+let currentListing = null;
+let gpuModels = [];
+let cpuModels = [];
+
+async function loadUnmatched() {
+    const category = document.getElementById('category-filter').value;
+    
+    try {
+        const response = await fetch(`/api/unmatched?category=${category}`);
+        const data = await response.json();
+        
+        gpuModels = data.gpu_models;
+        cpuModels = data.cpu_models;
+        
+        const container = document.getElementById('unmatched-container');
+        const listings = data.listings;
+        
+        if (listings.length === 0) {
+            container.innerHTML = '<div class="loading">🎉 No unmatched listings found! All caught up.</div>';
+            return;
+        }
+        
+        let html = `
+            <p style="margin-bottom: 1rem; color: #666;">Showing ${listings.length} unmatched listings</p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Category</th>
+                        <th>Price</th>
+                        <th>Location</th>
+                        <th>Date</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+        `;
+        
+        listings.forEach(item => {
+            html += `
+                <tr>
+                    <td><strong>${item.title}</strong></td>
+                    <td><span class="badge ${item.category === 'gpu' ? 'badge-success' : 'badge-warning'}">${item.category.toUpperCase()}</span></td>
+                    <td class="price">€${item.price_eur}</td>
+                    <td>${item.seller_location || 'N/A'}</td>
+                    <td>${item.date_posted ? new Date(item.date_posted).toLocaleDateString() : 'N/A'}</td>
+                    <td>
+                        <button class="btn btn-small" onclick="openMatchModal('${item.listing_id}', '${item.category}', '${item.title.replace(/'/g, "\\'")}')">
+                            Match
+                        </button>
+                        <a href="${item.listing_url}" target="_blank" class="btn btn-small">View →</a>
+                    </td>
+                </tr>
+            `;
+        });
+        
+        html += '</tbody></table>';
+        container.innerHTML = html;
+        
+    } catch (error) {
+        document.getElementById('unmatched-container').innerHTML = 
+            `<div class="error">Failed to load unmatched listings: ${error.message}</div>`;
+    }
+}
+
+function openMatchModal(listingId, category, title) {
+    currentListing = { listingId, category, title };
+    
+    document.getElementById('match-listing-title').textContent = title;
+    
+    const select = document.getElementById('model-select');
+    select.innerHTML = '';
+    
+    const models = category === 'gpu' ? gpuModels : cpuModels;
+    
+    models.forEach(model => {
+        const option = document.createElement('option');
+        option.value = model.id;
+        if (category === 'gpu') {
+            option.textContent = `${model.vendor} ${model.model}`;
+        } else {
+            option.textContent = `${model.producer} ${model.cpu_name}`;
+        }
+        select.appendChild(option);
+    });
+    
+    document.getElementById('match-modal').classList.add('active');
+}
+
+function closeModal() {
+    document.getElementById('match-modal').classList.remove('active');
+    currentListing = null;
+}
+
+async function submitMatch() {
+    if (!currentListing) return;
+    
+    const modelId = document.getElementById('model-select').value;
+    if (!modelId) {
+        alert('Please select a model');
+        return;
+    }
+    
+    const action = currentListing.category === 'gpu' ? 'match_gpu' : 'match_cpu';
+    
+    try {
+        const response = await fetch('/api/update-match', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                listing_id: currentListing.listingId,
+                action: action,
+                model_id: parseInt(modelId)
+            })
+        });
+        
+        const result = await response.json();
+        
+        if (result.success) {
+            closeModal();
+            loadUnmatched();
+        } else {
+            alert('Error: ' + result.error);
+        }
+    } catch (error) {
+        alert('Error: ' + error.message);
+    }
+}
+
+async function submitIgnore() {
+    if (!currentListing) return;
+    
+    if (!confirm('Are you sure you want to ignore this listing? It will be marked as inactive.')) {
+        return;
+    }
+    
+    try {
+        const response = await fetch('/api/update-match', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                listing_id: currentListing.listingId,
+                action: 'ignore'
+            })
+        });
+        
+        const result = await response.json();
+        
+        if (result.success) {
+            closeModal();
+            loadUnmatched();
+        } else {
+            alert('Error: ' + result.error);
+        }
+    } catch (error) {
+        alert('Error: ' + error.message);
+    }
+}
+
+// Close modal on outside click
+document.getElementById('match-modal').addEventListener('click', function(e) {
+    if (e.target === this) {
+        closeModal();
+    }
+});
+
+// Load on page load
+document.addEventListener('DOMContentLoaded', loadUnmatched);
+</script>
+{% endblock %}

@@ -1,0 +1,113 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="stats-grid" id="stats-container">
+    <div class="loading">Loading statistics...</div>
+</div>
+
+<div class="section">
+    <h2>Price Trends</h2>
+    <div class="chart-container">
+        <canvas id="priceChart"></canvas>
+    </div>
+</div>
+
+<div class="section">
+    <h2>Quick Links</h2>
+    <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+        <a href="/gpu" class="btn">View GPU Listings →</a>
+        <a href="/cpu" class="btn">View CPU Listings →</a>
+        <a href="/models" class="btn">Model Statistics →</a>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+// Load and display stats
+async function loadStats() {
+    try {
+        const response = await fetch('/api/stats');
+        const stats = await response.json();
+        
+        const container = document.getElementById('stats-container');
+        container.innerHTML = `
+            <div class="stat-card gpu">
+                <h3>GPU Listings</h3>
+                <div class="stat-value">${stats.gpu.active_listings}</div>
+                <small>${stats.gpu.matched} matched · Avg €${stats.gpu.avg_price || 'N/A'}</small>
+            </div>
+            
+            <div class="stat-card cpu">
+                <h3>CPU Listings</h3>
+                <div class="stat-value">${stats.cpu.active_listings}</div>
+                <small>${stats.cpu.matched} matched · Avg €${stats.cpu.avg_price || 'N/A'}</small>
+            </div>
+            
+            <div class="stat-card gpu">
+                <h3>GPU Unmatched</h3>
+                <div class="stat-value" style="color: #e74c3c;">${stats.gpu.unmatched}</div>
+                <small>need manual review</small>
+            </div>
+            
+            <div class="stat-card cpu">
+                <h3>CPU Unmatched</h3>
+                <div class="stat-value" style="color: #e74c3c;">${stats.cpu.unmatched}</div>
+                <small>need manual review</small>
+            </div>
+        `;
+        
+        // Create price chart
+        createPriceChart();
+        
+    } catch (error) {
+        document.getElementById('stats-container').innerHTML = 
+            `<div class="error">Failed to load statistics</div>`;
+    }
+}
+
+async function createPriceChart() {
+    const ctx = document.getElementById('priceChart').getContext('2d');
+    
+    // Fetch GPU data for chart
+    const response = await fetch('/api/gpu-models');
+    const models = await response.json();
+    
+    // Sort by avg price and take top 10
+    const topModels = models.slice(0, 10);
+    
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: topModels.map(m => `${m.vendor} ${m.model}`.substring(0, 25)),
+            datasets: [{
+                label: 'Average Price (€)',
+                data: topModels.map(m => m.avg_price),
+                backgroundColor: 'rgba(102, 126, 234, 0.8)',
+                borderColor: 'rgba(102, 126, 234, 1)',
+                borderWidth: 1
+            }, {
+                label: 'Min Price (€)',
+                data: topModels.map(m => m.min_price),
+                backgroundColor: 'rgba(39, 174, 96, 0.6)',
+                borderColor: 'rgba(39, 174, 96, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { position: 'top' }
+            },
+            scales: {
+                y: { beginAtZero: true }
+            }
+        }
+    });
+}
+
+// Load on page load
+document.addEventListener('DOMContentLoaded', loadStats);
+</script>
+{% endblock %}

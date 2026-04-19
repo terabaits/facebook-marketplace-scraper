@@ -1,0 +1,293 @@
+{% extends "base.html" %}
+
+{% block title %}Model Statistics - SS-Crawler{% endblock %}
+
+{% block content %}
+<div class="section">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+        <h2>GPU Model Statistics</h2>
+        <div class="filters" style="margin: 0;">
+            <label>
+                Sort by:
+                <select id="gpu-sort" onchange="loadGPUModels()">
+                    <option value="price_desc">Most Expensive</option>
+                    <option value="price_asc">Least Expensive</option>
+                    <option value="listings_desc">Most Listings</option>
+                    <option value="listings_asc">Least Listings</option>
+                </select>
+            </label>
+            <label>
+                Time:
+                <select id="gpu-time" onchange="loadGPUModels()">
+                    <option value="all_time">All Time</option>
+                    <option value="month">Last Month</option>
+                    <option value="week">Last Week</option>
+                </select>
+            </label>
+        </div>
+    </div>
+    
+    <div id="gpu-models" class="model-grid">
+        <div class="loading">Loading GPU models...</div>
+    </div>
+</div>
+
+<div class="section">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+        <h2>CPU Model Statistics</h2>
+        <div class="filters" style="margin: 0;">
+            <label>
+                Sort by:
+                <select id="cpu-sort" onchange="loadCPUModels()">
+                    <option value="price_desc">Most Expensive</option>
+                    <option value="price_asc">Least Expensive</option>
+                    <option value="listings_desc">Most Listings</option>
+                    <option value="listings_asc">Least Listings</option>
+                </select>
+            </label>
+            <label>
+                Time:
+                <select id="cpu-time" onchange="loadCPUModels()">
+                    <option value="all_time">All Time</option>
+                    <option value="month">Last Month</option>
+                    <option value="week">Last Week</option>
+                </select>
+            </label>
+        </div>
+    </div>
+    
+    <div id="cpu-models" class="model-grid">
+        <div class="loading">Loading CPU models...</div>
+    </div>
+</div>
+
+<!-- Model History Modal -->
+<div id="history-modal" class="modal-overlay">
+    <div class="modal">
+        <div class="modal-header">
+            <h3 id="history-title">Model Price History</h3>
+            <button class="modal-close" onclick="closeModal()">&times;</button>
+        </div>
+        <div id="history-content">
+            <div class="history-chart">
+                <canvas id="historyChart"></canvas>
+            </div>
+            <div id="history-listings"></div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+let historyChart = null;
+
+async function loadGPUModels() {
+    const sort = document.getElementById('gpu-sort').value;
+    const time = document.getElementById('gpu-time').value;
+    
+    try {
+        const response = await fetch(`/api/gpu-models?sort=${sort}&time=${time}`);
+        const models = await response.json();
+        
+        const container = document.getElementById('gpu-models');
+        
+        if (models.length === 0) {
+            container.innerHTML = '<div class="loading">No GPU models found</div>';
+            return;
+        }
+        
+        container.innerHTML = models.map(model => `
+            <div class="model-card" onclick="showModelHistory('gpu', ${model.id}, '${model.vendor} ${model.model}')">
+                <h4>${model.vendor} ${model.model}</h4>
+                <p style="color: #666; font-size: 0.875rem;">
+                    ${model.vram_gb ? model.vram_gb + 'GB VRAM · ' : ''}
+                    ${model.year_released || 'Unknown year'}
+                </p>
+                
+                <div class="model-stats">
+                    <div class="model-stat">
+                        <div class="model-stat-value">${model.active_listings}</div>
+                        <div class="model-stat-label">Listings</div>
+                    </div>
+                    <div class="model-stat">
+                        <div class="model-stat-value">€${model.avg_price}</div>
+                        <div class="model-stat-label">Avg Price</div>
+                    </div>
+                    
+                    <div class="model-stat">
+                        <div class="model-stat-value" style="color: #27ae60;">€${model.min_price}</div>
+                        <div class="model-stat-label">Best</div>
+                    </div>
+                </div>
+                
+                <div class="price-bar" style="margin-top: 1rem;">
+                    <div class="price-bar-fill" style="width: ${(model.avg_price - model.min_price) / (model.max_price - model.min_price) * 100 || 50}%"></div>
+                </div>
+                <small style="color: #666;">Range: €${model.min_price} - €${model.max_price}</small>
+            </div>
+        `).join('');
+        
+    } catch (error) {
+        document.getElementById('gpu-models').innerHTML = 
+            `<div class="error">Failed to load GPU models: ${error.message}</div>`;
+    }
+}
+
+async function loadCPUModels() {
+    const sort = document.getElementById('cpu-sort').value;
+    const time = document.getElementById('cpu-time').value;
+    
+    try {
+        const response = await fetch(`/api/cpu-models?sort=${sort}&time=${time}`);
+        const models = await response.json();
+        
+        const container = document.getElementById('cpu-models');
+        
+        if (models.length === 0) {
+            container.innerHTML = '<div class="loading">No CPU models found</div>';
+            return;
+        }
+        
+        container.innerHTML = models.map(model => `
+            <div class="model-card" onclick="showModelHistory('cpu', ${model.id}, '${model.cpu_name}')">
+                <h4>${model.cpu_name}</h4>
+                <p style="color: #666; font-size: 0.875rem;">
+                    ${model.cores ? model.cores + 'c/' + model.threads + 't · ' : ''}
+                    ${model.socket || 'Unknown socket'}
+                </p>
+                
+                <div class="model-stats">
+                    <div class="model-stat">
+                        <div class="model-stat-value">${model.active_listings}</div>
+                        <div class="model-stat-label">Listings</div>
+                    </div>
+                    <div class="model-stat">
+                        <div class="model-stat-value">€${model.avg_price}</div>
+                        <div class="model-stat-label">Avg Price</div>
+                    </div>
+                    
+                    <div class="model-stat">
+                        <div class="model-stat-value" style="color: #27ae60;">€${model.min_price}</div>
+                        <div class="model-stat-label">Best</div>
+                    </div>
+                </div>
+                
+                <div class="price-bar" style="margin-top: 1rem;">
+                    <div class="price-bar-fill" style="width: ${(model.avg_price - model.min_price) / (model.max_price - model.min_price) * 100 || 50}%"></div>
+                </div>
+                <small style="color: #666;">Range: €${model.min_price} - €${model.max_price}</small>
+            </div>
+        `).join('');
+        
+    } catch (error) {
+        document.getElementById('cpu-models').innerHTML = 
+            `<div class="error">Failed to load CPU models: ${error.message}</div>`;
+    }
+}
+
+async function showModelHistory(modelType, modelId, modelName) {
+    try {
+        const response = await fetch(`/api/model-history/${modelType}/${modelId}`);
+        const listings = await response.json();
+        
+        document.getElementById('history-title').textContent = `${modelName} - Price History`;
+        
+        // Prepare chart data
+        const dates = listings.map(l => new Date(l.date_posted).toLocaleDateString()).reverse();
+        const prices = listings.map(l => l.price_eur).reverse();
+        const colors = listings.map(l => l.is_active ? '#667eea' : '#95a5a6').reverse();
+        
+        // Destroy existing chart
+        if (historyChart) {
+            historyChart.destroy();
+        }
+        
+        // Create new chart
+        const ctx = document.getElementById('historyChart').getContext('2d');
+        historyChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: dates,
+                datasets: [{
+                    label: 'Price (€)',
+                    data: prices,
+                    borderColor: '#667eea',
+                    backgroundColor: 'rgba(102, 126, 234, 0.1)',
+                    fill: true,
+                    tension: 0.4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            callback: function(value) {
+                                return '€' + value;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+        
+        // Show listings table
+        const listingsHtml = `
+            <h4 style="margin-top: 2rem;">All Listings (${listings.length})</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Price</th>
+                        <th>Location</th>
+                        <th>Date</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${listings.map(item => `
+                        <tr>
+                            <td><a href="${item.listing_url}" target="_blank">${item.title}</a></td>
+                            <td class="price">€${item.price_eur}</td>
+                            <td>${item.seller_location || 'N/A'}</td>
+                            <td>${new Date(item.date_posted).toLocaleDateString()}</td>
+                            <td>${item.is_active ? '<span class="badge badge-success">Active</span>' : '<span class="badge badge-danger">Inactive</span>'}</td>
+                        </tr>
+                    `).join('')}
+                </tbody>
+            </table>
+        `;
+        
+        document.getElementById('history-listings').innerHTML = listingsHtml;
+        
+        document.getElementById('history-modal').classList.add('active');
+        
+    } catch (error) {
+        console.error('Error loading history:', error);
+    }
+}
+
+function closeModal() {
+    document.getElementById('history-modal').classList.remove('active');
+}
+
+// Close modal on outside click
+document.getElementById('history-modal').addEventListener('click', function(e) {
+    if (e.target === this) {
+        closeModal();
+    }
+});
+
+// Load on page load
+document.addEventListener('DOMContentLoaded', () => {
+    loadGPUModels();
+    loadCPUModels();
+});
+</script>
+{% endblock %}

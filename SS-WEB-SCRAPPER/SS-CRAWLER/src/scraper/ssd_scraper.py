@@ -4,15 +4,15 @@ from typing import Optional, List, Dict, Any, Set
 from datetime import datetime, timedelta
 from pathlib import Path
 
-from src.database.repository import DatabaseRepository
-from src.database.connection import DatabaseConnection
+from src.database.connection import init_database, get_session
+from src.database.repository import ListingRepository, SSDReferenceRepository, ScrapeRunRepository
 from src.models.schemas import Listing, SSDReference
 from src.scraper.crawler import Crawler, ErrorType
 from src.scraper.ssd_parser import SSDParser
 from src.scraper.ssd_matcher import SSDMatcher
-from src.utils.config import ScraperConfig
+from src.utils.config import AppConfig, ScraperConfig
 from src.utils.logger import get_logger
-from src.utils.text import compute_content_hash, extract_ssd_tokens
+from src.utils.text import compute_content_hash
 
 logger = get_logger("ssd_scraper")
 
@@ -23,25 +23,12 @@ class SSDScraper:
     BASE_URL = "https://www.ss.com"
     CATEGORY_URL = "/lv/electronics/computers/completing-pc/ssd/"
     
-    def __init__(self, config: Optional[ScraperConfig] = None):
+    def __init__(self, config: AppConfig):
         """Initialize the SSD scraper."""
-        self.config = config or ScraperConfig()
-        self.crawler = Crawler(self.config)
+        self.config = config
+        self.crawler = Crawler(config.scraper)
         self.parser = SSDParser()
-        
-        # Initialize database
-        db_conn = DatabaseConnection(
-            host=self.config.database.host,
-            port=self.config.database.port,
-            database=self.config.database.database,
-            user=self.config.database.user,
-            password=self.config.database.password
-        )
-        self.repo = DatabaseRepository(db_conn)
-        
-        # Initialize matcher (will be loaded on first use)
         self.matcher: Optional[SSDMatcher] = None
-        self.seen_urls: Set[str] = set()
         
         self.stats = {
             'processed': 0,
@@ -52,65 +39,26 @@ class SSDScraper:
             'matched': 0
         }
     
-    def _load_ssd_references(self) -> List[SSDReference]:
-        """Load SSD references from database."""
-        try:
-            with self.repo.db.get_cursor() as cursor:
-                cursor.execute("""
-                    SELECT id, brand, model, interface, form_factor, 
-                           capacity_gb, controller, configuration, has_dram, hmb,
-                           nand_brand, nand_type, layers, read_speed_mb, write_speed_mb,
-                           category, notes, search_keywords, normalized_name
-                    FROM ssd_reference
-                    ORDER BY brand, model
-                """)
-                
-                ssd_list = []
-                for row in cursor.fetchall():
-                    ssd = SSDReference(
-                        id=row[0],
-                        brand=row[1],
-                        model=row[2],
-                        interface=row[3],
-                        form_factor=row[4],
-                        capacity_gb=row[5],
-                        controller=row[6],
-                        configuration=row[7],
-                        has_dram=row[8],
-                        hmb=row[9],
-                        nand_brand=row[10],
-                        nand_type=row[11],
-                        layers=row[12],
-                        read_speed_mb=row[13],
-                        write_speed_mb=row[14],
-                        category=row[15],
-                        notes=row[16],
-                        search_keywords=row[17] if row[17] else [],
-                        normalized_name=row[18]
-                    )
-                    ssd_list.append(ssd)
-                
-                logger.info(f"Loaded {len(ssd_list)} SSD references from database")
-                return ssd_list
-                
-        except Exception as e:
-            logger.error(f"Failed to load SSD references: {e}")
-            return []
-    
-    def _ensure_matcher_loaded(self):
-        """Ensure the matcher is loaded."""
-        if self.matcher is None:
-            ssd_list = self._load_ssd_references()
-            self.matcher = SSDMatcher(ssd_list)
+    def initialize(self):
+        """Initialize database and load SSD references."""
+        logger.info("Initializing SSD scraper...")
+        
+        # Initialize database
+        init_database(self.config.database)
+        logger.info(f"Database: {self.config.database.connection_string}")
+        
+        # Load SSD reference data
+        with get_session() as session:
+            ssds = SSDReferenceRepository.get_all(session)
+            self.matcher = SSDMatcher(ssds)
+            logger.info(f"Loaded {len(ssds)} SSD references")
     
     def _extract_location(self, html: str) -> Optional[str]:
         """Extract seller location from HTML."""
-        # Look for location in the page
-        soup_match = re.search(r'<td[^>]*>\s*<b>([^<]+)</b>\s*</td>\s*<td[^>]*class="td_address"[^>]*>([^<]+)</td>', html)
+        soup_match = re.search(r'<td[^>]*>\s*<b>[^<]+</b>\s*</td>\s*<td[^>]*class="td_address"[^>]*>([^<]+)</td>', html)
         if soup_match:
-            return soup_match.group(2).strip()
+            return soup_match.group(1).strip()
         
-        # Alternative pattern
         loc_match = re.search(r'class="td_address"[^>]*>([^<]+)</td>', html)
         if loc_match:
             return loc_match.group(1).strip()
@@ -118,18 +66,7 @@ class SSDScraper:
         return None
     
     def scrape_listing(self, listing_id: str, url: str) -> Optional[Listing]:
-        """
-        Scrape a single SSD listing.
-        
-        Args:
-            listing_id: The listing ID
-            url: Full URL to the listing
-            
-        Returns:
-            Listing object if successful
-        """
-        self._ensure_matcher_loaded()
-        
+        """Scrape a single SSD listing."""
         try:
             # Fetch the page
             result = self.crawler.fetch(url)
@@ -183,17 +120,8 @@ class SSDScraper:
             return None
     
     def scrape_category(self, max_pages: int = 0, limit: int = 0) -> List[Listing]:
-        """
-        Scrape all SSD listings from the category.
-        
-        Args:
-            max_pages: Maximum pages to scrape (0 = unlimited)
-            limit: Maximum listings to process (0 = unlimited)
-            
-        Returns:
-            List of scraped listings
-        """
-        self._ensure_matcher_loaded()
+        """Scrape all SSD listings from the category."""
+        self.initialize()
         
         listings = []
         current_url = f"{self.BASE_URL}{self.CATEGORY_URL}"
@@ -203,7 +131,6 @@ class SSDScraper:
         logger.info(f"Starting SSD scraper from {current_url}")
         
         while True:
-            # Check page limit
             if max_pages > 0 and page > max_pages:
                 logger.info(f"Reached max pages limit ({max_pages})")
                 break
@@ -223,15 +150,9 @@ class SSDScraper:
             logger.info(f"Found {len(listing_urls)} listings on page {page}")
             
             for listing_id, url in listing_urls:
-                # Check global limit
                 if limit > 0 and total_listings >= limit:
                     logger.info(f"Reached global limit ({limit})")
                     return listings
-                
-                # Skip if already seen
-                if listing_id in self.seen_urls:
-                    continue
-                self.seen_urls.add(listing_id)
                 
                 # Scrape individual listing
                 listing = self.scrape_listing(listing_id, url)
@@ -262,38 +183,89 @@ class SSDScraper:
     def _save_listing(self, listing: Listing):
         """Save listing to database."""
         try:
-            # Check if listing exists
-            existing = self.repo.get_listing_by_id(listing.listing_id)
-            
-            if existing:
-                # Check if changed
-                if existing.content_hash == listing.content_hash:
-                    # Just update last_seen
-                    self.repo.update_listing_last_seen(listing.listing_id)
-                    self.stats['unchanged'] += 1
-                else:
-                    # Update with new data
-                    self.repo.update_listing(listing)
-                    self.stats['updated'] += 1
-            else:
-                # Insert new
-                self.repo.insert_listing(listing)
-                self.stats['new'] += 1
+            with get_session() as session:
+                existing = ListingRepository.get_by_id(session, listing.listing_id)
                 
+                if existing:
+                    if existing.content_hash == listing.content_hash:
+                        # Just update last_seen
+                        session.execute(
+                            "UPDATE listings SET last_seen_at = NOW() WHERE listing_id = :id",
+                            {"id": listing.listing_id}
+                        )
+                        self.stats['unchanged'] += 1
+                    else:
+                        # Update with new data
+                        session.execute(
+                            """
+                            UPDATE listings
+                            SET title = :title,
+                                description = :desc,
+                                price_eur = :price,
+                                seller_location = :location,
+                                matched_ssd_id = :ssd_id,
+                                ssd_confidence_score = :confidence,
+                                ssd_match_method = :method,
+                                capacity_gb = :capacity,
+                                is_active = true,
+                                last_seen_at = NOW(),
+                                updated_at = NOW()
+                            WHERE listing_id = :id
+                            """,
+                            {
+                                "id": listing.listing_id,
+                                "title": listing.title,
+                                "desc": listing.description,
+                                "price": listing.price_eur,
+                                "location": listing.seller_location,
+                                "ssd_id": listing.matched_ssd_id,
+                                "confidence": listing.ssd_confidence_score,
+                                "method": listing.ssd_match_method,
+                                "capacity": listing.capacity_gb
+                            }
+                        )
+                        self.stats['updated'] += 1
+                else:
+                    # Insert new
+                    session.execute(
+                        """
+                        INSERT INTO listings (
+                            listing_id, title, description, price_eur, seller_location,
+                            listing_url, image_url, date_posted, category,
+                            matched_ssd_id, ssd_confidence_score, ssd_match_method,
+                            capacity_gb, content_hash, is_active
+                        ) VALUES (
+                            :id, :title, :desc, :price, :location,
+                            :url, :image, :date, 'ssd',
+                            :ssd_id, :confidence, :method,
+                            :capacity, :hash, true
+                        )
+                        """,
+                        {
+                            "id": listing.listing_id,
+                            "title": listing.title,
+                            "desc": listing.description,
+                            "price": listing.price_eur,
+                            "location": listing.seller_location,
+                            "url": listing.listing_url,
+                            "image": listing.image_url,
+                            "date": listing.date_posted,
+                            "ssd_id": listing.matched_ssd_id,
+                            "confidence": listing.ssd_confidence_score,
+                            "method": listing.ssd_match_method,
+                            "capacity": listing.capacity_gb,
+                            "hash": listing.content_hash
+                        }
+                    )
+                    self.stats['new'] += 1
+                    
         except Exception as e:
             logger.error(f"Error saving listing {listing.listing_id}: {e}")
     
     def scrape_single(self, url: str) -> Optional[Listing]:
-        """
-        Scrape a single SSD listing by URL.
+        """Scrape a single SSD listing by URL."""
+        self.initialize()
         
-        Args:
-            url: The listing URL
-            
-        Returns:
-            Listing object if successful
-        """
-        # Extract listing ID from URL
         match = re.search(r'/([a-z]+)\.html$', url)
         if not match:
             logger.error(f"Could not extract listing ID from URL: {url}")
@@ -302,6 +274,10 @@ class SSDScraper:
         listing_id = match.group(1)
         return self.scrape_listing(listing_id, url)
     
-    def get_stats(self) -> Dict[str, Any]:
-        """Get scraping statistics."""
-        return self.stats.copy()
+    def run(self) -> Dict[str, Any]:
+        """Run full SSD scrape."""
+        self.scrape_category(
+            max_pages=self.config.scraper.max_pages,
+            limit=self.config.scraper.max_listings
+        )
+        return self.stats

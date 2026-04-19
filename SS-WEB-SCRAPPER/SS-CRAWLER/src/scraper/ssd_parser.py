@@ -208,21 +208,33 @@ class SSDParser:
             'next_url': None
         }
         
-        # Find pagination div
+        # Find pagination div - try multiple selectors
         paging_div = soup.find('div', {'class': 'pagination'})
-        if paging_div:
-            # Extract current page
-            current = paging_div.find('a', {'class': 'a_current'})
-            if current:
-                try:
-                    info['current_page'] = int(current.get_text(strip=True))
-                except ValueError:
-                    pass
-            
-            # Find next page link
-            next_link = paging_div.find('a', {'class': 'a_next'})
-            if next_link and next_link.get('href'):
-                info['has_next'] = True
-                info['next_url'] = next_link['href']
+        
+        # Alternative: look for paging links directly
+        if not paging_div:
+            # Look for "next" or "page" links in any div
+            all_links = soup.find_all('a', href=re.compile(r'page\d+\.html|navig'))
+            for link in all_links:
+                href = link.get('href', '')
+                if 'page' in href or 'navig' in href:
+                    info['has_next'] = True
+                    info['next_url'] = href if href.startswith('http') else f"https://www.ss.com{href}"
+                    break
+            return info
+        
+        # Extract current page
+        current = paging_div.find('a', {'class': 'a_current'})
+        if current:
+            try:
+                info['current_page'] = int(current.get_text(strip=True))
+            except ValueError:
+                pass
+        
+        # Find next page link
+        next_link = paging_div.find('a', {'class': 'a_next'})
+        if next_link and next_link.get('href'):
+            info['has_next'] = True
+            info['next_url'] = next_link['href']
         
         return info

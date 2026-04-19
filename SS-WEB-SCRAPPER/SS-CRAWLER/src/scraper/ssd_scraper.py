@@ -175,14 +175,18 @@ class SSDScraper:
             
             # Check for next page
             pagination = self.parser.extract_pagination_info(result.html)
-            if not pagination['has_next']:
+            has_next = pagination.get('has_next', False)
+            next_url = pagination.get('next_url')
+            
+            if not has_next or not next_url:
                 logger.info("No more pages")
                 break
             
-            current_url = pagination['next_url']
+            current_url = next_url
             if not current_url.startswith('http'):
                 current_url = f"{self.BASE_URL}{current_url}"
             
+            logger.info(f"Next page URL: {current_url}")
             page += 1
         
         logger.info(f"SSD scraping complete. Stats: {self.stats}")

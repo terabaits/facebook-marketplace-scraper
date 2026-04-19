@@ -1,0 +1,266 @@
+{% extends "base.html" %}
+
+{% block title %}SSD Listings - SS-Crawler{% endblock %}
+
+{% block content %}
+<div class="section">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
+        <h2>SSD Listings</h2>
+        <div class="filters" style="margin: 0;">
+            <label>
+                <input type="checkbox" id="active-only" checked onchange="loadListings()">
+                Active only
+            </label>
+            <label>
+                <input type="checkbox" id="high-confidence" checked onchange="loadListings()">
+                High confidence (≥70%)
+            </label>
+            <label>
+                Sort:
+                <select id="sort-by" onchange="loadListings()">
+                    <option value="date_posted">Date Posted</option>
+                    <option value="price">Price</option>
+                </select>
+            </label>
+            <label>
+                Order:
+                <select id="sort-order" onchange="loadListings()">
+                    <option value="desc">Descending</option>
+                    <option value="asc">Ascending</option>
+                </select>
+            </label>
+            <label>
+                Time:
+                <select id="time-filter" onchange="loadListings()">
+                    <option value="all_time">All Time</option>
+                    <option value="month">Last Month</option>
+                    <option value="week">Last Week</option>
+                </select>
+            </label>
+        </div>
+    </div>
+    
+    <div id="listings-container">
+        <div class="loading">Loading SSD listings...</div>
+    </div>
+</div>
+
+<div class="section">
+    <h2>Price Distribution</h2>
+    <div class="chart-container">
+        <canvas id="priceDistChart"></canvas>
+    </div>
+</div>
+
+<!-- Model History Modal -->
+<div id="history-modal" class="modal-overlay">
+    <div class="modal">
+        <div class="modal-header">
+            <h3 id="history-title">Model Price History</h3>
+            <button class="modal-close" onclick="closeModal()">&times;</button>
+        </div>
+        <div id="history-content">
+            <div class="history-chart">
+                <canvas id="historyChart"></canvas>
+            </div>
+            <div id="history-listings"></div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+let priceChart = null;
+let historyChart = null;
+
+async function loadListings() {
+    const activeOnly = document.getElementById('active-only').checked;
+    const highConfidence = document.getElementById('high-confidence').checked;
+    const sortBy = document.getElementById('sort-by').value;
+    const sortOrder = document.getElementById('sort-order').value;
+    const timeFilter = document.getElementById('time-filter').value;
+    
+    const params = new URLSearchParams();
+    params.append('active', activeOnly);
+    params.append('sort', sortBy);
+    params.append('order', sortOrder);
+    params.append('time', timeFilter);
+    if (highConfidence) params.append('min_confidence', '0.70');
+    
+    try {
+        const response = await fetch('/api/ssds?' + params.toString());
+        const listings = await response.json();
+        
+        const container = document.getElementById('listings-container');
+        
+        if (listings.length === 0) {
+            container.innerHTML = '<div class="loading">No listings found</div>';
+            return;
+        }
+        
+        let html = '<div class="table-container"><table><thead><tr>';
+        html += '<th>ID</th><th>SSD</th><th>Capacity</th><th>Price</th><th>Location</th><th>Confidence</th><th>Posted</th><th>Link</th>';
+        html += '</tr></thead><tbody>';
+        
+        listings.forEach(l => {
+            const capacity = l.capacity_gb ? `${l.capacity_gb} GB` : 'N/A';
+            const confidence = l.ssd_confidence_score ? `${(l.ssd_confidence_score * 100).toFixed(0)}%` : 'N/A';
+            const ssdName = l.ssd_brand ? `${l.ssd_brand} ${l.ssd_model}` : 'Unknown';
+            const ssdCell = l.ssd_brand 
+                ? `<a href="#" onclick="showModelHistory(${l.matched_ssd_id}, '${l.ssd_brand} ${l.ssd_model}', 'ssd'); return false;" style="color: #667eea; text-decoration: none;">${ssdName}</a>`
+                : 'Unknown';
+            
+            html += `<tr>
+                <td>${l.listing_id}</td>
+                <td>${ssdCell}</td>
+                <td>${capacity}</td>
+                <td class="price">€${l.price_eur}</td>
+                <td>${l.seller_location || 'N/A'}</td>
+                <td>${confidence}</td>
+                <td>${new Date(l.date_posted).toLocaleDateString()}</td>
+                <td><a href="${l.listing_url}" target="_blank" class="action-btn">View</a></td>
+            </tr>`;
+        });
+        
+        html += '</tbody></table></div>';
+        container.innerHTML = html;
+        
+        // Update price distribution chart
+        updatePriceChart(listings);
+        
+    } catch (error) {
+        document.getElementById('listings-container').innerHTML = 
+            `<div class="error">Error loading listings: ${error.message}</div>`;
+    }
+}
+
+function updatePriceChart(listings) {
+    const matched = listings.filter(l => l.ssd_confidence_score >= 0.70);
+    
+    const ranges = {
+        'Under €50': 0,
+        '€50-100': 0,
+        '€100-200': 0,
+        '€200-500': 0,
+        'Over €500': 0
+    };
+    
+    matched.forEach(l => {
+        const price = l.price_eur;
+        if (price < 50) ranges['Under €50']++;
+        else if (price < 100) ranges['€50-100']++;
+        else if (price < 200) ranges['€100-200']++;
+        else if (price < 500) ranges['€200-500']++;
+        else ranges['Over €500']++;
+    });
+    
+    const ctx = document.getElementById('priceDistChart').getContext('2d');
+    
+    if (priceChart) {
+        priceChart.destroy();
+    }
+    
+    priceChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: Object.keys(ranges),
+            datasets: [{
+                label: 'Listings',
+                data: Object.values(ranges),
+                backgroundColor: ['#667eea', '#764ba2', '#f093fb', '#f5576c', '#4facfe']
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { display: false }
+            },
+            scales: {
+                y: { beginAtZero: true, ticks: { stepSize: 1 } }
+            }
+        }
+    });
+}
+
+async function showModelHistory(modelId, modelName, category) {
+    document.getElementById('history-title').textContent = modelName + ' - Price History';
+    document.getElementById('history-modal').style.display = 'flex';
+    
+    try {
+        const response = await fetch(`/api/price-history/${modelId}?category=${category}`);
+        const data = await response.json();
+        
+        // Update chart
+        const ctx = document.getElementById('historyChart').getContext('2d');
+        
+        if (historyChart) {
+            historyChart.destroy();
+        }
+        
+        const prices = data.map(d => d.price_eur);
+        const dates = data.map(d => new Date(d.date_posted).toLocaleDateString());
+        
+        historyChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: dates,
+                datasets: [{
+                    label: 'Price (EUR)',
+                    data: prices,
+                    borderColor: '#667eea',
+                    backgroundColor: 'rgba(102, 126, 234, 0.1)',
+                    fill: true,
+                    tension: 0.3
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: { y: { beginAtZero: true } }
+            }
+        });
+        
+        // Show listings
+        let html = '<h4>All Historical Listings</h4>';
+        html += '<div class="table-container"><table><thead><tr>';
+        html += '<th>ID</th><th>Price</th><th>Location</th><th>Posted</th><th>Link</th>';
+        html += '</tr></thead><tbody>';
+        
+        data.forEach(l => {
+            html += `<tr>
+                <td>${l.listing_id}</td>
+                <td class="price">€${l.price_eur}</td>
+                <td>${l.seller_location || 'N/A'}</td>
+                <td>${new Date(l.date_posted).toLocaleDateString()}</td>
+                <td><a href="${l.listing_url}" target="_blank" class="action-btn">View</a></td>
+            </tr>`;
+        });
+        
+        html += '</tbody></table></div>';
+        document.getElementById('history-listings').innerHTML = html;
+        
+    } catch (error) {
+        document.getElementById('history-listings').innerHTML = 
+            `<div class="error">Error loading history: ${error.message}</div>`;
+    }
+}
+
+function closeModal() {
+    document.getElementById('history-modal').style.display = 'none';
+}
+
+// Close modal when clicking outside
+window.onclick = function(event) {
+    const modal = document.getElementById('history-modal');
+    if (event.target === modal) {
+        closeModal();
+    }
+}
+
+// Load on page load
+document.addEventListener('DOMContentLoaded', loadListings);
+</script>
+{% endblock %}

@@ -79,6 +79,19 @@ def get_stats():
     """)
     stats['cpu'] = dict(cursor.fetchone())
     
+    # SSD stats
+    cursor.execute("""
+        SELECT 
+            COUNT(*) as total_listings,
+            COUNT(CASE WHEN is_active THEN 1 END) as active_listings,
+            COUNT(CASE WHEN matched_ssd_id IS NOT NULL THEN 1 END) as matched,
+            COUNT(CASE WHEN matched_ssd_id IS NULL THEN 1 END) as unmatched,
+            ROUND(AVG(price_eur)::numeric, 2) as avg_price
+        FROM listings 
+        WHERE category = 'ssd'
+    """)
+    stats['ssd'] = dict(cursor.fetchone())
+    
     # Recent activity
     cursor.execute("""
         SELECT 
@@ -342,6 +355,20 @@ def get_model_history(model_type, model_id):
             WHERE l.matched_gpu_id = %s AND l.category = 'gpu'
             ORDER BY l.date_posted DESC
         """, (model_id,))
+    elif model_type == 'ssd':
+        cursor.execute("""
+            SELECT 
+                l.listing_id,
+                l.title,
+                l.price_eur,
+                l.seller_location,
+                l.date_posted,
+                l.is_active,
+                l.listing_url
+            FROM listings l
+            WHERE l.matched_ssd_id = %s AND l.category = 'ssd'
+            ORDER BY l.date_posted DESC
+        """, (model_id,))
     else:
         cursor.execute("""
             SELECT 
@@ -354,6 +381,8 @@ def get_model_history(model_type, model_id):
                 l.listing_url
             FROM listings l
             WHERE l.matched_cpu_id = %s AND l.category = 'cpu'
+            ORDER BY l.date_posted DESC
+        """, (model_id,))
             ORDER BY l.date_posted DESC
         """, (model_id,))
     
@@ -475,6 +504,132 @@ def get_cpu_models():
     return jsonify([dict(row) for row in models])
 
 
+@app.route('/api/ssd-models')
+def get_ssd_models():
+    """Get aggregated SSD model statistics with sorting."""
+    conn = get_db_connection()
+    cursor = conn.cursor(cursor_factory=RealDictCursor)
+    
+    sort = request.args.get('sort', 'price_desc')
+    time_filter = request.args.get('time', 'all_time')
+    
+    order_map = {
+        'price_desc': 'avg_price DESC',
+        'price_asc': 'avg_price ASC',
+        'listings_desc': 'active_listings DESC',
+        'listings_asc': 'active_listings ASC'
+    }
+    order_by = order_map.get(sort, 'avg_price DESC')
+    
+    time_clause = get_time_filter_sql(time_filter, 'l')
+    
+    cursor.execute(f"""
+        SELECT 
+            s.id,
+            s.brand,
+            s.model,
+            s.capacity_gb,
+            s.interface,
+            s.form_factor,
+            COUNT(l.id) as active_listings,
+            ROUND(AVG(l.price_eur)::numeric, 2) as avg_price,
+            MIN(l.price_eur) as min_price,
+            MAX(l.price_eur) as max_price,
+            MIN(l.date_posted) as first_seen,
+            MAX(l.date_posted) as last_seen
+        FROM ssd_reference s
+        JOIN listings l ON s.id = l.matched_ssd_id
+        WHERE l.category = 'ssd' 
+            AND l.is_active = true
+            AND l.ssd_confidence_score >= 0.70
+            {time_clause}
+        GROUP BY s.id, s.brand, s.model, s.capacity_gb, s.interface, s.form_factor
+        HAVING COUNT(l.id) >= 1
+        ORDER BY {order_by}
+    """)
+    
+    models = cursor.fetchall()
+    
+    cursor.close()
+    conn.close()
+    
+    return jsonify([dict(row) for row in models])
+
+
+@app.route('/api/ssds')
+def get_ssds():
+    """Get SSD listings with filters and sorting."""
+    try:
+        conn = get_db_connection()
+    except Exception as e:
+        return jsonify({'error': f'Database connection failed: {str(e)}'}), 500
+    
+    cursor = conn.cursor(cursor_factory=RealDictCursor)
+    
+    # Get query parameters
+    show_active = request.args.get('active', 'true').lower() == 'true'
+    min_confidence = float(request.args.get('min_confidence', 0))
+    time_filter = request.args.get('time', 'all_time')
+    sort_by = request.args.get('sort', 'date_posted')
+    sort_order = request.args.get('order', 'desc')
+    
+    query = """
+        SELECT 
+            l.listing_id,
+            l.title,
+            l.price_eur,
+            l.seller_location,
+            l.date_posted,
+            l.is_active,
+            l.ssd_confidence_score,
+            l.ssd_match_method,
+            l.matched_ssd_id,
+            l.capacity_gb,
+            s.brand as ssd_brand,
+            s.model as ssd_model,
+            s.interface,
+            s.form_factor,
+            l.image_url,
+            l.listing_url
+        FROM listings l
+        LEFT JOIN ssd_reference s ON l.matched_ssd_id = s.id
+        WHERE l.category = 'ssd'
+    """
+    
+    params = []
+    if show_active:
+        query += " AND l.is_active = true"
+    if min_confidence > 0:
+        query += " AND l.ssd_confidence_score >= %s"
+        params.append(min_confidence)
+    
+    query += get_time_filter_sql(time_filter)
+    
+    sort_column = 'l.price_eur' if sort_by == 'price' else 'l.date_posted'
+    sort_dir = 'ASC' if sort_order == 'asc' else 'DESC'
+    query += f" ORDER BY {sort_column} {sort_dir} LIMIT 100"
+    
+    try:
+        cursor.execute(query, params)
+        listings = cursor.fetchall()
+        
+        cursor.close()
+        conn.close()
+        
+        return jsonify([dict(row) for row in listings])
+        
+    except Exception as e:
+        cursor.close()
+        conn.close()
+        return jsonify({'error': str(e)}), 500
+
+
+@app.route('/ssd')
+def ssd_page():
+    """SSD listings page."""
+    return render_template('ssd.html')
+
+
 @app.route('/api/unmatched')
 def get_unmatched():
     """Get unmatched listings that need manual review."""
@@ -496,12 +651,15 @@ def get_unmatched():
             l.listing_url,
             l.matched_gpu_id,
             l.matched_cpu_id,
+            l.matched_ssd_id,
             l.confidence_score,
-            l.cpu_confidence_score
+            l.cpu_confidence_score,
+            l.ssd_confidence_score
         FROM listings l
         WHERE (
             (l.category = 'gpu' AND l.matched_gpu_id IS NULL)
             OR (l.category = 'cpu' AND l.matched_cpu_id IS NULL)
+            OR (l.category = 'ssd' AND l.matched_ssd_id IS NULL)
         )
     """
     
@@ -520,13 +678,17 @@ def get_unmatched():
     cursor.execute("SELECT id, producer, cpu_name FROM cpu_reference ORDER BY cpu_name")
     cpu_models = cursor.fetchall()
     
+    cursor.execute("SELECT id, brand, model, capacity_gb FROM ssd_reference ORDER BY brand, model")
+    ssd_models = cursor.fetchall()
+    
     cursor.close()
     conn.close()
     
     return jsonify({
         'listings': [dict(row) for row in listings],
         'gpu_models': [dict(row) for row in gpu_models],
-        'cpu_models': [dict(row) for row in cpu_models]
+        'cpu_models': [dict(row) for row in cpu_models],
+        'ssd_models': [dict(row) for row in ssd_models]
     })
 
 

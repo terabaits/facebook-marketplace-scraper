@@ -135,6 +135,7 @@ class SSDScraper:
         current_url = f"{self.BASE_URL}{self.CATEGORY_URL}"
         page = 1
         total_listings = 0
+        seen_urls = set()  # Track seen listing URLs across pages
         
         logger.info(f"Starting SSD scraper from {current_url}")
         
@@ -155,9 +156,13 @@ class SSDScraper:
             # Extract listing URLs
             listing_urls = self.parser.extract_listing_urls(result.html, self.BASE_URL)
             
-            logger.info(f"Found {len(listing_urls)} listings on page {page}")
+            # Filter out already seen URLs
+            new_listings = [(lid, url) for lid, url in listing_urls if url not in seen_urls]
+            seen_urls.update(url for _, url in new_listings)
             
-            for listing_id, url in listing_urls:
+            logger.info(f"Found {len(listing_urls)} listings on page {page}, {len(new_listings)} new")
+            
+            for listing_id, url in new_listings:
                 if limit > 0 and total_listings >= limit:
                     logger.info(f"Reached global limit ({limit})")
                     return listings

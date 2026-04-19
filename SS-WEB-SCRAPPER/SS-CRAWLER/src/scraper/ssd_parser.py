@@ -80,23 +80,33 @@ class SSDParser:
                     if image_url.startswith('/'):
                         image_url = f"https://i.ss.com{image_url}"
             
-            # Extract condition
+            # Extract condition and model
             condition = specs.get('Stāvoklis', '')
+            model_from_specs = specs.get('Modelis', '')
+            brand_from_specs = specs.get('Marka', '')
             
-            # Build full description
+            # Build full description with specs
             full_description = description
+            if brand_from_specs:
+                full_description += f"\nBrand: {brand_from_specs}"
+            if model_from_specs:
+                full_description += f"\nModel: {model_from_specs}"
             if condition:
                 full_description += f"\nCondition: {condition}"
+            
+            # Build title from brand + model if not already present
+            if not title or title == "":
+                title = f"{brand_from_specs} {model_from_specs}".strip() if (brand_from_specs or model_from_specs) else "Unknown SSD"
             
             listing = Listing(
                 listing_id=listing_id,
                 title=title,
                 description=full_description.strip(),
                 price_eur=price,
-                seller_location=None,  # Will be extracted from listing page
+                seller_location=None,
                 listing_url=url,
                 image_url=image_url,
-                date_posted=None,  # Will be set by scraper
+                date_posted=None,
                 category='ssd',
                 capacity_gb=capacity_gb,
                 is_active=True

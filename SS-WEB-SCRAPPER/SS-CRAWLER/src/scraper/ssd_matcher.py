@@ -147,6 +147,24 @@ class SSDMatcher:
             score = fuzz.token_set_ratio(normalized_title, ssd_name)
             method = "fuzzy"
         
+        # Check for model-only match (higher weight)
+        ssd_model_only = normalize_text(ssd.model)
+        model_parts = ssd_model_only.split()
+        for part in model_parts:
+            if len(part) >= 3 and part in normalized_title:
+                score += 20  # Boost for partial model match
+                method += "+model_part"
+                break
+        
+        # Handle slash variants (e.g., SU650/SU655)
+        if '/' in ssd.model:
+            for variant in ssd.model.split('/'):
+                norm_variant = normalize_text(variant.strip())
+                if len(norm_variant) >= 3 and norm_variant in normalized_title:
+                    score += 30  # Higher boost for exact variant match
+                    method += "+variant_exact"
+                    break
+        
         # Capacity matching bonus/penalty
         if extracted_capacity and ssd.capacity_gb:
             capacity_diff = abs(extracted_capacity - ssd.capacity_gb)

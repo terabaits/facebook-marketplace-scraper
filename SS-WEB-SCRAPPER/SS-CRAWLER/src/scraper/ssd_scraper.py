@@ -89,9 +89,13 @@ class SSDScraper:
             if location:
                 listing.seller_location = location
             
-            # Match to SSD reference
+            # Match to SSD reference - use title + description for better matching
+            search_text = listing.title
+            if listing.description:
+                search_text = f"{listing.title} {listing.description}"
+            
             match_result = self.matcher.match_listing(
-                listing.title,
+                search_text,
                 listing.capacity_gb
             )
             

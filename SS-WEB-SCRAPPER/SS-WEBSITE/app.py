@@ -383,8 +383,6 @@ def get_model_history(model_type, model_id):
             WHERE l.matched_cpu_id = %s AND l.category = 'cpu'
             ORDER BY l.date_posted DESC
         """, (model_id,))
-            ORDER BY l.date_posted DESC
-        """, (model_id,))
     
     listings = cursor.fetchall()
     

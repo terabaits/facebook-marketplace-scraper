@@ -55,10 +55,12 @@ class SSDScraper:
     
     def _extract_location(self, html: str) -> Optional[str]:
         """Extract seller location from HTML."""
-        soup_match = re.search(r'<td[^>]*>\s*<b>[^<]+</b>\s*</td>\s*<td[^>]*class="td_address"[^>]*>([^<]+)</td>', html)
-        if soup_match:
-            return soup_match.group(1).strip()
+        # Try ads_contacts class first (newer format)
+        contacts_match = re.search(r'class="ads_contacts"[^>]*>([^<]+)</td>', html)
+        if contacts_match:
+            return contacts_match.group(1).strip()
         
+        # Try td_address class (older format)
         loc_match = re.search(r'class="td_address"[^>]*>([^<]+)</td>', html)
         if loc_match:
             return loc_match.group(1).strip()

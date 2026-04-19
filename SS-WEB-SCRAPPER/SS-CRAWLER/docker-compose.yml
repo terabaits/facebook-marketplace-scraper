@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: ss_crawler_db
+    environment:
+      POSTGRES_DB: ss_market
+      POSTGRES_USER: crawler
+      POSTGRES_PASSWORD: crawler_pass
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+      - ./src/database/schema.sql:/docker-entrypoint-initdb.d/01_schema.sql
+      - ./src/database/import_reference.sql:/docker-entrypoint-initdb.d/02_import.sql
+      - ./data:/data
+    ports:
+      - "5433:5432"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U crawler -d ss_market"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  pg_data:
+    driver: local

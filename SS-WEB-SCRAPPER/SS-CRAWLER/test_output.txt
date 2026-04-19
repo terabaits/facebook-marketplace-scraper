@@ -1,0 +1,162 @@
+--- Logging error ---
+Traceback (most recent call last):
+  File "C:\Users\goldm\AppData\Local\Programs\Python\Python310\lib\logging\__init__.py", line 1103, in emit
+    stream.write(msg + self.terminator)
+  File "C:\Users\goldm\AppData\Local\Programs\Python\Python310\lib\encodings\cp1252.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+UnicodeEncodeError: 'charmap' codec can't encode character '\U0001f680' in position 76: character maps to <undefined>
+Call stack:
+  File "G:\Github\SS-WEB-SCRAPPER\SS-CRAWLER\main.py", line 7, in <module>
+    sys.exit(main())
+  File "G:\Github\SS-WEB-SCRAPPER\SS-CRAWLER\src\cli.py", line 378, in main
+    return handler(args)
+  File "G:\Github\SS-WEB-SCRAPPER\SS-CRAWLER\src\cli.py", line 167, in cmd_test_url
+    scraper.initialize()
+  File "G:\Github\SS-WEB-SCRAPPER\SS-CRAWLER\src\scraper\engine.py", line 40, in initialize
+    logger.info("\U0001f680 Initializing scraper...")
+  File "G:\Github\SS-WEB-SCRAPPER\SS-CRAWLER\src\utils\logger.py", line 94, in info
+    self._log(logging.INFO, msg, *args, **kwargs)
+  File "G:\Github\SS-WEB-SCRAPPER\SS-CRAWLER\src\utils\logger.py", line 88, in _log
+    self.logger.log(level, msg, *args, extra=extra, **kwargs)
+Message: '[scraper] [scraper] [scraper] \U0001f680 Initializing scraper...'
+Arguments: ()
+--- Logging error ---
+Traceback (most recent call last):
+  File "C:\Users\goldm\AppData\Local\Programs\Python\Python310\lib\logging\__init__.py", line 1103, in emit
+    stream.write(msg + self.terminator)
+  File "C:\Users\goldm\AppData\Local\Programs\Python\Python310\lib\encodings\cp1252.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+UnicodeEncodeError: 'charmap' codec can't encode character '\U0001f4e6' in position 76: character maps to <undefined>
+Call stack:
+  File "G:\Github\SS-WEB-SCRAPPER\SS-CRAWLER\main.py", line 7, in <module>
+    sys.exit(main())
+  File "G:\Github\SS-WEB-SCRAPPER\SS-CRAWLER\src\cli.py", line 378, in main
+    return handler(args)
+  File "G:\Github\SS-WEB-SCRAPPER\SS-CRAWLER\src\cli.py", line 167, in cmd_test_url
+    scraper.initialize()
+  File "G:\Github\SS-WEB-SCRAPPER\SS-CRAWLER\src\scraper\engine.py", line 44, in initialize
+    logger.info(f"\U0001f4e6 Database: {self.config.database.connection_string}")
+  File "G:\Github\SS-WEB-SCRAPPER\SS-CRAWLER\src\utils\logger.py", line 94, in info
+    self._log(logging.INFO, msg, *args, **kwargs)
+  File "G:\Github\SS-WEB-SCRAPPER\SS-CRAWLER\src\utils\logger.py", line 88, in _log
+    self.logger.log(level, msg, *args, extra=extra, **kwargs)
+Message: '[scraper] [scraper] [scraper] \U0001f4e6 Database: postgresql+psycopg2://crawler:crawler_pass@localhost:5433/ss_market'
+Arguments: ()
+--- Logging error ---
+Traceback (most recent call last):
+  File "C:\Users\goldm\AppData\Local\Programs\Python\Python310\lib\logging\__init__.py", line 1103, in emit
+    stream.write(msg + self.terminator)
+  File "C:\Users\goldm\AppData\Local\Programs\Python\Python310\lib\encodings\cp1252.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+UnicodeEncodeError: 'charmap' codec can't encode character '\U0001f3ae' in position 76: character maps to <undefined>
+Call stack:
+  File "G:\Github\SS-WEB-SCRAPPER\SS-CRAWLER\main.py", line 7, in <module>
+    sys.exit(main())
+  File "G:\Github\SS-WEB-SCRAPPER\SS-CRAWLER\src\cli.py", line 378, in main
+    return handler(args)
+  File "G:\Github\SS-WEB-SCRAPPER\SS-CRAWLER\src\cli.py", line 167, in cmd_test_url
+    scraper.initialize()
+  File "G:\Github\SS-WEB-SCRAPPER\SS-CRAWLER\src\scraper\engine.py", line 51, in initialize
+    logger.info(f"\U0001f3ae Loaded {len(gpus)} GPU references")
+  File "G:\Github\SS-WEB-SCRAPPER\SS-CRAWLER\src\utils\logger.py", line 94, in info
+    self._log(logging.INFO, msg, *args, **kwargs)
+  File "G:\Github\SS-WEB-SCRAPPER\SS-CRAWLER\src\utils\logger.py", line 88, in _log
+    self.logger.log(level, msg, *args, extra=extra, **kwargs)
+Message: '[scraper] [scraper] [scraper] \U0001f3ae Loaded 631 GPU references'
+Arguments: ()
+--- Logging error ---
+Traceback (most recent call last):
+  File "C:\Users\goldm\AppData\Local\Programs\Python\Python310\lib\logging\__init__.py", line 1103, in emit
+    stream.write(msg + self.terminator)
+  File "C:\Users\goldm\AppData\Local\Programs\Python\Python310\lib\encodings\cp1252.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+UnicodeEncodeError: 'charmap' codec can't encode character '\U0001f680' in position 76: character maps to <undefined>
+Call stack:
+  File "G:\Github\SS-WEB-SCRAPPER\SS-CRAWLER\main.py", line 7, in <module>
+    sys.exit(main())
+  File "G:\Github\SS-WEB-SCRAPPER\SS-CRAWLER\src\cli.py", line 378, in main
+    return handler(args)
+  File "G:\Github\SS-WEB-SCRAPPER\SS-CRAWLER\src\cli.py", line 169, in cmd_test_url
+    listing, match = scraper.run_single(args.url)
+  File "G:\Github\SS-WEB-SCRAPPER\SS-CRAWLER\src\scraper\engine.py", line 240, in run_single
+    self.initialize()
+  File "G:\Github\SS-WEB-SCRAPPER\SS-CRAWLER\src\scraper\engine.py", line 40, in initialize
+    logger.info("\U0001f680 Initializing scraper...")
+  File "G:\Github\SS-WEB-SCRAPPER\SS-CRAWLER\src\utils\logger.py", line 94, in info
+    self._log(logging.INFO, msg, *args, **kwargs)
+  File "G:\Github\SS-WEB-SCRAPPER\SS-CRAWLER\src\utils\logger.py", line 88, in _log
+    self.logger.log(level, msg, *args, extra=extra, **kwargs)
+Message: '[scraper] [scraper] [scraper] \U0001f680 Initializing scraper...'
+Arguments: ()
+--- Logging error ---
+Traceback (most recent call last):
+  File "C:\Users\goldm\AppData\Local\Programs\Python\Python310\lib\logging\__init__.py", line 1103, in emit
+    stream.write(msg + self.terminator)
+  File "C:\Users\goldm\AppData\Local\Programs\Python\Python310\lib\encodings\cp1252.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+UnicodeEncodeError: 'charmap' codec can't encode character '\U0001f4e6' in position 76: character maps to <undefined>
+Call stack:
+  File "G:\Github\SS-WEB-SCRAPPER\SS-CRAWLER\main.py", line 7, in <module>
+    sys.exit(main())
+  File "G:\Github\SS-WEB-SCRAPPER\SS-CRAWLER\src\cli.py", line 378, in main
+    return handler(args)
+  File "G:\Github\SS-WEB-SCRAPPER\SS-CRAWLER\src\cli.py", line 169, in cmd_test_url
+    listing, match = scraper.run_single(args.url)
+  File "G:\Github\SS-WEB-SCRAPPER\SS-CRAWLER\src\scraper\engine.py", line 240, in run_single
+    self.initialize()
+  File "G:\Github\SS-WEB-SCRAPPER\SS-CRAWLER\src\scraper\engine.py", line 44, in initialize
+    logger.info(f"\U0001f4e6 Database: {self.config.database.connection_string}")
+  File "G:\Github\SS-WEB-SCRAPPER\SS-CRAWLER\src\utils\logger.py", line 94, in info
+    self._log(logging.INFO, msg, *args, **kwargs)
+  File "G:\Github\SS-WEB-SCRAPPER\SS-CRAWLER\src\utils\logger.py", line 88, in _log
+    self.logger.log(level, msg, *args, extra=extra, **kwargs)
+Message: '[scraper] [scraper] [scraper] \U0001f4e6 Database: postgresql+psycopg2://crawler:crawler_pass@localhost:5433/ss_market'
+Arguments: ()
+--- Logging error ---
+Traceback (most recent call last):
+  File "C:\Users\goldm\AppData\Local\Programs\Python\Python310\lib\logging\__init__.py", line 1103, in emit
+    stream.write(msg + self.terminator)
+  File "C:\Users\goldm\AppData\Local\Programs\Python\Python310\lib\encodings\cp1252.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+UnicodeEncodeError: 'charmap' codec can't encode character '\U0001f3ae' in position 76: character maps to <undefined>
+Call stack:
+  File "G:\Github\SS-WEB-SCRAPPER\SS-CRAWLER\main.py", line 7, in <module>
+    sys.exit(main())
+  File "G:\Github\SS-WEB-SCRAPPER\SS-CRAWLER\src\cli.py", line 378, in main
+    return handler(args)
+  File "G:\Github\SS-WEB-SCRAPPER\SS-CRAWLER\src\cli.py", line 169, in cmd_test_url
+    listing, match = scraper.run_single(args.url)
+  File "G:\Github\SS-WEB-SCRAPPER\SS-CRAWLER\src\scraper\engine.py", line 240, in run_single
+    self.initialize()
+  File "G:\Github\SS-WEB-SCRAPPER\SS-CRAWLER\src\scraper\engine.py", line 51, in initialize
+    logger.info(f"\U0001f3ae Loaded {len(gpus)} GPU references")
+  File "G:\Github\SS-WEB-SCRAPPER\SS-CRAWLER\src\utils\logger.py", line 94, in info
+    self._log(logging.INFO, msg, *args, **kwargs)
+  File "G:\Github\SS-WEB-SCRAPPER\SS-CRAWLER\src\utils\logger.py", line 88, in _log
+    self.logger.log(level, msg, *args, extra=extra, **kwargs)
+Message: '[scraper] [scraper] [scraper] \U0001f3ae Loaded 631 GPU references'
+Arguments: ()
+--- Logging error ---
+Traceback (most recent call last):
+  File "C:\Users\goldm\AppData\Local\Programs\Python\Python310\lib\logging\__init__.py", line 1103, in emit
+    stream.write(msg + self.terminator)
+  File "C:\Users\goldm\AppData\Local\Programs\Python\Python310\lib\encodings\cp1252.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+UnicodeEncodeError: 'charmap' codec can't encode character '\U0001f50d' in position 76: character maps to <undefined>
+Call stack:
+  File "G:\Github\SS-WEB-SCRAPPER\SS-CRAWLER\main.py", line 7, in <module>
+    sys.exit(main())
+  File "G:\Github\SS-WEB-SCRAPPER\SS-CRAWLER\src\cli.py", line 378, in main
+    return handler(args)
+  File "G:\Github\SS-WEB-SCRAPPER\SS-CRAWLER\src\cli.py", line 169, in cmd_test_url
+    listing, match = scraper.run_single(args.url)
+  File "G:\Github\SS-WEB-SCRAPPER\SS-CRAWLER\src\scraper\engine.py", line 242, in run_single
+    logger.info(f"\U0001f50d Single URL mode: {url}")
+  File "G:\Github\SS-WEB-SCRAPPER\SS-CRAWLER\src\utils\logger.py", line 94, in info
+    self._log(logging.INFO, msg, *args, **kwargs)
+  File "G:\Github\SS-WEB-SCRAPPER\SS-CRAWLER\src\utils\logger.py", line 88, in _log
+    self.logger.log(level, msg, *args, extra=extra, **kwargs)
+Message: '[scraper] [scraper] [scraper] \U0001f50d Single URL mode: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/bolmid.html'
+Arguments: ()
+
+Error: 'charmap' codec can't encode character '\u012b' in position 14: character maps to <undefined>

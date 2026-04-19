@@ -1,0 +1,14 @@
+version: '3.8'
+
+services:
+  website:
+    build: ./SS-WEBSITE
+    container_name: ss_crawler_website
+    ports:
+      - "5000:5000"
+    environment:
+      - DATABASE_HOST=host.docker.internal
+      - DATABASE_PORT=5433
+      - DATABASE_NAME=ss_market
+      - DATABASE_USER=crawler
+      - DATABASE_PASSWORD=crawler_pass

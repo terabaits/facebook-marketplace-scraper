@@ -1,0 +1,16 @@
+requests==2.31.0
+beautifulsoup4==4.12.2
+sqlalchemy==2.0.23
+psycopg2-binary==2.9.9
+rapidfuzz==3.5.2
+python-dateutil==2.8.2
+pyyaml==6.0.1
+pydantic==2.5.2
+lxml==4.9.3
+fake-useragent==1.4.0
+
+# Development / Testing
+pytest==7.4.3
+pytest-asyncio==0.21.1
+black==23.11.0
+mypy==1.7.1

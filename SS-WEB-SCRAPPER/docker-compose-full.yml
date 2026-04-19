@@ -1,0 +1,49 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: ss_crawler_db
+    environment:
+      POSTGRES_DB: ss_market
+      POSTGRES_USER: crawler
+      POSTGRES_PASSWORD: crawler_pass
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+      - ./SS-CRAWLER/src/database/schema.sql:/docker-entrypoint-initdb.d/01_schema.sql
+      - ./data:/data
+    ports:
+      - "5433:5432"
+    networks:
+      - ss_network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U crawler -d ss_market"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  website:
+    build: ./SS-WEBSITE
+    container_name: ss_crawler_website
+    ports:
+      - "5000:5000"
+    environment:
+      - DATABASE_HOST=postgres
+      - DATABASE_PORT=5432
+      - DATABASE_NAME=ss_market
+      - DATABASE_USER=crawler
+      - DATABASE_PASSWORD=crawler_pass
+    networks:
+      - ss_network
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+volumes:
+  pg_data:
+    driver: local
+
+networks:
+  ss_network:
+    driver: bridge

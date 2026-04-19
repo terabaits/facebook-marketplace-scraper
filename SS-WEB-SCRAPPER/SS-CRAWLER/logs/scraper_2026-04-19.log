@@ -1,0 +1,652 @@
+2026-04-19 00:19:25 | INFO     | ss_crawler | [database] [database] Database connected: localhost:5433/ss_market
+2026-04-19 00:19:25 | INFO     | ss_crawler | [matcher] [matcher] GPUMatcher initialized with 631 GPUs
+2026-04-19 00:19:40 | INFO     | ss_crawler | [database] [database] Database connected: localhost:5433/ss_market
+2026-04-19 00:19:40 | INFO     | ss_crawler | [matcher] [matcher] GPUMatcher initialized with 631 GPUs
+2026-04-19 00:19:48 | INFO     | ss_crawler | [database] [database] Database connected: localhost:5433/ss_market
+2026-04-19 00:19:48 | INFO     | ss_crawler | [matcher] [matcher] GPUMatcher initialized with 631 GPUs
+2026-04-19 00:21:03 | INFO     | ss_crawler | [database] [database] Database connected: localhost:5433/ss_market
+2026-04-19 00:21:04 | INFO     | ss_crawler | [matcher] [matcher] GPUMatcher initialized with 631 GPUs
+2026-04-19 00:47:33 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] 🚀 Initializing CPU scraper...
+2026-04-19 00:47:33 | INFO     | ss_crawler | [database] [database] Database connected: localhost:5433/ss_market
+2026-04-19 00:47:33 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] 📦 Database: postgresql+psycopg2://crawler:crawler_pass@localhost:5433/ss_market
+2026-04-19 00:47:33 | ERROR    | ss_crawler | [database] [database] Database transaction failed: (psycopg2.errors.UndefinedTable) relation "cpu_reference" does not exist
+LINE 1: SELECT * FROM cpu_reference
+                      ^
+
+[SQL: SELECT * FROM cpu_reference]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2026-04-19 00:48:32 | INFO     | ss_crawler | [database] [database] Database connected: localhost:5433/ss_market
+2026-04-19 00:48:35 | INFO     | ss_crawler | [database] [database] Database connected: localhost:5433/ss_market
+2026-04-19 00:48:46 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] 🚀 Initializing CPU scraper...
+2026-04-19 00:48:46 | INFO     | ss_crawler | [database] [database] Database connected: localhost:5433/ss_market
+2026-04-19 00:48:46 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] 📦 Database: postgresql+psycopg2://crawler:crawler_pass@localhost:5433/ss_market
+2026-04-19 00:48:46 | INFO     | ss_crawler | [cpu_matcher] [cpu_matcher] CPUMatcher initialized with 5320 CPUs
+2026-04-19 00:48:46 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] 🖥️ Loaded 5320 CPU references
+2026-04-19 00:48:46 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] 🚀 Initializing CPU scraper...
+2026-04-19 00:48:46 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] 📦 Database: postgresql+psycopg2://crawler:crawler_pass@localhost:5433/ss_market
+2026-04-19 00:48:47 | INFO     | ss_crawler | [cpu_matcher] [cpu_matcher] CPUMatcher initialized with 5320 CPUs
+2026-04-19 00:48:47 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] 🖥️ Loaded 5320 CPU references
+2026-04-19 00:48:47 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] 🔍 Single URL mode: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/boonbo.html
+2026-04-19 00:48:47 | INFO     | ss_crawler | [crawler] [crawler] Fetching single CPU listing: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/boonbo.html
+2026-04-19 00:48:49 | INFO     | ss_crawler | [repository] [repository] New listing created: boonbo
+2026-04-19 00:50:10 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] Initializing CPU scraper...
+2026-04-19 00:50:10 | INFO     | ss_crawler | [database] [database] Database connected: localhost:5433/ss_market
+2026-04-19 00:50:10 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] Database: postgresql+psycopg2://crawler:crawler_pass@localhost:5433/ss_market
+2026-04-19 00:50:10 | INFO     | ss_crawler | [cpu_matcher] [cpu_matcher] CPUMatcher initialized with 5320 CPUs
+2026-04-19 00:50:10 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] Loaded 5320 CPU references
+2026-04-19 00:50:10 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] Initializing CPU scraper...
+2026-04-19 00:50:10 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] Database: postgresql+psycopg2://crawler:crawler_pass@localhost:5433/ss_market
+2026-04-19 00:50:11 | INFO     | ss_crawler | [cpu_matcher] [cpu_matcher] CPUMatcher initialized with 5320 CPUs
+2026-04-19 00:50:11 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] Loaded 5320 CPU references
+2026-04-19 00:50:11 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] Single URL mode: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/boonbo.html
+2026-04-19 00:50:11 | INFO     | ss_crawler | [crawler] [crawler] Fetching single CPU listing: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/boonbo.html
+2026-04-19 00:51:45 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] Initializing CPU scraper...
+2026-04-19 00:51:45 | INFO     | ss_crawler | [database] [database] Database connected: localhost:5433/ss_market
+2026-04-19 00:51:45 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] Database: postgresql+psycopg2://crawler:crawler_pass@localhost:5433/ss_market
+2026-04-19 00:51:45 | INFO     | ss_crawler | [cpu_matcher] [cpu_matcher] CPUMatcher initialized with 5320 CPUs
+2026-04-19 00:51:45 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] Loaded 5320 CPU references
+2026-04-19 00:51:45 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] Initializing CPU scraper...
+2026-04-19 00:51:45 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] Database: postgresql+psycopg2://crawler:crawler_pass@localhost:5433/ss_market
+2026-04-19 00:51:45 | INFO     | ss_crawler | [cpu_matcher] [cpu_matcher] CPUMatcher initialized with 5320 CPUs
+2026-04-19 00:51:45 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] Loaded 5320 CPU references
+2026-04-19 00:51:45 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] Single URL mode: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/boonbo.html
+2026-04-19 00:51:45 | INFO     | ss_crawler | [crawler] [crawler] Fetching single CPU listing: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/boonbo.html
+2026-04-19 00:57:56 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] Initializing CPU scraper...
+2026-04-19 00:57:56 | INFO     | ss_crawler | [database] [database] Database connected: localhost:5433/ss_market
+2026-04-19 00:57:56 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] Database: postgresql+psycopg2://crawler:crawler_pass@localhost:5433/ss_market
+2026-04-19 00:57:57 | INFO     | ss_crawler | [cpu_matcher] [cpu_matcher] CPUMatcher initialized with 5320 CPUs
+2026-04-19 00:57:57 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] Loaded 5320 CPU references
+2026-04-19 00:57:57 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] Initializing CPU scraper...
+2026-04-19 00:57:57 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] Database: postgresql+psycopg2://crawler:crawler_pass@localhost:5433/ss_market
+2026-04-19 00:57:57 | INFO     | ss_crawler | [cpu_matcher] [cpu_matcher] CPUMatcher initialized with 5320 CPUs
+2026-04-19 00:57:57 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] Loaded 5320 CPU references
+2026-04-19 00:57:57 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] Single URL mode: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/boonbo.html
+2026-04-19 00:57:57 | INFO     | ss_crawler | [crawler] [crawler] Fetching single CPU listing: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/boonbo.html
+2026-04-19 00:58:10 | INFO     | ss_crawler | [scraper] [scraper] 🚀 Initializing scraper...
+2026-04-19 00:58:10 | INFO     | ss_crawler | [database] [database] Database connected: localhost:5433/ss_market
+2026-04-19 00:58:10 | INFO     | ss_crawler | [scraper] [scraper] 📦 Database: postgresql+psycopg2://crawler:crawler_pass@localhost:5433/ss_market
+2026-04-19 00:58:10 | INFO     | ss_crawler | [matcher] [matcher] GPUMatcher initialized with 631 GPUs
+2026-04-19 00:58:10 | INFO     | ss_crawler | [scraper] [scraper] 🎮 Loaded 631 GPU references
+2026-04-19 00:58:10 | INFO     | ss_crawler | [scraper] [scraper] 🚀 Initializing scraper...
+2026-04-19 00:58:10 | INFO     | ss_crawler | [scraper] [scraper] 📦 Database: postgresql+psycopg2://crawler:crawler_pass@localhost:5433/ss_market
+2026-04-19 00:58:10 | INFO     | ss_crawler | [matcher] [matcher] GPUMatcher initialized with 631 GPUs
+2026-04-19 00:58:10 | INFO     | ss_crawler | [scraper] [scraper] 🎮 Loaded 631 GPU references
+2026-04-19 00:58:10 | INFO     | ss_crawler | [scraper] [scraper] 🔍 Single URL mode: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/biloio.html
+2026-04-19 00:58:10 | INFO     | ss_crawler | [crawler] [crawler] Fetching single listing: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/biloio.html
+2026-04-19 01:02:22 | INFO     | ss_crawler | [database] [database] Database connected: localhost:5433/ss_market
+2026-04-19 01:02:22 | INFO     | ss_crawler | [cpu_matcher] [cpu_matcher] CPUMatcher initialized with 5320 CPUs
+2026-04-19 01:04:05 | INFO     | ss_crawler | [database] [database] Database connected: localhost:5433/ss_market
+2026-04-19 01:04:05 | INFO     | ss_crawler | [cpu_matcher] [cpu_matcher] CPUMatcher initialized with 5320 CPUs
+2026-04-19 01:04:47 | INFO     | ss_crawler | [database] [database] Database connected: localhost:5433/ss_market
+2026-04-19 01:04:47 | INFO     | ss_crawler | [cpu_matcher] [cpu_matcher] CPUMatcher initialized with 5320 CPUs
+2026-04-19 01:04:52 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] Initializing CPU scraper...
+2026-04-19 01:04:52 | INFO     | ss_crawler | [database] [database] Database connected: localhost:5433/ss_market
+2026-04-19 01:04:52 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] Database: postgresql+psycopg2://crawler:crawler_pass@localhost:5433/ss_market
+2026-04-19 01:04:52 | INFO     | ss_crawler | [cpu_matcher] [cpu_matcher] CPUMatcher initialized with 5320 CPUs
+2026-04-19 01:04:52 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] Loaded 5320 CPU references
+2026-04-19 01:04:52 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] Initializing CPU scraper...
+2026-04-19 01:04:52 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] Database: postgresql+psycopg2://crawler:crawler_pass@localhost:5433/ss_market
+2026-04-19 01:04:52 | INFO     | ss_crawler | [cpu_matcher] [cpu_matcher] CPUMatcher initialized with 5320 CPUs
+2026-04-19 01:04:52 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] Loaded 5320 CPU references
+2026-04-19 01:04:52 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] Single URL mode: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/boonbo.html
+2026-04-19 01:04:52 | INFO     | ss_crawler | [crawler] [crawler] Fetching single CPU listing: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/boonbo.html
+2026-04-19 01:05:53 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] Initializing CPU scraper...
+2026-04-19 01:05:53 | INFO     | ss_crawler | [database] [database] Database connected: localhost:5433/ss_market
+2026-04-19 01:05:53 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] Database: postgresql+psycopg2://crawler:crawler_pass@localhost:5433/ss_market
+2026-04-19 01:05:53 | INFO     | ss_crawler | [cpu_matcher] [cpu_matcher] CPUMatcher initialized with 5320 CPUs
+2026-04-19 01:05:53 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] Loaded 5320 CPU references
+2026-04-19 01:05:53 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] Initializing CPU scraper...
+2026-04-19 01:05:53 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] Database: postgresql+psycopg2://crawler:crawler_pass@localhost:5433/ss_market
+2026-04-19 01:05:53 | INFO     | ss_crawler | [cpu_matcher] [cpu_matcher] CPUMatcher initialized with 5320 CPUs
+2026-04-19 01:05:53 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] Loaded 5320 CPU references
+2026-04-19 01:05:53 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] Single URL mode: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/fekmo.html
+2026-04-19 01:05:53 | INFO     | ss_crawler | [crawler] [crawler] Fetching single CPU listing: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/fekmo.html
+2026-04-19 01:05:55 | INFO     | ss_crawler | [repository] [repository] New listing created: fekmo
+2026-04-19 01:07:54 | INFO     | ss_crawler | [database] [database] Database connected: localhost:5433/ss_market
+2026-04-19 01:07:55 | INFO     | ss_crawler | [cpu_matcher] [cpu_matcher] CPUMatcher initialized with 5320 CPUs
+2026-04-19 01:08:28 | INFO     | ss_crawler | [database] [database] Database connected: localhost:5433/ss_market
+2026-04-19 01:08:28 | INFO     | ss_crawler | [cpu_matcher] [cpu_matcher] CPUMatcher initialized with 5320 CPUs
+2026-04-19 01:08:32 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] Initializing CPU scraper...
+2026-04-19 01:08:32 | INFO     | ss_crawler | [database] [database] Database connected: localhost:5433/ss_market
+2026-04-19 01:08:32 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] Database: postgresql+psycopg2://crawler:crawler_pass@localhost:5433/ss_market
+2026-04-19 01:08:33 | INFO     | ss_crawler | [cpu_matcher] [cpu_matcher] CPUMatcher initialized with 5320 CPUs
+2026-04-19 01:08:33 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] Loaded 5320 CPU references
+2026-04-19 01:08:33 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] Initializing CPU scraper...
+2026-04-19 01:08:33 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] Database: postgresql+psycopg2://crawler:crawler_pass@localhost:5433/ss_market
+2026-04-19 01:08:33 | INFO     | ss_crawler | [cpu_matcher] [cpu_matcher] CPUMatcher initialized with 5320 CPUs
+2026-04-19 01:08:33 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] Loaded 5320 CPU references
+2026-04-19 01:08:33 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] Single URL mode: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/fekmo.html
+2026-04-19 01:08:33 | INFO     | ss_crawler | [crawler] [crawler] Fetching single CPU listing: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/fekmo.html
+2026-04-19 01:09:37 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] Initializing CPU scraper...
+2026-04-19 01:09:37 | INFO     | ss_crawler | [database] [database] Database connected: localhost:5433/ss_market
+2026-04-19 01:09:37 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] Database: postgresql+psycopg2://crawler:crawler_pass@localhost:5433/ss_market
+2026-04-19 01:09:37 | INFO     | ss_crawler | [cpu_matcher] [cpu_matcher] CPUMatcher initialized with 5320 CPUs
+2026-04-19 01:09:37 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] Loaded 5320 CPU references
+2026-04-19 01:09:37 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] Initializing CPU scraper...
+2026-04-19 01:09:37 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] Database: postgresql+psycopg2://crawler:crawler_pass@localhost:5433/ss_market
+2026-04-19 01:09:38 | INFO     | ss_crawler | [cpu_matcher] [cpu_matcher] CPUMatcher initialized with 5320 CPUs
+2026-04-19 01:09:38 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] Loaded 5320 CPU references
+2026-04-19 01:09:38 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] Single URL mode: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/bopgon.html
+2026-04-19 01:09:38 | INFO     | ss_crawler | [crawler] [crawler] Fetching single CPU listing: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/bopgon.html
+2026-04-19 01:09:41 | INFO     | ss_crawler | [repository] [repository] New listing created: bopgon
+2026-04-19 01:10:19 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] Initializing CPU scraper...
+2026-04-19 01:10:19 | INFO     | ss_crawler | [database] [database] Database connected: localhost:5433/ss_market
+2026-04-19 01:10:19 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] Database: postgresql+psycopg2://crawler:crawler_pass@localhost:5433/ss_market
+2026-04-19 01:10:19 | INFO     | ss_crawler | [cpu_matcher] [cpu_matcher] CPUMatcher initialized with 5320 CPUs
+2026-04-19 01:10:19 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] Loaded 5320 CPU references
+2026-04-19 01:10:19 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] Initializing CPU scraper...
+2026-04-19 01:10:19 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] Database: postgresql+psycopg2://crawler:crawler_pass@localhost:5433/ss_market
+2026-04-19 01:10:19 | INFO     | ss_crawler | [cpu_matcher] [cpu_matcher] CPUMatcher initialized with 5320 CPUs
+2026-04-19 01:10:19 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] Loaded 5320 CPU references
+2026-04-19 01:10:19 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] Single URL mode: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/mjflp.html
+2026-04-19 01:10:19 | INFO     | ss_crawler | [crawler] [crawler] Fetching single CPU listing: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/mjflp.html
+2026-04-19 01:10:22 | INFO     | ss_crawler | [repository] [repository] New listing created: mjflp
+2026-04-19 01:10:52 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] Initializing CPU scraper...
+2026-04-19 01:10:52 | INFO     | ss_crawler | [database] [database] Database connected: localhost:5433/ss_market
+2026-04-19 01:10:52 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] Database: postgresql+psycopg2://crawler:crawler_pass@localhost:5433/ss_market
+2026-04-19 01:10:53 | INFO     | ss_crawler | [cpu_matcher] [cpu_matcher] CPUMatcher initialized with 5320 CPUs
+2026-04-19 01:10:53 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] Loaded 5320 CPU references
+2026-04-19 01:10:53 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] Initializing CPU scraper...
+2026-04-19 01:10:53 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] Database: postgresql+psycopg2://crawler:crawler_pass@localhost:5433/ss_market
+2026-04-19 01:10:53 | INFO     | ss_crawler | [cpu_matcher] [cpu_matcher] CPUMatcher initialized with 5320 CPUs
+2026-04-19 01:10:53 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] Loaded 5320 CPU references
+2026-04-19 01:10:53 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] Single URL mode: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/bopfhd.html
+2026-04-19 01:10:53 | INFO     | ss_crawler | [crawler] [crawler] Fetching single CPU listing: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/bopfhd.html
+2026-04-19 01:10:56 | INFO     | ss_crawler | [repository] [repository] New listing created: bopfhd
+2026-04-19 01:13:33 | INFO     | ss_crawler | [database] [database] Database connected: localhost:5433/ss_market
+2026-04-19 01:15:21 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] Initializing CPU scraper...
+2026-04-19 01:15:21 | INFO     | ss_crawler | [database] [database] Database connected: localhost:5433/ss_market
+2026-04-19 01:15:21 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] Database: postgresql+psycopg2://crawler:crawler_pass@localhost:5433/ss_market
+2026-04-19 01:15:21 | INFO     | ss_crawler | [cpu_matcher] [cpu_matcher] CPUMatcher initialized with 5320 CPUs
+2026-04-19 01:15:21 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] Loaded 5320 CPU references
+2026-04-19 01:15:21 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] Initializing CPU scraper...
+2026-04-19 01:15:21 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] Database: postgresql+psycopg2://crawler:crawler_pass@localhost:5433/ss_market
+2026-04-19 01:15:22 | INFO     | ss_crawler | [cpu_matcher] [cpu_matcher] CPUMatcher initialized with 5320 CPUs
+2026-04-19 01:15:22 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] Loaded 5320 CPU references
+2026-04-19 01:15:22 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] Single URL mode: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/lomkj.html
+2026-04-19 01:15:22 | INFO     | ss_crawler | [crawler] [crawler] Fetching single CPU listing: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/lomkj.html
+2026-04-19 01:15:24 | INFO     | ss_crawler | [repository] [repository] New listing created: lomkj
+2026-04-19 01:20:53 | INFO     | ss_crawler | [database] [database] Database connected: localhost:5433/ss_market
+2026-04-19 01:22:26 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] Initializing CPU scraper...
+2026-04-19 01:22:26 | INFO     | ss_crawler | [database] [database] Database connected: localhost:5433/ss_market
+2026-04-19 01:22:26 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] Database: postgresql+psycopg2://crawler:crawler_pass@localhost:5433/ss_market
+2026-04-19 01:22:26 | INFO     | ss_crawler | [cpu_matcher] [cpu_matcher] CPUMatcher initialized with 5320 CPUs
+2026-04-19 01:22:26 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] Loaded 5320 CPU references
+2026-04-19 01:22:26 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] Initializing CPU scraper...
+2026-04-19 01:22:26 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] Database: postgresql+psycopg2://crawler:crawler_pass@localhost:5433/ss_market
+2026-04-19 01:22:27 | INFO     | ss_crawler | [cpu_matcher] [cpu_matcher] CPUMatcher initialized with 5320 CPUs
+2026-04-19 01:22:27 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] Loaded 5320 CPU references
+2026-04-19 01:22:27 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] Single URL mode: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/lomkj.html
+2026-04-19 01:22:27 | INFO     | ss_crawler | [crawler] [crawler] Fetching single CPU listing: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/lomkj.html
+2026-04-19 01:23:43 | INFO     | ss_crawler | [database] [database] Database connected: localhost:5433/ss_market
+2026-04-19 01:23:54 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] Initializing CPU scraper...
+2026-04-19 01:23:54 | INFO     | ss_crawler | [database] [database] Database connected: localhost:5433/ss_market
+2026-04-19 01:23:54 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] Database: postgresql+psycopg2://crawler:crawler_pass@localhost:5433/ss_market
+2026-04-19 01:23:54 | INFO     | ss_crawler | [cpu_matcher] [cpu_matcher] CPUMatcher initialized with 5320 CPUs
+2026-04-19 01:23:54 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] Loaded 5320 CPU references
+2026-04-19 01:23:54 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] Initializing CPU scraper...
+2026-04-19 01:23:54 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] Database: postgresql+psycopg2://crawler:crawler_pass@localhost:5433/ss_market
+2026-04-19 01:23:55 | INFO     | ss_crawler | [cpu_matcher] [cpu_matcher] CPUMatcher initialized with 5320 CPUs
+2026-04-19 01:23:55 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] Loaded 5320 CPU references
+2026-04-19 01:23:55 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] Single URL mode: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/lomkj.html
+2026-04-19 01:23:55 | INFO     | ss_crawler | [crawler] [crawler] Fetching single CPU listing: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/lomkj.html
+2026-04-19 01:27:28 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] Initializing CPU scraper...
+2026-04-19 01:27:29 | INFO     | ss_crawler | [database] [database] Database connected: localhost:5433/ss_market
+2026-04-19 01:27:29 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] Database: postgresql+psycopg2://crawler:crawler_pass@localhost:5433/ss_market
+2026-04-19 01:27:29 | INFO     | ss_crawler | [cpu_matcher] [cpu_matcher] CPUMatcher initialized with 5320 CPUs
+2026-04-19 01:27:29 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] Loaded 5320 CPU references
+2026-04-19 01:27:29 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] Initializing CPU scraper...
+2026-04-19 01:27:29 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] Database: postgresql+psycopg2://crawler:crawler_pass@localhost:5433/ss_market
+2026-04-19 01:27:29 | INFO     | ss_crawler | [cpu_matcher] [cpu_matcher] CPUMatcher initialized with 5320 CPUs
+2026-04-19 01:27:29 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] Loaded 5320 CPU references
+2026-04-19 01:27:29 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] Single URL mode: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/lomkj.html
+2026-04-19 01:27:29 | INFO     | ss_crawler | [crawler] [crawler] Fetching single CPU listing: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/lomkj.html
+2026-04-19 01:28:00 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] Initializing CPU scraper...
+2026-04-19 01:28:00 | INFO     | ss_crawler | [database] [database] Database connected: localhost:5433/ss_market
+2026-04-19 01:28:00 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] Database: postgresql+psycopg2://crawler:crawler_pass@localhost:5433/ss_market
+2026-04-19 01:28:00 | INFO     | ss_crawler | [cpu_matcher] [cpu_matcher] CPUMatcher initialized with 5320 CPUs
+2026-04-19 01:28:00 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] Loaded 5320 CPU references
+2026-04-19 01:28:00 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] Initializing CPU scraper...
+2026-04-19 01:28:00 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] Database: postgresql+psycopg2://crawler:crawler_pass@localhost:5433/ss_market
+2026-04-19 01:28:01 | INFO     | ss_crawler | [cpu_matcher] [cpu_matcher] CPUMatcher initialized with 5320 CPUs
+2026-04-19 01:28:01 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] Loaded 5320 CPU references
+2026-04-19 01:28:01 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] Single URL mode: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/lomkj.html
+2026-04-19 01:28:01 | INFO     | ss_crawler | [crawler] [crawler] Fetching single CPU listing: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/lomkj.html
+2026-04-19 01:29:05 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] Initializing CPU scraper...
+2026-04-19 01:29:05 | INFO     | ss_crawler | [database] [database] Database connected: localhost:5433/ss_market
+2026-04-19 01:29:05 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] Database: postgresql+psycopg2://crawler:crawler_pass@localhost:5433/ss_market
+2026-04-19 01:29:05 | INFO     | ss_crawler | [cpu_matcher] [cpu_matcher] CPUMatcher initialized with 5320 CPUs
+2026-04-19 01:29:05 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] Loaded 5320 CPU references
+2026-04-19 01:29:05 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] Initializing CPU scraper...
+2026-04-19 01:29:05 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] Database: postgresql+psycopg2://crawler:crawler_pass@localhost:5433/ss_market
+2026-04-19 01:29:05 | INFO     | ss_crawler | [cpu_matcher] [cpu_matcher] CPUMatcher initialized with 5320 CPUs
+2026-04-19 01:29:05 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] Loaded 5320 CPU references
+2026-04-19 01:29:05 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] Single URL mode: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/bxxipb.html
+2026-04-19 01:29:05 | INFO     | ss_crawler | [crawler] [crawler] Fetching single CPU listing: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/bxxipb.html
+2026-04-19 01:29:07 | INFO     | ss_crawler | [repository] [repository] New listing created: bxxipb
+2026-04-19 01:29:50 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] Initializing CPU scraper...
+2026-04-19 01:29:50 | INFO     | ss_crawler | [database] [database] Database connected: localhost:5433/ss_market
+2026-04-19 01:29:50 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] Database: postgresql+psycopg2://crawler:crawler_pass@localhost:5433/ss_market
+2026-04-19 01:29:50 | INFO     | ss_crawler | [cpu_matcher] [cpu_matcher] CPUMatcher initialized with 5320 CPUs
+2026-04-19 01:29:50 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] Loaded 5320 CPU references
+2026-04-19 01:29:50 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] Initializing CPU scraper...
+2026-04-19 01:29:50 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] Database: postgresql+psycopg2://crawler:crawler_pass@localhost:5433/ss_market
+2026-04-19 01:29:50 | INFO     | ss_crawler | [cpu_matcher] [cpu_matcher] CPUMatcher initialized with 5320 CPUs
+2026-04-19 01:29:50 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] Loaded 5320 CPU references
+2026-04-19 01:29:50 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] Single URL mode: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/plcbd.html
+2026-04-19 01:29:50 | INFO     | ss_crawler | [crawler] [crawler] Fetching single CPU listing: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/plcbd.html
+2026-04-19 01:29:53 | INFO     | ss_crawler | [repository] [repository] New listing created: plcbd
+2026-04-19 01:31:24 | INFO     | ss_crawler | [database] [database] Database connected: localhost:5433/ss_market
+2026-04-19 01:31:24 | INFO     | ss_crawler | [cpu_matcher] [cpu_matcher] CPUMatcher initialized with 5320 CPUs
+2026-04-19 01:31:48 | INFO     | ss_crawler | [database] [database] Database connected: localhost:5433/ss_market
+2026-04-19 01:31:48 | INFO     | ss_crawler | [cpu_matcher] [cpu_matcher] CPUMatcher initialized with 5320 CPUs
+2026-04-19 01:32:08 | INFO     | ss_crawler | [database] [database] Database connected: localhost:5433/ss_market
+2026-04-19 01:32:42 | INFO     | ss_crawler | [database] [database] Database connected: localhost:5433/ss_market
+2026-04-19 01:32:43 | INFO     | ss_crawler | [cpu_matcher] [cpu_matcher] CPUMatcher initialized with 5320 CPUs
+2026-04-19 01:32:50 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] Initializing CPU scraper...
+2026-04-19 01:32:50 | INFO     | ss_crawler | [database] [database] Database connected: localhost:5433/ss_market
+2026-04-19 01:32:50 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] Database: postgresql+psycopg2://crawler:crawler_pass@localhost:5433/ss_market
+2026-04-19 01:32:50 | INFO     | ss_crawler | [cpu_matcher] [cpu_matcher] CPUMatcher initialized with 5320 CPUs
+2026-04-19 01:32:50 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] Loaded 5320 CPU references
+2026-04-19 01:32:50 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] Initializing CPU scraper...
+2026-04-19 01:32:50 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] Database: postgresql+psycopg2://crawler:crawler_pass@localhost:5433/ss_market
+2026-04-19 01:32:50 | INFO     | ss_crawler | [cpu_matcher] [cpu_matcher] CPUMatcher initialized with 5320 CPUs
+2026-04-19 01:32:50 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] Loaded 5320 CPU references
+2026-04-19 01:32:50 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] Single URL mode: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/plcbd.html
+2026-04-19 01:32:50 | INFO     | ss_crawler | [crawler] [crawler] Fetching single CPU listing: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/plcbd.html
+2026-04-19 01:34:02 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] Initializing CPU scraper...
+2026-04-19 01:34:02 | INFO     | ss_crawler | [database] [database] Database connected: localhost:5433/ss_market
+2026-04-19 01:34:02 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] Database: postgresql+psycopg2://crawler:crawler_pass@localhost:5433/ss_market
+2026-04-19 01:34:02 | INFO     | ss_crawler | [cpu_matcher] [cpu_matcher] CPUMatcher initialized with 5320 CPUs
+2026-04-19 01:34:02 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] Loaded 5320 CPU references
+2026-04-19 01:34:02 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] Initializing CPU scraper...
+2026-04-19 01:34:02 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] Database: postgresql+psycopg2://crawler:crawler_pass@localhost:5433/ss_market
+2026-04-19 01:34:02 | INFO     | ss_crawler | [cpu_matcher] [cpu_matcher] CPUMatcher initialized with 5320 CPUs
+2026-04-19 01:34:02 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] Loaded 5320 CPU references
+2026-04-19 01:34:02 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] Single URL mode: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/bclono.html
+2026-04-19 01:34:02 | INFO     | ss_crawler | [crawler] [crawler] Fetching single CPU listing: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/bclono.html
+2026-04-19 01:34:05 | INFO     | ss_crawler | [repository] [repository] New listing created: bclono
+2026-04-19 01:34:35 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] Initializing CPU scraper...
+2026-04-19 01:34:35 | INFO     | ss_crawler | [database] [database] Database connected: localhost:5433/ss_market
+2026-04-19 01:34:35 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] Database: postgresql+psycopg2://crawler:crawler_pass@localhost:5433/ss_market
+2026-04-19 01:34:35 | INFO     | ss_crawler | [cpu_matcher] [cpu_matcher] CPUMatcher initialized with 5320 CPUs
+2026-04-19 01:34:35 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] Loaded 5320 CPU references
+2026-04-19 01:34:35 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] CPU scrape run started: ID 8
+2026-04-19 01:34:35 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] Fetching CPU category: https://www.ss.com/lv/electronics/computers/completing-pc/cpu/
+2026-04-19 01:34:35 | INFO     | ss_crawler | [crawler] [crawler] Fetching CPU category page: https://www.ss.com/lv/electronics/computers/completing-pc/cpu/
+2026-04-19 01:34:38 | INFO     | ss_crawler | [cpu_parser] [cpu_parser] Found 30 listings on page
+2026-04-19 01:34:38 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] Found 30 CPU listings to process
+2026-04-19 01:34:38 | INFO     | ss_crawler | [crawler] [crawler] Fetching CPU listing 1/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/klcci.html
+2026-04-19 01:34:41 | INFO     | ss_crawler | [repository] [repository] New listing created: klcci
+2026-04-19 01:34:41 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] NEW: Processed: new
+2026-04-19 01:34:41 | INFO     | ss_crawler | [crawler] [crawler] Fetching CPU listing 2/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/boonbo.html
+2026-04-19 01:34:44 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] UNCHANGED: Processed: unchanged
+2026-04-19 01:34:44 | INFO     | ss_crawler | [crawler] [crawler] Fetching CPU listing 3/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/fekmo.html
+2026-04-19 01:34:46 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] UNCHANGED: Processed: unchanged
+2026-04-19 01:34:46 | INFO     | ss_crawler | [crawler] [crawler] Fetching CPU listing 4/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/bopgon.html
+2026-04-19 01:34:49 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] UNCHANGED: Processed: unchanged
+2026-04-19 01:34:49 | INFO     | ss_crawler | [crawler] [crawler] Fetching CPU listing 5/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/boonbc.html
+2026-04-19 01:34:52 | INFO     | ss_crawler | [repository] [repository] New listing created: boonbc
+2026-04-19 01:34:52 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] UNMATCHED: No CPU match found
+2026-04-19 01:34:52 | INFO     | ss_crawler | [crawler] [crawler] Fetching CPU listing 6/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/mcjfd.html
+2026-04-19 01:34:55 | INFO     | ss_crawler | [repository] [repository] New listing created: mcjfd
+2026-04-19 01:34:55 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] NEW: Processed: new
+2026-04-19 01:34:55 | INFO     | ss_crawler | [crawler] [crawler] Fetching CPU listing 7/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/olhle.html
+2026-04-19 01:34:58 | INFO     | ss_crawler | [repository] [repository] New listing created: olhle
+2026-04-19 01:34:58 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] NEW: Processed: new
+2026-04-19 01:34:58 | INFO     | ss_crawler | [crawler] [crawler] Fetching CPU listing 8/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/mjflp.html
+2026-04-19 01:35:00 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] UNCHANGED: Processed: unchanged
+2026-04-19 01:35:00 | INFO     | ss_crawler | [crawler] [crawler] Fetching CPU listing 9/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/dclij.html
+2026-04-19 01:35:03 | INFO     | ss_crawler | [repository] [repository] New listing created: dclij
+2026-04-19 01:35:03 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] NEW: Processed: new
+2026-04-19 01:35:03 | INFO     | ss_crawler | [crawler] [crawler] Fetching CPU listing 10/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/lnmin.html
+2026-04-19 01:35:05 | INFO     | ss_crawler | [repository] [repository] New listing created: lnmin
+2026-04-19 01:35:05 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] NEW: Processed: new
+2026-04-19 01:35:05 | INFO     | ss_crawler | [crawler] [crawler] Fetching CPU listing 11/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/pmoec.html
+2026-04-19 01:35:09 | INFO     | ss_crawler | [repository] [repository] New listing created: pmoec
+2026-04-19 01:35:09 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] NEW: Processed: new
+2026-04-19 01:35:09 | INFO     | ss_crawler | [crawler] [crawler] Fetching CPU listing 12/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/fiome.html
+2026-04-19 01:35:11 | INFO     | ss_crawler | [repository] [repository] New listing created: fiome
+2026-04-19 01:35:11 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] NEW: Processed: new
+2026-04-19 01:35:11 | INFO     | ss_crawler | [crawler] [crawler] Fetching CPU listing 13/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/bopdgg.html
+2026-04-19 01:35:15 | INFO     | ss_crawler | [repository] [repository] New listing created: bopdgg
+2026-04-19 01:35:15 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] NEW: Processed: new
+2026-04-19 01:35:15 | INFO     | ss_crawler | [crawler] [crawler] Fetching CPU listing 14/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/bopdbf.html
+2026-04-19 01:35:17 | INFO     | ss_crawler | [repository] [repository] New listing created: bopdbf
+2026-04-19 01:35:17 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] NEW: Processed: new
+2026-04-19 01:35:17 | INFO     | ss_crawler | [crawler] [crawler] Fetching CPU listing 15/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/bopfhd.html
+2026-04-19 01:35:19 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] UNCHANGED: Processed: unchanged
+2026-04-19 01:35:19 | INFO     | ss_crawler | [crawler] [crawler] Fetching CPU listing 16/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/bophbb.html
+2026-04-19 01:35:22 | INFO     | ss_crawler | [repository] [repository] New listing created: bophbb
+2026-04-19 01:35:22 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] NEW: Processed: new
+2026-04-19 01:35:22 | INFO     | ss_crawler | [crawler] [crawler] Fetching CPU listing 17/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/boonbn.html
+2026-04-19 01:35:25 | INFO     | ss_crawler | [repository] [repository] New listing created: boonbn
+2026-04-19 01:35:25 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] NEW: Processed: new
+2026-04-19 01:35:25 | INFO     | ss_crawler | [crawler] [crawler] Fetching CPU listing 18/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/bopfio.html
+2026-04-19 01:35:29 | INFO     | ss_crawler | [repository] [repository] New listing created: bopfio
+2026-04-19 01:35:29 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] NEW: Processed: new
+2026-04-19 01:35:29 | INFO     | ss_crawler | [crawler] [crawler] Fetching CPU listing 19/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/fkdem.html
+2026-04-19 01:35:31 | INFO     | ss_crawler | [repository] [repository] New listing created: fkdem
+2026-04-19 01:35:31 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] NEW: Processed: new
+2026-04-19 01:35:31 | INFO     | ss_crawler | [crawler] [crawler] Fetching CPU listing 20/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/hifej.html
+2026-04-19 01:35:34 | INFO     | ss_crawler | [repository] [repository] New listing created: hifej
+2026-04-19 01:35:34 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] NEW: Processed: new
+2026-04-19 01:35:34 | INFO     | ss_crawler | [crawler] [crawler] Fetching CPU listing 21/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/bjkek.html
+2026-04-19 01:35:37 | INFO     | ss_crawler | [repository] [repository] New listing created: bjkek
+2026-04-19 01:35:37 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] NEW: Processed: new
+2026-04-19 01:35:37 | INFO     | ss_crawler | [crawler] [crawler] Fetching CPU listing 22/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/lpidm.html
+2026-04-19 01:35:39 | INFO     | ss_crawler | [repository] [repository] New listing created: lpidm
+2026-04-19 01:35:39 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] NEW: Processed: new
+2026-04-19 01:35:39 | INFO     | ss_crawler | [crawler] [crawler] Fetching CPU listing 23/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/boofpk.html
+2026-04-19 01:35:42 | INFO     | ss_crawler | [repository] [repository] New listing created: boofpk
+2026-04-19 01:35:42 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] NEW: Processed: new
+2026-04-19 01:35:42 | INFO     | ss_crawler | [crawler] [crawler] Fetching CPU listing 24/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/boopef.html
+2026-04-19 01:35:46 | INFO     | ss_crawler | [repository] [repository] New listing created: boopef
+2026-04-19 01:35:46 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] NEW: Processed: new
+2026-04-19 01:35:46 | INFO     | ss_crawler | [crawler] [crawler] Fetching CPU listing 25/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/boopej.html
+2026-04-19 01:35:47 | INFO     | ss_crawler | [repository] [repository] New listing created: boopej
+2026-04-19 01:35:47 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] NEW: Processed: new
+2026-04-19 01:35:47 | INFO     | ss_crawler | [crawler] [crawler] Fetching CPU listing 26/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/mbfhb.html
+2026-04-19 01:35:49 | INFO     | ss_crawler | [repository] [repository] New listing created: mbfhb
+2026-04-19 01:35:49 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] NEW: Processed: new
+2026-04-19 01:35:49 | INFO     | ss_crawler | [crawler] [crawler] Fetching CPU listing 27/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/hjlpn.html
+2026-04-19 01:35:52 | INFO     | ss_crawler | [repository] [repository] New listing created: hjlpn
+2026-04-19 01:35:52 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] NEW: Processed: new
+2026-04-19 01:35:52 | INFO     | ss_crawler | [crawler] [crawler] Fetching CPU listing 28/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/mjgde.html
+2026-04-19 01:35:54 | INFO     | ss_crawler | [repository] [repository] New listing created: mjgde
+2026-04-19 01:35:54 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] NEW: Processed: new
+2026-04-19 01:35:54 | INFO     | ss_crawler | [crawler] [crawler] Fetching CPU listing 29/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/kojep.html
+2026-04-19 01:35:57 | INFO     | ss_crawler | [repository] [repository] New listing created: kojep
+2026-04-19 01:35:57 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] NEW: Processed: new
+2026-04-19 01:35:57 | INFO     | ss_crawler | [crawler] [crawler] Fetching CPU listing 30/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/gfgom.html
+2026-04-19 01:36:00 | INFO     | ss_crawler | [repository] [repository] New listing created: gfgom
+2026-04-19 01:36:00 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] NEW: Processed: new
+2026-04-19 01:36:00 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] Fetching CPU category: https://www.ss.com/lv/electronics/computers/completing-pc/cpu/page2.html
+2026-04-19 01:36:00 | INFO     | ss_crawler | [crawler] [crawler] Fetching CPU category page: https://www.ss.com/lv/electronics/computers/completing-pc/cpu/page2.html
+2026-04-19 01:36:02 | INFO     | ss_crawler | [cpu_parser] [cpu_parser] Found 30 listings on page
+2026-04-19 01:36:02 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] Found 30 CPU listings to process
+2026-04-19 01:36:02 | INFO     | ss_crawler | [crawler] [crawler] Fetching CPU listing 1/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/lnxgx.html
+2026-04-19 01:36:03 | INFO     | ss_crawler | [repository] [repository] New listing created: lnxgx
+2026-04-19 01:36:03 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] NEW: Processed: new
+2026-04-19 01:36:03 | INFO     | ss_crawler | [crawler] [crawler] Fetching CPU listing 2/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/lomkj.html
+2026-04-19 01:36:05 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] UNCHANGED: Processed: unchanged
+2026-04-19 01:36:05 | INFO     | ss_crawler | [crawler] [crawler] Fetching CPU listing 3/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/fdbgn.html
+2026-04-19 01:36:09 | INFO     | ss_crawler | [repository] [repository] New listing created: fdbgn
+2026-04-19 01:36:09 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] NEW: Processed: new
+2026-04-19 01:36:09 | INFO     | ss_crawler | [crawler] [crawler] Fetching CPU listing 4/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/gbeji.html
+2026-04-19 01:36:12 | WARNING  | ss_crawler | [cpu_parser] [cpu_parser] No price found for https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/gbeji.html
+2026-04-19 01:36:12 | INFO     | ss_crawler | [repository] [repository] New listing created: gbeji
+2026-04-19 01:36:12 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] NEW: Processed: new
+2026-04-19 01:36:12 | INFO     | ss_crawler | [crawler] [crawler] Fetching CPU listing 5/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/epjix.html
+2026-04-19 01:36:15 | INFO     | ss_crawler | [repository] [repository] New listing created: epjix
+2026-04-19 01:36:15 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] NEW: Processed: new
+2026-04-19 01:36:15 | INFO     | ss_crawler | [crawler] [crawler] Fetching CPU listing 6/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/bxxipb.html
+2026-04-19 01:36:18 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] UNCHANGED: Processed: unchanged
+2026-04-19 01:36:18 | INFO     | ss_crawler | [crawler] [crawler] Fetching CPU listing 7/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/bdxbjx.html
+2026-04-19 01:36:20 | INFO     | ss_crawler | [repository] [repository] New listing created: bdxbjx
+2026-04-19 01:36:20 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] NEW: Processed: new
+2026-04-19 01:36:20 | INFO     | ss_crawler | [crawler] [crawler] Fetching CPU listing 8/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/pkpxk.html
+2026-04-19 01:36:24 | INFO     | ss_crawler | [repository] [repository] New listing created: pkpxk
+2026-04-19 01:36:24 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] NEW: Processed: new
+2026-04-19 01:36:24 | INFO     | ss_crawler | [crawler] [crawler] Fetching CPU listing 9/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/fkbix.html
+2026-04-19 01:36:26 | INFO     | ss_crawler | [repository] [repository] New listing created: fkbix
+2026-04-19 01:36:26 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] NEW: Processed: new
+2026-04-19 01:36:26 | INFO     | ss_crawler | [crawler] [crawler] Fetching CPU listing 10/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/pindo.html
+2026-04-19 01:36:28 | INFO     | ss_crawler | [repository] [repository] New listing created: pindo
+2026-04-19 01:36:28 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] NEW: Processed: new
+2026-04-19 01:36:28 | INFO     | ss_crawler | [crawler] [crawler] Fetching CPU listing 11/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/pjlnl.html
+2026-04-19 01:36:31 | INFO     | ss_crawler | [repository] [repository] New listing created: pjlnl
+2026-04-19 01:36:31 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] NEW: Processed: new
+2026-04-19 01:36:31 | INFO     | ss_crawler | [crawler] [crawler] Fetching CPU listing 12/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/dgkgf.html
+2026-04-19 01:36:34 | INFO     | ss_crawler | [repository] [repository] New listing created: dgkgf
+2026-04-19 01:36:34 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] NEW: Processed: new
+2026-04-19 01:36:34 | INFO     | ss_crawler | [crawler] [crawler] Fetching CPU listing 13/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/logcg.html
+2026-04-19 01:36:36 | INFO     | ss_crawler | [repository] [repository] New listing created: logcg
+2026-04-19 01:36:36 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] UNMATCHED: No CPU match found
+2026-04-19 01:36:36 | INFO     | ss_crawler | [crawler] [crawler] Fetching CPU listing 14/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/pileb.html
+2026-04-19 01:36:38 | INFO     | ss_crawler | [repository] [repository] New listing created: pileb
+2026-04-19 01:36:38 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] NEW: Processed: new
+2026-04-19 01:36:38 | INFO     | ss_crawler | [crawler] [crawler] Fetching CPU listing 15/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/plnkm.html
+2026-04-19 01:36:40 | INFO     | ss_crawler | [repository] [repository] New listing created: plnkm
+2026-04-19 01:36:40 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] NEW: Processed: new
+2026-04-19 01:36:40 | INFO     | ss_crawler | [crawler] [crawler] Fetching CPU listing 16/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/blhdg.html
+2026-04-19 01:36:42 | INFO     | ss_crawler | [repository] [repository] New listing created: blhdg
+2026-04-19 01:36:42 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] NEW: Processed: new
+2026-04-19 01:36:42 | INFO     | ss_crawler | [crawler] [crawler] Fetching CPU listing 17/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/hgbnd.html
+2026-04-19 01:36:45 | INFO     | ss_crawler | [repository] [repository] New listing created: hgbnd
+2026-04-19 01:36:45 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] NEW: Processed: new
+2026-04-19 01:36:45 | INFO     | ss_crawler | [crawler] [crawler] Fetching CPU listing 18/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/mlhee.html
+2026-04-19 01:36:48 | INFO     | ss_crawler | [repository] [repository] New listing created: mlhee
+2026-04-19 01:36:48 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] NEW: Processed: new
+2026-04-19 01:36:48 | INFO     | ss_crawler | [crawler] [crawler] Fetching CPU listing 19/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/pmfbx.html
+2026-04-19 01:36:50 | INFO     | ss_crawler | [repository] [repository] New listing created: pmfbx
+2026-04-19 01:36:50 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] NEW: Processed: new
+2026-04-19 01:36:50 | INFO     | ss_crawler | [crawler] [crawler] Fetching CPU listing 20/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/fcgbf.html
+2026-04-19 01:36:52 | INFO     | ss_crawler | [repository] [repository] New listing created: fcgbf
+2026-04-19 01:36:52 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] NEW: Processed: new
+2026-04-19 01:36:52 | INFO     | ss_crawler | [crawler] [crawler] Fetching CPU listing 21/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/nbbkn.html
+2026-04-19 01:36:55 | INFO     | ss_crawler | [repository] [repository] New listing created: nbbkn
+2026-04-19 01:36:55 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] NEW: Processed: new
+2026-04-19 01:36:55 | INFO     | ss_crawler | [crawler] [crawler] Fetching CPU listing 22/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/bopgmk.html
+2026-04-19 01:36:58 | INFO     | ss_crawler | [repository] [repository] New listing created: bopgmk
+2026-04-19 01:36:58 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] NEW: Processed: new
+2026-04-19 01:36:58 | INFO     | ss_crawler | [crawler] [crawler] Fetching CPU listing 23/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/ppkkp.html
+2026-04-19 01:37:01 | INFO     | ss_crawler | [repository] [repository] New listing created: ppkkp
+2026-04-19 01:37:01 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] NEW: Processed: new
+2026-04-19 01:37:01 | INFO     | ss_crawler | [crawler] [crawler] Fetching CPU listing 24/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/fnfhp.html
+2026-04-19 01:37:03 | INFO     | ss_crawler | [repository] [repository] New listing created: fnfhp
+2026-04-19 01:37:03 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] NEW: Processed: new
+2026-04-19 01:37:03 | INFO     | ss_crawler | [crawler] [crawler] Fetching CPU listing 25/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/epdnc.html
+2026-04-19 01:37:06 | INFO     | ss_crawler | [repository] [repository] New listing created: epdnc
+2026-04-19 01:37:06 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] NEW: Processed: new
+2026-04-19 01:37:06 | INFO     | ss_crawler | [crawler] [crawler] Fetching CPU listing 26/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/ddodf.html
+2026-04-19 01:37:09 | INFO     | ss_crawler | [repository] [repository] New listing created: ddodf
+2026-04-19 01:37:09 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] UNMATCHED: No CPU match found
+2026-04-19 01:37:09 | INFO     | ss_crawler | [crawler] [crawler] Fetching CPU listing 27/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/pjjjf.html
+2026-04-19 01:37:12 | INFO     | ss_crawler | [repository] [repository] New listing created: pjjjf
+2026-04-19 01:37:12 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] NEW: Processed: new
+2026-04-19 01:37:12 | INFO     | ss_crawler | [crawler] [crawler] Fetching CPU listing 28/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/hjclf.html
+2026-04-19 01:37:14 | INFO     | ss_crawler | [repository] [repository] New listing created: hjclf
+2026-04-19 01:37:14 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] NEW: Processed: new
+2026-04-19 01:37:14 | INFO     | ss_crawler | [crawler] [crawler] Fetching CPU listing 29/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/mjbxl.html
+2026-04-19 01:37:17 | INFO     | ss_crawler | [repository] [repository] New listing created: mjbxl
+2026-04-19 01:37:17 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] NEW: Processed: new
+2026-04-19 01:37:17 | INFO     | ss_crawler | [crawler] [crawler] Fetching CPU listing 30/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/mxdbf.html
+2026-04-19 01:37:20 | INFO     | ss_crawler | [repository] [repository] New listing created: mxdbf
+2026-04-19 01:37:20 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] NEW: Processed: new
+2026-04-19 01:37:20 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] Fetching CPU category: https://www.ss.com/lv/electronics/computers/completing-pc/cpu/page3.html
+2026-04-19 01:37:20 | INFO     | ss_crawler | [crawler] [crawler] Fetching CPU category page: https://www.ss.com/lv/electronics/computers/completing-pc/cpu/page3.html
+2026-04-19 01:37:24 | INFO     | ss_crawler | [cpu_parser] [cpu_parser] Found 30 listings on page
+2026-04-19 01:37:24 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] Found 30 CPU listings to process
+2026-04-19 01:37:24 | INFO     | ss_crawler | [crawler] [crawler] Fetching CPU listing 1/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/mjmdj.html
+2026-04-19 01:37:26 | INFO     | ss_crawler | [repository] [repository] New listing created: mjmdj
+2026-04-19 01:37:26 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] NEW: Processed: new
+2026-04-19 01:37:26 | INFO     | ss_crawler | [crawler] [crawler] Fetching CPU listing 2/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/plcbd.html
+2026-04-19 01:37:28 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] UNCHANGED: Processed: unchanged
+2026-04-19 01:37:28 | INFO     | ss_crawler | [crawler] [crawler] Fetching CPU listing 3/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/plmlk.html
+2026-04-19 01:37:30 | INFO     | ss_crawler | [repository] [repository] New listing created: plmlk
+2026-04-19 01:37:30 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] NEW: Processed: new
+2026-04-19 01:37:30 | INFO     | ss_crawler | [crawler] [crawler] Fetching CPU listing 4/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/plpgi.html
+2026-04-19 01:37:32 | INFO     | ss_crawler | [repository] [repository] New listing created: plpgi
+2026-04-19 01:37:32 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] NEW: Processed: new
+2026-04-19 01:37:32 | INFO     | ss_crawler | [crawler] [crawler] Fetching CPU listing 5/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/hhoej.html
+2026-04-19 01:37:35 | INFO     | ss_crawler | [repository] [repository] New listing created: hhoej
+2026-04-19 01:37:35 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] NEW: Processed: new
+2026-04-19 01:37:35 | INFO     | ss_crawler | [crawler] [crawler] Fetching CPU listing 6/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/mkcnc.html
+2026-04-19 01:37:38 | INFO     | ss_crawler | [repository] [repository] New listing created: mkcnc
+2026-04-19 01:37:38 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] NEW: Processed: new
+2026-04-19 01:37:38 | INFO     | ss_crawler | [crawler] [crawler] Fetching CPU listing 7/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/edfcm.html
+2026-04-19 01:37:40 | INFO     | ss_crawler | [repository] [repository] New listing created: edfcm
+2026-04-19 01:37:40 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] NEW: Processed: new
+2026-04-19 01:37:40 | INFO     | ss_crawler | [crawler] [crawler] Fetching CPU listing 8/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/pmbgm.html
+2026-04-19 01:37:43 | INFO     | ss_crawler | [repository] [repository] New listing created: pmbgm
+2026-04-19 01:37:43 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] NEW: Processed: new
+2026-04-19 01:37:43 | INFO     | ss_crawler | [crawler] [crawler] Fetching CPU listing 9/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/hcflh.html
+2026-04-19 01:37:45 | INFO     | ss_crawler | [repository] [repository] New listing created: hcflh
+2026-04-19 01:37:45 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] NEW: Processed: new
+2026-04-19 01:37:45 | INFO     | ss_crawler | [crawler] [crawler] Fetching CPU listing 10/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/hxnom.html
+2026-04-19 01:37:49 | INFO     | ss_crawler | [repository] [repository] New listing created: hxnom
+2026-04-19 01:37:49 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] NEW: Processed: new
+2026-04-19 01:37:49 | INFO     | ss_crawler | [crawler] [crawler] Fetching CPU listing 11/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/mlhin.html
+2026-04-19 01:37:52 | INFO     | ss_crawler | [repository] [repository] New listing created: mlhin
+2026-04-19 01:37:52 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] NEW: Processed: new
+2026-04-19 01:37:52 | INFO     | ss_crawler | [crawler] [crawler] Fetching CPU listing 12/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/pkjnl.html
+2026-04-19 01:37:54 | INFO     | ss_crawler | [repository] [repository] New listing created: pkjnl
+2026-04-19 01:37:54 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] NEW: Processed: new
+2026-04-19 01:37:54 | INFO     | ss_crawler | [crawler] [crawler] Fetching CPU listing 13/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/bclpxm.html
+2026-04-19 01:37:56 | INFO     | ss_crawler | [repository] [repository] New listing created: bclpxm
+2026-04-19 01:37:56 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] NEW: Processed: new
+2026-04-19 01:37:56 | INFO     | ss_crawler | [crawler] [crawler] Fetching CPU listing 14/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/mfkod.html
+2026-04-19 01:37:58 | INFO     | ss_crawler | [repository] [repository] New listing created: mfkod
+2026-04-19 01:37:58 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] NEW: Processed: new
+2026-04-19 01:37:58 | INFO     | ss_crawler | [crawler] [crawler] Fetching CPU listing 15/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/lcdnm.html
+2026-04-19 01:38:00 | INFO     | ss_crawler | [repository] [repository] New listing created: lcdnm
+2026-04-19 01:38:00 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] NEW: Processed: new
+2026-04-19 01:38:00 | INFO     | ss_crawler | [crawler] [crawler] Fetching CPU listing 16/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/pmklp.html
+2026-04-19 01:38:02 | INFO     | ss_crawler | [repository] [repository] New listing created: pmklp
+2026-04-19 01:38:02 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] NEW: Processed: new
+2026-04-19 01:38:02 | INFO     | ss_crawler | [crawler] [crawler] Fetching CPU listing 17/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/lodgk.html
+2026-04-19 01:38:06 | INFO     | ss_crawler | [repository] [repository] New listing created: lodgk
+2026-04-19 01:38:06 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] NEW: Processed: new
+2026-04-19 01:38:06 | INFO     | ss_crawler | [crawler] [crawler] Fetching CPU listing 18/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/mfkop.html
+2026-04-19 01:38:08 | INFO     | ss_crawler | [repository] [repository] New listing created: mfkop
+2026-04-19 01:38:08 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] NEW: Processed: new
+2026-04-19 01:38:08 | INFO     | ss_crawler | [crawler] [crawler] Fetching CPU listing 19/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/lcdnn.html
+2026-04-19 01:38:11 | INFO     | ss_crawler | [repository] [repository] New listing created: lcdnn
+2026-04-19 01:38:11 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] NEW: Processed: new
+2026-04-19 01:38:11 | INFO     | ss_crawler | [crawler] [crawler] Fetching CPU listing 20/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/hjgkl.html
+2026-04-19 01:38:13 | INFO     | ss_crawler | [repository] [repository] New listing created: hjgkl
+2026-04-19 01:38:13 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] NEW: Processed: new
+2026-04-19 01:38:13 | INFO     | ss_crawler | [crawler] [crawler] Fetching CPU listing 21/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/mhbno.html
+2026-04-19 01:38:17 | INFO     | ss_crawler | [repository] [repository] New listing created: mhbno
+2026-04-19 01:38:17 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] NEW: Processed: new
+2026-04-19 01:38:17 | INFO     | ss_crawler | [crawler] [crawler] Fetching CPU listing 22/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/mkbbx.html
+2026-04-19 01:38:20 | INFO     | ss_crawler | [repository] [repository] New listing created: mkbbx
+2026-04-19 01:38:20 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] NEW: Processed: new
+2026-04-19 01:38:20 | INFO     | ss_crawler | [crawler] [crawler] Fetching CPU listing 23/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/bkcio.html
+2026-04-19 01:38:21 | INFO     | ss_crawler | [repository] [repository] New listing created: bkcio
+2026-04-19 01:38:21 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] NEW: Processed: new
+2026-04-19 01:38:21 | INFO     | ss_crawler | [crawler] [crawler] Fetching CPU listing 24/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/edbbx.html
+2026-04-19 01:38:25 | INFO     | ss_crawler | [repository] [repository] New listing created: edbbx
+2026-04-19 01:38:25 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] NEW: Processed: new
+2026-04-19 01:38:25 | INFO     | ss_crawler | [crawler] [crawler] Fetching CPU listing 25/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/hdkkj.html
+2026-04-19 01:38:29 | INFO     | ss_crawler | [repository] [repository] New listing created: hdkkj
+2026-04-19 01:38:29 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] NEW: Processed: new
+2026-04-19 01:38:29 | INFO     | ss_crawler | [crawler] [crawler] Fetching CPU listing 26/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/hjxif.html
+2026-04-19 01:38:32 | INFO     | ss_crawler | [repository] [repository] New listing created: hjxif
+2026-04-19 01:38:32 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] NEW: Processed: new
+2026-04-19 01:38:32 | INFO     | ss_crawler | [crawler] [crawler] Fetching CPU listing 27/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/bmxhf.html
+2026-04-19 01:38:35 | INFO     | ss_crawler | [repository] [repository] New listing created: bmxhf
+2026-04-19 01:38:35 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] NEW: Processed: new
+2026-04-19 01:38:35 | INFO     | ss_crawler | [crawler] [crawler] Fetching CPU listing 28/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/gmjdl.html
+2026-04-19 01:38:38 | INFO     | ss_crawler | [repository] [repository] New listing created: gmjdl
+2026-04-19 01:38:38 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] NEW: Processed: new
+2026-04-19 01:38:38 | INFO     | ss_crawler | [crawler] [crawler] Fetching CPU listing 29/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/bclono.html
+2026-04-19 01:38:41 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] UNCHANGED: Processed: unchanged
+2026-04-19 01:38:41 | INFO     | ss_crawler | [crawler] [crawler] Fetching CPU listing 30/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/lndcc.html
+2026-04-19 01:38:43 | INFO     | ss_crawler | [repository] [repository] New listing created: lndcc
+2026-04-19 01:38:43 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] NEW: Processed: new
+2026-04-19 01:38:43 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] Fetching CPU category: https://www.ss.com/lv/electronics/computers/completing-pc/cpu/page4.html
+2026-04-19 01:38:43 | INFO     | ss_crawler | [crawler] [crawler] Fetching CPU category page: https://www.ss.com/lv/electronics/computers/completing-pc/cpu/page4.html
+2026-04-19 01:38:46 | INFO     | ss_crawler | [cpu_parser] [cpu_parser] Found 3 listings on page
+2026-04-19 01:38:46 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] Found 3 CPU listings to process
+2026-04-19 01:38:46 | INFO     | ss_crawler | [crawler] [crawler] Fetching CPU listing 1/3: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/loghc.html
+2026-04-19 01:38:48 | INFO     | ss_crawler | [repository] [repository] New listing created: loghc
+2026-04-19 01:38:48 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] NEW: Processed: new
+2026-04-19 01:38:48 | INFO     | ss_crawler | [crawler] [crawler] Fetching CPU listing 2/3: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/mkxio.html
+2026-04-19 01:38:50 | INFO     | ss_crawler | [repository] [repository] New listing created: mkxio
+2026-04-19 01:38:50 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] NEW: Processed: new
+2026-04-19 01:38:50 | INFO     | ss_crawler | [crawler] [crawler] Fetching CPU listing 3/3: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/gfxje.html
+2026-04-19 01:38:53 | INFO     | ss_crawler | [repository] [repository] New listing created: gfxje
+2026-04-19 01:38:53 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] UNMATCHED: No CPU match found
+2026-04-19 01:38:53 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] Fetching CPU category: https://www.ss.com/lv/electronics/computers/completing-pc/cpu/page5.html
+2026-04-19 01:38:53 | INFO     | ss_crawler | [crawler] [crawler] Fetching CPU category page: https://www.ss.com/lv/electronics/computers/completing-pc/cpu/page5.html
+2026-04-19 01:38:57 | INFO     | ss_crawler | [cpu_parser] [cpu_parser] Found 30 listings on page
+2026-04-19 01:38:57 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] Found 30 CPU listings to process
+2026-04-19 01:38:57 | INFO     | ss_crawler | [crawler] [crawler] Fetching CPU listing 1/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/klcci.html
+2026-04-19 01:39:00 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] UNCHANGED: Processed: unchanged
+2026-04-19 01:39:00 | INFO     | ss_crawler | [crawler] [crawler] Fetching CPU listing 2/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/boonbo.html
+2026-04-19 01:39:03 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] UNCHANGED: Processed: unchanged
+2026-04-19 01:39:03 | INFO     | ss_crawler | [crawler] [crawler] Fetching CPU listing 3/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/fekmo.html
+2026-04-19 01:39:06 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] UNCHANGED: Processed: unchanged
+2026-04-19 01:39:06 | INFO     | ss_crawler | [crawler] [crawler] Fetching CPU listing 4/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/bopgon.html
+2026-04-19 01:39:08 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] UNCHANGED: Processed: unchanged
+2026-04-19 01:39:08 | INFO     | ss_crawler | [crawler] [crawler] Fetching CPU listing 5/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/boonbc.html
+2026-04-19 01:39:11 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] UNMATCHED: No CPU match found
+2026-04-19 01:39:11 | INFO     | ss_crawler | [crawler] [crawler] Fetching CPU listing 6/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/mcjfd.html
+2026-04-19 01:39:13 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] UNCHANGED: Processed: unchanged
+2026-04-19 01:39:13 | INFO     | ss_crawler | [crawler] [crawler] Fetching CPU listing 7/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/olhle.html
+2026-04-19 01:39:15 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] UNCHANGED: Processed: unchanged
+2026-04-19 01:39:15 | INFO     | ss_crawler | [crawler] [crawler] Fetching CPU listing 8/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/mjflp.html
+2026-04-19 01:39:18 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] UNCHANGED: Processed: unchanged
+2026-04-19 01:39:18 | INFO     | ss_crawler | [crawler] [crawler] Fetching CPU listing 9/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/dclij.html
+2026-04-19 01:39:21 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] UNCHANGED: Processed: unchanged
+2026-04-19 01:39:21 | INFO     | ss_crawler | [crawler] [crawler] Fetching CPU listing 10/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/lnmin.html
+2026-04-19 01:39:24 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] UNCHANGED: Processed: unchanged
+2026-04-19 01:39:24 | INFO     | ss_crawler | [crawler] [crawler] Fetching CPU listing 11/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/pmoec.html
+2026-04-19 01:39:27 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] UNCHANGED: Processed: unchanged
+2026-04-19 01:39:27 | INFO     | ss_crawler | [crawler] [crawler] Fetching CPU listing 12/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/fiome.html
+2026-04-19 01:39:30 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] UNCHANGED: Processed: unchanged
+2026-04-19 01:39:30 | INFO     | ss_crawler | [crawler] [crawler] Fetching CPU listing 13/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/bopdgg.html
+2026-04-19 01:39:32 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] UNCHANGED: Processed: unchanged
+2026-04-19 01:39:32 | INFO     | ss_crawler | [crawler] [crawler] Fetching CPU listing 14/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/bopdbf.html
+2026-04-19 01:39:35 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] UNCHANGED: Processed: unchanged
+2026-04-19 01:39:35 | INFO     | ss_crawler | [crawler] [crawler] Fetching CPU listing 15/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/bopfhd.html
+2026-04-19 01:39:37 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] UNCHANGED: Processed: unchanged
+2026-04-19 01:39:37 | INFO     | ss_crawler | [crawler] [crawler] Fetching CPU listing 16/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/bophbb.html
+2026-04-19 01:39:39 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] UNCHANGED: Processed: unchanged
+2026-04-19 01:39:39 | INFO     | ss_crawler | [crawler] [crawler] Fetching CPU listing 17/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/boonbn.html
+2026-04-19 01:39:43 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] UNCHANGED: Processed: unchanged
+2026-04-19 01:39:43 | INFO     | ss_crawler | [crawler] [crawler] Fetching CPU listing 18/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/bopfio.html
+2026-04-19 01:39:45 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] UNCHANGED: Processed: unchanged
+2026-04-19 01:39:45 | INFO     | ss_crawler | [crawler] [crawler] Fetching CPU listing 19/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/fkdem.html
+2026-04-19 01:39:48 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] UNCHANGED: Processed: unchanged
+2026-04-19 01:39:48 | INFO     | ss_crawler | [crawler] [crawler] Fetching CPU listing 20/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/hifej.html
+2026-04-19 01:39:51 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] UNCHANGED: Processed: unchanged
+2026-04-19 01:39:51 | INFO     | ss_crawler | [crawler] [crawler] Fetching CPU listing 21/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/bjkek.html
+2026-04-19 01:39:53 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] UNCHANGED: Processed: unchanged
+2026-04-19 01:39:53 | INFO     | ss_crawler | [crawler] [crawler] Fetching CPU listing 22/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/lpidm.html
+2026-04-19 01:39:56 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] UNCHANGED: Processed: unchanged
+2026-04-19 01:39:56 | INFO     | ss_crawler | [crawler] [crawler] Fetching CPU listing 23/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/boofpk.html
+2026-04-19 01:39:58 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] UNCHANGED: Processed: unchanged
+2026-04-19 01:39:58 | INFO     | ss_crawler | [crawler] [crawler] Fetching CPU listing 24/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/boopef.html
+2026-04-19 01:40:01 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] UNCHANGED: Processed: unchanged
+2026-04-19 01:40:01 | INFO     | ss_crawler | [crawler] [crawler] Fetching CPU listing 25/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/boopej.html
+2026-04-19 01:40:04 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] UNCHANGED: Processed: unchanged
+2026-04-19 01:40:04 | INFO     | ss_crawler | [crawler] [crawler] Fetching CPU listing 26/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/mbfhb.html
+2026-04-19 01:40:07 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] UNCHANGED: Processed: unchanged
+2026-04-19 01:40:07 | INFO     | ss_crawler | [crawler] [crawler] Fetching CPU listing 27/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/hjlpn.html
+2026-04-19 01:40:10 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] UNCHANGED: Processed: unchanged
+2026-04-19 01:40:10 | INFO     | ss_crawler | [crawler] [crawler] Fetching CPU listing 28/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/mjgde.html
+2026-04-19 01:40:13 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] UNCHANGED: Processed: unchanged
+2026-04-19 01:40:13 | INFO     | ss_crawler | [crawler] [crawler] Fetching CPU listing 29/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/kojep.html
+2026-04-19 01:40:16 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] UNCHANGED: Processed: unchanged
+2026-04-19 01:40:16 | INFO     | ss_crawler | [crawler] [crawler] Fetching CPU listing 30/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/gfgom.html
+2026-04-19 01:40:18 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] UNCHANGED: Processed: unchanged
+2026-04-19 01:40:18 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] Page limit reached (5), stopping
+2026-04-19 01:40:18 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] CPU scraping completed successfully
+2026-04-19 01:44:54 | INFO     | ss_crawler | [database] [database] Database connected: localhost:5433/ss_market
+2026-04-19 01:46:37 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] Initializing CPU scraper...
+2026-04-19 01:46:37 | INFO     | ss_crawler | [database] [database] Database connected: localhost:5433/ss_market
+2026-04-19 01:46:37 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] Database: postgresql+psycopg2://crawler:crawler_pass@localhost:5433/ss_market
+2026-04-19 01:46:37 | INFO     | ss_crawler | [cpu_matcher] [cpu_matcher] CPUMatcher initialized with 5320 CPUs
+2026-04-19 01:46:37 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] Loaded 5320 CPU references
+2026-04-19 01:46:37 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] Initializing CPU scraper...
+2026-04-19 01:46:37 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] Database: postgresql+psycopg2://crawler:crawler_pass@localhost:5433/ss_market
+2026-04-19 01:46:38 | INFO     | ss_crawler | [cpu_matcher] [cpu_matcher] CPUMatcher initialized with 5320 CPUs
+2026-04-19 01:46:38 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] Loaded 5320 CPU references
+2026-04-19 01:46:38 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] Single URL mode: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/boonbc.html
+2026-04-19 01:46:38 | INFO     | ss_crawler | [crawler] [crawler] Fetching single CPU listing: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/boonbc.html
+2026-04-19 01:48:28 | INFO     | ss_crawler | [database] [database] Database connected: localhost:5433/ss_market
+2026-04-19 01:48:28 | INFO     | ss_crawler | [cpu_matcher] [cpu_matcher] CPUMatcher initialized with 5320 CPUs
+2026-04-19 01:48:35 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] Initializing CPU scraper...
+2026-04-19 01:48:36 | INFO     | ss_crawler | [database] [database] Database connected: localhost:5433/ss_market
+2026-04-19 01:48:36 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] Database: postgresql+psycopg2://crawler:crawler_pass@localhost:5433/ss_market
+2026-04-19 01:48:36 | INFO     | ss_crawler | [cpu_matcher] [cpu_matcher] CPUMatcher initialized with 5320 CPUs
+2026-04-19 01:48:36 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] Loaded 5320 CPU references
+2026-04-19 01:48:36 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] Initializing CPU scraper...
+2026-04-19 01:48:36 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] Database: postgresql+psycopg2://crawler:crawler_pass@localhost:5433/ss_market
+2026-04-19 01:48:36 | INFO     | ss_crawler | [cpu_matcher] [cpu_matcher] CPUMatcher initialized with 5320 CPUs
+2026-04-19 01:48:36 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] Loaded 5320 CPU references
+2026-04-19 01:48:36 | INFO     | ss_crawler | [cpu_scraper] [cpu_scraper] Single URL mode: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/boonbc.html
+2026-04-19 01:48:36 | INFO     | ss_crawler | [crawler] [crawler] Fetching single CPU listing: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/boonbc.html

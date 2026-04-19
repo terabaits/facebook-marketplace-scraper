@@ -1,0 +1,9 @@
+Full CPU Name,Processor Number,Brand Modifier,Gen,# of Cores,# of P-cores,# of E-cores,# of Threads,Max Turbo Frequency (GHz),Performance-core Base Frequency (GHz),Efficient-core Base Frequency (GHz),Processor Base Frequency (GHz),Cache (MB),Processor Base Power (W),Max Memory Size (GB),Memory Types (MT/s),Max # of PCI Express Lanes,Supported Socket,Processor Graphics,Graphics Max Dynamic Frequency (GHz),Intel Optane Memory Supported,Intel Turbo Boost 2.0,Intel Turbo Boost Max 3.0,Intel vPro Eligibility,Max Resolution (HDMI/DP/eDP),Price
+Intel Core Ultra 9 285K,285K,9,2,24,8,16,24,5.7,3.7,3.2,3.7,36,125,192,DDR5-6400,20,LGA1851,Intel Xe-LPG,2.0,No,Yes,Yes,Yes,"HDMI 2.1 / DP 2.1 / eDP 1.4",TBD
+Intel Core Ultra 9 285KF,285KF,9,2,24,8,16,24,5.7,3.7,3.2,3.7,36,125,192,DDR5-6400,20,LGA1851,None,0,No,Yes,Yes,Yes,"N/A",TBD
+Intel Core Ultra 7 265K,265K,7,2,20,8,12,20,5.5,3.5,3.0,3.5,30,125,192,DDR5-6400,20,LGA1851,Intel Xe-LPG,2.0,No,Yes,Yes,Yes,"HDMI 2.1 / DP 2.1 / eDP 1.4",TBD
+Intel Core Ultra 7 265KF,265KF,7,2,20,8,12,20,5.5,3.5,3.0,3.5,30,125,192,DDR5-6400,20,LGA1851,None,0,No,Yes,Yes,Yes,"N/A",TBD
+Intel Core Ultra 5 245K,245K,5,2,14,6,8,14,5.2,3.3,2.9,3.3,24,125,192,DDR5-6400,20,LGA1851,Intel Xe-LPG,1.9,No,Yes,No,No,"HDMI 2.1 / DP 2.1 / eDP 1.4",TBD
+Intel Core Ultra 5 245KF,245KF,5,2,14,6,8,14,5.2,3.3,2.9,3.3,24,125,192,DDR5-6400,20,LGA1851,None,0,No,Yes,No,No,"N/A",TBD
+Intel Core Ultra 5 235,235,5,2,14,6,8,14,4.9,3.2,2.8,3.2,24,65,192,DDR5-5600,20,LGA1851,Intel Xe-LPG,1.8,No,Yes,No,No,"HDMI 2.1 / DP 2.1 / eDP 1.4",TBD
+Intel Core Ultra 5 235F,235F,5,2,14,6,8,14,4.9,3.2,2.8,3.2,24,65,192,DDR5-5600,20,LGA1851,None,0,No,Yes,No,No,"N/A",TBD

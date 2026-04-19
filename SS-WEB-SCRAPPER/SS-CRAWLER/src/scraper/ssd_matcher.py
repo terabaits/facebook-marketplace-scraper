@@ -179,6 +179,23 @@ class SSDMatcher:
         best_exact_match = None
         best_exact_score = 0
         
+        # When we have capacity, try to find exact capacity match first
+        if extracted_capacity and brands_in_title:
+            for ssd in candidates:
+                if ssd.capacity_gb and abs(extracted_capacity - ssd.capacity_gb) <= 100:
+                    # Check if model is in title (even partially)
+                    norm_model = normalize_text(ssd.model)
+                    model_parts = norm_model.split()
+                    
+                    # Check if any part of the model matches
+                    for part in model_parts:
+                        if len(part) >= 2 and part in normalized:
+                            return SSDMatchResult(
+                                ssd=ssd,
+                                confidence=0.95,
+                                method="capacity+model_partial"
+                            )
+        
         for ssd in candidates:
             norm_name = normalize_text(f"{ssd.brand} {ssd.model}")
             

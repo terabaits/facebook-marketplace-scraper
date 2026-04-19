@@ -50,6 +50,18 @@ class SSDMatcher:
                     norm_kw = normalize_text(kw)
                     self.searchable_names.append(norm_kw)
                     self.name_to_ssd[norm_kw] = ssd
+            
+            # Also add model-only index for partial matches
+            norm_model = normalize_text(ssd.model)
+            if norm_model not in self.name_to_ssd:
+                self.name_to_ssd[norm_model] = ssd
+            
+            # Handle model variants with slashes (e.g., "SU650/SU655")
+            if '/' in ssd.model:
+                for variant in ssd.model.split('/'):
+                    norm_variant = normalize_text(variant.strip())
+                    if norm_variant and norm_variant not in self.name_to_ssd:
+                        self.name_to_ssd[norm_variant] = ssd
     
     def _extract_capacity(self, text: str) -> Optional[int]:
         """Extract capacity in GB from text."""
@@ -98,6 +110,8 @@ class SSDMatcher:
             r'\bnv\d+\b', r'\bsnm\d+\b', r'\bmx\d+\b', r'\bx\d+\b',
             r'\bpcie\s*\d+\.?\d*\b', r'\bm\.2\b', r'\bsata\b', r'\bnvme\b',
             r'\bqvo\b', r'\bevo\b', r'\bpro\b', r'\bgm\d+\b',
+            r'\bsu\d+\b',  # ADATA SU series (SU650, SU655, etc)
+            r'\ba\d+\b',   # Generic model numbers like A400
         ]
         
         for pattern in series_patterns:

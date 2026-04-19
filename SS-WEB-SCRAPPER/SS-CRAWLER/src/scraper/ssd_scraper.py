@@ -4,6 +4,8 @@ from typing import Optional, List, Dict, Any, Set
 from datetime import datetime, timedelta
 from pathlib import Path
 
+from sqlalchemy import text
+
 from src.database.connection import init_database, get_session
 from src.database.repository import ListingRepository, SSDReferenceRepository, ScrapeRunRepository
 from src.models.schemas import Listing, SSDReference
@@ -196,14 +198,14 @@ class SSDScraper:
                     if existing.content_hash == listing.content_hash:
                         # Just update last_seen
                         session.execute(
-                            "UPDATE listings SET last_seen_at = NOW() WHERE listing_id = :id",
+                            text("UPDATE listings SET last_seen_at = NOW() WHERE listing_id = :id"),
                             {"id": listing.listing_id}
                         )
                         self.stats['unchanged'] += 1
                     else:
                         # Update with new data
                         session.execute(
-                            """
+                            text("""
                             UPDATE listings
                             SET title = :title,
                                 description = :desc,
@@ -217,7 +219,7 @@ class SSDScraper:
                                 last_seen_at = NOW(),
                                 updated_at = NOW()
                             WHERE listing_id = :id
-                            """,
+                            """),
                             {
                                 "id": listing.listing_id,
                                 "title": listing.title,
@@ -234,7 +236,7 @@ class SSDScraper:
                 else:
                     # Insert new
                     session.execute(
-                        """
+                        text("""
                         INSERT INTO listings (
                             listing_id, title, description, price_eur, seller_location,
                             listing_url, image_url, date_posted, category,
@@ -246,7 +248,7 @@ class SSDScraper:
                             :ssd_id, :confidence, :method,
                             :capacity, :hash, true
                         )
-                        """,
+                        """),
                         {
                             "id": listing.listing_id,
                             "title": listing.title,

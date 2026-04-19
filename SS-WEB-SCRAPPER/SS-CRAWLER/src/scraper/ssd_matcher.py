@@ -1,6 +1,6 @@
 """SSD matching engine using rapidfuzz."""
 import re
-from typing import Optional, List, Tuple
+from typing import Optional, List, Tuple, Dict
 from rapidfuzz import fuzz, process
 
 from src.models.schemas import SSDReference, SSDMatchResult
@@ -28,15 +28,17 @@ class SSDMatcher:
     
     def _build_index(self):
         """Build search index from SSD references."""
-        self.name_to_ssd = {}
+        self.name_to_ssds: Dict[str, List[SSDReference]] = {}  # name -> list of SSDs (different capacities)
         self.searchable_names = []
-        self.brand_to_ssds = {}  # Group SSDs by brand
+        self.brand_to_ssds: Dict[str, List[SSDReference]] = {}  # Group SSDs by brand
         
         for ssd in self.ssds:
             # Primary name: Brand + Model
             norm = normalize_text(f"{ssd.brand} {ssd.model}")
             self.searchable_names.append(norm)
-            self.name_to_ssd[norm] = ssd
+            if norm not in self.name_to_ssds:
+                self.name_to_ssds[norm] = []
+            self.name_to_ssds[norm].append(ssd)
             
             # Group by brand
             brand_key = normalize_text(ssd.brand)
@@ -46,22 +48,27 @@ class SSDMatcher:
             
             # All keyword variants
             for kw in ssd.search_keywords:
-                if kw and kw not in self.name_to_ssd:
+                if kw:
                     norm_kw = normalize_text(kw)
                     self.searchable_names.append(norm_kw)
-                    self.name_to_ssd[norm_kw] = ssd
+                    if norm_kw not in self.name_to_ssds:
+                        self.name_to_ssds[norm_kw] = []
+                    self.name_to_ssds[norm_kw].append(ssd)
             
             # Also add model-only index for partial matches
             norm_model = normalize_text(ssd.model)
-            if norm_model not in self.name_to_ssd:
-                self.name_to_ssd[norm_model] = ssd
+            if norm_model not in self.name_to_ssds:
+                self.name_to_ssds[norm_model] = []
+            self.name_to_ssds[norm_model].append(ssd)
             
             # Handle model variants with slashes (e.g., "SU650/SU655")
             if '/' in ssd.model:
                 for variant in ssd.model.split('/'):
                     norm_variant = normalize_text(variant.strip())
-                    if norm_variant and norm_variant not in self.name_to_ssd:
-                        self.name_to_ssd[norm_variant] = ssd
+                    if norm_variant:
+                        if norm_variant not in self.name_to_ssds:
+                            self.name_to_ssds[norm_variant] = []
+                        self.name_to_ssds[norm_variant].append(ssd)
     
     def _extract_capacity(self, text: str) -> Optional[int]:
         """Extract capacity in GB from text."""
@@ -120,12 +127,50 @@ class SSDMatcher:
         
         return list(tokens)
     
+    def _score_ssd_match(self, ssd: SSDReference, normalized_title: str, extracted_capacity: Optional[int]) -> Tuple[float, str]:
+        """
+        Score how well an SSD matches the listing.
+        Returns (score, method).
+        """
+        score = 0.0
+        method = ""
+        
+        # Build reference name
+        ssd_name = normalize_text(f"{ssd.brand} {ssd.model}")
+        
+        # Check for exact name match
+        if ssd_name in normalized_title:
+            score = 100.0
+            method = "exact"
+        else:
+            # Fuzzy match
+            score = fuzz.token_set_ratio(normalized_title, ssd_name)
+            method = "fuzzy"
+        
+        # Capacity matching bonus/penalty
+        if extracted_capacity and ssd.capacity_gb:
+            capacity_diff = abs(extracted_capacity - ssd.capacity_gb)
+            if capacity_diff == 0:
+                # Perfect capacity match
+                score += 50
+                method += "+capacity_exact"
+            else:
+                # Calculate tolerance
+                tolerance = min(max(extracted_capacity * 0.1, 20), 100)
+                if capacity_diff <= tolerance:
+                    # Within tolerance
+                    score += 30 * (1 - capacity_diff / tolerance)
+                    method += "+capacity_close"
+                else:
+                    # Outside tolerance - significant penalty
+                    score -= 100
+                    method += "+capacity_mismatch"
+        
+        return score, method
+    
     def match_listing(self, title: str, extracted_capacity: Optional[int] = None) -> SSDMatchResult:
         """
         Match a listing title to an SSD reference.
-        
-        STRICT RULE: If extracted_capacity is provided, the matched SSD MUST have
-        matching capacity (within tolerance). Otherwise, return no match.
         
         Args:
             title: The listing title
@@ -149,112 +194,48 @@ class SSDMatcher:
                                  'patriot', 'hp', 'acer', 'gigabyte', 'msi', 'asus', 'lexar']:
                 brands_in_title.add(token.lower())
         
-        # Get candidates by brand
+        # Get candidate SSDs by brand first
         candidates = []
         if brands_in_title:
             for brand in brands_in_title:
                 if brand in self.brand_to_ssds:
                     candidates.extend(self.brand_to_ssds[brand])
-        
-        if not candidates:
+        else:
             candidates = self.ssds
         
-        # FILTER: If we have extracted capacity, only consider SSDs with matching capacity
-        # Use strict tolerance: 10% or 20GB max (whichever is smaller)
+        # If we have capacity, filter candidates to those with matching capacity
         if extracted_capacity:
             capacity_candidates = []
             for ssd in candidates:
                 if ssd.capacity_gb:
-                    # Calculate tolerance: max(10% of capacity, 20GB) but cap at 100GB
                     tolerance = min(max(extracted_capacity * 0.1, 20), 100)
                     if abs(extracted_capacity - ssd.capacity_gb) <= tolerance:
                         capacity_candidates.append(ssd)
             
-            # If no SSDs match the capacity, return no match
-            if not capacity_candidates:
-                logger.info(f"No SSD with capacity {extracted_capacity}GB found in database")
-                return SSDMatchResult()
-            
-            # Use only capacity-matched candidates
-            candidates = capacity_candidates
+            if capacity_candidates:
+                candidates = capacity_candidates
         
-        # Step 1: Try exact substring match
-        best_exact_match = None
-        best_exact_score = 0
+        # Score all candidates
+        best_ssd = None
+        best_score = -float('inf')
+        best_method = ""
         
         for ssd in candidates:
-            norm_name = normalize_text(f"{ssd.brand} {ssd.model}")
+            score, method = self._score_ssd_match(ssd, normalized, extracted_capacity)
             
-            if norm_name in normalized:
-                score = len(norm_name)
-                if score > best_exact_score:
-                    best_exact_score = score
-                    best_exact_match = ssd
-            
-            norm_model = normalize_text(ssd.model)
-            if norm_model in normalized:
-                score = len(norm_model)
-                if score > best_exact_score:
-                    best_exact_score = score
-                    best_exact_match = ssd
+            if score > best_score:
+                best_score = score
+                best_ssd = ssd
+                best_method = method
         
-        if best_exact_match:
-            confidence = 0.95
-            method = "exact"
-            
-            # If we have capacity info, verify it with strict tolerance
-            if extracted_capacity and best_exact_match.capacity_gb:
-                tolerance = min(max(extracted_capacity * 0.1, 20), 100)
-                if abs(extracted_capacity - best_exact_match.capacity_gb) <= tolerance:
-                    confidence = 1.0
-                    method = "exact+capacity_verified"
-                else:
-                    # Capacity doesn't match - reject this match
-                    logger.info(f"Rejecting match: capacity mismatch ({extracted_capacity}GB vs {best_exact_match.capacity_gb}GB)")
-                    return SSDMatchResult()
-            
+        # Require minimum score of 50 for a match
+        if best_ssd and best_score >= 50:
+            confidence = min(best_score / 100.0, 1.0)
             return SSDMatchResult(
-                ssd=best_exact_match,
+                ssd=best_ssd,
                 confidence=confidence,
-                method=method
+                method=best_method
             )
-        
-        # Step 2: Try fuzzy matching (only on capacity-matched candidates)
-        tokens = self._extract_ssd_tokens(title)
-        
-        if tokens:
-            fuzzy_candidates = []
-            for token in tokens:
-                for ssd in candidates:
-                    norm_name = normalize_text(f"{ssd.brand} {ssd.model}")
-                    if token in norm_name or token in normalize_text(ssd.model):
-                        fuzzy_candidates.append(ssd)
-            
-            if fuzzy_candidates:
-                seen = set()
-                unique_candidates = []
-                for ssd in fuzzy_candidates:
-                    if ssd.id not in seen:
-                        seen.add(ssd.id)
-                        unique_candidates.append(ssd)
-                
-                best_match = None
-                best_score = 0
-                
-                for ssd in unique_candidates[:20]:
-                    ssd_name = normalize_text(f"{ssd.brand} {ssd.model}")
-                    score = fuzz.token_set_ratio(normalized, ssd_name)
-                    
-                    if score > best_score:
-                        best_score = score
-                        best_match = ssd
-                
-                if best_match and best_score >= 70:
-                    return SSDMatchResult(
-                        ssd=best_match,
-                        confidence=min(best_score / 100.0, 0.95),
-                        method="fuzzy"
-                    )
         
         return SSDMatchResult()
     

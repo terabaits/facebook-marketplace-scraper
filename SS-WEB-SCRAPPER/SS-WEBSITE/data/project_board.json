@@ -88,23 +88,6 @@
       "color": "#3498db",
       "tasks": [
         {
-          "id": "T128",
-          "title": "in creating new task box why link to tasks is not a dropdown list?Why link to task search box doesnt work?",
-          "page": "Project Board",
-          "category": "",
-          "priority": "Medium",
-          "fix": "",
-          "future_folder_id": "F-20260621160957-36ce9488",
-          "column": "progress",
-          "created": "2026-06-26T19:24:04.918077",
-          "updated": "2026-06-26T17:50:08.006461+00:00",
-          "linked_task_id": null,
-          "relationship_type": null,
-          "folder_id": "F-20260621160957-36ce9488",
-          "updated_at": "2026-06-26T19:24:05.247713",
-          "started_at": "2026-06-26T17:50:08.006461+00:00"
-        },
-        {
           "id": "T129",
           "title": "andele source image dont have image, but database shows they have",
           "page": "GPU",
@@ -117,21 +100,6 @@
           "linked_task_id": null,
           "relationship_type": null,
           "started_at": "2026-06-26T17:50:08.006461+00:00"
-        },
-        {
-          "id": "T130",
-          "title": "about the CPU chart box: draging arround is glitchy. a dont see where I can drag them to hide?",
-          "page": "CPU",
-          "category": "",
-          "priority": "High",
-          "fix": "Fixed CPU widget drag-and-drop UX in templates/cpu.html: (1) Replaced native glitchy DnD with a placeholder-based drag preview and drag-mode toggle—dragging is now enabled only after clicking the '✋ Drag' button to avoid accidental drags. (2) Replaced ambiguous '⋮⋮' handles with a clear '☰' drag handle, hover highlight, and opacity/cursor feedback. (3) Added a '👁 Manage' button that opens a widget manager modal where each widget can be shown/hidden; hidden state persists to localStorage alongside pinned/saved state. (4) Added per-widget '🙈' hide buttons and persisted hidden/minimized states. (5) Reset now clears order, pinned, hidden, minimized, and drag-mode keys and reloads. Charts remain rendered after reorder because only the widget cards move, not their internal content.",
-          "column": "talking",
-          "created": "2026-06-26T19:42:59.959953",
-          "updated": "2026-06-26T17:50:08.006461+00:00",
-          "linked_task_id": null,
-          "relationship_type": null,
-          "started_at": "2026-06-26T17:50:08.006461+00:00",
-          "completed_at": "2026-06-26T17:55:00.000000"
         }
       ]
     },
@@ -515,6 +483,38 @@
           "linked_task_id": null,
           "relationship_type": null,
           "completed_at": "2026-06-26T04:12:00.000000"
+        },
+        {
+          "id": "T130",
+          "title": "about the CPU chart box: draging arround is glitchy. a dont see where I can drag them to hide?",
+          "page": "CPU",
+          "category": "",
+          "priority": "High",
+          "fix": "Fixed CPU widget drag-and-drop UX in templates/cpu.html: (1) Replaced native glitchy DnD with a placeholder-based drag preview and drag-mode toggle—dragging is now enabled only after clicking the '✋ Drag' button to avoid accidental drags. (2) Replaced ambiguous '⋮⋮' handles with a clear '☰' drag handle, hover highlight, and opacity/cursor feedback. (3) Added a '👁 Manage' button that opens a widget manager modal where each widget can be shown/hidden; hidden state persists to localStorage alongside pinned/saved state. (4) Added per-widget '🙈' hide buttons and persisted hidden/minimized states. (5) Reset now clears order, pinned, hidden, minimized, and drag-mode keys and reloads. Charts remain rendered after reorder because only the widget cards move, not their internal content.",
+          "column": "talking",
+          "created": "2026-06-26T19:42:59.959953",
+          "updated": "2026-06-26T17:57:05.347643+00:00",
+          "linked_task_id": null,
+          "relationship_type": null,
+          "started_at": "2026-06-26T17:50:08.006461+00:00",
+          "completed_at": "2026-06-26T17:57:05.347643+00:00"
+        },
+        {
+          "id": "T128",
+          "title": "in creating new task box why link to tasks is not a dropdown list?Why link to task search box doesnt work?",
+          "page": "Project Board",
+          "category": "",
+          "priority": "Medium",
+          "fix": "Replaced broken link-to-task autocomplete with a working searchable <select> dropdown in the task modal. collectLinks() now reads task ID and relationship type from each link row, and both addTask() (POST) and saveEditedTask() (PUT) send linked_tasks to app.py. Tested end-to-end: created T132 linked to T002, persisted in project_board.json.",
+          "future_folder_id": "F-20260621160957-36ce9488",
+          "column": "talking",
+          "created": "2026-06-26T19:24:04.918077",
+          "updated": "2026-06-26T20:56:00",
+          "linked_task_id": null,
+          "relationship_type": null,
+          "folder_id": "F-20260621160957-36ce9488",
+          "updated_at": "2026-06-26T19:24:05.247713",
+          "started_at": "2026-06-26T17:50:08.006461+00:00"
         }
       ]
     },

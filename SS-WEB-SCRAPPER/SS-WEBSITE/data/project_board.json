@@ -54,6 +54,25 @@
           "updated": "2026-06-21T20:29:24.342209",
           "linked_task_id": null,
           "relationship_type": null
+        },
+        {
+          "id": "T132",
+          "title": "UI test task for link dropdown",
+          "page": "Test",
+          "category": "UI",
+          "priority": "Low",
+          "fix": "",
+          "column": "problems",
+          "linked_tasks": [
+            {
+              "task_id": "T002",
+              "relationship_type": "linked"
+            }
+          ],
+          "linked_task_id": "T002",
+          "relationship_type": "linked",
+          "created": "2026-06-26T20:55:00",
+          "updated": "2026-06-26T20:55:00"
         }
       ]
     },
@@ -67,58 +86,60 @@
       "id": "progress",
       "title": "In Progress",
       "color": "#3498db",
-      "tasks": []
+      "tasks": [
+        {
+          "id": "T128",
+          "title": "in creating new task box why link to tasks is not a dropdown list?Why link to task search box doesnt work?",
+          "page": "Project Board",
+          "category": "",
+          "priority": "Medium",
+          "fix": "",
+          "future_folder_id": "F-20260621160957-36ce9488",
+          "column": "progress",
+          "created": "2026-06-26T19:24:04.918077",
+          "updated": "2026-06-26T17:50:08.006461+00:00",
+          "linked_task_id": null,
+          "relationship_type": null,
+          "folder_id": "F-20260621160957-36ce9488",
+          "updated_at": "2026-06-26T19:24:05.247713",
+          "started_at": "2026-06-26T17:50:08.006461+00:00"
+        },
+        {
+          "id": "T129",
+          "title": "andele source image dont have image, but database shows they have",
+          "page": "GPU",
+          "category": "",
+          "priority": "Medium",
+          "fix": "",
+          "column": "progress",
+          "created": "2026-06-26T19:33:19.185673",
+          "updated": "2026-06-26T17:50:08.006461+00:00",
+          "linked_task_id": null,
+          "relationship_type": null,
+          "started_at": "2026-06-26T17:50:08.006461+00:00"
+        },
+        {
+          "id": "T130",
+          "title": "about the CPU chart box: draging arround is glitchy. a dont see where I can drag them to hide?",
+          "page": "CPU",
+          "category": "",
+          "priority": "High",
+          "fix": "Fixed CPU widget drag-and-drop UX in templates/cpu.html: (1) Replaced native glitchy DnD with a placeholder-based drag preview and drag-mode toggle—dragging is now enabled only after clicking the '✋ Drag' button to avoid accidental drags. (2) Replaced ambiguous '⋮⋮' handles with a clear '☰' drag handle, hover highlight, and opacity/cursor feedback. (3) Added a '👁 Manage' button that opens a widget manager modal where each widget can be shown/hidden; hidden state persists to localStorage alongside pinned/saved state. (4) Added per-widget '🙈' hide buttons and persisted hidden/minimized states. (5) Reset now clears order, pinned, hidden, minimized, and drag-mode keys and reloads. Charts remain rendered after reorder because only the widget cards move, not their internal content.",
+          "column": "talking",
+          "created": "2026-06-26T19:42:59.959953",
+          "updated": "2026-06-26T17:50:08.006461+00:00",
+          "linked_task_id": null,
+          "relationship_type": null,
+          "started_at": "2026-06-26T17:50:08.006461+00:00",
+          "completed_at": "2026-06-26T17:55:00.000000"
+        }
+      ]
     },
     {
       "id": "talking",
       "title": "Review",
       "color": "#9b59b6",
       "tasks": [
-        {
-          "id": "T126",
-          "title": "add similiar chart like MB Intel/AMD, but \"CPU Intel/AMD\" and make \"CPU by socket\" chart like MB by socket",
-          "page": "CPU",
-          "category": "Frontend",
-          "priority": "Medium",
-          "fix": "Added /api/cpus/platform-stats endpoint returning CPU Intel/AMD platform distribution and CPU socket distribution (with avg price). Added CPU Intel/AMD and CPU by Socket panels to templates/cpu.html stats section, matching Motherboard Market chart colors and styling. Updated loadCPUStatistics() to call loadCPUPlatformStats() so the charts refresh with the time filter.",
-          "column": "talking",
-          "created": "2026-06-26T18:55:49.698420",
-          "updated": "2026-06-26T16:15:32.896993+00:00",
-          "linked_task_id": null,
-          "relationship_type": null,
-          "started_at": "2026-06-26T16:10:17.251240+00:00",
-          "completed_at": "2026-06-26T16:15:32.896993+00:00"
-        },
-        {
-          "id": "T109",
-          "title": "add statistics of the motheboads about years years, intel/amd,sockets",
-          "page": "CPU",
-          "category": "Frontend",
-          "priority": "Medium",
-          "fix": "Added /api/motherboards/platform-stats endpoint returning motherboard year, Intel/AMD platform, and socket distributions. Added a Motherboard Market panel to cpu.html stats section with year, platform, and socket bar charts.",
-          "column": "talking",
-          "created": "2026-06-24T22:59:31.878984",
-          "updated": "2026-06-26T04:30:00.000000",
-          "started_at": "2026-06-26T04:04:52.000000",
-          "linked_task_id": null,
-          "relationship_type": null,
-          "completed_at": "2026-06-26T04:30:00.000000"
-        },
-        {
-          "id": "T122",
-          "title": "With gear icon I removed the \"Actions\" - it removed the colmun title, left the buttos and slo removed the gear icon so now I cannot put the row back even.",
-          "page": "CPU",
-          "category": "Frontend",
-          "priority": "Medium",
-          "fix": "Reworked the CPU page table header in templates/cpu.html. Added a standalone column-settings dropdown (gear icon) that stays visible even when the Actions column label is hidden, so users can always restore columns. Added draggable column reordering, checkboxes for visibility, dark-mode styling, and preserved the gear button independent of the Actions column state.",
-          "column": "talking",
-          "created": "2026-06-25T16:27:02.549460",
-          "updated": "2026-06-26T04:30:00.000000",
-          "started_at": "2026-06-26T04:04:52.000000",
-          "linked_task_id": null,
-          "relationship_type": null,
-          "completed_at": "2026-06-26T04:22:00.000000"
-        },
         {
           "id": "T117",
           "title": "SSD scrapper doesnt seem to download images and attach image_url to listing database",
@@ -133,6 +154,21 @@
           "relationship_type": null,
           "started_at": "2026-06-25T13:28:29.581637",
           "completed_at": "2026-06-25T13:55:00.000000"
+        },
+        {
+          "id": "T131",
+          "title": "filter should also filter out task tickets in future folder",
+          "page": "Project Board",
+          "category": "Frontend",
+          "priority": "Medium",
+          "fix": "Added an 'Include future folders' checkbox to the Project Board filter bar (default unchecked). Updated taskMatchesFilters() so tasks with future_folder_id or folder_id are hidden from column task lists when the toggle is off. Existing column text search and dropdown filters continue to work for both regular and future-folder tasks when the toggle is on. Future column folders themselves remain visible regardless of the toggle so they can still be browsed directly.",
+          "column": "talking",
+          "created": "2026-06-26T19:49:03.515836",
+          "updated": "2026-06-26T20:55:00",
+          "linked_task_id": null,
+          "relationship_type": null,
+          "started_at": "2026-06-26T17:50:08.006461+00:00",
+          "completed_at": "2026-06-26T20:55:00"
         },
         {
           "id": "T116",
@@ -479,80 +515,6 @@
           "linked_task_id": null,
           "relationship_type": null,
           "completed_at": "2026-06-26T04:12:00.000000"
-        },
-        {
-          "id": "T108",
-          "title": "in pop up window add listing image",
-          "page": "CPU",
-          "category": "Frontend",
-          "priority": "Medium",
-          "fix": "CPU popup image now displays. Root cause: local_image_path for CPU listings is stored as a bare filename (e.g. 'hdkkj_b41c0da5.jpg') with images physically located in SS-CRAWLER/images/cpu, while the popup/table code generated /images/<filename>. Flask's serve_image route only resolves folder-prefixed paths or via fallback search, so prefixed /images/cpu/<filename> is needed. Updated templates/cpu.html showListingHistory() and the table Image column renderer to prepend /images/cpu/ for bare filenames and preserve existing folder prefixes (e.g. facebook/). Backend /api/listing-details already returns local_image_path and image_url, and app.py serve_image route is unchanged.",
-          "column": "talking",
-          "created": "2026-06-24T22:45:51.377879",
-          "updated": "2026-06-26T16:18:16.720457+00:00",
-          "linked_task_id": null,
-          "relationship_type": null,
-          "started_at": "2026-06-25T12:53:43.651057",
-          "reopen_history": [
-            {
-              "reopened_at": "2026-06-25T12:50:24.627396",
-              "update": "There is still no image in pop up window",
-              "previous_completed_at": "2026-06-24T19:53:27.3337795Z"
-            },
-            {
-              "reopened_at": "2026-06-25T16:15:00.637380",
-              "update": "CPU page still doesnt have an pop up image",
-              "previous_completed_at": "2026-06-25T13:00:00"
-            },
-            {
-              "reopened_at": "2026-06-26T18:33:36.003922",
-              "update": "listings pop up window still doesnt show image",
-              "previous_completed_at": "2026-06-26T05:10:00.000000"
-            }
-          ],
-          "completed_at": "2026-06-26T16:18:16.720457+00:00"
-        },
-        {
-          "id": "T121",
-          "title": "Is \"CPU Class\" used anywhere even? Have the CPUs been market? By Class chart shows Unknown 100%",
-          "page": "CPU",
-          "category": "Frontend",
-          "priority": "Medium",
-          "fix": "Updated /api/cpus SQL cpu_class filter to include AMD Ryzen 5 in Mid-Range, Ryzen 7 in High-End, and kept Ryzen 9/Threadripper in Enthusiast. get_cpu_class() already classified them correctly, but the server-side family_tokens only matched Intel tokens, so AMD chips were dropped when filtering by class. Tested via /api/cpus?cpu_class=Mid-Range/High-End/Enthusiast: AMD Ryzen 5/7/9 now appear alongside Intel. CPU page By Class chart will reflect the corrected distribution.",
-          "column": "talking",
-          "created": "2026-06-25T16:19:21.137557",
-          "updated": "2026-06-26T16:20:28.568680+00:00",
-          "started_at": "2026-06-26T04:04:52.000000",
-          "linked_task_id": null,
-          "relationship_type": null,
-          "reopen_history": [
-            {
-              "reopened_at": "2026-06-26T18:51:07.079856",
-              "update": "it only show intel cpus in mid range, high end filter option. how about amd?",
-              "previous_completed_at": "2026-06-26T04:15:00.000000"
-            }
-          ],
-          "completed_at": "2026-06-26T16:20:28.568680+00:00"
-        },
-        {
-          "id": "T125",
-          "title": "it isnt the full spand of the row. it should auto adjust acoording to box width as I can remove columns",
-          "page": "CPU",
-          "category": "Frontend",
-          "priority": "Medium",
-          "fix": "Updated templates/cpu.html summary row to dynamically calculate colSpan values based on the number of currently visible columns. Replaced hardcoded colspan totals with a helper updateSummaryRowColspans() that is called on initial render and inside renderFullTable() whenever columns are toggled/reordered via the gear icon. Also moved the 'Summary:' label into the first cell so the summary row always spans the full table width regardless of which columns are hidden.",
-          "code_snippet": "<tfoot id=\"summary-row\" style=\"display: table-row-group; background: linear-gradient(135deg, rgb(102, 126, 234) 0%, rgb(118, 75, 162) 100%); color: white; font-weight: bold;\">\n                    <tr>\n                        <td colspan=\"2\" style=\"text-align: right; padding: 0.75rem;\">Summary:</td>\n                        <td id=\"summary-total-price\" style=\"padding: 0.75rem;\">€23.00 total</td>\n                        <td id=\"summary-avg-price\" style=\"padding: 0.75rem; font-size: 0.85rem;\">avg: €23.00</td>\n                        <td id=\"summary-count\" style=\"padding: 0.75rem;\" colspan=\"5\">1 listings shown</td>\n                    </tr>\n                </tfoot>",
-          "language": "html",
-          "future_folder_id": "F-20260626184910-ffd72a21",
-          "column": "talking",
-          "created": "2026-06-26T18:49:10.619242",
-          "updated": "2026-06-26T16:20:28.568680+00:00",
-          "linked_task_id": null,
-          "relationship_type": null,
-          "folder_id": "F-20260626184910-ffd72a21",
-          "updated_at": "2026-06-26T18:49:10.985633",
-          "started_at": "2026-06-26T16:10:17.251240+00:00",
-          "completed_at": "2026-06-26T16:20:28.568680+00:00"
         }
       ]
     },
@@ -1115,7 +1077,7 @@
           "category": "Frontend",
           "priority": "High",
           "fix": "Implemented draggable, saveable widgets on the CPU page. Wrapped each chart/stat box in a .widget-card with a pin/save button and drag handle. Added native HTML5 drag-and-drop support within the main/sub grid, persisted order (cpuWidgetOrder) and pinned widgets (cpuWidgetPinned) to localStorage, and added a reset button to restore defaults. Fixed the duplicate chart container IDs in the Motherboard Market Snapshot by using unique inner IDs (mb-market-year, mb-market-platform, mb-market-socket). Existing data loaders continue to work because they populate the inner divs inside each widget card.",
-          "column": "talking",
+          "column": "solved",
           "created": "2026-06-26T18:57:57.417301",
           "updated": "2026-06-26T16:24:01.924543+00:00",
           "linked_task_id": null,
@@ -1123,6 +1085,105 @@
           "linked_tasks": null,
           "started_at": "2026-06-26T16:10:17.251240+00:00",
           "completed_at": "2026-06-26T16:24:01.924543+00:00"
+        },
+        {
+          "id": "T121",
+          "title": "Is \"CPU Class\" used anywhere even? Have the CPUs been market? By Class chart shows Unknown 100%",
+          "page": "CPU",
+          "category": "Frontend",
+          "priority": "Medium",
+          "fix": "Updated /api/cpus SQL cpu_class filter to include AMD Ryzen 5 in Mid-Range, Ryzen 7 in High-End, and kept Ryzen 9/Threadripper in Enthusiast. get_cpu_class() already classified them correctly, but the server-side family_tokens only matched Intel tokens, so AMD chips were dropped when filtering by class. Tested via /api/cpus?cpu_class=Mid-Range/High-End/Enthusiast: AMD Ryzen 5/7/9 now appear alongside Intel. CPU page By Class chart will reflect the corrected distribution.",
+          "column": "solved",
+          "created": "2026-06-25T16:19:21.137557",
+          "updated": "2026-06-26T19:41:15.505785",
+          "started_at": "2026-06-26T04:04:52.000000",
+          "linked_task_id": null,
+          "relationship_type": null,
+          "reopen_history": [
+            {
+              "reopened_at": "2026-06-26T18:51:07.079856",
+              "update": "it only show intel cpus in mid range, high end filter option. how about amd?",
+              "previous_completed_at": "2026-06-26T04:15:00.000000"
+            }
+          ],
+          "completed_at": "2026-06-26T16:20:28.568680+00:00"
+        },
+        {
+          "id": "T126",
+          "title": "add similiar chart like MB Intel/AMD, but \"CPU Intel/AMD\" and make \"CPU by socket\" chart like MB by socket",
+          "page": "CPU",
+          "category": "Frontend",
+          "priority": "Medium",
+          "fix": "Added /api/cpus/platform-stats endpoint returning CPU Intel/AMD platform distribution and CPU socket distribution (with avg price). Added CPU Intel/AMD and CPU by Socket panels to templates/cpu.html stats section, matching Motherboard Market chart colors and styling. Updated loadCPUStatistics() to call loadCPUPlatformStats() so the charts refresh with the time filter.",
+          "column": "solved",
+          "created": "2026-06-26T18:55:49.698420",
+          "updated": "2026-06-26T19:44:32.126280",
+          "linked_task_id": null,
+          "relationship_type": null,
+          "started_at": "2026-06-26T16:10:17.251240+00:00",
+          "completed_at": "2026-06-26T16:15:32.896993+00:00"
+        },
+        {
+          "id": "T109",
+          "title": "add statistics of the motheboads about years years, intel/amd,sockets",
+          "page": "CPU",
+          "category": "Frontend",
+          "priority": "Medium",
+          "fix": "Added /api/motherboards/platform-stats endpoint returning motherboard year, Intel/AMD platform, and socket distributions. Added a Motherboard Market panel to cpu.html stats section with year, platform, and socket bar charts.",
+          "column": "solved",
+          "created": "2026-06-24T22:59:31.878984",
+          "updated": "2026-06-26T19:44:38.332991",
+          "started_at": "2026-06-26T04:04:52.000000",
+          "linked_task_id": null,
+          "relationship_type": null,
+          "completed_at": "2026-06-26T04:30:00.000000"
+        },
+        {
+          "id": "T122",
+          "title": "With gear icon I removed the \"Actions\" - it removed the colmun title, left the buttos and slo removed the gear icon so now I cannot put the row back even.",
+          "page": "CPU",
+          "category": "Frontend",
+          "priority": "Medium",
+          "fix": "Reworked the CPU page table header in templates/cpu.html. Added a standalone column-settings dropdown (gear icon) that stays visible even when the Actions column label is hidden, so users can always restore columns. Added draggable column reordering, checkboxes for visibility, dark-mode styling, and preserved the gear button independent of the Actions column state.",
+          "column": "solved",
+          "created": "2026-06-25T16:27:02.549460",
+          "updated": "2026-06-26T19:45:03.601628",
+          "started_at": "2026-06-26T04:04:52.000000",
+          "linked_task_id": null,
+          "relationship_type": null,
+          "completed_at": "2026-06-26T04:22:00.000000"
+        },
+        {
+          "id": "T108",
+          "title": "in pop up window add listing image",
+          "page": "CPU",
+          "category": "Frontend",
+          "priority": "Medium",
+          "fix": "CPU popup image now displays. Root cause: local_image_path for CPU listings is stored as a bare filename (e.g. 'hdkkj_b41c0da5.jpg') with images physically located in SS-CRAWLER/images/cpu, while the popup/table code generated /images/<filename>. Flask's serve_image route only resolves folder-prefixed paths or via fallback search, so prefixed /images/cpu/<filename> is needed. Updated templates/cpu.html showListingHistory() and the table Image column renderer to prepend /images/cpu/ for bare filenames and preserve existing folder prefixes (e.g. facebook/). Backend /api/listing-details already returns local_image_path and image_url, and app.py serve_image route is unchanged.",
+          "column": "solved",
+          "created": "2026-06-24T22:45:51.377879",
+          "updated": "2026-06-26T19:46:18.030901",
+          "linked_task_id": null,
+          "relationship_type": null,
+          "started_at": "2026-06-25T12:53:43.651057",
+          "reopen_history": [
+            {
+              "reopened_at": "2026-06-25T12:50:24.627396",
+              "update": "There is still no image in pop up window",
+              "previous_completed_at": "2026-06-24T19:53:27.3337795Z"
+            },
+            {
+              "reopened_at": "2026-06-25T16:15:00.637380",
+              "update": "CPU page still doesnt have an pop up image",
+              "previous_completed_at": "2026-06-25T13:00:00"
+            },
+            {
+              "reopened_at": "2026-06-26T18:33:36.003922",
+              "update": "listings pop up window still doesnt show image",
+              "previous_completed_at": "2026-06-26T05:10:00.000000"
+            }
+          ],
+          "completed_at": "2026-06-26T16:18:16.720457+00:00"
         }
       ]
     },
@@ -1844,6 +1905,26 @@
           "folder_id": "F-20260621160957-36ce9488",
           "future_folder_id": "F-20260621160957-36ce9488",
           "updated_at": "2026-06-24T15:58:35.140626"
+        },
+        {
+          "id": "T125",
+          "title": "it isnt the full spand of the row. it should auto adjust acoording to box width as I can remove columns",
+          "page": "CPU",
+          "category": "Frontend",
+          "priority": "Medium",
+          "fix": "Updated templates/cpu.html summary row to dynamically calculate colSpan values based on the number of currently visible columns. Replaced hardcoded colspan totals with a helper updateSummaryRowColspans() that is called on initial render and inside renderFullTable() whenever columns are toggled/reordered via the gear icon. Also moved the 'Summary:' label into the first cell so the summary row always spans the full table width regardless of which columns are hidden.",
+          "code_snippet": "<tfoot id=\"summary-row\" style=\"display: table-row-group; background: linear-gradient(135deg, rgb(102, 126, 234) 0%, rgb(118, 75, 162) 100%); color: white; font-weight: bold;\">\n                    <tr>\n                        <td colspan=\"2\" style=\"text-align: right; padding: 0.75rem;\">Summary:</td>\n                        <td id=\"summary-total-price\" style=\"padding: 0.75rem;\">€23.00 total</td>\n                        <td id=\"summary-avg-price\" style=\"padding: 0.75rem; font-size: 0.85rem;\">avg: €23.00</td>\n                        <td id=\"summary-count\" style=\"padding: 0.75rem;\" colspan=\"5\">1 listings shown</td>\n                    </tr>\n                </tfoot>",
+          "language": "html",
+          "future_folder_id": "F-20260626184910-ffd72a21",
+          "column": "future",
+          "created": "2026-06-26T18:49:10.619242",
+          "updated": "2026-06-26T19:44:08.342866",
+          "linked_task_id": null,
+          "relationship_type": null,
+          "folder_id": "F-20260626184910-ffd72a21",
+          "updated_at": "2026-06-26T19:44:08.342866",
+          "started_at": "2026-06-26T16:10:17.251240+00:00",
+          "completed_at": "2026-06-26T16:20:28.568680+00:00"
         }
       ],
       "folders": [
@@ -1853,7 +1934,7 @@
           "description": "",
           "relationship_status": "planned",
           "created_at": "2026-06-21T13:44:36.561237",
-          "updated_at": "2026-06-24T22:59:48.814063",
+          "updated_at": "2026-06-26T19:37:27.222204",
           "expanded": false,
           "folder_class": "Feature"
         },
@@ -1873,7 +1954,7 @@
           "description": "",
           "relationship_status": "planned",
           "created_at": "2026-06-21T16:09:57.191673",
-          "updated_at": "2026-06-24T22:59:51.848933",
+          "updated_at": "2026-06-26T19:36:58.903931",
           "expanded": false,
           "folder_class": "Feature"
         },
@@ -1883,8 +1964,8 @@
           "description": "trash",
           "relationship_status": "planned",
           "created_at": "2026-06-21T16:13:00.628376",
-          "updated_at": "2026-06-25T16:24:34.026393",
-          "expanded": true,
+          "updated_at": "2026-06-26T19:36:41.756698",
+          "expanded": false,
           "folder_class": "Feature"
         },
         {
@@ -1893,7 +1974,7 @@
           "description": "",
           "relationship_status": "planned",
           "created_at": "2026-06-21T19:13:17.872700",
-          "updated_at": "2026-06-24T22:59:54.684527",
+          "updated_at": "2026-06-26T19:47:59.820917",
           "expanded": false,
           "folder_class": "Feature"
         },
@@ -1904,7 +1985,7 @@
           "relationship_status": "planned",
           "folder_class": "Feature",
           "created_at": "2026-06-25T12:59:26.823393",
-          "updated_at": "2026-06-25T13:01:54.330024",
+          "updated_at": "2026-06-26T19:37:20.166946",
           "expanded": false
         },
         {
@@ -1945,7 +2026,7 @@
     "Scraper",
     "UI/UX"
   ],
-  "next_id": 128,
+  "next_id": 133,
   "updated": "2026-06-25T13:36:42",
   "schema": "project-board-bridge.v2",
   "schema_version": 2,

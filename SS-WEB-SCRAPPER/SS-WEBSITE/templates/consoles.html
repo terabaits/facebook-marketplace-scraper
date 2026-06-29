@@ -1,0 +1,1162 @@
+{% extends "base.html" %}
+
+{% block title %}Console Listings - SS-Crawler
+
+<!-- Listing Detail Modal -->
+<div id="listing-detail-modal" class="modal-overlay">
+    <div class="modal" style="max-width: 900px; max-height: 90vh; overflow-y: auto;">
+        <div class="modal-header">
+            <h3 id="listing-detail-title">Listing Details</h3>
+            <button class="modal-close" onclick="closeListingDetailModal()">&times;</button>
+        </div>
+        <div id="listing-detail-content" style="padding: 1.5rem;">
+            <div class="loading">Loading listing details...</div>
+        </div>
+        <div style="padding: 1rem 1.5rem; background: #f8f9fa; border-top: 1px solid #eee; display: flex; gap: 1rem; justify-content: flex-end;">
+            <button id="listing-detail-flag-btn" class="btn btn-warning" onclick="toggleFlagFromDetail()">🚫 Flag</button>
+            <a id="listing-detail-link" href="#" target="_blank" class="btn">View on ss.com →</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block content %}
+<!-- Price Distribution Chart (at top) -->
+<div class="section">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 1rem;">
+        <h2>Price Distribution</h2>
+        <div class="filters" style="margin: 0;">
+            <label>
+                Group by:
+                <select id="chart-grouping" onchange="updatePriceChart(allConsoles)">
+                    <option value="brand">Brand (Nintendo/PlayStation/Xbox)</option>
+                    <option value="console" selected>Console (Switch/PS5/Xbox Series)</option>
+                    <option value="variant">Variant (with model details)</option>
+                </select>
+            </label>
+        </div>
+    </div>
+    <div class="chart-container">
+        <canvas id="priceDistChart"></canvas>
+    </div>
+</div>
+
+<!-- Simple Stats (total + special) -->
+<div class="section" style="padding: 1rem;">
+    <div id="simple-stats" style="display: flex; gap: 2rem; justify-content: center; align-items: center;">
+        <div style="text-align: center;">
+            <div id="total-count" style="font-size: 2rem; font-weight: bold; color: #3b82f6;">-</div>
+            <div style="color: #666;">Total Listings</div>
+        </div>
+        <div style="text-align: center;">
+            <div id="special-count" style="font-size: 2rem; font-weight: bold; color: #f59e0b;">-</div>
+            <div style="color: #666;">Special Editions</div>
+        </div>
+        <div style="text-align: center;">
+            <button class="btn btn-small" onclick="showFlaggedUrls()" style="margin-top: 0.5rem;">View Flagged URLs</button>
+        </div>
+    </div>
+</div>
+
+<!-- Console Models Grid -->
+<div class="section">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
+        <h2>Console Models</h2>
+        <div class="filters" style="margin: 0;">
+            <label>
+                Sort:
+                <select id="model-sort" onchange="loadModels()">
+                    <option value="price_desc">Price: High to Low</option>
+                    <option value="price_asc">Price: Low to High</option>
+                    <option value="listings_desc">Most Listings</option>
+                    <option value="listings_asc">Fewest Listings</option>
+                </select>
+            </label>
+        </div>
+    </div>
+    <div id="models-container">
+        <div class="loading">Loading console models...</div>
+    </div>
+</div>
+
+<!-- Listings Section -->
+<div class="section">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
+        <h2>Console Listings</h2>
+        <div class="filters" style="margin: 0;">
+            <!-- Quick Filter Buttons -->
+            <div style="display: flex; gap: 0.5rem; margin-right: 1rem;">
+                <button class="btn btn-small filter-btn active" onclick="filterByConsole('all')" data-filter="all">All</button>
+                <button class="btn btn-small filter-btn" onclick="filterByConsole('PlayStation')" data-filter="PlayStation">PlayStation</button>
+                <button class="btn btn-small filter-btn" onclick="filterByConsole('Xbox')" data-filter="Xbox">Xbox</button>
+                <button class="btn btn-small filter-btn" onclick="filterByConsole('Nintendo')" data-filter="Nintendo">Nintendo</button>
+            </div>
+            <label>
+                <input type="checkbox" id="active-only" checked onchange="loadListings()">
+                Active only
+            </label>
+            <label>
+                <input type="checkbox" id="high-confidence" checked onchange="loadListings()">
+                High confidence (≥70%)
+            </label>
+            <label>
+                Console:
+                <select id="console-filter" onchange="filterByConsole(this.value)">
+                    <option value="all">All Consoles</option>
+                </select>
+            </label>
+            <label>
+                Variant:
+                <select id="variant-filter" onchange="loadListings()">
+                    <option value="all">All Variants</option>
+                </select>
+            </label>
+            <label>
+                Sort:
+                <select id="sort-by" onchange="loadListings()">
+                    <option value="date_posted">Date Posted</option>
+                    <option value="price">Price</option>
+                    <option value="discount">Biggest Discount</option>
+                </select>
+            </label>
+            <label>
+                Order:
+                <select id="sort-order" onchange="loadListings()">
+                    <option value="desc">Descending</option>
+                    <option value="asc">Ascending</option>
+                </select>
+            </label>
+        </div>
+    </div>
+    
+    <div id="listings-container">
+        <div class="loading">Loading console listings...</div>
+    </div>
+</div>
+
+<!-- Model History Modal -->
+<div id="history-modal" class="modal-overlay">
+    <div class="modal" style="max-width: 1200px;">
+        <div class="modal-header">
+            <h3 id="history-title">Model Price History</h3>
+            <button class="modal-close" onclick="closeModal()">&times;</button>
+        </div>
+        <div id="history-content">
+            <div class="history-chart" style="height: 300px;">
+                <canvas id="historyChart"></canvas>
+            </div>
+            <div style="margin: 1rem 0; padding: 1rem; background: #f8f9fa; border-radius: 8px;">
+                <p style="margin: 0; color: #666; font-size: 0.9rem;">
+                    <strong>Tip:</strong> Click the 🚫 flag button next to any listing to exclude it from price calculations. 
+                    Flagged listings will appear greyed out and won't affect averages.
+                </p>
+            </div>
+            <div id="history-listings"></div>
+        </div>
+    </div>
+</div>
+
+<!-- Flagged URLs Modal -->
+<div id="flagged-modal" class="modal-overlay">
+    <div class="modal" style="max-width: 900px;">
+        <div class="modal-header">
+            <h3>Flagged Listings URLs</h3>
+            <button class="modal-close" onclick="closeFlaggedModal()">&times;</button>
+        </div>
+        <div style="padding: 1.5rem;">
+            <p style="margin-bottom: 1rem; color: #666;">
+                These URLs are excluded from price calculations. Copy them to use in your scraper's skip list.
+            </p>
+            <textarea id="flagged-urls-text" style="width: 100%; height: 300px; font-family: monospace; font-size: 0.85rem; padding: 1rem; border: 1px solid #ddd; border-radius: 8px; resize: vertical;" readonly></textarea>
+            <div style="margin-top: 1rem; display: flex; gap: 1rem;">
+                <button class="btn" onclick="copyFlaggedUrls()">Copy to Clipboard</button>
+                <button class="btn btn-secondary" onclick="downloadFlaggedUrls()">Download as File</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='console-icons.js') }}?v=2"></script>
+<script>
+// Ensure getConsoleIcon is available globally
+if (typeof getConsoleIcon === 'undefined' && typeof consoleIcons !== 'undefined') {
+    window.getConsoleIcon = function(name) {
+        return consoleIcons[name] || consoleIcons['default'];
+    };
+}
+
+// Debug: log when script loads
+console.log('Console icons script loaded, getConsoleIcon available:', typeof getConsoleIcon !== 'undefined');
+let priceChart = null;
+let historyChart = null;
+let allConsoles = [];
+let consoleModels = [];
+let flaggedListings = new Set();
+
+// Load flagged listings on startup
+async function loadFlaggedListings() {
+    try {
+        const response = await fetch('/api/flagged-listings');
+        const listings = await response.json();
+        flaggedListings = new Set(listings.map(l => l.listing_id));
+    } catch (error) {
+        console.error('Error loading flagged listings:', error);
+    }
+}
+
+async function loadSimpleStats() {
+    try {
+        const response = await fetch('/api/consoles/stats');
+        const stats = await response.json();
+        
+        document.getElementById('total-count').textContent = stats.total_listings || 0;
+        document.getElementById('special-count').textContent = stats.special_editions || 0;
+    } catch (error) {
+        console.error('Error loading stats:', error);
+    }
+}
+
+async function loadModels() {
+    try {
+        console.log('Loading models...');
+        const sort = document.getElementById('model-sort').value;
+        const response = await fetch('/api/console-models?sort=' + sort);
+        
+        if (!response.ok) {
+            const errorText = await response.text();
+            console.error('API Error:', response.status, errorText);
+            throw new Error(`HTTP ${response.status}: ${errorText}`);
+        }
+        
+        const models = await response.json();
+        console.log('Models loaded:', models);
+        
+        // Check if response is an error object
+        if (models.error) {
+            throw new Error(models.error);
+        }
+        
+        consoleModels = models;
+        const container = document.getElementById('models-container');
+        
+        if (!Array.isArray(models)) {
+            console.error('Expected array, got:', typeof models, models);
+            throw new Error('Invalid response format');
+        }
+        
+        if (models.length === 0) {
+            container.innerHTML = '<div class="loading">No console models found. All listings may be flagged.</div>';
+            return;
+        }
+        
+        // Update console filter dropdown
+        const consoleSelect = document.getElementById('console-filter');
+        const existingValue = consoleSelect.value;
+        consoleSelect.innerHTML = '<option value="all">All Consoles</option>';
+        models.forEach(model => {
+            consoleSelect.innerHTML += `<option value="${model.console_name}">${model.console_name}</option>`;
+        });
+        consoleSelect.value = existingValue;
+        
+        // Build models grid with icons
+        let html = '<div class="console-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem;">';
+        
+        console.log('getConsoleIcon available:', typeof getConsoleIcon !== 'undefined');
+        
+        models.forEach(model => {
+            let iconSvg = '';
+            try {
+                if (typeof getConsoleIcon !== 'undefined') {
+                    iconSvg = getConsoleIcon(model.console_name);
+                    console.log('Icon for', model.console_name, ':', iconSvg ? 'found' : 'NOT FOUND');
+                } else {
+                    console.log('getConsoleIcon is undefined for:', model.console_name);
+                }
+            } catch (e) {
+                console.error('Error getting icon for', model.console_name, e);
+            }
+            html += `
+                <div class="console-card clickable" onclick="filterByConsole('${model.console_name}')" style="background: white; border-radius: 12px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); overflow: hidden; cursor: pointer; transition: transform 0.2s;">
+                    <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 1.5rem; color: white; display: flex; align-items: center; gap: 1rem;">
+                        <div style="width: 60px; height: 60px;" class="console-icon-container">${iconSvg}</div>
+                        <div>
+                            <div style="font-size: 1.2rem; font-weight: bold;">${model.console_name}</div>
+                            <div style="font-size: 0.9rem; opacity: 0.9;">${model.active_listings} listings</div>
+                        </div>
+                    </div>
+                    <div style="padding: 1rem;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                            <span style="color: #666; font-size: 0.9rem;">Average Price:</span>
+                            <span style="font-size: 1.2rem; font-weight: bold; color: #10b981;">€${Number(model.avg_price).toFixed(2)}</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.85rem; color: #666;">
+                            <span>Range:</span>
+                            <span>€${Number(model.min_price).toFixed(0)} - €${Number(model.max_price).toFixed(0)}</span>
+                        </div>
+                        <div style="margin-top: 1rem; display: flex; gap: 0.5rem;">
+                            <button class="btn btn-small" style="flex: 1;" onclick="event.stopPropagation(); showModelHistory(${model.console_id}, '${model.console_name}')">History</button>
+                            <button class="btn btn-small" style="flex: 1;" onclick="event.stopPropagation(); filterByConsole('${model.console_name}')">Filter</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        });
+        
+        html += '</div>';
+        container.innerHTML = html;
+        
+    } catch (error) {
+        console.error('Error loading models:', error);
+        document.getElementById('models-container').innerHTML = 
+            '<div class="error">Error loading console models</div>';
+    }
+}
+
+async function loadListings() {
+    const activeOnly = document.getElementById('active-only').checked;
+    const highConfidence = document.getElementById('high-confidence').checked;
+    const consoleFilter = document.getElementById('console-filter').value;
+    const variantFilter = document.getElementById('variant-filter').value;
+    const sortBy = document.getElementById('sort-by').value;
+    const sortOrder = document.getElementById('sort-order').value;
+    
+    const params = new URLSearchParams();
+    params.append('active', activeOnly);
+    params.append('sort', sortBy);
+    params.append('order', sortOrder);
+    if (highConfidence) params.append('min_confidence', '0.70');
+    if (consoleFilter !== 'all') params.append('console', consoleFilter);
+    if (variantFilter !== 'all') params.append('variant', variantFilter);
+    
+    try {
+        const response = await fetch('/api/consoles?' + params.toString());
+        const listings = await response.json();
+        
+        allConsoles = listings;
+        const container = document.getElementById('listings-container');
+        
+        if (listings.length === 0) {
+            container.innerHTML = '<div class="loading">No console listings found</div>';
+            updateVariantFilter([]);
+            return;
+        }
+        
+        // Update variant filter based on current listings
+        updateVariantFilter(listings);
+        
+        // Get console models for price comparison
+        const modelsResponse = await fetch('/api/console-models');
+        const models = await modelsResponse.json();
+        const avgPrices = {};
+        models.forEach(m => {
+            avgPrices[m.console_name] = m.avg_price;
+        });
+        
+        // Calculate discount for each listing if sorting by discount
+        if (sortBy === 'discount') {
+            listings.forEach(item => {
+                const consoleName = item.console_name || 'Unknown';
+                const avgPrice = avgPrices[consoleName];
+                if (avgPrice && avgPrice > 0) {
+                    item.discount_pct = ((avgPrice - item.price_eur) / avgPrice) * 100;
+                } else {
+                    item.discount_pct = -999;
+                }
+            });
+            listings.sort((a, b) => {
+                const dir = sortOrder === 'asc' ? 1 : -1;
+                return (a.discount_pct - b.discount_pct) * dir;
+            });
+        }
+        
+        let html = `
+            <div style="overflow-x: auto;">
+            <table style="width: 100%; border-collapse: collapse;">
+                <thead>
+                    <tr style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
+                        <th style="padding: 0.75rem; text-align: center;">Image</th>
+                        <th style="padding: 0.75rem;">Console</th>
+                        <th style="padding: 0.75rem;">Price</th>
+                        <th style="padding: 0.75rem;">Location</th>
+                        <th style="padding: 0.75rem;">Date</th>
+                        <th style="padding: 0.75rem;">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+        `;
+        
+        listings.forEach(item => {
+            const consoleName = item.console_name || 'Unknown';
+            const variantInfo = item.variant_name ? ` (${item.variant_name})` : '';
+            // Check both the global Set and the API response
+            const isFlagged = item.is_flagged === true || flaggedListings.has(item.listing_id);
+            
+            // Update the flaggedListings Set for consistency
+            if (isFlagged) flaggedListings.add(item.listing_id);
+            
+            // Skip flagged listings entirely (T163)
+            if (isFlagged) return;
+
+            const rowStyle = '';
+            
+            const avgPrice = avgPrices[consoleName];
+            const priceDiff = avgPrice ? item.price_eur - avgPrice : 0;
+            const priceDiffPct = avgPrice ? ((priceDiff / avgPrice) * 100).toFixed(1) : 0;
+            
+            let priceClass = '';
+            let priceIndicator = '';
+            if (avgPrice) {
+                const pctDiff = ((item.price_eur - avgPrice) / avgPrice * 100).toFixed(0);
+                const absPctDiff = Math.abs(pctDiff);
+                
+                if (priceDiff < 0) {
+                    // Below average - green badge like GPU page
+                    priceClass = 'price-below-avg';
+                    priceIndicator = `<span style="background: linear-gradient(135deg, #16a34a, #22c55e); color: white; font-size: 0.7rem; padding: 2px 6px; border-radius: 4px; font-weight: bold; margin-left: 0.5rem; vertical-align: middle;">${pctDiff}%</span>`;
+                } else if (absPctDiff <= 5) {
+                    // Within 5% of average - orange/yellow (fair price) like GPU page
+                    priceClass = 'price-average';
+                    priceIndicator = `<span style="background: linear-gradient(135deg, #f59e0b, #fbbf24); color: white; font-size: 0.7rem; padding: 2px 6px; border-radius: 4px; font-weight: bold; margin-left: 0.5rem; vertical-align: middle;">+${pctDiff}%</span>`;
+                } else {
+                    // Above average - red badge like GPU page
+                    priceClass = 'price-above-avg';
+                    priceIndicator = `<span style="background: linear-gradient(135deg, #dc2626, #ef4444); color: white; font-size: 0.7rem; padding: 2px 6px; border-radius: 4px; font-weight: bold; margin-left: 0.5rem; vertical-align: middle;">+${pctDiff}%</span>`;
+                }
+            }
+            
+            const confidence = item.console_confidence_score || 0;
+            let confidenceClass = 'confidence-high';
+            if (confidence < 0.70) confidenceClass = 'confidence-medium';
+            if (confidence < 0.50) confidenceClass = 'confidence-low';
+            
+            // Format date - show any valid date, not just recent ones
+            let dateStr = 'N/A';
+            const rawDate = item.date_posted || item.first_seen_at || item.last_seen_at || item.created_at;
+            if (rawDate) {
+                try {
+                    const date = new Date(rawDate);
+                    if (!isNaN(date.getTime())) {
+                        dateStr = date.toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric' });
+                    }
+                } catch (e) {}
+            }
+            
+            // Skip flagged listings entirely (T163)
+            if (isFlagged) return;
+            
+            html += `
+                <tr ${rowStyle}>
+                    <td style="padding: 0.75rem; text-align: center; width: 100px;">
+                        ${item.image_url ? `<img src="${item.image_url}" alt="${consoleName}" 
+                            onclick="event.stopPropagation(); showImageModal('${item.image_url}', '${consoleName}')"
+                            style="max-width: 90px; max-height: 70px; border-radius: 6px; cursor: pointer; box-shadow: 0 2px 4px rgba(0,0,0,0.1); object-fit: cover;"
+                        >` : '<div style="width: 90px; height: 70px; background: linear-gradient(135deg, #f5f5f5 0%, #eee 100%); border-radius: 6px; display: flex; align-items: center; justify-content: center; color: #999; font-size: 1.5rem;">📷</div>'}
+                    </td>
+                    <td style="padding: 0.75rem;">
+                        <div style="font-weight: bold; font-size: 1.05rem;">${consoleName}${variantInfo}</div>
+                        ${item.edition_name ? `<div style="font-size: 0.85rem; color: #666; margin-top: 0.25rem;">Edition: ${item.edition_name}</div>` : ''}
+                        <div style="margin-top: 0.25rem;"><span class="${confidenceClass}" style="font-size: 0.85rem;">${(confidence*100).toFixed(0)}% confidence</span></div>
+                        ${item.is_special_edition ? '<div style="margin-top: 0.25rem;"><span class="badge" style="background: #f59e0b; color: white;">Special</span></div>' : ''}
+                        
+                    </td>
+                    <td style="padding: 0.75rem;" class="${priceClass}">
+                        <div style="font-weight: bold; font-size: 1.1rem;">€${item.price_eur.toFixed(2)}</div>
+                        ${priceIndicator}
+                    </td>
+                    <td style="padding: 0.75rem;" class="listing-location">${item.seller_location || 'N/A'}</td>
+                    <td style="padding: 0.75rem;" class="listing-date">${dateStr}</td>
+                    <td style="padding: 0.75rem;">
+                        <a href="${item.listing_url}" target="_blank" class="btn btn-small" style="white-space: nowrap;">View →</a>
+                        <div style="display: flex; align-items: center; gap: 0.5rem; margin-top: 0.5rem;">
+                            <input type="text" id="comment-${item.listing_id}" placeholder="Comment..." style="flex: 1; min-width: 80px; padding: 0.25rem 0.5rem; font-size: 0.8rem; border: 1px solid #ddd; border-radius: 4px;">
+                            <button class="btn btn-small" onclick="toggleFlagWithComment('${item.listing_id}', '${consoleName}', ${isFlagged})" title="Flag listing" style="white-space: nowrap;">
+                                🚫
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            `;
+        });
+        
+        html += '</tbody></table></div>';
+        container.innerHTML = html;
+        
+        updatePriceChart(listings);
+    } catch (error) {
+        console.error('Error loading listings:', error);
+        document.getElementById('listings-container').innerHTML = 
+            '<div class="error">Error loading listings. Please try again.</div>';
+    }
+}
+
+async function toggleFlagWithComment(listingId, consoleName, isCurrentlyFlagged) {
+    const commentInput = document.getElementById(`comment-${listingId}`);
+    const comment = commentInput ? commentInput.value.trim() : '';
+    
+    try {
+        if (isCurrentlyFlagged) {
+            await fetch(`/api/unflag-listing/${listingId}`, { method: 'POST' });
+            flaggedListings.delete(listingId);
+        } else {
+            await fetch('/api/flag-listing', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ listing_id: listingId, console_name: consoleName, reason: comment || 'User flagged' })
+            });
+            flaggedListings.add(listingId);
+        }
+        loadListings();
+    } catch (error) {
+        console.error('Error toggling flag:', error);
+        alert('Error flagging listing. Please try again.');
+    }
+}
+
+// Keep the old function for backward compatibility (e.g., from history modal without comment)
+async function toggleFlag(listingId, consoleName, isCurrentlyFlagged) {
+    await toggleFlagWithComment(listingId, consoleName, isCurrentlyFlagged);
+}
+
+function updateVariantFilter(listings) {
+    const variantSelect = document.getElementById('variant-filter');
+    const currentValue = variantSelect.value;
+    
+    const variants = new Set();
+    listings.forEach(item => {
+        if (item.variant_name) {
+            variants.add(item.variant_name);
+        }
+    });
+    
+    variantSelect.innerHTML = '<option value="all">All Variants</option>';
+    Array.from(variants).sort().forEach(variant => {
+        variantSelect.innerHTML += `<option value="${variant}">${variant}</option>`;
+    });
+    
+    if (currentValue !== 'all' && variants.has(currentValue)) {
+        variantSelect.value = currentValue;
+    }
+}
+
+function filterByConsole(consoleName) {
+    const consoleSelect = document.getElementById('console-filter');
+    consoleSelect.value = consoleName;
+    loadListings();
+}
+
+async function showModelHistory(consoleId, consoleName) {
+    try {
+        const response = await fetch(`/api/console-model-history/${consoleId}`);
+        const listings = await response.json();
+        
+        document.getElementById('history-title').textContent = `${consoleName} - Price History`;
+        
+        // Prepare chart data - FILTER OUT flagged items from chart only
+        const unflaggedListings = listings.filter(item => !flaggedListings.has(item.listing_id));
+        const sorted = [...unflaggedListings].sort((a, b) => new Date(a.date_posted) - new Date(b.date_posted));
+        const dates = sorted.map(l => {
+            const d = new Date(l.date_posted);
+            return !isNaN(d.getTime()) ? d.toLocaleDateString() : 'N/A';
+        });
+        const prices = sorted.map(l => l.price_eur);
+        
+        if (historyChart) {
+            historyChart.destroy();
+        }
+        
+        const ctx = document.getElementById('historyChart').getContext('2d');
+        historyChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: dates,
+                datasets: [{
+                    label: 'Price (€)',
+                    data: prices,
+                    borderColor: '#667eea',
+                    backgroundColor: 'rgba(102, 126, 234, 0.1)',
+                    fill: true,
+                    tension: 0.4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: { callback: function(value) { return '€' + value; } }
+                    }
+                }
+            }
+        });
+        
+        // Build listings table with flag buttons - SHOW ALL listings including flagged ones
+        let html = `
+            <h4 style="margin-top: 2rem;">All Listings (${listings.length})</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Image</th>
+                        <th>Title</th>
+                        <th>Price</th>
+                        <th>Location</th>
+                        <th>Date</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+        `;
+        
+        listings.forEach(item => {
+            const isFlagged = flaggedListings.has(item.listing_id);
+            const rowStyle = isFlagged ? 'style="opacity: 0.5; background: #f5f5f5;"' : '';
+            const flaggedBadge = isFlagged ? ' <span class="badge" style="background: #999;">Flagged</span>' : '';
+            
+            html += `
+                <tr id="history-row-${item.listing_id}" ${rowStyle}>
+                    <td style="padding: 0.5rem; text-align: center; width: 80px;">
+                        ${item.image_url ? `<img src="${item.image_url}" alt="" style="max-width: 70px; max-height: 50px; border-radius: 4px; object-fit: cover; cursor: pointer;" onclick="event.stopPropagation(); showImageModal('${item.image_url}', '${item.title.replace(/'/g, "\\'")}')">` : '<div style="width: 70px; height: 50px; background: #f5f5f5; border-radius: 4px; display: flex; align-items: center; justify-content: center; color: #999; font-size: 1.2rem;">📷</div>'}
+                    </td>
+                    <td><a href="${item.listing_url}" target="_blank">${item.title}</a></td>
+                    <td class="price">€${item.price_eur}</td>
+                    <td>${item.seller_location || 'N/A'}</td>
+                    <td>${item.date_posted ? new Date(item.date_posted).toLocaleDateString() : 'N/A'}</td>
+                    <td>${item.is_active ? '<span class="badge badge-success">Active</span>' : '<span class="badge badge-danger">Inactive</span>'}${flaggedBadge}</td>
+                    <td>
+                        <div style="display: flex; align-items: center; gap: 0.5rem;">
+                            <input type="text" id="history-comment-${item.listing_id}" placeholder="Comment..." style="flex: 1; min-width: 80px; padding: 0.25rem 0.5rem; font-size: 0.85rem; border: 1px solid #ddd; border-radius: 4px;" value="${isFlagged ? 'Already flagged' : ''}" ${isFlagged ? 'disabled' : ''}>
+                            <button id="history-flag-btn-${item.listing_id}" class="btn btn-small ${isFlagged ? 'btn-secondary' : ''}" onclick="toggleFlagFromHistoryWithComment('${item.listing_id}', '${consoleName}', ${isFlagged})" title="${isFlagged ? 'Unflag' : 'Flag'} listing" style="white-space: nowrap;">
+                                ${isFlagged ? '✓ Flagged' : '🚫 Flag'}
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            `;
+        });
+        
+        html += '</tbody></table>';
+        document.getElementById('history-listings').innerHTML = html;
+        document.getElementById('history-modal').classList.add('active');
+        
+    } catch (error) {
+        console.error('Error loading history:', error);
+    }
+}
+
+async function toggleFlagFromHistoryWithComment(listingId, consoleName, isCurrentlyFlagged) {
+    const commentInput = document.getElementById(`history-comment-${listingId}`);
+    const comment = commentInput ? commentInput.value.trim() : '';
+    
+    try {
+        if (isCurrentlyFlagged) {
+            await fetch(`/api/unflag-listing/${listingId}`, { method: 'POST' });
+            flaggedListings.delete(listingId);
+        } else {
+            await fetch('/api/flag-listing', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ listing_id: listingId, console_name: consoleName, reason: comment || 'User flagged' })
+            });
+            flaggedListings.add(listingId);
+        }
+        
+        // Update just the UI for this row instead of refreshing the entire modal
+        const row = document.getElementById(`history-row-${listingId}`);
+        if (row) {
+            const isNowFlagged = !isCurrentlyFlagged;
+            row.style.opacity = isNowFlagged ? '0.5' : '1';
+            row.style.background = isNowFlagged ? '#f5f5f5' : '';
+            
+            // Update button
+            const btn = document.getElementById(`history-flag-btn-${listingId}`);
+            if (btn) {
+                btn.textContent = isNowFlagged ? '✓ Flagged' : '🚫 Flag';
+                btn.className = isNowFlagged ? 'btn btn-small btn-secondary' : 'btn btn-small';
+                btn.onclick = function() { toggleFlagFromHistoryWithComment(listingId, consoleName, isNowFlagged); };
+            }
+            
+            // Update comment input
+            const commentInp = document.getElementById(`history-comment-${listingId}`);
+            if (commentInp) {
+                commentInp.value = isNowFlagged ? 'Already flagged' : '';
+                commentInp.disabled = isNowFlagged;
+            }
+            
+            // Update badge if exists
+            const badgeCell = row.querySelector('td:nth-child(5)');
+            if (badgeCell && isNowFlagged) {
+                const existingBadge = badgeCell.querySelector('.badge');
+                if (!existingBadge) {
+                    badgeCell.innerHTML += ' <span class="badge" style="background: #999;">Flagged</span>';
+                }
+            } else if (badgeCell && !isNowFlagged) {
+                const badge = badgeCell.querySelector('.badge');
+                if (badge) badge.remove();
+            }
+        }
+        
+        // Update the chart only (filter flagged from chart, but keep in table)
+        const consoleId = consoleModels.find(m => m.console_name === consoleName)?.console_id;
+        if (consoleId) {
+            updateHistoryChartOnly(consoleId, consoleName);
+        }
+        
+        // Also refresh main listings
+        loadListings();
+    } catch (error) {
+        console.error('Error toggling flag:', error);
+        alert('Error flagging listing. Please try again.');
+    }
+}
+
+// New function to update only the chart without refreshing the table
+async function updateHistoryChartOnly(consoleId, consoleName) {
+    try {
+        const response = await fetch(`/api/console-model-history/${consoleId}`);
+        const listings = await response.json();
+        
+        // Prepare chart data - FILTER OUT flagged items from chart only
+        const unflaggedListings = listings.filter(item => !flaggedListings.has(item.listing_id));
+        const sorted = [...unflaggedListings].sort((a, b) => new Date(a.date_posted) - new Date(b.date_posted));
+        const dates = sorted.map(l => {
+            const d = new Date(l.date_posted);
+            return !isNaN(d.getTime()) ? d.toLocaleDateString() : 'N/A';
+        });
+        const prices = sorted.map(l => l.price_eur);
+        
+        if (historyChart) {
+            historyChart.destroy();
+        }
+        
+        const ctx = document.getElementById('historyChart').getContext('2d');
+        historyChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: dates,
+                datasets: [{
+                    label: 'Price (€)',
+                    data: prices,
+                    borderColor: '#667eea',
+                    backgroundColor: 'rgba(102, 126, 234, 0.1)',
+                    fill: true,
+                    tension: 0.4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: { callback: function(value) { return '€' + value; } }
+                    }
+                }
+            }
+        });
+    } catch (error) {
+        console.error('Error updating chart:', error);
+    }
+}
+
+async function toggleFlagFromHistory(listingId, consoleName, isCurrentlyFlagged) {
+    await toggleFlagFromHistoryWithComment(listingId, consoleName, isCurrentlyFlagged);
+}
+
+async function showFlaggedUrls() {
+    try {
+        const response = await fetch('/api/flagged-urls');
+        const urls = await response.json();
+        
+        let text = '';
+        if (urls.length === 0) {
+            text = '# No flagged listings yet\n\n# Example format:\n# https://www.ss.com/msg/lv/electronics/computers/game-consoles/xxxxx.html\n';
+        } else {
+            text = `# Flagged Listings URLs (${urls.length} total)\n`;
+            text += `# Generated: ${new Date().toISOString()}\n\n`;
+            urls.forEach((u, i) => {
+                text += `# ${u.console || 'Unknown'} - ${u.reason || 'No reason'}\n`;
+                text += `${u.url}\n\n`;
+            });
+        }
+        
+        document.getElementById('flagged-urls-text').value = text;
+        document.getElementById('flagged-modal').classList.add('active');
+    } catch (error) {
+        console.error('Error loading flagged URLs:', error);
+    }
+}
+
+function closeModal() {
+    document.getElementById('history-modal').classList.remove('active');
+}
+
+function closeFlaggedModal() {
+    document.getElementById('flagged-modal').classList.remove('active');
+}
+
+function copyFlaggedUrls() {
+    const textarea = document.getElementById('flagged-urls-text');
+    textarea.select();
+    document.execCommand('copy');
+    alert('Copied to clipboard!');
+}
+
+function downloadFlaggedUrls() {
+    const text = document.getElementById('flagged-urls-text').value;
+    const blob = new Blob([text], { type: 'text/plain' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `flagged-listings-${new Date().toISOString().split('T')[0]}.txt`;
+    a.click();
+    URL.revokeObjectURL(url);
+}
+
+function updatePriceChart(listings) {
+    const ctx = document.getElementById('priceDistChart');
+    if (!ctx) return;
+    
+    const grouping = document.getElementById('chart-grouping').value;
+    const consolePrices = {};
+    
+    // Filter out flagged items from the chart
+    const unflaggedListings = listings.filter(item => {
+        const isFlagged = item.is_flagged === true || flaggedListings.has(item.listing_id);
+        return !isFlagged;
+    });
+    
+    unflaggedListings.forEach(item => {
+        let key;
+        if (grouping === 'brand') {
+            // Extract brand from console name
+            if (item.console_name?.includes('PlayStation')) key = 'PlayStation';
+            else if (item.console_name?.includes('Xbox')) key = 'Xbox';
+            else if (item.console_name?.includes('Nintendo')) key = 'Nintendo';
+            else key = item.console_name || 'Other';
+        } else if (grouping === 'console') {
+            key = item.console_name || 'Unknown';
+        } else {
+            // variant level
+            key = item.variant_name ? `${item.console_name} (${item.variant_name})` : item.console_name || 'Unknown';
+        }
+        
+        if (!consolePrices[key]) {
+            consolePrices[key] = [];
+        }
+        consolePrices[key].push(item.price_eur);
+    });
+    
+    const labels = Object.keys(consolePrices);
+    const data = labels.map(key => {
+        const prices = consolePrices[key];
+        return prices.reduce((a, b) => a + b, 0) / prices.length;
+    });
+    
+    if (priceChart) {
+        priceChart.destroy();
+    }
+    
+    priceChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Average Price (€)',
+                data: data,
+                backgroundColor: ['#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899']
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { 
+                legend: { display: false },
+                title: {
+                    display: true,
+                    text: `Average Price by ${grouping.charAt(0).toUpperCase() + grouping.slice(1)}`
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: { callback: function(value) { return '€' + value.toFixed(0); } }
+                }
+            }
+        }
+    });
+}
+
+// Close modals on outside click
+document.getElementById('history-modal').addEventListener('click', function(e) {
+    if (e.target === this) closeModal();
+});
+
+document.getElementById('flagged-modal').addEventListener('click', function(e) {
+    if (e.target === this) closeFlaggedModal();
+});
+
+// Add CSS for dark mode compatibility - Location and Date columns
+const darkModeStyles = document.createElement('style');
+darkModeStyles.textContent = `
+    /* Location and Date column styling for visibility in both light and dark mode */
+    .listing-location, .listing-date {
+        color: var(--text-color, #333) !important;
+    }
+    
+    [data-theme="dark"] .listing-location,
+    [data-theme="dark"] .listing-date {
+        color: #e0e0e0 !important;
+    }
+    
+    /* Ensure table cells inherit proper colors */
+    tbody td {
+        color: var(--text-color, #333);
+    }
+    
+    [data-theme="dark"] tbody td {
+        color: #e0e0e0;
+    }
+`;
+document.head.appendChild(darkModeStyles);
+
+// Image modal function
+function showImageModal(imageUrl, title) {
+    let modal = document.getElementById('image-preview-modal');
+    if (!modal) {
+        modal = document.createElement('div');
+        modal.id = 'image-preview-modal';
+        modal.className = 'modal-overlay';
+        modal.innerHTML = `
+            <div class="modal" style="max-width: 90%; max-height: 90%; padding: 0; overflow: hidden;">
+                <div style="position: relative; background: #000;">
+                    <button onclick="closeImageModal()" style="position: absolute; top: 10px; right: 10px; background: rgba(0,0,0,0.7); color: white; border: none; border-radius: 50%; width: 40px; height: 40px; font-size: 20px; cursor: pointer; z-index: 10;">&times;</button>
+                    <img id="preview-image" src="" alt="" style="max-width: 100%; max-height: 85vh; display: block; margin: 0 auto;">
+                </div>
+                <div style="padding: 1rem; background: white; text-align: center;">
+                    <p id="preview-title" style="margin: 0; font-weight: 600;"></p>
+                </div>
+            </div>
+        `;
+        document.body.appendChild(modal);
+        modal.addEventListener('click', function(e) {
+            if (e.target === modal) closeImageModal();
+        });
+    }
+    document.getElementById('preview-image').src = imageUrl;
+    document.getElementById('preview-image').alt = title;
+    document.getElementById('preview-title').textContent = title;
+    modal.classList.add('active');
+}
+
+function closeImageModal() {
+    const modal = document.getElementById('image-preview-modal');
+    if (modal) modal.classList.remove('active');
+}
+
+// Load on page load
+document.addEventListener('DOMContentLoaded', async () => {
+    await loadFlaggedListings();
+    loadSimpleStats();
+    loadModels();
+    loadListings();
+});
+
+// Filter button styling
+const filterButtonStyle = document.createElement('style');
+filterButtonStyle.textContent = `
+    .filter-btn {
+        background: #f5f5f5;
+        border: 1px solid #ddd;
+        color: #666;
+        transition: all 0.2s;
+    }
+    .filter-btn:hover {
+        background: #e0e0e0;
+    }
+    .filter-btn.active {
+        background: #667eea;
+        color: white;
+        border-color: #667eea;
+    }
+`;
+document.head.appendChild(filterButtonStyle);
+
+// Override filterByConsole to update button states
+const originalFilterByConsole = filterByConsole;
+filterByConsole = function(consoleName) {
+    // Update button states
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.classList.remove('active');
+        if (btn.dataset.filter === consoleName) {
+            btn.classList.add('active');
+        }
+    });
+    
+    // Update dropdown
+    document.getElementById('console-filter').value = consoleName;
+    
+    // Call original function
+    return originalFilterByConsole(consoleName);
+};
+
+// Listing Detail Modal Functions
+let currentDetailListing = null;
+
+async function showListingDetail(listingId) {
+    currentDetailListing = listingId;
+    
+    try {
+        const response = await fetch(`/api/listing-details/${listingId}`);
+        const data = await response.json();
+        
+        if (data.error || !data.current) {
+            alert('Error loading listing details');
+            return;
+        }
+        
+        const item = data.current;
+        
+        // Set title
+        document.getElementById('listing-detail-title').textContent = item.title || 'Listing Details';
+        
+        // Build content
+        let html = '';
+        
+        // Image
+        if (item.image_url) {
+            html += `
+                <div style="text-align: center; margin-bottom: 1.5rem;">
+                    <img src="${item.image_url}" alt="${item.title}" 
+                         style="max-width: 100%; max-height: 300px; border-radius: 8px; cursor: pointer;"
+                         onclick="showImageModal('${item.image_url}', '${item.title.replace(/'/g, "\\'")}')">
+                </div>
+            `;
+        }
+        
+        // Info grid
+        html += `
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem;">
+                <div style="background: #f8f9fa; padding: 1rem; border-radius: 8px;">
+                    <strong>Price:</strong> <span class="price" style="font-size: 1.25rem;">€${item.price_eur}</span>
+                </div>
+                <div style="background: #f8f9fa; padding: 1rem; border-radius: 8px;">
+                    <strong>Location:</strong> ${item.seller_location || 'N/A'}
+                </div>
+                <div style="background: #f8f9fa; padding: 1rem; border-radius: 8px;">
+                    <strong>Date:</strong> ${item.date_posted ? new Date(item.date_posted).toLocaleDateString() : 'N/A'}
+                </div>
+                <div style="background: #f8f9fa; padding: 1rem; border-radius: 8px;">
+                    <strong>Status:</strong> ${item.is_active ? '<span style="color: #27ae60;">Active</span>' : '<span style="color: #e74c3c;">Inactive</span>'}
+                </div>
+            </div>
+        `;
+        
+        // Console-specific info
+        if (item.console_name) {
+            html += `
+                <div style="background: #e8f5e9; padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
+                    <strong>Console:</strong> ${item.console_name}<br>
+                    ${item.variant_name ? `<strong>Variant:</strong> ${item.variant_name}<br>` : ''}
+                    ${item.edition_name ? `<strong>Edition:</strong> ${item.edition_name}<br>` : ''}
+                    ${item.is_special_edition ? '<span class="badge" style="background: #f59e0b; color: white;">Special Edition</span>' : ''}
+                </div>
+            `;
+        }
+        
+        // Description
+        html += `
+            <div style="margin-bottom: 1rem;">
+                <strong>Description:</strong>
+                <div style="background: #f8f9fa; padding: 1rem; border-radius: 8px; margin-top: 0.5rem; max-height: 200px; overflow-y: auto; white-space: pre-wrap;">
+                    ${item.description || '<em>No description</em>'}
+                </div>
+            </div>
+        `;
+        
+        // Price history
+        if (data.history && data.history.length > 0) {
+            html += `
+                <h4 style="margin-top: 1.5rem; margin-bottom: 0.5rem;">Price History</h4>
+                <table style="width: 100%;">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Price</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+            data.history.forEach(h => {
+                html += `
+                    <tr>
+                        <td>${h.recorded_at ? new Date(h.recorded_at).toLocaleDateString() : 'N/A'}</td>
+                        <td class="price">€${h.price_eur}</td>
+                    </tr>
+                `;
+            });
+            html += '</tbody></table>';
+        }
+        
+        // Flag status
+        if (data.flag) {
+            html += `
+                <div style="background: #fff3cd; border: 1px solid #ffc107; padding: 1rem; border-radius: 8px; margin-top: 1rem;">
+                    <strong>🚫 Flagged:</strong> ${data.flag.comment || 'No comment'}<br>
+                    <small>Flagged on: ${new Date(data.flag.flagged_at).toLocaleDateString()}</small>
+                </div>
+            `;
+        }
+        
+        document.getElementById('listing-detail-content').innerHTML = html;
+        
+        // Update link
+        document.getElementById('listing-detail-link').href = item.listing_url;
+        
+        // Update flag button
+        const isFlagged = flaggedListings.has(listingId);
+        const flagBtn = document.getElementById('listing-detail-flag-btn');
+        flagBtn.textContent = isFlagged ? '✓ Unflag' : '🚫 Flag';
+        flagBtn.className = isFlagged ? 'btn btn-secondary' : 'btn btn-warning';
+        
+        // Show modal
+        document.getElementById('listing-detail-modal').classList.add('active');
+        
+    } catch (error) {
+        console.error('Error loading listing details:', error);
+        alert('Error loading listing details');
+    }
+}
+
+function closeListingDetailModal() {
+    document.getElementById('listing-detail-modal').classList.remove('active');
+    currentDetailListing = null;
+}
+
+async function toggleFlagFromDetail() {
+    if (!currentDetailListing) return;
+    
+    const isFlagged = flaggedListings.has(currentDetailListing);
+    await toggleFlag(currentDetailListing, '', isFlagged);
+    
+    // Refresh modal
+    showListingDetail(currentDetailListing);
+}
+
+// Close modal on outside click
+document.addEventListener('DOMContentLoaded', () => {
+    const detailModal = document.getElementById('listing-detail-modal');
+    if (detailModal) {
+        detailModal.addEventListener('click', function(e) {
+            if (e.target === this) closeListingDetailModal();
+        });
+    }
+});
+
+
+</script>
+{% endblock %}

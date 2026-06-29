@@ -605,8 +605,13 @@ async function loadComputers() {
             if (ramCapacity) {
                 components.push(`<span class="badge badge-ram" data-ram-capacity="${ramCapacity}" data-ram-type="${item.ram_type || ''}">RAM: ${ramCapacity}GB ${item.ram_type || ''}</span>`);
             }
-            if (item.ssd_capacity) {
-                components.push(`<span class="badge badge-ssd">SSD: ${item.ssd_capacity}GB</span>`);
+            let ssdCapacity = item.ssd_capacity;
+            if (!ssdCapacity && item.ssd_match_method) {
+                const ssdMatch = item.ssd_match_method.match(/(\d+)\s*GB/i);
+                if (ssdMatch) ssdCapacity = parseInt(ssdMatch[1]);
+            }
+            if (ssdCapacity) {
+                components.push(`<span class="badge badge-ssd">SSD: ${ssdCapacity}GB</span>`);
             }
             if (item.prebuilt_badge) {
                 components.push(item.prebuilt_badge);
@@ -623,14 +628,19 @@ async function loadComputers() {
             const prebuiltTitleBadge = isPrebuilt ? `<span class="badge" style="background: #e74c3c; color: white; margin-left: 0.5rem;">🏭 Prebuilt</span>` : '';
             
             // Image - escape special chars for onclick
-            const imageUrl = item.image_url ? item.image_url : '';
-            const safeImageUrl = imageUrl.replace(/'/g, "\\'").replace(/"/g, '&quot;');
+            const rawImageUrl = item.image_url ? item.image_url : '';
+            const fullImageUrl = rawImageUrl
+                .replace(/\.t\./, '.800.')
+                .replace(/\.th\./, '.')
+                .replace(/\.thumb\./, '.')
+                .replace(/\//thumb\//, '/');
+            const safeImageUrl = fullImageUrl.replace(/'/g, "\\'").replace(/"/g, '&quot;');
             const safeTitle = (item.title || '').replace(/'/g, "\\'").replace(/"/g, '&quot;');
             const safeListingId = item.listing_id ? item.listing_id.replace(/'/g, "\\'") : '';
             
-            const imageHtml = imageUrl 
+            const imageHtml = fullImageUrl 
                 ? `<div class="listing-image-wrapper">
-                    <img src="${imageUrl}" alt="Computer" class="listing-thumb" loading="lazy" onclick="event.stopPropagation(); showImageModal('${safeImageUrl}', '${safeTitle}')">
+                    <img src="${fullImageUrl}" alt="Computer" class="listing-thumb" loading="lazy" onclick="event.stopPropagation(); showImageModal('${safeImageUrl}', '${safeTitle}')">
                     ${item.prebuilt_badge ? `<div class="prebuilt-overlay">${item.prebuilt_badge}</div>` : ''}
                    </div>`
                 : '<div class="listing-thumb-placeholder">💻</div>';
@@ -705,9 +715,13 @@ async function showComputerDetail(listingId) {
         const specsHtml = buildFullSpecs(listing, breakdown);
         
         // Image HTML - use larger image
-        const imageUrl = listing.image_url || '';
-        const fullImageUrl = imageUrl.replace(/\.th\./, '.').replace(/\/thumb\//, '/');
-        const imageHtml = imageUrl 
+        const rawImageUrl = listing.image_url || '';
+        const fullImageUrl = rawImageUrl
+            .replace(/\.t\./, '.800.')
+            .replace(/\.th\./, '.')
+            .replace(/\.thumb\./, '.')
+            .replace(/\//thumb\//, '/');
+        const imageHtml = fullImageUrl 
             ? `<div class="computer-image-container">
                 <img src="${fullImageUrl}" alt="Computer" class="computer-main-image" onclick="showImageModal('${fullImageUrl.replace(/'/g, "\\'")}', '${(listing.title || '').replace(/'/g, "\\'")}')">
                </div>`
@@ -1320,7 +1334,12 @@ function closeComputerModal() {
 }
 
 function showImageModal(imageUrl, title) {
-    document.getElementById('preview-image').src = imageUrl;
+    const fullImageUrl = imageUrl
+        .replace(/\.t\./, '.800.')
+        .replace(/\.th\./, '.')
+        .replace(/\.thumb\./, '.')
+        .replace(/\//thumb\//, '/');
+    document.getElementById('preview-image').src = fullImageUrl;
     document.getElementById('preview-image').alt = title;
     document.getElementById('preview-title').textContent = title;
     document.getElementById('image-preview-modal').classList.add('active');
@@ -1762,10 +1781,10 @@ function applyComponentFilters() {
     const rows = document.querySelectorAll('#listings-container tbody tr');
     rows.forEach(row => {
         const cells = row.querySelectorAll('td');
-        if (cells.length < 4) return;
+        if (cells.length < 5) return;
         
-        const componentsCell = cells[3].textContent.toLowerCase();
-        const priceText = cells[2].textContent;
+        const componentsCell = cells[4].textContent.toLowerCase();
+        const priceText = cells[3].textContent;
         const price = parseFloat(priceText.replace('€', '').replace(',', '')) || 0;
         
         let show = true;
@@ -1778,8 +1797,10 @@ function applyComponentFilters() {
             const ramAttr = ramBadge?.dataset.ramCapacity;
             if (ramAttr) {
                 if (parseInt(ramAttr) !== parseInt(ramCapacity)) show = false;
+            } else {
+                // No RAM info means it cannot match the requested capacity
+                show = false;
             }
-            // If no RAM info found, don't hide - let it pass through
         }
         
         if (ramDdr) {
@@ -1787,8 +1808,9 @@ function applyComponentFilters() {
             const ddrAttr = ramBadge?.dataset.ramType || '';
             if (ddrAttr) {
                 if (ddrAttr.toLowerCase() !== ramDdr.toLowerCase()) show = false;
+            } else {
+                show = false;
             }
-            // If no DDR info found, don't hide - let it pass through
         }
         
         if (ssdTotal) {
@@ -1796,6 +1818,8 @@ function applyComponentFilters() {
             if (ssdMatch) {
                 const ssd = parseInt(ssdMatch[1]);
                 if (ssd < parseInt(ssdTotal)) show = false;
+            } else {
+                show = false;
             }
         }
         

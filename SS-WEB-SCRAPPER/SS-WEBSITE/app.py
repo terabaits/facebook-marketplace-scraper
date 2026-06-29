@@ -1847,11 +1847,15 @@ def get_computers():
                     gpu.vendor as gpu_vendor,
                     gpu.model as gpu_model,
                     ram.capacity_gb as ram_capacity,
-                    cl.ram_match_method
+                    ram.type as ram_type,
+                    cl.ram_match_method,
+                    cl.ssd_match_method,
+                    ssd.capacity_gb as ssd_capacity
                 FROM computer_listings cl
                 LEFT JOIN cpu_reference cpu ON cl.matched_cpu_id = cpu.id
                 LEFT JOIN gpu_reference gpu ON cl.matched_gpu_id = gpu.id
                 LEFT JOIN ram_reference ram ON cl.matched_ram_id = ram.id
+                LEFT JOIN ssd_reference ssd ON cl.matched_ssd_id = ssd.id
                 WHERE cl.is_active = true
                 ORDER BY cl.date_posted DESC
                 LIMIT 100
@@ -1872,10 +1876,14 @@ def get_computers():
                     gpu.vendor as gpu_vendor,
                     gpu.model as gpu_model,
                     NULL as ram_capacity,
-                    cl.ram_match_method
+                    NULL as ram_type,
+                    cl.ram_match_method,
+                    cl.ssd_match_method,
+                    ssd.capacity_gb as ssd_capacity
                 FROM computer_listings cl
                 LEFT JOIN cpu_reference cpu ON cl.matched_cpu_id = cpu.id
                 LEFT JOIN gpu_reference gpu ON cl.matched_gpu_id = gpu.id
+                LEFT JOIN ssd_reference ssd ON cl.matched_ssd_id = ssd.id
                 WHERE cl.is_active = true
                 ORDER BY cl.date_posted DESC
                 LIMIT 100
@@ -1924,14 +1932,19 @@ def get_computer_detail(listing_id):
         """)
         ram_table_exists = cursor.fetchone()['exists']
 
-        # Check if motherboard_reference table exists
+        # Check if motherboard_models table exists (the real reference table)
         cursor.execute("""
             SELECT EXISTS (
                 SELECT FROM information_schema.tables
-                WHERE table_name = 'motherboard_reference'
+                WHERE table_name = 'motherboard_models'
             )
         """)
         mb_table_exists = cursor.fetchone()['exists']
+
+        mb_select = ''',
+                    mb.id as motherboard_id, mb.brand as mb_brand, mb.model as mb_model, mb.socket as mb_socket, mb.chipset as mb_chipset,
+                    cl.motherboard_match_method''' if mb_table_exists else ',\n                    NULL as motherboard_id, NULL as mb_brand, NULL as mb_model, NULL as mb_socket, NULL as mb_chipset, cl.motherboard_match_method'
+        mb_join = 'LEFT JOIN motherboard_models mb ON cl.matched_motherboard_id = mb.id' if mb_table_exists else ''
 
         if ram_table_exists:
             query = """
@@ -1949,12 +1962,7 @@ def get_computer_detail(listing_id):
                 LEFT JOIN ssd_reference ssd ON cl.matched_ssd_id = ssd.id
                 {mb_join}
                 WHERE cl.listing_id = %s
-            """.format(
-                mb_select=''',
-                    mb.id as motherboard_id, mb.brand as mb_brand, mb.model as mb_model, mb.socket as mb_socket, mb.chipset as mb_chipset,
-                    cl.motherboard_match_method''' if mb_table_exists else ',\n                    NULL as motherboard_id, NULL as mb_brand, NULL as mb_model, NULL as mb_socket, NULL as mb_chipset',
-                mb_join='LEFT JOIN motherboard_reference mb ON cl.matched_motherboard_id = mb.id' if mb_table_exists else ''
-            )
+            """.format(mb_select=mb_select, mb_join=mb_join)
         else:
             query = """
                 SELECT cl.*,
@@ -1969,12 +1977,7 @@ def get_computer_detail(listing_id):
                 LEFT JOIN gpu_reference gpu ON cl.matched_gpu_id = gpu.id
                 {mb_join}
                 WHERE cl.listing_id = %s
-            """.format(
-                mb_select=''',
-                    mb.id as motherboard_id, mb.brand as mb_brand, mb.model as mb_model, mb.socket as mb_socket, mb.chipset as mb_chipset,
-                    cl.motherboard_match_method''' if mb_table_exists else ',\n                    NULL as motherboard_id, NULL as mb_brand, NULL as mb_model, NULL as mb_socket, NULL as mb_chipset',
-                mb_join='LEFT JOIN motherboard_reference mb ON cl.matched_motherboard_id = mb.id' if mb_table_exists else ''
-            )
+            """.format(mb_select=mb_select, mb_join=mb_join)
 
         cursor.execute(query, (listing_id,))
 
@@ -2081,7 +2084,21 @@ def get_computer_detail(listing_id):
                         AND l.matched_ram_id = %s
                 """, (ram_id,))
                 ram_price_data = cursor.fetchone()
-                ram_avg = float(ram_price_data['avg_price']) if ram_price_data and ram_price_data['avg_price'] else 50.0
+                if ram_price_data and ram_price_data.get('avg_price'):
+                    ram_avg = float(ram_price_data['avg_price'])
+                else:
+                    # Active listing gone; fallback to historical (inactive) listings for this RAM model
+                    cursor.execute("""
+                        SELECT ROUND(AVG(price_eur)::numeric, 2) as avg_price,
+                               MIN(l.price_eur) as min_price,
+                               MAX(l.price_eur) as max_price,
+                               COUNT(*) as listing_count
+                        FROM listings l
+                        WHERE l.category = 'ram'
+                            AND l.matched_ram_id = %s
+                    """, (ram_id,))
+                    ram_price_data = cursor.fetchone()
+                    ram_avg = float(ram_price_data['avg_price']) if ram_price_data and ram_price_data.get('avg_price') else 50.0
             else:
                 # Fallback detected RAM - query actual market data for generic RAM
                 # For generic RAM, query ALL active RAM listings with matching capacity
@@ -4865,6 +4882,7 @@ def get_ram():
         speed_filter = request.args.get('speed', '')
         time_filter = request.args.get('time', 'all_time')
         min_confidence = float(request.args.get('min_confidence', 0))
+        ram_id_filter = request.args.get('ram_id', '')
 
         # Check if ram_reference table exists
         cursor.execute("""
@@ -4938,6 +4956,12 @@ def get_ram():
         if speed_filter:
             query += f" AND r.{speed_column} >= %s"
             params.append(int(speed_filter))
+        if ram_id_filter:
+            try:
+                query += " AND r.id = %s"
+                params.append(int(ram_id_filter))
+            except ValueError:
+                pass
 
         query += get_time_filter_sql(time_filter, 'l')
 
@@ -5614,6 +5638,9 @@ def get_consoles():
                 cl.price_eur,
                 cl.seller_location,
                 cl.date_posted,
+                cl.first_seen_at,
+                cl.last_seen_at,
+                cl.created_at,
                 cl.is_active,
                 cl.listing_url,
                 cl.image_url,

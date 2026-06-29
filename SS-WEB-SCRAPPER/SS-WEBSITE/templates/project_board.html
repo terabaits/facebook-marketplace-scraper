@@ -2038,7 +2038,12 @@ function addLinkRow(existingLink = null) {
     row.style.cssText = 'display: flex; gap: 0.5rem; margin-bottom: 0.5rem; align-items: center; flex-wrap: wrap;';
     row.id = linkId;
 
-    const allTasks = getLinkableTasks();
+    const allTasks = getLinkableTasks()
+        .sort((a, b) => {
+            const numA = parseInt(a.id.replace(/^T/, ''), 10) || 0;
+            const numB = parseInt(b.id.replace(/^T/, ''), 10) || 0;
+            return numB - numA; // descending TXXX
+        });
     const taskOptions = allTasks.map(t =>
         `<option value="${t.id}">${t.id}: ${t.title.substring(0, 40)}</option>`
     ).join('');

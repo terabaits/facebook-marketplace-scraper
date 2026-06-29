@@ -66,19 +66,6 @@
           "future_folder_id": "F-20260627231132-7c98d254"
         },
         {
-          "id": "T149",
-          "title": "why listing list shows in date column N/A",
-          "page": "RAM",
-          "category": "Frontend",
-          "priority": "Medium",
-          "fix": "",
-          "column": "problems",
-          "created": "2026-06-27T23:13:51.854907",
-          "updated": "2026-06-27T23:13:51.854907",
-          "linked_task_id": null,
-          "relationship_type": null
-        },
-        {
           "id": "T157",
           "title": "Motherboard dropdown list entries are mising brand in the fron",
           "page": "PC Builder",
@@ -717,7 +704,7 @@
           "category": "Frontend",
           "priority": "Medium",
           "fix": "",
-          "column": "progress",
+          "column": "talking",
           "created": "2026-06-27T14:02:22.540747",
           "updated": "2026-06-27T14:02:22.540747",
           "linked_task_id": null,
@@ -825,20 +812,6 @@
           "relationship_type": null
         },
         {
-          "id": "T158",
-          "title": "Add prebuild tag to listings in list",
-          "page": "Computers",
-          "category": "Frontend",
-          "priority": "Medium",
-          "fix": "",
-          "column": "talking",
-          "created": "2026-06-27T23:57:00.702723",
-          "updated": "2026-06-29T17:50:00",
-          "linked_task_id": null,
-          "relationship_type": null,
-          "linked_tasks": []
-        },
-        {
           "id": "T156",
           "title": "Add option to search GPU CPU Motherboard SSD PSU Case RAM by typing in the select box",
           "page": "PC Builder",
@@ -932,6 +905,46 @@
           "updated": "2026-06-29T18:04:00",
           "linked_task_id": null,
           "relationship_type": null
+        },
+        {
+          "id": "T149",
+          "title": "why listing list shows in date column N/A",
+          "page": "RAM",
+          "category": "Frontend",
+          "priority": "Medium",
+          "fix": "Use COALESCE(date_posted, first_seen_at, created_at) for RAM listings query and time filters",
+          "column": "talking",
+          "created": "2026-06-27T23:13:51.854907",
+          "updated": "2026-06-29T18:22:00",
+          "linked_task_id": "T075",
+          "relationship_type": "linked",
+          "linked_tasks": [
+            {
+              "task_id": "T075",
+              "relationship_type": "linked"
+            }
+          ]
+        },
+        {
+          "id": "T158",
+          "title": "Add prebuild tag to listings in list",
+          "page": "Computers",
+          "category": "Frontend",
+          "priority": "Medium",
+          "fix": "Use COALESCE(date_posted, first_seen_at, created_at) for RAM listings query and time filters",
+          "column": "talking",
+          "created": "2026-06-27T23:57:00.702723",
+          "updated": "2026-06-29T18:22:00",
+          "linked_task_id": null,
+          "relationship_type": null,
+          "linked_tasks": [],
+          "reopen_history": [
+            {
+              "reopened_at": "2026-06-29T18:17:42.941950",
+              "update": "every computer shows \"Čustom\" tag. either the filters dont work or tag diesnt work",
+              "previous_completed_at": null
+            }
+          ]
         }
       ]
     },

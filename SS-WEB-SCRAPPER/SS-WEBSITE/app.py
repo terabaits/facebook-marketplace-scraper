@@ -336,9 +336,9 @@ def convert_decimal_to_float(obj):
 def get_time_filter_sql(time_filter, table_alias='l'):
     """Generate SQL time filter clause."""
     if time_filter == 'week':
-        return f" AND {table_alias}.date_posted > NOW() - INTERVAL '7 days'"
+        return f" AND COALESCE({table_alias}.date_posted, {table_alias}.first_seen_at, {table_alias}.created_at) > NOW() - INTERVAL '7 days'"
     elif time_filter == 'month':
-        return f" AND {table_alias}.date_posted > NOW() - INTERVAL '30 days'"
+        return f" AND COALESCE({table_alias}.date_posted, {table_alias}.first_seen_at, {table_alias}.created_at) > NOW() - INTERVAL '30 days'"
     return ""  # all_time
 
 
@@ -4903,7 +4903,8 @@ def get_ram():
                 r.type as ddr_type,
                 {speed_field} as speed,
                 r.modules,
-                r.cas_latency
+                r.cas_latency,
+                COALESCE(l.date_posted, l.first_seen_at, l.created_at) as date_posted
             FROM listings l
             JOIN ram_reference r ON l.matched_ram_id = r.id
             LEFT JOIN flagged_listings fl ON l.listing_id = fl.listing_id

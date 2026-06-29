@@ -1940,16 +1940,21 @@ def get_computer_detail(listing_id):
                     gpu.id as gpu_id, gpu.vendor as gpu_vendor, gpu.model as gpu_model, gpu.vram_gb,
                     ram.id as ram_id, ram.name as ram_name, ram.speed as ram_speed, ram.capacity_gb as ram_capacity,
                     ssd.id as ssd_id, ssd.brand as ssd_brand, ssd.model as ssd_model, ssd.capacity_gb as ssd_capacity,
-                    mb.id as motherboard_id, mb.brand as mb_brand, mb.model as mb_model, mb.socket as mb_socket, mb.chipset as mb_chipset,
-                    cl.ram_match_method, cl.ssd_match_method, cl.motherboard_match_method
+                    cl.ram_match_method, cl.ssd_match_method
+                    {mb_select}
                 FROM computer_listings cl
                 LEFT JOIN cpu_reference cpu ON cl.matched_cpu_id = cpu.id
                 LEFT JOIN gpu_reference gpu ON cl.matched_gpu_id = gpu.id
                 LEFT JOIN ram_reference ram ON cl.matched_ram_id = ram.id
                 LEFT JOIN ssd_reference ssd ON cl.matched_ssd_id = ssd.id
-                LEFT JOIN motherboard_reference mb ON cl.matched_motherboard_id = mb.id
+                {mb_join}
                 WHERE cl.listing_id = %s
-            """
+            """.format(
+                mb_select=''',
+                    mb.id as motherboard_id, mb.brand as mb_brand, mb.model as mb_model, mb.socket as mb_socket, mb.chipset as mb_chipset,
+                    cl.motherboard_match_method''' if mb_table_exists else ',\n                    NULL as motherboard_id, NULL as mb_brand, NULL as mb_model, NULL as mb_socket, NULL as mb_chipset',
+                mb_join='LEFT JOIN motherboard_reference mb ON cl.matched_motherboard_id = mb.id' if mb_table_exists else ''
+            )
         else:
             query = """
                 SELECT cl.*,
@@ -1957,14 +1962,19 @@ def get_computer_detail(listing_id):
                     gpu.id as gpu_id, gpu.vendor as gpu_vendor, gpu.model as gpu_model, gpu.vram_gb,
                     NULL as ram_id, NULL as ram_name, NULL as ram_speed, NULL as ram_capacity,
                     NULL as ssd_id, NULL as ssd_brand, NULL as ssd_model, NULL as ssd_capacity,
-                    mb.id as motherboard_id, mb.brand as mb_brand, mb.model as mb_model, mb.socket as mb_socket, mb.chipset as mb_chipset,
-                    cl.ram_match_method, cl.ssd_match_method, cl.motherboard_match_method
+                    cl.ram_match_method, cl.ssd_match_method
+                    {mb_select}
                 FROM computer_listings cl
                 LEFT JOIN cpu_reference cpu ON cl.matched_cpu_id = cpu.id
                 LEFT JOIN gpu_reference gpu ON cl.matched_gpu_id = gpu.id
-                LEFT JOIN motherboard_reference mb ON cl.matched_motherboard_id = mb.id
+                {mb_join}
                 WHERE cl.listing_id = %s
-            """
+            """.format(
+                mb_select=''',
+                    mb.id as motherboard_id, mb.brand as mb_brand, mb.model as mb_model, mb.socket as mb_socket, mb.chipset as mb_chipset,
+                    cl.motherboard_match_method''' if mb_table_exists else ',\n                    NULL as motherboard_id, NULL as mb_brand, NULL as mb_model, NULL as mb_socket, NULL as mb_chipset',
+                mb_join='LEFT JOIN motherboard_reference mb ON cl.matched_motherboard_id = mb.id' if mb_table_exists else ''
+            )
 
         cursor.execute(query, (listing_id,))
 

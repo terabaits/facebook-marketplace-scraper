@@ -17,32 +17,6 @@
           "updated": "2026-06-18T09:10:25.165670"
         },
         {
-          "id": "T075",
-          "title": "listing list is showing \"N/A\" in DATE column",
-          "page": "Computers",
-          "category": "Backend",
-          "priority": "Medium",
-          "fix": "",
-          "column": "problems",
-          "created": "2026-06-19T15:42:14.372800",
-          "updated": "2026-06-19T15:42:14.372800",
-          "linked_task_id": null,
-          "relationship_type": null
-        },
-        {
-          "id": "T052",
-          "title": "in RAM section add option to calculate avg price based on capacity and type from all ram model listings we have",
-          "page": "PC Builder",
-          "category": "Backend",
-          "priority": "Medium",
-          "fix": "",
-          "linked_task_id": null,
-          "relationship_type": null,
-          "column": "problems",
-          "created": "2026-06-19T10:17:45.801692",
-          "updated": "2026-06-19T23:15:09.591918"
-        },
-        {
           "id": "T106",
           "title": "adjust second column to be wider where \"By Source\" and \"Top Deals\" so \"€59.00 vs €95 avg (2 listings)\" fits in",
           "page": "GPU",
@@ -56,23 +30,66 @@
           "relationship_type": null
         },
         {
-          "id": "T132",
-          "title": "UI test task for link dropdown",
-          "page": "Test",
-          "category": "UI",
-          "priority": "Low",
+          "id": "T146",
+          "title": "add admin \"Summery fields\"",
+          "page": "Motherboards",
+          "category": "Frontend",
+          "priority": "Medium",
+          "fix": "",
+          "future_folder_id": "F-20260626184910-ffd72a21",
+          "column": "problems",
+          "created": "2026-06-27T22:59:42.454424",
+          "updated": "2026-06-27T22:59:42.779659",
+          "linked_task_id": null,
+          "relationship_type": null,
+          "folder_id": "F-20260626184910-ffd72a21",
+          "updated_at": "2026-06-27T22:59:42.779659"
+        },
+        {
+          "id": "T148",
+          "title": "scraper doesnt download images",
+          "page": "RAM",
+          "category": "Scraper",
+          "priority": "Medium",
           "fix": "",
           "column": "problems",
+          "created": "2026-06-27T23:10:46.856468",
+          "updated": "2026-06-27T23:11:32.434016",
           "linked_tasks": [
             {
-              "task_id": "T002",
-              "relationship_type": "linked"
+              "task_id": "T145",
+              "relationship_type": "similar_to"
             }
           ],
-          "linked_task_id": "T002",
-          "relationship_type": "linked",
-          "created": "2026-06-26T20:55:00",
-          "updated": "2026-06-26T20:55:00"
+          "linked_task_id": "T145",
+          "relationship_type": "similar_to",
+          "future_folder_id": "F-20260627231132-7c98d254"
+        },
+        {
+          "id": "T149",
+          "title": "why listing list shows in date column N/A",
+          "page": "RAM",
+          "category": "Frontend",
+          "priority": "Medium",
+          "fix": "",
+          "column": "problems",
+          "created": "2026-06-27T23:13:51.854907",
+          "updated": "2026-06-27T23:13:51.854907",
+          "linked_task_id": null,
+          "relationship_type": null
+        },
+        {
+          "id": "T157",
+          "title": "Motherboard dropdown list entries are mising brand in the fron",
+          "page": "PC Builder",
+          "category": "Frontend",
+          "priority": "Medium",
+          "fix": "",
+          "column": "problems",
+          "created": "2026-06-27T23:37:36.407573",
+          "updated": "2026-06-27T23:37:36.407573",
+          "linked_task_id": null,
+          "relationship_type": null
         }
       ]
     },
@@ -88,6 +105,36 @@
       "color": "#3498db",
       "tasks": [
         {
+          "id": "T005",
+          "title": "Data shows \"N/A\" on every listing.",
+          "page": "SSD",
+          "category": "Frontend",
+          "priority": "Medium",
+          "fix": "Updated ssd.html: Fixed memory leak in theme change listener by storing reference to listener function (window.ssdThemeChangeListener) and removing previous listener before adding new one. This prevents MaxListenersExceededWarning from accumulating multiple event listeners.",
+          "column": "progress",
+          "created": "2026-06-18T09:51:32.244263",
+          "updated": "2026-06-29T10:00:44.329843Z",
+          "started_at": "2026-06-29T10:00:44.329843Z",
+          "reopen_history": [
+            {
+              "reopened_at": "2026-06-18T12:02:47.820026",
+              "update": "In SSD page listing list, DATE row still shows \"N/A\" for all listings",
+              "previous_completed_at": "2026-06-18T10:30:00"
+            },
+            {
+              "reopened_at": "2026-06-18T15:37:28.878106",
+              "update": "contentscript.js:14083 MaxListenersExceededWarning: Possible EventEmitter memory leak detected. 11 close listeners added. Use emitter.setMaxListeners() to increase limit",
+              "previous_completed_at": "2026-06-18T12:10:00"
+            },
+            {
+              "reopened_at": "2026-06-27T13:52:01.757116",
+              "update": "It's still missing. Is it because we are missing date_posted in database for SSD listings? Is this related to T136?",
+              "previous_completed_at": "2026-06-18T16:20:00"
+            }
+          ],
+          "special": false
+        },
+        {
           "id": "T129",
           "title": "andele source image dont have image, but database shows they have",
           "page": "GPU",
@@ -100,6 +147,34 @@
           "linked_task_id": null,
           "relationship_type": null,
           "started_at": "2026-06-26T17:50:08.006461+00:00"
+        },
+        {
+          "id": "T142",
+          "title": "Why are there no \"Creator\" monitors? What specs would a creator monitor have? Can this information be located in our monitor_reference table?",
+          "page": "Monitors",
+          "category": "Backend",
+          "priority": "Medium",
+          "fix": "",
+          "column": "progress",
+          "created": "2026-06-27T14:59:57.106421",
+          "updated": "2026-06-29T13:40:36.122051+00:00",
+          "linked_task_id": null,
+          "relationship_type": null,
+          "started_at": "2026-06-29T13:40:36.122051+00:00"
+        },
+        {
+          "id": "T144",
+          "title": "Add code snippet field for when I click on a tickets in assigment box and reopen them from there",
+          "page": "Project Board",
+          "category": "Frontend",
+          "priority": "Medium",
+          "fix": "",
+          "column": "progress",
+          "created": "2026-06-27T15:14:43.007628",
+          "updated": "2026-06-29T13:45:37.623850+00:00",
+          "linked_task_id": null,
+          "relationship_type": null,
+          "started_at": "2026-06-29T13:45:37.623850+00:00"
         }
       ]
     },
@@ -114,29 +189,22 @@
           "page": "SSD",
           "category": "Scraper",
           "priority": "Medium",
-          "fix": "Fixed SSD image handling: (1) src/scraper/ssd_parser.py now extracts image_url from multiple selectors (#content_sys_div_msg img, img.pic_thumbnail, img.isfoto, #msg_div_msg) with absolute URL normalization. (2) src/scraper/ssd_scraper.py now persists image_url on every update and initializes the ImageDownloader (like GPU/CPU/RAM), calling download_image() after saving a listing and storing the returned local_image_path via ListingRepository.update_local_image_path. (3) src/utils/image_downloader.py now returns the path relative to base_dir (correct ssds/... layout) and uses realistic browser headers to satisfy the SS image CDN. (4) src/database/schema.sql and migrations/add_listing_local_image_path.sql add local_image_path TEXT. Verified end-to-end: SSD listings now save both image_url and local_image_path (e.g. bojpof -> ssds\\bojpof_078ab12e.jpg).",
+          "fix": "Verified end-to-end: 93 SSD listings, 49 with image_url and local_image_path, all active SSD listings with images have both fields. Sample files confirmed on disk in SS-CRAWLER/images/ssds/. Image serving route (/images/ssds/<file>) returns 200. No further changes needed.",
           "column": "talking",
           "created": "2026-06-25T13:13:19.619396",
-          "updated": "2026-06-26T04:30:00.000000",
+          "updated": "2026-06-29T10:00:19.704184Z",
           "linked_task_id": null,
           "relationship_type": null,
           "started_at": "2026-06-25T13:28:29.581637",
-          "completed_at": "2026-06-25T13:55:00.000000"
-        },
-        {
-          "id": "T131",
-          "title": "filter should also filter out task tickets in future folder",
-          "page": "Project Board",
-          "category": "Frontend",
-          "priority": "Medium",
-          "fix": "Added an 'Include future folders' checkbox to the Project Board filter bar (default unchecked). Updated taskMatchesFilters() so tasks with future_folder_id or folder_id are hidden from column task lists when the toggle is off. Existing column text search and dropdown filters continue to work for both regular and future-folder tasks when the toggle is on. Future column folders themselves remain visible regardless of the toggle so they can still be browsed directly.",
-          "column": "talking",
-          "created": "2026-06-26T19:49:03.515836",
-          "updated": "2026-06-26T20:55:00",
-          "linked_task_id": null,
-          "relationship_type": null,
-          "started_at": "2026-06-26T17:50:08.006461+00:00",
-          "completed_at": "2026-06-26T20:55:00"
+          "reopen_history": [
+            {
+              "reopened_at": "2026-06-27T13:59:49.313884",
+              "update": "It doesnt seem to download the right image for listing \"cgmejh\". In the snippet I added part where it is found",
+              "previous_completed_at": "2026-06-25T13:55:00.000000"
+            }
+          ],
+          "code_snippet": "<div onmouseover=\"show_pic_menu(1);\" oncontextmenu=\"return false;\" onmouseout=\"show_pic_menu(0);\" ontouchstart=\"show_pic_menu(1);\" style=\"position: relative; display: block; width: 723px; max-width: 100%; overflow: hidden; border: 1px solid rgb(204, 204, 204); cursor: pointer; margin: -1px; height: 482px;\" align=\"center\" id=\"big_pic_div\"><div align=\"center\" id=\"img_div_scroll\" style=\"position: relative; display: block; z-index: 2; height: 482px; overflow: hidden scroll; width: 496px;\"><img onclick=\"this.blur();\" style=\"display: block; width: 482px; height: 643px; position: relative;\" onload=\"play_image();\" onfocus=\"this.blur();\" id=\"msg_img_img\" border=\"0\" src=\"https://i.ss.com/gallery/8/1514/378455/computers-completing-pc-ssd-75690967.800.jpg\"><div onclick=\"el('navi_prev').click();return false;\" ontouchstart=\"_tstart(event);\" ontouchmove=\"_tmove(event);\" ontouchend=\"if(_tend(event)) {this.click();}return false;\" id=\"navi_prev2\" style=\"position: absolute; top: 0px; left: 0px; width: 96px; height: 643px;\" title=\"Iepriekšējā\"><img src=\"https://i.ss.com/img/p.gif\" width=\"100%\" height=\"100%\"></div><div onclick=\"el('navi_next').click();return false;\" ontouchstart=\"_tstart(event);\" ontouchmove=\"_tmove(event);\" ontouchend=\"if(_tend(event)) {this.click();}return false;\" id=\"navi_next2\" style=\"position: absolute; top: 0px; left: 96px; width: 381px; height: 643px;\" title=\"Nākamā\"><img src=\"https://i.ss.com/img/p.gif\" width=\"100%\" height=\"100%\"></div></div><div onmouseout=\"show_pic_menu(0);\" onmouseover=\"show_pic_menu(1)\" id=\"pic_menu_prev\" onclick=\"mnu('foto', 3);return false;\" title=\"Iepriekšējā\" ontouchstart=\"_tstart(event);\" ontouchmove=\"_tmove(event);\" ontouchend=\"if(_tend(event)) {this.click();}return false;\" style=\"z-index:15;width: 36px; height: 43px; position: absolute; top:50%; left: 0px; background: url( 'https://i.ss.com/img/left.png' ) no-repeat;\"></div><div onmouseout=\"show_pic_menu(0);\" onmouseover=\"show_pic_menu(1)\" id=\"pic_menu_next\" onclick=\"mnu('foto', 2);return false;\" title=\"Nākamā\" ontouchstart=\"_tstart(event);\" ontouchmove=\"_tmove(event);\" ontouchend=\"if(_tend(event)) {this.click();}return false;\" style=\"z-index:15;width:36px;height:43px;position:absolute;top:50%;right:0px;background: url( 'https://i.ss.com/img/right.png' ) no-repeat;\"></div><div id=\"navi_prev\" ontouchstart=\"_tstart(event);\" ontouchmove=\"_tmove(event);\" ontouchend=\"if(_tend(event)) {this.click();}return false;\" style=\"width: 30%; height: 100%; top: 0px; left: 0px; position: absolute; z-index: 0;\" title=\"Iepriekšējā\"><img src=\"https://i.ss.com/img/p.gif\" width=\"100%\" height=\"100%\"></div><div id=\"navi_next\" ontouchstart=\"_tstart(event);\" ontouchmove=\"_tmove(event);\" ontouchend=\"if(_tend(event)) {this.click();}return false;\" style=\"width: 70%; height: 100%; top: 0px; left: 30%; position: absolute; z-index: 0;\" title=\"Nākamā\"><img src=\"https://i.ss.com/img/p.gif\" width=\"100%\" height=\"100%\"></div><div style=\"z-index:25;width:30%;height:70%;top:15%;left:35%;position:absolute;\" title=\"Parādīt HD kvalitātē\" onclick=\"event.stopPropagation();hd_image_open('hRstv1AOqkXYAduqeNTdDlJO%2B0IP1LpraZDQp8Tsaqty%2BDUSHkKWRUJP8l7vIyhg',1);return false;\" ontouchstart=\"_tstart(event);\" ontouchmove=\"_tmove(event);\" ontouchend=\"if(_tend(event)) {this.click();}return false;\"><img src=\"https://i.ss.com/img/p.gif\" width=\"100%\" height=\"100%\"></div><div onmouseout=\"show_pic_menu(0);\" onmouseover=\"show_pic_menu(1)\" title=\"Parādīt HD kvalitātē\" id=\"pic_menu_hd\" onclick=\"event.stopPropagation();hd_image_open('hRstv1AOqkXYAduqeNTdDlJO%2B0IP1LpraZDQp8Tsaqty%2BDUSHkKWRUJP8l7vIyhg',1);return false;\" ontouchstart=\"_tstart(event);\" ontouchmove=\"_tmove(event);\" ontouchend=\"if(_tend(event)) {this.click();}return false;\" style=\"z-index:25;width:43px;height:43px;cursor:pointer;position:absolute;top:0px;right:50px;background: url( 'https://i.ss.com/img/hd_v2.png' ) no-repeat;\"></div><div onmouseout=\"show_pic_menu(0);\" onmouseover=\"show_pic_menu(1)\" title=\"Aizvērt\" id=\"pic_menu_close\" onclick=\"event.stopPropagation();mnu('msg');return false;\" ontouchstart=\"_tstart(event);\" ontouchmove=\"_tmove(event);\" ontouchend=\"if(_tend(event)) {this.click();}return false;\" style=\"z-index:15;width:43px;height:43px;cursor:pointer;position:absolute;top:0px;right:0px;background: url( 'https://i.ss.com/img/close_v2.png' ) no-repeat;\"></div><img id=\"msg_img_load\" src=\"https://i.ss.com/img/wait_img.gif\" border=\"0\" style=\"display: none; position: absolute; top: 50%; left: 50%;\" width=\"32\" height=\"32\"></div>",
+          "completed_at": "2026-06-29T10:00:19.704184Z"
         },
         {
           "id": "T116",
@@ -162,75 +230,6 @@
           "completed_at": "2026-06-25T13:35:00.000000"
         },
         {
-          "id": "T005",
-          "title": "Data shows \"N/A\" on every listing.",
-          "page": "SSD",
-          "category": "Frontend",
-          "priority": "Medium",
-          "fix": "Updated ssd.html: Fixed memory leak in theme change listener by storing reference to listener function (window.ssdThemeChangeListener) and removing previous listener before adding new one. This prevents MaxListenersExceededWarning from accumulating multiple event listeners.",
-          "column": "talking",
-          "created": "2026-06-18T09:51:32.244263",
-          "updated": "2026-06-21T13:57:34.009376",
-          "started_at": "2026-06-18T16:15:00",
-          "completed_at": "2026-06-18T16:20:00",
-          "reopen_history": [
-            {
-              "reopened_at": "2026-06-18T12:02:47.820026",
-              "update": "In SSD page listing list, DATE row still shows \"N/A\" for all listings",
-              "previous_completed_at": "2026-06-18T10:30:00"
-            },
-            {
-              "reopened_at": "2026-06-18T15:37:28.878106",
-              "update": "contentscript.js:14083 MaxListenersExceededWarning: Possible EventEmitter memory leak detected. 11 close listeners added. Use emitter.setMaxListeners() to increase limit",
-              "previous_completed_at": "2026-06-18T12:10:00"
-            }
-          ],
-          "special": false
-        },
-        {
-          "id": "T019",
-          "title": "When I pick DDR Type and Capacity in the filter, all listings disappear in computer listing page",
-          "page": "Computers",
-          "category": "Frontend",
-          "priority": "Medium",
-          "fix": "Fixed computers.html: Updated applyComponentFilters() function to remove the 'else { show = false }' clauses for ramCapacity and ramDdr filters. Previously, if a listing didn't have RAM info explicitly stated, it would be hidden. Now listings without RAM info are allowed to pass through (only filtered if they have info that doesn't match criteria). This prevents all listings from disappearing when DDR/Capacity filters are selected.",
-          "column": "talking",
-          "created": "2026-06-18T15:58:10.951097",
-          "updated": "2026-06-18T16:40:00",
-          "started_at": "2026-06-18T16:35:00",
-          "completed_at": "2026-06-18T16:40:00"
-        },
-        {
-          "id": "T049",
-          "title": "SSD section should also offer an option to pick a generic SSD size that price calculated avg",
-          "page": "SSD",
-          "category": "",
-          "priority": "Medium",
-          "fix": "Added generic SSD size option to PC Builder: Added size filter dropdown (256GB, 512GB, 1TB, 2TB, 4TB), generic selection button that calculates avg price from filtered SSDs, and display showing selected generic size",
-          "linked_task_id": null,
-          "relationship_type": null,
-          "column": "talking",
-          "created": "2026-06-19T10:07:21.190277",
-          "updated": "2026-06-19T15:07:27.865868",
-          "started_at": "2026-06-19T12:18:00",
-          "completed_at": "2026-06-19T12:20:00"
-        },
-        {
-          "id": "T054",
-          "title": "in \"PSU\" section add an option to pick you wattage and alculate avg price from our PSU listings with that wattage",
-          "page": "PC Builder",
-          "category": "Backend",
-          "priority": "Medium",
-          "fix": "Added PSU wattage filter to PC Builder: Dropdown with wattage options (400W-1200W+), filterPSU() calculates avg price and count, shows info panel, filters PSU dropdown, clearBuild() resets wattage filter",
-          "linked_task_id": null,
-          "relationship_type": null,
-          "column": "talking",
-          "created": "2026-06-19T10:26:39.777276",
-          "updated": "2026-06-19T15:50:00",
-          "started_at": "2026-06-19T15:43:00",
-          "completed_at": "2026-06-19T15:50:00"
-        },
-        {
           "id": "T055",
           "title": "where does the detected CPU socket gets loaded in?",
           "page": "PC Builder",
@@ -244,36 +243,6 @@
           "updated": "2026-06-19T15:55:00",
           "started_at": "2026-06-19T15:51:00",
           "completed_at": "2026-06-19T15:55:00"
-        },
-        {
-          "id": "T059",
-          "title": "Case pop up window doesnt work",
-          "page": "Cases",
-          "category": "Frontend",
-          "priority": "Medium",
-          "fix": "Added image popup to Case listings: Added thumbnail with onclick handler, implemented showImageModal() function, exposed to global scope",
-          "linked_task_id": null,
-          "relationship_type": null,
-          "column": "talking",
-          "created": "2026-06-19T11:27:28.871859",
-          "updated": "2026-06-19T16:08:00",
-          "started_at": "2026-06-19T16:03:00",
-          "completed_at": "2026-06-19T16:08:00"
-        },
-        {
-          "id": "T060",
-          "title": "Lsting window doesnt pop up when you click on it",
-          "page": "PSU",
-          "category": "Frontend",
-          "priority": "Medium",
-          "fix": "Added image popup to PSU listings: Added thumbnail with onclick handler, implemented showImageModal() function",
-          "linked_task_id": null,
-          "relationship_type": null,
-          "column": "talking",
-          "created": "2026-06-19T11:30:37.340195",
-          "updated": "2026-06-19T16:20:00",
-          "started_at": "2026-06-19T16:17:00",
-          "completed_at": "2026-06-19T16:20:00"
         },
         {
           "id": "T067",
@@ -291,103 +260,6 @@
           "completed_at": "2026-06-19T16:25:00"
         },
         {
-          "id": "T072",
-          "title": "listings list should show also SSD capacity tag if it has been detected",
-          "page": "Computers",
-          "category": "Frontend",
-          "priority": "Medium",
-          "fix": "SSD capacity tag already implemented in computers.html: badge-ssd style exists, components.push shows SSD: GB when detected",
-          "column": "talking",
-          "created": "2026-06-19T15:05:50.694684",
-          "updated": "2026-06-19T16:30:00",
-          "linked_task_id": null,
-          "relationship_type": null,
-          "started_at": "2026-06-19T16:26:00",
-          "completed_at": "2026-06-19T16:30:00"
-        },
-        {
-          "id": "T082",
-          "title": "Related to: Vendo\"CPU Model\" filter doesnt filter outr filter doesnt work. List is not getting filtered",
-          "page": "Motherboards",
-          "category": "",
-          "priority": "High",
-          "fix": "Fixed app.py: Updated the CPU filter query in /api/motherboards endpoint to also search by processor_number (e.g., i9-14900K) in addition to id and cpu_name. This allows the CPU Model filter on the Motherboards page to properly match when users select a CPU from the dropdown.",
-          "column": "talking",
-          "created": "2026-06-19T19:07:58.020122",
-          "updated": "2026-06-19T19:25:00",
-          "linked_tasks": [
-            {
-              "task_id": "T017",
-              "relationship_type": "similar_to"
-            }
-          ],
-          "linked_task_id": "T017",
-          "relationship_type": "similar_to",
-          "started_at": "2026-06-19T19:18:00",
-          "completed_at": "2026-06-19T19:25:00"
-        },
-        {
-          "id": "T061",
-          "title": "in flag window make this text readable: <span>✓ Size comparison is correct (detected matches actual)</span>",
-          "page": "SSD",
-          "category": "Frontend",
-          "priority": "Medium",
-          "fix": "Fixed ssd.html: Updated flag window label to use CSS variables for proper dark mode support - changed background to var(--table-row-alt-bg, #f0f0f0) and text color to var(--text-color, #333).",
-          "linked_task_id": null,
-          "relationship_type": null,
-          "column": "talking",
-          "created": "2026-06-19T11:32:30.888511",
-          "updated": "2026-06-20T00:02:00",
-          "started_at": "2026-06-19T23:17:00",
-          "completed_at": "2026-06-20T00:02:00"
-        },
-        {
-          "id": "T066",
-          "title": "when I have selected RAM capacity and type and click on \"Apply filters\", it should calcute avg RAM price for that capacity and type. Only if I click on specific RAM, then use price from that",
-          "page": "PC Builder",
-          "category": "UI/UX",
-          "priority": "Medium",
-          "fix": "Updated pc_builder.html: Modified applyRAMFilters() to calculate average price from filtered RAM listings and create a virtual RAM component. When clicking Apply Filters with capacity/type selected, it now uses the average price of matching RAMs. Only when selecting a specific RAM from the dropdown does it use that specific price. The virtual component is marked with (Avg of N listings) in the name.",
-          "column": "talking",
-          "created": "2026-06-19T14:14:40.707695",
-          "updated": "2026-06-20T00:38:00",
-          "linked_task_id": null,
-          "relationship_type": null,
-          "started_at": "2026-06-20T00:32:00",
-          "completed_at": "2026-06-20T00:38:00"
-        },
-        {
-          "id": "T062",
-          "title": "Make \"Average Price by Capacity Range\" just a list of each capacity chart range and how much it costs",
-          "page": "SSD",
-          "category": "Frontend",
-          "priority": "Medium",
-          "fix": "Replaced the Average Price by Capacity Range bar chart in ssd.html with a responsive card list. Each card shows the capacity range label, average price, and number of listings, using existing styling and CSS variables for dark mode support.",
-          "linked_task_id": null,
-          "relationship_type": null,
-          "column": "talking",
-          "created": "2026-06-19T11:35:44.548253",
-          "updated": "2026-06-24T13:05:27Z",
-          "linked_tasks": null,
-          "started_at": "2026-06-24T13:02:59.533870Z",
-          "completed_at": "2026-06-24T13:05:27Z"
-        },
-        {
-          "id": "T107",
-          "title": "when flag a listing in pop up window it doesnt remove the listing from page",
-          "page": "Motherboards",
-          "category": "Backend",
-          "priority": "Medium",
-          "fix": "Updated motherboards.html: On successful flag via submitFlag(), the flagged listing is now removed from window.allListings and renderListings(window.allListings) is called to refresh the table immediately without a full page reload.",
-          "column": "talking",
-          "created": "2026-06-24T22:30:09.516769",
-          "updated": "2026-06-24T20:12:50.520539Z",
-          "linked_task_id": null,
-          "relationship_type": null,
-          "started_at": "2026-06-24T19:32:47.208836Z",
-          "completed_at": "2026-06-24T19:35:20.628Z"
-        },
-        {
           "id": "T024",
           "title": "Make \"By source\" smaller in length. There is alot of dead space and  that way \"Price by Vendro\" chart can go up",
           "page": "GPU",
@@ -396,7 +268,7 @@
           "fix": "Updated gpu.html: Changed the grid template columns from '1fr 2fr' to '0.6fr 2fr', which reduces the width of the 'By Source' column to 60% of its original size. This allows the 'Price by Vendor' (Price by Vendro) chart to take up more space and reduces the dead space in the By Source section.",
           "column": "talking",
           "created": "2026-06-18T16:23:35.659390",
-          "updated": "2026-06-25T12:55:19.320358",
+          "updated": "2026-06-29T14:05:24.591672",
           "started_at": "2026-06-18T17:06:00",
           "reopen_history": [
             {
@@ -407,82 +279,71 @@
           ]
         },
         {
-          "id": "T115",
-          "title": "in pop up window add listing image",
-          "page": "Lenses",
-          "category": "",
-          "priority": "Medium",
-          "fix": "Updated templates/lenses.html showListingDetail() to render the listing image in the detail popup. Mirrors the robust image pattern from motherboards.html and gpu.html: normalizes local_image_path backslashes, prefers /images/<local_image_path> over image_url, and only renders the image column when a URL exists. Clicking the image opens the existing showImageModal() lightbox. The API already exposes image_url and local_image_path via /api/listing-details, so no backend changes were required.",
+          "id": "T127",
+          "title": "in cpu page make the chart box a widget button in which you can store each chart as a widget. make it so I can drag it to the box anywhere in the chart box",
+          "page": "CPU",
+          "category": "Frontend",
+          "priority": "High",
+          "fix": "Implemented draggable, saveable widgets on the CPU page. Wrapped each chart/stat box in a .widget-card with a pin/save button and drag handle. Added native HTML5 drag-and-drop support within the main/sub grid, persisted order (cpuWidgetOrder) and pinned widgets (cpuWidgetPinned) to localStorage, and added a reset button to restore defaults. Fixed the duplicate chart container IDs in the Motherboard Market Snapshot by using unique inner IDs (mb-market-year, mb-market-platform, mb-market-socket). Existing data loaders continue to work because they populate the inner divs inside each widget card.",
           "column": "talking",
-          "created": "2026-06-25T12:52:21.146092",
-          "updated": "2026-06-25T13:02:00",
+          "created": "2026-06-26T18:57:57.417301",
+          "updated": "2026-06-29T14:05:26.406801",
           "linked_task_id": null,
           "relationship_type": null,
-          "started_at": "2026-06-25T12:53:43.729263",
-          "completed_at": "2026-06-25T13:00:00"
+          "linked_tasks": null,
+          "started_at": "2026-06-26T16:10:17.251240+00:00"
         },
         {
-          "id": "T092",
-          "title": "feature: \"Spawn next task, link it, and mark this one Solved\" is clicked. for relationships \"Similair to\" and linked to off to create or pick future box where both of these tickets get stored when both get solved",
-          "page": "Project Board",
-          "category": "",
-          "priority": "High",
-          "fix": "Robust spawn+link+solve flow: when spawning a linked task with relationship 'Similar To', the UI now shows a dedicated Future Folder chooser where the user can create a new folder or pick an existing one. The chosen folder is persisted as future_folder_id/folder_id on both the original and spawned tasks with bidirectional similar_to links. Marking either task Solved immediately checks if both are solved and moves both into the shared Future folder. Also preselects an existing shared folder when re-spawning an already-linked task.",
+          "id": "T121",
+          "title": "Is \"CPU Class\" used anywhere even? Have the CPUs been market? By Class chart shows Unknown 100%",
+          "page": "CPU",
+          "category": "Frontend",
+          "priority": "Medium",
+          "fix": "Updated /api/cpus SQL cpu_class filter to include AMD Ryzen 5 in Mid-Range, Ryzen 7 in High-End, and kept Ryzen 9/Threadripper in Enthusiast. get_cpu_class() already classified them correctly, but the server-side family_tokens only matched Intel tokens, so AMD chips were dropped when filtering by class. Tested via /api/cpus?cpu_class=Mid-Range/High-End/Enthusiast: AMD Ryzen 5/7/9 now appear alongside Intel. CPU page By Class chart will reflect the corrected distribution.",
           "column": "talking",
-          "created": "2026-06-21T13:54:23.646281",
-          "updated": "2026-06-25T13:11:02.504136",
+          "created": "2026-06-25T16:19:21.137557",
+          "updated": "2026-06-29T14:05:28.657406",
+          "started_at": "2026-06-26T04:04:52.000000",
           "linked_task_id": null,
           "relationship_type": null,
           "reopen_history": [
             {
-              "reopened_at": "2026-06-21T16:21:34.626975",
-              "update": "This feature doesnt work yet",
-              "previous_completed_at": "2026-06-21T15:20:00.000000"
-            },
-            {
-              "reopened_at": "2026-06-24T15:57:54.619515",
-              "update": "This feature does not work. it doesnt give me an option when i spawn a task",
-              "previous_completed_at": null
-            },
-            {
-              "reopened_at": "2026-06-25T13:00:28.698102",
-              "update": "When I drag a task from \"Solved\" to \"Assigment\" and spawn it as a new task with link to prvious and relationship \"Similar To\" I dont get the option to create a new \"future\" folder",
-              "previous_completed_at": "2026-06-24T13:26:51.668044Z"
+              "reopened_at": "2026-06-26T18:51:07.079856",
+              "update": "it only show intel cpus in mid range, high end filter option. how about amd?",
+              "previous_completed_at": "2026-06-26T04:15:00.000000"
             }
-          ],
-          "started_at": "2026-06-25T13:03:09.688501",
-          "updated_at": "2026-06-25T13:11:02.504136",
-          "completed_at": "2026-06-25T13:11:02.504136"
+          ]
         },
         {
-          "id": "T110",
-          "title": "in new task window add option to already assign future box to which it gets sent when solved",
-          "page": "Project Board",
+          "id": "T108",
+          "title": "in pop up window add listing image",
+          "page": "CPU",
           "category": "Frontend",
           "priority": "Medium",
-          "fix": "Added Future Folder selector to the new-task/create-task dialog. Users can now create a new Future folder or pick an existing one. The selected folder ID is stored on the task (future_folder_id) at creation/edit time. When the task is later marked Solved, it is automatically moved into that chosen Future folder via the existing task-folder API.",
+          "fix": "CPU popup image now displays. Root cause: local_image_path for CPU listings is stored as a bare filename (e.g. 'hdkkj_b41c0da5.jpg') with images physically located in SS-CRAWLER/images/cpu, while the popup/table code generated /images/<filename>. Flask's serve_image route only resolves folder-prefixed paths or via fallback search, so prefixed /images/cpu/<filename> is needed. Updated templates/cpu.html showListingHistory() and the table Image column renderer to prepend /images/cpu/ for bare filenames and preserve existing folder prefixes (e.g. facebook/). Backend /api/listing-details already returns local_image_path and image_url, and app.py serve_image route is unchanged.",
           "column": "talking",
-          "created": "2026-06-24T23:02:34.084836",
-          "updated": "2026-06-25T13:27:36.854083",
+          "created": "2026-06-24T22:45:51.377879",
+          "updated": "2026-06-29T14:05:30.753214",
           "linked_task_id": null,
           "relationship_type": null,
-          "started_at": "2026-06-25T13:03:09.772758",
-          "completed_at": "2026-06-25T13:16:24.970808"
-        },
-        {
-          "id": "T118",
-          "title": "or example SSD listing_id \"cgmebj\" description in datbase says \"Brand: Kioxia Model: Keg60Zns512G Condition: lietota\" . But it should get more info like <div id=\"msg_div_msg\"> <div style=\"float:right;margin:0px 0px 20px 20px;\" id=\"content_sys_div_msg\"></div>  Keg60Zns512G kioxia eg6 512gb nvme pcie gen4x4 m. 2 2230 ssd<br><br><table cellpadding=\"0\" cellspacing=\"0\" border=\"0\" width=\"100%\" class=\"options_list\"><tbody><tr><td width=\"50%\" valign=\"top\"><table border=\"0\" width=\"100%\" cellpadding=\"1\" cellspacing=\"0\"> \t\t\t\t<tbody><tr> \t\t\t\t\t<td height=\"20\" class=\"ads_opt_name\" width=\"30\" nowrap=\"\"> \t\t\t\t\t\tMarka: \t\t\t\t\t</td> \t\t\t\t\t<td class=\"ads_opt\" id=\"tdo_125\" nowrap=\"\"> \t\t\t\t\t\t<b>Kioxia</b> \t\t\t\t\t</td> \t\t\t\t</tr> \t\t\t\t<tr> \t\t\t\t\t<td height=\"20\" class=\"ads_opt_name\" width=\"30\" nowrap=\"\"> \t\t\t\t\t\tModelis: \t\t\t\t\t</td> \t\t\t\t\t<td class=\"ads_opt\" id=\"tdo_24\" nowrap=\"\"> \t\t\t\t\t\t<b>Keg60Zns512G</b> \t\t\t\t\t</td> \t\t\t\t</tr> \t\t\t\t<tr> \t\t\t\t\t<td height=\"20\" class=\"ads_opt_name\" width=\"30\" nowrap=\"\"> \t\t\t\t\t\tApjoms, Gb: \t\t\t\t\t</td> \t\t\t\t\t<td class=\"ads_opt\" id=\"tdo_42\" nowrap=\"\"> \t\t\t\t\t\t512 \t\t\t\t\t</td> \t\t\t\t</tr> \t\t\t\t<tr> \t\t\t\t\t<td id=\"pprice_td\" height=\"20\" class=\"ads_opt_name\" width=\"30\" nowrap=\"\"> \t\t\t\t\t\tStāvoklis: \t\t\t\t\t</td> \t\t\t\t\t<td class=\"ads_opt\" id=\"tdo_352\" nowrap=\"\"> \t\t\t\t\t\tlietota \t\t\t\t\t</td> \t\t\t\t</tr></tbody></table></td></tr></tbody></table><table style=\"border-top:1px #eee solid;padding-top:5px;margin-top:10px;\" cellpadding=\"1\" cellspacing=\"0\" border=\"0\" width=\"100%\"> \t\t\t\t<tbody><tr> \t\t\t\t\t<td valign=\"top\" height=\"20\" class=\"ads_opt_name_big\" width=\"30\" nowrap=\"\"> \t\t\t\t\t\tCena: \t\t\t\t\t</td> \t\t\t\t\t<td class=\"ads_price\" id=\"tdo_8\" valign=\"top\" nowrap=\"\"> \t\t\t\t\t\t75 € \t\t\t\t\t</td> \t\t\t\t</tr></tbody></table></div> be SSD scrapper doesnt seem to download images and attach image_url to listing database",
-          "page": "SSD",
-          "category": "Scraper",
-          "priority": "Medium",
-          "fix": "Updated src/scraper/ssd_parser.py to capture the full readable content of #msg_div_msg instead of only a one-line snippet. The new _extract_full_description() collects free-form text, all options-list tables (brand, model, capacity, condition) as \"Label: Value\" lines, and the price table. Nested tables are deduplicated and the original Latvian price text is preserved. Existing image_url extraction remains, so SSD listings now get both a complete description and a local image path via the scraper. Tested with the cgmebj sample HTML.",
-          "column": "talking",
-          "created": "2026-06-25T13:50:35.561357",
-          "updated": "2026-06-26T04:30:00.000000",
-          "started_at": "2026-06-26T04:04:52.000000",
-          "linked_task_id": null,
-          "relationship_type": null,
-          "completed_at": "2026-06-26T04:12:00.000000"
+          "started_at": "2026-06-25T12:53:43.651057",
+          "reopen_history": [
+            {
+              "reopened_at": "2026-06-25T12:50:24.627396",
+              "update": "There is still no image in pop up window",
+              "previous_completed_at": "2026-06-24T19:53:27.3337795Z"
+            },
+            {
+              "reopened_at": "2026-06-25T16:15:00.637380",
+              "update": "CPU page still doesnt have an pop up image",
+              "previous_completed_at": "2026-06-25T13:00:00"
+            },
+            {
+              "reopened_at": "2026-06-26T18:33:36.003922",
+              "update": "listings pop up window still doesnt show image",
+              "previous_completed_at": "2026-06-26T05:10:00.000000"
+            }
+          ]
         },
         {
           "id": "T130",
@@ -493,28 +354,584 @@
           "fix": "Fixed CPU widget drag-and-drop UX in templates/cpu.html: (1) Replaced native glitchy DnD with a placeholder-based drag preview and drag-mode toggle—dragging is now enabled only after clicking the '✋ Drag' button to avoid accidental drags. (2) Replaced ambiguous '⋮⋮' handles with a clear '☰' drag handle, hover highlight, and opacity/cursor feedback. (3) Added a '👁 Manage' button that opens a widget manager modal where each widget can be shown/hidden; hidden state persists to localStorage alongside pinned/saved state. (4) Added per-widget '🙈' hide buttons and persisted hidden/minimized states. (5) Reset now clears order, pinned, hidden, minimized, and drag-mode keys and reloads. Charts remain rendered after reorder because only the widget cards move, not their internal content.",
           "column": "talking",
           "created": "2026-06-26T19:42:59.959953",
-          "updated": "2026-06-26T17:57:05.347643+00:00",
+          "updated": "2026-06-27T12:58:54.395380",
           "linked_task_id": null,
           "relationship_type": null,
-          "started_at": "2026-06-26T17:50:08.006461+00:00",
-          "completed_at": "2026-06-26T17:57:05.347643+00:00"
+          "started_at": "2026-06-29T13:40:03.536273",
+          "reopen_history": [
+            {
+              "reopened_at": "2026-06-27T12:58:54.395380",
+              "update": "Dragging around doesnt really work. I cant put chart next to specific other chart. It just goes somewhere at the end of charts when I release mouse.",
+              "previous_completed_at": "2026-06-26T17:57:05.347643+00:00"
+            }
+          ],
+          "status": "talking",
+          "completed_at": "2026-06-29T13:47:27.082663",
+          "updated_at": "2026-06-29T14:43:35.000958"
         },
         {
-          "id": "T128",
-          "title": "in creating new task box why link to tasks is not a dropdown list?Why link to task search box doesnt work?",
+          "id": "T131",
+          "title": "filter should also filter out task tickets in future folder",
           "page": "Project Board",
-          "category": "",
+          "category": "Frontend",
           "priority": "Medium",
-          "fix": "Replaced broken link-to-task autocomplete with a working searchable <select> dropdown in the task modal. collectLinks() now reads task ID and relationship type from each link row, and both addTask() (POST) and saveEditedTask() (PUT) send linked_tasks to app.py. Tested end-to-end: created T132 linked to T002, persisted in project_board.json.",
-          "future_folder_id": "F-20260621160957-36ce9488",
+          "fix": "Added an 'Include future folders' checkbox to the Project Board filter bar (default unchecked). Updated taskMatchesFilters() so tasks with future_folder_id or folder_id are hidden from column task lists when the toggle is off. Existing column text search and dropdown filters continue to work for both regular and future-folder tasks when the toggle is on. Future column folders themselves remain visible regardless of the toggle so they can still be browsed directly.",
           "column": "talking",
-          "created": "2026-06-26T19:24:04.918077",
-          "updated": "2026-06-26T20:56:00",
+          "created": "2026-06-26T19:49:03.515836",
+          "updated": "2026-06-27T13:02:02.165094",
           "linked_task_id": null,
           "relationship_type": null,
-          "folder_id": "F-20260621160957-36ce9488",
-          "updated_at": "2026-06-26T19:24:05.247713",
-          "started_at": "2026-06-26T17:50:08.006461+00:00"
+          "started_at": "2026-06-29T13:48:05.447373",
+          "reopen_history": [
+            {
+              "reopened_at": "2026-06-27T13:02:02.165094",
+              "update": "Once I change the filter, it should not close all the folder. It should keep the ones that were open open, and the ones that were closed, keep them closed.",
+              "previous_completed_at": "2026-06-26T20:55:00"
+            }
+          ],
+          "status": "talking",
+          "completed_at": "2026-06-29T13:49:13.373593",
+          "updated_at": "2026-06-29T14:43:35.000958"
+        },
+        {
+          "id": "T133",
+          "title": "Do the same fix fo this page as you did in T125",
+          "page": "GPU",
+          "category": "Frontend",
+          "priority": "Medium",
+          "fix": "",
+          "future_folder_id": "F-20260626184910-ffd72a21",
+          "column": "talking",
+          "created": "2026-06-27T13:09:27.058766",
+          "updated": "2026-06-27T13:09:27.392186",
+          "linked_tasks": [
+            {
+              "task_id": "T125",
+              "relationship_type": "linked"
+            }
+          ],
+          "linked_task_id": "T125",
+          "relationship_type": "linked",
+          "folder_id": "F-20260626184910-ffd72a21",
+          "updated_at": "2026-06-29T14:43:35.000958",
+          "status": "talking",
+          "started_at": "2026-06-29T13:50:09.864712",
+          "completed_at": "2026-06-29T14:36:11.749113"
+        },
+        {
+          "id": "T019",
+          "title": "When I pick DDR Type and Capacity in the filter, all listings disappear in computer listing page",
+          "page": "Computers",
+          "category": "Frontend",
+          "priority": "Medium",
+          "fix": "Fixed computers.html: Updated applyComponentFilters() function to remove the 'else { show = false }' clauses for ramCapacity and ramDdr filters. Previously, if a listing didn't have RAM info explicitly stated, it would be hidden. Now listings without RAM info are allowed to pass through (only filtered if they have info that doesn't match criteria). This prevents all listings from disappearing when DDR/Capacity filters are selected.",
+          "column": "talking",
+          "created": "2026-06-18T15:58:10.951097",
+          "updated": "2026-06-27T14:23:49.435098",
+          "started_at": "2026-06-29T14:36:59.193986",
+          "reopen_history": [
+            {
+              "reopened_at": "2026-06-27T14:23:49.435098",
+              "update": "DDR type filter doesnt work. Capacity should offer to pick a certain size and not the \"min\"",
+              "previous_completed_at": "2026-06-18T16:40:00"
+            }
+          ],
+          "status": "talking",
+          "updated_at": "2026-06-29T14:43:35.000958",
+          "completed_at": "2026-06-29T14:39:28.213652"
+        },
+        {
+          "id": "T052",
+          "title": "in RAM section add option to calculate avg price based on capacity and type from all ram model listings we have",
+          "page": "PC Builder",
+          "category": "Backend",
+          "priority": "Medium",
+          "fix": "",
+          "linked_task_id": null,
+          "relationship_type": null,
+          "column": "talking",
+          "created": "2026-06-19T10:17:45.801692",
+          "updated": "2026-06-27T15:20:08.197783",
+          "status": "talking",
+          "started_at": "2026-06-29T14:39:33.725456",
+          "updated_at": "2026-06-29T14:46:35.876184",
+          "completed_at": "2026-06-29T14:46:35.876184"
+        },
+        {
+          "id": "T054",
+          "title": "in \"PSU\" section add an option to pick you wattage and alculate avg price from our PSU listings with that wattage",
+          "page": "PC Builder",
+          "category": "Backend",
+          "priority": "Medium",
+          "fix": "Added PSU wattage filter to PC Builder: Dropdown with wattage options (400W-1200W+), filterPSU() calculates avg price and count, shows info panel, filters PSU dropdown, clearBuild() resets wattage filter",
+          "linked_task_id": null,
+          "relationship_type": null,
+          "column": "talking",
+          "created": "2026-06-19T10:26:39.777276",
+          "updated": "2026-06-27T15:17:50.748950",
+          "started_at": "2026-06-29T14:46:35.876184",
+          "reopen_history": [
+            {
+              "reopened_at": "2026-06-27T15:13:43.607923",
+              "update": "Make the dropdown more destinct in dark mode. Also If a particular PSU is not selected, use the avg price of all the PSU options of that wattage in Total Esimate box",
+              "previous_completed_at": "2026-06-19T15:50:00"
+            }
+          ],
+          "code_snippet": "<select id=\"psu-wattage-filter\" onchange=\"filterPSU()\" style=\"flex: 1; padding: 0.4rem; border: 1px solid var(--border-color); border-radius: 4px; background: var(--card-bg); color: var(--text-primary);\">\n                                <option value=\"\">Any</option>\n                                <option value=\"400\">400W</option>\n                                <option value=\"500\">500W</option>\n                                <option value=\"550\">550W</option>\n                                <option value=\"600\">600W</option>\n                                <option value=\"650\">650W</option>\n                                <option value=\"750\">750W</option>\n                                <option value=\"850\">850W</option>\n                                <option value=\"1000\">1000W</option>\n                                <option value=\"1200\">1200W+</option>\n                            </select>",
+          "status": "talking",
+          "updated_at": "2026-06-29T14:55:31.754860",
+          "completed_at": "2026-06-29T14:55:31.754860"
+        },
+        {
+          "id": "T059",
+          "title": "Case pop up window doesnt work",
+          "page": "Cases",
+          "category": "Frontend",
+          "priority": "Medium",
+          "fix": "Added image popup to Case listings: Added thumbnail with onclick handler, implemented showImageModal() function, exposed to global scope",
+          "linked_task_id": null,
+          "relationship_type": null,
+          "column": "talking",
+          "created": "2026-06-19T11:27:28.871859",
+          "updated": "2026-06-27T14:50:57.425258",
+          "started_at": "2026-06-29T14:55:31.754860",
+          "reopen_history": [
+            {
+              "reopened_at": "2026-06-27T14:31:50.443234",
+              "update": "I think you did not understand the task. Pop up window should show detailed information about the listings.\n\nSource, Description, image, location, data, price, historical listing price",
+              "previous_completed_at": "2026-06-19T16:08:00"
+            }
+          ],
+          "status": "talking",
+          "updated_at": "2026-06-29T14:57:29.974438",
+          "completed_at": "2026-06-29T14:57:29.974438"
+        },
+        {
+          "id": "T060",
+          "title": "Lsting window doesnt pop up when you click on it",
+          "page": "PSU",
+          "category": "Frontend",
+          "priority": "Medium",
+          "fix": "Added image popup to PSU listings: Added thumbnail with onclick handler, implemented showImageModal() function",
+          "linked_task_id": null,
+          "relationship_type": null,
+          "column": "talking",
+          "created": "2026-06-19T11:30:37.340195",
+          "updated": "2026-06-27T14:51:48.173637",
+          "started_at": "2026-06-29T14:57:29.974438",
+          "reopen_history": [
+            {
+              "reopened_at": "2026-06-27T14:51:48.173637",
+              "update": "Still doesnt work. I think you did not understand the task. Pop up window should show detailed information about the listings.\n\nSource, Description, image, location, data, price, historical listing price, prices of PSUs listings of other similiar wattage PSUs",
+              "previous_completed_at": "2026-06-19T16:20:00"
+            }
+          ],
+          "status": "talking",
+          "updated_at": "2026-06-29T15:02:44.752668",
+          "completed_at": "2026-06-29T15:02:44.752668"
+        },
+        {
+          "id": "T072",
+          "title": "listings list should show also SSD capacity tag if it has been detected",
+          "page": "Computers",
+          "category": "Frontend",
+          "priority": "Medium",
+          "fix": "SSD capacity tag already implemented in computers.html: badge-ssd style exists, components.push shows SSD: GB when detected",
+          "column": "talking",
+          "created": "2026-06-19T15:05:50.694684",
+          "updated": "2026-06-27T14:27:21.478027",
+          "linked_task_id": null,
+          "relationship_type": null,
+          "started_at": "2026-06-29T15:02:44.752668",
+          "reopen_history": [
+            {
+              "reopened_at": "2026-06-27T14:27:21.478027",
+              "update": "None of the listings in the list show SSD badge yet when I open pop up window it shows SSD was detected, even generic ones",
+              "previous_completed_at": "2026-06-19T16:30:00"
+            }
+          ],
+          "status": "talking",
+          "updated_at": "2026-06-29T15:06:10.237427",
+          "completed_at": "2026-06-29T15:06:10.237427"
+        },
+        {
+          "id": "T075",
+          "title": "listing list is showing \"N/A\" in DATE column",
+          "page": "Computers",
+          "category": "Backend",
+          "priority": "Medium",
+          "fix": "",
+          "column": "talking",
+          "created": "2026-06-19T15:42:14.372800",
+          "updated": "2026-06-27T15:21:43.977493",
+          "linked_task_id": null,
+          "relationship_type": null,
+          "status": "in-progress",
+          "started_at": "2026-06-29T15:06:10.237427",
+          "updated_at": "2026-06-29T15:06:10.237427",
+          "movedAt": "2026-06-29T15:34:20.236085"
+        },
+        {
+          "id": "T077",
+          "title": "Create a python code that checks how many listings dont have an image. Once downloader is going trough listings that doesnt have an image, download the image only for those listings that description matches database for ss.com",
+          "page": "",
+          "category": "Scraper",
+          "priority": "Medium",
+          "fix": "Created src/utils/download_missing_matched_images.py. Counts ss.com listings without local_image_path, filters to DB-matched listings, downloads images via ImageDownloader, and updates listings.local_image_path.",
+          "column": "talking",
+          "created": "2026-06-19T15:46:51.069850",
+          "updated": "2026-06-27T15:03:34.969223",
+          "linked_task_id": "T116",
+          "relationship_type": "similar_to",
+          "linked_tasks": [
+            {
+              "task_id": "T116",
+              "relationship_type": "similar_to"
+            }
+          ],
+          "started_at": "2026-06-24T13:02:59.533870Z",
+          "future_folder_id": "F-20260625125926-3cb29754",
+          "folder_id": "F-20260625125926-3cb29754",
+          "reopen_history": [
+            {
+              "reopened_at": "2026-06-27T15:03:34.969223",
+              "update": "It doesnt seem to know how to download images for monitors.\n\nPS G:\\Github\\SS-WEB-SCRAPPER\\SS-CRAWLER> python  src/utils/download_missing_matched_images.py -monitors\nC:\\Users\\goldm\\AppData\\Local\\Programs\\Python\\Python310\\lib\\site-packages\\requests\\__init__.py:109: RequestsDependencyWarning: urllib3 (2.6.3) or chardet (7.4.3)/charset_normalizer (2.1.1) doesn't match a supported version!\n  warnings.warn(\nusage: download_missing_matched_images.py [-h] [--dry-run] [--limit LIMIT]  \ndownload_missing_matched_images.py: error: unrecognized arguments: -monitors\nPS G:\\Github\\SS-WEB-SCRAPPER\\SS-CRAWLER> ^C\nPS G:\\Github\\SS-WEB-SCRAPPER\\SS-CRAWLER>",
+              "previous_completed_at": "2026-06-24T13:22:13.895085Z"
+            }
+          ],
+          "movedAt": "2026-06-29T15:35:25.254745"
+        },
+        {
+          "id": "T107",
+          "title": "when flag a listing in pop up window it doesnt remove the listing from page",
+          "page": "Motherboards",
+          "category": "Backend",
+          "priority": "Medium",
+          "fix": "Updated motherboards.html: On successful flag via submitFlag(), the flagged listing is now removed from window.allListings and renderListings(window.allListings) is called to refresh the table immediately without a full page reload.",
+          "column": "talking",
+          "created": "2026-06-24T22:30:09.516769",
+          "updated": "2026-06-27T15:10:41.283371",
+          "linked_task_id": null,
+          "relationship_type": null,
+          "started_at": "2026-06-24T19:32:47.208836Z",
+          "reopen_history": [
+            {
+              "reopened_at": "2026-06-27T15:10:41.283371",
+              "update": "The flagged listings remains in the list after flag still. Now When I flag a listing, all of the listings disappear and I need tor reload the page. Afterwards all of the listings including the one I flagged are still there. I checked the admin page and there I see the flagged listing.",
+              "previous_completed_at": "2026-06-24T19:35:20.628Z"
+            }
+          ],
+          "movedAt": "2026-06-29T16:08:44.933954"
+        },
+        {
+          "id": "T115",
+          "title": "in pop up window add listing image",
+          "page": "Lenses",
+          "category": "",
+          "priority": "Medium",
+          "fix": "Updated templates/lenses.html showListingDetail() to render the listing image in the detail popup. Mirrors the robust image pattern from motherboards.html and gpu.html: normalizes local_image_path backslashes, prefers /images/<local_image_path> over image_url, and only renders the image column when a URL exists. Clicking the image opens the existing showImageModal() lightbox. The API already exposes image_url and local_image_path via /api/listing-details, so no backend changes were required.",
+          "column": "talking",
+          "created": "2026-06-25T12:52:21.146092",
+          "updated": "2026-06-27T14:11:25.921738",
+          "linked_task_id": null,
+          "relationship_type": null,
+          "started_at": "2026-06-25T12:53:43.729263",
+          "reopen_history": [
+            {
+              "reopened_at": "2026-06-27T14:11:25.921738",
+              "update": "You added the option to click on a image and lightbox appears, however, I need the iamge to appear in the pop up box when you click a listing to open. In this box, it should be visable.",
+              "previous_completed_at": "2026-06-25T13:00:00"
+            }
+          ],
+          "movedAt": "2026-06-29T16:11:06.799938"
+        },
+        {
+          "id": "T118",
+          "title": "or example SSD listing_id \"cgmebj\" description in datbase says \"Brand: Kioxia Model: Keg60Zns512G Condition: lietota\" . But it should get more info like <div id=\"msg_div_msg\"> <div style=\"float:right;margin:0px 0px 20px 20px;\" id=\"content_sys_div_msg\"></div>  Keg60Zns512G kioxia eg6 512gb nvme pcie gen4x4 m. 2 2230 ssd<br><br><table cellpadding=\"0\" cellspacing=\"0\" border=\"0\" width=\"100%\" class=\"options_list\"><tbody><tr><td width=\"50%\" valign=\"top\"><table border=\"0\" width=\"100%\" cellpadding=\"1\" cellspacing=\"0\"> \t\t\t\t<tbody><tr> \t\t\t\t\t<td height=\"20\" class=\"ads_opt_name\" width=\"30\" nowrap=\"\"> \t\t\t\t\t\tMarka: \t\t\t\t\t</td> \t\t\t\t\t<td class=\"ads_opt\" id=\"tdo_125\" nowrap=\"\"> \t\t\t\t\t\t<b>Kioxia</b> \t\t\t\t\t</td> \t\t\t\t</tr> \t\t\t\t<tr> \t\t\t\t\t<td height=\"20\" class=\"ads_opt_name\" width=\"30\" nowrap=\"\"> \t\t\t\t\t\tModelis: \t\t\t\t\t</td> \t\t\t\t\t<td class=\"ads_opt\" id=\"tdo_24\" nowrap=\"\"> \t\t\t\t\t\t<b>Keg60Zns512G</b> \t\t\t\t\t</td> \t\t\t\t</tr> \t\t\t\t<tr> \t\t\t\t\t<td height=\"20\" class=\"ads_opt_name\" width=\"30\" nowrap=\"\"> \t\t\t\t\t\tApjoms, Gb: \t\t\t\t\t</td> \t\t\t\t\t<td class=\"ads_opt\" id=\"tdo_42\" nowrap=\"\"> \t\t\t\t\t\t512 \t\t\t\t\t</td> \t\t\t\t</tr> \t\t\t\t<tr> \t\t\t\t\t<td id=\"pprice_td\" height=\"20\" class=\"ads_opt_name\" width=\"30\" nowrap=\"\"> \t\t\t\t\t\tStāvoklis: \t\t\t\t\t</td> \t\t\t\t\t<td class=\"ads_opt\" id=\"tdo_352\" nowrap=\"\"> \t\t\t\t\t\tlietota \t\t\t\t\t</td> \t\t\t\t</tr></tbody></table></td></tr></tbody></table><table style=\"border-top:1px #eee solid;padding-top:5px;margin-top:10px;\" cellpadding=\"1\" cellspacing=\"0\" border=\"0\" width=\"100%\"> \t\t\t\t<tbody><tr> \t\t\t\t\t<td valign=\"top\" height=\"20\" class=\"ads_opt_name_big\" width=\"30\" nowrap=\"\"> \t\t\t\t\t\tCena: \t\t\t\t\t</td> \t\t\t\t\t<td class=\"ads_price\" id=\"tdo_8\" valign=\"top\" nowrap=\"\"> \t\t\t\t\t\t75 € \t\t\t\t\t</td> \t\t\t\t</tr></tbody></table></div> be SSD scrapper doesnt seem to download images and attach image_url to listing database",
+          "page": "SSD",
+          "category": "Scraper",
+          "priority": "Medium",
+          "fix": "Updated src/scraper/ssd_parser.py to capture the full readable content of #msg_div_msg instead of only a one-line snippet. The new _extract_full_description() collects free-form text, all options-list tables (brand, model, capacity, condition) as \"Label: Value\" lines, and the price table. Nested tables are deduplicated and the original Latvian price text is preserved. Existing image_url extraction remains, so SSD listings now get both a complete description and a local image path via the scraper. Tested with the cgmebj sample HTML.",
+          "column": "talking",
+          "created": "2026-06-25T13:50:35.561357",
+          "updated": "2026-06-27T13:46:17.787375",
+          "started_at": "2026-06-26T04:04:52.000000",
+          "linked_task_id": null,
+          "relationship_type": null,
+          "reopen_history": [
+            {
+              "reopened_at": "2026-06-27T13:46:17.787375",
+              "update": "scrapped description should be clenaener. Now it includes all the html tags like <td>,<tr> etc.",
+              "previous_completed_at": "2026-06-26T04:12:00.000000"
+            }
+          ],
+          "movedAt": "2026-06-29T16:15:41.245156"
+        },
+        {
+          "id": "T134",
+          "title": "When I add a new task from future box to assigment, spawn a new task with the dragged tasked linked",
+          "page": "Project Board",
+          "category": "Frontend",
+          "priority": "Medium",
+          "fix": "",
+          "column": "talking",
+          "created": "2026-06-27T13:10:34.347914",
+          "updated": "2026-06-27T13:10:34.347914",
+          "linked_task_id": null,
+          "relationship_type": null,
+          "movedAt": "2026-06-29T16:18:02.329941"
+        },
+        {
+          "id": "T136",
+          "title": "Why doesnt the scraper capture \"date_posted\"?",
+          "page": "SSD",
+          "category": "Scraper",
+          "priority": "Medium",
+          "fix": "",
+          "code_snippet": "<td class=\"msg_footer\" align=\"right\">Datums: 17.06.2026 01:15</td>",
+          "column": "talking",
+          "created": "2026-06-27T13:48:59.522419",
+          "updated": "2026-06-27T13:48:59.522419",
+          "linked_task_id": null,
+          "relationship_type": null,
+          "movedAt": "2026-06-29T16:20:31.857025"
+        },
+        {
+          "id": "T137",
+          "title": "To filter \"Capacity\" add 8TB ,16TB optons",
+          "page": "SSD",
+          "category": "Frontend",
+          "priority": "Medium",
+          "fix": "",
+          "column": "talking",
+          "created": "2026-06-27T13:53:55.981230",
+          "updated": "2026-06-27T13:53:55.981230",
+          "linked_task_id": null,
+          "relationship_type": null,
+          "movedAt": "2026-06-29T16:25:02.472118"
+        },
+        {
+          "id": "T138",
+          "title": "make the boxes in \"Average Price by Capacity Range\" smaller so all sizes fit in the same row",
+          "page": "SSD",
+          "category": "Frontend",
+          "priority": "Medium",
+          "fix": "",
+          "column": "progress",
+          "created": "2026-06-27T14:02:22.540747",
+          "updated": "2026-06-27T14:02:22.540747",
+          "linked_task_id": null,
+          "relationship_type": null,
+          "movedAt": "2026-06-29T16:27:28.579976"
+        },
+        {
+          "id": "T139",
+          "title": "In the pop up box you can make the spacing smaller between text boxes next to the image",
+          "page": "SSD",
+          "category": "Frontend",
+          "priority": "Medium",
+          "fix": "",
+          "code_snippet": "<div>\n                    <h4 style=\"color: var(--text-color); margin-bottom: 1rem;\">💾 SSD Information</h4>\n                    <table style=\"width: 100%; color: var(--text-color);\">\n                        <tbody><tr><td><strong>Brand:</strong></td><td>WD</td></tr>\n                        <tr><td><strong>Model:</strong></td><td>SN850X</td></tr>\n                        <tr><td><strong>Capacity:</strong></td><td>2000GB</td></tr>\n                        <tr><td><strong>Interface:</strong></td><td>x4 PCIe 4.0/NVMe</td></tr>\n                        <tr><td><strong>Form Factor:</strong></td><td>M.2</td></tr>\n                        <tr><td><strong>Read Speed:</strong></td><td>7300 MB/s</td></tr>\n                        <tr><td><strong>Write Speed:</strong></td><td>N/A</td></tr>\n                        <tr><td><strong>NAND Type:</strong></td><td>TLC</td></tr>\n                        <tr><td><strong>Controller:</strong></td><td>WD Proprietary</td></tr>\n                    </tbody></table>\n                    \n                    <h4 style=\"color: var(--text-color); margin: 1.5rem 0 1rem 0;\">💰 Pricing</h4>\n                    <table style=\"width: 100%; color: var(--text-color);\">\n                        <tbody><tr><td><strong>Current Price:</strong></td><td>€240.00</td></tr>\n                        <tr><td><strong>Cost per GB:</strong></td><td>€0.120</td></tr>\n                        <tr><td><strong>Confidence Score:</strong></td><td>100%</td></tr>\n                    </tbody></table>\n                </div>",
+          "column": "talking",
+          "created": "2026-06-27T14:05:44.103933",
+          "updated": "2026-06-29T13:37:14.290995+00:00",
+          "linked_task_id": null,
+          "relationship_type": null,
+          "movedAt": "2026-06-29T16:27:28.579976"
+        },
+        {
+          "id": "T140",
+          "title": "add admin functionality of \"Show Listing ID in Popup\"",
+          "page": "Lenses",
+          "category": "Frontend",
+          "priority": "Medium",
+          "fix": "Added an admin toggle \"Show Listing ID in Popup\" to lenses.html. The toggle is persisted in localStorage and shows/hides a Listing ID field inside the shared listing-detail popup via the .admin-only.listing-id-field CSS class.",
+          "future_folder_id": "F-20260627141412-3d3ecd45",
+          "column": "talking",
+          "created": "2026-06-27T14:14:13.247778",
+          "updated": "2026-06-29T13:40:36.122051+00:00",
+          "linked_task_id": null,
+          "relationship_type": null,
+          "folder_id": "F-20260627141412-3d3ecd45",
+          "updated_at": "2026-06-27T14:14:13.570250",
+          "movedAt": "2026-06-29T16:28:06.026545"
+        },
+        {
+          "id": "T141",
+          "title": "VRAM filter deosnt work. IT should also offer an optio to pick certain size, however here I like the min approach. Make it a toggle between two",
+          "page": "GPU",
+          "category": "UI/UX",
+          "priority": "Medium",
+          "fix": "Added a VRAM mode toggle to gpu.html (Exact size / ≥ selected) and updated /api/gpus in app.py to honor vram_mode=exact|min.",
+          "column": "talking",
+          "created": "2026-06-27T14:29:31.077057",
+          "updated": "2026-06-29T13:44:29.574555+00:00",
+          "linked_task_id": null,
+          "relationship_type": null,
+          "started_at": "2026-06-29T13:37:14.290995+00:00"
+        },
+        {
+          "id": "T143",
+          "title": "instead of future tag, it should say name of the folder on the tasks",
+          "page": "Project Board",
+          "category": "Frontend",
+          "priority": "Medium",
+          "fix": "Updated project_board.html to show the folder name as a tag label instead of the literal \"future\" column id.",
+          "column": "talking",
+          "created": "2026-06-27T15:06:37.850801",
+          "updated": "2026-06-29T13:45:37.622851+00:00",
+          "linked_task_id": null,
+          "relationship_type": null,
+          "started_at": "2026-06-29T13:44:29.574555+00:00"
+        },
+        {
+          "id": "T145",
+          "title": "why scrapper only downloads the small image for ss.com? atleast in the pop up window I inly see the small image",
+          "page": "Computers",
+          "category": "Scraper",
+          "priority": "Medium",
+          "fix": "",
+          "column": "talking",
+          "created": "2026-06-27T22:54:10.376466",
+          "updated": "2026-06-29T17:43:00",
+          "linked_task_id": null,
+          "relationship_type": null,
+          "linked_tasks": []
+        },
+        {
+          "id": "T147",
+          "title": "why listing \"hfcxk\" in database shows matched motherboard ID 7407, but on website pop up window detected compunents it shows \" Generic Motherboard for Intel Core i5-9500\" it should show what motherboard was matched.",
+          "page": "Computers",
+          "category": "Frontend",
+          "priority": "Medium",
+          "fix": "",
+          "column": "talking",
+          "created": "2026-06-27T23:00:49.007553",
+          "updated": "2026-06-29T17:46:00",
+          "linked_task_id": null,
+          "relationship_type": null
+        },
+        {
+          "id": "T151",
+          "title": "on some listings when you click it shows \"Error: 'NoneType' object has no attribute 'lower'\"",
+          "page": "Cameras",
+          "category": "Frontend",
+          "priority": "Medium",
+          "fix": "",
+          "column": "talking",
+          "created": "2026-06-27T23:17:39.193253",
+          "updated": "2026-06-29T17:49:00",
+          "linked_task_id": null,
+          "relationship_type": null
+        },
+        {
+          "id": "T158",
+          "title": "Add prebuild tag to listings in list",
+          "page": "Computers",
+          "category": "Frontend",
+          "priority": "Medium",
+          "fix": "",
+          "column": "talking",
+          "created": "2026-06-27T23:57:00.702723",
+          "updated": "2026-06-29T17:50:00",
+          "linked_task_id": null,
+          "relationship_type": null,
+          "linked_tasks": []
+        },
+        {
+          "id": "T156",
+          "title": "Add option to search GPU CPU Motherboard SSD PSU Case RAM by typing in the select box",
+          "page": "PC Builder",
+          "category": "Frontend",
+          "priority": "Medium",
+          "fix": "",
+          "column": "talking",
+          "created": "2026-06-27T23:35:08.989234",
+          "updated": "2026-06-29T17:52:00",
+          "linked_task_id": null,
+          "relationship_type": null
+        },
+        {
+          "id": "T155",
+          "title": "why doesnt this dropbox fit in ram box?",
+          "page": "PC Builder",
+          "category": "Frontend",
+          "priority": "Medium",
+          "fix": "",
+          "code_snippet": "<select id=\"ram-select\" class=\"component-select\" onchange=\"selectComponent('ram', this.value)\"><option value=\"\">Select RAM...</option><option value=\"72\" data-name=\"Corsair Vengeance RGB 192 GB\" data-capacity=\"192\" data-type=\"DDR5\" data-speed=\"DDR5-5200\">Corsair Vengeance RGB 192 GB (192GB DDR5 DDR5-5200MHz) - €1600</option><option value=\"23\" data-name=\"G.Skill Trident Z5 Neo RGB 64 GB\" data-capacity=\"64\" data-type=\"DDR5\" data-speed=\"DDR5-6000\">G.Skill Trident Z5 Neo RGB 64 GB (64GB DDR5 DDR5-6000MHz) - €1000</option><option value=\"1365\" data-name=\"ADATA XPG Lancer Blade 32 GB\" data-capacity=\"32\" data-type=\"DDR5\" data-speed=\"DDR5-6400\">ADATA XPG Lancer Blade 32 GB (32GB DDR5 DDR5-6400MHz) - €520</option><option value=\"20\" data-name=\"Crucial Pro 64 GB\" data-capacity=\"64\" data-type=\"DDR5\" data-speed=\"DDR5-6000\">Crucial Pro 64 GB (64GB DDR5 DDR5-6000MHz) - €520</option><option value=\"741\" data-name=\"Kingston FURY Beast RGB 64 GB\" data-capacity=\"64\" data-type=\"DDR4\" data-speed=\"DDR4-3600\">Kingston FURY Beast RGB 64 GB (64GB DDR4 DDR4-3600MHz) - €500</option><option value=\"36\" data-name=\"Patriot Viper Venom 32 GB\" data-capacity=\"32\" data-type=\"DDR5\" data-speed=\"DDR5-6000\">Patriot Viper Venom 32 GB (32GB DDR5 DDR5-6000MHz) - €395</option><option value=\"1895\" data-name=\"ADATA ADATA 32GB\" data-capacity=\"32\" data-type=\"DDR4\" data-speed=\"DDR4-3000\">ADATA ADATA 32GB (32GB DDR4 DDR4-3000MHz) - €380</option><option value=\"1\" data-name=\"Corsair Vengeance RGB 32 GB\" data-capacity=\"32\" data-type=\"DDR5\" data-speed=\"DDR5-6000\">Corsair Vengeance RGB 32 GB (32GB DDR5 DDR5-6000MHz) - €380</option><option value=\"303\" data-name=\"GOODRAM IRDM 32 GB\" data-capacity=\"32\" data-type=\"DDR5\" data-speed=\"DDR5-6000\">GOODRAM IRDM 32 GB (32GB DDR5 DDR5-6000MHz) - €380</option><option value=\"16\" data-name=\"Kingston FURY Beast 32 GB\" data-capacity=\"32\" data-type=\"DDR5\" data-speed=\"DDR5-6000\">Kingston FURY Beast 32 GB (32GB DDR5 DDR5-6000MHz) - €375</option><option value=\"3813\" data-name=\"Kingston T1 8 GB\" data-capacity=\"8\" data-type=\"DDR3\" data-speed=\"DDR3-1866\">Kingston T1 8 GB (8GB DDR3 DDR3-1866MHz) - €360</option><option value=\"177\" data-name=\"G.Skill Ripjaws S5 32 GB\" data-capacity=\"32\" data-type=\"DDR5\" data-speed=\"DDR5-6400\">G.Skill Ripjaws S5 32 GB (32GB DDR5 DDR5-6400MHz) - €350</option><option value=\"1007\" data-name=\"ADATA XPG Lancer Blade RGB 32 GB\" data-capacity=\"32\" data-type=\"DDR5\" data-speed=\"DDR5-6400\">ADATA XPG Lancer Blade RGB 32 GB (32GB DDR5 DDR5-6400MHz) - €300</option><option value=\"10\" data-name=\"Corsair Vengeance 32 GB\" data-capacity=\"32\" data-type=\"DDR5\" data-speed=\"DDR5-6000\">Corsair Vengeance 32 GB (32GB DDR5 DDR5-6000MHz) - €300</option><option value=\"107\" data-name=\"Kingston FURY Beast 32 GB\" data-capacity=\"32\" data-type=\"DDR5\" data-speed=\"DDR5-5600\">Kingston FURY Beast 32 GB (32GB DDR5 DDR5-5600MHz) - €265</option><option value=\"83\" data-name=\"G.Skill Trident Z RGB 32 GB\" data-capacity=\"32\" data-type=\"DDR4\" data-speed=\"DDR4-3600\">G.Skill Trident Z RGB 32 GB (32GB DDR4 DDR4-3600MHz) - €210</option><option value=\"896\" data-name=\"Kingston Fury Renegade RGB 16 GB\" data-capacity=\"16\" data-type=\"DDR5\" data-speed=\"DDR5-6400\">Kingston Fury Renegade RGB 16 GB (16GB DDR5 DDR5-6400MHz) - €200</option><option value=\"49\" data-name=\"G.Skill Ripjaws V 32 GB\" data-capacity=\"32\" data-type=\"DDR4\" data-speed=\"DDR4-3200\">G.Skill Ripjaws V 32 GB (32GB DDR4 DDR4-3200MHz) - €200</option><option value=\"526\" data-name=\"Crucial CT32G56C46U5 32 GB\" data-capacity=\"32\" data-type=\"DDR5\" data-speed=\"DDR5-5600\">Crucial CT32G56C46U5 32 GB (32GB DDR5 DDR5-5600MHz) - €180</option><option value=\"359\" data-name=\"G.Skill Aegis 5 16 GB\" data-capacity=\"16\" data-type=\"DDR5\" data-speed=\"DDR5-6000\">G.Skill Aegis 5 16 GB (16GB DDR5 DDR5-6000MHz) - €150</option><option value=\"60\" data-name=\"Kingston FURY Beast 16 GB\" data-capacity=\"16\" data-type=\"DDR5\" data-speed=\"DDR5-6000\">Kingston FURY Beast 16 GB (16GB DDR5 DDR5-6000MHz) - €145</option><option value=\"710\" data-name=\"Corsair Vengeance RGB RS 16 GB\" data-capacity=\"16\" data-type=\"DDR4\" data-speed=\"DDR4-3600\">Corsair Vengeance RGB RS 16 GB (16GB DDR4 DDR4-3600MHz) - €140</option><option value=\"5\" data-name=\"Corsair Vengeance LPX 16 GB\" data-capacity=\"16\" data-type=\"DDR4\" data-speed=\"DDR4-3200\">Corsair Vengeance LPX 16 GB (16GB DDR4 DDR4-3200MHz) - €115</option><option value=\"4034\" data-name=\"Kingston 1500 4 GB\" data-capacity=\"4\" data-type=\"DDR3\" data-speed=\"DDR3-1600\">Kingston 1500 4 GB (4GB DDR3 DDR3-1600MHz) - €96.67</option><option value=\"686\" data-name=\"Corsair CORSAIR Vengeance LPX 16GB\" data-capacity=\"16\" data-type=\"DDR4\" data-speed=\"DDR4-3000\">Corsair CORSAIR Vengeance LPX 16GB (16GB DDR4 DDR4-3000MHz) - €95</option><option value=\"435\" data-name=\"SK Hynix HMAA2GU6CJR8N-XN 16 GB\" data-capacity=\"16\" data-type=\"DDR4\" data-speed=\"DDR4-3200\">SK Hynix HMAA2GU6CJR8N-XN 16 GB (16GB DDR4 DDR4-3200MHz) - €85</option><option value=\"347\" data-name=\"Corsair Vengeance LPX 16 GB\" data-capacity=\"16\" data-type=\"DDR4\" data-speed=\"DDR4-2666\">Corsair Vengeance LPX 16 GB (16GB DDR4 DDR4-2666MHz) - €75</option><option value=\"401\" data-name=\"Corsair Vengeance LPX 32 GB\" data-capacity=\"32\" data-type=\"DDR4\" data-speed=\"DDR4-2133\">Corsair Vengeance LPX 32 GB (32GB DDR4 DDR4-2133MHz) - €70</option><option value=\"402\" data-name=\"Corsair Vengeance RGB RS 32 GB\" data-capacity=\"32\" data-type=\"DDR4\" data-speed=\"DDR4-3200\">Corsair Vengeance RGB RS 32 GB (32GB DDR4 DDR4-3200MHz) - €45</option><option value=\"1369\" data-name=\"Samsung M391A2K43BB1-CPB 16 GB\" data-capacity=\"16\" data-type=\"DDR4\" data-speed=\"DDR4-2133\">Samsung M391A2K43BB1-CPB 16 GB (16GB DDR4 DDR4-2133MHz) - €40</option><option value=\"163\" data-name=\"Samsung M378A1K43CB2-CRC 8 GB\" data-capacity=\"8\" data-type=\"DDR4\" data-speed=\"DDR4-2400\">Samsung M378A1K43CB2-CRC 8 GB (8GB DDR4 DDR4-2400MHz) - €37.5</option><option value=\"371\" data-name=\"Kingston ValueRAM 8 GB\" data-capacity=\"8\" data-type=\"DDR4\" data-speed=\"DDR4-3200\">Kingston ValueRAM 8 GB (8GB DDR4 DDR4-3200MHz) - €35</option><option value=\"4855\" data-name=\"Crucial CT3K8G3ERSLD8160B 24 GB\" data-capacity=\"24\" data-type=\"DDR3\" data-speed=\"DDR3-1600\">Crucial CT3K8G3ERSLD8160B 24 GB (24GB DDR3 DDR3-1600MHz) - €25</option><option value=\"365\" data-name=\"SK Hynix HMA81GU6MFR8N-UH 8 GB\" data-capacity=\"8\" data-type=\"DDR4\" data-speed=\"DDR4-2400\">SK Hynix HMA81GU6MFR8N-UH 8 GB (8GB DDR4 DDR4-2400MHz) - €25</option><option value=\"4359\" data-name=\"Crucial Ballistix 16 GB\" data-capacity=\"16\" data-type=\"DDR3\" data-speed=\"DDR3-1600\">Crucial Ballistix 16 GB (16GB DDR3 DDR3-1600MHz) - €19</option><option value=\"3570\" data-name=\"Crucial Ballistix Smart Tracer 4 GB\" data-capacity=\"4\" data-type=\"DDR3\" data-speed=\"DDR3-1600\">Crucial Ballistix Smart Tracer 4 GB (4GB DDR3 DDR3-1600MHz) - €15</option><option value=\"530\" data-name=\"Samsung Green 8 GB\" data-capacity=\"8\" data-type=\"DDR4\" data-speed=\"DDR4-2133\">Samsung Green 8 GB (8GB DDR4 DDR4-2133MHz) - €15</option><option value=\"3784\" data-name=\"Kingston Blu 8 GB\" data-capacity=\"8\" data-type=\"DDR3\" data-speed=\"DDR3-1600\">Kingston Blu 8 GB (8GB DDR3 DDR3-1600MHz) - €11</option><option value=\"457\" data-name=\"Corsair Vengeance LPX 128 GB\" data-capacity=\"128\" data-type=\"DDR4\" data-speed=\"DDR4-3200\">Corsair Vengeance LPX 128 GB (128GB DDR4 DDR4-3200MHz) - €10</option><option value=\"598\" data-name=\"Corsair Vengeance LPX 8 GB\" data-capacity=\"8\" data-type=\"DDR4\" data-speed=\"DDR4-2400\">Corsair Vengeance LPX 8 GB (8GB DDR4 DDR4-2400MHz) - €10</option><option value=\"4180\" data-name=\"Corsair Mac Memory 4 GB\" data-capacity=\"4\" data-type=\"DDR3\" data-speed=\"DDR3-1066\">Corsair Mac Memory 4 GB (4GB DDR3 DDR3-1066MHz) - €10</option><option value=\"79\" data-name=\"Corsair Vengeance LPX 8 GB\" data-capacity=\"8\" data-type=\"DDR4\" data-speed=\"DDR4-2400\">Corsair Vengeance LPX 8 GB (8GB DDR4 DDR4-2400MHz) - €9</option><option value=\"1013\" data-name=\"Corsair CORSAIR Vengeance LPX 64GB\" data-capacity=\"64\" data-type=\"DDR4\" data-speed=\"DDR4-3200\">Corsair CORSAIR Vengeance LPX 64GB (64GB DDR4 DDR4-3200MHz) - €5</option><option value=\"662\" data-name=\"SK Hynix HMT41GU6MFR8C-PB 8 GB\" data-capacity=\"8\" data-type=\"DDR3\" data-speed=\"DDR3-1600\">SK Hynix HMT41GU6MFR8C-PB 8 GB (8GB DDR3 DDR3-1600MHz) - €5</option><option value=\"140\" data-name=\"Kingston FURY Beast 32 GB\" data-capacity=\"32\" data-type=\"DDR4\" data-speed=\"DDR4-3600\">Kingston FURY Beast 32 GB (32GB DDR4 DDR4-3600MHz) - €0</option></select>",
+          "column": "talking",
+          "created": "2026-06-27T23:33:17.716258",
+          "updated": "2026-06-29T17:54:00",
+          "linked_task_id": null,
+          "relationship_type": null
+        },
+        {
+          "id": "T159",
+          "title": "Add an option to search across all tickets in one place",
+          "page": "Project Board",
+          "category": "Frontend",
+          "priority": "Medium",
+          "fix": "",
+          "column": "talking",
+          "created": "2026-06-27T23:58:00.207047",
+          "updated": "2026-06-29T17:56:00",
+          "linked_task_id": null,
+          "relationship_type": null
+        },
+        {
+          "id": "T153",
+          "title": "Make this readable in dark mode",
+          "page": "PC Builder",
+          "category": "Frontend",
+          "priority": "Medium",
+          "fix": "",
+          "code_snippet": "<div class=\"component-details\" id=\"motherboard-details\"><div class=\"detail-row\"><span>brand:</span><span>ASUS</span></div><div class=\"detail-row\"><span>model:</span><span>ROG MAXIMUS Z690 EXTREME</span></div><div class=\"detail-row\"><span>socket:</span><span>LGA1700</span></div><div class=\"detail-row\"><span>chipset:</span><span>Z690</span></div><div class=\"detail-row\"><span>Avg Price:</span><span>€550</span></div></div>",
+          "column": "talking",
+          "created": "2026-06-27T23:31:07.868522",
+          "updated": "2026-06-29T17:58:00",
+          "linked_task_id": null,
+          "relationship_type": null
+        },
+        {
+          "id": "T154",
+          "title": "Make this box fit in visualy.",
+          "page": "PC Builder",
+          "category": "Frontend",
+          "priority": "Medium",
+          "fix": "",
+          "code_snippet": "<div class=\"ssd-filter-group\">\n                                <label>Size</label>\n                                <select id=\"ssd-size-filter\" onchange=\"filterSSD()\">\n                                    <option value=\"\">Any</option>\n                                    <option value=\"256\">256GB</option>\n                                    <option value=\"512\">512GB</option>\n                                    <option value=\"1000\">1TB</option>\n                                    <option value=\"2000\">2TB</option>\n                                    <option value=\"4000\">4TB</option>\n                                </select>\n                            </div>",
+          "column": "talking",
+          "created": "2026-06-27T23:32:18.031159",
+          "updated": "2026-06-29T18:00:00",
+          "linked_task_id": null,
+          "relationship_type": null
+        },
+        {
+          "id": "T152",
+          "title": "Console Models grid shows up correctly, but not list loads in.",
+          "page": "Consoles",
+          "category": "Frontend",
+          "priority": "Medium",
+          "fix": "",
+          "code_snippet": "contentscript.js:14083 MaxListenersExceededWarning: Possible EventEmitter memory leak detected. 11 close listeners added. Use emitter.setMaxListeners() to increase limit\nn @ contentscript.js:14083\ncontentscript.js:14083 MaxListenersExceededWarning: Possible EventEmitter memory leak detected. 11 end listeners added. Use emitter.setMaxListeners() to increase limit\nn @ contentscript.js:14083\ncontentscript.js:14083 ObjectMultiplex - orphaned data for stream \"app-init-liveness\"\nwarn @ contentscript.js:14083\ncontentscript.js:14083 ObjectMultiplex - orphaned data for stream \"app-init-liveness\"\nwarn @ contentscript.js:14083\ncontentscript.js:14083 ObjectMultiplex - orphaned data for stream \"background-liveness\"\nwarn @ contentscript.js:14083\ncontentscript.js:14083 ObjectMultiplex - orphaned data for stream \"background-liveness\"\nwarn @ contentscript.js:14083\ncontentscript.js:14083 ObjectMultiplex - malformed chunk without name \"[object Object]\"\nwarn @ contentscript.js:14083\ncontentscript.js:14083 ObjectMultiplex - malformed chunk without name \"[object Object]\"\nwarn @ contentscript.js:14083\nconsoles:1636 Console icons script loaded, getConsoleIcon available: true\nconsoles:1668 Loading models...\nchunk-mgcl-MAO3VRCL.js:16 @import rules are not allowed here. See https://github.com/WICG/construct-stylesheets/issues/119#issuecomment-588352418.\n(anonymous) @ chunk-mgcl-MAO3VRCL.js:16\nconsoles:1679 Models loaded: Array(36)\nconsoles:1711 getConsoleIcon available: true\nconsoles:1718 Icon for Meta Quest 2 : found\nconsoles:1718 Icon for Meta Quest 3 : found\nconsoles:1718 Icon for Meta Quest 3S : found\nconsoles:1718 Icon for Nintendo 2DS : found\nconsoles:1718 Icon for Nintendo 3DS : found\nconsoles:1718 Icon for Nintendo DS : found\nconsoles:1718 Icon for Nintendo GameCube : found\nconsoles:1718 Icon for Nintendo Switch : found\nconsoles:1718 Icon for Nintendo Switch 2 : found\nconsoles:1718 Icon for Nintendo Switch Lite : found\nconsoles:1718 Icon for PSP Go : found\nconsoles:1718 Icon for PlayStation : found\nconsoles:1718 Icon for PlayStation 2 : found\nconsoles:1718 Icon for PlayStation 3 : found\nconsoles:1718 Icon for PlayStation 3 Slim : found\nconsoles:1718 Icon for PlayStation 3 Super Slim : found\nconsoles:1718 Icon for PlayStation 4 : found\nconsoles:1718 Icon for PlayStation 4 Pro : found\nconsoles:1718 Icon for PlayStation 4 Slim : found\nconsoles:1718 Icon for PlayStation 5 : found\nconsoles:1718 Icon for PlayStation 5 Pro : found\nconsoles:1718 Icon for PlayStation 5 Slim : found\nconsoles:1718 Icon for PlayStation Portable 2000 : found\nconsoles:1718 Icon for PlayStation Portable Street : found\nconsoles:1718 Icon for PlayStation VR : found\nconsoles:1718 Icon for PlayStation VR2 : found\nconsoles:1718 Icon for Steam Deck : found\nconsoles:1718 Icon for Wii : found\nconsoles:1718 Icon for Xbox : found\nconsoles:1718 Icon for Xbox 360 : found\nconsoles:1718 Icon for Xbox One : found\nconsoles:1718 Icon for Xbox One S : found\nconsoles:1718 Icon for Xbox One X : found\nconsoles:1718 Icon for Xbox Series S : found\nconsoles:1718 Icon for Xbox Series X : found\nconsoles:1718 Icon for Unknown Console : found\nconsoles:1925 Error loading listings: TypeError: item.price_eur.toFixed is not a function\n    at consoles:1902:94\n    at Array.forEach (<anonymous>)\n    at loadListings (consoles:1835:18)\nloadListings @ consoles:1925\nconsoles:1925 Error loading listings: TypeError: item.price_eur.toFixed is not a function\n    at consoles:1902:94\n    at Array.forEach (<anonymous>)\n    at loadListings (consoles:1835:18)\nloadListings @ consoles:1925\nchunk-mgcl-HFZJ56IT.js:558 Received json-rpc sentryRequest error response for id e5d6490f-3d40-49ce-9955-ffd3e9a6837b Object\n(anonymous) @ chunk-mgcl-HFZJ56IT.js:558\nchunk-mgcl-HFZJ56IT.js:558 Received json-rpc sentryRequest error response for id 9c5ab08a-7e55-4469-a407-a7b8f1231736 Object\n(anonymous) @ chunk-mgcl-HFZJ56IT.js:558\nchunk-mgcl-HFZJ56IT.js:558 Received json-rpc sentryRequest error response for id 0991a180-4a29-4bd1-8dc9-5ad43c7243f9 Object\n(anonymous) @ chunk-mgcl-HFZJ56IT.js:558",
+          "column": "talking",
+          "created": "2026-06-27T23:20:23.869661",
+          "updated": "2026-06-29T18:02:00",
+          "linked_task_id": null,
+          "relationship_type": null
+        },
+        {
+          "id": "T150",
+          "title": "dont show unknown ram in list",
+          "page": "RAM",
+          "category": "Frontend",
+          "priority": "Medium",
+          "fix": "",
+          "column": "talking",
+          "created": "2026-06-27T23:15:44.094397",
+          "updated": "2026-06-29T18:04:00",
+          "linked_task_id": null,
+          "relationship_type": null
         }
       ]
     },
@@ -965,29 +1382,6 @@
           "completed_at": "2026-06-24T20:14:44.841676Z"
         },
         {
-          "id": "T077",
-          "title": "Create a python code that checks how many listings dont have an image. Once downloader is going trough listings that doesnt have an image, download the image only for those listings that description matches database for ss.com",
-          "page": "",
-          "category": "Scraper",
-          "priority": "Medium",
-          "fix": "Created src/utils/download_missing_matched_images.py. Counts ss.com listings without local_image_path, filters to DB-matched listings, downloads images via ImageDownloader, and updates listings.local_image_path.",
-          "column": "solved",
-          "created": "2026-06-19T15:46:51.069850",
-          "updated": "2026-06-25T12:59:28.691190",
-          "linked_task_id": "T116",
-          "relationship_type": "similar_to",
-          "linked_tasks": [
-            {
-              "task_id": "T116",
-              "relationship_type": "similar_to"
-            }
-          ],
-          "started_at": "2026-06-24T13:02:59.533870Z",
-          "completed_at": "2026-06-24T13:22:13.895085Z",
-          "future_folder_id": "F-20260625125926-3cb29754",
-          "folder_id": "F-20260625125926-3cb29754"
-        },
-        {
           "id": "T020",
           "title": "Why \"benchmarks\" and \"price/perf\" columns dont work?",
           "page": "CPU",
@@ -1071,44 +1465,6 @@
           "completed_at": "2026-06-25T13:36:42"
         },
         {
-          "id": "T127",
-          "title": "in cpu page make the chart box a widget button in which you can store each chart as a widget. make it so I can drag it to the box anywhere in the chart box",
-          "page": "CPU",
-          "category": "Frontend",
-          "priority": "High",
-          "fix": "Implemented draggable, saveable widgets on the CPU page. Wrapped each chart/stat box in a .widget-card with a pin/save button and drag handle. Added native HTML5 drag-and-drop support within the main/sub grid, persisted order (cpuWidgetOrder) and pinned widgets (cpuWidgetPinned) to localStorage, and added a reset button to restore defaults. Fixed the duplicate chart container IDs in the Motherboard Market Snapshot by using unique inner IDs (mb-market-year, mb-market-platform, mb-market-socket). Existing data loaders continue to work because they populate the inner divs inside each widget card.",
-          "column": "solved",
-          "created": "2026-06-26T18:57:57.417301",
-          "updated": "2026-06-26T16:24:01.924543+00:00",
-          "linked_task_id": null,
-          "relationship_type": null,
-          "linked_tasks": null,
-          "started_at": "2026-06-26T16:10:17.251240+00:00",
-          "completed_at": "2026-06-26T16:24:01.924543+00:00"
-        },
-        {
-          "id": "T121",
-          "title": "Is \"CPU Class\" used anywhere even? Have the CPUs been market? By Class chart shows Unknown 100%",
-          "page": "CPU",
-          "category": "Frontend",
-          "priority": "Medium",
-          "fix": "Updated /api/cpus SQL cpu_class filter to include AMD Ryzen 5 in Mid-Range, Ryzen 7 in High-End, and kept Ryzen 9/Threadripper in Enthusiast. get_cpu_class() already classified them correctly, but the server-side family_tokens only matched Intel tokens, so AMD chips were dropped when filtering by class. Tested via /api/cpus?cpu_class=Mid-Range/High-End/Enthusiast: AMD Ryzen 5/7/9 now appear alongside Intel. CPU page By Class chart will reflect the corrected distribution.",
-          "column": "solved",
-          "created": "2026-06-25T16:19:21.137557",
-          "updated": "2026-06-26T19:41:15.505785",
-          "started_at": "2026-06-26T04:04:52.000000",
-          "linked_task_id": null,
-          "relationship_type": null,
-          "reopen_history": [
-            {
-              "reopened_at": "2026-06-26T18:51:07.079856",
-              "update": "it only show intel cpus in mid range, high end filter option. how about amd?",
-              "previous_completed_at": "2026-06-26T04:15:00.000000"
-            }
-          ],
-          "completed_at": "2026-06-26T16:20:28.568680+00:00"
-        },
-        {
           "id": "T126",
           "title": "add similiar chart like MB Intel/AMD, but \"CPU Intel/AMD\" and make \"CPU by socket\" chart like MB by socket",
           "page": "CPU",
@@ -1154,36 +1510,154 @@
           "completed_at": "2026-06-26T04:22:00.000000"
         },
         {
-          "id": "T108",
-          "title": "in pop up window add listing image",
+          "id": "T125",
+          "title": "it isnt the full spand of the row. it should auto adjust acoording to box width as I can remove columns",
           "page": "CPU",
           "category": "Frontend",
           "priority": "Medium",
-          "fix": "CPU popup image now displays. Root cause: local_image_path for CPU listings is stored as a bare filename (e.g. 'hdkkj_b41c0da5.jpg') with images physically located in SS-CRAWLER/images/cpu, while the popup/table code generated /images/<filename>. Flask's serve_image route only resolves folder-prefixed paths or via fallback search, so prefixed /images/cpu/<filename> is needed. Updated templates/cpu.html showListingHistory() and the table Image column renderer to prepend /images/cpu/ for bare filenames and preserve existing folder prefixes (e.g. facebook/). Backend /api/listing-details already returns local_image_path and image_url, and app.py serve_image route is unchanged.",
+          "fix": "Updated templates/cpu.html summary row to dynamically calculate colSpan values based on the number of currently visible columns. Replaced hardcoded colspan totals with a helper updateSummaryRowColspans() that is called on initial render and inside renderFullTable() whenever columns are toggled/reordered via the gear icon. Also moved the 'Summary:' label into the first cell so the summary row always spans the full table width regardless of which columns are hidden.",
+          "code_snippet": "<tfoot id=\"summary-row\" style=\"display: table-row-group; background: linear-gradient(135deg, rgb(102, 126, 234) 0%, rgb(118, 75, 162) 100%); color: white; font-weight: bold;\">\n                    <tr>\n                        <td colspan=\"2\" style=\"text-align: right; padding: 0.75rem;\">Summary:</td>\n                        <td id=\"summary-total-price\" style=\"padding: 0.75rem;\">€23.00 total</td>\n                        <td id=\"summary-avg-price\" style=\"padding: 0.75rem; font-size: 0.85rem;\">avg: €23.00</td>\n                        <td id=\"summary-count\" style=\"padding: 0.75rem;\" colspan=\"5\">1 listings shown</td>\n                    </tr>\n                </tfoot>",
+          "language": "html",
+          "future_folder_id": "F-20260626184910-ffd72a21",
           "column": "solved",
-          "created": "2026-06-24T22:45:51.377879",
-          "updated": "2026-06-26T19:46:18.030901",
+          "created": "2026-06-26T18:49:10.619242",
+          "updated": "2026-06-27T13:09:27.314677",
           "linked_task_id": null,
           "relationship_type": null,
-          "started_at": "2026-06-25T12:53:43.651057",
+          "folder_id": "F-20260626184910-ffd72a21",
+          "updated_at": "2026-06-26T19:44:08.342866",
+          "started_at": "2026-06-26T16:10:17.251240+00:00",
+          "completed_at": "2026-06-27T13:09:27.314677"
+        },
+        {
+          "id": "T062",
+          "title": "Make \"Average Price by Capacity Range\" just a list of each capacity chart range and how much it costs",
+          "page": "SSD",
+          "category": "Frontend",
+          "priority": "Medium",
+          "fix": "Replaced the Average Price by Capacity Range bar chart in ssd.html with a responsive card list. Each card shows the capacity range label, average price, and number of listings, using existing styling and CSS variables for dark mode support.",
+          "linked_task_id": null,
+          "relationship_type": null,
+          "column": "solved",
+          "created": "2026-06-19T11:35:44.548253",
+          "updated": "2026-06-27T14:02:37.485018",
+          "linked_tasks": null,
+          "started_at": "2026-06-24T13:02:59.533870Z",
+          "completed_at": "2026-06-24T13:05:27Z"
+        },
+        {
+          "id": "T049",
+          "title": "SSD section should also offer an option to pick a generic SSD size that price calculated avg",
+          "page": "SSD",
+          "category": "",
+          "priority": "Medium",
+          "fix": "Added generic SSD size option to PC Builder: Added size filter dropdown (256GB, 512GB, 1TB, 2TB, 4TB), generic selection button that calculates avg price from filtered SSDs, and display showing selected generic size",
+          "linked_task_id": null,
+          "relationship_type": null,
+          "column": "solved",
+          "created": "2026-06-19T10:07:21.190277",
+          "updated": "2026-06-27T14:08:51.834075",
+          "started_at": "2026-06-19T12:18:00",
+          "completed_at": "2026-06-19T12:20:00"
+        },
+        {
+          "id": "T061",
+          "title": "in flag window make this text readable: <span>✓ Size comparison is correct (detected matches actual)</span>",
+          "page": "SSD",
+          "category": "Frontend",
+          "priority": "Medium",
+          "fix": "Fixed ssd.html: Updated flag window label to use CSS variables for proper dark mode support - changed background to var(--table-row-alt-bg, #f0f0f0) and text color to var(--text-color, #333).",
+          "linked_task_id": null,
+          "relationship_type": null,
+          "column": "solved",
+          "created": "2026-06-19T11:32:30.888511",
+          "updated": "2026-06-27T14:09:00.869993",
+          "started_at": "2026-06-19T23:17:00",
+          "completed_at": "2026-06-20T00:02:00"
+        },
+        {
+          "id": "T110",
+          "title": "in new task window add option to already assign future box to which it gets sent when solved",
+          "page": "Project Board",
+          "category": "Frontend",
+          "priority": "Medium",
+          "fix": "Added Future Folder selector to the new-task/create-task dialog. Users can now create a new Future folder or pick an existing one. The selected folder ID is stored on the task (future_folder_id) at creation/edit time. When the task is later marked Solved, it is automatically moved into that chosen Future folder via the existing task-folder API.",
+          "column": "solved",
+          "created": "2026-06-24T23:02:34.084836",
+          "updated": "2026-06-27T15:04:37.147305",
+          "linked_task_id": null,
+          "relationship_type": null,
+          "started_at": "2026-06-25T13:03:09.772758",
+          "completed_at": "2026-06-25T13:16:24.970808"
+        },
+        {
+          "id": "T092",
+          "title": "feature: \"Spawn next task, link it, and mark this one Solved\" is clicked. for relationships \"Similair to\" and linked to off to create or pick future box where both of these tickets get stored when both get solved",
+          "page": "Project Board",
+          "category": "",
+          "priority": "High",
+          "fix": "Robust spawn+link+solve flow: when spawning a linked task with relationship 'Similar To', the UI now shows a dedicated Future Folder chooser where the user can create a new folder or pick an existing one. The chosen folder is persisted as future_folder_id/folder_id on both the original and spawned tasks with bidirectional similar_to links. Marking either task Solved immediately checks if both are solved and moves both into the shared Future folder. Also preselects an existing shared folder when re-spawning an already-linked task.",
+          "column": "solved",
+          "created": "2026-06-21T13:54:23.646281",
+          "updated": "2026-06-27T15:04:58.981866",
+          "linked_task_id": null,
+          "relationship_type": null,
           "reopen_history": [
             {
-              "reopened_at": "2026-06-25T12:50:24.627396",
-              "update": "There is still no image in pop up window",
-              "previous_completed_at": "2026-06-24T19:53:27.3337795Z"
+              "reopened_at": "2026-06-21T16:21:34.626975",
+              "update": "This feature doesnt work yet",
+              "previous_completed_at": "2026-06-21T15:20:00.000000"
             },
             {
-              "reopened_at": "2026-06-25T16:15:00.637380",
-              "update": "CPU page still doesnt have an pop up image",
-              "previous_completed_at": "2026-06-25T13:00:00"
+              "reopened_at": "2026-06-24T15:57:54.619515",
+              "update": "This feature does not work. it doesnt give me an option when i spawn a task",
+              "previous_completed_at": null
             },
             {
-              "reopened_at": "2026-06-26T18:33:36.003922",
-              "update": "listings pop up window still doesnt show image",
-              "previous_completed_at": "2026-06-26T05:10:00.000000"
+              "reopened_at": "2026-06-25T13:00:28.698102",
+              "update": "When I drag a task from \"Solved\" to \"Assigment\" and spawn it as a new task with link to prvious and relationship \"Similar To\" I dont get the option to create a new \"future\" folder",
+              "previous_completed_at": "2026-06-24T13:26:51.668044Z"
             }
           ],
-          "completed_at": "2026-06-26T16:18:16.720457+00:00"
+          "started_at": "2026-06-25T13:03:09.688501",
+          "updated_at": "2026-06-25T13:11:02.504136",
+          "completed_at": "2026-06-25T13:11:02.504136"
+        },
+        {
+          "id": "T066",
+          "title": "when I have selected RAM capacity and type and click on \"Apply filters\", it should calcute avg RAM price for that capacity and type. Only if I click on specific RAM, then use price from that",
+          "page": "PC Builder",
+          "category": "UI/UX",
+          "priority": "Medium",
+          "fix": "Updated pc_builder.html: Modified applyRAMFilters() to calculate average price from filtered RAM listings and create a virtual RAM component. When clicking Apply Filters with capacity/type selected, it now uses the average price of matching RAMs. Only when selecting a specific RAM from the dropdown does it use that specific price. The virtual component is marked with (Avg of N listings) in the name.",
+          "column": "solved",
+          "created": "2026-06-19T14:14:40.707695",
+          "updated": "2026-06-27T15:11:39.663844",
+          "linked_task_id": null,
+          "relationship_type": null,
+          "started_at": "2026-06-20T00:32:00",
+          "completed_at": "2026-06-20T00:38:00"
+        },
+        {
+          "id": "T082",
+          "title": "Related to: Vendo\"CPU Model\" filter doesnt filter outr filter doesnt work. List is not getting filtered",
+          "page": "Motherboards",
+          "category": "",
+          "priority": "High",
+          "fix": "Fixed app.py: Updated the CPU filter query in /api/motherboards endpoint to also search by processor_number (e.g., i9-14900K) in addition to id and cpu_name. This allows the CPU Model filter on the Motherboards page to properly match when users select a CPU from the dropdown.",
+          "column": "solved",
+          "created": "2026-06-19T19:07:58.020122",
+          "updated": "2026-06-27T15:11:54.620063",
+          "linked_tasks": [
+            {
+              "task_id": "T017",
+              "relationship_type": "similar_to"
+            }
+          ],
+          "linked_task_id": "T017",
+          "relationship_type": "similar_to",
+          "started_at": "2026-06-19T19:18:00",
+          "completed_at": "2026-06-19T19:25:00"
         }
       ]
     },
@@ -1907,24 +2381,22 @@
           "updated_at": "2026-06-24T15:58:35.140626"
         },
         {
-          "id": "T125",
-          "title": "it isnt the full spand of the row. it should auto adjust acoording to box width as I can remove columns",
-          "page": "CPU",
-          "category": "Frontend",
+          "id": "T128",
+          "title": "in creating new task box why link to tasks is not a dropdown list?Why link to task search box doesnt work?",
+          "page": "Project Board",
+          "category": "",
           "priority": "Medium",
-          "fix": "Updated templates/cpu.html summary row to dynamically calculate colSpan values based on the number of currently visible columns. Replaced hardcoded colspan totals with a helper updateSummaryRowColspans() that is called on initial render and inside renderFullTable() whenever columns are toggled/reordered via the gear icon. Also moved the 'Summary:' label into the first cell so the summary row always spans the full table width regardless of which columns are hidden.",
-          "code_snippet": "<tfoot id=\"summary-row\" style=\"display: table-row-group; background: linear-gradient(135deg, rgb(102, 126, 234) 0%, rgb(118, 75, 162) 100%); color: white; font-weight: bold;\">\n                    <tr>\n                        <td colspan=\"2\" style=\"text-align: right; padding: 0.75rem;\">Summary:</td>\n                        <td id=\"summary-total-price\" style=\"padding: 0.75rem;\">€23.00 total</td>\n                        <td id=\"summary-avg-price\" style=\"padding: 0.75rem; font-size: 0.85rem;\">avg: €23.00</td>\n                        <td id=\"summary-count\" style=\"padding: 0.75rem;\" colspan=\"5\">1 listings shown</td>\n                    </tr>\n                </tfoot>",
-          "language": "html",
-          "future_folder_id": "F-20260626184910-ffd72a21",
+          "fix": "Replaced broken link-to-task autocomplete with a working searchable <select> dropdown in the task modal. collectLinks() now reads task ID and relationship type from each link row, and both addTask() (POST) and saveEditedTask() (PUT) send linked_tasks to app.py. Tested end-to-end: created T132 linked to T002, persisted in project_board.json.",
+          "future_folder_id": "F-20260621160957-36ce9488",
           "column": "future",
-          "created": "2026-06-26T18:49:10.619242",
-          "updated": "2026-06-26T19:44:08.342866",
+          "created": "2026-06-26T19:24:04.918077",
+          "updated": "2026-06-27T15:19:07.635017",
           "linked_task_id": null,
           "relationship_type": null,
-          "folder_id": "F-20260626184910-ffd72a21",
-          "updated_at": "2026-06-26T19:44:08.342866",
-          "started_at": "2026-06-26T16:10:17.251240+00:00",
-          "completed_at": "2026-06-26T16:20:28.568680+00:00"
+          "folder_id": "F-20260621160957-36ce9488",
+          "updated_at": "2026-06-27T15:19:07.635017",
+          "started_at": "2026-06-26T17:50:08.006461+00:00",
+          "completed_at": "2026-06-27T15:19:07.367564"
         }
       ],
       "folders": [
@@ -1934,7 +2406,7 @@
           "description": "",
           "relationship_status": "planned",
           "created_at": "2026-06-21T13:44:36.561237",
-          "updated_at": "2026-06-26T19:37:27.222204",
+          "updated_at": "2026-06-27T12:59:09.705429",
           "expanded": false,
           "folder_class": "Feature"
         },
@@ -1944,7 +2416,7 @@
           "description": "",
           "relationship_status": "planned",
           "created_at": "2026-06-21T15:09:45.875995",
-          "updated_at": "2026-06-24T22:59:50.801888",
+          "updated_at": "2026-06-27T15:00:24.707695",
           "expanded": false,
           "folder_class": "Feature"
         },
@@ -1954,8 +2426,8 @@
           "description": "",
           "relationship_status": "planned",
           "created_at": "2026-06-21T16:09:57.191673",
-          "updated_at": "2026-06-26T19:36:58.903931",
-          "expanded": false,
+          "updated_at": "2026-06-27T13:00:03.279982",
+          "expanded": true,
           "folder_class": "Feature"
         },
         {
@@ -1964,7 +2436,7 @@
           "description": "trash",
           "relationship_status": "planned",
           "created_at": "2026-06-21T16:13:00.628376",
-          "updated_at": "2026-06-26T19:36:41.756698",
+          "updated_at": "2026-06-27T12:59:58.321499",
           "expanded": false,
           "folder_class": "Feature"
         },
@@ -1974,8 +2446,8 @@
           "description": "",
           "relationship_status": "planned",
           "created_at": "2026-06-21T19:13:17.872700",
-          "updated_at": "2026-06-26T19:47:59.820917",
-          "expanded": false,
+          "updated_at": "2026-06-27T12:59:20.397302",
+          "expanded": true,
           "folder_class": "Feature"
         },
         {
@@ -1985,8 +2457,8 @@
           "relationship_status": "planned",
           "folder_class": "Feature",
           "created_at": "2026-06-25T12:59:26.823393",
-          "updated_at": "2026-06-26T19:37:20.166946",
-          "expanded": false
+          "updated_at": "2026-06-27T15:00:15.246456",
+          "expanded": true
         },
         {
           "id": "F-20260626184910-ffd72a21",
@@ -1995,7 +2467,27 @@
           "relationship_status": "planned",
           "folder_class": "Feature",
           "created_at": "2026-06-26T18:49:10.291690",
-          "updated_at": "2026-06-26T18:49:10.291713",
+          "updated_at": "2026-06-27T12:59:16.310677",
+          "expanded": true
+        },
+        {
+          "id": "F-20260627141412-3d3ecd45",
+          "name": "ADMIN",
+          "description": "features that are controlable to be visable by admin. In future these could be subscription features.",
+          "relationship_status": "planned",
+          "folder_class": "Feature",
+          "created_at": "2026-06-27T14:14:12.922511",
+          "updated_at": "2026-06-27T14:14:12.922511",
+          "expanded": true
+        },
+        {
+          "id": "F-20260627231132-7c98d254",
+          "name": "scrapper image download",
+          "description": "",
+          "relationship_status": "planned",
+          "folder_class": "Structure",
+          "created_at": "2026-06-27T23:11:32.109175",
+          "updated_at": "2026-06-27T23:11:32.109175",
           "expanded": true
         }
       ]
@@ -2026,7 +2518,7 @@
     "Scraper",
     "UI/UX"
   ],
-  "next_id": 133,
+  "next_id": 160,
   "updated": "2026-06-25T13:36:42",
   "schema": "project-board-bridge.v2",
   "schema_version": 2,

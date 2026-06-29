@@ -1,0 +1,763 @@
+{% extends "base.html" %}
+
+{% block title %}Camera Listings - SS-Crawler{% endblock %}
+
+{% block content %}
+<div class="section">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
+        <h2>📸 Camera Listings</h2>
+        <div class="filters" style="margin: 0;">
+            <label>
+                <input type="checkbox" id="active-only" checked onchange="loadCameras()">
+                Active only
+            </label>
+            <label>
+                Sort:
+                <select id="sort-by" onchange="loadCameras()">
+                    <option value="date_posted">Date Posted</option>
+                    <option value="price">Price</option>
+                </select>
+            </label>
+            <label>
+                Order:
+                <select id="sort-order" onchange="loadCameras()">
+                    <option value="desc">Descending</option>
+                    <option value="asc">Ascending</option>
+                </select>
+            </label>
+            <label>
+                Brand:
+                <select id="brand-filter" onchange="loadCameras()">
+                    <option value="">All Brands</option>
+                </select>
+            </label>
+            <label>
+                Model:
+                <select id="model-filter" onchange="loadCameras()">
+                    <option value="">All Models</option>
+                </select>
+            </label>
+            <label>
+                Sensor:
+                <select id="sensor-filter" onchange="loadCameras()">
+                    <option value="">All Sensors</option>
+                </select>
+            </label>
+        </div>
+    </div>
+    
+    <!-- Stats Panel -->
+    <div class="stats-grid" style="margin-bottom: 2rem;">
+        <div class="stat-card">
+            <h3>Total Listings</h3>
+            <div class="stat-value" id="stat-total">-</div>
+        </div>
+        <div class="stat-card">
+            <h3>Active Listings</h3>
+            <div class="stat-value" id="stat-active">-</div>
+        </div>
+        <div class="stat-card">
+            <h3>Avg Price</h3>
+            <div class="stat-value" id="stat-avg-price">-</div>
+        </div>
+        <div class="stat-card">
+            <h3>With Lens Detected</h3>
+            <div class="stat-value" id="stat-with-lens">-</div>
+        </div>
+    </div>
+    
+    <!-- Camera Listings Table -->
+    <div id="listings-container">
+        <div class="loading">Loading camera listings...</div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+// Camera brands, models and sensors data
+let cameraBrands = [];
+let cameraModels = [];
+let sensorTypes = ['Full Frame', 'APS-C', 'Micro 4/3', '1-inch', 'Medium Format'];
+
+// Extract sensor type from camera title/model
+function extractSensorType(title, model) {
+    if (!title && !model) return 'Unknown';
+    
+    const text = (title + ' ' + model).toLowerCase();
+    
+    // Common sensor type patterns
+    const sensorPatterns = [
+        { pattern: /full.?frame|fx|eos.?6d|eos.?5d|a7r|a7s|a7iii|a7iv|d850|d750|z6|z7/i, type: 'Full Frame' },
+        { pattern: /aps-?c|dx|ef-?s|eos.?rebel|eos.?80d|eos.?90d|d3500|d5600|a6/i, type: 'APS-C' },
+        { pattern: /micro.?4\/3|m43|m4\/3|lumix.?g|olympus|panasonic/i, type: 'Micro 4/3' },
+        { pattern: /1.?inch|rx100|rx10|zv-1/i, type: '1-inch' },
+        { pattern: /medium.?format|645|gfx/i, type: 'Medium Format' }
+    ];
+    
+    for (const { pattern, type } of sensorPatterns) {
+        if (pattern.test(text)) return type;
+    }
+    
+    // Try to extract from specific patterns like "Panasonic Modelis: Dmc-Fz18"
+    if (/panasonic|lumix/i.test(text)) {
+        // Panasonic bridge cameras typically have smaller sensors
+        if (/fz|tz|zs|lx|gh|gf|gx|gm/i.test(text)) return 'Micro 4/3';
+    }
+    
+    // Canon model extraction
+    if (/canon/i.test(text)) {
+        // Rebel/xxxD series are APS-C
+        if (/rebel|600d|650d|700d|750d|760d|800d|850d|200d|250d/i.test(text)) return 'APS-C';
+        // xD series with smaller numbers are APS-C, larger are Full Frame
+        if (/70d|77d|80d|90d|7d|77d/i.test(text)) return 'APS-C';
+        // 6D, 5D, R5, R6 are Full Frame
+        if (/6d|5d|1dx|r5|r6|rp/i.test(text)) return 'Full Frame';
+        // M series mirrorless are APS-C
+        if (/eos.?m/i.test(text)) return 'APS-C';
+    }
+    
+    // Nikon extraction
+    if (/nikon/i.test(text)) {
+        // D3xxx, D5xxx are APS-C
+        if (/d3|d5/i.test(text)) return 'APS-C';
+        // D7xxx are APS-C
+        if (/d7/i.test(text)) return 'APS-C';
+        // D6, D8 are Full Frame
+        if (/d6|d8/i.test(text)) return 'Full Frame';
+        // Z50, Zfc are APS-C
+        if (/z50|zfc/i.test(text)) return 'APS-C';
+    }
+    
+    // Sony extraction
+    if (/sony/i.test(text)) {
+        // A6xxx series are APS-C
+        if (/a6/i.test(text)) return 'APS-C';
+        // A7, A9, A1 are Full Frame
+        if (/a7|a9|a1/i.test(text)) return 'Full Frame';
+    }
+    
+    return 'Unknown';
+}
+
+// Load camera filters from API
+async function loadCameraFilters() {
+    try {
+        const response = await fetch('/api/camera-brands');
+        const brands = await response.json();
+        
+        const brandSelect = document.getElementById('brand-filter');
+        if (brands && brands.length > 0) {
+            cameraBrands = brands;
+            brands.forEach(brand => {
+                const option = document.createElement('option');
+                option.value = brand;
+                option.textContent = brand;
+                brandSelect.appendChild(option);
+            });
+        }
+    } catch (error) {
+        console.error('Error loading camera brands:', error);
+        // Fallback to common brands
+        cameraBrands = ['Canon', 'Nikon', 'Sony', 'Panasonic', 'Fujifilm', 'Olympus', 'Pentax'];
+        const brandSelect = document.getElementById('brand-filter');
+        cameraBrands.forEach(brand => {
+            const option = document.createElement('option');
+            option.value = brand;
+            option.textContent = brand;
+            brandSelect.appendChild(option);
+        });
+    }
+    
+    // Load sensor types
+    const sensorSelect = document.getElementById('sensor-filter');
+    sensorTypes.forEach(sensor => {
+        const option = document.createElement('option');
+        option.value = sensor;
+        option.textContent = sensor;
+        sensorSelect.appendChild(option);
+    });
+}
+
+// Update model filter when brand changes
+async function onBrandFilterChange() {
+    const brand = document.getElementById('brand-filter').value;
+    const modelSelect = document.getElementById('model-filter');
+    
+    // Reset model filter
+    modelSelect.innerHTML = '<option value="">All Models</option>';
+    
+    if (!brand) return;
+    
+    try {
+        const response = await fetch('/api/camera-models?brand=' + encodeURIComponent(brand));
+        const models = await response.json();
+        
+        if (models && models.length > 0) {
+            cameraModels = models;
+            models.forEach(model => {
+                const option = document.createElement('option');
+                option.value = model;
+                option.textContent = model;
+                modelSelect.appendChild(option);
+            });
+        }
+    } catch (error) {
+        console.error('Error loading camera models:', error);
+    }
+}
+
+// Load camera listings
+async function loadCameras() {
+    const activeOnly = document.getElementById('active-only').checked;
+    const sortBy = document.getElementById('sort-by').value;
+    const sortOrder = document.getElementById('sort-order').value;
+    const brandFilter = document.getElementById('brand-filter').value;
+    const modelFilter = document.getElementById('model-filter').value;
+    const sensorFilter = document.getElementById('sensor-filter').value;
+    
+    const params = new URLSearchParams();
+    params.append('active', activeOnly);
+    params.append('sort', sortBy);
+    params.append('order', sortOrder);
+    if (brandFilter) params.append('brand', brandFilter);
+    if (modelFilter) params.append('model', modelFilter);
+    if (sensorFilter) params.append('sensor', sensorFilter);
+    
+    try {
+        const response = await fetch('/api/cameras?' + params.toString());
+        const data = await response.json();
+        
+        const container = document.getElementById('listings-container');
+        
+        if (!data.success || !data.listings || data.listings.length === 0) {
+            container.innerHTML = '<div class="loading">No camera listings found</div>';
+            return;
+        }
+        
+        // Update stats
+        document.getElementById('stat-total').textContent = data.stats?.total || data.listings.length;
+        document.getElementById('stat-active').textContent = data.stats?.active || data.listings.filter(l => l.is_active).length;
+        document.getElementById('stat-avg-price').textContent = '€' + (data.stats?.avg_price || 0).toFixed(0);
+        document.getElementById('stat-with-lens').textContent = data.listings.filter(l => l.detected_lenses && l.detected_lenses.length > 0).length;
+        
+        let html = `
+            <table>
+                <thead>
+                    <tr>
+                        <th>Image</th>
+                        <th>Title</th>
+                        <th>Price</th>
+                        <th>Camera</th>
+                        <th>Sensor</th>
+                        <th>Lenses</th>
+                        <th>Location</th>
+                        <th>Date</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+        `;
+        
+        data.listings.forEach(item => {
+            const imageHtml = item.image_url 
+                ? `<img src="${item.image_url}" alt="Camera" class="listing-thumb" loading="lazy">`
+                : '<div class="listing-thumb-placeholder">📸</div>';
+            
+            // Camera info badge
+            let cameraInfo = '';
+            if (item.camera_brand) {
+                cameraInfo = `<span class="badge badge-success">${item.camera_brand}</span>`;
+                if (item.camera_model) {
+                    cameraInfo += `<br><small>${item.camera_model.substring(0, 30)}${item.camera_model.length > 30 ? '...' : ''}</small>`;
+                }
+            } else {
+                cameraInfo = '<em style="color: #999;">Unknown</em>';
+            }
+            
+            // Extract sensor type
+            const sensorType = item.sensor_type || extractSensorType(item.title, item.camera_model);
+            const sensorBadge = sensorType !== 'Unknown' 
+                ? `<span class="badge" style="background: #3498db; color: white;">${sensorType}</span>`
+                : `<span class="badge" style="background: #95a5a6;">Unknown</span>`;
+            
+            // Lenses count
+            const lensesCount = item.detected_lenses ? item.detected_lenses.length : 0;
+            const lensesBadge = lensesCount > 0 
+                ? `<span class="badge" style="background: #e74c3c; color: white;">${lensesCount} lens${lensesCount > 1 ? 'es' : ''}</span>`
+                : '<span class="badge" style="background: #95a5a6;">No lenses</span>';
+            
+            const safeListingId = item.listing_id ? item.listing_id.replace(/'/g, "\\'").replace(/"/g, '&quot;') : '';
+            const safeTitle = item.title ? item.title.replace(/'/g, "\\'").replace(/"/g, '&quot;') : '';
+            
+            html += `
+                <tr class="clickable" onclick="showCameraDetail('${safeListingId}')">
+                    <td class="listing-image-cell">${imageHtml}</td>
+                    <td style="max-width: 300px;">
+                        <div style="font-weight: 600; margin-bottom: 0.25rem;">${item.title || 'Untitled'}</div>
+                        <div style="font-size: 0.75rem; color: #888;">${item.listing_id || ''}</div>
+                    </td>
+                    <td><span class="price">€${item.price_eur}</span></td>
+                    <td>${cameraInfo}</td>
+                    <td>${sensorBadge}</td>
+                    <td>${lensesBadge}</td>
+                    <td>${item.seller_location || 'N/A'}</td>
+                    <td>${item.date_posted ? new Date(item.date_posted).toLocaleDateString() : 'N/A'}</td>
+                    <td>
+                        <button class="btn btn-small" onclick="event.stopPropagation(); showCameraDetail('${safeListingId}')">View</button>
+                        <button class="btn btn-small btn-secondary" onclick="event.stopPropagation(); showCameraHistory('${safeListingId}')">History</button>
+                        <button class="btn btn-small" style="background: #e74c3c;" onclick="event.stopPropagation(); showFlagModal('${safeListingId}', '${safeTitle}')">Flag</button>
+                    </td>
+                </tr>
+            `;
+        });
+        
+        html += '</tbody></table>';
+        container.innerHTML = html;
+        
+    } catch (error) {
+        console.error('Error loading cameras:', error);
+        document.getElementById('listings-container').innerHTML = 
+            `<div class="error">Failed to load listings: ${error.message}</div>`;
+    }
+}
+
+// Show camera detail popup
+async function showCameraDetail(listingId) {
+    try {
+        const response = await fetch('/api/camera-listing-details/' + encodeURIComponent(listingId));
+        const data = await response.json();
+        
+        // Check for error or if listing not found
+        if (data.error) {
+            alert('Error: ' + data.error);
+            return;
+        }
+        
+        if (!data.listing) {
+            alert('Error: Listing not found');
+            return;
+        }
+        
+        const listing = data.listing;
+        
+        // Build lenses HTML with enhanced display
+        let lensesHtml = '';
+        if (data.lenses && data.lenses.length > 0) {
+            lensesHtml = `
+                <h4 style="margin-top: 1.5rem; margin-bottom: 0.75rem;">🔭 Detected Compatible Lenses (${data.lenses.length})</h4>
+                <div style="background: var(--card-bg); padding: 1rem; border-radius: 8px;">
+                    <p style="font-size: 0.85rem; color: #888; margin-bottom: 1rem;">
+                        <em>Lenses detected from listing title and description that may be compatible with this camera.</em>
+                    </p>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 0.75rem;">
+                        ${data.lenses.map(lens => `
+                            <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 0.75rem; border-radius: 8px; color: white;">
+                                <div style="font-weight: 600; margin-bottom: 0.25rem;">${lens.name}</div>
+                                ${lens.brand ? `<div style="font-size: 0.75rem; opacity: 0.9;">Brand: ${lens.brand}</div>` : ''}
+                                ${lens.mount_type ? `<div style="font-size: 0.75rem; opacity: 0.9;">Mount: ${lens.mount_type}</div>` : ''}
+                                ${lens.focal_length ? `<div style="font-size: 0.75rem; opacity: 0.9;">Focal: ${lens.focal_length}</div>` : ''}
+                                ${lens.aperture ? `<div style="font-size: 0.75rem; opacity: 0.9;">Aperture: ${lens.aperture}</div>` : ''}
+                                ${lens.estimated_value ? `<div style="font-size: 0.75rem; margin-top: 0.5rem; padding-top: 0.5rem; border-top: 1px solid rgba(255,255,255,0.3); color: #90EE90;">Est. Value: €${lens.estimated_value}</div>` : ''}
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+        } else {
+            lensesHtml = `
+                <h4 style="margin-top: 1.5rem; margin-bottom: 0.75rem;">🔭 Detected Lenses</h4>
+                <div style="background: var(--card-bg); padding: 1rem; border-radius: 8px; color: var(--text-secondary); border: 1px solid var(--border-color);">
+                    <p>No lenses detected in this listing.</p>
+                </div>
+            `;
+        }
+        
+        // Build cost analysis HTML
+        let costHtml = '';
+        if (data.cost_breakdown) {
+            const cost = data.cost_breakdown;
+            const savingsAmount = cost.savings_indication;
+            const isGoodDeal = savingsAmount && savingsAmount > 0;
+            
+            costHtml = `
+                <h4 style="margin-top: 1.5rem; margin-bottom: 0.75rem;">💰 Cost Analysis</h4>
+                <div style="background: linear-gradient(135deg, ${isGoodDeal ? '#27ae60' : '#667eea'} 0%, ${isGoodDeal ? '#229954' : '#764ba2'} 100%); padding: 1rem; border-radius: 8px; color: white;">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                        <div>
+                            <div style="font-size: 0.8rem; opacity: 0.8;">Camera Value</div>
+                            <div style="font-size: 1.25rem; font-weight: bold;">€${cost.camera_value || 0}</div>
+                        </div>
+                        <div>
+                            <div style="font-size: 0.8rem; opacity: 0.8;">Lenses Value</div>
+                            <div style="font-size: 1.25rem; font-weight: bold;">€${cost.lenses_value || 0}</div>
+                        </div>
+                        <div>
+                            <div style="font-size: 0.8rem; opacity: 0.8;">Total Market Value</div>
+                            <div style="font-size: 1.25rem; font-weight: bold;">€${cost.total_market_value || 0}</div>
+                        </div>
+                        <div>
+                            <div style="font-size: 0.8rem; opacity: 0.8;">Listing Price</div>
+                            <div style="font-size: 1.25rem; font-weight: bold;">€${cost.listing_price || 0}</div>
+                        </div>
+                    </div>
+                    ${savingsAmount !== null && savingsAmount !== undefined ? `
+                        <div style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid rgba(255,255,255,0.3);">
+                            <div style="font-size: 0.9rem;">
+                                ${isGoodDeal 
+                                    ? `<span style="font-weight: bold; color: #90EE90;">✅ Good Deal! Save €${savingsAmount.toFixed(2)} vs Market Value</span>`
+                                    : `<span style="font-weight: bold; color: #FFB6C1;">⚠️ €${Math.abs(savingsAmount).toFixed(2)} above market average</span>`
+                                }
+                            </div>
+                        </div>
+                    ` : ''}
+                </div>
+            `;
+        }
+        
+        const modalHtml = `
+            <div id="camera-detail-modal" class="modal-overlay active" style="z-index: 1000;">
+                <div class="modal" style="max-width: 900px; max-height: 90vh; overflow-y: auto;">
+                    <div class="modal-header" style="position: sticky; top: 0; background: var(--card-bg); z-index: 10;">
+                        <h3>${listing.title || 'Camera Details'}</h3>
+                        <button class="modal-close" onclick="closeCameraDetail()">&times;</button>
+                    </div>
+                    <div style="padding: 1.5rem;">
+                        ${listing.image_url ? `<img src="${listing.image_url}" style="width: 100%; max-height: 300px; object-fit: contain; margin-bottom: 1rem; border-radius: 8px;">` : ''}
+                        
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+                            <div><strong>Price:</strong> <span class="price">€${listing.price_eur}</span></div>
+                            <div><strong>Location:</strong> ${listing.seller_location || 'N/A'}</div>
+                            <div><strong>Date:</strong> ${listing.date_posted ? new Date(listing.date_posted).toLocaleDateString() : 'N/A'}</div>
+                            <div><strong>Status:</strong> ${listing.is_active ? '<span class="badge badge-success">Active</span>' : '<span class="badge badge-danger">Inactive</span>'}</div>
+                        </div>
+                        
+                        <h4 style="margin-top: 1.5rem; margin-bottom: 0.75rem;">📝 Description</h4>
+                        <div style="background: var(--card-bg); padding: 1rem; border-radius: 8px; max-height: 200px; overflow-y: auto;">
+                            ${listing.description || 'No description available.'}
+                        </div>
+                        
+                        ${lensesHtml}
+                        ${costHtml}
+                        
+                        <div style="margin-top: 1.5rem; text-align: center; display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                            <a href="${listing.listing_url}" target="_blank" class="btn" style="font-size: 1rem; padding: 0.75rem 2rem;">View Original Listing →</a>
+                            <button class="btn btn-secondary" onclick="showCameraHistory('${listing.listing_id}')" style="font-size: 1rem; padding: 0.75rem 2rem;">View History</button>
+                            <button class="btn" style="font-size: 1rem; padding: 0.75rem 2rem; background: #e74c3c;" onclick="showFlagSection('${listing.listing_id}')">🚩 Flag Listing</button>
+                        </div>
+                        
+                        <!-- Floating Flag Section -->
+                        <div class="flag-section floating-flag-section" id="flag-section-${listing.listing_id}" style="display: none; margin-top: 1.5rem;">
+                            <div class="flag-section-header" onclick="toggleFlagSection('${listing.listing_id}')">
+                                <span>🚩 Flag This Listing</span>
+                                <span class="flag-toggle-icon">▼</span>
+                            </div>
+                            <div class="flag-section-content">
+                                <textarea id="flag-comment-${listing.listing_id}" placeholder="Enter reason (e.g., Scam, Wrong specs, Sold)" rows="1" oninput="autoResizeTextarea(this)" style="width: 100%; padding: 0.75rem; border: 2px solid #e74c3c; border-radius: 8px; margin-bottom: 0.75rem; font-family: inherit;"></textarea>
+                                <div class="flag-actions" style="display: flex; gap: 0.5rem; justify-content: flex-end;">
+                                    <button class="btn btn-small" onclick="submitFlag('${listing.listing_id}')" style="background: #e74c3c;">Submit Flag</button>
+                                    <button class="btn btn-small btn-secondary" onclick="hideFlagSection('${listing.listing_id}')">Cancel</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+        
+        // Remove existing modal if present
+        const existingModal = document.getElementById('camera-detail-modal');
+        if (existingModal) existingModal.remove();
+        
+        document.body.insertAdjacentHTML('beforeend', modalHtml);
+        
+        // Close on outside click
+        document.getElementById('camera-detail-modal').addEventListener('click', function(e) {
+            if (e.target === this) closeCameraDetail();
+        });
+        
+    } catch (error) {
+        console.error('Error loading camera details:', error);
+        alert('Failed to load listing details');
+    }
+}
+
+function closeCameraDetail() {
+    const modal = document.getElementById('camera-detail-modal');
+    if (modal) modal.remove();
+}
+
+// Flag section functions
+function showFlagSection(listingId) {
+    const section = document.getElementById(`flag-section-${listingId}`);
+    if (section) {
+        section.style.display = 'block';
+        section.classList.remove('collapsed');
+        const textarea = document.getElementById(`flag-comment-${listingId}`);
+        if (textarea) {
+            textarea.focus();
+            autoResizeTextarea(textarea);
+        }
+        updateToggleIcon(listingId);
+    }
+}
+
+function hideFlagSection(listingId) {
+    const section = document.getElementById(`flag-section-${listingId}`);
+    if (section) {
+        section.style.display = 'none';
+        const textarea = document.getElementById(`flag-comment-${listingId}`);
+        if (textarea) textarea.value = '';
+    }
+}
+
+function toggleFlagSection(listingId) {
+    const section = document.getElementById(`flag-section-${listingId}`);
+    if (section) {
+        section.classList.toggle('collapsed');
+        updateToggleIcon(listingId);
+        if (!section.classList.contains('collapsed')) {
+            const textarea = document.getElementById(`flag-comment-${listingId}`);
+            if (textarea) setTimeout(() => autoResizeTextarea(textarea), 0);
+        }
+    }
+}
+
+function updateToggleIcon(listingId) {
+    const section = document.getElementById(`flag-section-${listingId}`);
+    const icon = section ? section.querySelector('.flag-toggle-icon') : null;
+    if (section && icon) {
+        icon.textContent = section.classList.contains('collapsed') ? '▶' : '▼';
+    }
+}
+
+function autoResizeTextarea(textarea) {
+    textarea.style.height = 'auto';
+    textarea.style.height = Math.min(textarea.scrollHeight, 200) + 'px';
+}
+
+async function submitFlag(listingId) {
+    const commentInput = document.getElementById(`flag-comment-${listingId}`);
+    const comment = commentInput ? commentInput.value.trim() : '';
+    
+    if (!comment) {
+        alert('Please enter a reason for flagging');
+        return;
+    }
+    
+    try {
+        const response = await fetch('/api/flag-listing', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ 
+                listing_id: listingId, 
+                comment: comment,
+                category: 'camera'
+            })
+        });
+        
+        const data = await response.json();
+        if (data.success) {
+            alert('Listing flagged successfully!');
+            hideFlagSection(listingId);
+        } else {
+            alert('Error: ' + (data.error || 'Failed to flag listing'));
+        }
+    } catch (error) {
+        console.error('Error flagging listing:', error);
+        alert('Failed to flag listing. Please try again.');
+    }
+}
+
+// Show flag modal (called from table row)
+async function showFlagModal(listingId, title) {
+    // Remove existing flag modal if present
+    const existingModal = document.getElementById('flag-modal');
+    if (existingModal) existingModal.remove();
+    
+    // Escape the listingId for use in the onclick attribute
+    const safeId = listingId.replace(/'/g, "\\'").replace(/"/g, '&quot;');
+    
+    const modalHtml = `
+        <div id="flag-modal" class="modal-overlay active" style="z-index: 2000;">
+            <div class="modal" style="max-width: 500px;">
+                <div class="modal-header">
+                    <h3>🚩 Flag Listing</h3>
+                    <button class="modal-close" onclick="closeFlagModal()">&times;</button>
+                </div>
+                <div style="padding: 1.5rem;">
+                    <p style="margin-bottom: 1rem;"><strong>Listing:</strong> ${title || listingId}</p>
+                    
+                    <div class="form-group" style="margin-bottom: 1rem;">
+                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Flag Category:</label>
+                        <select id="flag-category" style="width: 100%; padding: 0.5rem; border: 1px solid #ddd; border-radius: 6px;">
+                            <option value="IGNORE">IGNORE - Hide from listings</option>
+                            <option value="SKIP">SKIP - Skip in future scrapes</option>
+                            <option value="SCRAPPER">SCRAPPER - Scraper issue</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group" style="margin-bottom: 1rem;">
+                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Reason:</label>
+                        <textarea id="flag-reason" placeholder="Enter reason (e.g., Scam, Wrong specs, Sold)" 
+                            style="width: 100%; padding: 0.75rem; border: 2px solid #e74c3c; border-radius: 8px; font-family: inherit; resize: vertical;"
+                            rows="3"></textarea>
+                    </div>
+                    
+                    <div style="display: flex; gap: 0.5rem; justify-content: flex-end;">
+                        <button class="btn btn-small btn-secondary" onclick="closeFlagModal()">Cancel</button>
+                        <button class="btn btn-small" style="background: #e74c3c;" onclick="submitFlagFromModal('${safeId}')">Submit Flag</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    document.body.insertAdjacentHTML('beforeend', modalHtml);
+    
+    // Close on outside click
+    document.getElementById('flag-modal').addEventListener('click', function(e) {
+        if (e.target === this) closeFlagModal();
+    });
+}
+
+function closeFlagModal() {
+    const modal = document.getElementById('flag-modal');
+    if (modal) modal.remove();
+}
+
+function removeListingRow(listingId) {
+    const rows = document.querySelectorAll('#listings-container tbody tr, table tbody tr');
+    rows.forEach(row => {
+        const onclick = row.getAttribute('onclick') || '';
+        const html = row.innerHTML;
+        if (onclick.includes("'" + listingId + "'") || html.includes("'" + listingId + "'") || html.includes(listingId)) {
+            row.style.transition = 'opacity 0.3s ease';
+            row.style.opacity = '0';
+            setTimeout(() => row.remove(), 300);
+        }
+    });
+}
+
+async function submitFlagFromModal(listingId) {
+    const categorySelect = document.getElementById('flag-category');
+    const reasonInput = document.getElementById('flag-reason');
+    
+    const category = categorySelect ? categorySelect.value : 'IGNORE';
+    const reason = reasonInput ? reasonInput.value.trim() : '';
+    
+    if (!reason) {
+        alert('Please enter a reason for flagging');
+        return;
+    }
+    
+    try {
+        const response = await fetch('/api/flag-listing', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ 
+                listing_id: listingId, 
+                comment: reason,
+                category: 'camera',
+                flag_category: category
+            })
+        });
+        
+        const data = await response.json();
+        if (data.success) {
+            alert('Listing flagged successfully!');
+            closeFlagModal();
+            // Refresh the listings
+            loadCameras();
+        } else {
+            alert('Error: ' + (data.error || 'Failed to flag listing'));
+        }
+    } catch (error) {
+        console.error('Error flagging listing:', error);
+        alert('Failed to flag listing. Please try again.');
+    }
+}
+
+// Show camera history
+async function showCameraHistory(listingId) {
+    // Implementation for history view
+    alert('History view - To be implemented');
+}
+
+// Load cameras on page load
+document.addEventListener('DOMContentLoaded', () => {
+    loadCameraFilters();
+    loadCameras();
+});
+
+// Brand filter change handler
+document.getElementById('brand-filter').addEventListener('change', () => {
+    onBrandFilterChange();
+    loadCameras();
+});
+</script>
+
+<style>
+/* Camera page specific styles */
+.listing-thumb {
+    width: 80px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 6px;
+}
+
+.listing-thumb-placeholder {
+    width: 80px;
+    height: 60px;
+    background: linear-gradient(135deg, #e74c3c 0%, #f39c12 100%);
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+}
+
+.listing-image-cell {
+    width: 100px;
+    text-align: center;
+}
+
+/* Floating Flag Section */
+.floating-flag-section {
+    background: linear-gradient(135deg, #fff5f5 0%, #ffe0e0 100%);
+    border: 2px solid #e74c3c;
+    border-radius: 8px;
+    padding: 1rem;
+}
+
+.floating-flag-section.collapsed .flag-section-content {
+    display: none;
+}
+
+.flag-section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    font-weight: 600;
+    color: #c0392b;
+}
+
+.flag-toggle-icon {
+    transition: transform 0.3s ease;
+}
+
+.floating-flag-section.collapsed .flag-toggle-icon {
+    transform: rotate(-90deg);
+}
+
+[data-theme="dark"] .floating-flag-section {
+    background: linear-gradient(135deg, #2d1f1f 0%, #3d2a2a 100%);
+}
+
+[data-theme="dark"] .flag-section-content textarea {
+    background: #1a1a2e;
+    color: #e0e0e0;
+}
+</style>
+{% endblock %}

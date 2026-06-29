@@ -1,0 +1,1674 @@
+{% extends "base.html" %}
+
+{% block title %}PC Builder - SS-Crawler{% endblock %}
+
+{% block content %}
+<div class="section">
+    <div class="page-header">
+        <h2>🔧 PC Builder</h2>
+        <p class="section-description">Select components to build your custom PC and estimate the total cost.</p>
+    </div>
+    
+    <!-- PC Builder Layout -->
+    <div class="pc-builder-layout">
+        <!-- Component Selection Grid -->
+        <div class="component-selection">
+            <!-- CPU -->
+            <div class="component-card" data-component="cpu">
+                <div class="component-header">
+                    <span class="component-icon">⚙️</span>
+                    <h3>CPU</h3>
+                    <span class="component-status" id="cpu-status">Not selected</span>
+                </div>
+                <div class="component-body">
+                    <div class="select-container">
+                        <input type="text" class="select-search" id="cpu-select-search" placeholder="🔍 Search CPU..." oninput="filterComponentSelect('cpu-select', this.value)">
+                        <select id="cpu-select" class="component-select" onchange="selectComponent('cpu', this.value)">
+                            <option value="">Select CPU...</option>
+                        </select>
+                        <button class="view-listings-btn" id="cpu-view-btn" onclick="viewListings('cpu')" title="View all listings for this CPU" disabled>
+                            📋
+                        </button>
+                    </div>
+                    <div class="socket-info" id="cpu-socket-info"></div>
+                    <div class="component-details" id="cpu-details"></div>
+                </div>
+            </div>
+            
+            <!-- Motherboard -->
+            <div class="component-card" data-component="motherboard">
+                <div class="component-header">
+                    <span class="component-icon">🔧</span>
+                    <h3>Motherboard</h3>
+                    <span class="component-status" id="motherboard-status">Not selected</span>
+                </div>
+                <div class="component-body">
+                    <div class="match-chipset-row">
+                        <button class="btn btn-small match-chipset-btn" id="match-chipset-btn" onclick="matchChipset()" disabled>
+                            🔗 Match Chipset
+                        </button>
+                        <span class="compatibility-indicator" id="compatibility-indicator"></span>
+                    </div>
+                    <div class="select-container">
+                        <input type="text" class="select-search" id="motherboard-select-search" placeholder="🔍 Search Motherboard..." oninput="filterComponentSelect('motherboard-select', this.value)">
+                        <select id="motherboard-select" class="component-select" onchange="selectComponent('motherboard', this.value)">
+                            <option value="">Select Motherboard...</option>
+                        </select>
+                        <button class="view-listings-btn" id="motherboard-view-btn" onclick="viewListings('motherboard')" title="View all listings for this motherboard" disabled>
+                            📋
+                        </button>
+                    </div>
+                    <div class="component-details" id="motherboard-details"></div>
+                </div>
+            </div>
+            
+            <!-- GPU -->
+            <div class="component-card" data-component="gpu">
+                <div class="component-header">
+                    <span class="component-icon">🎮</span>
+                    <h3>GPU</h3>
+                    <span class="component-status" id="gpu-status">Not selected</span>
+                </div>
+                <div class="component-body">
+                    <div class="select-container">
+                        <input type="text" class="select-search" id="gpu-select-search" placeholder="🔍 Search GPU..." oninput="filterComponentSelect('gpu-select', this.value)">
+                        <select id="gpu-select" class="component-select" onchange="selectComponent('gpu', this.value)">
+                            <option value="">Select GPU...</option>
+                        </select>
+                        <button class="view-listings-btn" id="gpu-view-btn" onclick="viewListings('gpu')" title="View all listings for this GPU" disabled>
+                            📋
+                        </button>
+                    </div>
+                    <div class="component-details" id="gpu-details"></div>
+                </div>
+            </div>
+            
+            <!-- RAM -->
+            <div class="component-card" data-component="ram">
+                <div class="component-header">
+                    <span class="component-icon">💾</span>
+                    <h3>RAM</h3>
+                    <span class="component-status" id="ram-status">Not selected</span>
+                </div>
+                <div class="component-body">
+                    <!-- RAM Multi-Filter Interface -->
+                    <div class="ram-filter-container" id="ram-filter-container">
+                        <div class="ram-filters">
+                            <div class="ram-filter-group">
+                                <label>Capacity</label>
+                                <select id="ram-capacity-filter" onchange="filterRAM()">
+                                    <option value="">Any</option>
+                                    <option value="8">8GB</option>
+                                    <option value="16">16GB</option>
+                                    <option value="32">32GB</option>
+                                    <option value="64">64GB</option>
+                                </select>
+                            </div>
+                            <div class="ram-filter-group">
+                                <label>Type</label>
+                                <select id="ram-type-filter" onchange="filterRAM()">
+                                    <option value="">Any</option>
+                                    <option value="DDR4">DDR4</option>
+                                    <option value="DDR5">DDR5</option>
+                                </select>
+                            </div>
+                        </div>
+                        <button class="btn btn-small" onclick="applyRAMFilters()">🔄 Apply Filters</button>
+                    </div>
+                    <div class="select-container">
+                        <input type="text" class="select-search" id="ram-select-search" placeholder="🔍 Search RAM..." oninput="filterComponentSelect('ram-select', this.value)">
+                        <select id="ram-select" class="component-select" onchange="selectComponent('ram', this.value)">
+                            <option value="">Select RAM...</option>
+                        </select>
+                        <button class="view-listings-btn" id="ram-view-btn" onclick="viewListings('ram')" title="View all listings for this RAM" disabled>
+                            📋
+                        </button>
+                    </div>
+                    <div class="component-details" id="ram-details"></div>
+                </div>
+            </div>
+            
+            <!-- SSD -->
+            <div class="component-card" data-component="ssd">
+                <div class="component-header">
+                    <span class="component-icon">💽</span>
+                    <h3>SSD</h3>
+                    <span class="component-status" id="ssd-status">Not selected</span>
+                </div>
+                <div class="component-body">
+                    <!-- SSD Size Filter -->
+                    <div class="ssd-filter-container" id="ssd-filter-container">
+                        <div class="ssd-filters">
+                            <div class="ssd-filter-group">
+                                <label>Size</label>
+                                <select id="ssd-size-filter" onchange="filterSSD()">
+                                    <option value="">Any</option>
+                                    <option value="256">256GB</option>
+                                    <option value="512">512GB</option>
+                                    <option value="1000">1TB</option>
+                                    <option value="2000">2TB</option>
+                                    <option value="4000">4TB</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="ssd-filter-actions">
+                            <button class="btn btn-small" onclick="clearSSDFilter()">Clear Filter</button>
+                            <button class="btn btn-small" id="ssd-generic-btn" onclick="selectGenericSSD()" disabled>
+                                🔍 Use Generic
+                            </button>
+                        </div>
+                        <div class="generic-ssd-info" id="generic-ssd-info" style="display: none;">
+                            <span class="generic-label">Generic SSD Size Selected:</span>
+                            <span class="generic-value" id="generic-ssd-size"></span>
+                        </div>
+                    </div>
+                    <div class="select-container">
+                        <input type="text" class="select-search" id="ssd-select-search" placeholder="🔍 Search SSD..." oninput="filterComponentSelect('ssd-select', this.value)">
+                        <select id="ssd-select" class="component-select" onchange="selectComponent('ssd', this.value)">
+                            <option value="">Select SSD...</option>
+                        </select>
+                        <button class="view-listings-btn" id="ssd-view-btn" onclick="viewListings('ssd')" title="View all listings for this SSD" disabled>
+                            📋
+                        </button>
+                    </div>
+                    <div class="component-details" id="ssd-details"></div>
+                </div>
+            </div>
+            
+            <!-- PSU -->
+            <div class="component-card" data-component="psu">
+                <div class="component-header">
+                    <span class="component-icon">🔌</span>
+                    <h3>PSU</h3>
+                    <span class="component-status" id="psu-status">Not selected</span>
+                </div>
+                <div class="component-body">
+                    <!-- PSU Wattage Filter -->
+                    <div class="psu-filter-container" id="psu-filter-container" style="margin-bottom: 0.75rem;">
+                        <div style="display: flex; gap: 0.5rem; align-items: center; margin-bottom: 0.5rem;">
+                            <label style="font-size: 0.9rem; color: var(--text-secondary);">Wattage:</label>
+                            <select id="psu-wattage-filter" onchange="filterPSU()" style="flex: 1; padding: 0.4rem; border: 1px solid var(--border-color); border-radius: 4px; background: var(--card-bg); color: var(--text-primary);">
+                                <option value="">Any</option>
+                                <option value="400">400W</option>
+                                <option value="500">500W</option>
+                                <option value="550">550W</option>
+                                <option value="600">600W</option>
+                                <option value="650">650W</option>
+                                <option value="750">750W</option>
+                                <option value="850">850W</option>
+                                <option value="1000">1000W</option>
+                                <option value="1200">1200W+</option>
+                            </select>
+                        </div>
+                        <div class="psu-wattage-info" id="psu-wattage-info" style="display: none; font-size: 0.85rem; color: var(--text-secondary); padding: 0.5rem; background: rgba(52, 152, 219, 0.1); border-radius: 4px;">
+                            <span id="psu-wattage-display"></span>
+                        </div>
+                    </div>
+                    <div class="select-container">
+                        <input type="text" class="select-search" id="psu-select-search" placeholder="🔍 Search PSU..." oninput="filterComponentSelect('psu-select', this.value)">
+                        <select id="psu-select" class="component-select" onchange="selectComponent('psu', this.value)">
+                            <option value="">Select PSU...</option>
+                        </select>
+                        <button class="view-listings-btn" id="psu-view-btn" onclick="viewListings('psu')" title="View all listings for this PSU" disabled>
+                            📋
+                        </button>
+                    </div>
+                    <div class="component-details" id="psu-details"></div>
+                </div>
+            </div>
+            
+            <!-- Case -->
+            <div class="component-card" data-component="case">
+                <div class="component-header">
+                    <span class="component-icon">🖥️</span>
+                    <h3>Case</h3>
+                    <span class="component-status" id="case-status">Not selected</span>
+                </div>
+                <div class="component-body">
+                    <div class="select-container">
+                        <input type="text" class="select-search" id="case-select-search" placeholder="🔍 Search Case..." oninput="filterComponentSelect('case-select', this.value)">
+                        <select id="case-select" class="component-select" onchange="selectComponent('case', this.value)">
+                            <option value="">Select Case...</option>
+                        </select>
+                        <button class="view-listings-btn" id="case-view-btn" onclick="viewListings('case')" title="View all listings for this Case" disabled>
+                            📋
+                        </button>
+                    </div>
+                    <div class="component-details" id="case-details"></div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Sticky Price Summary -->
+        <div class="price-summary-container">
+            <div class="price-summary" id="price-summary">
+                <h3>💰 Total Estimate</h3>
+                <div class="price-breakdown">
+                    <div class="summary-row" id="cpu-summary-row">
+                        <span class="summary-label">⚙️ CPU</span>
+                        <span class="summary-value" id="cpu-summary-price">—</span>
+                    </div>
+                    <div class="summary-row" id="motherboard-summary-row">
+                        <span class="summary-label">🔧 Motherboard</span>
+                        <span class="summary-value" id="motherboard-summary-price">—</span>
+                    </div>
+                    <div class="summary-row" id="gpu-summary-row">
+                        <span class="summary-label">🎮 GPU</span>
+                        <span class="summary-value" id="gpu-summary-price">—</span>
+                    </div>
+                    <div class="summary-row" id="ram-summary-row">
+                        <span class="summary-label">💾 RAM</span>
+                        <span class="summary-value" id="ram-summary-price">—</span>
+                    </div>
+                    <div class="summary-row" id="ssd-summary-row">
+                        <span class="summary-label">💽 SSD</span>
+                        <span class="summary-value" id="ssd-summary-price">—</span>
+                    </div>
+                    <div class="summary-row" id="psu-summary-row">
+                        <span class="summary-label">🔌 PSU</span>
+                        <span class="summary-value" id="psu-summary-price">—</span>
+                    </div>
+                    <div class="summary-row" id="case-summary-row">
+                        <span class="summary-label">🖥️ Case</span>
+                        <span class="summary-value" id="case-summary-price">—</span>
+                    </div>
+                    <div class="summary-row total" id="total-summary-row">
+                        <span class="summary-label">💰 Total</span>
+                        <span class="summary-value" id="total-summary-price">€0</span>
+                    </div>
+                </div>
+                <div class="price-actions">
+                    <button class="btn btn-secondary" onclick="clearBuild()">🗑️ Clear</button>
+                    <button class="btn" onclick="findMatchingListings()">🔍 Find PCs</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Matching Listings -->
+    <div class="matching-listings" id="matching-listings" style="display: none;">
+        <h3>📋 Matching Computer Listings</h3>
+        <div id="matching-listings-content">
+            <div class="loading">Searching for matching listings...</div>
+        </div>
+    </div>
+</div>
+
+<!-- Listings Modal -->
+<div class="modal-overlay" id="listings-modal" onclick="closeModal(event)">
+    <div class="modal-content" onclick="event.stopPropagation()">
+        <div class="modal-header">
+            <h3 id="modal-title">Listings</h3>
+            <button class="modal-close" onclick="closeModal()">&times;</button>
+        </div>
+        <div class="modal-body" id="modal-body">
+            <div class="loading">Loading listings...</div>
+        </div>
+    </div>
+</div>
+
+<style>
+/* PC Builder Layout */
+.pc-builder-layout {
+    display: grid;
+    grid-template-columns: 1fr 320px;
+    gap: 1.5rem;
+    align-items: start;
+}
+
+/* Component Selection Grid */
+.component-selection {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 1.5rem;
+}
+
+.component-card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    padding: 1.25rem;
+    box-shadow: 0 2px 8px var(--shadow);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.component-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px var(--shadow-hover);
+}
+
+.component-card.selected {
+    border-color: #667eea;
+    box-shadow: 0 4px 16px rgba(102, 126, 234, 0.2);
+}
+
+.component-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+}
+
+.component-icon {
+    font-size: 1.5rem;
+}
+
+.component-header h3 {
+    margin: 0;
+    flex: 1;
+    color: var(--text-color);
+}
+
+.component-status {
+    font-size: 0.75rem;
+    color: #888;
+    background: var(--badge-bg);
+    padding: 0.25rem 0.5rem;
+    border-radius: 12px;
+}
+
+.component-card.selected .component-status {
+    background: #667eea;
+    color: white;
+}
+
+/* Select Container with View Button */
+.select-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
+    align-items: stretch;
+}
+
+.component-select {
+    flex: 1 1 100%;
+    min-width: 0;
+    padding: 0.75rem;
+    border: 1px solid var(--input-border);
+    border-radius: 8px;
+    background: var(--input-bg);
+    color: var(--text-color);
+    font-size: 0.9rem;
+    max-width: 100%;
+    text-overflow: ellipsis;
+}
+
+.component-select option {
+    white-space: normal;
+    word-break: break-word;
+}
+
+.select-search {
+    flex: 1 1 100%;
+    min-width: 0;
+    padding: 0.6rem 0.75rem;
+    border: 1px solid var(--input-border);
+    border-radius: 8px;
+    background: var(--input-bg);
+    color: var(--text-color);
+    font-size: 0.9rem;
+}
+
+.select-search::placeholder {
+    color: var(--text-secondary);
+}
+
+.view-listings-btn {
+    padding: 0.75rem;
+    background: var(--badge-bg);
+    border: 1px solid var(--input-border);
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: all 0.2s;
+    min-width: 44px;
+    flex: 0 0 auto;
+}
+
+.view-listings-btn:hover:not(:disabled) {
+    background: #667eea;
+    border-color: #667eea;
+}
+
+.view-listings-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Match Chipset Button */
+.match-chipset-row {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.75rem;
+}
+
+.match-chipset-btn {
+    padding: 0.5rem 1rem;
+    font-size: 0.85rem;
+}
+
+.match-chipset-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.compatibility-indicator {
+    font-size: 0.85rem;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    font-weight: 500;
+}
+
+.compatibility-indicator.compatible {
+    background: #d4edda;
+    color: #155724;
+}
+
+.compatibility-indicator.incompatible {
+    background: #f8d7da;
+    color: #721c24;
+}
+
+.compatibility-indicator.warning {
+    background: #fff3cd;
+    color: #856404;
+}
+
+[data-theme="dark"] .compatibility-indicator.compatible {
+    background: #1e4620;
+    color: #81c784;
+}
+
+[data-theme="dark"] .compatibility-indicator.incompatible {
+    background: #5c1c1c;
+    color: #ef5350;
+}
+
+.socket-info {
+    font-size: 0.8rem;
+    color: #666;
+    margin-bottom: 0.5rem;
+    padding: 0.25rem 0.5rem;
+    background: var(--badge-bg);
+    border-radius: 4px;
+    display: inline-block;
+}
+
+/* RAM Filter Container */
+.ram-filter-container {
+    background: var(--badge-bg);
+    border: 1px solid var(--input-border);
+    border-radius: 8px;
+    padding: 1rem;
+    margin-bottom: 0.75rem;
+}
+
+.ram-filters {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.75rem;
+    margin-bottom: 0.75rem;
+}
+
+.ram-filter-group label {
+    display: block;
+    font-size: 0.75rem;
+    color: var(--text-color);
+    margin-bottom: 0.25rem;
+    font-weight: 500;
+}
+
+.ram-filter-group select {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid var(--input-border);
+    border-radius: 6px;
+    background: var(--input-bg);
+    color: var(--text-color);
+    font-size: 0.85rem;
+}
+
+/* SSD Filter Container */
+.ssd-filter-container {
+    background: var(--badge-bg);
+    border: 1px solid var(--input-border);
+    border-radius: 8px;
+    padding: 1rem;
+    margin-bottom: 0.75rem;
+}
+
+.ssd-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-bottom: 0.75rem;
+}
+
+.ssd-filter-group {
+    flex: 1 1 auto;
+    min-width: 100px;
+}
+
+.ssd-filter-group label {
+    display: block;
+    font-size: 0.75rem;
+    color: var(--text-color);
+    margin-bottom: 0.25rem;
+    font-weight: 500;
+}
+
+.ssd-filter-group select {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid var(--input-border);
+    border-radius: 6px;
+    background: var(--input-bg);
+    color: var(--text-color);
+    font-size: 0.85rem;
+}
+
+.ssd-filter-actions {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.generic-ssd-info {
+    margin-top: 0.5rem;
+    padding: 0.5rem;
+    background: rgba(52, 152, 219, 0.1);
+    border-radius: 4px;
+    font-size: 0.85rem;
+}
+
+.generic-ssd-info .generic-label {
+    font-weight: 500;
+    margin-right: 0.25rem;
+}
+
+.generic-ssd-info .generic-value {
+    font-weight: 600;
+    color: #3498db;
+}
+
+.component-details {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+}
+
+.component-details .detail-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.25rem 0;
+    border-bottom: 1px solid var(--border-color);
+}
+
+[data-theme="dark"] .component-details {
+    color: var(--text-color);
+}
+
+[data-theme="dark"] .component-details .detail-row {
+    border-bottom-color: var(--border-color);
+}
+
+.component-details .detail-row:last-child {
+    border-bottom: none;
+}
+
+/* Sticky Price Summary */
+.price-summary-container {
+    position: sticky;
+    top: 1rem;
+    height: fit-content;
+}
+
+.price-summary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 12px;
+    padding: 1.5rem;
+    color: white;
+    box-shadow: 0 4px 20px rgba(102, 126, 234, 0.3);
+}
+
+.price-summary h3 {
+    margin: 0 0 1rem 0;
+    font-size: 1.25rem;
+}
+
+.price-breakdown {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+}
+
+/* Summary Rows - Base Styles */
+.summary-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.summary-row:last-child {
+    border-bottom: none;
+}
+
+.summary-row.total {
+    font-size: 1.25rem;
+    font-weight: bold;
+    border-top: 2px solid rgba(255, 255, 255, 0.3);
+    margin-top: 0.5rem;
+    padding-top: 0.75rem;
+}
+
+.summary-label {
+    opacity: 0.9;
+}
+
+.summary-value {
+    font-weight: 600;
+}
+
+/* Dark Mode Neon Glow Effects */
+[data-theme="dark"] .summary-row:nth-child(1) .summary-label {
+    text-shadow: 0 0 8px #00d4ff, 0 0 16px #00d4ff;
+}
+
+[data-theme="dark"] .summary-row:nth-child(2) .summary-label {
+    text-shadow: 0 0 8px #ff00ff, 0 0 16px #ff00ff;
+}
+
+[data-theme="dark"] .summary-row:nth-child(3) .summary-label {
+    text-shadow: 0 0 8px #00ff88, 0 0 16px #00ff88;
+}
+
+[data-theme="dark"] .summary-row:nth-child(4) .summary-label {
+    text-shadow: 0 0 8px #ffaa00, 0 0 16px #ffaa00;
+}
+
+[data-theme="dark"] .summary-row:nth-child(5) .summary-label {
+    text-shadow: 0 0 8px #ff5555, 0 0 16px #ff5555;
+}
+
+[data-theme="dark"] .summary-row:nth-child(6) .summary-label {
+    text-shadow: 0 0 8px #aa55ff, 0 0 16px #aa55ff;
+}
+
+[data-theme="dark"] .summary-row:nth-child(7) .summary-label {
+    text-shadow: 0 0 8px #55aaff, 0 0 16px #55aaff;
+}
+
+[data-theme="dark"] .summary-row.total .summary-label,
+[data-theme="dark"] .summary-row.total .summary-value {
+    text-shadow: 0 0 10px #ffd700, 0 0 20px #ffd700, 0 0 30px #ffd700;
+}
+
+/* Price Actions */
+.price-actions {
+    display: flex;
+    gap: 0.75rem;
+}
+
+.price-actions .btn {
+    flex: 1;
+    text-align: center;
+    padding: 0.6rem 0.75rem;
+    font-size: 0.85rem;
+}
+
+.price-actions .btn-secondary {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.price-actions .btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+/* Modal Styles */
+.modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+}
+
+.modal-overlay.active {
+    display: flex;
+}
+
+.modal-content {
+    background: var(--card-bg);
+    border-radius: 12px;
+    max-width: 900px;
+    width: 100%;
+    max-height: 80vh;
+    overflow: hidden;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    display: flex;
+    flex-direction: column;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid var(--card-border);
+}
+
+.modal-header h3 {
+    margin: 0;
+    color: var(--text-color);
+}
+
+.modal-close {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: var(--text-color);
+    padding: 0.25rem;
+    line-height: 1;
+}
+
+.modal-close:hover {
+    color: #ff5555;
+}
+
+.modal-body {
+    padding: 1rem 1.5rem;
+    overflow-y: auto;
+    max-height: 60vh;
+}
+
+/* Listings Table in Modal */
+.modal-body table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+}
+
+.modal-body th,
+.modal-body td {
+    padding: 0.75rem;
+    text-align: left;
+    border-bottom: 1px solid var(--table-border);
+}
+
+.modal-body th {
+    background: var(--badge-bg);
+    font-weight: 600;
+}
+
+.modal-body .price {
+    font-weight: 600;
+    color: #667eea;
+}
+
+.modal-body .btn-small {
+    padding: 0.35rem 0.75rem;
+    font-size: 0.8rem;
+}
+
+/* Matching Listings Section */
+.matching-listings {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-top: 2rem;
+}
+
+.matching-listings h3 {
+    margin: 0 0 1rem 0;
+    color: var(--text-color);
+}
+
+.loading {
+    text-align: center;
+    padding: 2rem;
+    color: #888;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+    .pc-builder-layout {
+        grid-template-columns: 1fr;
+    }
+    
+    .price-summary-container {
+        position: relative;
+        top: 0;
+        order: -1;
+    }
+    
+    .price-summary {
+        margin-bottom: 1rem;
+    }
+    
+    .component-selection {
+        grid-template-columns: 1fr;
+    }
+    
+    .ram-filters {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .select-container {
+        flex-wrap: wrap;
+    }
+    
+    .view-listings-btn {
+        min-width: 44px;
+        min-height: 44px;
+    }
+    
+    .match-chipset-row {
+        flex-wrap: wrap;
+    }
+    
+    .modal-content {
+        margin: 0.5rem;
+        max-height: 90vh;
+    }
+    
+    .modal-body {
+        padding: 0.75rem;
+    }
+}
+</style>
+
+<script>
+// Component data cache
+const componentData = {
+    cpu: [],
+    motherboard: [],
+    gpu: [],
+    ram: [],
+    ssd: [],
+    psu: [],
+    case: []
+};
+
+// Store all RAM data for filtering
+let allRAMData = [];
+
+// Selected components
+const selectedComponents = {
+    cpu: null,
+    motherboard: null,
+    gpu: null,
+    ram: null,
+    ssd: null,
+    psu: null,
+    case: null
+};
+
+// Field mappings for different component types
+const componentFields = {
+    cpu: 'cpu_name',
+    motherboard: 'model',
+    gpu: 'model',
+    ram: 'name',
+    ssd: 'model',
+    psu: 'name',
+    case: 'name'
+};
+
+// Load all components on page load
+document.addEventListener('DOMContentLoaded', async () => {
+    await Promise.all([
+        loadCPUs(),
+        loadMotherboards(),
+        loadGPUs(),
+        loadRAMs(),
+        loadSSDs(),
+        loadPSUs(),
+        loadCases()
+    ]);
+});
+
+// Load CPUs
+async function loadCPUs() {
+    try {
+        const response = await fetch('/api/cpu-models');
+        const data = await response.json();
+        componentData.cpu = data;
+        populateSelect('cpu-select', data, 'cpu_name');
+    } catch (error) {
+        console.error('Error loading CPUs:', error);
+    }
+}
+
+// Load Motherboards
+async function loadMotherboards() {
+    try {
+        const response = await fetch('/api/motherboard-models');
+        const data = await response.json();
+        componentData.motherboard = data;
+        populateSelect('motherboard-select', data, 'model');
+    } catch (error) {
+        console.error('Error loading motherboards:', error);
+    }
+}
+
+// Load GPUs
+async function loadGPUs() {
+    try {
+        const response = await fetch('/api/gpu-models');
+        const data = await response.json();
+        componentData.gpu = data;
+        populateSelect('gpu-select', data, 'model');
+    } catch (error) {
+        console.error('Error loading GPUs:', error);
+    }
+}
+
+// Load RAMs
+async function loadRAMs() {
+    try {
+        const response = await fetch('/api/ram-models');
+        const data = await response.json();
+        componentData.ram = data;
+        allRAMData = data;
+        populateRAMSelect(data);
+    } catch (error) {
+        console.error('Error loading RAMs:', error);
+    }
+}
+
+// Load SSDs
+async function loadSSDs() {
+    try {
+        const response = await fetch('/api/ssd-models');
+        const data = await response.json();
+        componentData.ssd = data;
+        populateSelect('ssd-select', data, 'model');
+    } catch (error) {
+        console.error('Error loading SSDs:', error);
+    }
+}
+
+// Filter SSD by size
+function filterSSD() {
+    const sizeFilter = document.getElementById('ssd-size-filter').value;
+    const genericBtn = document.getElementById('ssd-generic-btn');
+    
+    if (sizeFilter) {
+        genericBtn.disabled = false;
+        genericBtn.textContent = `🔍 Use Generic ${sizeFilter}GB SSD`;
+    } else {
+        genericBtn.disabled = true;
+        genericBtn.textContent = '🔍 Use Generic';
+    }
+}
+
+// Select generic SSD based on size filter
+function selectGenericSSD() {
+    const sizeFilter = document.getElementById('ssd-size-filter').value;
+    if (!sizeFilter) return;
+    
+    // Create a generic SSD entry
+    const sizeGB = parseInt(sizeFilter);
+    const sizeLabel = sizeGB >= 1000 ? `${sizeGB/1000}TB` : `${sizeGB}GB`;
+    
+    // Calculate average price from filtered SSDs
+    const filteredSSDs = componentData.ssd.filter(ssd => {
+        const ssdSize = parseInt(ssd.capacity_gb) || 0;
+        if (sizeGB === 256) return ssdSize >= 200 && ssdSize <= 350;
+        if (sizeGB === 512) return ssdSize >= 450 && ssdSize <= 600;
+        if (sizeGB === 1000) return ssdSize >= 900 && ssdSize <= 1100;
+        if (sizeGB === 2000) return ssdSize >= 1900 && ssdSize <= 2200;
+        if (sizeGB === 4000) return ssdSize >= 3800 && ssdSize <= 4200;
+        return false;
+    });
+    
+    let avgPrice = 0;
+    if (filteredSSDs.length > 0) {
+        const totalPrice = filteredSSDs.reduce((sum, ssd) => sum + (parseFloat(ssd.avg_price) || 0), 0);
+        avgPrice = totalPrice / filteredSSDs.length;
+    }
+    
+    // Create generic SSD object
+    const genericSSD = {
+        model: `Generic ${sizeLabel} SSD`,
+        capacity_gb: sizeGB,
+        avg_price: avgPrice,
+        is_generic: true
+    };
+    
+    // Update component selection
+    selectedComponents.ssd = genericSSD;
+    updateComponentUI('ssd', genericSSD);
+    updatePriceSummary();
+    
+    // Show generic selection
+    document.getElementById('generic-ssd-info').style.display = 'block';
+    document.getElementById('generic-ssd-size').textContent = sizeLabel;
+    
+    // Clear the select
+    document.getElementById('ssd-select').value = '';
+}
+
+// Clear SSD filter
+function clearSSDFilter() {
+    document.getElementById('ssd-size-filter').value = '';
+    document.getElementById('ssd-generic-btn').disabled = true;
+    document.getElementById('ssd-generic-btn').textContent = '🔍 Use Generic';
+    document.getElementById('generic-ssd-info').style.display = 'none';
+    
+    // Reset SSD selection
+    selectedComponents.ssd = null;
+    updateComponentUI('ssd', null);
+    updatePriceSummary();
+}
+
+// Filter PSU by wattage
+function filterPSU() {
+    const wattageFilter = document.getElementById('psu-wattage-filter').value;
+    
+    if (!wattageFilter) {
+        // Show all PSUs
+        populateSelect('psu-select', componentData.psu, 'name');
+        document.getElementById('psu-wattage-info').style.display = 'none';
+        return;
+    }
+    
+    const targetWattage = parseInt(wattageFilter);
+    
+    // Calculate average price for this wattage range
+    const filteredPSUs = componentData.psu.filter(psu => {
+        const psuWattage = parseInt(psu.wattage) || 0;
+        // Match within +/- 50W range
+        return Math.abs(psuWattage - targetWattage) <= 50;
+    });
+    
+    // Calculate average price
+    let avgPrice = 0;
+    if (filteredPSUs.length > 0) {
+        const totalPrice = filteredPSUs.reduce((sum, psu) => sum + (parseFloat(psu.avg_price) || 0), 0);
+        avgPrice = totalPrice / filteredPSUs.length;
+    }
+    
+    // Show info
+    const infoDiv = document.getElementById('psu-wattage-info');
+    const displaySpan = document.getElementById('psu-wattage-display');
+    infoDiv.style.display = 'block';
+    displaySpan.innerHTML = `💡 ${targetWattage}W PSUs: ${filteredPSUs.length} found, avg €${avgPrice.toFixed(2)}`;
+    
+    // Populate select with filtered PSUs
+    populateSelect('psu-select', filteredPSUs, 'name');
+}
+
+// Load PSUs
+async function loadPSUs() {
+    try {
+        const response = await fetch('/api/psu-models');
+        const data = await response.json();
+        componentData.psu = data;
+        populateSelect('psu-select', data, 'name');
+    } catch (error) {
+        console.error('Error loading PSUs:', error);
+    }
+}
+
+// Load Cases
+async function loadCases() {
+    try {
+        const response = await fetch('/api/case-models');
+        const data = await response.json();
+        componentData.case = data;
+        populateSelect('case-select', data, 'name');
+    } catch (error) {
+        console.error('Error loading cases:', error);
+    }
+}
+
+// Filter select dropdown based on search text
+function filterComponentSelect(selectId, query) {
+    const select = document.getElementById(selectId);
+    if (!select) return;
+
+    const term = query.toLowerCase().trim();
+
+    // Determine component type and data source
+    const type = selectId.replace('-select', '');
+    const nameField = componentFields[type];
+    const allItems = type === 'ram' ? allRAMData : componentData[type];
+
+    if (!allItems || !nameField) return;
+
+    const filtered = term === '' ? allItems : allItems.filter(item => {
+        const name = (item[nameField] || '').toLowerCase();
+        return name.includes(term);
+    });
+
+    // Preserve current selection if possible
+    const currentValue = select.value;
+
+    if (type === 'ram') {
+        populateRAMSelect(filtered);
+    } else {
+        populateSelect(selectId, filtered, nameField);
+    }
+
+    // Restore selection if it still exists
+    if (currentValue && Array.from(select.options).some(o => o.value === currentValue)) {
+        select.value = currentValue;
+    }
+}
+
+// Populate select dropdown
+function populateSelect(selectId, items, nameField) {
+    const select = document.getElementById(selectId);
+    if (!select) return;
+    
+    // Keep the first option
+    const firstOption = select.options[0];
+    select.innerHTML = '';
+    select.appendChild(firstOption);
+    
+    items.forEach(item => {
+        const option = document.createElement('option');
+        option.value = item.id;
+        const price = item.avg_price || item.price || 0;
+        option.textContent = `${item[nameField]} - €${price}`;
+        option.dataset.name = item[nameField];
+        select.appendChild(option);
+    });
+}
+
+// Populate RAM select with filtered data
+function populateRAMSelect(items) {
+    const select = document.getElementById('ram-select');
+    if (!select) return;
+    
+    // Keep the first option
+    const firstOption = select.options[0];
+    select.innerHTML = '';
+    select.appendChild(firstOption);
+    
+    items.forEach(item => {
+        const option = document.createElement('option');
+        option.value = item.id;
+        const price = item.avg_price || item.price || 0;
+        const speed = item.speed_mhz || item.speed || 0;
+        option.textContent = `${item.name} (${item.capacity_gb}GB ${item.type} ${speed}MHz) - €${price}`;
+        option.dataset.name = item.name;
+        option.dataset.capacity = item.capacity_gb;
+        option.dataset.type = item.type;
+        option.dataset.speed = speed;
+        select.appendChild(option);
+    });
+}
+
+// Filter RAM based on selected criteria
+function filterRAM() {
+    // This is called on change, but we don't apply immediately
+    // The actual filtering happens in applyRAMFilters
+}
+
+// Apply RAM filters
+function applyRAMFilters() {
+    const capacityFilter = document.getElementById('ram-capacity-filter').value;
+    const typeFilter = document.getElementById('ram-type-filter').value;
+    
+    let filtered = allRAMData;
+    
+    if (capacityFilter) {
+        filtered = filtered.filter(r => r.capacity_gb == capacityFilter);
+    }
+    
+    if (typeFilter) {
+        filtered = filtered.filter(r => r.type && r.type.toUpperCase() === typeFilter.toUpperCase());
+    }
+    
+    populateRAMSelect(filtered);
+    
+    // Calculate average price from filtered results and use as the component
+    if (filtered.length > 0) {
+        const avgPrice = filtered.reduce((sum, r) => sum + (r.avg_price || r.price || 0), 0) / filtered.length;
+        const capacity = capacityFilter || filtered[0].capacity_gb;
+        const ramType = typeFilter || filtered[0].type || 'DDR4';
+        
+        // Create a virtual RAM component with average price
+        const virtualRAM = {
+            id: 'filtered_avg',
+            name: `${capacity}GB ${ramType} (Avg of ${filtered.length} listings)`,
+            capacity_gb: parseInt(capacity),
+            type: ramType,
+            avg_price: avgPrice,
+            is_filtered_avg: true
+        };
+        
+        selectedComponents.ram = virtualRAM;
+        updateComponentCard('ram', virtualRAM);
+        document.getElementById('ram-view-btn').disabled = true; // Disable view since it's an average
+        updateTotal();
+        
+        // Clear the select to indicate we're using filtered average
+        document.getElementById('ram-select').value = '';
+    }
+    
+    // Clear selection if current selection is no longer valid
+    if (selectedComponents.ram && !selectedComponents.ram.is_filtered_avg) {
+        const stillExists = filtered.find(r => r.id === selectedComponents.ram.id);
+        if (!stillExists) {
+            selectComponent('ram', '');
+        }
+    }
+}
+
+// Select a component
+function selectComponent(type, id) {
+    const viewBtn = document.getElementById(`${type}-view-btn`);
+    
+    if (!id) {
+        selectedComponents[type] = null;
+        updateComponentCard(type, null);
+        if (viewBtn) viewBtn.disabled = true;
+    } else {
+        const component = componentData[type].find(c => c.id == id);
+        selectedComponents[type] = component;
+        updateComponentCard(type, component);
+        if (viewBtn) viewBtn.disabled = false;
+        
+        // Update socket info display for CPU
+        if (type === 'cpu' && component && component.socket) {
+            document.getElementById('cpu-socket-info').textContent = `Socket: ${component.socket}`;
+            document.getElementById('match-chipset-btn').disabled = false;
+        } else if (type === 'cpu') {
+            document.getElementById('cpu-socket-info').textContent = '';
+            document.getElementById('match-chipset-btn').disabled = true;
+        }
+    }
+    
+    // Check compatibility when CPU or motherboard changes
+    if (type === 'cpu' || type === 'motherboard') {
+        checkCompatibility();
+    }
+    
+    updateTotal();
+}
+
+// Check CPU/Motherboard compatibility
+function checkCompatibility() {
+    const cpu = selectedComponents.cpu;
+    const motherboard = selectedComponents.motherboard;
+    const indicator = document.getElementById('compatibility-indicator');
+    
+    if (!cpu && !motherboard) {
+        indicator.textContent = '';
+        indicator.className = 'compatibility-indicator';
+        return;
+    }
+    
+    if (cpu && !motherboard) {
+        indicator.textContent = `CPU socket: ${cpu.socket}`;
+        indicator.className = 'compatibility-indicator';
+        return;
+    }
+    
+    if (!cpu && motherboard) {
+        indicator.textContent = `MB socket: ${motherboard.socket || 'Unknown'}`;
+        indicator.className = 'compatibility-indicator';
+        return;
+    }
+    
+    // Both selected - check compatibility
+    if (cpu.socket === motherboard.socket) {
+        indicator.textContent = '✓ Compatible';
+        indicator.className = 'compatibility-indicator compatible';
+    } else {
+        indicator.textContent = `✗ Socket mismatch: CPU ${cpu.socket} vs MB ${motherboard.socket}`;
+        indicator.className = 'compatibility-indicator incompatible';
+    }
+}
+
+// Match Chipset - Filter motherboards by CPU socket
+function matchChipset() {
+    const cpu = selectedComponents.cpu;
+    if (!cpu || !cpu.socket) {
+        alert('Please select a CPU first');
+        return;
+    }
+    
+    const socket = cpu.socket;
+    const allMotherboards = componentData.motherboard;
+    
+    // Filter motherboards by socket
+    const compatible = allMotherboards.filter(m => m.socket === socket);
+    
+    if (compatible.length === 0) {
+        alert(`No motherboards found for socket: ${socket}`);
+        return;
+    }
+    
+    // Repopulate motherboard select with only compatible boards
+    const select = document.getElementById('motherboard-select');
+    const firstOption = select.options[0];
+    select.innerHTML = '';
+    select.appendChild(firstOption);
+    
+    compatible.forEach(item => {
+        const option = document.createElement('option');
+        option.value = item.id;
+        const price = item.avg_price || item.price || 0;
+        option.textContent = `${item.model} (${item.socket}) - €${price}`;
+        option.dataset.name = item.model;
+        select.appendChild(option);
+    });
+    
+    // Show warning that list is filtered
+    const indicator = document.getElementById('compatibility-indicator');
+    indicator.textContent = `Showing ${compatible.length} boards for ${socket}`;
+    indicator.className = 'compatibility-indicator warning';
+}
+
+// Update component card UI
+function updateComponentCard(type, component) {
+    const card = document.querySelector(`[data-component="${type}"]`);
+    const status = document.getElementById(`${type}-status`);
+    const details = document.getElementById(`${type}-details`);
+    
+    if (component) {
+        card.classList.add('selected');
+        status.textContent = 'Selected';
+        
+        // Show component details
+        let detailsHtml = '';
+        const importantFields = ['vendor', 'brand', 'model', 'cpu_name', 'processor_number', 'cores', 'threads', 'socket', 'chipset', 'capacity_gb', 'type', 'wattage', 'efficiency_rating', 'vram_gb', 'year_released'];
+        
+        importantFields.forEach(key => {
+            if (component[key] && component[key] !== '' && component[key] !== null) {
+                let value = component[key];
+                if (key === 'vram_gb' && value >= 1024) {
+                    value = (value / 1024).toFixed(0) + 'GB';
+                }
+                detailsHtml += `<div class="detail-row"><span>${key.replace('_', ' ').replace('_', ' ')}:</span><span>${value}</span></div>`;
+            }
+        });
+        
+        // Add price info
+        const price = component.avg_price || component.price || 0;
+        if (price > 0) {
+            detailsHtml += `<div class="detail-row"><span>Avg Price:</span><span>€${price}</span></div>`;
+        }
+        
+        details.innerHTML = detailsHtml;
+        
+        // Update summary row
+        updateSummaryRow(type, component);
+    } else {
+        card.classList.remove('selected');
+        status.textContent = 'Not selected';
+        details.innerHTML = '';
+        
+        // Clear summary row
+        clearSummaryRow(type);
+    }
+}
+
+// Update summary row for a component
+function updateSummaryRow(type, component) {
+    const price = component.avg_price || component.price || 0;
+    const priceEl = document.getElementById(`${type}-summary-price`);
+    const rowEl = document.getElementById(`${type}-summary-row`);
+    
+    if (priceEl) {
+        priceEl.textContent = `€${price}`;
+        rowEl.classList.add('active');
+    }
+}
+
+// Clear summary row for a component
+function clearSummaryRow(type) {
+    const priceEl = document.getElementById(`${type}-summary-price`);
+    const rowEl = document.getElementById(`${type}-summary-row`);
+    
+    if (priceEl) {
+        priceEl.textContent = '—';
+        rowEl.classList.remove('active');
+    }
+}
+
+// Update total price
+function updateTotal() {
+    let total = 0;
+    Object.entries(selectedComponents).forEach(([type, component]) => {
+        if (component) {
+            total += component.avg_price || component.price || 0;
+        }
+    });
+    document.getElementById('total-summary-price').textContent = `€${total.toFixed(2)}`;
+}
+
+// Clear build
+function clearBuild() {
+    Object.keys(selectedComponents).forEach(type => {
+        selectedComponents[type] = null;
+        document.getElementById(`${type}-select`).value = '';
+        updateComponentCard(type, null);
+        
+        // Disable view buttons
+        const viewBtn = document.getElementById(`${type}-view-btn`);
+        if (viewBtn) viewBtn.disabled = true;
+    });
+    
+    // Reset socket info
+    document.getElementById('cpu-socket-info').textContent = '';
+    document.getElementById('match-chipset-btn').disabled = true;
+    document.getElementById('compatibility-indicator').textContent = '';
+    document.getElementById('compatibility-indicator').className = 'compatibility-indicator';
+    
+    // Reset RAM filters
+    document.getElementById('ram-capacity-filter').value = '';
+    document.getElementById('ram-type-filter').value = '';
+    populateRAMSelect(allRAMData);
+    
+    // Reset SSD filters
+    clearSSDFilter();
+    
+    // Reset PSU wattage filter
+    document.getElementById('psu-wattage-filter').value = '';
+    document.getElementById('psu-wattage-info').style.display = 'none';
+    
+    // Reset motherboard select
+    populateSelect('motherboard-select', componentData.motherboard, 'model');
+    
+    updateTotal();
+    document.getElementById('matching-listings').style.display = 'none';
+}
+
+// View Listings Modal
+async function viewListings(type) {
+    const component = selectedComponents[type];
+    if (!component) return;
+    
+    const modal = document.getElementById('listings-modal');
+    const modalTitle = document.getElementById('modal-title');
+    const modalBody = document.getElementById('modal-body');
+    
+    const nameField = componentFields[type];
+    const componentName = component[nameField] || component.model || component.name || 'Unknown';
+    
+    modalTitle.textContent = `Listings for ${componentName}`;
+    modalBody.innerHTML = '<div class="loading">Loading listings...</div>';
+    modal.classList.add('active');
+    
+    try {
+        // Determine API endpoint
+        let endpoint = '';
+        let idParam = '';
+        
+        switch(type) {
+            case 'cpu':
+                endpoint = '/api/cpus';
+                // Filter by CPU ID
+                break;
+            case 'gpu':
+                endpoint = '/api/gpus';
+                break;
+            case 'motherboard':
+                endpoint = '/api/motherboards';
+                break;
+            case 'ram':
+                endpoint = '/api/rams';
+                break;
+            case 'ssd':
+                endpoint = '/api/ssds';
+                break;
+            case 'psu':
+                endpoint = '/api/psus';
+                break;
+            case 'case':
+                endpoint = '/api/cases';
+                break;
+        }
+        
+        // Fetch listings
+        const response = await fetch(endpoint);
+        const data = await response.json();
+        
+        // Filter to only show listings for this specific model
+        let listings = [];
+        if (Array.isArray(data)) {
+            listings = data.filter(item => {
+                // Match by various ID fields
+                if (item.matched_cpu_id === component.id) return true;
+                if (item.matched_gpu_id === component.id) return true;
+                if (item.motherboard_model_id === component.id) return true;
+                if (item.matched_ram_id === component.id) return true;
+                if (item.matched_ssd_id === component.id) return true;
+                if (item.matched_psu_id === component.id) return true;
+                if (item.matched_case_id === component.id) return true;
+                // Fallback to name matching
+                if (item.title && item.title.toLowerCase().includes(componentName.toLowerCase())) return true;
+                return false;
+            });
+        }
+        
+        if (listings.length === 0) {
+            modalBody.innerHTML = '<div class="loading">No active listings found for this model.</div>';
+            return;
+        }
+        
+        // Render listings table
+        let html = `
+            <p>Found ${listings.length} listing(s)</p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Price</th>
+                        <th>Location</th>
+                        <th>Date</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+        `;
+        
+        listings.slice(0, 50).forEach(listing => {
+            const date = listing.date_posted ? new Date(listing.date_posted).toLocaleDateString() : 'Unknown';
+            html += `
+                <tr>
+                    <td>${listing.title || 'N/A'}</td>
+                    <td class="price">€${listing.price_eur || 0}</td>
+                    <td>${listing.seller_location || 'Unknown'}</td>
+                    <td>${date}</td>
+                    <td>
+                        ${listing.listing_url ? `<a href="${listing.listing_url}" target="_blank" class="btn btn-small">View →</a>` : 'N/A'}
+                    </td>
+                </tr>
+            `;
+        });
+        
+        html += '</tbody></table>';
+        modalBody.innerHTML = html;
+        
+    } catch (error) {
+        console.error('Error loading listings:', error);
+        modalBody.innerHTML = `<div class="loading">Error loading listings: ${error.message}</div>`;
+    }
+}
+
+// Close Modal
+function closeModal(event) {
+    if (event && event.target !== event.currentTarget) return;
+    document.getElementById('listings-modal').classList.remove('active');
+}
+
+// Find matching listings
+async function findMatchingListings() {
+    const container = document.getElementById('matching-listings');
+    const content = document.getElementById('matching-listings-content');
+    
+    container.style.display = 'block';
+    content.innerHTML = '<div class="loading">Searching for matching listings...</div>';
+    
+    try {
+        // Get selected component IDs
+        const params = new URLSearchParams();
+        if (selectedComponents.cpu) params.append('cpu_id', selectedComponents.cpu.id);
+        if (selectedComponents.gpu) params.append('gpu_id', selectedComponents.gpu.id);
+        if (selectedComponents.ram) params.append('ram_id', selectedComponents.ram.id);
+        
+        const response = await fetch(`/api/computers?${params.toString()}`);
+        const data = await response.json();
+        
+        if (!data.success || data.listings.length === 0) {
+            content.innerHTML = '<div class="loading">No matching listings found.</div>';
+            return;
+        }
+        
+        // Render listings
+        let html = '<table><thead><tr><th>Title</th><th>Price</th><th>Components</th><th>Actions</th></tr></thead><tbody>';
+        
+        data.listings.forEach(listing => {
+            const components = [];
+            if (listing.cpu_name) components.push(`CPU: ${listing.cpu_producer} ${listing.cpu_name}`);
+            if (listing.gpu_model) components.push(`GPU: ${listing.gpu_vendor} ${listing.gpu_model}`);
+            if (listing.ram_capacity) components.push(`RAM: ${listing.ram_capacity}GB`);
+            
+            html += `
+                <tr>
+                    <td>${listing.title}</td>
+                    <td class="price">€${listing.price_eur}</td>
+                    <td>${components.join(', ') || 'No components detected'}</td>
+                    <td>
+                        <a href="/computers" class="btn btn-small">View →</a>
+                    </td>
+                </tr>
+            `;
+        });
+        
+        html += '</tbody></table>';
+        content.innerHTML = html;
+        
+    } catch (error) {
+        content.innerHTML = '<div class="loading">Error loading matching listings.</div>';
+        console.error('Error finding matching listings:', error);
+    }
+}
+
+// Close modal on Escape key
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+        closeModal();
+    }
+});
+</script>
+{% endblock %}

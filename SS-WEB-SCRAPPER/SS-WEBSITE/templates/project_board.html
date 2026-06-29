@@ -500,6 +500,10 @@
                 </label>
                 <button class="btn btn-secondary" onclick="clearFilters()" style="padding: 0.5rem 1rem;">Clear</button>
             </div>
+            <div class="global-search-bar" style="display: flex; gap: 0.5rem; align-items: center; margin-top: 0.5rem;">
+                <input type="text" id="global-search" placeholder="🔍 Search across all tickets..." oninput="applyFilters()" style="padding: 0.5rem; border-radius: 4px; border: 1px solid var(--border-color); background: var(--card-bg); color: var(--text-primary); min-width: 300px;">
+                <span id="search-results-count" style="font-size: 0.85rem; color: var(--text-secondary);"></span>
+            </div>
         </div>
     </div>
 
@@ -729,7 +733,6 @@ function toggleSortDirection(columnId) {
 function renderBoard() {
     const container = document.getElementById('board-columns');
     container.innerHTML = '';
-    restoreFilterControls();
 
     // Top row columns (removed 'progress')
     const topRowIds = ['problems', 'assignment', 'talking'];
@@ -765,6 +768,7 @@ function renderBoard() {
             const columnEl = createFutureColumnElement(column);
             columnEl.classList.add('future-column');
             bottomRow.appendChild(columnEl);
+            restoreFilterControls();
         } else {
             const columnEl = createColumnElement(column);
             columnEl.classList.add('solved-column');
@@ -811,12 +815,12 @@ function createColumnElement(column) {
         `;
     }
 
-    // Filter tasks based on current filters
+// Filter tasks based on current filters
     let filteredTasks = column.tasks.filter(task => taskMatchesFilters(task));
 
-    // Future column: always include all folder tasks (they're filtered by the global search box, not top filters)
+    // Future column: use its own renderer; guard in case it accidentally gets here
     if (column.id === 'future') {
-        filteredTasks = column.tasks.slice();
+        filteredTasks = column.tasks.filter(task => currentFilters.includeFuture || !(task.future_folder_id || task.folder_id));
     }
 
     // Apply sorting for talking (Review) and solved columns
@@ -870,22 +874,36 @@ function filterColumnTasks(columnId, searchText) {
     const tasks = tasksContainer.querySelectorAll('.task-card');
 
     tasks.forEach(task => {
-        const title = task.querySelector('.task-title').textContent.toLowerCase();
-        const taskId = task.getAttribute('onclick').match(/'([^']+)'/)[1].toLowerCase();
-        const meta = task.querySelector('.task-meta').textContent.toLowerCase();
-
-        const matches = title.includes(searchLower) ||
-                       taskId.includes(searchLower) ||
-                       meta.includes(searchLower);
-
+        const taskId = task.dataset.taskId;
+        const matches = taskMatchesSearch(taskId, searchLower);
         task.style.display = matches ? 'block' : 'none';
     });
+}
+
+// Search a task's title, description/fix, code snippet, page, category, and id
+function taskMatchesSearch(taskId, searchLower) {
+    if (!searchLower) return true;
+    const task = findTask(taskId);
+    if (!task) return false;
+
+    const haystack = [
+        task.id,
+        task.title,
+        task.fix,
+        task.code_snippet,
+        task.page,
+        task.category,
+        task.priority
+    ].map(v => (v || '').toString().toLowerCase()).join(' ');
+
+    return haystack.includes(searchLower);
 }
 
 // Create Future column with folders
 function createFutureColumnElement(column) {
     const folders = column.folders || [];
-    const unfiledTasks = column.tasks.filter(t => !t.folder_id);
+    const visibleTasks = column.tasks.filter(t => currentFilters.includeFuture || !(t.future_folder_id || t.folder_id)).filter(futureTaskMatchesFilters);
+    const unfiledTasks = visibleTasks.filter(t => !t.folder_id);
 
     const columnEl = document.createElement('div');
     columnEl.className = 'board-column';
@@ -893,7 +911,7 @@ function createFutureColumnElement(column) {
     columnEl.innerHTML = `
         <div class="column-header" style="border-color: ${column.color}; display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
             <span>${column.title}</span>
-            <span class="column-count">${column.tasks.length}</span>
+            <span class="column-count">${folders.reduce((acc,f)=>acc + visibleTasks.filter(t=>t.folder_id===f.id).length,0) + unfiledTasks.length}</span>
             <button class="btn btn-small" onclick="showCreateFolderModal()" style="margin-left: auto; font-size: 0.8rem; padding: 0.25rem 0.5rem;">📁 + Folder</button>
         </div>
         <div style="padding: 0.5rem; border-bottom: 1px solid var(--border-color); background: rgba(46, 204, 113, 0.1);">
@@ -949,17 +967,9 @@ function filterFutureTasks(searchText) {
         let anyTaskMatches = false;
 
         taskCards.forEach(task => {
-            const title = task.querySelector('.task-title');
-            const titleText = title ? title.textContent.toLowerCase() : '';
-            const meta = task.querySelector('.task-meta');
-            const metaText = meta ? meta.textContent.toLowerCase() : '';
-            const taskIdMatch = task.getAttribute('onclick')?.match(/'([^']+)'/);
-            const taskId = taskIdMatch ? taskIdMatch[1].toLowerCase() : '';
-
-            const matches = titleText.includes(searchLower) ||
-                          metaText.includes(searchLower) ||
-                          taskId.includes(searchLower);
-
+            const taskId = task.dataset.taskId;
+            const matches = taskMatchesSearch(taskId, searchLower) ||
+                            folderNameText.includes(searchLower);
             if (matches) anyTaskMatches = true;
             task.style.display = (!searchLower || matches) ? 'block' : 'none';
         });
@@ -989,17 +999,8 @@ function filterFutureTasks(searchText) {
         let anyTaskMatches = false;
 
         taskCards.forEach(task => {
-            const title = task.querySelector('.task-title');
-            const titleText = title ? title.textContent.toLowerCase() : '';
-            const meta = task.querySelector('.task-meta');
-            const metaText = meta ? meta.textContent.toLowerCase() : '';
-            const taskIdMatch = task.getAttribute('onclick')?.match(/'([^']+)'/);
-            const taskId = taskIdMatch ? taskIdMatch[1].toLowerCase() : '';
-
-            const matches = titleText.includes(searchLower) ||
-                          metaText.includes(searchLower) ||
-                          taskId.includes(searchLower);
-
+            const taskId = task.dataset.taskId;
+            const matches = taskMatchesSearch(taskId, searchLower);
             if (matches) anyTaskMatches = true;
             task.style.display = (!searchLower || matches) ? 'block' : 'none';
         });
@@ -1017,6 +1018,17 @@ function shouldShowFutureTickets() {
 // Apply the show/hide future-folder tickets toggle
 function applyFutureTicketsToggle() {
     const searchInput = document.getElementById('search-future');
+    const showFutureTickets = shouldShowFutureTickets();
+
+    // Sync the future-tickets toggle with the global include-future filter
+    if (currentFilters.includeFuture !== showFutureTickets) {
+        currentFilters.includeFuture = showFutureTickets;
+        const includeFutureCheckbox = document.getElementById('filter-include-future');
+        if (includeFutureCheckbox) includeFutureCheckbox.checked = showFutureTickets;
+        renderBoard();
+        return;
+    }
+
     filterFutureTasks(searchInput ? searchInput.value : '');
 }
 
@@ -1029,8 +1041,10 @@ function searchAllBoardTasks(searchText) {
         filterColumnTasks(colId, searchText);
     });
 
-    // Search future folders
-    filterFutureTasks(searchText);
+    // Search future folders only if future tickets are shown
+    if (shouldShowFutureTickets()) {
+        filterFutureTasks(searchText);
+    }
 }
 
 // Filter a specific future folder by name
@@ -1043,7 +1057,7 @@ function filterFutureFolderByName(folderName) {
 }
 
 function renderFolder(folder, allTasks) {
-    const folderTasks = allTasks.filter(t => t.folder_id === folder.id);
+    const folderTasks = allTasks.filter(t => t.folder_id === folder.id).filter(task => currentFilters.includeFuture || !(task.future_folder_id || task.folder_id)).filter(futureTaskMatchesFilters);
     const isExpanded = folder.expanded !== false; // default expanded
     const folderClass = folder.folder_class || '';
     const classBadgeClass = folderClass
@@ -1060,7 +1074,7 @@ function renderFolder(folder, allTasks) {
                     <span class="folder-icon" id="folder-icon-${folder.id}">${isExpanded ? '📂' : '📁'}</span>
                     <span style="font-weight: 600;">${folder.name}</span>
                     <span class="folder-class-badge ${classBadgeClass}">${classEmoji} ${classLabel}</span>
-                    <span style="font-size: 0.8rem; color: var(--text-secondary);">(${folderTasks.length} tasks)</span>
+                    <span style="font-size: 0.8rem; color: var(--text-secondary);" id="folder-count-${folder.id}">(${folderTasks.length} tasks)</span>
                 </div>
                 <div style="display: flex; gap: 0.25rem;">
                     <button class="btn btn-small" onclick="event.stopPropagation(); showFolderDetails('${folder.id}')" style="font-size: 0.75rem; padding: 0.2rem 0.4rem;">i️</button>
@@ -1576,9 +1590,10 @@ function renderTaskCard(task) {
     const taskIdBadge = `<span style="font-size: 0.7rem; background: rgba(0,0,0,0.1); padding: 0.1rem 0.3rem; border-radius: 3px; margin-right: 0.5rem;">${task.id}</span>`;
     const pageBadge = task.page ? `<span class="page-badge">📄 ${task.page}</span>` : '';
     const categoryBadge = task.category ? `<span class="category-badge">🏷️ ${task.category}</span>` : '';
+    const futureBadge = (task.future_folder_id || task.folder_id) ? `<span style="font-size: 0.7rem; background: rgba(39, 174, 96, 0.15); color: #27ae60; padding: 0.1rem 0.3rem; border-radius: 3px; margin-left: auto;">📁 ${getTaskFolderName(task) || 'future'}</span>` : '';
 
     return `
-        <div class="task-card" draggable="true"
+        <div class="task-card" draggable="true" data-task-id="${task.id}"
              ondragstart="handleDragStart(event, '${task.id}', '${task.column}')"
              onclick="showTaskDetail('${task.id}')">
             <div style="display: flex; align-items: center; margin-bottom: 0.3rem; flex-wrap: wrap; gap: 0.25rem;">
@@ -1593,6 +1608,7 @@ function renderTaskCard(task) {
                 ${pageBadge}
                 ${categoryBadge}
                 ${hasFix}
+                ${futureBadge}
             </div>
         </div>
     `;
@@ -1635,7 +1651,8 @@ let currentFilters = {
     priority: '',
     category: '',
     countType: 'review',
-    includeFuture: false
+    includeFuture: false,
+    search: ''
 };
 
 // Compute per-page counts for each count type
@@ -1682,8 +1699,40 @@ function populateDropdowns() {
     const savedFilterCat = filterCatSelect ? filterCatSelect.value : '';
     const savedIncludeFuture = filterIncludeFuture ? filterIncludeFuture.checked : currentFilters.includeFuture;
 
-    // ...existing dropdown rebuilding code...
-    // (kept the same as before, only restoring include-future state below)
+    // Pages - for task modal (check if element exists)
+    if (pageSelect) {
+        pageSelect.innerHTML = '<option value="">Select page...</option>';
+        (boardData.pages || []).forEach(page => {
+            pageSelect.innerHTML += `<option value="${page}">${page}</option>`;
+        });
+    }
+
+    // Categories - for task modal (check if element exists)
+    if (catSelect) {
+        catSelect.innerHTML = '<option value="">Select category...</option>';
+        (boardData.categories || []).forEach(cat => {
+            catSelect.innerHTML += `<option value="${cat}">${cat}</option>`;
+        });
+    }
+
+    // Filter dropdowns (check if elements exist)
+    if (filterPageSelect) {
+        const pageCounts = computePageCounts();
+        const countType = filterCountType && filterCountType.value ? filterCountType.value : currentFilters.countType || 'review';
+        const typeLabel = countType.charAt(0).toUpperCase() + countType.slice(1);
+        filterPageSelect.innerHTML = `<option value="">All Pages (${pageCounts[''][countType]} ${typeLabel})</option>`;
+        (boardData.pages || []).forEach(page => {
+            const count = pageCounts[page] ? pageCounts[page][countType] : 0;
+            filterPageSelect.innerHTML += `<option value="${page}">${page} (${count} ${typeLabel})</option>`;
+        });
+    }
+
+    if (filterCatSelect) {
+        filterCatSelect.innerHTML = '<option value="">All Categories</option>';
+        (boardData.categories || []).forEach(cat => {
+            filterCatSelect.innerHTML += `<option value="${cat}">${cat}</option>`;
+        });
+    }
 
     // Restore selections after rebuilding (if the value still exists among options)
     if (pageSelect && savedPage) pageSelect.value = savedPage;
@@ -1699,6 +1748,10 @@ function restoreFilterControls() {
     if (includeFutureCheckbox) {
         includeFutureCheckbox.checked = currentFilters.includeFuture;
     }
+    const showFutureTicketsToggle = document.getElementById('show-future-tickets-toggle');
+    if (showFutureTicketsToggle) {
+        showFutureTicketsToggle.checked = currentFilters.includeFuture;
+    }
 }
 
 // Apply filters to all columns
@@ -1708,6 +1761,7 @@ function applyFilters() {
     const categoryValue = document.getElementById('filter-category').value;
     const countTypeValue = document.getElementById('filter-count-type').value;
     const includeFutureValue = document.getElementById('filter-include-future').checked;
+    const searchValue = (document.getElementById('global-search').value || '').toLowerCase().trim();
 
     // If count type changed, update dropdown labels while preserving page selection
     if (countTypeValue !== currentFilters.countType) {
@@ -1716,17 +1770,20 @@ function applyFilters() {
         currentFilters.category = categoryValue;
         currentFilters.countType = countTypeValue;
         currentFilters.includeFuture = includeFutureValue;
+        currentFilters.search = searchValue;
         populateDropdowns();
         // Re-apply the selection after repopulating
         document.getElementById('filter-page').value = currentFilters.page;
         document.getElementById('filter-priority').value = currentFilters.priority;
         document.getElementById('filter-category').value = currentFilters.category;
         document.getElementById('filter-include-future').checked = currentFilters.includeFuture;
+        document.getElementById('global-search').value = currentFilters.search;
     } else {
         currentFilters.page = pageValue;
         currentFilters.priority = priorityValue;
         currentFilters.category = categoryValue;
         currentFilters.includeFuture = includeFutureValue;
+        currentFilters.search = searchValue;
     }
     renderBoard();
 }
@@ -1738,7 +1795,8 @@ function clearFilters() {
     document.getElementById('filter-category').value = '';
     document.getElementById('filter-count-type').value = 'review';
     document.getElementById('filter-include-future').checked = false;
-    currentFilters = { page: '', priority: '', category: '', countType: 'review', includeFuture: false };
+    document.getElementById('global-search').value = '';
+    currentFilters = { page: '', priority: '', category: '', countType: 'review', includeFuture: false, search: '' };
     populateDropdowns();
     renderBoard();
 }
@@ -1748,9 +1806,65 @@ function taskMatchesFilters(task) {
     if (currentFilters.page && task.page !== currentFilters.page) return false;
     if (currentFilters.priority && task.priority !== currentFilters.priority) return false;
     if (currentFilters.category && task.category !== currentFilters.category) return false;
-    // Hide tasks that belong to a future folder unless the include-future toggle is on
-    if (!currentFilters.includeFuture && (task.future_folder_id || task.folder_id)) return false;
+    if (currentFilters.search) {
+        const haystack = [
+            task.title,
+            task.id,
+            task.page,
+            task.category,
+            task.priority,
+            task.fix,
+            task.code_snippet
+        ].filter(Boolean).join(' ').toLowerCase();
+        if (!haystack.includes(currentFilters.search)) return false;
+    }
+    // Hide tasks that are physically in the Future column from regular column views
+    // unless the user explicitly wants to include future-folder tasks everywhere.
+    if (!currentFilters.includeFuture && task.column === 'future') return false;
+    // Also hide tasks that are assigned to a Future folder but currently displayed
+    // in another working column (e.g., dragged out or duplicated) unless future
+    // tasks are being included.
+    if (!currentFilters.includeFuture && taskIsInFutureFolder(task)) return false;
     return true;
+}
+
+// Check if a task inside the Future column matches the current top-bar filters
+function futureTaskMatchesFilters(task) {
+    if (currentFilters.page && task.page !== currentFilters.page) return false;
+    if (currentFilters.priority && task.priority !== currentFilters.priority) return false;
+    if (currentFilters.category && task.category !== currentFilters.category) return false;
+    if (currentFilters.search) {
+        const haystack = [
+            task.title,
+            task.id,
+            task.page,
+            task.category,
+            task.priority,
+            task.fix,
+            task.code_snippet
+        ].filter(Boolean).join(' ').toLowerCase();
+        if (!haystack.includes(currentFilters.search)) return false;
+    }
+    return true;
+}
+
+// Check if a task is inside a future folder
+function taskIsInFutureFolder(task) {
+    const futureColumn = boardData && boardData.columns.find(c => c.id === 'future');
+    if (!futureColumn || !futureColumn.folders) return false;
+    const folderId = task.future_folder_id || task.folder_id;
+    if (!folderId) return false;
+    return futureColumn.folders.some(f => f.id === folderId);
+}
+
+// Get folder name for a task (if any)
+function getTaskFolderName(task) {
+    const futureColumn = boardData && boardData.columns.find(c => c.id === 'future');
+    if (!futureColumn || !futureColumn.folders) return null;
+    const folderId = task.future_folder_id || task.folder_id;
+    if (!folderId) return null;
+    const folder = futureColumn.folders.find(f => f.id === folderId);
+    return folder ? folder.name : null;
 }
 
 // Drag & Drop
@@ -1774,6 +1888,13 @@ async function handleDrop(e, toColumn) {
     e.currentTarget.classList.remove('column-drag-over');
 
     if (!draggedTask || draggedFromColumn === toColumn) return;
+
+    // If dragging a task FROM the Future column TO assignment/problems, spawn a new linked task
+    // and keep the original future task in place.
+    if (draggedFromColumn === 'future' && (toColumn === 'assignment' || toColumn === 'problems')) {
+        await spawnTaskFromFuture(draggedTask, toColumn);
+        return;
+    }
 
     // If moving from review/solved to assignment/problems, show reopen modal
     if ((draggedFromColumn === 'talking' || draggedFromColumn === 'solved') && (toColumn === 'assignment' || toColumn === 'problems')) {
@@ -2187,13 +2308,19 @@ async function showTaskDetail(taskId) {
         }
 
         task.reopen_history.forEach((entry, idx) => {
+            const isLastReopen = idx === task.reopen_history.length - 1;
             // Reopen entry
             content += `
-                <div style="position: relative; margin-bottom: 1rem;">
+                <div id="reopen-entry-${task.id}-${idx}" style="position: relative; margin-bottom: 1rem;">
                     <div style="position: absolute; left: -1.35rem; top: 0; width: 10px; height: 10px; border-radius: 50%; background: #e74c3c;"></div>
                     <div style="background: rgba(231, 76, 60, 0.15); padding: 0.75rem; border-radius: 4px; border-left: 3px solid #e74c3c;">
-                        <strong>🔄 Re-opened #${idx + 1}</strong> - ${new Date(entry.reopened_at).toLocaleString()}<br>
-                        <em style="color: var(--text-primary);">${entry.update}</em>
+                        <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 0.5rem;">
+                            <strong>🔄 Re-opened #${idx + 1}</strong> - ${new Date(entry.reopened_at).toLocaleString()}
+                            ${isLastReopen ? `<button class="btn btn-small" onclick="enableEditLastReopen('${task.id}', ${idx})" style="font-size: 0.75rem; padding: 0.2rem 0.4rem; background: #3498db; color: white; border: none; border-radius: 4px; cursor: pointer;">✏️ Edit</button>` : ''}
+                        </div>
+                        <div id="reopen-text-${task.id}-${idx}" style="margin-top: 0.5rem;">
+                            <em style="color: var(--text-primary);">${entry.update}</em>
+                        </div>
                     </div>
                 </div>
             `;
@@ -2961,6 +3088,93 @@ function closeReviewChoiceModal() {
     window.reviewChoiceData = null;
 }
 
+async function spawnTaskFromFuture(futureTaskId, toColumn) {
+    const futureTask = findTask(futureTaskId);
+    if (!futureTask) {
+        console.error('Future task not found:', futureTaskId);
+        return;
+    }
+
+    // Pre-fill the add-task modal with the future task's context and a link back to it.
+    showAddTaskModal(toColumn);
+    document.getElementById('task-title').value = `From Future: ${futureTask.title}`;
+    document.getElementById('task-page').value = futureTask.page || '';
+    document.getElementById('task-category').value = futureTask.category || '';
+    document.getElementById('task-priority').value = futureTask.priority || 'Medium';
+    document.getElementById('task-fix').value = '';
+
+    // Add a default link to the original future task.
+    const linksContainer = document.getElementById('task-links-container');
+    linksContainer.innerHTML = '';
+    addLinkRow({ task_id: futureTaskId, relationship_type: 'linked' });
+
+    // Switch modal into spawn mode.
+    document.querySelector('#add-task-modal .modal-title').textContent = '📝 Spawn Task from Future';
+    const formActions = document.querySelector('#add-task-modal .form-actions');
+    formActions.innerHTML = `
+        <button class="btn btn-secondary" onclick="closeAddTaskModal()">Cancel</button>
+        <button class="btn" onclick="saveSpawnedTaskFromFuture('${futureTaskId}')" style="background: #3498db;">💾 Create Linked Task</button>
+    `;
+
+    window.spawnOriginalTaskId = futureTaskId;
+    window.originalTaskToSolve = null; // Don't solve the future task, keep it in Future.
+}
+
+async function saveSpawnedTaskFromFuture(futureTaskId) {
+    const title = document.getElementById('task-title').value.trim();
+    if (!title) { alert('Please enter a title'); return; }
+
+    const links = collectLinks();
+    const futureFolderId = await resolveFutureFolderId();
+
+    try {
+        const response = await fetch('/api/project-board/task', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                title,
+                page: document.getElementById('task-page').value,
+                category: document.getElementById('task-category').value,
+                priority: document.getElementById('task-priority').value,
+                fix: document.getElementById('task-fix').value.trim(),
+                code_snippet: document.getElementById('task-code-snippet').value.trim(),
+                language: document.getElementById('task-language').value || '',
+                linked_tasks: links.length > 0 ? links : null,
+                future_folder_id: futureFolderId || null,
+                column: window.newTaskColumn || 'assignment'
+            })
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            console.error('[saveSpawnedTaskFromFuture] Error:', errorData);
+            alert('Error creating task: ' + (errorData.error || 'Unknown error'));
+            return;
+        }
+
+        const result = await response.json();
+        const newTaskId = result.task.id;
+
+        // Optionally attach the new task to the same future folder as the original (without marking it future).
+        const futureTask = findTask(futureTaskId);
+        const sharedFolderId = futureFolderId || (futureTask && (futureTask.future_folder_id || futureTask.folder_id));
+        if (sharedFolderId) {
+            await fetch('/api/project-board/task-folder', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ task_id: newTaskId, folder_id: sharedFolderId, mark_as_future: false })
+            });
+        }
+
+        closeAddTaskModal();
+        await loadBoard();
+        alert(`✅ Created linked task ${newTaskId} from Future task ${futureTaskId}. The original remains in Future.`);
+    } catch (error) {
+        console.error('Error spawning task from future:', error);
+        alert('Error creating task: ' + error.message);
+    }
+}
+
 // Spawn new task and solve current
 async function spawnNewTaskAndSolveCurrent() {
     if (!window.reviewChoiceData) return;
@@ -3275,6 +3489,80 @@ async function addBackLink(taskId, newLinkedTaskId, relationshipType) {
         })
     });
 }
+
+// Enable inline editing of the last reopen reason
+function enableEditLastReopen(taskId, idx) {
+    const task = findTask(taskId);
+    if (!task || !task.reopen_history || idx >= task.reopen_history.length) return;
+
+    const entry = task.reopen_history[idx];
+    const textEl = document.getElementById(`reopen-text-${taskId}-${idx}`);
+    if (!textEl) return;
+
+    const escapedUpdate = escapeHtml(entry.update || '');
+
+    textEl.innerHTML = `
+        <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+            <textarea id="reopen-edit-${taskId}-${idx}" style="width: 100%; min-height: 80px; padding: 0.5rem; border: 1px solid var(--border-color); border-radius: 4px; background: var(--card-bg); color: var(--text-primary);">${escapedUpdate}</textarea>
+            <div style="display: flex; gap: 0.5rem; justify-content: flex-end;">
+                <button class="btn btn-small" onclick="cancelEditLastReopen('${taskId}', ${idx})" style="font-size: 0.75rem; padding: 0.3rem 0.6rem;">Cancel</button>
+                <button class="btn btn-small" onclick="saveEditLastReopen('${taskId}', ${idx})" style="font-size: 0.75rem; padding: 0.3rem 0.6rem; background: #27ae60; color: white; border: none;">Save</button>
+            </div>
+        </div>
+    `;
+
+    const textarea = document.getElementById(`reopen-edit-${taskId}-${idx}`);
+    if (textarea) textarea.focus();
+}
+
+function cancelEditLastReopen(taskId, idx) {
+    const task = findTask(taskId);
+    if (!task || !task.reopen_history || idx >= task.reopen_history.length) return;
+
+    const entry = task.reopen_history[idx];
+    const textEl = document.getElementById(`reopen-text-${taskId}-${idx}`);
+    if (!textEl) return;
+
+    textEl.innerHTML = `\n        <em style="color: var(--text-primary);">${entry.update || ''}</em>\n    `;
+}
+
+async function saveEditLastReopen(taskId, idx) {
+    const textarea = document.getElementById(`reopen-edit-${taskId}-${idx}`);
+    if (!textarea) return;
+
+    const newText = textarea.value.trim();
+    if (!newText) {
+        alert('Reopen reason cannot be empty');
+        return;
+    }
+
+    try {
+        const response = await fetch(`/api/project-board/task/${taskId}/reopen-history/${idx}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ update: newText })
+        });
+
+        if (!response.ok) {
+            const err = await response.json();
+            throw new Error(err.error || 'Failed to update reopen reason');
+        }
+
+        // Update local data to avoid full reload
+        const task = findTask(taskId);
+        if (task && task.reopen_history && task.reopen_history[idx]) {
+            task.reopen_history[idx].update = newText;
+            task.updated = new Date().toISOString();
+        }
+
+        // Refresh the detail view
+        showTaskDetail(taskId);
+    } catch (error) {
+        console.error('Error updating reopen reason:', error);
+        alert('Error: ' + error.message);
+    }
+}
+
 
 // Get existing or create a new folder for "similar_to" tasks.
 // Prefers the folder selected by the user during spawn, otherwise auto-creates a default folder.

@@ -1,0 +1,829 @@
+{% extends "base.html" %}
+
+{% block title %}Laptops - SS-Crawler{% endblock %}
+
+{% block extra_css %}
+    body > .container {
+        max-width: 1600px;
+    }
+
+    .laptop-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+        gap: 1rem;
+        margin-top: 1rem;
+    }
+
+    .laptop-card {
+        background: var(--card-bg);
+        border: 1px solid var(--card-border, #eee);
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 2px 8px var(--shadow);
+        transition: transform 0.15s ease, box-shadow 0.15s ease;
+        cursor: pointer;
+        position: relative;
+    }
+
+    .laptop-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 16px var(--shadow-hover);
+    }
+
+    .laptop-card-image {
+        width: 100%;
+        height: 180px;
+        object-fit: cover;
+        display: block;
+        background: var(--bar-bg, #e5e7eb);
+    }
+
+    .seller-badge {
+        position: absolute;
+        top: 0.5rem;
+        left: 0.5rem;
+        padding: 0.25rem 0.5rem;
+        border-radius: 4px;
+        font-size: 0.7rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        color: #fff;
+        z-index: 2;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+    }
+
+    .seller-badge.lombards { background: #dc2626; }
+    .seller-badge.perekups { background: #ea580c; }
+
+    .laptop-card-placeholder {
+        width: 100%;
+        height: 180px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 3rem;
+        background: var(--bar-bg, #e5e7eb);
+    }
+
+    .laptop-card-body {
+        padding: 0.75rem;
+    }
+
+    .laptop-card-title {
+        font-weight: 600;
+        font-size: 0.95rem;
+        margin-bottom: 0.5rem;
+        line-height: 1.25;
+    }
+
+    .laptop-card-price {
+        font-size: 1.15rem;
+        font-weight: 700;
+        color: var(--link-color);
+        margin-bottom: 0.25rem;
+    }
+
+    .laptop-card-meta {
+        font-size: 0.85rem;
+        color: var(--text-secondary);
+        margin-bottom: 0.25rem;
+    }
+
+    .laptop-card-specs {
+        font-size: 0.8rem;
+        color: var(--text-secondary);
+        margin-top: 0.5rem;
+    }
+
+    .laptop-card-specs span {
+        display: inline-block;
+        margin-right: 0.5rem;
+    }
+
+    .laptop-card-footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 0.75rem;
+        font-size: 0.8rem;
+        color: var(--text-secondary);
+    }
+
+    #cpu-filter-group .filter-dropdown {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        z-index: 10;
+        background: var(--card-bg);
+        border: 1px solid var(--table-border);
+        border-radius: 6px;
+        padding: 0.75rem;
+        min-width: 560px;
+        max-height: none;
+        overflow-y: visible;
+        box-shadow: 0 4px 12px var(--shadow);
+    }
+
+    #cpu-filter-group .filter-dropdown.open {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 0.35rem;
+    }
+{% endblock %}
+
+{% block content %}
+<div class="section">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
+        <h2>Laptops</h2>
+        <div class="filters" style="margin: 0; flex-wrap: wrap;">
+            <label>
+                Brand:
+                <select id="brand-filter" onchange="loadLaptops()">
+                    <option value="">{{ t('All') }}</option>
+                </select>
+            </label>
+            <div id="cpu-filter-group" style="position: relative;">
+                <label style="cursor: pointer;" onclick="toggleCPUFilter()">
+                    CPU: <span id="cpu-selected-label">{{ t('Any') }}</span>
+                </label>
+                <div id="cpu-options" class="filter-dropdown">
+                    <div id="cpu-sort-bar" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; padding-bottom: 0.35rem; border-bottom: 1px solid var(--table-border);">
+                        <span style="font-weight: 600;">Sort:</span>
+                        <select id="cpu-sort-mode" onchange="renderCPUOptions(); saveFilters();">
+                            <option value="name">Name</option>
+                            <option value="count-desc">Most listings</option>
+                            <option value="count-asc">Least listings</option>
+                        </select>
+                    </div>
+                    <div id="cpu-options-list">
+                        <!-- populated dynamically -->
+                    </div>
+                </div>
+            </div>
+            <label>
+                <input type="checkbox" id="macbook-only" onchange="loadLaptops()">
+                Include macbooks
+            </label>
+            <label>
+                GPU:
+                <input type="text" id="gpu-filter" placeholder="e.g. GTX" oninput="debounceLoadLaptops()">
+            </label>
+            <label>
+                Min €:
+                <input type="number" id="min-price" style="width: 80px;" oninput="debounceLoadLaptops()">
+            </label>
+            <label>
+                Max €:
+                <input type="number" id="max-price" style="width: 80px;" oninput="debounceLoadLaptops()">
+            </label>
+            <label>
+                RAM:
+                <select id="ram-min" onchange="loadLaptops()" style="width: 70px;">
+                    <option value="">Min</option>
+                    <option value="4">4 GB</option>
+                    <option value="8">8 GB</option>
+                    <option value="16">16 GB</option>
+                    <option value="32">32 GB</option>
+                </select>
+                <select id="ram-max" onchange="loadLaptops()" style="width: 70px;">
+                    <option value="">Max</option>
+                    <option value="8">8 GB</option>
+                    <option value="16">16 GB</option>
+                    <option value="32">32 GB</option>
+                    <option value="64">64 GB</option>
+                </select>
+            </label>
+            <label>
+                Screen:
+                <select id="display-size-min" onchange="loadLaptops()" style="width: 75px;">
+                    <option value="">Min</option>
+                    <option value="11">11"</option>
+                    <option value="12">12"</option>
+                    <option value="13">13"</option>
+                    <option value="14">14"</option>
+                    <option value="15">15"</option>
+                    <option value="16">16"</option>
+                    <option value="17">17"</option>
+                </select>
+                <select id="display-size-max" onchange="loadLaptops()" style="width: 75px;">
+                    <option value="">Max</option>
+                    <option value="12">12"</option>
+                    <option value="13">13"</option>
+                    <option value="14">14"</option>
+                    <option value="15">15"</option>
+                    <option value="16">16"</option>
+                    <option value="17">17"</option>
+                    <option value="18">18"</option>
+                </select>
+            </label>
+            <label>
+                Sort:
+                <select id="sort-by" onchange="loadLaptops()">
+                    <option value="date_posted">{{ t('Date Posted') }}</option>
+                    <option value="price">{{ t('Price') }}</option>
+                </select>
+            </label>
+            <label>
+                Order:
+                <select id="sort-order" onchange="loadLaptops()">
+                    <option value="desc">Desc</option>
+                    <option value="asc">Asc</option>
+                </select>
+            </label>
+            <label>
+                Time:
+                <select id="time-filter" onchange="loadLaptops()">
+                    <option value="all_time">All Time</option>
+                    <option value="30d">30 Days</option>
+                    <option value="7d">7 Days</option>
+                </select>
+            </label>
+            <label>
+                <input type="checkbox" id="active-only" checked onchange="loadLaptops()">
+                Active only
+            </label>
+            <label>
+                <input type="checkbox" id="exclude-flagged" checked onchange="loadLaptops()">
+                Exclude flagged
+            </label>
+            <label>
+                <input type="checkbox" id="include-perekups" checked onchange="loadLaptops()">
+                Include perekups
+            </label>
+            <label>
+                <input type="checkbox" id="include-lombards" checked onchange="loadLaptops()">
+                Include lombards
+            </label>
+            <input type="hidden" id="model-filter">
+            <input type="hidden" id="storage-min">
+            <input type="hidden" id="storage-max">
+            <input type="hidden" id="storage-type">
+            <input type="hidden" id="display-size">
+            <button class="btn btn-small" onclick="clearFilters()">Clear filters</button>
+        </div>
+    </div>
+
+    <div id="active-filters" style="margin-bottom: 1rem; min-height: 1.5rem; display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; font-size: 0.85rem; color: var(--text-secondary);"></div>
+
+    <!-- Similar listings modal -->
+    <div id="similar-modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); z-index:1000; align-items:center; justify-content:center;">
+        <div class="modal" style="max-width:480px;">
+            <div class="modal-header">
+                <h3>Show similar listings</h3>
+                <button class="modal-close" onclick="closeSimilarModal()">&times;</button>
+            </div>
+            <p style="margin-bottom:1rem; color:var(--text-secondary); font-size:0.9rem;">Pick which specs must match. Uncheck a spec to ignore it.</p>
+            <div id="similar-options" style="display:grid; gap:0.6rem; margin-bottom:1.5rem;">
+                <!-- populated dynamically -->
+            </div>
+            <div style="display:flex; justify-content:flex-end; gap:0.75rem;">
+                <button class="btn btn-small" onclick="closeSimilarModal()">{{ t('Cancel') }}</button>
+                <button class="btn btn-primary" onclick="applySimilarFilter()">Show similar</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="listings-container">
+        <div class="loading">Loading laptop listings...</div>
+    </div>
+
+    <div id="pagination" style="margin-top: 1.5rem; display: flex; justify-content: center; align-items: center; gap: 1rem;">
+        <button class="btn btn-small" id="prev-page" onclick="changePage(-1)">{{ t('Previous') }}</button>
+        <span id="page-info"></span>
+        <button class="btn btn-small" id="next-page" onclick="changePage(1)">{{ t('Next') }}</button>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    let currentPage = 0;
+    const pageSize = 24;
+    let totalListings = 0;
+    let debounceTimer;
+    let allCpuOptions = [];
+    let currentListings = [];
+    let similarTarget = null;
+
+    function showSharedListingDetail(listingId) {
+        const modal = document.getElementById('shared-listing-modal');
+        const content = document.getElementById('shared-listing-content');
+        const title = document.getElementById('shared-listing-title');
+        title.textContent = t('Listing Details');
+        content.innerHTML = '<div class="loading">' + t('Loading...') + '</div>';
+        modal.classList.add('active');
+
+        fetch(`/api/listing-details/${listingId}`)
+            .then(response => {
+                if (!response.ok) throw new Error(t('Failed to load listing details'));
+                return response.json();
+            })
+            .then(item => {
+                const thumbUrl = item.local_image_path
+                    ? `/images/${item.local_image_path.replace(/\\/g, '/')}`
+                    : item.image_url;
+                const dateStr = (item.date_posted || item.first_seen_at || item.created_at)
+                    ? new Date(item.date_posted || item.first_seen_at || item.created_at).toLocaleDateString()
+                    : 'N/A';
+                let html = '';
+                if (thumbUrl) {
+                    html += `<div class="listing-detail-images"><img src="${thumbUrl}" alt="${item.title || ''}" loading="lazy" onerror="this.style.display='none'"></div>`;
+                }
+                html += `<h2>${item.title || ''}</h2>`;
+                html += `<p style="font-size: 1.25rem; font-weight: 700; color: #667eea;">€${item.price_eur || item.price || 0}</p>`;
+                if (item.listing_url) {
+                    html += `<p><a href="${item.listing_url}" target="_blank" rel="noopener">${t('View on ss.com')} →</a></p>`;
+                }
+                const specs = [
+                    ['Brand', item.brand],
+                    ['Model', item.model],
+                    ['Display', item.display_size ? `${item.display_size}"` : null],
+                    ['CPU', item.cpu_raw],
+                    ['RAM', item.ram_gb ? `${item.ram_gb} GB` : null],
+                    ['Storage', item.storage_gb ? `${item.storage_gb} GB ${item.storage_type || ''}`.trim() : null],
+                    ['GPU', item.gpu_raw],
+                    ['Condition', item.condition_state],
+                    ['Seller type', item.seller_type],
+                    ['Location', item.seller_location],
+                    ['Date', dateStr]
+                ].filter(([_, v]) => v);
+                if (specs.length) {
+                    html += `<h3>${t('Specifications')}</h3>`;
+                    html += '<div>';
+                    for (const [label, value] of specs) {
+                        html += `<div class="spec-row"><span class="spec-label">${label}</span><span class="spec-value">${value}</span></div>`;
+                    }
+                    html += '</div>';
+                }
+                if (item.description) {
+                    html += `<div><strong>${t('Description')}:</strong></div>`;
+                    html += `<p>${item.description}</p>`;
+                }
+                content.innerHTML = html;
+            })
+            .catch(error => {
+                content.innerHTML = '<div class="error">' + (error.message || t('Error loading listing')) + '</div>';
+            });
+    }
+
+    const LS_KEY = 'laptop_filters_v1';
+
+    function saveFilters() {
+        const state = {
+            brand: document.getElementById('brand-filter').value,
+            macbookOnly: document.getElementById('macbook-only').checked,
+            cpuSortMode: document.getElementById('cpu-sort-mode').value,
+            cpus: Array.from(document.querySelectorAll('#cpu-options input:checked')).map(cb => cb.value),
+            gpu: document.getElementById('gpu-filter').value,
+            minPrice: document.getElementById('min-price').value,
+            maxPrice: document.getElementById('max-price').value,
+            ramMin: document.getElementById('ram-min').value,
+            ramMax: document.getElementById('ram-max').value,
+            storageMin: document.getElementById('storage-min').value,
+            storageMax: document.getElementById('storage-max').value,
+            storageType: document.getElementById('storage-type').value,
+            displaySizeMin: document.getElementById('display-size-min').value,
+            displaySizeMax: document.getElementById('display-size-max').value,
+            displaySize: document.getElementById('display-size').value,
+            model: document.getElementById('model-filter').value,
+            sort: document.getElementById('sort-by').value,
+            order: document.getElementById('sort-order').value,
+            time: document.getElementById('time-filter').value,
+            active: document.getElementById('active-only').checked,
+            excludeFlagged: document.getElementById('exclude-flagged').checked,
+            includePerekups: document.getElementById('include-perekups').checked,
+            includeLombards: document.getElementById('include-lombards').checked
+        };
+        localStorage.setItem(LS_KEY, JSON.stringify(state));
+        renderActiveFilters();
+    }
+
+    function restoreFilters() {
+        try {
+            const raw = localStorage.getItem(LS_KEY);
+            if (!raw) return;
+            const s = JSON.parse(raw);
+            if (s.brand !== undefined) document.getElementById('brand-filter').value = s.brand;
+            if (s.macbookOnly !== undefined) document.getElementById('macbook-only').checked = s.macbookOnly;
+            if (s.cpuSortMode !== undefined) document.getElementById('cpu-sort-mode').value = s.cpuSortMode;
+            if (s.gpu !== undefined) document.getElementById('gpu-filter').value = s.gpu;
+            if (s.minPrice !== undefined) document.getElementById('min-price').value = s.minPrice;
+            if (s.maxPrice !== undefined) document.getElementById('max-price').value = s.maxPrice;
+            if (s.ramMin !== undefined) document.getElementById('ram-min').value = s.ramMin;
+            if (s.ramMax !== undefined) document.getElementById('ram-max').value = s.ramMax;
+            if (s.storageMin !== undefined) document.getElementById('storage-min').value = s.storageMin;
+            if (s.storageMax !== undefined) document.getElementById('storage-max').value = s.storageMax;
+            if (s.storageType !== undefined) document.getElementById('storage-type').value = s.storageType;
+            if (s.displaySizeMin !== undefined) document.getElementById('display-size-min').value = s.displaySizeMin;
+            if (s.displaySizeMax !== undefined) document.getElementById('display-size-max').value = s.displaySizeMax;
+            if (s.displaySize !== undefined) document.getElementById('display-size').value = s.displaySize;
+            if (s.model !== undefined) document.getElementById('model-filter').value = s.model;
+            if (s.sort !== undefined) document.getElementById('sort-by').value = s.sort;
+            if (s.order !== undefined) document.getElementById('sort-order').value = s.order;
+            if (s.time !== undefined) document.getElementById('time-filter').value = s.time;
+            if (s.active !== undefined) document.getElementById('active-only').checked = s.active;
+            if (s.excludeFlagged !== undefined) document.getElementById('exclude-flagged').checked = s.excludeFlagged;
+            if (s.includePerekups !== undefined) document.getElementById('include-perekups').checked = s.includePerekups;
+            if (s.includeLombards !== undefined) document.getElementById('include-lombards').checked = s.includeLombards;
+            if (Array.isArray(s.cpus)) {
+                // Options are populated after first load; store desired selection in a data attribute
+                document.getElementById('cpu-options').dataset.pending = JSON.stringify(s.cpus);
+            }
+        } catch (e) {
+            console.warn('Could not restore laptop filters', e);
+        }
+    }
+
+    function debounceLoadLaptops() {
+        clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(loadLaptops, 300);
+    }
+
+    async function loadLaptops(page = 0) {
+        currentPage = page;
+        const params = new URLSearchParams();
+        params.append('active', document.getElementById('active-only').checked);
+        params.append('exclude_flagged', document.getElementById('exclude-flagged').checked);
+        params.append('include_perekups', document.getElementById('include-perekups').checked);
+        params.append('include_lombards', document.getElementById('include-lombards').checked);
+        params.append('sort', document.getElementById('sort-by').value);
+        params.append('order', document.getElementById('sort-order').value);
+        params.append('time', document.getElementById('time-filter').value);
+        params.append('limit', pageSize);
+        params.append('offset', page * pageSize);
+
+        const brand = document.getElementById('brand-filter').value;
+        if (brand) params.append('brand', brand);
+        const selectedCpus = Array.from(document.querySelectorAll('#cpu-options input[type=checkbox]:checked')).map(cb => cb.value);
+        selectedCpus.forEach(cpu => params.append('cpu', cpu));
+        const gpu = document.getElementById('gpu-filter').value;
+        if (gpu) params.append('gpu', gpu);
+        const minPrice = document.getElementById('min-price').value;
+        if (minPrice) params.append('min_price', minPrice);
+        const maxPrice = document.getElementById('max-price').value;
+        if (maxPrice) params.append('max_price', maxPrice);
+        const ramMin = document.getElementById('ram-min').value;
+        if (ramMin) params.append('ram_min', ramMin);
+        const ramMax = document.getElementById('ram-max').value;
+        if (ramMax) params.append('ram_max', ramMax);
+        const storageMin = document.getElementById('storage-min').value;
+        if (storageMin) params.append('storage_min', storageMin);
+        const storageMax = document.getElementById('storage-max').value;
+        if (storageMax) params.append('storage_max', storageMax);
+        const storageType = document.getElementById('storage-type').value;
+        if (storageType) params.append('storage_type', storageType);
+        const displaySizeMin = document.getElementById('display-size-min').value;
+        if (displaySizeMin) params.append('display_size_min', displaySizeMin);
+        const displaySizeMax = document.getElementById('display-size-max').value;
+        if (displaySizeMax) params.append('display_size_max', displaySizeMax);
+        const displaySize = document.getElementById('display-size').value;
+        if (displaySize) params.append('display_size', displaySize);
+        const macbookOnly = document.getElementById('macbook-only').checked;
+        if (macbookOnly) params.append('macbook_only', 'true');
+        const modelFilter = document.getElementById('model-filter').value;
+        if (modelFilter) params.append('model', modelFilter);
+
+        saveFilters();
+
+        const container = document.getElementById('listings-container');
+        try {
+            container.innerHTML = '<div class="loading">Loading laptop listings...</div>';
+            const response = await fetch('/api/laptops?' + params.toString());
+            const data = await response.json();
+
+            if (data.error) {
+                throw new Error(data.error);
+            }
+
+            const listings = data.listings || [];
+            currentListings = listings;
+            totalListings = data.total || 0;
+
+            updatePagination();
+            populateBrandFilter(listings);
+
+            if (listings.length === 0) {
+                container.innerHTML = '<div class="loading">No laptop listings found</div>';
+                return;
+            }
+
+            let html = '<div class="laptop-grid">';
+            listings.forEach(item => {
+                const thumbUrl = item.local_image_path
+                    ? `/images/${item.local_image_path.replace(/\\/g, '/')}`
+                    : item.image_url;
+                const rawTitle = item.title || 'Unknown laptop';
+                const title = cleanLaptopTitle(rawTitle);
+                const brandModel = [item.brand, item.model].filter(Boolean).join(' ');
+                const display = item.display_size ? `${item.display_size}"` : '';
+                const cpu = item.cpu_raw || '';
+                const ram = item.ram_gb ? `${item.ram_gb} GB RAM` : '';
+                const storage = [item.storage_gb ? `${item.storage_gb} GB` : '', item.storage_type || ''].filter(Boolean).join(' ');
+                const gpu = item.gpu_raw || '';
+                const dateStr = (item.date_posted || item.first_seen_at || item.created_at)
+                    ? new Date(item.date_posted || item.first_seen_at || item.created_at).toLocaleDateString()
+                    : 'N/A';
+
+                html += `
+                    <div class="laptop-card" onclick="showSharedListingDetail('${item.listing_id}', true)">
+                        ${(item.seller_type || '').toLowerCase() !== 'private'
+                            ? `<span class="seller-badge ${(item.seller_type || '').toLowerCase()}">${item.seller_type || ''}</span>`
+                            : ''}
+                        ${thumbUrl
+                            ? `<img src="${thumbUrl}" alt="${title.replace(/'/g, "\\'")}" class="laptop-card-image" loading="lazy">`
+                            : `<div class="laptop-card-placeholder">💻</div>`
+                        }
+                        <div class="laptop-card-body">
+                            <div class="laptop-card-price">€${item.price_eur}</div>
+                            <div class="laptop-card-title">${title}</div>
+                            ${brandModel ? `<div class="laptop-card-meta">${brandModel}</div>` : ''}
+                            <div class="laptop-card-specs">
+                                ${display ? `<span>📺 ${display}</span>` : ''}
+                                ${cpu ? `<span>🖥 ${cpu}</span>` : ''}
+                                ${ram ? `<span>🧠 ${ram}</span>` : ''}
+                                ${storage ? `<span>💾 ${storage}</span>` : ''}
+                                ${gpu ? `<span>🎮 ${gpu}</span>` : ''}
+                            </div>
+                            <div style="display:flex; justify-content:flex-end; margin-top:0.5rem;">
+                                <button class="btn btn-small" onclick="event.stopPropagation(); openSimilarModal('${item.listing_id}')">Similar</button>
+                            </div>
+                            <div class="laptop-card-footer">
+                                <span>${item.seller_location || 'N/A'}</span>
+                                <span>${dateStr}</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            html += '</div>';
+            container.innerHTML = html;
+        } catch (error) {
+            container.innerHTML = `<div class="error">Failed to load listings: ${error.message}</div>`;
+        }
+    }
+
+    async function loadCPUOptions() {
+        try {
+            const params = new URLSearchParams();
+            params.append('active', 'true');
+            params.append('limit', '10000');
+            const response = await fetch('/api/laptops?' + params.toString());
+            const data = await response.json();
+            const listings = data.listings || [];
+            const counts = {};
+            listings.forEach(l => {
+                const cpu = (l.cpu_raw || '').trim();
+                if (cpu) counts[cpu] = (counts[cpu] || 0) + 1;
+            });
+            allCpuOptions = Object.entries(counts).sort((a, b) => {
+                const sortMode = document.getElementById('cpu-sort-mode').value;
+                if (sortMode === 'count-desc') return b[1] - a[1];
+                if (sortMode === 'count-asc') return a[1] - b[1];
+                // name sort
+                return a[0].toLowerCase().localeCompare(b[0].toLowerCase());
+            });
+            renderCPUOptions();
+        } catch (e) {
+            console.error('Failed to load CPU options', e);
+        }
+    }
+
+    function renderCPUOptions() {
+        const wrapper = document.getElementById('cpu-options-list');
+        const sortMode = document.getElementById('cpu-sort-mode').value;
+        const selected = new Set();
+        const pendingRaw = document.getElementById('cpu-options').dataset.pending;
+        if (pendingRaw) {
+            try {
+                JSON.parse(pendingRaw).forEach(v => selected.add(v));
+                delete document.getElementById('cpu-options').dataset.pending;
+            } catch (e) {}
+        }
+        document.querySelectorAll('#cpu-options input:checked').forEach(cb => selected.add(cb.value));
+
+        const options = [...allCpuOptions];
+        if (sortMode === 'count-desc') options.sort((a, b) => b[1] - a[1]);
+        else if (sortMode === 'count-asc') options.sort((a, b) => a[1] - b[1]);
+        else options.sort((a, b) => a[0].toLowerCase().localeCompare(b[0].toLowerCase()));
+
+        wrapper.innerHTML = options.map(([cpu, count]) => `
+            <label style="display: flex; align-items: center; gap: 0.35rem; padding: 0.25rem 0; cursor: pointer; white-space: nowrap;">
+                <input type="checkbox" value="${cpu.replace(/"/g, '&quot;')}" ${selected.has(cpu) ? 'checked' : ''} onchange="loadLaptops(); updateCPUFilterLabel(); renderActiveFilters();">
+                ${cpu} <small>(${count})</small>
+            </label>
+        `).join('') || '<div style="padding: 0.25rem; color: #888;">No CPU data</div>';
+        updateCPUFilterLabel();
+    }
+
+    function toggleCPUFilter() {
+        const el = document.getElementById('cpu-options');
+        el.classList.toggle('open');
+    }
+
+    function updateCPUFilterLabel() {
+        const selected = Array.from(document.querySelectorAll('#cpu-options input:checked')).map(cb => cb.value);
+        document.getElementById('cpu-selected-label').textContent = selected.length ? `${selected.length} selected` : 'Any';
+    }
+
+    document.addEventListener('click', (e) => {
+        const group = document.getElementById('cpu-filter-group');
+        if (group && !group.contains(e.target)) {
+            document.getElementById('cpu-options').classList.remove('open');
+        }
+    });
+
+    function updatePagination() {
+        const totalPages = Math.ceil(totalListings / pageSize) || 1;
+        document.getElementById('page-info').textContent = `Page ${currentPage + 1} of ${totalPages} (${totalListings} total)`;
+        document.getElementById('prev-page').disabled = currentPage === 0;
+        document.getElementById('next-page').disabled = (currentPage + 1) * pageSize >= totalListings;
+    }
+
+    function changePage(delta) {
+        loadLaptops(currentPage + delta);
+    }
+
+    function populateBrandFilter(listings) {
+        const select = document.getElementById('brand-filter');
+        const current = select.value;
+        const brands = new Set(listings.map(l => l.brand).filter(Boolean));
+        const existing = Array.from(select.options).map(o => o.value);
+        brands.forEach(brand => {
+            if (!existing.includes(brand)) {
+                const option = document.createElement('option');
+                option.value = brand;
+                option.textContent = brand;
+                select.appendChild(option);
+            }
+        });
+        if (current && Array.from(select.options).some(o => o.value === current)) {
+            select.value = current;
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        restoreFilters();
+        loadCPUOptions().then(() => {
+            updateCPUFilterLabel();
+            renderActiveFilters();
+            loadLaptops(0);
+        });
+    });
+
+    function clearFilters() {
+        document.getElementById('brand-filter').value = '';
+        document.getElementById('macbook-only').checked = false;
+        document.getElementById('gpu-filter').value = '';
+        document.getElementById('min-price').value = '';
+        document.getElementById('max-price').value = '';
+        document.getElementById('ram-min').value = '';
+        document.getElementById('ram-max').value = '';
+        document.getElementById('storage-min').value = '';
+        document.getElementById('storage-max').value = '';
+        document.getElementById('storage-type').value = '';
+        document.getElementById('display-size-min').value = '';
+        document.getElementById('display-size-max').value = '';
+        document.getElementById('display-size').value = '';
+        document.getElementById('model-filter').value = '';
+        document.getElementById('sort-by').value = 'date_posted';
+        document.getElementById('sort-order').value = 'desc';
+        document.getElementById('time-filter').value = 'all_time';
+        document.getElementById('active-only').checked = true;
+        document.getElementById('exclude-flagged').checked = true;
+        document.getElementById('include-perekups').checked = true;
+        document.getElementById('include-lombards').checked = true;
+        document.querySelectorAll('#cpu-options input:checked').forEach(cb => cb.checked = false);
+        currentPage = 0;
+        saveFilters();
+        loadLaptops(0);
+    }
+
+    function renderActiveFilters() {
+        const container = document.getElementById('active-filters');
+        const chips = [];
+        const brand = document.getElementById('brand-filter').value;
+        if (brand) chips.push(`Brand: ${brand}`);
+        document.querySelectorAll('#cpu-options input:checked').forEach(cb => chips.push(`CPU: ${cb.value}`));
+        const gpu = document.getElementById('gpu-filter').value;
+        if (gpu) chips.push(`GPU: ${gpu}`);
+        const minPrice = document.getElementById('min-price').value;
+        const maxPrice = document.getElementById('max-price').value;
+        if (minPrice || maxPrice) chips.push(`Price: ${minPrice || '0'}€ - ${maxPrice || '∞'}`);
+        const ramMin = document.getElementById('ram-min').value;
+        const ramMax = document.getElementById('ram-max').value;
+        if (ramMin || ramMax) chips.push(`RAM: ${ramMin || '0'} - ${ramMax || '∞'} GB`);
+        const storageMin = document.getElementById('storage-min').value;
+        const storageMax = document.getElementById('storage-max').value;
+        if (storageMin || storageMax) chips.push(`Storage: ${storageMin || '0'} - ${storageMax || '∞'} GB`);
+        const storageType = document.getElementById('storage-type').value;
+        if (storageType) chips.push(`Storage type: ${storageType}`);
+        const displaySizeMin = document.getElementById('display-size-min').value;
+        const displaySizeMax = document.getElementById('display-size-max').value;
+        if (displaySizeMin || displaySizeMax) chips.push(`Screen: ${displaySizeMin || '0'}\" - ${displaySizeMax || '∞'}\"`);
+        const displaySize = document.getElementById('display-size').value;
+        if (displaySize) chips.push(`Display: ${displaySize}\"`);
+        const modelFilter = document.getElementById('model-filter').value;
+        if (modelFilter) chips.push(`Model: ${modelFilter}`);
+        if (document.getElementById('macbook-only').checked) chips.push('Include macbooks');
+        const time = document.getElementById('time-filter').value;
+        if (time !== 'all_time') chips.push(`Time: ${time.replace('d',' days')}`);
+        if (!document.getElementById('active-only').checked) chips.push('Active: off');
+        if (!document.getElementById('exclude-flagged').checked) chips.push('Flagged: included');
+        if (!document.getElementById('include-perekups').checked) chips.push('Perekups: hidden');
+        if (!document.getElementById('include-lombards').checked) chips.push('Lombards: hidden');
+
+        if (chips.length === 0) {
+            container.innerHTML = '';
+            return;
+        }
+        container.innerHTML = '<strong>Active filters:</strong> ' + chips.map(c => `<span style="background: var(--bar-bg); padding: 0.15rem 0.4rem; border-radius: 4px; border: 1px solid var(--table-border);">${c}</span>`).join('');
+    }
+
+    function cleanLaptopTitle(title) {
+        return title.replace(/^SS\.COM Datori un orgtehnika - Piezīmjdatori, Cena\s*[\d\s]+\s*€\.\s*/i, '').trim();
+    }
+
+    function openSimilarModal(listingId) {
+        const item = currentListings.find(l => l.listing_id === listingId);
+        if (!item) return;
+        similarTarget = item;
+        const container = document.getElementById('similar-options');
+        const specs = [
+            { key: 'brand', label: 'Brand', value: item.brand || '' },
+            { key: 'model', label: 'Model', value: item.model || '' },
+            { key: 'cpu_raw', label: 'CPU', value: item.cpu_raw || '' },
+            { key: 'gpu_raw', label: 'GPU', value: item.gpu_raw || '' },
+            { key: 'ram_gb', label: 'RAM', value: item.ram_gb ? `${item.ram_gb} GB` : '' },
+            { key: 'storage_gb', label: 'Storage size', value: item.storage_gb ? `${item.storage_gb} GB` : '' },
+            { key: 'storage_type', label: 'Storage type', value: item.storage_type || '' },
+            { key: 'display_size', label: 'Display', value: item.display_size ? `${item.display_size}"` : '' }
+        ].filter(s => s.value);
+
+        container.innerHTML = specs.map((s, i) => `
+            <label style="display:flex; align-items:center; gap:0.5rem; cursor:pointer;">
+                <input type="checkbox" id="similar-${s.key}" value="${s.key}" checked>
+                <span><strong>${s.label}</strong>: ${s.value}</span>
+            </label>
+        `).join('') || '<p>No usable specs for this listing.</p>';
+        document.getElementById('similar-modal').style.display = 'flex';
+    }
+
+    function closeSimilarModal() {
+        document.getElementById('similar-modal').style.display = 'none';
+        similarTarget = null;
+    }
+
+    function applySimilarFilter() {
+        if (!similarTarget) return;
+        const item = similarTarget;
+        const checked = new Set(Array.from(document.querySelectorAll('#similar-options input:checked')).map(cb => cb.value));
+
+        const parseNum = (v) => {
+            if (!v) return '';
+            const n = parseFloat(String(v).replace(/[^0-9.]/g, ''));
+            return isNaN(n) ? '' : String(n);
+        };
+
+        // Reset everything first
+        document.getElementById('brand-filter').value = checked.has('brand') ? (item.brand || '') : '';
+        document.getElementById('macbook-only').checked = checked.has('brand') && (item.brand || '').toLowerCase() === 'apple';
+        document.getElementById('model-filter').value = checked.has('model') ? (item.model || '') : '';
+        document.getElementById('gpu-filter').value = checked.has('gpu_raw') ? (item.gpu_raw || '') : '';
+        document.getElementById('ram-min').value = checked.has('ram_gb') ? parseNum(item.ram_gb) : '';
+        document.getElementById('ram-max').value = checked.has('ram_gb') ? parseNum(item.ram_gb) : '';
+        document.getElementById('storage-min').value = checked.has('storage_gb') ? parseNum(item.storage_gb) : '';
+        document.getElementById('storage-max').value = checked.has('storage_gb') ? parseNum(item.storage_gb) : '';
+        document.getElementById('storage-type').value = checked.has('storage_type') ? (item.storage_type || '') : '';
+        document.getElementById('display-size-min').value = checked.has('display_size') ? parseNum(item.display_size) : '';
+        document.getElementById('display-size-max').value = checked.has('display_size') ? parseNum(item.display_size) : '';
+        document.getElementById('display-size').value = checked.has('display_size') ? parseNum(item.display_size) : '';
+
+        // CPU is multi-select: clear others and set pending for renderCPUOptions if needed
+        document.querySelectorAll('#cpu-options input:checked').forEach(cb => cb.checked = false);
+        if (checked.has('cpu_raw') && item.cpu_raw) {
+            const cpuContainer = document.getElementById('cpu-options');
+            const existing = cpuContainer.querySelector(`input[value="${CSS.escape(item.cpu_raw)}"]`);
+            if (existing) {
+                existing.checked = true;
+            } else {
+                const pending = cpuContainer.dataset.pending ? JSON.parse(cpuContainer.dataset.pending) : [];
+                pending.push(item.cpu_raw);
+                cpuContainer.dataset.pending = JSON.stringify(pending);
+            }
+        }
+        renderCPUOptions();
+
+        currentPage = 0;
+        closeSimilarModal();
+        updateCPUFilterLabel();
+        renderActiveFilters();
+        saveFilters();
+        loadLaptops(0);
+    }
+
+    document.getElementById('similar-modal').addEventListener('click', (e) => {
+        if (e.target.id === 'similar-modal') closeSimilarModal();
+    });
+</script>
+{% endblock %}

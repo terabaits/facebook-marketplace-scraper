@@ -3,7 +3,7 @@
 {% block title %}CPU Listings - SS-Crawler{% endblock %}
 
 {% block extra_css %}
-<style>
+
 @keyframes spin {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
@@ -151,7 +151,7 @@ th[data-col="col-actions"].actions-collapsed .header-content {
 .column-settings-footer button.btn-primary {
     background: #667eea;
     color: white;
-    border-color: #667eea;
+    border-color: var(--accent-color, #667eea);
 }
 
 .column-settings-footer button.btn-primary:hover {
@@ -162,7 +162,7 @@ th[data-col="col-actions"].actions-collapsed .header-content {
 [data-theme="dark"] .description-box {
     background: var(--card-bg) !important;
     color: var(--text-color) !important;
-    border-color: #667eea !important;
+    border-color: var(--accent-color, #667eea) !important;
 }
 
 /* Header cell with settings button */
@@ -194,7 +194,7 @@ td.hidden-column {
 th[data-col="col-actions"] {
     position: relative;
     overflow: visible;
-    min-width: 40px;
+    min-width: 48px;
     text-align: center;
 }
 
@@ -202,6 +202,14 @@ th[data-col="col-actions"] .column-settings-btn {
     position: relative;
     z-index: 100;
     flex-shrink: 0;
+    display: inline-flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+th[data-col="col-actions"]:has(.header-text[style*="display: none"]) .column-settings-btn,
+th[data-col="col-actions"]:has(.header-text[style*="display:none"]) .column-settings-btn {
+    margin: 0 auto !important;
 }
 
 /* When the Actions column label is hidden, keep both header and body cells narrow and centered */
@@ -209,12 +217,26 @@ th[data-col="col-actions"].actions-collapsed,
 td[data-col="col-actions"].actions-collapsed,
 th[data-col="col-actions"]:has(.header-text[style*="display: none"]),
 th[data-col="col-actions"]:has(.header-text[style*="display:none"]) {
-    width: 40px;
-    max-width: 40px;
-    min-width: 40px;
+    width: 48px;
+    max-width: 48px;
+    min-width: 48px;
     text-align: center;
     padding: 0.5rem;
     vertical-align: middle;
+}
+
+/* Ensure the gear button inside the collapsed actions header is fully visible */
+th[data-col="col-actions"].actions-collapsed .column-settings-btn,
+td[data-col="col-actions"].actions-collapsed .column-settings-btn {
+    display: inline-flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    margin: 0 auto !important;
+    flex-shrink: 0;
+    width: 32px;
+    height: 28px;
+    min-width: 32px;
+    min-height: 28px;
 }
 
 td[data-col="col-actions"] {
@@ -290,46 +312,179 @@ table thead th {
 
 [data-theme="dark"] .column-settings-footer button.btn-primary {
     background: #667eea;
-    border-color: #667eea;
+    border-color: var(--accent-color, #667eea);
 }
 
 [data-theme="dark"] .column-settings-footer button.btn-primary:hover {
     background: #5a6fd6;
 }
-</style>
+
 
 <!-- Widget System Styles -->
-<style>
+
 .widget-card {
     background: var(--card-bg);
     border-radius: 8px;
     padding: 1rem;
     border: 1px solid var(--card-border);
-    transition: box-shadow 0.2s, transform 0.15s, border-color 0.2s;
+    transition: box-shadow 0.2s, transform 0.15s, border-color 0.2s, opacity 0.2s;
     position: relative;
+    resize: both;
+    overflow: auto;
+    min-width: 180px;
+    min-height: 140px;
+    max-width: 100%;
+    align-self: start;
+    justify-self: start;
+}
+
+/* Ensure the resize grip doesn't overlap the action buttons */
+.widget-card .widget-header {
+    padding-right: 28px;
+}
+
+/* Safari fallback for custom resize handle since resize:both is webkit-only */
+.widget-resize-handle {
+    position: absolute;
+    bottom: 2px;
+    right: 2px;
+    width: 16px;
+    height: 16px;
+    cursor: se-resize;
+    z-index: 10;
+    opacity: 0.4;
+    pointer-events: none;
+}
+.widget-resize-handle::after {
+    content: '';
+    display: block;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, transparent 45%, #667eea 45%, #667eea 55%, transparent 55%, transparent 70%, #667eea 70%);
+    border-radius: 0 0 6px 0;
+}
+.widget-card:hover .widget-resize-handle,
+body.drag-mode-active .widget-card .widget-resize-handle {
+    opacity: 0.75;
+}
+
+/* Inactive drag mode: show a subtle draggable-area indicator */
+.widget-card::before {
+    content: '';
+    position: absolute;
+    top: 0.25rem;
+    right: 0.25rem;
+    width: 24px;
+    height: 24px;
+    border-radius: 4px;
+    background: rgba(102,126,234,0.06);
+    border: 1px dashed rgba(102,126,234,0.2);
+    opacity: 0;
+    transition: opacity 0.2s;
+    pointer-events: none;
+}
+
+.widget-card:hover::before {
+    opacity: 1;
 }
 
 .widget-card.wide {
     grid-column: 1 / -1;
 }
 
+/* The real card is hidden while dragging; the visual is a .drag-clone */
 .widget-card.dragging {
-    opacity: 0.6;
-    border-color: #667eea;
-    box-shadow: 0 8px 24px rgba(0,0,0,0.2);
-    transform: scale(1.01);
-    z-index: 10;
+    opacity: 0.25;
+    border-style: dashed;
+    border-color: var(--accent-color, #667eea);
+    background: rgba(102,126,234,0.04);
+    filter: grayscale(0.4);
+    box-shadow: none;
+    pointer-events: none;
+    display: none !important;
+}
+
+.widget-card.ghost {
+    opacity: 0.25;
+    border-style: dashed;
+    border-color: var(--accent-color, #667eea);
+    background: rgba(102,126,234,0.04);
+    filter: grayscale(0.4);
+    box-shadow: none;
+}
+
+.widget-card-placeholder {
+    background: rgba(102,126,234,0.12);
+    border: 2px dashed #667eea;
+    border-radius: 8px;
+    min-height: 80px;
+    pointer-events: none;
+    opacity: 1;
+    animation: placeholder-pulse 1.2s ease-in-out infinite;
+}
+
+.widget-card-placeholder::after {
+    content: 'Drop here';
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--accent-color, #667eea);
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    height: 100%;
+}
+
+/* Legacy placeholder still used by original drag code; kept hidden */
+.widget-placeholder {
+    display: none;
+}
+
+/* Floating clone that follows the pointer */
+.drag-clone {
+    position: fixed;
+    z-index: 10001;
+    pointer-events: none;
+    opacity: 0.92;
+    background: var(--card-bg, white);
+    border: 2px solid #667eea;
+    border-radius: 8px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+    transform: rotate(1deg);
+    transition: none;
 }
 
 .widget-card.drag-over {
     border-style: dashed;
-    border-color: #667eea;
+    border-color: var(--accent-color, #667eea);
     background: rgba(102,126,234,0.05);
+    transform: translateY(2px);
+}
+
+/* Drop-zone outline visible while a card is being dragged */
+#cpu-widget-grid.drag-active,
+#cpu-widget-subgrid.drag-active {
+    outline: 2px dashed rgba(102,126,234,0.35);
+    outline-offset: 4px;
+    border-radius: 10px;
 }
 
 .widget-card.pinned {
     border-color: #f59e0b;
     box-shadow: 0 0 0 1px rgba(245,158,11,0.3);
+}
+
+.widget-card.hidden {
+    display: none !important;
+}
+
+.widget-card.minimized {
+    opacity: 0.6;
+}
+
+.widget-card.minimized .widget-body {
+    display: none;
 }
 
 .widget-header {
@@ -338,16 +493,22 @@ table thead th {
     align-items: center;
     margin-bottom: 0.75rem;
     gap: 0.5rem;
+    position: relative;
+}
+
+.widget-card.minimized .widget-header {
+    margin-bottom: 0;
 }
 
 .widget-actions {
     display: flex;
     align-items: center;
-    gap: 0.4rem;
+    gap: 0.3rem;
 }
 
 .widget-btn,
-.widget-pin-btn {
+.widget-pin-btn,
+.widget-toggle-btn {
     background: rgba(255,255,255,0.1);
     border: 1px solid rgba(255,255,255,0.2);
     color: inherit;
@@ -357,10 +518,14 @@ table thead th {
     font-size: 0.8rem;
     line-height: 1;
     transition: all 0.2s;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .widget-btn:hover,
-.widget-pin-btn:hover {
+.widget-pin-btn:hover,
+.widget-toggle-btn:hover {
     background: rgba(255,255,255,0.2);
 }
 
@@ -372,13 +537,142 @@ table thead th {
 .widget-drag-handle {
     cursor: grab;
     user-select: none;
-    color: #888;
+    color: var(--accent-color, #667eea);
     font-weight: bold;
-    padding: 0.2rem;
+    padding: 0.25rem 0.35rem;
+    border-radius: 4px;
+    transition: background 0.2s, color 0.2s, opacity 0.2s, transform 0.15s;
+    font-size: 1.1rem;
+    line-height: 1;
+    opacity: 0.75;
+    background: rgba(102,126,234,0.08);
+    border: 1px solid rgba(102,126,234,0.15);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
 }
 
+.widget-card:hover .widget-drag-handle,
+.widget-drag-handle:hover {
+    opacity: 1;
+    background: rgba(102,126,234,0.18);
+    transform: scale(1.05);
+}
+
+.widget-card.drag-mode-preview .widget-drag-handle,
+body.drag-mode-active .widget-card .widget-drag-handle {
+    opacity: 1;
+    background: rgba(102,126,234,0.25);
+    color: #4f5bd5;
+    border-color: rgba(102,126,234,0.4);
+    box-shadow: 0 0 0 2px rgba(102,126,234,0.2);
+    animation: drag-pulse 1.5s ease-in-out infinite;
+}
+
+body.drag-mode-active .widget-card::before {
+    opacity: 1;
+    background: rgba(102,126,234,0.1);
+    border-style: solid;
+    border-color: rgba(102,126,234,0.3);
+}
+
+@keyframes drag-pulse {
+    0%, 100% { box-shadow: 0 0 0 2px rgba(102,126,234,0.2); transform: scale(1); }
+    50% { box-shadow: 0 0 0 5px rgba(102,126,234,0.15); transform: scale(1.05); }
+}
+
+body.drag-mode-active .widget-card {
+    border-color: rgba(102,126,234,0.35);
+}
+
+body.drag-mode-active .widget-card .widget-header {
+    cursor: grab;
+}
+
+/* Placeholder that is an actual grid item so insertBefore works correctly */
+.widget-card-placeholder {
+    background: rgba(102,126,234,0.12);
+    border: 2px dashed #667eea;
+    border-radius: 8px;
+    min-height: 80px;
+    pointer-events: none;
+    opacity: 1;
+    animation: placeholder-pulse 1.2s ease-in-out infinite;
+}
+
+.widget-card-placeholder::after {
+    content: 'Drop here';
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--accent-color, #667eea);
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    height: 100%;
+}
+
+body.drag-mode-active .widget-card .widget-header::after {
+    display: none;
+}
+
+body.drag-mode-active .widget-card .widget-header:hover .widget-drag-handle {
+    background: rgba(102,126,234,0.35);
+}
+
+body.drag-mode-active .widget-card .widget-header:active,
 .widget-drag-handle:active {
     cursor: grabbing;
+}
+
+/* Floating drag tooltip */
+#drag-tooltip {
+    position: fixed;
+    pointer-events: none;
+    z-index: 9999;
+    background: rgba(102,126,234,0.95);
+    color: white;
+    padding: 0.25rem 0.6rem;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    opacity: 0;
+    transition: opacity 0.15s;
+    white-space: nowrap;
+}
+
+/* Visual placeholder shown during drag */
+.widget-placeholder {
+    display: none;
+}
+
+@keyframes placeholder-pulse {
+    0%, 100% { background: rgba(102,126,234,0.08); }
+    50% { background: rgba(102,126,234,0.18); }
+}
+
+.drag-mode-hint {
+    font-size: 0.8rem;
+    color: var(--accent-color, #667eea);
+    background: rgba(102,126,234,0.1);
+    border: 1px solid rgba(102,126,234,0.25);
+    border-radius: 4px;
+    padding: 0.25rem 0.6rem;
+    display: none;
+}
+
+body.drag-mode-active .drag-mode-hint {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    animation: hint-pulse 2s ease-in-out infinite;
+}
+
+@keyframes hint-pulse {
+    0%, 100% { background: rgba(102,126,234,0.1); }
+    50% { background: rgba(102,126,234,0.25); }
 }
 
 [data-theme="dark"] .widget-card {
@@ -389,12 +683,19 @@ table thead th {
 [data-theme="dark"] .widget-card.drag-over {
     background: rgba(102,126,234,0.08);
 }
-</style>
+
+[data-theme="dark"] .widget-drag-handle:hover {
+    background: rgba(102,126,234,0.25);
+}
+
 {% endblock %}
 
 {% block content %}
 <!-- Widget Settings Bar -->
-<div style="display: flex; justify-content: flex-end; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem; padding: 0 0.25rem;">
+<div style="display: flex; justify-content: flex-end; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem; padding: 0 0.25rem; flex-wrap: wrap;">
+    <span class="drag-mode-hint">☰ Drag widgets by the handle to reorder</span>
+    <button id="widget-manager-btn" class="widget-btn" style="font-size: 0.75rem; padding: 0.2rem 0.5rem;" onclick="openWidgetManager()" title="Show/hide widgets">👁 Manage</button>
+    <button id="toggle-drag-mode-btn" class="widget-btn" style="font-size: 0.75rem; padding: 0.2rem 0.5rem;" onclick="toggleDragMode()" title="Toggle drag mode">✋ Drag</button>
     <button id="reset-widgets-btn" class="widget-btn" style="font-size: 0.75rem; padding: 0.2rem 0.5rem;" onclick="resetWidgets()" title="Reset widget layout">↺ Reset</button>
 </div>
 
@@ -402,177 +703,197 @@ table thead th {
 <div class="section" id="stats-section" style="margin-bottom: 2rem;">
     <div id="cpu-widget-grid" style="display: grid; grid-template-columns: 1fr 3fr; gap: 1.5rem;" data-widget-default-cols="1fr 3fr">
         <!-- Most Listed CPU Models (1/4) -->
-        <div class="widget-card" data-widget-id="most-listed" draggable="true">
+        <div class="widget-card" data-widget-id="most-listed" data-widget-default-w="" data-widget-default-h="">
             <div class="widget-header">
                 <h3 style="display: flex; align-items: center; gap: 0.5rem; margin: 0;">
                     <span>📊</span> Most Listed
                 </h3>
                 <div class="widget-actions">
+                    <button class="widget-toggle-btn" onclick="toggleWidgetVisibility('most-listed')" title="Hide widget">🙈</button>
                     <button class="widget-pin-btn" onclick="toggleWidgetPin('most-listed')" title="Save / un-save as widget">📌</button>
-                    <span class="widget-drag-handle" title="Drag to move">⋮⋮</span>
+                    <span class="widget-drag-handle" title="Drag to move">☰</span>
                 </div>
             </div>
-            <div id="most-sold-models">
+            <div id="most-sold-models" class="widget-body">
                 <div class="loading">Loading statistics...</div>
             </div>
+            <div class="widget-resize-handle" aria-hidden="true"></div>
         </div>
 
         <!-- Other Statistics (3/4) -->
         <div id="cpu-widget-subgrid" class="widget-subgrid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem;" data-widget-default-cols="repeat(3, 1fr)">
             <!-- Motherboard Year Distribution -->
-            <div class="widget-card" data-widget-id="mb-year" draggable="true">
+            <div class="widget-card" data-widget-id="mb-year" data-widget-default-w="" data-widget-default-h="">
                 <div class="widget-header">
                     <h4 style="display: flex; align-items: center; gap: 0.5rem; margin: 0;">
                         <span>📅</span> MB by Year
                     </h4>
                     <div class="widget-actions">
+                        <button class="widget-toggle-btn" onclick="toggleWidgetVisibility('mb-year')" title="Hide widget">🙈</button>
                         <button class="widget-pin-btn" onclick="toggleWidgetPin('mb-year')" title="Save / un-save as widget">📌</button>
-                        <span class="widget-drag-handle" title="Drag to move">⋮⋮</span>
+                        <span class="widget-drag-handle" title="Drag to move">☰</span>
                     </div>
                 </div>
-                <div id="mb-year-distribution">
-                    <div class="loading">Loading...</div>
+                <div id="mb-year-distribution" class="widget-body">
+                    <div class="loading">{{ t('Loading...') }}</div>
                 </div>
+                <div class="widget-resize-handle" aria-hidden="true"></div>
             </div>
 
             <!-- CPU Platform Distribution (Intel/AMD) -->
-            <div class="widget-card" data-widget-id="cpu-platform" draggable="true">
+            <div class="widget-card" data-widget-id="cpu-platform" data-widget-default-w="" data-widget-default-h="">
                 <div class="widget-header">
                     <h4 style="display: flex; align-items: center; gap: 0.5rem; margin: 0;">
                         <span>🧩</span> CPU Intel/AMD
                     </h4>
                     <div class="widget-actions">
+                        <button class="widget-toggle-btn" onclick="toggleWidgetVisibility('cpu-platform')" title="Hide widget">🙈</button>
                         <button class="widget-pin-btn" onclick="toggleWidgetPin('cpu-platform')" title="Save / un-save as widget">📌</button>
-                        <span class="widget-drag-handle" title="Drag to move">⋮⋮</span>
+                        <span class="widget-drag-handle" title="Drag to move">☰</span>
                     </div>
                 </div>
-                <div id="cpu-platform-distribution">
-                    <div class="loading">Loading...</div>
+                <div id="cpu-platform-distribution" class="widget-body">
+                    <div class="loading">{{ t('Loading...') }}</div>
                 </div>
+                <div class="widget-resize-handle" aria-hidden="true"></div>
             </div>
 
             <!-- CPU Socket Distribution -->
-            <div class="widget-card" data-widget-id="cpu-socket" draggable="true">
+            <div class="widget-card" data-widget-id="cpu-socket" data-widget-default-w="" data-widget-default-h="">
                 <div class="widget-header">
                     <h4 style="display: flex; align-items: center; gap: 0.5rem; margin: 0;">
                         <span>🔌</span> CPU by Socket
                     </h4>
                     <div class="widget-actions">
+                        <button class="widget-toggle-btn" onclick="toggleWidgetVisibility('cpu-socket')" title="Hide widget">🙈</button>
                         <button class="widget-pin-btn" onclick="toggleWidgetPin('cpu-socket')" title="Save / un-save as widget">📌</button>
-                        <span class="widget-drag-handle" title="Drag to move">⋮⋮</span>
+                        <span class="widget-drag-handle" title="Drag to move">☰</span>
                     </div>
                 </div>
-                <div id="cpu-socket-distribution" style="max-height: 260px; overflow-y: auto;">
-                    <div class="loading">Loading...</div>
+                <div id="cpu-socket-distribution" class="widget-body" style="max-height: 260px; overflow-y: auto;">
+                    <div class="loading">{{ t('Loading...') }}</div>
                 </div>
+                <div class="widget-resize-handle" aria-hidden="true"></div>
             </div>
 
             <!-- Price Stats by Vendor -->
-            <div class="widget-card" data-widget-id="price-vendor" draggable="true">
+            <div class="widget-card" data-widget-id="price-vendor" data-widget-default-w="" data-widget-default-h="">
                 <div class="widget-header">
                     <h4 style="display: flex; align-items: center; gap: 0.5rem; margin: 0;">
                         <span>💰</span> Price by Vendor
                     </h4>
                     <div class="widget-actions">
+                        <button class="widget-toggle-btn" onclick="toggleWidgetVisibility('price-vendor')" title="Hide widget">🙈</button>
                         <button class="widget-pin-btn" onclick="toggleWidgetPin('price-vendor')" title="Save / un-save as widget">📌</button>
-                        <span class="widget-drag-handle" title="Drag to move">⋮⋮</span>
+                        <span class="widget-drag-handle" title="Drag to move">☰</span>
                     </div>
                 </div>
-                <div id="vendor-price-stats">
-                    <div class="loading">Loading...</div>
+                <div id="vendor-price-stats" class="widget-body">
+                    <div class="loading">{{ t('Loading...') }}</div>
                 </div>
+                <div class="widget-resize-handle" aria-hidden="true"></div>
             </div>
 
             <!-- Source Distribution -->
-            <div class="widget-card" data-widget-id="source" draggable="true">
+            <div class="widget-card" data-widget-id="source" data-widget-default-w="" data-widget-default-h="">
                 <div class="widget-header">
                     <h4 style="display: flex; align-items: center; gap: 0.5rem; margin: 0;">
                         <span>🌐</span> By Source
                     </h4>
                     <div class="widget-actions">
+                        <button class="widget-toggle-btn" onclick="toggleWidgetVisibility('source')" title="Hide widget">🙈</button>
                         <button class="widget-pin-btn" onclick="toggleWidgetPin('source')" title="Save / un-save as widget">📌</button>
-                        <span class="widget-drag-handle" title="Drag to move">⋮⋮</span>
+                        <span class="widget-drag-handle" title="Drag to move">☰</span>
                     </div>
                 </div>
-                <div id="source-distribution">
-                    <div class="loading">Loading...</div>
+                <div id="source-distribution" class="widget-body">
+                    <div class="loading">{{ t('Loading...') }}</div>
                 </div>
+                <div class="widget-resize-handle" aria-hidden="true"></div>
             </div>
 
             <!-- Class Distribution -->
-            <div class="widget-card" data-widget-id="class" draggable="true">
+            <div class="widget-card" data-widget-id="class" data-widget-default-w="" data-widget-default-h="">
                 <div class="widget-header">
                     <h4 style="display: flex; align-items: center; gap: 0.5rem; margin: 0;">
                         <span>📝</span> By Class
                     </h4>
                     <div class="widget-actions">
+                        <button class="widget-toggle-btn" onclick="toggleWidgetVisibility('class')" title="Hide widget">🙈</button>
                         <button class="widget-pin-btn" onclick="toggleWidgetPin('class')" title="Save / un-save as widget">📌</button>
-                        <span class="widget-drag-handle" title="Drag to move">⋮⋮</span>
+                        <span class="widget-drag-handle" title="Drag to move">☰</span>
                     </div>
                 </div>
-                <div id="class-distribution">
-                    <div class="loading">Loading...</div>
+                <div id="class-distribution" class="widget-body">
+                    <div class="loading">{{ t('Loading...') }}</div>
                 </div>
+                <div class="widget-resize-handle" aria-hidden="true"></div>
             </div>
 
             <!-- Top Deals -->
-            <div class="widget-card" data-widget-id="top-deals" draggable="true">
+            <div class="widget-card" data-widget-id="top-deals" data-widget-default-w="" data-widget-default-h="">
                 <div class="widget-header">
                     <h4 style="display: flex; align-items: center; gap: 0.5rem; margin: 0;">
                         <span>🔥</span> Top Deals
                     </h4>
                     <div class="widget-actions">
+                        <button class="widget-toggle-btn" onclick="toggleWidgetVisibility('top-deals')" title="Hide widget">🙈</button>
                         <button class="widget-pin-btn" onclick="toggleWidgetPin('top-deals')" title="Save / un-save as widget">📌</button>
-                        <span class="widget-drag-handle" title="Drag to move">⋮⋮</span>
+                        <span class="widget-drag-handle" title="Drag to move">☰</span>
                     </div>
                 </div>
-                <div id="new-listings-trend">
-                    <div class="loading">Loading...</div>
+                <div id="new-listings-trend" class="widget-body">
+                    <div class="loading">{{ t('Loading...') }}</div>
                 </div>
+                <div class="widget-resize-handle" aria-hidden="true"></div>
             </div>
 
             <!-- Performance vs Price -->
-            <div class="widget-card" data-widget-id="best-value" draggable="true">
+            <div class="widget-card" data-widget-id="best-value" data-widget-default-w="" data-widget-default-h="">
                 <div class="widget-header">
                     <h4 style="display: flex; align-items: center; gap: 0.5rem; margin: 0;">
                         <span>⚡</span> Best Value
                     </h4>
                     <div class="widget-actions">
+                        <button class="widget-toggle-btn" onclick="toggleWidgetVisibility('best-value')" title="Hide widget">🙈</button>
                         <button class="widget-pin-btn" onclick="toggleWidgetPin('best-value')" title="Save / un-save as widget">📌</button>
-                        <span class="widget-drag-handle" title="Drag to move">⋮⋮</span>
+                        <span class="widget-drag-handle" title="Drag to move">☰</span>
                     </div>
                 </div>
-                <div id="best-value-cpus">
-                    <div class="loading">Loading...</div>
+                <div id="best-value-cpus" class="widget-body">
+                    <div class="loading">{{ t('Loading...') }}</div>
                 </div>
+                <div class="widget-resize-handle" aria-hidden="true"></div>
             </div>
 
             <!-- Motherboard Market Snapshot -->
-            <div class="widget-card wide" data-widget-id="mb-market" draggable="true">
+            <div class="widget-card wide" data-widget-id="mb-market" data-widget-default-w="" data-widget-default-h="">
                 <div class="widget-header">
                     <h4 style="display: flex; align-items: center; gap: 0.5rem; justify-content: space-between; margin: 0; flex: 1;">
                         <span>🖥️ Motherboard Market</span>
                         <span id="mb-market-time" style="font-size: 0.75rem; color: #888;">All time</span>
                     </h4>
                     <div class="widget-actions">
+                        <button class="widget-toggle-btn" onclick="toggleWidgetVisibility('mb-market')" title="Hide widget">🙈</button>
                         <button class="widget-pin-btn" onclick="toggleWidgetPin('mb-market')" title="Save / un-save as widget">📌</button>
-                        <span class="widget-drag-handle" title="Drag to move">⋮⋮</span>
+                        <span class="widget-drag-handle" title="Drag to move">☰</span>
                     </div>
                 </div>
-                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem;" id="motherboard-market-stats">
+                <div class="widget-body" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem;" id="motherboard-market-stats">
                     <div>
                         <h5 style="margin: 0 0 0.5rem 0; font-size: 0.8rem; color: #888;">By Year</h5>
-                        <div id="mb-market-year" class="loading">Loading...</div>
+                        <div id="mb-market-year" class="loading">{{ t('Loading...') }}</div>
                     </div>
                     <div>
                         <h5 style="margin: 0 0 0.5rem 0; font-size: 0.8rem; color: #888;">Intel / AMD</h5>
-                        <div id="mb-market-platform" class="loading">Loading...</div>
+                        <div id="mb-market-platform" class="loading">{{ t('Loading...') }}</div>
                     </div>
                     <div>
                         <h5 style="margin: 0 0 0.5rem 0; font-size: 0.8rem; color: #888;">By Socket</h5>
-                        <div id="mb-market-socket" class="loading">Loading...</div>
+                        <div id="mb-market-socket" class="loading">{{ t('Loading...') }}</div>
                     </div>
                 </div>
+                <div class="widget-resize-handle" aria-hidden="true"></div>
             </div>
         </div>
     </div>
@@ -580,7 +901,7 @@ table thead th {
 
 <div class="section">
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
-        <h2>CPU Listings</h2>
+        <h2>{{ t('CPU Listings') }}</h2>
         <div class="filters" style="margin: 0;">
             <span style="font-weight: 600; margin-right: 0.5rem;">Filters:</span>
             <label>
@@ -636,8 +957,8 @@ table thead th {
             <label>
                 Sort:
                 <select id="sort-by" onchange="loadListings()">
-                    <option value="date_posted">Date Posted</option>
-                    <option value="price">Price</option>
+                    <option value="date_posted">{{ t('Date Posted') }}</option>
+                    <option value="price">{{ t('Price') }}</option>
                     <option value="price_per_r23">Price/Perf (€/R23k)</option>
                     <option value="price_per_passmark">Price/Perf (€/PMk)</option>
                     <option value="r23_score">R23 Multi Score</option>
@@ -647,8 +968,8 @@ table thead th {
             <label>
                 Order:
                 <select id="sort-order" onchange="loadListings()">
-                    <option value="desc">Descending</option>
-                    <option value="asc">Ascending</option>
+                    <option value="desc">{{ t('Descending') }}</option>
+                    <option value="asc">{{ t('Ascending') }}</option>
                 </select>
             </label>
             <label>
@@ -681,7 +1002,7 @@ table thead th {
 <div id="listing-modal" class="modal-overlay">
     <div class="modal" style="max-width: 900px;">
         <div class="modal-header">
-            <h3 id="listing-title">Listing Details</h3>
+            <h3 id="listing-title">{{ t('Listing Details') }}</h3>
             <button class="modal-close" onclick="closeListingModal()">&times;</button>
         </div>
         <div id="listing-content" style="padding: 1.5rem;">
@@ -698,6 +1019,9 @@ table thead th {
             <button class="modal-close" onclick="closeModal()">&times;</button>
         </div>
         <div id="history-content">
+            <div class="history-chart-toolbar" style="display: flex; justify-content: flex-end; align-items: center; gap: 0.5rem; padding: 0.25rem 0.5rem;">
+                <button id="history-autofit-btn" class="widget-btn" style="font-size: 0.75rem; padding: 0.2rem 0.5rem;" onclick="autoFitHistoryChart()" title="Resize chart to minimum height that fits all data">🗜 Auto-fit</button>
+            </div>
             <div class="history-chart">
                 <canvas id="historyChart"></canvas>
             </div>
@@ -749,7 +1073,20 @@ function loadColumnSettings() {
 
     if (savedOrder) {
         try {
-            columnOrder = JSON.parse(savedOrder);
+            const saved = JSON.parse(savedOrder);
+            columnOrder = [];
+            // Preserve saved order for columns that still exist
+            saved.forEach(col => {
+                if (defaultColumnOrder.find(d => d.id === col.id)) {
+                    columnOrder.push(col);
+                }
+            });
+            // Append any new default columns that weren't in the saved order
+            defaultColumnOrder.forEach(defCol => {
+                if (!columnOrder.find(c => c.id === defCol.id)) {
+                    columnOrder.push(defCol);
+                }
+            });
         } catch (e) {
             columnOrder = [...defaultColumnOrder];
         }
@@ -780,12 +1117,54 @@ function saveColumnSettings() {
     localStorage.setItem('cpuColumnVisibility', JSON.stringify(columnVisibility));
 }
 
+// Discover-model tracking for FIRST badge (mirrors GPU page)
+const discoveredCpuModelsKey = 'discovered_cpu_models';
+let discoveredCpuModels = new Set();
+
+function loadDiscoveredCpuModels() {
+    try {
+        const stored = localStorage.getItem(discoveredCpuModelsKey);
+        if (stored) {
+            discoveredCpuModels = new Set(JSON.parse(stored));
+        }
+    } catch (e) {
+        console.error('Error loading discovered CPU models:', e);
+        discoveredCpuModels = new Set();
+    }
+}
+
+function saveDiscoveredCpuModels() {
+    try {
+        localStorage.setItem(discoveredCpuModelsKey, JSON.stringify([...discoveredCpuModels]));
+    } catch (e) {
+        console.error('Error saving discovered CPU models:', e);
+    }
+}
+
+function computeCpuDealBadges(item) {
+    let dealBadge = '';
+
+    const isNewListing = item.is_new === true;
+    if (isNewListing) {
+        dealBadge += `<span class="badge" style="background: #3b82f6; color: white; font-weight: bold;" title="New listing from current import!">🆕 NEW</span><br>`;
+    }
+    if (!isNewListing && item.price_stats && item.price_stats.below_avg) {
+        const avgPrice = parseFloat(item.price_stats.avg);
+        const currentPrice = item.price_eur;
+        const savingsPct = ((avgPrice - currentPrice) / avgPrice * 100);
+        if (savingsPct >= 15) {
+            dealBadge += `<span class="badge" style="background: #dc2626; color: white; font-weight: bold;" title="Price is ${savingsPct.toFixed(0)}% below average!">🔥 STEAL</span><br>`;
+        }
+    }
+    return dealBadge;
+}
+
 // Toggle column visibility
 function toggleColumn(columnId, visible) {
     columnVisibility[columnId] = visible;
     saveColumnSettings();
     renderFullTable();
-    
+
     // Keep the dropdown open and repositioned after toggling so the user can toggle more columns
     const dropdown = document.getElementById('column-settings-dropdown');
     if (dropdown && dropdown.classList.contains('active')) {
@@ -828,6 +1207,8 @@ function resetColumns() {
 // Render full table (header + body)
 function renderFullTable() {
     const table = document.querySelector('#listings-container table');
+    loadDiscoveredCpuModels();
+
     if (!table || !currentListingsData.length) return;
 
     // Update header
@@ -842,8 +1223,31 @@ function renderFullTable() {
         tbody.innerHTML = currentListingsData.map(item => renderTableRow(item)).join('');
     }
 
+    saveDiscoveredCpuModels();
+
     // Enforce CSS hidden state for every non-actions column based on current visibility
     applyHiddenColumnClasses();
+
+    // If Actions is hidden, ensure its header/body cells are collapsed but the gear remains clickable
+    if (!columnVisibility['col-actions']) {
+        const actionsHeader = table.querySelector('th[data-col=\"col-actions\"]');
+        if (actionsHeader) actionsHeader.classList.add('actions-collapsed');
+        table.querySelectorAll('td[data-col=\"col-actions\"]').forEach(cell => {
+            cell.classList.add('actions-collapsed');
+            cell.style.display = 'table-cell';
+            cell.style.textAlign = 'center';
+            cell.style.padding = '0.5rem';
+        });
+    } else {
+        const actionsHeader = table.querySelector('th[data-col=\"col-actions\"]');
+        if (actionsHeader) actionsHeader.classList.remove('actions-collapsed');
+        table.querySelectorAll('td[data-col=\"col-actions\"]').forEach(cell => {
+            cell.classList.remove('actions-collapsed');
+            cell.style.display = '';
+            cell.style.textAlign = '';
+            cell.style.padding = '';
+        });
+    }
 
     updateSelectAllState();
     updateVisibleCount();
@@ -997,7 +1401,10 @@ function toggleColumnSettings(event) {
     }
 
     const dropdown = document.getElementById('column-settings-dropdown');
-    const btn = document.getElementById('column-settings-btn');
+    let btn = event && event.target && event.target.closest('.column-settings-btn');
+    if (!btn) {
+        btn = document.getElementById('column-settings-btn');
+    }
 
     if (!dropdown) {
         console.log('Dropdown not found');
@@ -1016,25 +1423,25 @@ function toggleColumnSettings(event) {
         updateColumnOptions();
         dropdown.classList.add('active');
 
-        // Then update position
-        updateDropdownPosition();
+        // Then update position relative to the clicked gear
+        updateDropdownPosition(btn);
 
         // Add scroll listener to update position
-        window.addEventListener('scroll', updateDropdownPosition, { passive: true });
-        window.addEventListener('resize', updateDropdownPosition, { passive: true });
+        window.addEventListener('scroll', () => updateDropdownPosition(btn), { passive: true });
+        window.addEventListener('resize', () => updateDropdownPosition(btn), { passive: true });
     } else {
         dropdown.classList.remove('active');
         // Remove scroll listener
-        window.removeEventListener('scroll', updateDropdownPosition);
-        window.removeEventListener('resize', updateDropdownPosition);
+        window.removeEventListener('scroll', () => updateDropdownPosition(btn));
+        window.removeEventListener('resize', () => updateDropdownPosition(btn));
     }
 }
 
-// Update dropdown position to follow gear icon
-function updateDropdownPosition() {
+// Update dropdown position to follow the clicked gear icon (or the header gear as fallback)
+function updateDropdownPosition(preferredBtn) {
     const dropdown = document.getElementById('column-settings-dropdown');
     const headerBtn = document.getElementById('column-settings-btn');
-    let btn = headerBtn;
+    let btn = preferredBtn || headerBtn;
 
     if (!btn) {
         // Fallback: any gear button in the collapsed actions cells
@@ -1061,9 +1468,8 @@ function updateDropdownPosition() {
 // Close dropdown when clicking outside
 function closeColumnSettings(e) {
     const dropdown = document.getElementById('column-settings-dropdown');
-    const btn = document.getElementById('column-settings-btn');
     if (!dropdown) return;
-    // Close dropdown when clicking outside of it or outside any gear button.
+    // Close dropdown when clicking outside of it and outside any gear button.
     const clickedGear = e.target && (e.target.classList.contains('column-settings-btn') || e.target.closest('.column-settings-btn'));
     if (!dropdown.contains(e.target) && !clickedGear) {
         dropdown.classList.remove('active');
@@ -1087,12 +1493,12 @@ function renderTableHeader() {
                 // The gear button is always rendered. When Actions is hidden, we collapse the label text
                 // but keep a tiny clickable target with the gear icon visible so users can restore columns.
                 const labelStyle = isHidden ? 'display: none;' : '';
-                const minWidthStyle = isHidden ? 'width: 40px; min-width: 40px; max-width: 40px; overflow: visible; white-space: nowrap;' : 'position: relative;';
+                const minWidthStyle = isHidden ? 'width: 48px; min-width: 48px; max-width: 48px; overflow: visible; white-space: nowrap;' : 'position: relative;';
                 const collapseClass = isHidden ? ' actions-collapsed' : '';
                 return `<th data-col="col-actions" class="column-header${collapseClass}" style="${thStyle}${minWidthStyle}" title="Column Settings">
-                    <div class="header-content" style="justify-content: center;">
+                    <div class="header-content" style="justify-content: center; align-items: center;">
                         <span class="header-text" style="${labelStyle}">${col.label}</span>
-                        <button id="column-settings-btn" class="column-settings-btn" onclick="toggleColumnSettings(event)" title="Column Settings">⚙️</button>
+                        <button id="column-settings-btn" class="column-settings-btn" onclick="toggleColumnSettings(event)" title="Column Settings" style="flex-shrink:0; margin:0;">⚙️</button>
                     </div>
                 </th>`;
             }
@@ -1147,8 +1553,11 @@ function renderTableRow(item) {
     if (confidence < 0.70) confidenceClass = 'confidence-medium';
     if (confidence < 0.50) confidenceClass = 'confidence-low';
 
-    const rowClass = modelId ? 'clickable' : '';
-    const clickHandler = modelId ? `onclick="showModelHistory(${modelId}, '${item.producer} ${item.cpu_name}')"` : '';
+    const rowClass = 'clickable';
+    const clickHandler = `onclick="openListingDetails('${item.listing_id}')"`;
+    const titleAttr = 'title="Click to view listing details"';
+
+    const dealBadge = computeCpuDealBadges(item);
 
     const hasHistory = item.history && item.history.length > 0;
 
@@ -1165,7 +1574,11 @@ function renderTableRow(item) {
                 const rowImageUrl = rowLocalImage
                     ? (rowLocalImage.includes('/') ? `/images/${rowLocalImage}` : `/images/cpu/${rowLocalImage}`)
                     : (item.image_url || null);
-                return `<td data-col="col-image" class="${hiddenClass}" style="padding: 0.75rem; text-align: center; ${style}">
+                const imageOverlayBadges = (dealBadge)
+                    ? `<div style="position: absolute; top: 4px; right: 4px; display: flex; flex-direction: column; gap: 4px; z-index: 10;">${dealBadge}</div>`
+                    : '';
+                return `<td data-col="col-image" class="${hiddenClass}" style="padding: 0.75rem; text-align: center; position: relative; ${style}">
+                    ${imageOverlayBadges}
                     ${rowImageUrl ? `<img src="${rowImageUrl}" alt="${cpuName}" class="listing-thumb" onclick="event.stopPropagation(); showImageModal('${rowImageUrl}', '${cpuName}')" style="max-width: 80px; max-height: 60px; border-radius: 4px; cursor: pointer;">` : '<div class="listing-thumb-placeholder" style="width: 80px; height: 60px; background: #f0f0f0; border-radius: 4px; display: flex; align-items: center; justify-content: center; color: #999;">📷</div>'}
                 </td>`;
             }
@@ -1190,7 +1603,7 @@ function renderTableRow(item) {
                         <span class="${priceClass}">€${item.price_eur}</span>
                         ${priceIndicator}
                     </div>
-                    ${showAvgPriceGlobal && item.price_stats ? `<div style="font-size: 0.75rem; color: #888; margin-top: 2px;">avg: €${item.price_stats.avg}</div>` : ''}
+                    ${showAvgPriceGlobal && item.price_stats ? `<div style="font-size: 0.75rem; color: #888; margin-top: 2px;">avg: €${item.price_stats.avg} · ${item.price_stats.listing_count || 0} listings</div>` : ''}
                     ${hasPriceChange ? `<br><small style="color: ${item.price_eur < item.history[0].price_eur ? '#e74c3c' : '#27ae60'};">Was: €${item.history[0].price_eur} ${item.price_eur < item.history[0].price_eur ? '↓' : '↑'}</small>` : ''}
                 </td>`;
             case 'col-price-perf':
@@ -1223,18 +1636,20 @@ function renderTableRow(item) {
             case 'col-location':
                 return `<td data-col="col-location" class="${hiddenClass}" ${style}>${item.seller_location || 'N/A'}</td>`;
             case 'col-date':
-                return `<td data-col="col-date" class="${hiddenClass}" ${style}>${item.date_posted ? new Date(item.date_posted).toLocaleDateString() : 'N/A'}</td>`;
+                return `<td data-col="col-date" class="${hiddenClass}" ${style}>${(item.date_posted || item.first_seen_at || item.created_at) ? new Date(item.date_posted || item.first_seen_at || item.created_at).toLocaleDateString() : 'N/A'}</td>`;
             case 'col-actions': {
                 // Keep a minimal gear placeholder in every Actions body cell so the column remains
                 // reachable when the Actions header is collapsed, but hide the action buttons.
                 const isActionsHidden = !columnVisibility['col-actions'];
-                const cellPaddingStyle = isActionsHidden ? 'padding: 0.5rem;' : '';
+                const cellPaddingStyle = isActionsHidden ? 'padding: 0.5rem; text-align: center;' : '';
                 const actionCellClass = isActionsHidden ? ' actions-collapsed' : '';
-                return `<td data-col="col-actions" class="${actionCellClass}" style="${style}${cellPaddingStyle}">
+                const displayStyle = isActionsHidden ? 'display: table-cell;' : '';
+                return `<td data-col="col-actions" class="${actionCellClass}" style="${style}${cellPaddingStyle}${displayStyle}">
                     ${isActionsHidden
-                        ? `<button class="column-settings-btn" onclick="event.stopPropagation(); toggleColumnSettings(event)" title="Column Settings" style="margin:0 auto;">⚙️</button>`
+                        ? `<button class="column-settings-btn" onclick="event.stopPropagation(); toggleColumnSettings(event)" title="Column Settings" style="margin:0 auto; display:inline-flex;">⚙️</button>`
                         : `<div style="display: flex; gap: 0.5rem; flex-wrap: wrap; justify-content: center;">
-                            <button class="btn btn-small" onclick="event.stopPropagation(); showListingHistory('${item.listing_id}')">Details</button>
+                            <button class="btn btn-small" onclick="event.stopPropagation(); openListingDetails('${item.listing_id}')">{{ t('Details') }}</button>
+                            <button class="btn btn-small" onclick="event.stopPropagation(); showModelHistoryByListing('${item.listing_id}')">History</button>
                             <button class="btn btn-small" style="background: #dc3545; color: white; border: none;" onclick="event.stopPropagation(); showFlagModalWithCategories('${item.listing_id ? item.listing_id.replace(/'/g, "\\'").replace(/"/g, '&quot;') : ''}', '${escapeHtml(item.title || '').replace(/'/g, "\\'").replace(/"/g, '&quot;')}')">🚩 Flag</button>
                             <a href="${item.listing_url}" target="_blank" class="btn btn-small" onclick="event.stopPropagation()">View →</a>
                         </div>`}
@@ -1245,13 +1660,15 @@ function renderTableRow(item) {
         }
     }).join('');
 
-    return `<tr id="listing-row-${item.listing_id}" class="${rowClass}" ${clickHandler} title="${modelId ? 'Click to view model history' : ''}" style="border-bottom: 1px solid #eee;">${cells}</tr>`;
+    return `<tr id="listing-row-${item.listing_id}" class="${rowClass}" ${clickHandler} title="Click to view listing details" style="border-bottom: 1px solid #eee;">${cells}</tr>`;
 }
 
 // Load CPU statistics for dashboard
 async function loadCPUStatistics() {
     try {
-        const response = await fetch('/api/cpus?active=true&time=all_time');
+        // Use active=false so stats still render when no currently-active CPU listings exist
+        // (the CPU scraper has not run recently, so all historical rows are inactive).
+        const response = await fetch('/api/cpus?active=false&time=all_time&limit=10000');
         const listings = await response.json();
 
         // 1. Most Listed CPU Models
@@ -1275,10 +1692,8 @@ async function loadCPUStatistics() {
 
         if (topModels.length === 0) {
             document.getElementById('most-sold-models').innerHTML = '<div style="color: #888; text-align: center; padding: 1rem;">No model data</div>';
-            return;
-        }
-
-        const maxCount = Math.max(...topModels.map(([, data]) => data.count));
+        } else {
+            const maxCount = Math.max(...topModels.map(([, data]) => data.count)) || 1;
 
         let modelsHtml = '<div style="display: flex; flex-direction: column; gap: 0.75rem;">';
         topModels.forEach(([model, data], index) => {
@@ -1308,6 +1723,7 @@ async function loadCPUStatistics() {
         });
         modelsHtml += '</div>';
         document.getElementById('most-sold-models').innerHTML = modelsHtml;
+        } // end if (topModels.length > 0)
 
         // 2. Price by Vendor
         const vendorStats = {};
@@ -1452,7 +1868,7 @@ async function loadCPUStatistics() {
         });
 
         deals.sort((a, b) => b.savingsPct - a.savingsPct);
-        const topDeals = deals.slice(0, 5);
+        const topDeals = deals.slice(0, 10);
 
         let dealsHtml = '<div style="display: flex; flex-direction: column; gap: 0.5rem;">';
         if (topDeals.length === 0) {
@@ -1497,7 +1913,7 @@ async function loadCPUStatistics() {
             .filter(item => item.valueScore !== null)
             .sort((a, b) => a.valueScore - b.valueScore)
             .slice(0, 5);
-        
+
         let valueHtml = '<div style="display: flex; flex-direction: column; gap: 0.5rem;">';
         if (valueCpus.length === 0) {
             valueHtml += '<div style="text-align: center; padding: 1rem; color: #888;">No benchmark data</div>';
@@ -1510,15 +1926,18 @@ async function loadCPUStatistics() {
                             <div style="font-weight: 600; font-size: 0.875rem;">${cpuName}</div>
                             <div style="font-size: 0.75rem; color: #888;">€${item.price_eur}</div>
                         </div>
-                        <div style="color: #667eea; font-weight: bold; font-size: 0.85rem;">€${item.valueScore.toFixed(2)}/${item.metric}</div>
+                        <div style="color: var(--accent-color, #667eea); font-weight: bold; font-size: 0.85rem;">€${item.valueScore.toFixed(2)}/${item.metric}</div>
                     </div>
                 `;
             });
         }
         valueHtml += '</div>';
         document.getElementById('best-value-cpus').innerHTML = valueHtml;
-
-        // 7. CPU Market Snapshot (Intel/AMD + Socket)
+        
+        // CPU Chart widget was removed (it duplicated GPU-style charts and kept loading forever
+        // when no CPU listings are active). The platform/socket distribution widgets below still
+        // provide the same market breakdowns in text/bar form.
+        
         await loadCPUPlatformStats();
 
         // 8. Motherboard Market Snapshot
@@ -1532,7 +1951,7 @@ async function loadCPUStatistics() {
 async function loadCPUPlatformStats() {
     try {
         const timeFilter = document.getElementById('time-filter')?.value || 'all_time';
-        const response = await fetch(`/api/cpus/platform-stats?time=${timeFilter}`);
+        const response = await fetch(`/api/cpus/platform-stats?time=${timeFilter}&active=false`);
         if (!response.ok) throw new Error(`HTTP ${response.status}`);
         const data = await response.json();
 
@@ -1869,7 +2288,47 @@ async function loadListings() {
         });
         const uniqueListings = Object.values(listingsById);
 
-        const listingsWithHistory = await fetchPriceHistoryForListings(uniqueListings);
+        let listingsWithHistory = await fetchPriceHistoryForListings(uniqueListings);
+
+        loadDiscoveredCpuModels();
+
+        // Defensive client-side sort: ensure the displayed order always matches
+        // the user's selected sort and order, even if the backend ORDER BY is
+        // not applied or if post-fetch filtering changes the sequence.
+        const sortFieldMap = {
+            'date_posted': 'date_posted',
+            'price': 'price_eur',
+            'r23_score': 'cinebench_r23_multi',
+            'passmark_score': 'passmark_cpu_mark',
+            'price_per_r23': 'price_per_r23',
+            'price_per_passmark': 'price_per_passmark'
+        };
+        const sortField = sortFieldMap[sortBy] || 'date_posted';
+        const sortMultiplier = sortOrder === 'asc' ? 1 : -1;
+
+        listingsWithHistory.sort((a, b) => {
+            let aVal = a[sortField];
+            let bVal = b[sortField];
+            const aNull = aVal === null || aVal === undefined || aVal === '';
+            const bNull = bVal === null || bVal === undefined || bVal === '';
+            if (aNull && bNull) return 0;
+            if (aNull) return 1;   // nulls last
+            if (bNull) return -1;  // nulls last
+
+            let comparison;
+            if (sortField === 'date_posted') {
+                comparison = new Date(aVal) - new Date(bVal);
+            } else {
+                const aNum = parseFloat(aVal);
+                const bNum = parseFloat(bVal);
+                if (!isNaN(aNum) && !isNaN(bNum)) {
+                    comparison = aNum - bNum;
+                } else {
+                    comparison = String(aVal).localeCompare(String(bVal));
+                }
+            }
+            return comparison * sortMultiplier;
+        });
 
         // Store data for re-rendering
         currentListingsData = listingsWithHistory;
@@ -1912,6 +2371,8 @@ async function loadListings() {
         `;
 
         container.innerHTML = html;
+
+        saveDiscoveredCpuModels();
 
         // Show summary row if enabled in settings
         const showSummary = localStorage.getItem('showSummaryFields') === 'true';
@@ -1967,14 +2428,29 @@ function renderPriceDecreaseBadge(item) {
     return '';
 }
 
-function renderHistoryButton(listingId, hasHistory) {
-    if (hasHistory) {
-        return `<button class="btn btn-small" onclick="event.stopPropagation(); showListingHistory('${listingId}')">History</button>`;
-    }
+function renderHistoryButton(listingId, history) {
+    // Replaced by separate Details + History action buttons; kept for API compatibility if any old callers exist.
     return '';
 }
 
-async function showListingHistory(listingId) {
+async function showModelHistoryByListing(listingId) {
+    // Resolve the matched CPU model from the listing, then open the model-history modal.
+    try {
+        const res = await fetch(`/api/listing-details/${listingId}`);
+        const data = await res.json();
+        const current = data.current || {};
+        if (current.matched_cpu_id) {
+            await showModelHistory(current.matched_cpu_id, current.cpu_name || 'CPU');
+        } else {
+            alert('No matched CPU model for price history.');
+        }
+    } catch (error) {
+        console.error('Error opening history from listing:', error);
+        alert('Failed to load price history.');
+    }
+}
+
+async function openListingDetails(listingId) {
     try {
         // Fetch price history
         const historyResponse = await fetch(`/api/price-history/${listingId}`);
@@ -2017,8 +2493,8 @@ async function showListingHistory(listingId) {
         // CPU-specific info
         if (current.vendor || current.cpu_name || current.cores || current.threads || current.socket || current.processor_number) {
             html += `
-                <div style="margin-bottom: 1.5rem; padding: 1rem; background: #f8f9fa; border-radius: 8px; border-left: 4px solid #667eea;">
-                    <h4 style="margin-bottom: 0.75rem; color: #667eea;">CPU Details</h4>
+                <div style="margin-bottom: 1.5rem; padding: 1rem; background: var(--modal-box-bg, #f8f9fa); border-radius: 8px; border-left: 4px solid var(--accent-color, #667eea);">
+                    <h4 style="margin-bottom: 0.75rem; color: var(--accent-color, #667eea);">CPU Details</h4>
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem;">
                         ${current.vendor ? `<div><strong>Brand:</strong> ${current.vendor}</div>` : ''}
                         ${current.cpu_name ? `<div><strong>Model:</strong> ${current.cpu_name}</div>` : ''}
@@ -2033,16 +2509,16 @@ async function showListingHistory(listingId) {
         // Price info grid
         html += `
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem;">
-                <div style="background: #f8f9fa; padding: 1rem; border-radius: 8px;">
+                <div style="background: var(--modal-box-bg, #f8f9fa); padding: 1rem; border-radius: 8px;">
                     <strong>Current Price:</strong> <span class="price" style="font-size: 1.25rem;">€${current.price_eur || 'N/A'}</span>
                 </div>
-                <div style="background: #f8f9fa; padding: 1rem; border-radius: 8px;">
+                <div style="background: var(--modal-box-bg, #f8f9fa); padding: 1rem; border-radius: 8px;">
                     <strong>Location:</strong> ${current.seller_location || 'N/A'}
                 </div>
-                <div style="background: #f8f9fa; padding: 1rem; border-radius: 8px;">
+                <div style="background: var(--modal-box-bg, #f8f9fa); padding: 1rem; border-radius: 8px;">
                     <strong>Date:</strong> ${current.date_posted ? new Date(current.date_posted).toLocaleDateString() : 'N/A'}
                 </div>
-                <div style="background: #f8f9fa; padding: 1rem; border-radius: 8px;">
+                <div style="background: var(--modal-box-bg, #f8f9fa); padding: 1rem; border-radius: 8px;">
                     <strong>Status:</strong> ${current.is_active ? '<span style="color: #27ae60;">Active</span>' : '<span style="color: #e74c3c;">Inactive</span>'}
                 </div>
             </div>
@@ -2051,7 +2527,7 @@ async function showListingHistory(listingId) {
         // CPU-specific info
         if (current.cpu_name) {
             html += `
-                <div style="background: #e8f0ff; padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
+                <div style="background: var(--modal-highlight-bg, #e8f0ff); padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
                     <strong>CPU:</strong> ${current.producer || ''} ${current.cpu_name}<br>
                     ${current.cores ? `<strong>Cores/Threads:</strong> ${current.cores}/${current.threads || '?'}<br>` : ''}
                     ${current.match_method ? `<strong>Match Confidence:</strong> <span class="${(current.confidence_score || 0) >= 0.70 ? 'confidence-high' : ((current.confidence_score || 0) >= 0.50 ? 'confidence-medium' : 'confidence-low')}">${((current.confidence_score || 0) * 100).toFixed(0)}%</span>` : ''}
@@ -2063,7 +2539,7 @@ async function showListingHistory(listingId) {
         html += `
             <div style="margin-bottom: 1.5rem;">
                 <strong>Description:</strong>
-                <div class="description-box" style="margin-top: 0.5rem; max-height: 300px; overflow-y: auto; background: #f8f9fa; padding: 1rem; border-radius: 8px; border-left: 4px solid #667eea;">
+                <div class="description-box" style="margin-top: 0.5rem; max-height: 300px; overflow-y: auto; background: var(--modal-box-bg, #f8f9fa); padding: 1rem; border-radius: 8px; border-left: 4px solid var(--accent-color, #667eea);">
                     ${current.description ? escapeHtml(current.description).replace(/\n/g, '<br>') : '<em>No description available</em>'}
                 </div>
             </div>
@@ -2077,7 +2553,7 @@ async function showListingHistory(listingId) {
                     <thead>
                         <tr>
                             <th>Date</th>
-                            <th>Price</th>
+                            <th>{{ t('Price') }}</th>
                             <th>Change</th>
                         </tr>
                     </thead>
@@ -2134,6 +2610,9 @@ function closeListingModal() {
     document.getElementById('listing-modal').classList.remove('active');
 }
 
+// Backwards-compatible alias: listing-row clicks and old buttons may still call showListingHistory
+window.showListingHistory = openListingDetails;
+
 async function showModelHistory(modelId, modelName) {
     if (!modelId) return;
 
@@ -2183,6 +2662,12 @@ async function showModelHistory(modelId, modelName) {
                 plugins: {
                     legend: { display: false }
                 },
+                elements: {
+                    point: {
+                        radius: 3,
+                        hoverRadius: 6
+                    }
+                },
                 scales: {
                     y: {
                         beginAtZero: true,
@@ -2196,25 +2681,35 @@ async function showModelHistory(modelId, modelName) {
             }
         });
 
+        // Normalize listing image URLs like the main listing table/popup does.
+        function getListingImageUrl(item) {
+            const localPath = item.local_image_path ? String(item.local_image_path).replace(/\\/g, '/') : null;
+            const remoteUrl = item.image_url ? String(item.image_url) : null;
+            if (localPath) {
+                return localPath.includes('/') ? `/images/${localPath}` : `/images/cpu/${localPath}`;
+            }
+            return remoteUrl || null;
+        }
+
         let html = `
             <div style="margin-bottom: 1.5rem;">
                 <h4>Quick Statistics</h4>
                 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; margin-top: 1rem;">
-                    <div style="background: #f8f9fa; padding: 1rem; border-radius: 8px; text-align: center; border-left: 4px solid #667eea;">
-                        <div style="font-size: 1.5rem; font-weight: bold; color: #667eea;">€${stats.avg_price}</div>
-                        <div style="font-size: 0.875rem; color: #666;">Average Price</div>
+                    <div style="background: var(--modal-box-bg, #f8f9fa); padding: 1rem; border-radius: 8px; text-align: center; border-left: 4px solid var(--accent-color, #667eea);">
+                        <div style="font-size: 1.5rem; font-weight: bold; color: var(--accent-color, #667eea);">€${stats.avg || 'N/A'}</div>
+                        <div style="font-size: 0.875rem; color: var(--text-color, #666);">Average Price</div>
                     </div>
-                    <div style="background: #f8f9fa; padding: 1rem; border-radius: 8px; text-align: center; border-left: 4px solid #27ae60;">
-                        <div style="font-size: 1.5rem; font-weight: bold; color: #27ae60;">€${stats.min_price}</div>
-                        <div style="font-size: 0.875rem; color: #666;">Min Price</div>
+                    <div style="background: var(--modal-box-bg, #f8f9fa); padding: 1rem; border-radius: 8px; text-align: center; border-left: 4px solid #27ae60;">
+                        <div style="font-size: 1.5rem; font-weight: bold; color: #27ae60;">€${stats.min || 'N/A'}</div>
+                        <div style="font-size: 0.875rem; color: var(--text-color, #666);">Min Price</div>
                     </div>
-                    <div style="background: #f8f9fa; padding: 1rem; border-radius: 8px; text-align: center; border-left: 4px solid #e74c3c;">
-                        <div style="font-size: 1.5rem; font-weight: bold; color: #e74c3c;">€${stats.max_price}</div>
-                        <div style="font-size: 0.875rem; color: #666;">Max Price</div>
+                    <div style="background: var(--modal-box-bg, #f8f9fa); padding: 1rem; border-radius: 8px; text-align: center; border-left: 4px solid #e74c3c;">
+                        <div style="font-size: 1.5rem; font-weight: bold; color: #e74c3c;">€${stats.max || 'N/A'}</div>
+                        <div style="font-size: 0.875rem; color: var(--text-color, #666);">Max Price</div>
                     </div>
-                    <div style="background: #f8f9fa; padding: 1rem; border-radius: 8px; text-align: center; border-left: 4px solid #764ba2;">
-                        <div style="font-size: 1.5rem; font-weight: bold; color: #764ba2;">${stats.active_count}</div>
-                        <div style="font-size: 0.875rem; color: #666;">Active (${stats.total_count} total)</div>
+                    <div style="background: var(--modal-box-bg, #f8f9fa); padding: 1rem; border-radius: 8px; text-align: center; border-left: 4px solid #764ba2;">
+                        <div style="font-size: 1.5rem; font-weight: bold; color: #764ba2;">${stats.count || 0}</div>
+                        <div style="font-size: 0.875rem; color: var(--text-color, #666);">Listings (${uniqueListings.length} unique)</div>
                     </div>
                 </div>
             </div>
@@ -2224,23 +2719,30 @@ async function showModelHistory(modelId, modelName) {
             <table>
                 <thead>
                     <tr>
+                        <th>Image</th>
                         <th>Title</th>
-                        <th>Price</th>
+                        <th>{{ t('Price') }}</th>
                         <th>Location</th>
                         <th>Date</th>
                         <th>Status</th>
                     </tr>
                 </thead>
                 <tbody>
-                    ${uniqueListings.map(item => `
+                    ${uniqueListings.map(item => {
+                        const imgUrl = getListingImageUrl(item);
+                        const imgHtml = imgUrl
+                            ? `<img src="${imgUrl}" alt="${item.title || ''}" class="listing-thumb" style="width:60px;height:60px;object-fit:cover;border-radius:6px;cursor:pointer;" onerror="this.style.display='none'" onclick="event.stopPropagation(); showImageModal('${imgUrl.replace(/'/g, "\\'")}', '${(item.title || '').replace(/'/g, "\\'")}')">`
+                            : `<div class="listing-thumb-placeholder" style="width:60px;height:60px;">🖼️</div>`;
+                        return `
                         <tr>
+                            <td style="text-align:center;">${imgHtml}</td>
                             <td><a href="${item.listing_url}" target="_blank">${item.title}</a></td>
                             <td class="price">€${item.price_eur}</td>
                             <td>${item.seller_location || 'N/A'}</td>
                             <td>${item.date_posted ? new Date(item.date_posted).toLocaleDateString() : 'N/A'}</td>
                             <td>${item.is_active ? '<span class="badge badge-success">Active</span>' : '<span class="badge badge-danger">Inactive</span>'}</td>
                         </tr>
-                    `).join('')}
+                    `}).join('')}
                 </tbody>
             </table>
             </div>
@@ -2258,6 +2760,30 @@ function closeModal() {
     document.getElementById('history-modal').classList.remove('active');
 }
 
+window.autoFitHistoryChart = function() {
+    const chartContainer = document.querySelector('.history-chart');
+    const canvas = document.getElementById('historyChart');
+    if (!chartContainer || !canvas || !historyChart) return;
+
+    // Reset any user-resized inline height first.
+    chartContainer.style.height = '';
+    canvas.style.height = '';
+
+    // Determine a compact minimum height that still shows every data label.
+    const minHeight = 180;
+    const dataCount = historyChart.data.labels.length;
+    const heightPerLabel = 16;
+    const desiredHeight = Math.max(minHeight, dataCount * heightPerLabel);
+
+    // Cap to avoid absurdly tall modals for huge histories.
+    const maxHeight = Math.min(window.innerHeight * 0.55, 520);
+    const finalHeight = Math.min(desiredHeight, maxHeight);
+
+    chartContainer.style.height = finalHeight + 'px';
+    canvas.style.height = finalHeight + 'px';
+    historyChart.resize();
+};
+
 document.getElementById('history-modal').addEventListener('click', function(e) {
     if (e.target === this) {
         closeModal();
@@ -2274,7 +2800,7 @@ function showImageModal(imageUrl, title) {
             <div class="modal" style="max-width: 90%; max-height: 90%; padding: 0; overflow: hidden;">
                 <div style="position: relative; background: #000;">
                     <button onclick="closeImageModal()" style="position: absolute; top: 10px; right: 10px; background: rgba(0,0,0,0.7); color: white; border: none; border-radius: 50%; width: 40px; height: 40px; font-size: 20px; cursor: pointer; z-index: 10;">&times;</button>
-                    <img id="preview-image" src="" alt="" style="max-width: 100%; max-height: 85vh; display: block; margin: 0 auto;">
+                    <img id="preview-image" src="" alt="" style="max-width: 100%; max-height: 85vh; display: block; margin: 0 auto;" onload="fitPreviewImage(this)">
                 </div>
                 <div style="padding: 1rem; background: white; text-align: center;">
                     <p id="preview-title" style="margin: 0; font-weight: 600;"></p>
@@ -2301,6 +2827,18 @@ function closeImageModal() {
     const modal = document.getElementById('image-preview-modal');
     if (modal) {
         modal.classList.remove('active');
+    }
+}
+
+function fitPreviewImage(img) {
+    if (!img || !img.naturalWidth || !img.naturalHeight) return;
+    const isPortrait = img.naturalHeight > img.naturalWidth;
+    if (isPortrait) {
+        img.style.maxWidth = '70%';
+        img.style.margin = '0 auto';
+    } else {
+        img.style.maxWidth = '100%';
+        img.style.margin = '0 auto';
     }
 }
 
@@ -2380,7 +2918,7 @@ function showFlagModalWithCategories(listingId, title) {
                     </div>
 
                     <div style="display: flex; gap: 0.5rem; justify-content: flex-end;">
-                        <button class="btn btn-small btn-secondary" onclick="closeFlagModal()">Cancel</button>
+                        <button class="btn btn-small btn-secondary" onclick="closeFlagModal()">{{ t('Cancel') }}</button>
                         <button class="btn btn-small" style="background: #e74c3c;" onclick="submitFlagFromModal('${listingId}')">Submit Flag</button>
                     </div>
                 </div>
@@ -2398,6 +2936,19 @@ function showFlagModalWithCategories(listingId, title) {
 function closeFlagModal() {
     const modal = document.getElementById('flag-modal');
     if (modal) modal.remove();
+}
+
+function removeListingRow(listingId) {
+    const rows = document.querySelectorAll('#listings-container tbody tr, table tbody tr');
+    rows.forEach(row => {
+        const onclick = row.getAttribute('onclick') || '';
+        const html = row.innerHTML;
+        if (onclick.includes("'" + listingId + "'") || html.includes("'" + listingId + "'") || html.includes(listingId)) {
+            row.style.transition = 'opacity 0.3s ease';
+            row.style.opacity = '0';
+            setTimeout(() => row.remove(), 300);
+        }
+    });
 }
 
 async function submitFlagFromModal(listingId) {
@@ -2428,6 +2979,7 @@ async function submitFlagFromModal(listingId) {
         if (data.success) {
             alert('✅ Listing flagged successfully!');
             closeFlagModal();
+            removeListingRow(listingId);
             loadListings();
         } else {
             alert('Error: ' + (data.error || 'Failed to flag listing'));
@@ -2518,197 +3070,550 @@ function populateModelFilter(listings) {
 
 // =================== CPU Widget System ===================
 (function() {
-    const WIDGET_ORDER_KEY = 'cpuWidgetOrder';
-    const WIDGET_PINNED_KEY = 'cpuWidgetPinned';
-    const GRID_COLS_KEY = 'cpuWidgetGridCols';
+    
+const WIDGET_ORDER_KEY = 'cpuWidgetOrder';
+const WIDGET_PINNED_KEY = 'cpuWidgetPinned';
+const WIDGET_HIDDEN_KEY = 'cpuWidgetHidden';
+const WIDGET_MINIMIZED_KEY = 'cpuWidgetMinimized';
+const WIDGET_DRAG_MODE_KEY = 'cpuWidgetDragMode';
+const GRID_COLS_KEY = 'cpuGridCols';
+const WIDGET_SIZE_KEY = 'cpuWidgetSizes';
 
-    let draggedCard = null;
-    let dragSourceZone = null;
+function getDefaultOrder() {
+    return ['most-listed', 'mb-year', 'cpu-platform', 'cpu-socket', 'price-vendor', 'source', 'class', 'top-deals', 'best-value', 'mb-market'];
+}
 
-    function getDefaultOrder() {
-        return ['most-listed', 'mb-year', 'cpu-platform', 'cpu-socket', 'price-vendor', 'source', 'class', 'top-deals', 'best-value', 'mb-market'];
-    }
+function getDefaultSubgridOrder() {
+    return ['mb-year', 'cpu-platform', 'cpu-socket', 'price-vendor', 'source', 'class', 'top-deals', 'best-value', 'mb-market'];
+}
 
-    function loadWidgetOrder() {
-        try {
-            const raw = localStorage.getItem(WIDGET_ORDER_KEY);
-            if (raw) {
-                const saved = JSON.parse(raw);
-                const defaults = getDefaultOrder();
-                const valid = saved.filter(id => defaults.includes(id));
-                const missing = defaults.filter(id => !valid.includes(id));
-                return [...valid, ...missing];
-            }
-        } catch (e) { console.error('Error loading widget order:', e); }
-        return getDefaultOrder();
-    }
+function loadWidgetOrder() {
+    try {
+        const raw = localStorage.getItem(WIDGET_ORDER_KEY);
+        if (raw) return JSON.parse(raw);
+    } catch (e) { console.error('Error loading widget order:', e); }
+    return getDefaultOrder();
+}
 
-    function saveWidgetOrder() {
-        try {
-            const order = Array.from(document.querySelectorAll('.widget-card')).map(c => c.dataset.widgetId);
-            localStorage.setItem(WIDGET_ORDER_KEY, JSON.stringify(order));
-        } catch (e) { console.error('Error saving widget order:', e); }
-    }
+function saveWidgetOrder(order) {
+    try {
+        localStorage.setItem(WIDGET_ORDER_KEY, JSON.stringify(order || getDefaultOrder()));
+    } catch (e) { console.error('Error saving widget order:', e); }
+}
 
-    function loadWidgetPinned() {
-        try {
-            const raw = localStorage.getItem(WIDGET_PINNED_KEY);
-            if (raw) return JSON.parse(raw);
-        } catch (e) { console.error('Error loading pinned widgets:', e); }
-        return {};
-    }
+function loadWidgetHidden() {
+    try {
+        const raw = localStorage.getItem(WIDGET_HIDDEN_KEY);
+        if (raw) return JSON.parse(raw);
+    } catch (e) { console.error('Error loading hidden widgets:', e); }
+    return {};
+}
 
-    function saveWidgetPinned(pinned) {
-        try {
-            localStorage.setItem(WIDGET_PINNED_KEY, JSON.stringify(pinned || {}));
-        } catch (e) { console.error('Error saving pinned widgets:', e); }
-    }
+function saveWidgetHidden(hidden) {
+    try {
+        localStorage.setItem(WIDGET_HIDDEN_KEY, JSON.stringify(hidden || {}));
+    } catch (e) { console.error('Error saving hidden widgets:', e); }
+}
 
-    function getWidgetById(id) {
-        return document.querySelector(`.widget-card[data-widget-id="${id}"]`);
-    }
+function loadWidgetMinimized() {
+    try {
+        const raw = localStorage.getItem(WIDGET_MINIMIZED_KEY);
+        if (raw) return JSON.parse(raw);
+    } catch (e) { console.error('Error loading minimized widgets:', e); }
+    return {};
+}
 
-    function applyWidgetLayout() {
-        const order = loadWidgetOrder();
-        const pinned = loadWidgetPinned();
-        const mainGrid = document.getElementById('cpu-widget-grid');
-        const subGrid = document.getElementById('cpu-widget-subgrid');
-        if (!mainGrid || !subGrid) return;
+function saveWidgetMinimized(minimized) {
+    try {
+        localStorage.setItem(WIDGET_MINIMIZED_KEY, JSON.stringify(minimized || {}));
+    } catch (e) { console.error('Error saving minimized widgets:', e); }
+}
 
-        // Build current lookup of cards that are present in either grid
-        const existingCards = new Set();
-        mainGrid.querySelectorAll('.widget-card').forEach(c => existingCards.add(c.dataset.widgetId));
-        subGrid.querySelectorAll('.widget-card').forEach(c => existingCards.add(c.dataset.widgetId));
+function loadDragMode() {
+    try {
+        return localStorage.getItem(WIDGET_DRAG_MODE_KEY) === 'true';
+    } catch (e) { console.error('Error loading drag mode:', e); }
+    return false;
+}
 
-        // Ensure all default widgets exist in order
-        const defaults = getDefaultOrder();
-        const finalOrder = [];
-        order.forEach(id => {
-            if (defaults.includes(id) && existingCards.has(id) && !finalOrder.includes(id)) {
-                finalOrder.push(id);
-            }
-        });
-        defaults.forEach(id => {
-            if (existingCards.has(id) && !finalOrder.includes(id)) finalOrder.push(id);
-        });
+function saveDragMode(active) {
+    try {
+        localStorage.setItem(WIDGET_DRAG_MODE_KEY, active ? 'true' : 'false');
+    } catch (e) { console.error('Error saving drag mode:', e); }
+}
 
-        // Move cards to desired locations
-        finalOrder.forEach((id, idx) => {
-            const card = getWidgetById(id);
-            if (!card) return;
-            if (idx === 0) {
-                mainGrid.prepend(card);
-            } else {
-                subGrid.appendChild(card);
-            }
-            updatePinVisual(card, !!pinned[id]);
-        });
-    }
+function loadWidgetPinned() {
+    try {
+        const raw = localStorage.getItem(WIDGET_PINNED_KEY);
+        if (raw) return JSON.parse(raw);
+    } catch (e) { console.error('Error loading pinned widgets:', e); }
+    return {};
+}
 
-    function updatePinVisual(card, isPinned) {
-        if (!card) return;
-        const btn = card.querySelector('.widget-pin-btn');
-        if (btn) btn.classList.toggle('active', isPinned);
-        card.classList.toggle('pinned', isPinned);
-    }
+function saveWidgetPinned(pinned) {
+    try {
+        localStorage.setItem(WIDGET_PINNED_KEY, JSON.stringify(pinned || {}));
+    } catch (e) { console.error('Error saving pinned widgets:', e); }
+}
 
-    window.toggleWidgetPin = function(id) {
+function loadWidgetSizes() {
+    try {
+        const raw = localStorage.getItem(WIDGET_SIZE_KEY);
+        if (raw) return JSON.parse(raw);
+    } catch (e) { console.error('Error loading widget sizes:', e); }
+    return {};
+}
+
+function saveWidgetSizes(sizes) {
+    try {
+        localStorage.setItem(WIDGET_SIZE_KEY, JSON.stringify(sizes || {}));
+    } catch (e) { console.error('Error saving widget sizes:', e); }
+}
+
+function storeDefaultWidgetSize(card) {
+    if (!card) return;
+    const id = card.dataset.widgetId;
+    const rect = card.getBoundingClientRect();
+    if (!card.dataset.widgetDefaultW) card.dataset.widgetDefaultW = Math.round(rect.width) + 'px';
+    if (!card.dataset.widgetDefaultH) card.dataset.widgetDefaultH = Math.round(rect.height) + 'px';
+}
+
+function applyWidgetSizes() {
+    const sizes = loadWidgetSizes();
+    document.querySelectorAll('.widget-card').forEach(card => {
+        const id = card.dataset.widgetId;
+        const s = sizes[id];
+        if (s && s.w && s.h) {
+            card.style.width = s.w;
+            card.style.height = s.h;
+        }
+    });
+}
+
+function persistCurrentWidgetSize(card) {
+    if (!card) return;
+    const sizes = loadWidgetSizes();
+    const rect = card.getBoundingClientRect();
+    sizes[card.dataset.widgetId] = { w: Math.round(rect.width) + 'px', h: Math.round(rect.height) + 'px' };
+    saveWidgetSizes(sizes);
+}
+
+function resetWidgetSize(id) {
+    const card = getWidgetById(id);
+    if (!card) return;
+    card.style.width = '';
+    card.style.height = '';
+    const sizes = loadWidgetSizes();
+    delete sizes[id];
+    saveWidgetSizes(sizes);
+}
+
+function getWidgetById(id) {
+    return document.querySelector(`.widget-card[data-widget-id="${id}"]`);
+}
+
+function updatePinVisual(card, isPinned) {
+    if (!card) return;
+    const btn = card.querySelector('.widget-pin-btn');
+    if (btn) btn.classList.toggle('active', isPinned);
+    card.classList.toggle('pinned', isPinned);
+}
+
+function applyWidgetState() {
+    const hidden = loadWidgetHidden();
+    const minimized = loadWidgetMinimized();
+    document.querySelectorAll('.widget-card').forEach(card => {
+        const id = card.dataset.widgetId;
+        card.classList.toggle('hidden', !!hidden[id]);
+        card.classList.toggle('minimized', !!minimized[id]);
+        const toggleBtn = card.querySelector('.widget-toggle-btn');
+        if (toggleBtn) {
+            toggleBtn.textContent = hidden[id] ? '👁' : '🙈';
+            toggleBtn.title = hidden[id] ? 'Show widget' : 'Hide widget';
+        }
+    });
+}
+
+function applyWidgetLayout() {
+    const order = loadWidgetOrder();
+    const pinned = loadWidgetPinned();
+    const mainGrid = document.getElementById('cpu-widget-grid');
+    const subGrid = document.getElementById('cpu-widget-subgrid');
+    if (!mainGrid || !subGrid) return;
+
+    const defaults = getDefaultOrder();
+    const validOrder = [];
+    order.forEach(id => { if (defaults.includes(id) && !validOrder.includes(id)) validOrder.push(id); });
+    defaults.forEach(id => { if (!validOrder.includes(id)) validOrder.push(id); });
+
+    const mainDefault = 'most-listed';
+    validOrder.forEach(id => {
         const card = getWidgetById(id);
         if (!card) return;
-        const pinned = loadWidgetPinned();
-        pinned[id] = !pinned[id];
-        saveWidgetPinned(pinned);
-        updatePinVisual(card, pinned[id]);
-    };
+        storeDefaultWidgetSize(card);
+        if (id === mainDefault) {
+            mainGrid.insertBefore(card, subGrid);
+        } else {
+            subGrid.appendChild(card);
+        }
+        updatePinVisual(card, !!pinned[id]);
+    });
 
-    window.resetWidgets = function() {
-        if (!confirm('Reset widget layout to default?')) return;
-        localStorage.removeItem(WIDGET_ORDER_KEY);
-        localStorage.removeItem(WIDGET_PINNED_KEY);
-        localStorage.removeItem(GRID_COLS_KEY);
-        location.reload();
-    };
+    applyWidgetState();
+    applyWidgetSizes();
+    updateDragModeUI();
+    attachResizeListeners();
+}
 
-    function getDropTarget(ev, zone) {
-        const draggableCards = [...zone.querySelectorAll('.widget-card:not(.dragging)')];
-        return draggableCards.reduce((closest, child) => {
-            const box = child.getBoundingClientRect();
-            const offset = ev.clientX - box.left - box.width / 2;
-            if (offset < 0 && offset > closest.offset) {
-                return { offset: offset, element: child };
-            }
-            return closest;
-        }, { offset: Number.NEGATIVE_INFINITY }).element;
+window.toggleWidgetVisibility = function(id) {
+    const card = getWidgetById(id);
+    if (!card) return;
+    const hidden = loadWidgetHidden();
+    hidden[id] = !hidden[id];
+    saveWidgetHidden(hidden);
+    applyWidgetState();
+};
+
+window.toggleWidgetMinimize = function(id) {
+    const card = getWidgetById(id);
+    if (!card) return;
+    const minimized = loadWidgetMinimized();
+    minimized[id] = !minimized[id];
+    saveWidgetMinimized(minimized);
+    applyWidgetState();
+};
+
+window.openWidgetManager = function() {
+    const hidden = loadWidgetHidden();
+    const defaults = getDefaultOrder();
+    let html = '<div style="display: flex; flex-direction: column; gap: 0.4rem; max-height: 60vh; overflow-y: auto;">';
+    defaults.forEach(id => {
+        const card = getWidgetById(id);
+        const title = card ? (card.querySelector('h3, h4')?.textContent?.trim() || id) : id;
+        const isHidden = !!hidden[id];
+        html += `
+            <label style="display: flex; align-items: center; gap: 0.5rem; padding: 0.4rem; cursor: pointer; border-radius: 4px; ${isHidden ? 'opacity: 0.6;' : ''}">
+                <input type="checkbox" ${isHidden ? '' : 'checked'} onchange="toggleWidgetVisibility('${id}')">
+                <span>${title}</span>
+            </label>
+        `;
+    });
+    html += '</div><div style="margin-top: 0.75rem; font-size: 0.75rem; color: #888;">Uncheck to hide. Hidden widgets stay hidden after reload.</div>';
+
+    let modal = document.getElementById('widget-manager-modal');
+    if (!modal) {
+        modal = document.createElement('div');
+        modal.id = 'widget-manager-modal';
+        modal.className = 'modal-overlay';
+        modal.innerHTML = `
+            <div class="modal" style="max-width: 360px; padding: 1.5rem;">
+                <div class="modal-header">
+                    <h3>👁 Manage Widgets</h3>
+                    <button class="modal-close" onclick="closeWidgetManager()">×</button>
+                </div>
+                <div id="widget-manager-content"></div>
+            </div>
+        `;
+        modal.addEventListener('click', e => { if (e.target === modal) closeWidgetManager(); });
+        document.body.appendChild(modal);
     }
+    document.getElementById('widget-manager-content').innerHTML = html;
+    modal.classList.add('active');
+};
 
-    function initDragAndDrop() {
-        const zones = document.querySelectorAll('#cpu-widget-grid, #cpu-widget-subgrid');
+window.closeWidgetManager = function() {
+    const modal = document.getElementById('widget-manager-modal');
+    if (modal) modal.classList.remove('active');
+};
 
-        zones.forEach(zone => {
-            zone.addEventListener('dragover', e => {
-                e.preventDefault();
-                if (!draggedCard) return;
-                const targetZone = e.currentTarget;
-                if (targetZone !== dragSourceZone) return;
-                const afterElement = getDropTarget(e, targetZone);
-                if (afterElement == null) {
-                    targetZone.appendChild(draggedCard);
-                } else {
-                    targetZone.insertBefore(draggedCard, afterElement);
-                }
-            });
+window.toggleDragMode = function() {
+    dragModeActive = !dragModeActive;
+    saveDragMode(dragModeActive);
+    updateDragModeUI();
+};
 
-            zone.addEventListener('drop', e => {
-                e.preventDefault();
-                if (draggedCard) {
-                    draggedCard.classList.remove('dragging');
-                    saveWidgetOrder();
-                    draggedCard = null;
-                    dragSourceZone = null;
-                }
-                zones.forEach(z => z.classList.remove('drag-over'));
-            });
+window.toggleWidgetPin = function(id) {
+    const card = getWidgetById(id);
+    if (!card) return;
+    const pinned = loadWidgetPinned();
+    pinned[id] = !pinned[id];
+    saveWidgetPinned(pinned);
+    updatePinVisual(card, pinned[id]);
+};
 
-            zone.addEventListener('dragenter', e => {
-                if (draggedCard && e.currentTarget === dragSourceZone) {
-                    e.currentTarget.classList.add('drag-over');
-                }
-            });
+window.resetWidgets = function() {
+    if (!confirm('Reset widget layout to default?')) return;
+    localStorage.removeItem(WIDGET_ORDER_KEY);
+    localStorage.removeItem(WIDGET_PINNED_KEY);
+    localStorage.removeItem(WIDGET_HIDDEN_KEY);
+    localStorage.removeItem(WIDGET_MINIMIZED_KEY);
+    localStorage.removeItem(WIDGET_DRAG_MODE_KEY);
+    localStorage.removeItem(GRID_COLS_KEY);
+    localStorage.removeItem(WIDGET_SIZE_KEY);
+    location.reload();
+};
 
-            zone.addEventListener('dragleave', e => {
-                if (!e.currentTarget.contains(e.relatedTarget)) {
-                    e.currentTarget.classList.remove('drag-over');
-                }
-            });
-        });
-
-        document.addEventListener('dragend', () => {
-            if (draggedCard) {
-                draggedCard.classList.remove('dragging');
-                saveWidgetOrder();
-                draggedCard = null;
-                dragSourceZone = null;
-            }
-            zones.forEach(z => z.classList.remove('drag-over'));
-        });
-
-        document.querySelectorAll('.widget-card').forEach(card => {
-            card.addEventListener('dragstart', e => {
-                draggedCard = card;
-                dragSourceZone = card.parentElement;
-                card.classList.add('dragging');
-                e.dataTransfer.effectAllowed = 'move';
-                e.dataTransfer.setData('text/plain', card.dataset.widgetId);
-                if (dragSourceZone) dragSourceZone.classList.add('drag-over');
-            });
-        });
+function updateDragModeUI() {
+    const btn = document.getElementById('toggle-drag-mode-btn');
+    const cards = document.querySelectorAll('.widget-card');
+    document.body.classList.toggle('drag-mode-active', dragModeActive);
+    if (btn) {
+        btn.textContent = dragModeActive ? '✋ Dragging ON' : '✋ Drag';
+        btn.style.background = dragModeActive ? 'rgba(102,126,234,0.2)' : '';
+        btn.style.borderColor = dragModeActive ? '#667eea' : '';
+        btn.title = dragModeActive ? 'Drag mode is on - grab the ☰ handle to reorder' : 'Toggle drag mode';
     }
+    cards.forEach(card => {
+        const handle = card.querySelector('.widget-drag-handle');
+        if (handle) {
+            handle.style.opacity = dragModeActive ? '1' : '0.75';
+            handle.title = dragModeActive ? 'Drag to move this widget' : 'Enable Drag mode to reorder widgets';
+            handle.textContent = dragModeActive ? '≡' : '☰';
+        }
+    });
+}
 
-    window.initWidgetSystem = function() {
-        applyWidgetLayout();
-        initDragAndDrop();
-    };
+function ensureDragTooltip() {
+    let tip = document.getElementById('drag-tooltip');
+    if (!tip) {
+        tip = document.createElement('div');
+        tip.id = 'drag-tooltip';
+        document.body.appendChild(tip);
+    }
+    return tip;
+}
+
+function showDragTooltip(text, x, y) {
+    const tip = ensureDragTooltip();
+    tip.textContent = text;
+    tip.style.left = (x + 14) + 'px';
+    tip.style.top = (y + 14) + 'px';
+    tip.style.opacity = '1';
+}
+
+function hideDragTooltip() {
+    const tip = document.getElementById('drag-tooltip');
+    if (tip) tip.style.opacity = '0';
+}
+
+let dragModeActive = false;
+let draggedCard = null;
+let placeholder = null;
+let dragGhost = null;
+
+function createPlaceholder(referenceCard) {
+    if (placeholder) placeholder.remove();
+    placeholder = document.createElement('div');
+    placeholder.className = 'widget-card-placeholder';
+    const rect = referenceCard.getBoundingClientRect();
+    placeholder.style.width = rect.width + 'px';
+    placeholder.style.height = rect.height + 'px';
+    return placeholder;
+}
+
+function getDropTarget(x, y, zone) {
+    const cards = [...zone.querySelectorAll('.widget-card:not(.dragging):not(.hidden):not(.widget-card-placeholder)')];
+    if (!cards.length) return null;
+    return cards.reduce((closest, child) => {
+        const box = child.getBoundingClientRect();
+        const offset = y - box.top - box.height / 2;
+        if (offset < 0 && offset > closest.offset) {
+            return { offset: offset, element: child };
+        }
+        return closest;
+    }, { offset: Number.NEGATIVE_INFINITY }).element;
+}
+
+function getDropTargetRow(x, y, zone) {
+    const cards = [...zone.querySelectorAll('.widget-card:not(.dragging):not(.hidden):not(.widget-card-placeholder)')];
+    const cardCenters = cards.map(c => {
+        const box = c.getBoundingClientRect();
+        return { card: c, cx: box.left + box.width / 2, cy: box.top + box.height / 2 };
+    });
+    const rows = [];
+    const seenRows = new Set();
+    cardCenters.forEach(c => {
+        if (!seenRows.has(c.cy)) {
+            seenRows.add(c.cy);
+            rows.push({ y: c.cy, cards: cardCenters.filter(o => Math.abs(o.cy - c.cy) < 40) });
+        }
+    });
+    let targetRow = null;
+    let bestRowDist = Infinity;
+    rows.forEach(r => {
+        const d = Math.abs(y - r.y);
+        if (d < bestRowDist) { bestRowDist = d; targetRow = r; }
+    });
+    if (!targetRow) return null;
+    let leftCard = null, rightCard = null;
+    targetRow.cards.forEach(c => {
+        if (x < c.cx && (!rightCard || c.cx < rightCard.cx)) rightCard = c;
+        if (x >= c.cx && (!leftCard || c.cx > leftCard.cx)) leftCard = c;
+    });
+    return { before: rightCard ? rightCard.card : null, after: leftCard ? leftCard.card : null, rowY: targetRow.y };
+}
+
+function movePlaceholder(clientX, clientY) {
+    if (!draggedCard) return;
+    const subGrid = document.getElementById('cpu-widget-subgrid');
+    if (!subGrid) return;
+    const rect = subGrid.getBoundingClientRect();
+    const inside = clientX >= rect.left && clientX <= rect.right && clientY >= rect.top && clientY <= rect.bottom;
+    if (!inside) {
+        removePlaceholder();
+        showDragTooltip('Drop inside the grid', clientX, clientY);
+        return;
+    }
+    subGrid.classList.add('drag-active');
+    const ph = createPlaceholder(draggedCard);
+    const target = getDropTarget(clientX, clientY, subGrid);
+    if (!target || target === draggedCard) {
+        subGrid.appendChild(ph);
+    } else {
+        subGrid.insertBefore(ph, target);
+    }
+    showDragTooltip('Drop to reorder widget', clientX, clientY);
+}
+
+function onPointerMove(e) {
+    if (!draggedCard) return;
+    if (dragGhost) {
+        dragGhost.style.left = (e.clientX - dragGhost.offsetX) + 'px';
+        dragGhost.style.top = (e.clientY - dragGhost.offsetY) + 'px';
+    }
+    movePlaceholder(e.clientX, e.clientY);
+}
+
+function onPointerUp(e) {
+    if (!draggedCard) return;
+    const subGrid = document.getElementById('cpu-widget-subgrid');
+    const mainGrid = document.getElementById('cpu-widget-grid');
+    if (placeholder && placeholder.parentElement && placeholder.parentElement === subGrid) {
+        subGrid.insertBefore(draggedCard, placeholder);
+        const order = ['most-listed'];
+        subGrid.querySelectorAll('.widget-card').forEach(c => order.push(c.dataset.widgetId));
+        saveWidgetOrder(order);
+    } else if (placeholder && placeholder.parentElement) {
+        placeholder.parentElement.insertBefore(draggedCard, placeholder);
+        const order = Array.from(document.querySelectorAll('.widget-card')).map(c => c.dataset.widgetId).filter(Boolean);
+        saveWidgetOrder(order);
+    }
+    cleanupDrag();
+}
+
+function cleanupDrag() {
+    if (dragGhost) {
+        dragGhost.remove();
+        dragGhost = null;
+    }
+    if (draggedCard) {
+        draggedCard.classList.remove('dragging');
+        draggedCard.style.display = '';
+        // Keep the resized width/height in place; applyWidgetSizes() will restore
+        // any saved size from localStorage and ensure consistency after reordering.
+        draggedCard = null;
+    }
+    removePlaceholder();
+    document.querySelectorAll('#cpu-widget-grid, #cpu-widget-subgrid').forEach(z => z.classList.remove('drag-active'));
+    hideDragTooltip();
+    document.removeEventListener('pointermove', onPointerMove);
+    document.removeEventListener('pointerup', onPointerUp);
+    document.removeEventListener('pointercancel', onPointerUp);
+    applyWidgetSizes();
+    attachResizeListeners();
+}
+
+function createDragGhost(card, x, y) {
+    const rect = card.getBoundingClientRect();
+    const ghost = document.createElement('div');
+    ghost.className = 'drag-clone';
+    ghost.textContent = card.querySelector('h3, h4')?.textContent?.trim() || 'Widget';
+    ghost.style.width = Math.min(rect.width, 220) + 'px';
+    ghost.style.height = 'auto';
+    ghost.style.padding = '0.75rem';
+    ghost.style.display = 'flex';
+    ghost.style.alignItems = 'center';
+    ghost.style.justifyContent = 'center';
+    ghost.style.fontWeight = '600';
+    ghost.style.boxShadow = '0 8px 24px rgba(0,0,0,0.25)';
+    ghost.offsetX = x - rect.left;
+    ghost.offsetY = y - rect.top;
+    document.body.appendChild(ghost);
+    // Set initial position so the ghost starts exactly over the original card
+    ghost.style.left = (x - ghost.offsetX) + 'px';
+    ghost.style.top = (y - ghost.offsetY) + 'px';
+    return ghost;
+}
+
+function initDragAndDrop() {
+    document.querySelectorAll('.widget-card').forEach(card => {
+        // The sidebar widget is managed (hidden/shown) but stays in the sidebar
+        if (card.dataset.widgetId === 'most-listed') return;
+        const handle = card.querySelector('.widget-drag-handle');
+        if (!handle) return;
+        handle.addEventListener('pointerdown', e => {
+            if (!dragModeActive) return;
+            e.preventDefault();
+            e.stopPropagation();
+            draggedCard = card;
+            const sizes = loadWidgetSizes();
+            const s = sizes[card.dataset.widgetId];
+            card.style.width = s ? s.w : card.getBoundingClientRect().width + 'px';
+            card.style.height = s ? s.h : card.getBoundingClientRect().height + 'px';
+            card.classList.add('dragging');
+            dragGhost = createDragGhost(card, e.clientX, e.clientY);
+            movePlaceholder(e.clientX, e.clientY);
+            document.addEventListener('pointermove', onPointerMove);
+            document.addEventListener('pointerup', onPointerUp);
+            document.addEventListener('pointercancel', onPointerUp);
+        });
+    });
+}
+
+function attachResizeListeners() {
+    let resizing = null;
+    document.querySelectorAll('.widget-card').forEach(card => {
+        card.addEventListener('pointerdown', function(e) {
+            if (dragModeActive) return;
+            const rect = this.getBoundingClientRect();
+            const gripSize = 16;
+            const onGrip = e.clientX >= rect.right - gripSize && e.clientY >= rect.bottom - gripSize;
+            if (!onGrip) return;
+            e.preventDefault();
+            resizing = this;
+            const startX = e.clientX;
+            const startY = e.clientY;
+            const startW = rect.width;
+            const startH = rect.height;
+            const onMove = ev => {
+                if (!resizing) return;
+                const newW = Math.max(180, startW + ev.clientX - startX);
+                const newH = Math.max(140, startH + ev.clientY - startY);
+                resizing.style.width = newW + 'px';
+                resizing.style.height = newH + 'px';
+            };
+            const onUp = ev => {
+                if (!resizing) return;
+                persistCurrentWidgetSize(resizing);
+                resizing = null;
+                document.removeEventListener('pointermove', onMove);
+                document.removeEventListener('pointerup', onUp);
+                document.removeEventListener('pointercancel', onUp);
+            };
+            document.addEventListener('pointermove', onMove);
+            document.addEventListener('pointerup', onUp);
+            document.addEventListener('pointercancel', onUp);
+        });
+    });
+}
+
+window.initWidgetSystem = function() {
+    dragModeActive = loadDragMode();
+    applyWidgetLayout();
+    initDragAndDrop();
+};
 })();
+
 // ==========================================================
 document.addEventListener('DOMContentLoaded', function() {
     loadListings();

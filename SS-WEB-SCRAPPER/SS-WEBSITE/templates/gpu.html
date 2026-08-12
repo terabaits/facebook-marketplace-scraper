@@ -2,30 +2,1018 @@
 
 {% block title %}GPU Listings - SS-Crawler{% endblock %}
 
-{% block content %}<div class="section">
+{% block extra_css %}
+    /* Make GPU page container wider */
+    body > .container {
+        max-width: 1600px;
+    }
+
+    /* Table layout - fixed for better control */
+    .gpu-listings-table {
+        table-layout: fixed;
+        width: 100%;
+    }
+
+    .text-center {
+        text-align: center !important;
+        vertical-align: middle;
+    }
+
+    .market-position-content {
+        display: inline-block;
+        text-align: center;
+    }
+
+    @keyframes spin {
+        to { transform: rotate(360deg); }
+    }
+
+    #gpu-loading-overlay {
+        display: none;
+    }
+
+    #gpu-loading-overlay.active {
+        display: flex !important;
+    }
+
+    /* Image column - centered thumbnail */
+    .gpu-listings-table th:nth-child(1),
+    .gpu-listings-table td:nth-child(1) {
+        width: 7%;
+        text-align: center !important;
+        vertical-align: middle;
+    }
+
+    .gpu-listings-table td:nth-child(1) .listing-thumb,
+    .gpu-listings-table td:nth-child(1) .listing-thumb-placeholder {
+        margin: 0 auto;
+    }
+
+    /* Styled compare checkbox - thick custom box */
+    .compare-checkbox {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 26px;
+        height: 26px;
+        border: 3px solid #667eea;
+        border-radius: 6px;
+        background: rgba(102, 126, 234, 0.08);
+        cursor: pointer;
+        transition: all 0.2s ease;
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .compare-checkbox:hover {
+        transform: scale(1.12);
+        box-shadow: 0 0 12px rgba(102, 126, 234, 0.6);
+        background: rgba(102, 126, 234, 0.18);
+    }
+    .compare-checkbox:checked {
+        background: #667eea;
+        border-color: #667eea;
+        box-shadow: 0 0 14px rgba(102, 126, 234, 0.85);
+    }
+    .compare-checkbox:checked::after {
+        content: '✓';
+        color: #fff;
+        font-size: 1rem;
+        font-weight: bold;
+        text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+    }
+    tr.compare-row-checked td {
+        background: rgba(102, 126, 234, 0.15) !important;
+        box-shadow: inset 0 0 18px rgba(102, 126, 234, 0.28);
+        border-left: 4px solid #667eea;
+    }
+    tr.compare-row-checked:hover td {
+        background: rgba(102, 126, 234, 0.25) !important;
+    }
+
+    /* Brand column - centered */
+    .gpu-listings-table th:nth-child(2),
+    .gpu-listings-table td:nth-child(2) {
+        width: 5%;
+        min-width: 55px;
+        text-align: center !important;
+        vertical-align: middle;
+    }
+
+    .gpu-listings-table td:nth-child(2) .vendor-badge,
+    .gpu-listings-table td:nth-child(2) .source-badge {
+        margin: 2px auto;
+        display: block;
+    }
+
+    /* GPU column - just wide enough for long model names */
+    .gpu-listings-table th:nth-child(3),
+    .gpu-listings-table td:nth-child(3) {
+        width: 13%;
+        min-width: 190px;
+        max-width: 260px;
+        white-space: normal;
+        word-wrap: break-word;
+    }
+
+    /* VRAM column - very narrow, centered */
+    .gpu-listings-table th:nth-child(4),
+    .gpu-listings-table td:nth-child(4) {
+        width: 4%;
+        min-width: 45px;
+        text-align: center !important;
+        vertical-align: middle;
+    }
+
+    /* Year column - very narrow, centered */
+    .gpu-listings-table th:nth-child(5),
+    .gpu-listings-table td:nth-child(5) {
+        width: 4%;
+        min-width: 40px;
+        text-align: center !important;
+        vertical-align: middle;
+    }
+
+    /* Price column */
+    .gpu-listings-table th:nth-child(6),
+    .gpu-listings-table td:nth-child(6) {
+        width: 9%;
+    }
+
+    /* MSRP column */
+    .gpu-listings-table th:nth-child(7),
+    .gpu-listings-table td:nth-child(7) {
+        width: 5%;
+        min-width: 50px;
+    }
+
+    /* G3D column */
+    .gpu-listings-table th:nth-child(8),
+    .gpu-listings-table td:nth-child(8) {
+        width: 5%;
+        min-width: 55px;
+        text-align: center !important;
+        vertical-align: middle;
+    }
+
+    /* Performance/Price column */
+    .gpu-listings-table th:nth-child(9),
+    .gpu-listings-table td:nth-child(9) {
+        width: 5%;
+        min-width: 55px;
+        text-align: center !important;
+        vertical-align: middle;
+    }
+
+    /* G2D column */
+    .gpu-listings-table th:nth-child(10),
+    .gpu-listings-table td:nth-child(10) {
+        width: 5%;
+        min-width: 55px;
+        text-align: center !important;
+        vertical-align: middle;
+    }
+
+    /* Rank column */
+    .gpu-listings-table th:nth-child(11),
+    .gpu-listings-table td:nth-child(11) {
+        width: 5%;
+        min-width: 55px;
+        text-align: center !important;
+        vertical-align: middle;
+    }
+
+    /* Market Position column */
+    .gpu-listings-table th:nth-child(12),
+    .gpu-listings-table td:nth-child(12) {
+        width: 18%;
+        min-width: 260px;
+        white-space: normal;
+        text-align: center !important;
+        vertical-align: middle;
+    }
+
+    .gpu-listings-table td:nth-child(12) .price-comparison {
+        justify-content: center;
+    }
+
+    /* Location column */
+    .gpu-listings-table th:nth-child(13),
+    .gpu-listings-table td:nth-child(13) {
+        width: 9%;
+        text-align: center !important;
+        vertical-align: middle;
+    }
+
+    /* Date column */
+    .gpu-listings-table th:nth-child(14),
+    .gpu-listings-table td:nth-child(14) {
+        width: 6%;
+        text-align: center !important;
+        vertical-align: middle;
+    }
+
+    /* Actions column */
+    .gpu-listings-table th:nth-child(15),
+    .gpu-listings-table td:nth-child(15) {
+        width: 6%;
+    }
+
+    /* Compare column */
+    .gpu-listings-table th:nth-child(16),
+    .gpu-listings-table td:nth-child(16) {
+        width: 3%;
+        min-width: 30px;
+        text-align: center;
+    }
+
+    /* Reduce padding for small columns */
+    .gpu-listings-table td:nth-child(4),
+    .gpu-listings-table td:nth-child(5),
+    .gpu-listings-table td:nth-child(8),
+    .gpu-listings-table td:nth-child(9),
+    .gpu-listings-table td:nth-child(10),
+    .gpu-listings-table td:nth-child(11),
+    .gpu-listings-table td:nth-child(16) {
+        padding-left: 2px;
+        padding-right: 2px;
+    }
+
+    /* Fixed-height chart containers prevent responsive Chart.js from growing infinitely */
+    .perf-chart-box {
+        position: relative;
+        height: 250px;
+        min-height: 250px;
+        max-height: 250px;
+        overflow: hidden;
+    }
+
+
+
+/* Custom filter icon buttons */
+    .filter-icon-bar {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.7rem;
+        margin-right: 0.8rem;
+        vertical-align: middle;
+    }
+    .filter-icon-btn {
+        position: relative;
+        width: 42px;
+        height: 42px;
+        border: 2px solid #667eea;
+        border-radius: 12px;
+        background: rgba(102, 126, 234, 0.12);
+        color: #667eea;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        outline: none;
+        padding: 0;
+        flex: 0 0 auto;
+    }
+    .filter-icon-btn:hover,
+    .filter-icon-btn:focus-visible {
+        transform: translateY(-3px) scale(1.1);
+        border-color: #764ba2;
+        background: rgba(118, 75, 162, 0.18);
+        color: #764ba2;
+        box-shadow: 0 8px 20px rgba(102, 126, 234, 0.35);
+    }
+    .filter-icon-btn.active {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border-color: #764ba2;
+        color: #fff;
+        animation: iconGlow 1.6s ease-in-out infinite alternate;
+    }
+    .filter-icon-btn svg {
+        width: 22px;
+        height: 22px;
+        pointer-events: none;
+    }
+    @keyframes iconGlow {
+        from { box-shadow: 0 0 8px rgba(118, 75, 162, 0.55), 0 0 18px rgba(102, 126, 234, 0.35); }
+        to { box-shadow: 0 0 18px rgba(118, 75, 162, 0.85), 0 0 32px rgba(102, 126, 234, 0.65); }
+    }
+    .hidden-filter {
+        position: absolute;
+        left: -9999px;
+        opacity: 0;
+        width: 0;
+        height: 0;
+        margin: 0;
+        padding: 0;
+        border: 0;
+        clip: rect(0, 0, 0, 0);
+        pointer-events: none;
+    }
+{% endblock %}
+
+{% block scripts %}<script src="{{ url_for('static', filename='console-icons.js') }}"></script>
+<script>
+
+function toggleFilterIcon(btn, checkboxId) {
+    const cb = document.getElementById(checkboxId);
+    if (!cb) return;
+    cb.checked = !cb.checked;
+    updateFilterIconState(btn, cb.checked);
+    cb.dispatchEvent(new Event('change'));
+}
+
+function updateFilterIconState(btn, isActive) {
+    if (isActive) {
+        btn.classList.add('active');
+        btn.setAttribute('aria-pressed', 'true');
+    } else {
+        btn.classList.remove('active');
+        btn.setAttribute('aria-pressed', 'false');
+    }
+}
+
+function initFilterIcons() {
+    document.querySelectorAll('.filter-icon-btn[data-target]').forEach(btn => {
+        const targetId = btn.getAttribute('data-target');
+        const cb = document.getElementById(targetId);
+        if (cb) {
+            updateFilterIconState(btn, cb.checked);
+        }
+    });
+}
+
+let priceChart = null;
+let historyChart = null;
+let mostSoldChart = null;
+let topPerformersChart = null;
+
+// Load additional statistics
+
+async function loadPerformanceCharts() {
+    try {
+        const res = await fetch('/api/gpu-performance-stats');
+        if (!res.ok) return;
+        const data = await res.json();
+
+        // Scatter: Price vs G3D (top 80 models to keep the page fast)
+        const ctxScatter = document.getElementById('gpu-scatter-chart');
+        if (ctxScatter && data.scatter) {
+            const points = data.scatter
+                .filter(p => p.g3d_mark && p.avg_price)
+                .slice(0, 10)
+                .map(p => ({
+                    x: Number(p.g3d_mark),
+                    y: Number(p.avg_price),
+                    model: `${p.vendor} ${p.model}`
+                }));
+            new Chart(ctxScatter, {
+                type: 'scatter',
+                data: {
+                    datasets: [{
+                        label: '€ vs G3D Mark',
+                        data: points,
+                        backgroundColor: 'rgba(59, 130, 246, 0.6)',
+                        borderColor: 'rgba(59, 130, 246, 0.8)',
+                        borderWidth: 1,
+                        pointRadius: 2,
+                        pointHoverRadius: 5
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    animation: false,
+                    scales: {
+                        x: { type: 'linear', position: 'bottom', title: { display: true, text: 'G3D Mark' } },
+                        y: { title: { display: true, text: 'Avg Price (€)' }, ticks: { callback: v => '€' + v } }
+                    },
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: (ctx) => {
+                                    const p = ctx.raw;
+                                    return `${p.model}: G3D ${p.x.toLocaleString()} | Avg €${p.y.toLocaleString()}`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Vendor avg G3D bar chart
+        const ctxVendor = document.getElementById('gpu-vendor-chart');
+        if (ctxVendor && data.vendor_avg_g3d) {
+            new Chart(ctxVendor, {
+                type: 'bar',
+                data: {
+                    labels: data.vendor_avg_g3d.map(v => v.vendor),
+                    datasets: [{
+                        label: 'Avg G3D',
+                        data: data.vendor_avg_g3d.map(v => v.avg_g3d),
+                        backgroundColor: ['#76b900', '#ed1c24', '#0071c5']
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: { y: { beginAtZero: true } }
+                }
+            });
+        }
+
+        // Value buckets
+        const ctxValue = document.getElementById('gpu-value-chart');
+        if (ctxValue && data.value_buckets) {
+            new Chart(ctxValue, {
+                type: 'bar',
+                data: {
+                    labels: data.value_buckets.map(b => b.bucket),
+                    datasets: [{
+                        label: 'GPU models',
+                        data: data.value_buckets.map(b => b.gpu_count),
+                        backgroundColor: '#f59e0b'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: { y: { beginAtZero: true } }
+                }
+            });
+        }
+
+        // Price per G3D point (value chart)
+        const ctxValuePoint = document.getElementById('gpu-value-point-chart');
+        if (ctxValuePoint && data.value_per_point) {
+            const valuePoints = data.value_per_point
+                .filter(p => p.x && p.y)
+                .map(p => ({
+                    x: Number(p.x),
+                    y: Number(p.y),
+                    model: p.label,
+                    vram: p.vram ? `${p.vram}GB` : '',
+                    avg_price: p.avg_price
+                }));
+            new Chart(ctxValuePoint, {
+                type: 'scatter',
+                data: {
+                    datasets: [{
+                        label: '€ per G3D point',
+                        data: valuePoints,
+                        backgroundColor: 'rgba(16, 185, 129, 0.6)',
+                        borderColor: 'rgba(16, 185, 129, 0.8)',
+                        borderWidth: 1,
+                        pointRadius: 3,
+                        pointHoverRadius: 6
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    animation: false,
+                    scales: {
+                        x: { type: 'linear', position: 'bottom', title: { display: true, text: 'G3D Mark' } },
+                        y: { title: { display: true, text: '€ per G3D point' }, ticks: { callback: v => '€' + v.toFixed(2) } }
+                    },
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: (ctx) => {
+                                    const p = ctx.raw;
+                                    return `${p.model}${p.vram ? ' · ' + p.vram : ''}: €${p.y.toFixed(3)}/pt · Avg €${Number(p.avg_price).toLocaleString()}`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        // 4. Top Performers chart is now driven by filtered listings in loadListings()
+    } catch (e) {
+        console.error('Error loading GPU performance charts:', e);
+    }
+}
+
+async function loadGPUStatistics() {
+    try {
+        // Fetch GPU listings to calculate stats
+        const response = await fetch('/api/gpus?time=all_time&active=false&limit=10000');
+        const listings = await response.json();
+
+        // 1. Price by Vendor Stats (small bar chart)
+        const vendorStats = {};
+        listings.forEach(item => {
+            const vendor = item.vendor || 'Unknown';
+            if (!vendorStats[vendor]) {
+                vendorStats[vendor] = { count: 0, total: 0, min: Infinity, max: 0 };
+            }
+            const price = parseFloat(item.price_eur) || 0;
+            if (price > 0) {
+                vendorStats[vendor].count++;
+                vendorStats[vendor].total += price;
+                vendorStats[vendor].min = Math.min(vendorStats[vendor].min, price);
+                vendorStats[vendor].max = Math.max(vendorStats[vendor].max, price);
+            }
+        });
+
+        const vendorEntries = Object.entries(vendorStats).filter(([_, stats]) => stats.count > 0);
+        const vendorMax = vendorEntries.length > 0 ? Math.max(...vendorEntries.map(([_, s]) => s.count)) : 1;
+        const vendorColors = { 'NVIDIA': '#76b900', 'AMD': '#ed1c24', 'Intel': '#0071c5' };
+
+        let vendorHtml = '<div style="display: flex; flex-direction: column; gap: 0.5rem;">';
+        vendorEntries.forEach(([vendor, stats]) => {
+            const avg = (stats.total / stats.count).toFixed(0);
+            const color = vendorColors[vendor] || 'var(--text-secondary, #888)';
+            const barWidth = (stats.count / vendorMax * 100);
+            vendorHtml += `
+                <div style="padding: 0.5rem; background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 4px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.25rem;">
+                        <span style="font-weight: 600; color: ${color};">${vendor}</span>
+                        <span style="font-size: 0.8rem; color: var(--text-secondary, #888);">€${avg} avg · ${stats.count} listings</span>
+                    </div>
+                    <div style="background: var(--bar-bg, #e5e7eb); border-radius: 4px; height: 8px; overflow: hidden;">
+                        <div style="background: ${color}; height: 100%; width: ${barWidth}%; border-radius: 4px;"></div>
+                    </div>
+                </div>
+            `;
+        });
+        vendorHtml += '</div>';
+        document.getElementById('vendor-price-stats').innerHTML = vendorHtml;
+
+        // 2. VRAM Distribution - Top 5 by Count (Vertical Bar Chart)
+        const vramStats = {};
+        listings.forEach(item => {
+            const vram = item.vram_gb;
+            if (vram && vram !== 'Unknown') {
+                vramStats[vram] = (vramStats[vram] || 0) + 1;
+            }
+        });
+
+        // Sort by count DESC and take top 6
+        const vramEntries = Object.entries(vramStats)
+            .sort((a, b) => parseInt(b[1]) - parseInt(a[1]))
+            .slice(0, 6);
+        const totalVram = vramEntries.reduce((sum, [, count]) => sum + count, 0) || 1;
+        const maxVramCount = Math.max(...vramEntries.map(([, count]) => count));
+
+        // VRAM colors
+        const vramColors = [
+            { bg: '#3b82f6', bar: 'linear-gradient(180deg, #60a5fa, #3b82f6)' },
+            { bg: '#06b6d4', bar: 'linear-gradient(180deg, #22d3ee, #06b6d4)' },
+            { bg: '#10b981', bar: 'linear-gradient(180deg, #34d399, #10b981)' },
+            { bg: '#f59e0b', bar: 'linear-gradient(180deg, #fbbf24, #f59e0b)' },
+            { bg: '#ef4444', bar: 'linear-gradient(180deg, #f87171, #ef4444)' }
+        ];
+        // Use GB display values if the backend returns raw MB (fallback)
+        function formatVramStat(value) {
+            const num = Number(value);
+            if (!num) return value;
+            return num >= 1024 ? `${Math.round(num/1024)}GB` : `${num}GB`;
+        }
+
+        // Vertical bar chart layout
+        let vramHtml = '<div style="display: flex; align-items: flex-end; justify-content: space-around; height: 180px; gap: 0.5rem; padding: 1rem 0;">';
+        vramEntries.forEach(([vram, count], idx) => {
+            const pct = (count / totalVram * 100).toFixed(0);
+            const barHeight = (count / maxVramCount * 100);
+            const color = vramColors[idx % vramColors.length];
+
+            vramHtml += `
+                <div style="display: flex; flex-direction: column; align-items: center; flex: 1; max-width: 70px;">
+                    <div style="font-size: 0.75rem; font-weight: bold; color: ${color.bg}; margin-bottom: 4px;">${pct}%</div>
+                    <div style="background: var(--bar-bg, rgba(255,255,255,0.1)); border-radius: 8px 8px 4px 4px; width: 100%; height: 120px; position: relative; overflow: hidden;">
+                        <div style="background: ${color.bar}; width: 100%; height: ${barHeight}%; border-radius: 8px 8px 4px 4px; position: absolute; bottom: 0; transition: height 0.5s ease; display: flex; align-items: flex-start; justify-content: center; padding-top: 4px;">
+                            ${barHeight > 25 ? `<span style="color: white; font-weight: bold; font-size: 0.7rem; text-shadow: 0 1px 2px rgba(0,0,0,0.5);">${count}</span>` : ''}
+                        </div>
+                    </div>
+                    <div style="font-weight: 600; font-size: 0.8rem; margin-top: 6px; text-align: center;">${formatVramStat(vram)}</div>
+                    <div style="font-size: 0.65rem; color: var(--text-secondary, #888);">${count} listings</div>
+                </div>
+            `;
+        });
+        vramHtml += '</div>';
+        document.getElementById('vram-distribution').innerHTML = vramHtml;
+
+        // 3. Source Distribution
+        document.getElementById('source-distribution').innerHTML = buildSourceDistributionHtml(listings);
+
+        // 4. Top Deals - GPUs with best % below average per Model + VRAM
+        // Group listings by Model+VRAM and calculate stats per group
+        const modelVramGroups = {};
+        listings.forEach(item => {
+            // Use vram_gb from item (API returns it from gpu_reference)
+            const vram = item.vram_gb || item.vram || 'Unknown';
+            if (item.gpu_model) {
+                const key = `${item.gpu_model}_${vram}GB`;
+                if (!modelVramGroups[key]) {
+                    modelVramGroups[key] = {
+                        model: item.gpu_model,
+                        vram: vram,
+                        listings: [],
+                        totalPrice: 0
+                    };
+                }
+                modelVramGroups[key].listings.push(item);
+                modelVramGroups[key].totalPrice += parseFloat(item.price_eur);
+            }
+        });
+
+        // Calculate per-group averages and find deals
+        const deals = [];
+        Object.values(modelVramGroups).forEach(group => {
+            if (group.listings.length >= 2) { // Need at least 2 listings to compare
+                const avgPrice = group.totalPrice / group.listings.length;
+                // Find the cheapest listing in this group
+                const cheapest = group.listings.reduce((min, item) =>
+                    parseFloat(item.price_eur) < parseFloat(min.price_eur) ? item : min, group.listings[0]);
+                const savingsPct = ((avgPrice - parseFloat(cheapest.price_eur)) / avgPrice * 100);
+
+                // Only include if it's actually below average by at least 5%
+                if (savingsPct >= 5) {
+                    deals.push({
+                        ...cheapest,
+                        savingsPct: savingsPct,
+                        groupAvg: avgPrice.toFixed(0),
+                        groupCount: group.listings.length
+                    });
+                }
+            }
+        });
+
+        // Sort by savings % and take top 5
+        deals.sort((a, b) => b.savingsPct - a.savingsPct);
+        const topDeals = deals.slice(0, 5);
+
+        let dealsHtml = '<div style="display: flex; flex-direction: column; gap: 0.5rem;">';
+        if (topDeals.length === 0) {
+            dealsHtml += '<div style="text-align: center; padding: 1rem; color: #888; font-size: 0.875rem;">No deals found<br><small>Need 2+ listings of same model+VRAM</small></div>';
+        } else {
+            topDeals.forEach(item => {
+                const gpuName = item.gpu_model ? item.gpu_model.replace(/\b(GeForce|Radeon)\s*/i, '') : 'Unknown GPU';
+                dealsHtml += `
+                    <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.5rem; background: rgba(22, 163, 74, 0.1); border-radius: 4px; border-left: 3px solid #16a34a;">
+                        <div style="flex: 1;">
+                            <div style="font-weight: 600; font-size: 0.875rem;">${gpuName} ${item.vram_gb}GB</div>
+                            <div style="font-size: 0.75rem; color: #888;">€${item.price_eur} vs €${item.groupAvg} avg (${item.groupCount} listings)</div>
+                        </div>
+                        <div style="color: #16a34a; font-weight: bold; font-size: 1rem;">-${item.savingsPct.toFixed(0)}%</div>
+                    </div>
+                `;
+            });
+        }
+        dealsHtml += '</div>';
+        document.getElementById('new-listings-trend').innerHTML = dealsHtml;
+
+    } catch (error) {
+        console.error('Error loading GPU statistics:', error);
+    }
+}
+
+// Load most sold models statistics
+async function loadMostSoldModels() {
+    const container = document.getElementById('most-sold-models');
+    if (!container) return;
+
+    // Get toggle state
+    const useLivePrices = document.getElementById('use-live-prices')?.checked || false;
+
+    try {
+        const useActiveAvgStats = document.getElementById('use-active-avg')?.checked || false;
+        const response = await fetch(`/api/gpu-model-stats?use_live_prices=${useLivePrices}&use_active_avg=${useActiveAvgStats}`);
+        const data = await response.json();
+
+        if (!data.models || data.models.length === 0) {
+            container.innerHTML = '<div style="color: #888; text-align: center;">No statistics available</div>';
+            return;
+        }
+
+        // Take top 10 models
+        const topModels = data.models.slice(0, 10);
+
+        // Calculate max count for percentage
+        const maxCount = Math.max(...topModels.map(m => m.count));
+
+        let html = `
+            <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+        `;
+
+        topModels.forEach((model, index) => {
+            const barWidth = (model.count / maxCount) * 100;
+            const avgPrice = model.avg_price ? parseFloat(model.avg_price).toFixed(0) : 'N/A';
+            const rankColors = ['#ffd700', '#c0c0c0', '#cd7f32', '#667eea', '#667eea'];
+            const rankColor = index < 3 ? rankColors[index] : (index < 5 ? '#667eea' : '#9ca3af');
+            const medal = index < 3 ? ['🥇', '🥈', '🥉'][index] : `<span style="color: #888; font-size: 0.9rem;">#${index + 1}</span>`;
+
+            // Remove "Radeon", "GeForce", "AMD", "NVIDIA", "Intel" from display name
+            const cleanModel = model.model.replace(/\b(GeForce|Radeon|AMD|NVIDIA|Intel)\s*/gi, '').trim();
+
+            // Vendor colors: NVIDIA=Green(#76b900), AMD=Red(#ed1c24), Intel=Blue(#0071c5)
+            const vendorColors = { 'NVIDIA': '#76b900', 'AMD': '#ed1c24', 'Intel': '#0071c5' };
+            const vendorColor = vendorColors[model.vendor] || '#888';
+
+            html += `
+                <div style="display: flex; align-items: center; gap: 1rem; cursor: pointer;"
+                     onclick="filterByModel('${model.vendor}', '${model.model}')"
+                     title="Click to filter listings by this model"
+                     class="model-stat-row"
+                     onmouseover="this.style.background='rgba(102,126,234,0.05)'"
+                     onmouseout="this.style.background='transparent'">
+                    <div style="width: 40px; text-align: center; font-weight: bold; font-size: 1.1rem;">${medal}</div>
+                    <div style="flex: 1;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.25rem;">
+                            <span style="font-weight: 600; color: ${vendorColor};">${cleanModel}</span>
+                            <span style="font-size: 0.875rem; color: #888;">
+                                <strong>${model.count}</strong> listings · avg €${avgPrice}
+                            </span>
+                        </div>
+                        <div style="background: #e5e7eb; border-radius: 4px; height: 8px; overflow: hidden; position: relative;">
+                            <div style="background: ${rankColor}; height: 100%; border-radius: 4px; width: ${barWidth}%; transition: width 0.3s ease;"></div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        });
+
+        html += '</div>';
+
+        container.innerHTML = html;
+
+    } catch (error) {
+        console.error('Error loading most sold models:', error);
+        container.innerHTML = '<div style="color: #e74c3c; text-align: center;">Failed to load statistics</div>';
+    }
+}
+
+// Filter listings by model
+function filterByModel(vendor, model) {
+    // Set vendor filter
+    const vendorSelect = document.getElementById('vendor-filter');
+    if (vendorSelect) {
+        vendorSelect.value = vendor;
+        onVendorChange();
+    }
+
+    // Set model filter
+    const modelSelect = document.getElementById('model-filter');
+    if (modelSelect) {
+        modelSelect.value = model;
+        onModelChange();
+    }
+}
+
+</script>
+{% endblock %}
+
+{% block content %}
+<!-- Statistics Dashboard Grid -->
+<div class="section" id="stats-section" style="margin-bottom: 2rem;">
+    <div style="display: grid; grid-template-columns: 1fr 3fr; gap: 1.5rem;">
+        <!-- Most Listed GPU Models (1/4) -->
+        <div style="background: var(--card-bg); border-radius: 8px; padding: 1rem; border: 1px solid var(--card-border);">
+            <h3 style="margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+                <span>📊</span> Most Listed
+            </h3>
+            <div id="most-sold-models">
+                <div class="loading">Loading statistics...</div>
+            </div>
+        </div>
+
+        <!-- Other Statistics (3/4) -->
+        <div style="display: grid; grid-template-columns: 0.6fr 2fr; grid-template-rows: auto auto; gap: 1rem; align-items: start;">
+            <!-- By Source (Left 1/3) -->
+            <div style="background: var(--card-bg); border-radius: 8px; padding: 1rem; border: 1px solid var(--card-border);">
+                <h4 style="margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem;">
+                    <span>🌐</span> By Source
+                </h4>
+                <div id="source-distribution">
+                    <div class="loading">{{ t('Loading...') }}</div>
+                </div>
+            </div>
+
+            <!-- Top Deals (small left column) -->
+            <div style="background: var(--card-bg); border-radius: 8px; padding: 1rem; border: 1px solid var(--card-border);">
+                <h4 style="margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem;">
+                    <span>🔥</span> Top Deals
+                </h4>
+                <div id="new-listings-trend">
+                    <div class="loading">{{ t('Loading...') }}</div>
+                </div>
+            </div>
+
+            <!-- Price by Vendor (right, double height) -->
+            <div style="background: var(--card-bg); border-radius: 8px; padding: 1rem; border: 1px solid var(--card-border); grid-row: span 2;">
+                <h4 style="margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem;">
+                    <span>💰</span> Price by Vendor
+                </h4>
+                <div id="vendor-price-stats">
+                    <div class="loading">{{ t('Loading...') }}</div>
+                </div>
+            </div>
+
+            <!-- VRAM Distribution (row 2, right column) -->
+            <div style="background: var(--card-bg); border-radius: 8px; padding: 1rem; border: 1px solid var(--card-border); grid-column: 2; grid-row: 2;">
+                <h4 style="margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem;">
+                    <span>💾</span> VRAM Distribution
+                </h4>
+                <div id="vram-distribution">
+                    <div class="loading">{{ t('Loading...') }}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Performance / Price Charts -->
+    <div style="display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 1.5rem; margin-top: 1.5rem;">
+        <div style="background: var(--card-bg); border-radius: 8px; padding: 1rem; border: 1px solid var(--card-border);">
+            <h3 style="margin-bottom: 1rem;">💹 Price vs G3D Performance</h3>
+            <div class="perf-chart-box">
+                <canvas id="gpu-scatter-chart"></canvas>
+            </div>
+        </div>
+        <div style="background: var(--card-bg); border-radius: 8px; padding: 1rem; border: 1px solid var(--card-border);">
+            <h3 style="margin-bottom: 1rem;">🏢 Avg G3D by Vendor</h3>
+            <div class="perf-chart-box">
+                <canvas id="gpu-vendor-chart"></canvas>
+            </div>
+        </div>
+        <div style="background: var(--card-bg); border-radius: 8px; padding: 1rem; border: 1px solid var(--card-border);">
+            <h3 style="margin-bottom: 1rem;">🎯 Value Buckets (€/G3D pt)</h3>
+            <div class="perf-chart-box">
+                <canvas id="gpu-value-chart"></canvas>
+            </div>
+        </div>
+        <div style="background: var(--card-bg); border-radius: 8px; padding: 1rem; border: 1px solid var(--card-border);">
+            <h3 style="margin-bottom: 1rem;">🏆 Top Performers (G3D/€)</h3>
+            <div class="perf-chart-box">
+                <canvas id="gpu-top-performers-chart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- Average Price by Month -->
+    <div style="background: var(--card-bg); border-radius: 8px; padding: 1rem; border: 1px solid var(--card-border); margin-top: 1.5rem;">
+        <h3 style="margin-bottom: 1rem;">📅 Average GPU Price by Month (filtered listings)</h3>
+        <div class="perf-chart-box">
+            <canvas id="gpu-monthly-avg-chart"></canvas>
+        </div>
+    </div>
+
+    <!-- Value-per-point chart -->
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 1.5rem;">
+        <div style="background: var(--card-bg); border-radius: 8px; padding: 1rem; border: 1px solid var(--card-border);">
+            <h3 style="margin-bottom: 1rem;">💶 Price per G3D Point (lower = better)</h3>
+            <div class="perf-chart-box">
+                <canvas id="gpu-value-point-chart"></canvas>
+            </div>
+        </div>
+        <div style="background: var(--card-bg); border-radius: 8px; padding: 1rem; border: 1px solid var(--card-border); display: flex; flex-direction: column; justify-content: center;">
+            <h3 style="margin-bottom: 1rem;">ℹ Value Explained</h3>
+            <p style="color: var(--text-secondary); font-size: 0.9rem; line-height: 1.6;">
+                This chart plots how many euros you pay for each G3D Mark point on average.
+                A lower dot means better price/performance. The model name and VRAM appear in the tooltip.
+            </p>
+        </div>
+    </div>
+</div>
+
+<div class="section">
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
-        <h2>GPU Listings</h2>
+        <h2>{{ t('GPU Listings') }}</h2>
         <div class="filters" style="margin: 0;">
+            <div class="filter-icon-bar">
+                <button type="button" class="filter-icon-btn" data-target="active-only"
+                        title="{{ t('Active only') }}" aria-pressed="false"
+                        onclick="toggleFilterIcon(this, 'active-only')">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                        <circle cx="12" cy="12" r="3"/>
+                    </svg>
+                </button>
+                <button type="button" class="filter-icon-btn" data-target="high-confidence"
+                        title="{{ t('High confidence (≥70%)') }}" aria-pressed="false"
+                        onclick="toggleFilterIcon(this, 'high-confidence')">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                        <polyline points="9 12 12 15 16 10"/>
+                    </svg>
+                </button>
+                <button type="button" class="filter-icon-btn" data-target="price-drop-only"
+                        title="{{ t('Price drop only') }}" aria-pressed="false"
+                        onclick="toggleFilterIcon(this, 'price-drop-only')">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="12" y1="5" x2="12" y2="19"/>
+                        <polyline points="19 12 12 19 5 12"/>
+                    </svg>
+                </button>
+                <button type="button" class="filter-icon-btn" data-target="show-avg-price"
+                        title="{{ t('Show avg price') }}" aria-pressed="false"
+                        onclick="toggleFilterIcon(this, 'show-avg-price')">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M18 20V10"/>
+                        <path d="M12 20V4"/>
+                        <path d="M6 20v-6"/>
+                    </svg>
+                </button>
+                <button type="button" class="filter-icon-btn" data-target="use-active-avg"
+                        title="{{ t('Active-only averages') }}" aria-pressed="false"
+                        onclick="toggleFilterIcon(this, 'use-active-avg')">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/>
+                    </svg>
+                </button>
+            </div>
+            <input type="checkbox" id="active-only" checked onchange="loadListings()" class="hidden-filter">
+            <input type="checkbox" id="high-confidence" checked onchange="loadListings()" class="hidden-filter">
+            <input type="checkbox" id="price-drop-only" onchange="loadListings()" class="hidden-filter">
+            <input type="checkbox" id="show-avg-price" onchange="loadListings()" class="hidden-filter">
+            <input type="checkbox" id="use-active-avg" onchange="loadListings()" class="hidden-filter">
             <label>
-                <input type="checkbox" id="active-only" checked onchange="loadListings()">
-                Active only
+                Vendor:
+                <select id="vendor-filter" onchange="onVendorChange()">
+                    <option value="all">All Vendors</option>
+                    <option value="NVIDIA">NVIDIA</option>
+                    <option value="AMD">AMD</option>
+                    <option value="Intel">Intel</option>
+                </select>
             </label>
             <label>
-                <input type="checkbox" id="high-confidence" checked onchange="loadListings()">
-                High confidence (≥70%)
+                Model:
+                <select id="model-filter" onchange="onModelChange()">
+                    <option value="all">All Models</option>
+                </select>
+            </label>
+            <label class="strict-match-label" style="display: none;" id="strict-match-container">
+                <input type="checkbox" id="strict-match" onchange="loadListings()">
+                <span style="color: #00d4ff; font-weight: 500;">Exact Match Only</span>
+                <span style="font-size: 0.75rem; color: #888; margin-left: 4px;" title="When enabled, filters out Ti/Super variants">i</span>
+            </label>
+            <label style="background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); border: 1px solid #00d4ff; border-radius: 20px; padding: 0.5rem 1rem;">
+                <span style="color: #00d4ff; font-weight: 500; font-size: 0.875rem;">💾 VRAM</span>
+                <select id="vram-filter" onchange="loadListings()" style="margin-top: 4px; min-width: 110px;">
+                    <option value="">All VRAM</option>
+                </select>
+                <span style="display: inline-flex; align-items: center; gap: 0.4rem; margin-left: 0; margin-top: 4px; font-weight: 500; color: #00d4ff; cursor: help;">
+                    <input type="checkbox" id="vram-min-mode" onchange="onVramModeChange()" style="accent-color: #00d4ff; width: 16px; height: 16px; cursor: pointer; vertical-align: middle;" title="Switch between exact-size list and 8GB+ minimum list">
+                    <span id="vram-min-label" style="white-space: nowrap;">Exact size</span>
+                    <span style="display: inline-flex; align-items: center; justify-content: center; width: 18px; height: 18px; border-radius: 50%; background: rgba(136,136,136,0.25); color: #888; font-size: 0.75rem; font-weight: 600;" title="Unchecked: pick an exact VRAM size from 4GB to 32GB. Checked: pick a minimum VRAM threshold from 8GB+ to 32GB+. Options larger than 32GB are hidden.">i</span>
+                </span>
+            </label>
+            <label style="background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); border: 1px solid #00d4ff; border-radius: 20px; padding: 0.5rem 1rem;">
+                <span style="color: #00d4ff; font-weight: 500; font-size: 0.875rem;">💶 Price Range</span>
+                <div style="display: flex; gap: 0.5rem; align-items: center; margin-top: 4px;">
+                    <input type="number" id="price-min" placeholder="Min" style="width: 70px; background: rgba(0,0,0,0.3); border: 1px solid #444; border-radius: 6px; padding: 4px 8px; color: white; font-size: 0.85rem;" onchange="loadListings()">
+                    <span style="color: #888;">-</span>
+                    <input type="number" id="price-max" placeholder="Max" style="width: 70px; background: rgba(0,0,0,0.3); border: 1px solid #444; border-radius: 6px; padding: 4px 8px; color: white; font-size: 0.85rem;" onchange="loadListings()">
+                </div>
+            </label>
+            <label style="background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); border: 1px solid #00d4ff; border-radius: 20px; padding: 0.5rem 1rem;">
+                <span style="color: #00d4ff; font-weight: 500; font-size: 0.875rem;">🏆 Rank Range</span>
+                <div style="display: flex; gap: 0.5rem; align-items: center; margin-top: 4px;">
+                    <input type="number" id="rank-min" placeholder="Min" style="width: 70px; background: rgba(0,0,0,0.3); border: 1px solid #444; border-radius: 6px; padding: 4px 8px; color: white; font-size: 0.85rem;" onchange="loadListings()">
+                    <span style="color: #888;">-</span>
+                    <input type="number" id="rank-max" placeholder="Max" style="width: 70px; background: rgba(0,0,0,0.3); border: 1px solid #444; border-radius: 6px; padding: 4px 8px; color: white; font-size: 0.85rem;" onchange="loadListings()">
+                </div>
             </label>
             <label>
                 Sort:
                 <select id="sort-by" onchange="loadListings()">
-                    <option value="date_posted">Date Posted</option>
-                    <option value="price">Price</option>
+                    <option value="date_posted">{{ t('Date Posted') }}</option>
+                    <option value="price">{{ t('Price') }}</option>
+                    <option value="performance_price">Performance/Price</option>
+                    <option value="rank">Rank</option>
                 </select>
             </label>
             <label>
                 Order:
                 <select id="sort-order" onchange="loadListings()">
-                    <option value="desc">Descending</option>
-                    <option value="asc">Ascending</option>
+                    <option value="desc">{{ t('Descending') }}</option>
+                    <option value="asc">{{ t('Ascending') }}</option>
+                </select>
+            </label>
+            <button id="compare-btn" class="btn btn-small" style="background: linear-gradient(135deg, #667eea, #764ba2); color: white; border: none; align-self: center;" onclick="goToCompare()" disabled>
+                Compare <span id="compare-count">0</span>
+            </button>
+            <label>
+                🦄 Unicorn:
+                <div class="unicorn-switch" style="display: flex; gap: 4px; margin-top: 4px;">
+                    <button id="unicorn-all" class="unicorn-btn active" onclick="setUnicornFilter('all')" title="Show all listings">{{ t('All') }}</button>
+                    <button id="unicorn-only" class="unicorn-btn" onclick="setUnicornFilter('only')" title="Show only unicorn deals">🦄 Only</button>
+                    <button id="unicorn-exclude" class="unicorn-btn" onclick="setUnicornFilter('exclude')" title="Hide unicorn listings">🚫 Hide</button>
+                </div>
+            </label>
+            <label>
+                Source:
+                <select id="source-filter" onchange="loadListings()">
+                    <option value="all">All Sources</option>
+                    <option value="ss.com">SS.com</option>
+                    <option value="andelemandele">Andele Mandele</option>
+                    <option value="facebook_extension">Facebook</option>
                 </select>
             </label>
             <label>
@@ -36,9 +1024,19 @@
                     <option value="week">Last Week</option>
                 </select>
             </label>
+            <label style="background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); border: 1px solid #00d4ff; border-radius: 20px; padding: 0.5rem 1rem; cursor: pointer; transition: all 0.3s ease;">
+                <input type="checkbox" id="use-live-prices" onchange="loadMostSoldModels()" style="accent-color: #00d4ff; width: 18px; height: 18px; cursor: pointer; vertical-align: middle; margin-right: 0.5rem;">
+                <span style="color: #00d4ff; font-weight: 500; font-size: 0.875rem;">⚡ Live Prices</span>
+                <span style="font-size: 0.75rem; color: #888; margin-left: 4px;" title="Calculate avg from actual sold listings (accurate but slower)">i</span>
+            </label>
         </div>
     </div>
-    
+
+    <div id="gpu-loading-overlay" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.35); z-index: 2000; justify-content: center; align-items: center; flex-direction: column;">
+        <div style="width: 48px; height: 48px; border: 4px solid rgba(255,255,255,0.2); border-top-color: #00d4ff; border-radius: 50%; animation: spin 1s linear infinite;"></div>
+        <div style="margin-top: 12px; color: #fff; font-weight: 500;">Loading GPUs...</div>
+    </div>
+
     <div id="listings-container">
         <div class="loading">Loading GPU listings...</div>
     </div>
@@ -48,6 +1046,26 @@
     <h2>Price Distribution</h2>
     <div class="chart-container">
         <canvas id="priceDistChart"></canvas>
+    </div>
+</div>
+
+<!-- Listing Detail Modal -->
+<div id="listing-modal" class="modal-overlay">
+    <div class="modal" style="max-width: 1000px;">
+        <div class="modal-header">
+            <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+                <h3 id="listing-title">{{ t('Listing Details') }}</h3>
+                <div style="display: flex; gap: 0.5rem; align-items: center;">
+                    <button id="flag-listing-btn" class="btn btn-small" style="background: #dc3545; color: white; border: none;" onclick="showFlagModalWithCategoriesFromModal()">
+                        🚩 Flag
+                    </button>
+                    <button class="modal-close" onclick="closeListingModal()">&times;</button>
+                </div>
+            </div>
+        </div>
+        <div id="listing-content">
+            <div id="listing-comparison"></div>
+        </div>
     </div>
 </div>
 
@@ -66,125 +1084,675 @@
         </div>
     </div>
 </div>
-{% endblock %}
 
-{% block scripts %}<script>
-let priceChart = null;
-let historyChart = null;
+
+<script>
+// Cache for listing details to reduce API calls
+const listingCache = new Map();
+
+async function getListingDetails(listingId) {
+    if (listingCache.has(listingId)) {
+        return listingCache.get(listingId);
+    }
+
+    try {
+        const response = await fetch(`/api/listing-details/${listingId}`);
+        const data = await response.json();
+        listingCache.set(listingId, data);
+        return data;
+    } catch (error) {
+        console.error('Error fetching listing details:', error);
+        return null;
+    }
+}
 
 async function loadListings() {
+    const overlay = document.getElementById('gpu-loading-overlay');
+    if (overlay) overlay.classList.add('active');
+
     const activeOnly = document.getElementById('active-only').checked;
     const highConfidence = document.getElementById('high-confidence').checked;
+    const priceDropOnly = document.getElementById('price-drop-only').checked;
+    const showAvgPrice = document.getElementById('show-avg-price').checked;
     const sortBy = document.getElementById('sort-by').value;
     const sortOrder = document.getElementById('sort-order').value;
     const timeFilter = document.getElementById('time-filter').value;
-    
+    const vendorFilter = document.getElementById('vendor-filter').value;
+    const modelFilter = document.getElementById('model-filter').value;
+    const vramFilter = document.getElementById('vram-filter')?.value || '';
+    const vramMinMode = document.getElementById('vram-min-mode')?.checked || false;
+    const vramMode = vramMinMode ? 'min' : 'exact';
+    const sourceFilter = document.getElementById('source-filter')?.value || 'all';
+    const strictMatch = document.getElementById('strict-match')?.checked || false;
+    const priceMin = document.getElementById('price-min')?.value || '';
+    const priceMax = document.getElementById('price-max')?.value || '';
+    const rankMin = document.getElementById('rank-min')?.value || '';
+    const rankMax = document.getElementById('rank-max')?.value || '';
+
+    // Show/hide strict match checkbox based on model selection
+    const strictMatchContainer = document.getElementById('strict-match-container');
+    if (strictMatchContainer) {
+        strictMatchContainer.style.display = modelFilter !== 'all' ? 'inline-flex' : 'none';
+    }
+
+    // Update VRAM filter options based on selected model (only when model/vendor changed)
+    // Note: updateVramFilter is called from onVendorChange/onModelChange to avoid wiping user selection on every reload
+
     const params = new URLSearchParams();
     params.append('active', activeOnly);
     params.append('sort', sortBy);
     params.append('order', sortOrder);
     params.append('time', timeFilter);
     if (highConfidence) params.append('min_confidence', '0.70');
-    
+    if (priceDropOnly) params.append('price_drop', 'true');
+    if (showAvgPrice) params.append('show_avg_price', 'true');
+    const useActiveAvg = document.getElementById('use-active-avg')?.checked || false;
+    if (useActiveAvg) params.append('use_active_avg', 'true');
+    if (vendorFilter !== 'all') params.append('vendor', vendorFilter);
+    if (modelFilter !== 'all') {
+        params.append('model', modelFilter);
+        if (strictMatch) params.append('strict_match', 'true');
+    }
+    if (vramFilter) {
+        params.append('vram', vramFilter);
+        params.append('vram_mode', vramMode);
+    }
+    if (sourceFilter !== 'all') params.append('source', sourceFilter);
+    if (priceMin) params.append('price_min', priceMin);
+    if (priceMax) params.append('price_max', priceMax);
+    if (rankMin) params.append('rank_min', rankMin);
+    if (rankMax) params.append('rank_max', rankMax);
+    // Use triple unicorn switch state
+    if (unicornFilter === 'only') params.append('unicorn', 'only');
+    if (unicornFilter === 'exclude') params.append('unicorn', 'exclude');
+
     try {
         const response = await fetch('/api/gpus?' + params.toString());
         const listings = await response.json();
-        
+
         const container = document.getElementById('listings-container');
-        
+
         if (listings.length === 0) {
             container.innerHTML = '<div class="loading">No listings found</div>';
             return;
         }
-        
+
+        // Fetch price history for all listings to check for decreases
+        const listingsWithHistory = await Promise.all(
+            listings.map(async item => {
+                try {
+                    const historyRes = await fetch(`/api/price-history/${item.listing_id}`);
+                    const historyData = await historyRes.json();
+                    // Compute price-change indicators from versioned history array
+                    const enriched = {...item, priceHistory: historyData || []};
+                    if (Array.isArray(historyData) && historyData.length >= 2) {
+                        const sorted = [...historyData].sort((a, b) => new Date(a.recorded_at) - new Date(b.recorded_at));
+                        const last = sorted[sorted.length - 1];
+                        const prev = sorted[sorted.length - 2];
+                        const change = parseFloat(last.price_eur) - parseFloat(prev.price_eur);
+                        enriched.price_changes = [{change, price: last.price_eur, previous_price: prev.price_eur, recorded_at: last.recorded_at}];
+                        enriched.has_price_decreased = change < 0;
+                    }
+                    return enriched;
+                } catch (e) {
+                    return item;
+                }
+            })
+        );
+
         let html = `
-            <table>
+            <table class="gpu-listings-table">
                 <thead>
                     <tr>
-                        <th>GPU</th>
-                        <th>VRAM</th>
-                        <th>Price</th>
+                        <th class="text-center">Image</th>
+                        <th>{{ t('Brand') }}</th>
+                        <th>{{ t('GPU') }}</th>
+                        <th>{{ t('VRAM') }}</th>
+                        <th>Year</th>
+                        <th>{{ t('Price') }}</th>
+                        <th>MSRP</th>
+                        <th title="PassMark G3D Mark">G3D</th>
+                        <th title="Performance / Price: G3D Mark per Euro">€/G3D</th>
+                        <th title="PassMark G2D Mark">G2D</th>
+                        <th title="Performance rank based on G3D">Rank</th>
                         <th>Market Position</th>
                         <th>Location</th>
                         <th>Date</th>
                         <th>Actions</th>
+                        <th style="text-align: center;"><input type="checkbox" id="select-all-compare" title="Select all visible for compare" onclick="toggleSelectAllCompare(event)"></th>
                     </tr>
                 </thead>
                 <tbody>
         `;
-        
-        listings.forEach(item => {
-            const gpuName = item.gpu_model ? `${item.vendor} ${item.gpu_model}` : item.title;
+
+        // Track first occurrence of each GPU model - persist across sessions
+        const discoveredModelsKey = 'discovered_gpu_models';
+        let discoveredModels = new Set();
+        try {
+            const stored = localStorage.getItem(discoveredModelsKey);
+            if (stored) {
+                discoveredModels = new Set(JSON.parse(stored));
+            }
+        } catch (e) {
+            console.error('Error loading discovered models:', e);
+        }
+
+        // Track new models discovered in this session
+        const newModelsDiscovered = [];
+
+        // Check if "GeForce" should be shown in NVIDIA GPU names
+        const showGeForce = localStorage.getItem('showGeForceInGPUName') !== 'false';
+
+        listingsWithHistory.forEach(item => {
+            // Build GPU name, optionally removing "GeForce" from NVIDIA models
+            let gpuModel = item.gpu_model || '';
+            if (!showGeForce && gpuModel.toLowerCase().includes('geforce')) {
+                gpuModel = gpuModel.replace(/\bGeForce\s*/i, '');
+            }
+            // Remove vendor prefix from model name to avoid duplication
+            gpuModel = gpuModel.replace(/\b(NVIDIA|AMD|Intel)\s*/gi, '').replace(/\b(Radeon|GeForce)\s*/gi, '').trim();
+
+            // Create vendor badge instead of text
+            const vendorBadge = item.vendor ? `
+                <span style="display: inline-flex; align-items: center; justify-content: center;
+                    background: ${item.vendor === 'NVIDIA' ? '#76b900' : item.vendor === 'AMD' ? '#ed1c24' : '#0071c5'};
+                    color: white; font-size: 0.65rem; font-weight: bold; padding: 2px 6px;
+                    border-radius: 4px; margin-right: 6px; vertical-align: middle;">
+                    ${item.vendor === 'NVIDIA' ? 'NVIDIA' : item.vendor === 'AMD' ? 'AMD' : 'INTEL'}
+                </span>
+            ` : '';
+
+            const gpuName = gpuModel || item.title;
             const vram = item.vram_gb ? `${item.vram_gb}GB` : 'N/A';
             const modelId = item.matched_gpu_id;
-            
+
             let priceClass = 'price';
             let priceIndicator = '';
-            
-            if (item.price_stats) {
-                if (item.price_stats.below_avg) {
-                    priceClass = 'price-below-avg';
-                    priceIndicator = '↓ Below avg';
-                } else {
-                    priceClass = 'price-above-avg';
-                    priceIndicator = '↑ Above avg';
+            let priceDecreasedBadge = '';
+            let dealBadge = '';
+
+            // Check if this is the first time we're seeing this model EVER
+            const modelKey = item.gpu_model || item.title;
+            const isFirstModelEver = modelKey && !discoveredModels.has(modelKey);
+            if (isFirstModelEver && modelKey) {
+                discoveredModels.add(modelKey);
+                newModelsDiscovered.push(modelKey);
+            }
+
+            // Check for NEW, FIRST, STEAL and BUY indicators
+            // NEW: Only show for listings from the current import (not in previous import)
+            let isNewListing = item.is_new === true;
+
+            if (isNewListing) {
+                // New listing from current import - show NEW badge
+                dealBadge += `<span class="badge" style="background: #3b82f6; color: white; font-weight: bold;" title="New listing from current import!">🆕 NEW</span><br>`;
+            }
+
+            if (isFirstModelEver && modelKey) {
+                // First model ever discovered - show FIRST badge
+                dealBadge += `<span class="badge" style="background: #9333ea; color: white; font-weight: bold;" title="First time this model appears!">✨ FIRST</span><br>`;
+            }
+
+            if (!isNewListing && item.price_stats && item.price_stats.below_avg) {
+                // STEAL: only show if price is at least 15% below average
+                const avgPrice = parseFloat(item.price_stats.avg);
+                const currentPrice = item.price_eur;
+                const savingsPct = ((avgPrice - currentPrice) / avgPrice * 100);
+
+                // Must be at least 15% below average to be a STEAL
+                if (savingsPct >= 15) {
+                    dealBadge += `<span class="badge" style="background: #dc2626; color: white; font-weight: bold;" title="Price is ${savingsPct.toFixed(0)}% below average!">🔥 STEAL</span><br>`;
                 }
             }
-            
+
+            // Check if this is all-time lowest (BUY)
+            // Only show BUY if there's actual price history with different prices
+            let isAllTimeLowest = false;
+
+            // Check if price decreased
+            if (item.has_price_decreased) {
+                const lastChange = item.price_changes?.[0];
+                if (lastChange && lastChange.change < 0) {
+                    priceDecreasedBadge = `<span class="badge badge-success" title="Price dropped by €${Math.abs(lastChange.change).toFixed(2)}">↓ Price Drop</span><br>`;
+                }
+            }
+
+            if (item.price_stats) {
+                const avgPrice = parseFloat(item.price_stats.avg);
+                const currentPrice = item.price_eur;
+                const pctDiff = ((currentPrice - avgPrice) / avgPrice * 100).toFixed(0);
+                const absPctDiff = Math.abs(pctDiff);
+
+                if (item.price_stats.below_avg) {
+                    // Below average - green
+                    priceClass = 'price-below-avg';
+                    priceIndicator = `<span style="background: linear-gradient(135deg, #16a34a, #22c55e); color: white; font-size: 0.7rem; padding: 2px 6px; border-radius: 4px; font-weight: bold; margin-left: 0.5rem; vertical-align: middle;">${pctDiff}%</span>`;
+                } else if (absPctDiff <= 5 && absPctDiff > 0) {
+                    // Within 5% of average - orange/yellow (fair price), only show if not 0%
+                    priceClass = 'price-average';
+                    priceIndicator = `<span style="background: linear-gradient(135deg, #f59e0b, #fbbf24); color: white; font-size: 0.7rem; padding: 2px 6px; border-radius: 4px; font-weight: bold; margin-left: 0.5rem; vertical-align: middle;">+${pctDiff}%</span>`;
+                } else if (pctDiff === '0' || pctDiff === '-0') {
+                    // Exactly at average - don't show any percentage badge
+                    priceClass = 'price-average';
+                    priceIndicator = '';
+                } else {
+                    // Above average - red
+                    priceClass = 'price-above-avg';
+                    priceIndicator = `<span style="background: linear-gradient(135deg, #dc2626, #ef4444); color: white; font-size: 0.7rem; padding: 2px 6px; border-radius: 4px; font-weight: bold; margin-left: 0.5rem; vertical-align: middle;">+${pctDiff}%</span>`;
+                }
+            }
+
             const confidence = item.confidence_score || 0;
             let confidenceClass = 'confidence-high';
             if (confidence < 0.70) confidenceClass = 'confidence-medium';
             if (confidence < 0.50) confidenceClass = 'confidence-low';
-            
-            const rowClass = modelId ? 'clickable' : '';
-            const clickHandler = modelId ? `onclick="showModelHistory(${modelId}, '${item.vendor} ${item.gpu_model}')"` : '';
-            
+
+            // OC badge - show glowing red "OC" BEFORE source dot if description mentions "OC", "Overclocked", "Overclock"
+            const descLower = (item.description || '').toLowerCase();
+            const titleLower = (item.title || '').toLowerCase();
+            const hasOC = descLower.includes('oc') || descLower.includes('overclock') || descLower.includes('overclocked') ||
+                         titleLower.includes('oc') || titleLower.includes('overclock') || titleLower.includes('overclocked');
+            const ocBadge = hasOC ? `&nbsp;<span title="Overclocked Edition" style="font-size: 0.65rem; font-weight: bold; color: #ff3333; text-shadow: 0 0 4px #ff3333, 0 0 8px #ff3333; animation: glow 1.5s ease-in-out infinite alternate;">OC</span>` : '';
+
+            // Source dot indicator (small colored dot only, no text) - check if enabled in settings
+            const showSourceDots = localStorage.getItem('showSourceDots') !== 'false';
+            let sourceDot = '';
+            const sourceLabels = {
+                'andelemandele': { text: 'Andele', bg: '#8B5CF6' },
+                'facebook_extension': { text: 'FB', bg: '#1877F2' },
+                'ss.com': { text: 'SS', bg: '#10b981' }
+            };
+            const sourceInfo = sourceLabels[item.source] || sourceLabels['ss.com'];
+            if (showSourceDots) {
+                sourceDot = `<span class="source-dot" title="${sourceInfo.text}" style="display: inline-block; width: 12px; height: 12px; background: ${sourceInfo.bg}; border-radius: 50%; cursor: pointer; box-shadow: 0 0 6px ${sourceInfo.bg}; flex-shrink: 0; border: 2px solid rgba(255,255,255,0.25);"></span>`;
+            }
+
+            const rowClass = 'clickable';
+            const clickHandler = `onclick="showListingDetail('${item.listing_id}')"`;
+
+            // Use local image if available, fallback to external URL
+            // local_image_path format: "facebook/filename.png" or "ss.com/filename.png"
+            const imageUrl = item.local_image_path
+                ? `/images/${item.local_image_path}`
+                : item.image_url;
+            const imageClickUrl = item.local_image_path
+                ? `/images/${item.local_image_path}`
+                : item.image_url;
+
+            // Deal badges overlay on image
+            const imageOverlayBadges = (dealBadge || priceDecreasedBadge)
+                ? `<div style="position: absolute; top: 4px; right: 4px; display: flex; flex-direction: column; gap: 4px; z-index: 10;">${dealBadge}${priceDecreasedBadge}</div>`
+                : '';
+
             html += `
-                <tr class="${rowClass}" ${clickHandler} title="${modelId ? 'Click to view model history' : ''}">
+                <tr class="${rowClass}" ${clickHandler} title="Click to view listing details">
+                    <td class="listing-image-cell text-center" style="position: relative;">
+                        <div style="position: relative; display: inline-block;">
+                            ${showSourceDots ? `<div style="position: absolute; left: -12px; top: 50%; transform: translateY(-50%); z-index: 10;">${sourceDot}</div>` : ''}
+                            ${imageOverlayBadges}
+                            ${imageUrl ? `<img src="${imageUrl}" alt="${gpuName}" class="listing-thumb" loading="lazy" onclick="event.stopPropagation(); showImageModal('${imageClickUrl}', '${gpuName}')">` : '<div class="listing-thumb-placeholder">📷</div>'}
+                        </div>
+                    </td>
+                    <td class="text-center" style="display: table-cell; vertical-align: middle;">
+                        ${vendorBadge}
+                    </td>
                     <td>
-                        <strong>${gpuName}</strong>
+                        <strong>${gpuName}</strong>${ocBadge}
                         ${item.match_method ? `<br><small class="${confidenceClass}">${(confidence*100).toFixed(0)}% confidence</small>` : ''}
                     </td>
-                    <td>${vram}</td>
-                    <td>
-                        <span class="${priceClass}">€${item.price_eur}</span>
-                        ${priceIndicator ? `<br><small>${priceIndicator}</small>` : ''}
+                    <td class="text-center">${vram}</td>
+                    <td class="text-center">
+                        ${item.year_released ? `<span style="font-weight: 600; color: #888;">${item.year_released}</span>` : '-'}
                     </td>
-                    <td>
-                        ${item.price_stats ? `
-                            <div style="font-size: 0.875rem;">
-                                Avg: €${item.price_stats.avg}<br>
-                                Range: €${item.price_stats.min} - €${item.price_stats.max}
-                            </div>
-                            <div class="price-bar" title="Price percentile: ${item.price_stats.percentile}%">
-                                <div class="price-bar-fill" style="width: ${item.price_stats.percentile}%"></div>
-                            </div>
-                        ` : '<small>No price data</small>'}
+                    <td style="position: relative; padding: 0.75rem 0.5rem;">
+                        <div style="display: inline-flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; position: relative;">
+                            ${priceDecreasedBadge ? `<span style="position: absolute; top: 0; left: 50%; transform: translate(-50%, -70%); font-size: 0.55rem; padding: 1px 4px; border-radius: 3px; background: #16a34a; color: white; font-weight: bold; white-space: nowrap; z-index: 5; box-shadow: 0 1px 3px rgba(0,0,0,0.3); line-height: 1;">↓ Drop</span>` : ''}
+                            <span class="${priceClass}" style="font-size: 1.15rem; font-weight: 700; ${priceDecreasedBadge ? 'padding-top: 8px;' : ''} ${item.price_stats ? (item.price_stats.below_avg ? 'color: #16a34a;' : 'color: #000000;') : ''}">€${item.price_eur}</span>
+                            ${priceIndicator ? priceIndicator : ''}
+                            ${showAvgPrice && item.price_stats ? `<span style="color: #888; font-size: 0.75rem;">avg €${item.price_stats.avg}</span>` : ''}
+                        </div>
                     </td>
-                    <td>${item.seller_location || 'N/A'}</td>
-                    <td>${item.date_posted ? new Date(item.date_posted).toLocaleDateString() : 'N/A'}</td>
+                    <td class="text-center">
+                        ${item.msrp_usd ? `<div style="font-size: 1rem; color: #ffffff; font-weight: 600; text-shadow: 0 1px 2px rgba(0,0,0,0.3);">€${(item.msrp_usd * 0.92).toFixed(0)}</div><div style="font-size: 0.7rem; color: #888;">MSRP</div>` : '<span style="color: #888; font-size: 0.85rem;">-</span>'}
+                    </td>
+                    <td class="text-center" title="${item.g3d_mark ? 'PassMark G3D Mark: ' + item.g3d_mark : 'No G3D score'}">${item.g3d_mark ? Number(item.g3d_mark).toLocaleString() : '-'}</td>
+                    <td class="text-center" title="${item.g3d_mark && item.price_eur ? 'G3D Mark per Euro' : 'No data'}" style="font-weight: 600; ${item.g3d_mark && item.price_eur && (item.g3d_mark / item.price_eur) >= 5 ? 'color: #16a34a;' : ''}">
+                        ${item.g3d_mark && item.price_eur ? (item.g3d_mark / item.price_eur).toFixed(1) : '-'}
+                    </td>
+                    <td class="text-center" title="${item.g2d_mark ? 'PassMark G2D Mark: ' + item.g2d_mark : 'No G2D score'}">${item.g2d_mark ? Number(item.g2d_mark).toLocaleString() : '-'}</td>
+                    <td class="text-center" title="${item.performance_tier || 'No rank'}">${item.g3d_rank ? '#' + Number(item.g3d_rank).toLocaleString() : '-'}</td>
+                    <td class="text-center">
+                        <div class="market-position-content">
+                            ${item.is_unicorn ? `
+                                <span class="unicorn-badge" title="Only one listing of this model in all history!">🦄 UNICORN</span>
+                            ` : (item.price_stats ? `
+                                <div style="font-size: 0.875rem;">
+                                    Avg: €${item.price_stats.avg}<br>
+                                    Range: €${item.price_stats.min} - €${item.price_stats.max}
+                                </div>
+                                <div class="price-bar" title="Price percentile: ${item.price_stats.percentile}%">
+                                    <div class="price-bar-fill" style="width: ${item.price_stats.percentile}%"></div>
+                                </div>
+                            ` : (item.gpu_model ? '<small>No price data</small>' : '<small>No price data</small>'))}
+                        </div>
+                    </td>
+                    <td class="text-center">${item.source === 'andelemandele' ? 'Latvia' : (item.source === 'facebook_extension' ? (item.seller_location || 'Unknown') : (item.seller_location || 'N/A'))}</td>
+                    <td class="text-center">${item.date_posted ? new Date(item.date_posted).toLocaleDateString() : 'N/A'}</td>
                     <td>
+                        <button class="btn btn-small btn-secondary" onclick="event.stopPropagation(); showListingDetail('${item.listing_id}')">History</button>
                         <a href="${item.listing_url}" target="_blank" class="btn btn-small" onclick="event.stopPropagation()">View →</a>
+                    </td>
+                    <td style="text-align: center;" onclick="event.stopPropagation();">
+                        <input type="checkbox" class="compare-checkbox" value="${item.listing_id}" data-title="${gpuName.replace(/"/g, '&quot;')}" onchange="updateCompareSelection()">
                     </td>
                 </tr>
             `;
         });
-        
-        html += '</tbody></table>';
+
+        // Save discovered models to localStorage
+        if (newModelsDiscovered.length > 0) {
+            try {
+                localStorage.setItem(discoveredModelsKey, JSON.stringify([...discoveredModels]));
+                console.log(`Saved ${newModelsDiscovered.length} newly discovered models to localStorage`);
+            } catch (e) {
+                console.error('Error saving discovered models:', e);
+            }
+        }
+
+        html += `
+                </tbody>
+                <tfoot id="summary-row" style="display: none; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; font-weight: bold;">
+                    <tr id="summary-row-tr">
+                        <td id="summary-label-cell" colspan="5" style="text-align: right; padding: 0.75rem;">Summary:</td>
+                        <td id="summary-total-price" style="padding: 0.75rem;">-</td>
+                        <td id="summary-avg-price" style="padding: 0.75rem; font-size: 0.85rem;">-</td>
+                        <td id="summary-count" style="padding: 0.75rem;" colspan="9">- listings</td>
+                    </tr>
+                </tfoot>
+            </table>
+        `;
         container.innerHTML = html;
-        
-        // Update chart
+
+        // Show summary row if enabled in settings
+        const showSummary = localStorage.getItem('showSummaryFields') === 'true';
+        const summaryRow = document.getElementById('summary-row');
+        if (showSummary && summaryRow) {
+            summaryRow.style.display = 'table-row-group';
+            // Calculate totals
+            const totalPrice = listings.reduce((sum, item) => sum + parseFloat(item.price_eur || 0), 0);
+            const avgPrice = listings.length > 0 ? totalPrice / listings.length : 0;
+            const count = listings.length;
+            document.getElementById('summary-total-price').textContent = `€${totalPrice.toFixed(2)} total`;
+            document.getElementById('summary-avg-price').textContent = `avg: €${avgPrice.toFixed(2)}`;
+            document.getElementById('summary-count').textContent = `${count} listings shown`;
+        }
+
+        // Restore compare checkboxes after re-render
+        try {
+            const savedIds = new Set(JSON.parse(localStorage.getItem('gpu_compare_ids') || '[]'));
+            document.querySelectorAll('.compare-checkbox').forEach(cb => {
+                if (savedIds.has(cb.value)) cb.checked = true;
+            });
+            updateCompareSelection();
+        } catch (e) {}
+
+        // Update summary row colspans to match current visible columns
+        updateSummaryRowColspans();
+
+        // Update charts
         updatePriceChart(listings);
-        
+        updateMonthlyAvgChart(listings);
+        updateTopPerformersChart();
+        document.getElementById('source-distribution').innerHTML = buildSourceDistributionHtml(listings);
+
     } catch (error) {
-        document.getElementById('listings-container').innerHTML = 
+        document.getElementById('listings-container').innerHTML =
             `<div class="error">Failed to load listings: ${error.message}</div>`;
+    } finally {
+        if (overlay) overlay.classList.remove('active');
     }
+}
+
+function buildSourceDistributionHtml(listings) {
+    const sourceStats = {};
+    listings.forEach(item => {
+        const source = item.source || 'Unknown';
+        sourceStats[source] = (sourceStats[source] || 0) + 1;
+    });
+
+    const sourceNames = {
+        'ss.com': 'SS.com',
+        'andelemandele': 'Andele',
+        'facebook_extension': 'Facebook',
+        'facebook': 'Facebook'
+    };
+
+    const sourceDisplayCounts = {};
+    Object.entries(sourceStats).forEach(([source, count]) => {
+        const key = sourceNames[source] || source;
+        sourceDisplayCounts[key] = (sourceDisplayCounts[key] || 0) + count;
+    });
+
+    const sourceEntries = Object.entries(sourceDisplayCounts)
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, 5);
+    const totalSource = sourceEntries.reduce((sum, [, count]) => sum + count, 0) || 1;
+
+    const sourceColors = {
+        'SS.com': '#90EE90',
+        'Andele': '#8B5CF6',
+        'Facebook': '#1877F2'
+    };
+    const sourceIcons = {
+        'SS.com': '📰',
+        'Andele': '📱',
+        'Facebook': '👥'
+    };
+
+    let sourceHtml = '<div style="display: flex; flex-direction: column; gap: 0.4rem;">';
+    sourceEntries.forEach(([source, count]) => {
+        const pct = (count / totalSource * 100).toFixed(0);
+        const icon = sourceIcons[source] || '📦';
+        const barWidth = sourceEntries[0] ? (count / sourceEntries[0][1] * 100) : 0;
+        const color = sourceColors[source] || '#888';
+        sourceHtml += `
+            <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <span style="font-size: 1.1rem;">${icon}</span>
+                <div style="flex: 1;">
+                    <div style="display: flex; justify-content: space-between; font-size: 0.8rem; margin-bottom: 2px;">
+                        <span>${source}</span>
+                        <span style="font-weight: bold;">${pct}%</span>
+                    </div>
+                    <div style="background: rgba(255,255,255,0.1); border-radius: 4px; height: 8px; overflow: hidden;">
+                        <div style="background: ${color}; height: 100%; width: ${barWidth}%; border-radius: 4px;"></div>
+                    </div>
+                </div>
+                <span style="font-size: 0.75rem; color: #888; min-width: 35px; text-align: right;">${count}</span>
+            </div>
+        `;
+    });
+    sourceHtml += '</div>';
+    return sourceHtml;
+}
+
+let monthlyAvgChart = null;
+
+function updateMonthlyAvgChart(listings) {
+    const ctx = document.getElementById('gpu-monthly-avg-chart');
+    if (!ctx) return;
+
+    // Collect months
+    const months = Array.from(new Set(
+        listings.map(item => {
+            const d = item.date_posted || item.first_seen_at;
+            return d ? new Date(d).toISOString().slice(0, 7) : null;
+        }).filter(Boolean)
+    )).sort();
+    if (months.length === 0) return;
+
+    const labels = months.map(m => { const [y, mon] = m.split('-'); return `${mon}/${y}`; });
+    const monthIndex = Object.fromEntries(months.map((m, i) => [m, i]));
+
+    // Group by GPU model, then by month, collecting prices to average
+    const byModel = {};
+    listings.forEach(item => {
+        const d = item.date_posted || item.first_seen_at;
+        if (!d) return;
+        const month = new Date(d).toISOString().slice(0, 7);
+        const model = (item.gpu_model || item.title || 'Unknown').replace(/\b(GeForce|Radeon|AMD|NVIDIA|Intel)\s*/gi, '').trim() || 'Unknown';
+        const idx = monthIndex[month];
+        if (!byModel[model]) byModel[model] = {};
+        if (!byModel[model][idx]) byModel[model][idx] = [];
+        byModel[model][idx].push(parseFloat(item.price_eur) || 0);
+    });
+
+    const palette = ['#667eea', '#10b981', '#f59e0b', '#ef4444', '#8B5CF6', '#06b6d4', '#ec4899', '#84cc16', '#f97316', '#6366f1', '#14b8a6', '#f43f5e', '#a855f7', '#22c55e', '#eab308'];
+
+    const datasets = Object.entries(byModel).map(([model, monthMap], idx) => {
+        const points = Object.entries(monthMap).map(([x, prices]) => ({
+            x: Number(x),
+            y: prices.reduce((a, b) => a + b, 0) / prices.length,
+            count: prices.length
+        })).sort((a, b) => a.x - b.x);
+        return {
+            label: model,
+            data: points,
+            borderColor: palette[idx % palette.length],
+            backgroundColor: palette[idx % palette.length],
+            showLine: true,
+            spanGaps: true,
+            tension: 0.3,
+            pointRadius: 4,
+            pointHoverRadius: 6,
+            borderWidth: 2
+        };
+    });
+
+    if (monthlyAvgChart) monthlyAvgChart.destroy();
+    monthlyAvgChart = new Chart(ctx, {
+        type: 'line',
+        data: { datasets },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            animation: false,
+            parsing: { x: 'x', y: 'y' },
+            plugins: {
+                legend: { display: true, position: 'bottom', labels: { boxWidth: 12, font: { size: 10 } } },
+                tooltip: {
+                    callbacks: {
+                        label: (ctx) => {
+                            const p = ctx.raw;
+                            const noun = p.count === 1 ? 'listing' : 'listings';
+                            return `${ctx.dataset.label}: Avg €${Number(p.y).toFixed(0)} (${p.count} ${noun})`;
+                        }
+                    }
+                }
+            },
+            scales: {
+                y: { beginAtZero: false, title: { display: true, text: 'Average Price (€)' } },
+                x: {
+                    type: 'linear',
+                    position: 'bottom',
+                    min: -0.5,
+                    max: months.length - 0.5,
+                    title: { display: true, text: 'Month' },
+                    ticks: {
+                        stepSize: 1,
+                        callback: v => labels[Math.round(v)] || ''
+                    }
+                }
+            }
+        }
+    });
+}
+async function updateTopPerformersChart() {
+    const ctx = document.getElementById('gpu-top-performers-chart');
+    if (!ctx) return;
+
+    try {
+        const params = new URLSearchParams();
+        params.append('active', 'false');
+        params.append('time', 'all_time');
+        params.append('limit', '10000');
+        const response = await fetch('/api/gpus?' + params.toString());
+        const data = await response.json();
+        const listings = Array.isArray(data) ? data : (data.listings || []);
+
+        const top = listings
+            .filter(l => Number(l.g3d_mark) > 0 && Number(l.price_eur) > 0)
+            .map(l => ({ ...l, ratio: Number(l.g3d_mark) / Number(l.price_eur) }))
+            .sort((a, b) => b.ratio - a.ratio)
+            .slice(0, 10);
+
+        if (topPerformersChart) topPerformersChart.destroy();
+        topPerformersChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: top.map(l => {
+                    const model = (l.gpu_model || l.title || '').replace(/\b(GeForce|Radeon|AMD|NVIDIA|Intel)\s*/gi, '').trim();
+                    return `${l.vendor || ''} ${model}`.trim();
+                }),
+                datasets: [{
+                    label: 'G3D/€',
+                    data: top.map(l => l.ratio),
+                    backgroundColor: top.map((_, i) => i < 3 ? 'rgba(16, 185, 129, 0.85)' : 'rgba(59, 130, 246, 0.6)'),
+                    borderColor: top.map((_, i) => i < 3 ? 'rgba(16, 185, 129, 1)' : 'rgba(59, 130, 246, 0.8)'),
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                indexAxis: 'y',
+                responsive: true,
+                maintainAspectRatio: false,
+                animation: false,
+                scales: {
+                    x: { title: { display: true, text: 'G3D Mark per Euro (higher is better)' } }
+                },
+                plugins: {
+                    title: { display: true, text: '🏆 Top Performers (G3D/€) — all-time' },
+                    legend: { display: false },
+                    tooltip: {
+                        callbacks: {
+                            label: (ctx) => {
+                                const l = top[ctx.dataIndex];
+                                return `€${Number(l.price_eur).toFixed(0)} · ${l.ratio.toFixed(2)} G3D/€ · G3D ${Number(l.g3d_mark).toLocaleString()}`;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    } catch (err) {
+        console.error('Failed to update top performers chart:', err);
+    }
+}
+
+function updateSummaryRowColspans() {
+    const table = document.querySelector('#listings-container table');
+    const summaryRow = document.getElementById('summary-row-tr');
+    if (!table || !summaryRow) return;
+
+    // Count only headers that are actually visible (in case columns get hidden)
+    const headers = Array.from(table.querySelectorAll('thead th'))
+        .filter(th => window.getComputedStyle(th).display !== 'none');
+    const totalVisible = headers.length;
+    if (totalVisible < 3) return;
+
+    // Summary row layout: [label][total][avg][count]
+    const priceIndex = headers.findIndex(th => th.textContent.trim() === 'Price');
+    const labelSpan = priceIndex >= 0 ? priceIndex : Math.max(1, totalVisible - 3);
+    const countSpan = Math.max(1, totalVisible - labelSpan - 2);
+
+    const labelCell = document.getElementById('summary-label-cell');
+    const countCell = document.getElementById('summary-count');
+    if (labelCell) labelCell.colSpan = labelSpan;
+    if (countCell) countCell.colSpan = countSpan;
 }
 
 function updatePriceChart(listings) {
     const ctx = document.getElementById('priceDistChart').getContext('2d');
-    
+
     // Group by price ranges
     const ranges = {
         'Under €50': 0,
@@ -193,7 +1761,7 @@ function updatePriceChart(listings) {
         '€200-500': 0,
         'Over €500': 0
     };
-    
+
     listings.forEach(item => {
         const price = item.price_eur;
         if (price < 50) ranges['Under €50']++;
@@ -202,11 +1770,11 @@ function updatePriceChart(listings) {
         else if (price < 500) ranges['€200-500']++;
         else ranges['Over €500']++;
     });
-    
+
     if (priceChart) {
         priceChart.destroy();
     }
-    
+
     priceChart = new Chart(ctx, {
         type: 'doughnut',
         data: {
@@ -234,23 +1802,37 @@ function updatePriceChart(listings) {
 
 async function showModelHistory(modelId, modelName) {
     if (!modelId) return;
-    
+
     try {
         const response = await fetch(`/api/model-history/gpu/${modelId}`);
-        const listings = await response.json();
-        
+        const result = await response.json();
+
+        // Check if response is an error object
+        if (result.error) {
+            throw new Error(result.error);
+        }
+
+        // Check if we got valid data (API returns {listings, stats, model_info})
+        const listings = result.listings || (Array.isArray(result) ? result : []);
+        const stats = result.stats || {};
+
+        if (!Array.isArray(listings)) {
+            console.error('Expected array, got:', typeof result, result);
+            throw new Error('Invalid response format from API');
+        }
+
         document.getElementById('history-title').textContent = `${modelName} - Price History`;
-        
+
         // Prepare chart data
         const sorted = [...listings].sort((a, b) => new Date(a.date_posted) - new Date(b.date_posted));
         const dates = sorted.map(l => new Date(l.date_posted).toLocaleDateString());
         const prices = sorted.map(l => l.price_eur);
-        
+
         // Destroy existing chart
         if (historyChart) {
             historyChart.destroy();
         }
-        
+
         // Create new chart
         const ctx = document.getElementById('historyChart').getContext('2d');
         historyChart = new Chart(ctx, {
@@ -284,7 +1866,7 @@ async function showModelHistory(modelId, modelName) {
                 }
             }
         });
-        
+
         // Show listings table
         const listingsHtml = `
             <h4 style="margin-top: 2rem;">All Listings (${listings.length})</h4>
@@ -292,7 +1874,7 @@ async function showModelHistory(modelId, modelName) {
                 <thead>
                     <tr>
                         <th>Title</th>
-                        <th>Price</th>
+                        <th>{{ t('Price') }}</th>
                         <th>Location</th>
                         <th>Date</th>
                         <th>Status</th>
@@ -311,11 +1893,11 @@ async function showModelHistory(modelId, modelName) {
                 </tbody>
             </table>
         `;
-        
+
         document.getElementById('history-listings').innerHTML = listingsHtml;
-        
+
         document.getElementById('history-modal').classList.add('active');
-        
+
     } catch (error) {
         console.error('Error loading history:', error);
     }
@@ -325,14 +1907,1071 @@ function closeModal() {
     document.getElementById('history-modal').classList.remove('active');
 }
 
+async function showListingDetail(listingId) {
+    console.log('showListingDetail called for:', listingId);
+    try {
+        const response = await fetch(`/api/listing-details/${listingId}`);
+        const data = await response.json();
+
+        if (data.error) {
+            console.error('Error:', data.error);
+            return;
+        }
+
+        const current = data.current;
+        const history = data.history || [];
+
+        // Use local image if available
+        // local_image_path format: "facebook/filename.png" or "gpus/filename.jpg" etc.
+        // Normalize backslashes to forward slashes for Windows paths
+        const normalizedImagePath = current.local_image_path
+            ? current.local_image_path.replace(/\\/g, '/')
+            : null;
+        const detailImageUrl = normalizedImagePath
+            ? `/images/${normalizedImagePath}`
+            : current.image_url;
+
+        document.getElementById('listing-title').textContent = current.title || 'Listing Details';
+
+        // Source badge for popup (full badge)
+        let popupSourceBadge = '';
+        if (current.source === 'andelemandele') {
+            popupSourceBadge = `<span class="badge" style="background: #ff6b6b; color: white; margin-left: 10px;">Andele Mandele</span>`;
+        } else if (current.source === 'facebook_extension') {
+            popupSourceBadge = `<span class="badge" style="background: #4267B2; color: white; margin-left: 10px;">Facebook</span>`;
+        } else {
+            popupSourceBadge = `<span class="badge" style="background: #90EE90; color: #333; margin-left: 10px;">SS.com</span>`;
+        }
+
+        let comparisonHtml = `
+            ${detailImageUrl ? `
+            <div style="margin-bottom: 1.5rem; text-align: center;">
+                <img src="${detailImageUrl}" alt="${current.title}" class="listing-detail-image" style="max-height: 300px;">
+            </div>
+            ` : ''}
+            <div style="margin-bottom: 1.5rem;">
+                <div style="display: flex; gap: 1rem; margin-bottom: 1rem; align-items: center; flex-wrap: wrap;">
+                    <div style="flex: 1;">
+                        <strong>Current Price:</strong> <span class="price" style="font-size: 1.25rem;">€${current.price_eur}</span>
+                    </div>
+                    ${popupSourceBadge}
+                    ${(current.matched_gpu_id && localStorage.getItem('showGPUId') !== 'false') ? `<span class="badge" style="background: #6b7280; color: white; font-family: monospace; font-size: 0.75rem;">GPU ID: ${current.matched_gpu_id}</span>` : ''}
+                    ${localStorage.getItem('showListingId') !== 'false' ? `<span class="badge" style="background: #374151; color: #9ca3af; font-family: monospace; font-size: 0.75rem;">Listing: ${current.listing_id}</span>` : ''}
+                    ${localStorage.getItem('showDeleteButtons') !== 'false' ? `<button class="btn btn-small" style="background: #dc2626; color: white; border: none;" onclick="deleteListing('${current.listing_id}')">🗑️ Delete</button>` : ''}
+                </div>
+                    <div style="flex: 1;">
+                        ${history.length > 0 ? `
+                            <strong>Previous Price:</strong> €${history[0].price_eur}
+                            <span style="color: ${current.price_eur < history[0].price_eur ? '#27ae60' : '#e74c3c'};">
+                                ${current.price_eur < history[0].price_eur ? '↓' : '↑'}
+                                €${Math.abs(current.price_eur - history[0].price_eur).toFixed(2)}
+                            </span>
+                        ` : '<em>No previous price</em>'}
+                    </div>
+                </div>
+            </div>
+
+            <div style="margin-bottom: 1rem;">
+                <strong>Description:</strong>
+                <div class="description-box">
+                    ${current.description || '<em>No description</em>'}
+                </div>
+            </div>
+        `;
+
+        if (history.length > 0 && history[0].description) {
+            comparisonHtml += `
+                <div style="margin-bottom: 1.5rem;">
+                    <strong>Previous Description:</strong>
+                    <div class="prev-description-box">
+                        ${history[0].description}
+                    </div>
+                </div>
+
+                <div style="margin-bottom: 1.5rem;">
+                    <button class="btn btn-small" onclick="toggleDescription('current-desc', 'prev-desc')">
+                        Toggle Description View
+                    </button>
+                </div>
+
+                <div id="prev-desc" style="display: none;">
+                    <h4>Previous Version</h4>
+                    <pre style="background: #f8f9fa; padding: 1rem; overflow-x: auto;">${history[0].description}</pre>
+                </div>
+            `;
+        }
+
+        // Price history table
+        comparisonHtml += `
+            <h4 style="margin-top: 1.5rem;">Price History</h4>
+            <table class="analytics-table">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>{{ t('Price') }}</th>
+                        <th>Change</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>${current.date_posted ? new Date(current.date_posted).toLocaleDateString() : new Date().toLocaleDateString()}</td>
+                        <td class="price">€${current.price_eur}</td>
+                        <td>-</td>
+                    </tr>
+                    ${history.map((h, i) => {
+                        const prevPrice = history[i + 1]?.price_eur;
+                        const change = prevPrice ? h.price_eur - prevPrice : 0;
+                        const changeClass = change < 0 ? 'price-diff-positive' : change > 0 ? 'price-diff-negative' : '';
+                        return `
+                            <tr>
+                                <td>${h.recorded_at ? new Date(h.recorded_at).toLocaleDateString() : 'N/A'}</td>
+                                <td>€${h.price_eur}</td>
+                                <td class="${changeClass}">
+                                    ${change !== 0 ? `${change < 0 ? '↓' : '↑'} €${Math.abs(change).toFixed(2)}` : '-'}
+                                </td>
+                            </tr>
+                        `;
+                    }).join('')}
+                </tbody>
+            </table>
+
+            <!-- Add Model History Section if this listing has a matched GPU model -->
+            ${current.matched_gpu_id ? `
+                <div style="margin-top: 2rem;">
+                    <button class="btn btn-small" onclick="loadAndShowModelHistory(${current.matched_gpu_id}, '${current.gpu_model || 'GPU'}')" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
+                        📊 View All ${current.gpu_model || 'GPU'} Listings
+                    </button>
+                </div>
+            ` : ''}
+
+            <div style="margin-top: 1.5rem;">
+                <a href="${current.listing_url}" target="_blank" class="btn">View on ${current.source === 'facebook' || current.source === 'facebook_extension' ? 'Facebook' : 'ss.com'} →</a>
+            </div>
+        `;
+
+        document.getElementById('listing-comparison').innerHTML = comparisonHtml;
+        document.getElementById('listing-modal').classList.add('active');
+
+    } catch (error) {
+        console.error('Error loading listing details:', error);
+    }
+}
+
+// Function to load and display model history
+async function loadAndShowModelHistory(modelId, modelName) {
+    try {
+        const response = await fetch(`/api/model-history/gpu/${modelId}`);
+        const result = await response.json();
+
+        if (result.error) {
+            throw new Error(result.error);
+        }
+
+        const listings = result.listings || [];
+        const stats = result.stats || {};
+
+        // Build the model history HTML
+        let modelHtml = `
+            <div style="margin-top: 2rem; padding-top: 2rem; border-top: 2px solid #667eea;">
+                <h4 style="color: #667eea;">📊 All ${modelName} Listings (${listings.length})</h4>
+
+                <div style="background: var(--card-bg); padding: 1rem; border-radius: 8px; margin-bottom: 1rem; border: 1px solid var(--card-border);">
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 1rem;">
+                        <div>
+                            <strong>Average:</strong> €${stats.avg?.toFixed(2) || 'N/A'}
+                        </div>
+                        <div>
+                            <strong>Range:</strong> €${stats.min?.toFixed(0) || '?'} - €${stats.max?.toFixed(0) || '?'}
+                        </div>
+                        <div>
+                            <strong>Count:</strong> ${listings.length} listings
+                        </div>
+                    </div>
+                </div>
+
+                <table class="analytics-table">
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>{{ t('Price') }}</th>
+                            <th>Location</th>
+                            <th>Date</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${listings.slice(0, 20).map(item => `
+                            <tr>
+                                <td>
+                                    <a href="${item.listing_url}" target="_blank" style="color: #667eea;">
+                                        ${item.title?.substring(0, 50) || 'N/A'}${(item.title?.length || 0) > 50 ? '...' : ''}
+                                    </a>
+                                </td>
+                                <td class="price">€${item.price_eur}</td>
+                                <td>${item.seller_location || 'N/A'}</td>
+                                <td>${item.date_posted ? new Date(item.date_posted).toLocaleDateString() : 'N/A'}</td>
+                                <td>${item.is_active ? '<span style="color: #27ae60;">● Active</span>' : '<span style="color: #999;">● Inactive</span>'}</td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+
+                ${listings.length > 20 ? `
+                    <div style="text-align: center; margin-top: 1rem; color: #666;">
+                        <em>Showing 20 of ${listings.length} listings</em>
+                    </div>
+                ` : ''}
+            </div>
+        `;
+
+        // Append to the listing comparison div
+        const comparisonDiv = document.getElementById('listing-comparison');
+        comparisonDiv.innerHTML += modelHtml;
+
+        // Scroll to the new section
+        comparisonDiv.scrollTop = comparisonDiv.scrollHeight;
+
+    } catch (error) {
+        console.error('Error loading model history:', error);
+        alert('Error loading model history: ' + error.message);
+    }
+}
+
+function toggleDescription(currentId, prevId) {
+    const current = document.getElementById(currentId);
+    const prev = document.getElementById(prevId);
+    if (current && prev) {
+        const temp = current.innerHTML;
+        current.innerHTML = prev.innerHTML;
+        prev.innerHTML = temp;
+    }
+}
+
+function closeListingModal() {
+    document.getElementById('listing-modal').classList.remove('active');
+}
+
 // Close modal on outside click
+document.getElementById('listing-modal').addEventListener('click', function(e) {
+    if (e.target === this) {
+        closeListingModal();
+    }
+});
+
+// Close history modal on outside click
 document.getElementById('history-modal').addEventListener('click', function(e) {
     if (e.target === this) {
         closeModal();
     }
 });
 
+// Image modal function
+function showImageModal(imageUrl, title) {
+    // Create modal if it doesn't exist
+    let modal = document.getElementById('image-preview-modal');
+    if (!modal) {
+        modal = document.createElement('div');
+        modal.id = 'image-preview-modal';
+        modal.className = 'modal-overlay';
+        modal.innerHTML = `
+            <div class="modal" style="max-width: 90%; max-height: 90%; padding: 0; overflow: hidden;">
+                <div style="position: relative; background: #000;">
+                    <button onclick="closeImageModal()" style="position: absolute; top: 10px; right: 10px; background: rgba(0,0,0,0.7); color: white; border: none; border-radius: 50%; width: 40px; height: 40px; font-size: 20px; cursor: pointer; z-index: 10;">&times;</button>
+                    <img id="preview-image" src="" alt="" style="max-width: 100%; max-height: 85vh; display: block; margin: 0 auto;" onload="fitPreviewImage(this)">
+                </div>
+                <div style="padding: 1rem; background: white; text-align: center;">
+                    <p id="preview-title" style="margin: 0; font-weight: 600;"></p>
+                    <a id="preview-link" href="" target="_blank" class="btn" style="margin-top: 0.5rem;">View on ss.com →</a>
+                </div>
+            </div>
+        `;
+        document.body.appendChild(modal);
+
+        // Close on outside click
+        modal.addEventListener('click', function(e) {
+            if (e.target === modal) {
+                closeImageModal();
+            }
+        });
+    }
+
+    document.getElementById('preview-image').src = imageUrl;
+    document.getElementById('preview-image').alt = title;
+    document.getElementById('preview-title').textContent = title;
+
+    modal.classList.add('active');
+}
+
+function closeImageModal() {
+    const modal = document.getElementById('image-preview-modal');
+    if (modal) {
+        modal.classList.remove('active');
+    }
+}
+
+function fitPreviewImage(img) {
+    if (!img || !img.naturalWidth || !img.naturalHeight) return;
+    const isPortrait = img.naturalHeight > img.naturalWidth;
+    if (isPortrait) {
+        img.style.maxWidth = '70%';
+        img.style.margin = '0 auto';
+    } else {
+        img.style.maxWidth = '100%';
+        img.style.margin = '0 auto';
+    }
+}
+
+// Delete a single listing
+async function deleteListing(listingId) {
+    if (!confirm('⚠️ WARNING: This will permanently delete this listing from the database.\n\nAre you sure you want to delete?')) return;
+
+    try {
+        const response = await fetch(`/api/delete-listing/${listingId}`, {
+            method: 'DELETE'
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+            closeListingModal();
+            loadListings();
+            alert('✅ Listing deleted successfully');
+        } else {
+            alert('Error: ' + result.error);
+        }
+    } catch (error) {
+        alert('Error: ' + error.message);
+    }
+}
+
+// GPU models fetched from database
+let gpuModelsByVendor = {
+    'NVIDIA': {'models': [], 'vrams': {}},
+    'AMD': {'models': [], 'vrams': {}},
+    'Intel': {'models': [], 'vrams': {}}
+};
+
+// Load GPU models from API on page load
+async function loadGpuModels() {
+    try {
+        console.log('[GPU Debug] Loading GPU models from /api/gpu-models-by-vendor');
+        const response = await fetch('/api/gpu-models-by-vendor');
+        console.log('[GPU Debug] Response status:', response.status);
+
+        const data = await response.json();
+        console.log('[GPU Debug] Data received:', data);
+
+        if (data.error) {
+            console.error('[GPU Debug] Error in response:', data.error);
+        } else {
+            gpuModelsByVendor = data;
+            console.log('[GPU Debug] NVIDIA models:', gpuModelsByVendor.NVIDIA?.models?.length || 0);
+            console.log('[GPU Debug] AMD models:', gpuModelsByVendor.AMD?.models?.length || 0);
+            console.log('[GPU Debug] Intel models:', gpuModelsByVendor.Intel?.models?.length || 0);
+
+            // Refresh model dropdown if vendor is already selected
+            const vendorSelect = document.getElementById('vendor-filter');
+            if (vendorSelect.value !== 'all') {
+                console.log('[GPU Debug] Vendor already selected, calling onVendorChange');
+                onVendorChange();
+            }
+        }
+    } catch (error) {
+        console.error('[GPU Debug] Error loading GPU models:', error);
+    }
+}
+
+// Call on page load
+document.addEventListener('DOMContentLoaded', loadGpuModels);
+
+// Populate model dropdown based on vendor selection
+function onVendorChange() {
+    const vendorSelect = document.getElementById('vendor-filter');
+    const modelSelect = document.getElementById('model-filter');
+    const vramSelect = document.getElementById('vram-filter');
+    const selectedVendor = vendorSelect.value;
+
+    console.log('[GPU Debug] onVendorChange called, selected vendor:', selectedVendor);
+    console.log('[GPU Debug] gpuModelsByVendor:', gpuModelsByVendor);
+
+    // Clear current options
+    modelSelect.innerHTML = '<option value="all">All Models</option>';
+
+    // Reset VRAM filter when vendor changes
+    vramSelect.innerHTML = '<option value="">All VRAM</option>';
+
+    if (selectedVendor !== 'all' && gpuModelsByVendor[selectedVendor]) {
+        const models = gpuModelsByVendor[selectedVendor].models || [];
+        const vrams = gpuModelsByVendor[selectedVendor].vrams || {};
+        console.log('[GPU Debug] Found', models.length, 'models for', selectedVendor);
+
+        // Group models by base name (remove " XGB" suffix)
+        const baseModels = new Map(); // baseName -> Set of VRAMs
+
+        models.forEach(model => {
+            // Extract base model name by removing VRAM suffix (e.g., "GeForce GTX 1060 6GB" -> "GeForce GTX 1060")
+            const baseMatch = model.match(/^(.+?)\s*(\d+GB)$/i);
+            const baseName = baseMatch ? baseMatch[1].trim() : model;
+
+            // Get VRAMs for this model
+            const modelVrams = vrams[model] || [];
+
+            if (!baseModels.has(baseName)) {
+                baseModels.set(baseName, new Set());
+            }
+            modelVrams.forEach(v => baseModels.get(baseName).add(v));
+        });
+
+        // Sort base models by year released (extract year from model name or use API order)
+        // API returns models sorted by id DESC (newest first), so maintain that order
+        const sortedBaseModels = Array.from(baseModels.keys());
+
+        sortedBaseModels.forEach(baseName => {
+            const option = document.createElement('option');
+            option.value = baseName;
+            option.textContent = baseName;
+            option.dataset.vrams = JSON.stringify(Array.from(baseModels.get(baseName)).sort((a, b) => a - b));
+            modelSelect.appendChild(option);
+        });
+
+        console.log('[GPU Debug] Grouped into', sortedBaseModels.length, 'base models');
+    } else {
+        console.log('[GPU Debug] No vendor selected or vendor not in data');
+    }
+
+    // Reload listings with new filter
+    loadListings();
+}
+
+// Update VRAM filter dynamically based on selected model
+function updateVramFilter() {
+    const vendorSelect = document.getElementById('vendor-filter');
+    const modelSelect = document.getElementById('model-filter');
+    const vramSelect = document.getElementById('vram-filter');
+
+    const selectedVendor = vendorSelect.value;
+    const selectedModel = modelSelect.value;
+
+    // Get available VRAMs for this vendor/model
+    let availableVrams = [];
+
+    if (selectedVendor !== 'all' && gpuModelsByVendor[selectedVendor]) {
+        const vrams = gpuModelsByVendor[selectedVendor].vrams || {};
+
+        if (selectedModel !== 'all') {
+            // Find all models that match the base name (e.g., "GeForce GTX 1060" matches "GeForce GTX 1060 6GB")
+            const selectedOption = modelSelect.options[modelSelect.selectedIndex];
+            if (selectedOption && selectedOption.dataset.vrams) {
+                // Use cached VRAMs from the option's data attribute
+                try {
+                    availableVrams = JSON.parse(selectedOption.dataset.vrams);
+                } catch (e) {
+                    console.error('Error parsing VRAMs:', e);
+                }
+            }
+
+            // Fallback: scan through all models to find VRAMs
+            if (availableVrams.length === 0) {
+                Object.entries(vrams).forEach(([modelName, modelVrams]) => {
+                    if (modelName.startsWith(selectedModel)) {
+                        availableVrams = [...new Set([...availableVrams, ...modelVrams])];
+                    }
+                });
+            }
+        } else {
+            // No specific model - show all VRAMs for this vendor
+            Object.values(vrams).forEach(vrams => {
+                availableVrams = [...new Set([...availableVrams, ...vrams])];
+            });
+        }
+    } else {
+        // Get all VRAMs across all vendors
+        Object.values(gpuModelsByVendor).forEach(vendor => {
+            Object.values(vendor.vrams || {}).forEach(vrams => {
+                availableVrams = [...new Set([...availableVrams, ...vrams])];
+            });
+        });
+    }
+
+    // Sort VRAM values
+    availableVrams.sort((a, b) => a - b);
+
+    // Save current selection (now stored in MB)
+    const currentVram = vramSelect.value;
+
+    // Rebuild VRAM options using actual MB values with GB labels
+    vramSelect.innerHTML = '<option value="">All VRAM</option>';
+
+    if (availableVrams.length > 0) {
+        availableVrams.forEach(vram => {
+            const option = document.createElement('option');
+            option.value = vram;  // MB value sent to backend
+            option.textContent = vramDisplayLabel(vram);
+            option.title = `${vram} MB`;
+            vramSelect.appendChild(option);
+        });
+    } else {
+        // Fallback: standard VRAM sizes (MB values), capped at 32 GB
+        const standardVrams = [
+            [3072, '3 GB'],
+            [4096, '4 GB'],
+            [6144, '6 GB'],
+            [8192, '8 GB'],
+            [10240, '10 GB'],
+            [11264, '11 GB'],
+            [12288, '12 GB'],
+            [16384, '16 GB'],
+            [20480, '20 GB'],
+            [24576, '24 GB'],
+            [32768, '32 GB']
+        ];
+        standardVrams.forEach(([mb, label]) => {
+            const option = document.createElement('option');
+            option.value = mb;
+            option.textContent = label;
+            option.title = `${mb} MB`;
+            vramSelect.appendChild(option);
+        });
+    }
+
+    // Restore selection if still valid (value is now in MB)
+    if (currentVram && availableVrams.includes(parseInt(currentVram))) {
+        vramSelect.value = currentVram;
+    }
+}
+
+// Format a VRAM MB value as a human-readable GB label (matches backend half-up rounding)
+function vramDisplayLabel(mb) {
+    const gb = Math.round(mb / 1024);
+    if (mb % 1024 === 0) {
+        return `${gb} GB`;
+    }
+    return `${gb} GB (${mb} MB)`;
+}
+
+// Handle VRAM mode checkbox toggle - updates label and refreshes listings
+function onVramModeChange() {
+    const checkbox = document.getElementById('vram-min-mode');
+    const label = document.getElementById('vram-min-label');
+    if (checkbox && label) {
+        label.textContent = checkbox.checked ? '≥ selected' : 'Exact size';
+    }
+    loadListings();
+}
+
+// Handle model change - update VRAM options then reload listings
+function onModelChange() {
+    updateVramFilter();
+    loadListings();
+}
+
+// Store current listing ID for flagging
+let currentGPUListingId = null;
+
+// Override showListingDetail to store the listing ID
+const originalShowListingDetail = showListingDetail;
+showListingDetail = async function(listingId) {
+    currentGPUListingId = listingId;
+    await originalShowListingDetail(listingId);
+
+    // Reset flag button
+    const flagBtn = document.getElementById('flag-listing-btn');
+    if (flagBtn) {
+        flagBtn.textContent = '🚩 Flag';
+        flagBtn.style.background = '#dc3545';
+        flagBtn.disabled = false;
+    }
+};
+
+// Flag GPU listing function
+async function flagCurrentListing() {
+    if (!currentGPUListingId) {
+        alert('No listing selected');
+        return;
+    }
+
+    const reason = prompt('Enter reason for flagging this listing:', 'Suspicious');
+    if (!reason) return;
+
+    const consoleName = 'GPU';
+
+    try {
+        const response = await fetch('/api/flag-listing', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                listing_id: currentGPUListingId,
+                reason: reason,
+                console_name: consoleName
+            })
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+            alert('Listing flagged successfully!');
+            // Update button to show it's flagged
+            const btn = document.getElementById('flag-listing-btn');
+            btn.textContent = '✓ Flagged';
+            btn.style.background = '#28a745';
+            btn.disabled = true;
+
+            // Refresh listings to remove flagged item
+            setTimeout(() => {
+                loadListings();
+            }, 500);
+        } else {
+            alert('Error: ' + (data.error || 'Failed to flag listing'));
+        }
+    } catch (error) {
+        console.error('Error flagging listing:', error);
+        alert('Failed to flag listing. See console for details.');
+    }
+}
+
+// Show flag modal with categories from listing detail modal
+function showFlagModalWithCategoriesFromModal() {
+    if (!currentGPUListingId) {
+        alert('No listing selected');
+        return;
+    }
+
+    const title = document.getElementById('listing-title').textContent || 'Listing Details';
+    showFlagModalWithCategories(currentGPUListingId, title);
+}
+
+// Flag modal with categories function
+function showFlagModalWithCategories(listingId, title) {
+    const existingModal = document.getElementById('flag-modal');
+    if (existingModal) existingModal.remove();
+
+    const safeId = String(listingId).replace(/'/g, "\\'").replace(/"/g, '&quot;');
+
+    const modalHtml = `
+        <div id="flag-modal" class="modal-overlay active" style="z-index: 2000;">
+            <div class="modal" style="max-width: 500px;">
+                <div class="modal-header">
+                    <h3>🚩 Flag Listing</h3>
+                    <button class="modal-close" onclick="closeFlagModal()">×</button>
+                </div>
+                <div style="padding: 1.5rem;">
+                    <p style="margin-bottom: 1rem;"><strong>Listing:</strong> ${title || listingId}</p>
+
+                    <div class="form-group" style="margin-bottom: 1rem;">
+                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Flag Category:</label>
+                        <select id="flag-category" style="width: 100%; padding: 0.5rem; border: 1px solid #ddd; border-radius: 6px;">
+                            <option value="IGNORE">IGNORE - Hide from listings</option>
+                            <option value="SKIP">SKIP - Skip in future scrapes</option>
+                            <option value="SCRAPPER">SCRAPPER - Scraper issue</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group" style="margin-bottom: 1rem;">
+                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Reason:</label>
+                        <textarea id="flag-reason" placeholder="Enter reason (e.g., Scam, Wrong specs, Sold)"
+                            style="width: 100%; padding: 0.75rem; border: 2px solid #e74c3c; border-radius: 8px; font-family: inherit; resize: vertical;"
+                            rows="3"></textarea>
+                    </div>
+
+                    <div style="display: flex; gap: 0.5rem; justify-content: flex-end;">
+                        <button class="btn btn-small btn-secondary" onclick="closeFlagModal()">{{ t('Cancel') }}</button>
+                        <button class="btn btn-small" style="background: #e74c3c;" onclick="submitFlagFromModal('${safeId}')">Submit Flag</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+
+    document.body.insertAdjacentHTML('beforeend', modalHtml);
+
+    document.getElementById('flag-modal').addEventListener('click', function(e) {
+        if (e.target === this) closeFlagModal();
+    });
+}
+
+function closeFlagModal() {
+    const modal = document.getElementById('flag-modal');
+    if (modal) modal.remove();
+}
+
+function removeListingRow(listingId) {
+    const rows = document.querySelectorAll('#listings-container tbody tr, table tbody tr');
+    rows.forEach(row => {
+        const onclick = row.getAttribute('onclick') || '';
+        const html = row.innerHTML;
+        if (onclick.includes("'" + listingId + "'") || html.includes("'" + listingId + "'") || html.includes(listingId)) {
+            row.style.transition = 'opacity 0.3s ease';
+            row.style.opacity = '0';
+            setTimeout(() => row.remove(), 300);
+        }
+    });
+}
+
+async function submitFlagFromModal(listingId) {
+    const categorySelect = document.getElementById('flag-category');
+    const reasonInput = document.getElementById('flag-reason');
+
+    const category = categorySelect ? categorySelect.value : 'IGNORE';
+    const reason = reasonInput ? reasonInput.value.trim() : '';
+
+    if (!reason) {
+        alert('Please enter a reason for flagging');
+        return;
+    }
+
+    try {
+        const response = await fetch('/api/flag-listing', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                listing_id: listingId,
+                comment: reason,
+                category: 'gpu',
+                flag_category: category
+            })
+        });
+
+        const data = await response.json();
+        if (data.success) {
+            alert('✅ Listing flagged successfully!');
+            closeFlagModal();
+
+            // Remove the row immediately so the listing disappears from the page
+            removeListingRow(listingId);
+
+            // Update the flag button in the modal
+            if (listingId === currentGPUListingId) {
+                const btn = document.getElementById('flag-listing-btn');
+                if (btn) {
+                    btn.textContent = '✓ Flagged';
+                    btn.style.background = '#28a745';
+                    btn.disabled = true;
+                }
+            }
+
+            loadListings();
+        } else {
+            alert('Error: ' + (data.error || 'Failed to flag listing'));
+        }
+    } catch (error) {
+        console.error('Error flagging listing:', error);
+        alert('Failed to flag listing. Please try again.');
+    }
+}
+
+// Unicorn filter state
+let unicornFilter = 'all';
+
+function setUnicornFilter(mode) {
+    unicornFilter = mode;
+
+    // Update button styles
+    document.querySelectorAll('.unicorn-btn').forEach(btn => {
+        btn.classList.remove('active');
+    });
+
+    if (mode === 'all') {
+        document.getElementById('unicorn-all').classList.add('active');
+    } else if (mode === 'only') {
+        document.getElementById('unicorn-only').classList.add('active');
+    } else if (mode === 'exclude') {
+        document.getElementById('unicorn-exclude').classList.add('active');
+    }
+
+    loadListings();
+}
+
+function updateCompareSelection() {
+    const checkboxes = document.querySelectorAll('.compare-checkbox:checked');
+    const ids = Array.from(checkboxes).map(cb => cb.value);
+    const count = ids.length;
+    document.getElementById('compare-count').textContent = count;
+    document.getElementById('compare-btn').disabled = count < 2 || count > 4;
+    document.getElementById('compare-btn').title = count > 4 ? 'Max 4 GPUs' : (count < 2 ? 'Select 2-4 GPUs' : 'Open compare page');
+    try {
+        localStorage.setItem('gpu_compare_ids', JSON.stringify(ids));
+    } catch (e) {}
+
+    // Highlight rows that are selected for comparison
+    document.querySelectorAll('#listings-container tbody tr').forEach(row => {
+        const cb = row.querySelector('.compare-checkbox');
+        if (cb) {
+            if (cb.checked) {
+                row.classList.add('compare-row-checked');
+            } else {
+                row.classList.remove('compare-row-checked');
+            }
+        }
+    });
+}
+
+function toggleSelectAllCompare(event) {
+    event.stopPropagation();
+    const checked = event.target.checked;
+    document.querySelectorAll('.compare-checkbox').forEach(cb => cb.checked = checked);
+    updateCompareSelection();
+}
+
+function goToCompare() {
+    const ids = JSON.parse(localStorage.getItem('gpu_compare_ids') || '[]');
+    if (ids.length >= 2) {
+        window.open('/gpu-compare?ids=' + encodeURIComponent(ids.join(',')), '_blank');
+    }
+}
+
 // Load on page load
-document.addEventListener('DOMContentLoaded', loadListings);
+document.addEventListener('DOMContentLoaded', () => {
+    initFilterIcons();
+    loadListings();
+    loadGpuModels();
+    loadMostSoldModels();
+    loadGPUStatistics();
+    loadPerformanceCharts();
+});
+
 </script>
+
+<style>
+/* Description box dark mode fix */
+.description-box {
+    background: #f8f9fa;
+    padding: 1rem;
+    border-radius: 8px;
+    margin-top: 0.5rem;
+    color: #333;
+}
+
+[data-theme="dark"] .description-box {
+    background: var(--card-bg);
+    color: var(--text-color);
+    border: 1px solid var(--card-border);
+}
+
+/* Previous description box */
+.prev-description-box {
+    background: #fff3cd;
+    padding: 1rem;
+    border-radius: 8px;
+    margin-top: 0.5rem;
+    border-left: 4px solid #f39c12;
+    color: #333;
+}
+
+[data-theme="dark"] .prev-description-box {
+    background: #3d3d1a;
+    color: var(--text-color);
+    border: 1px solid #f39c12;
+}
+
+/* Strict Match Toggle Styling */
+.strict-match-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    border-radius: 20px;
+    border: 1px solid #00d4ff;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.strict-match-label:hover {
+    box-shadow: 0 0 10px rgba(0, 212, 255, 0.5);
+    transform: translateY(-1px);
+}
+
+.strict-match-label input[type="checkbox"] {
+    accent-color: #00d4ff;
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+}
+
+.strict-match-label span {
+    font-size: 0.875rem;
+}
+
+[data-theme="dark"] .strict-match-label {
+    background: linear-gradient(135deg, #0f0f1a 0%, #0d1420 100%);
+}
+
+@media (max-width: 768px) {
+    .strict-match-label {
+        padding: 0.4rem 0.75rem;
+        font-size: 0.8rem;
+    }
+}
+
+
+/* Dark mode styles for column settings dropdown */
+[data-theme="dark"] .column-settings-dropdown {
+    background: #2d2d3a;
+    border-color: #444;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+}
+
+[data-theme="dark"] .column-settings-dropdown h4 {
+    color: #e0e0e0;
+    border-bottom-color: #444;
+}
+
+[data-theme="dark"] .column-option {
+    color: #e0e0e0;
+}
+
+[data-theme="dark"] .column-option:hover {
+    background: #3a3a4a;
+}
+
+[data-theme="dark"] .column-option.dragging {
+    background: #4a4a5a;
+}
+
+[data-theme="dark"] .column-option .drag-handle {
+    color: #888;
+}
+
+[data-theme="dark"] .column-option label {
+    color: #f0f0f0;
+    font-weight: 500;
+}
+
+/* Required column option - lighter and more readable */
+[data-theme="dark"] .column-option.required {
+    background: #3a3a5a;
+    border-radius: 4px;
+}
+
+[data-theme="dark"] .column-option.required label {
+    color: #ffffff;
+    font-weight: 600;
+}
+
+[data-theme="dark"] .column-option input[type="checkbox"]:disabled + label {
+    color: #aaa;
+    opacity: 0.8;
+}
+
+[data-theme="dark"] .column-settings-footer {
+    border-top-color: #444;
+}
+
+[data-theme="dark"] .column-settings-footer button {
+    background: #3a3a4a;
+    border-color: #555;
+    color: #e0e0e0;
+}
+
+[data-theme="dark"] .column-settings-footer button:hover {
+    background: #4a4a5a;
+}
+
+[data-theme="dark"] .column-settings-footer button.btn-primary {
+    background: #667eea;
+    border-color: #667eea;
+}
+
+[data-theme="dark"] .column-settings-footer button.btn-primary:hover {
+    background: #5a6fd6;
+}
+
+/* Console icon container styles */
+.console-icon-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 60px;
+    height: 60px;
+}
+
+.console-icon-container svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+/* Console icon styles */
+.console-icon {
+    width: 100%;
+    height: 100%;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+}
+
+/* Unicorn Switch Styles */
+.unicorn-switch {
+    display: flex;
+    gap: 4px;
+}
+
+.unicorn-btn {
+    padding: 6px 12px;
+    border: 2px solid #ddd;
+    background: white;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    color: #666;
+}
+
+.unicorn-btn:hover {
+    border-color: #667eea;
+    color: #667eea;
+}
+
+.unicorn-btn.active {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-color: #667eea;
+    color: white;
+    box-shadow: 0 2px 8px rgba(102,126,234,0.4);
+}
+
+[data-theme="dark"] .unicorn-btn {
+    background: #2a2a3a;
+    border-color: #444;
+    color: #aaa;
+}
+
+[data-theme="dark"] .unicorn-btn:hover {
+    border-color: #667eea;
+    color: #a0a0ff;
+}
+
+[data-theme="dark"] .unicorn-btn.active {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-color: #667eea;
+    color: white;
+}
+/* Model stat row hover effect */
+.model-stat-row {
+    transition: background 0.2s ease;
+    border-radius: 6px;
+}
+
+.model-stat-row:hover {
+    background: rgba(102, 126, 234, 0.1);
+}
+
+[data-theme="dark"] .model-stat-row {
+    --text-color: #e0e0e0;
+}
+
+[data-theme="dark"] [style*="background: #e5e7eb"] {
+    background: #3a3a4a !important;
+}
+
+/* OC Badge Glow Animation */
+@keyframes glow {
+    from {
+        text-shadow: 0 0 4px #ff3333, 0 0 8px #ff3333;
+    }
+    to {
+        text-shadow: 0 0 8px #ff3333, 0 0 16px #ff3333, 0 0 24px #ff6666;
+    }
+}
+</style>
 {% endblock %}

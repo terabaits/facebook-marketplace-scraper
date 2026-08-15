@@ -1,15 +1,21 @@
 #!/usr/bin/env python3
-"""SS-Crawler v2 - GPU/CPU scraper for ss.com"""
+"""SS-Crawler v2 - GPU/CPU/RAM scraper for ss.com"""
 import sys
-import io
 
-# Force UTF-8 for Windows console
-if sys.platform == 'win32':
-    if hasattr(sys.stdout, 'buffer'):
-        sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8', errors='replace')
-        sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding='utf-8', errors='replace')
+# Clear any cached modules to ensure fresh imports
+modules_to_clear = [k for k in sys.modules.keys() if k.startswith('src')]
+for mod in modules_to_clear:
+    del sys.modules[mod]
 
 from src.cli import main
 
 if __name__ == "__main__":
-    sys.exit(main())
+    try:
+        sys.exit(main())
+    except SystemExit:
+        raise
+    except Exception as e:
+        print(f"Error: {e}", file=sys.stderr)
+        import traceback
+        traceback.print_exc()
+        sys.exit(1)

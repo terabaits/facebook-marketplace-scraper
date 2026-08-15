@@ -1,0 +1,74 @@
+COLUMN assignment T170
+  id : T170
+  title : Add an option to toggle between active listing averages and all time averages
+  page : PC Builder
+  category : Backend
+  priority : Medium
+  fix : Added use-active-avg checkbox on gpu.html and backend use_active_avg query param. When enabled, average price calculations exclude flagged listings; disabled includes all.
+  column : assignment
+  created : 2026-07-03T10:09:35.795978
+  updated : 2026-07-03T20:01:09.155232
+  linked_task_id : T052
+  relationship_type : linked
+  linked_tasks : [{'task_id': 'T052', 'relationship_type': 'linked'}]
+  reopen_history : [{'reopened_at': '2026-07-03T20:01:09.155232', 'update': '1. The page linked was "PC builder" not "GPU". dont you see what page is assigned in the task ticket?\n2. It needs to be in PC builder page and reflect to component fields\n3. when enabled it should show average price for active listings and when disabled all time excluding flagged listings', 'previous_completed_at': None}]
+
+COLUMN assignment T180
+  id : T180
+  title : in motherboards box add option to select avg by socket or chipset drop down list.
+  page : PC Builder
+  category : UI/UX
+  priority : Medium
+  fix : 
+  column : assignment
+  created : 2026-07-03T20:03:35.854773
+  updated : 2026-07-03T20:03:35.854773
+  linked_task_id : None
+  relationship_type : None
+
+COLUMN assignment T156
+  id : T156
+  title : Add option to search GPU CPU Motherboard SSD PSU Case RAM by typing in the select box
+  page : PC Builder
+  category : Frontend
+  priority : Medium
+  fix : 
+  column : assignment
+  created : 2026-06-27T23:35:08.989234
+  updated : 2026-07-03T20:09:57.355026
+  linked_task_id : None
+  relationship_type : None
+  reopen_history : [{'reopened_at': '2026-07-03T10:07:29.027032', 'update': 'None of the searches work or do anything', 'previous_completed_at': None}, {'reopened_at': '2026-07-03T20:09:57.355026', 'update': 'Make the dropdown list ignore the button otherwise there is weird gap. snippet contains an example it can open over', 'previous_completed_at': None}]
+  code_snippet : <button class="view-listings-btn" id="motherboard-view-btn" onclick="viewListings('motherboard')" title="View all listings for this motherboard">
+                            📋
+                        </button>
+
+COLUMN talking T054
+  id : T054
+  title : in "PSU" section add an option to pick you wattage and alculate avg price from our PSU listings with that wattage
+  page : PC Builder
+  category : Backend
+  priority : Medium
+  fix : PC Builder PSU: added distinct dark-mode-friendly wattage dropdown, an info box showing count + average price, and an "➕ Use Avg Price" button that adds a generic PSU component at the average price to the Total Estimate. Also added a Clear button to reset the filter/selection.
+  linked_task_id : None
+  relationship_type : None
+  column : talking
+  created : 2026-06-19T10:26:39.777276
+  updated : 2026-07-03T21:20:36.796278
+  started_at : 2026-06-29T14:46:35.876184
+  reopen_history : [{'reopened_at': '2026-06-27T15:13:43.607923', 'update': 'Make the dropdown more destinct in dark mode. Also If a particular PSU is not selected, use the avg price of all the PSU options of that wattage in Total Esimate box', 'previous_completed_at': '2026-06-19T15:50:00'}, {'reopened_at': '2026-07-03T10:12:03.384132', 'update': 'there is no apply button to add the avg to total estimate box', 'previous_completed_at': '2026-06-29T14:55:31.754860'}, {'reopened_at': '2026-07-03T19:57:15.329963', 'update': 'there is still no apply button to add the avg to total estimate box', 'previous_completed_at': None}]
+  code_snippet : <select id="psu-wattage-filter" onchange="filterPSU()" style="flex: 1; padding: 0.4rem; border: 1px solid var(--border-color); border-radius: 4px; background: var(--card-bg); color: var(--text-primary);">
+                                <option value="">Any</option>
+                                <option value="400">400W</option>
+                                <option value="500">500W</option>
+                                <option value="550">550W</option>
+                                <option value="600">600W</option>
+                                <option value="650">650W</option>
+                                <option value="750">750W</option>
+                                <option value="850">850W</option>
+                                <option value="1000">1000W</option>
+                                <option value="1200">1200W+</option>
+                            </select>
+  status : talking
+  updated_at : 2026-06-29T14:55:31.754860
+

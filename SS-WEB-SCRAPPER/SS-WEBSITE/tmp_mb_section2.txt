@@ -1,0 +1,37 @@
+// Motherboard (matched from database)
+    if (breakdown.motherboard) {
+        const mb = breakdown.motherboard;
+        const isMatched = mb.motherboard_id || mb.id;
+        let mbName;
+        if (mb.brand && mb.model) {
+            mbName = `${mb.brand} ${mb.model}`;
+        } else if (mb.name) {
+            mbName = mb.name;
+        } else {
+            mbName = 'Motherboard';
+        }
+        const chipsetList = mb.supported_chipsets ? mb.supported_chipsets.slice(0, 4).join(', ') + (mb.supported_chipsets.length > 4 ? '...' : '') : '';
+        html += `
+            <div class="component-row detailed">
+                <div class="component-header">
+                    <div class="component-icon-large" style="background: #8e44ad;">🔌</div>
+                    <div class="component-info">
+                        <div class="component-name">${mbName}</div>
+                        <div class="component-specs">
+                            ${mb.socket ? `<span class="spec-tag">${mb.socket}</span>` : ''}
+                            ${mb.chipset ? `<span class="spec-tag">${mb.chipset}</span>` : ''}
+                            ${chipsetList ? `<span class="spec-tag" title="${mb.supported_chipsets?.join(', ') || ''}">Chipsets: ${chipsetList}</span>` : ''}
+                            ${mb.form_factor ? `<span class="spec-tag">${mb.form_factor}</span>` : ''}
+                            ${mb.is_generic ? '<span class="spec-tag" style="background: #f39c12; color: #000;">📋 Generic</span>' : ''}
+                            ${isMatched ? '<span class="spec-tag" style="background: #27ae60; color: white;">✓ Matched</span>' : ''}
+                        </div>
+                    </div>
+                    <div class="component-value">
+                        <div class="price-tag">~€${breakdown.motherboard_avg_price?.toFixed(0) || '?'}</div>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+    
+    // Storage drives

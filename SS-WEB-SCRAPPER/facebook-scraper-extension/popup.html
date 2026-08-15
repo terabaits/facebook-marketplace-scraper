@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>FB Marketplace PC Scraper</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      width: 320px;
+      padding: 16px;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #f5f5f5;
+    }
+    
+    .header {
+      text-align: center;
+      margin-bottom: 16px;
+    }
+    
+    .header h1 {
+      font-size: 18px;
+      color: #333;
+      margin-bottom: 4px;
+    }
+    
+    .header p {
+      font-size: 12px;
+      color: #666;
+    }
+    
+    .status {
+      background: white;
+      border-radius: 8px;
+      padding: 12px;
+      margin-bottom: 12px;
+    }
+    
+    .status-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 6px 0;
+      border-bottom: 1px solid #eee;
+    }
+    
+    .status-item:last-child {
+      border-bottom: none;
+    }
+    
+    .status-label {
+      font-size: 13px;
+      color: #666;
+    }
+    
+    .status-value {
+      font-size: 13px;
+      font-weight: 600;
+    }
+    
+    .status-value.connected {
+      color: #27ae60;
+    }
+    
+    .status-value.disconnected {
+      color: #e74c3c;
+    }
+    
+    .actions {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    
+    button {
+      background: #667eea;
+      color: white;
+      border: none;
+      padding: 10px 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: background 0.2s;
+    }
+    
+    button:hover {
+      background: #5a6fd6;
+    }
+    
+    button:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+    }
+    
+    .stats {
+      background: white;
+      border-radius: 8px;
+      padding: 12px;
+      margin-top: 12px;
+    }
+    
+    .stats h3 {
+      font-size: 14px;
+      color: #333;
+      margin-bottom: 10px;
+    }
+    
+    .stat-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 4px 0;
+      font-size: 13px;
+    }
+    
+    .footer {
+      margin-top: 16px;
+      text-align: center;
+      font-size: 11px;
+      color: #888;
+    }
+    
+    .error {
+      background: #f8d7da;
+      color: #721c24;
+      padding: 10px;
+      border-radius: 6px;
+      margin-bottom: 12px;
+      font-size: 13px;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>🔍 PC Component Analyzer</h1>
+    <p>Analyze Facebook Marketplace PC listings</p>
+  </div>
+  
+  <div id="status-container">
+    <div class="status">
+      <div class="status-item">
+        <span class="status-label">Backend Status:</span>
+        <span id="backend-status" class="status-value disconnected">Checking...</span>
+      </div>
+      <div class="status-item">
+        <span class="status-label">Extension Version:</span>
+        <span class="status-value">1.0.4</span>
+      </div>
+    </div>
+  </div>
+  
+  <div class="actions">
+    <button id="scrape-page" style="background: #27ae60; font-weight: bold;">📋 Scrape Current Page</button>
+    <button id="check-health">Check Backend Health</button>
+    <button id="clear-cache">Clear Cache</button>
+  </div>
+  
+  <div class="stats">
+    <h3>📊 Quick Stats</h3>
+    <div class="stat-row">
+      <span>Analyses Today:</span>
+      <span id="analyses-count">0</span>
+    </div>
+    <div class="stat-row">
+      <span>Cache Hits:</span>
+      <span id="cache-hits">0</span>
+    </div>
+  </div>
+  
+  <div class="footer">
+    <p>Visit Facebook Marketplace to analyze listings</p>
+  </div>
+  
+  <script src="popup.js"></script>
+</body>
+</html>

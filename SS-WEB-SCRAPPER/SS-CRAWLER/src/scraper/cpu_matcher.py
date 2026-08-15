@@ -111,11 +111,20 @@ class CPUMatcher:
         # Look for patterns like i7-14700, i9-14900K, Ryzen 7 7800X, etc.
         cpu_tokens = extract_cpu_tokens(full_text_fixed)
         
+        # Sort tokens to prioritize those with version/suffix info (longer tokens first)
+        # This ensures "xeone52680v4" is checked before "xeone52680"
+        cpu_tokens = sorted(cpu_tokens, key=lambda x: len(x), reverse=True)
+        
         for token in cpu_tokens:
             token_norm = token.replace(' ', '').lower()
             
             # Check processor number matches
-            for proc_num, cpu in self.processor_numbers.items():
+            # Sort by length (descending) so longer matches are checked first
+            # e.g., "ryzen53600x" should be checked before "ryzen53600"
+            sorted_proc_nums = sorted(self.processor_numbers.items(), 
+                                      key=lambda x: len(x[0]), reverse=True)
+            
+            for proc_num, cpu in sorted_proc_nums:
                 if cpu.id in seen:
                     continue
                 
@@ -126,7 +135,115 @@ class CPUMatcher:
                     continue
                 
                 # Check if processor number is contained in token (e.g., "xeonx5650" contains "x5650")
-                if proc_num.lower() in token_norm:
+                # BUT: Don't match shorter processor numbers when suffixes are present
+                # e.g., "5800x" should NOT match "5800x3d", "3600x" should NOT match "3600"
+                proc_num_lower = proc_num.lower().replace(' ', '').replace('-', '')
+                if proc_num_lower in token_norm:
+                    # CRITICAL FIX: Check if this is a partial match that shouldn't count
+                    # e.g., "5160" (ID 3957) should NOT match "r51600" (Ryzen 5 1600)
+                    # The processor number should be complete in the token, not just a prefix
+                    
+                    # Only skip if this is a numeric-only processor number
+                    # AND it's being matched against a longer alphanumeric token
+                    # AND the processor number is purely numeric (like "5160" for Core 2 Duo E6600)
+                    if proc_num_lower.isdigit():
+                        # Find where the processor number appears in the token
+                        pos = token_norm.find(proc_num_lower)
+                        proc_len = len(proc_num_lower)
+                        token_len = len(token_norm)
+                        
+                        # If token continues with digits after the match, it's a partial match
+                        if pos + proc_len < token_len and token_norm[pos + proc_len].isdigit():
+                            continue
+                    
+                    # Special check: if token has '3d' suffix, don't match non-3d processors
+                    if '3d' in token_norm and '3d' not in proc_num_lower:
+                        continue
+                    
+                    # Special check for Intel F suffix: if token has 'f', processor must also have it
+                    # This handles "14400f" vs "14400" cases
+                    if token_norm.endswith('f') and not proc_num_lower.endswith('f'):
+                        # Token has F suffix but this processor doesn't - skip
+                        continue
+                    if proc_num_lower.endswith('f') and not token_norm.endswith('f'):
+                        # Processor has F suffix but token doesn't - skip (prevents 14400 matching 14400F)
+                        continue
+                    
+                    # Special check for Intel K suffix: if token has 'k', processor must also have it
+                    # This handles "14900k" vs "14900" and "14900kf" cases
+                    if token_norm.endswith('k') and not proc_num_lower.endswith('k') and not proc_num_lower.endswith('kf'):
+                        # Token has K suffix but this processor doesn't - skip (KF has K so it's OK)
+                        continue
+                    if proc_num_lower.endswith('k') and not token_norm.endswith('k') and not token_norm.endswith('kf'):
+                        # Processor has K suffix but token doesn't and token doesn't end with KF - skip
+                        continue
+                    
+                    # Special check for Intel KF suffix: if token has 'kf', processor must also have it
+                    if token_norm.endswith('kf') and not proc_num_lower.endswith('kf'):
+                        continue
+                    if proc_num_lower.endswith('kf') and not token_norm.endswith('kf'):
+                        continue
+                    
+                    # Special check for Intel T suffix: if token has 't', processor must also have it
+                    if token_norm.endswith('t') and not proc_num_lower.endswith('t'):
+                        continue
+                    if proc_num_lower.endswith('t') and not token_norm.endswith('t'):
+                        continue
+                    
+                    # Special check for Intel KS suffix: if token has 'ks', processor must also have it
+                    if token_norm.endswith('ks') and not proc_num_lower.endswith('ks'):
+                        continue
+                    if proc_num_lower.endswith('ks') and not token_norm.endswith('ks'):
+                        continue
+                    
+                    # Special check for AMD G suffix (APU): if token has 'g', processor must also have it
+                    # This handles "8700g" vs "8700" and "5600g" vs "5600" cases
+                    if token_norm.endswith('g') and not proc_num_lower.endswith('g'):
+                        # Token has G suffix but this processor doesn't - skip
+                        continue
+                    if proc_num_lower.endswith('g') and not token_norm.endswith('g'):
+                        # Processor has G suffix but token doesn't - skip (prevents 8700 matching 8700G)
+                        continue
+                    
+                    # Special check for AMD X suffix: if token ends with 'x', prefer processors that also end with 'x'
+                    # This handles "3600x" vs "3600" and "5800x" vs "5800" cases
+                    if token_norm.endswith('x') and not proc_num_lower.endswith('x'):
+                        # Token has X suffix but this processor doesn't - skip unless it's XT
+                        if not proc_num_lower.endswith('xt'):
+                            continue
+                    
+                    # Also: if token DOESN'T have 'x' but processor DOES, skip (prevents 3600 from matching 3600X)
+                    if not token_norm.endswith('x') and proc_num_lower.endswith('x'):
+                        if not proc_num_lower.endswith('xt'):
+                            continue
+                    
+                    # Special check for Xeon v-version: if token has 'v4'/'v3'/etc, prefer matching version
+                    # This handles "e52680v4" vs "e52680" cases
+                    version_match = re.search(r'v(\d+)$', token_norm)
+                    if version_match:
+                        # Token has version suffix (v4, v3, etc.)
+                        token_version = version_match.group(1)
+                        if not proc_num_lower.endswith(f'v{token_version}'):
+                            # Processor doesn't have matching version - skip
+                            continue
+                    else:
+                        # Token doesn't have version suffix - skip processors WITH version suffix
+                        # to prevent "e52680" from matching "e52680v4"
+                        if re.search(r'v\d+$', proc_num_lower):
+                            continue
+                    
+                    # Special check for Intel S suffix: prefer non-S variant when token doesn't have S
+                    # This handles "4460" vs "4460s" cases - prefer plain variant
+                    # Skip processors with 's' suffix when token doesn't end with 's'
+                    if proc_num_lower.endswith('s') and not token_norm.endswith('s'):
+                        # Processor has S suffix but token doesn't - skip this processor
+                        continue
+                    
+                    # Also skip non-S processors if token ends with S
+                    if token_norm.endswith('s') and not proc_num_lower.endswith('s'):
+                        # Token has S suffix but this processor doesn't - skip
+                        continue
+                    
                     candidates.append((cpu, 0.95))
                     seen.add(cpu.id)
                     continue
@@ -134,6 +251,21 @@ class CPUMatcher:
                 # Check for close matches
                 proc_num_clean = proc_num.lower().replace('-', '').replace(' ', '')
                 token_clean = token_norm.replace('-', '').replace(' ', '')
+                
+                # SPECIAL HANDLING: Check for AMD Ryzen short form "r5" vs "ryzen5"
+                # e.g., token "r51600" should match processor "ryzen51600"
+                if token_clean.startswith('r') and len(token_clean) >= 5:
+                    # Check if this could be a short Ryzen token
+                    # r5 -> ryzen5, r7 -> ryzen7, r9 -> ryzen9
+                    ryz_match = re.match(r'r([3579])(\d+)', token_clean)
+                    if ryz_match:
+                        tier, num = ryz_match.groups()
+                        expanded_token = f"ryzen{tier}{num}"
+                        if proc_num_clean == expanded_token or proc_num_clean == token_clean:
+                            candidates.append((cpu, 0.9))
+                            seen.add(cpu.id)
+                            continue
+                
                 if proc_num_clean == token_clean:
                     candidates.append((cpu, 1.0))
                     seen.add(cpu.id)
@@ -264,6 +396,40 @@ class CPUMatcher:
                             score = 0.85
                         candidates.append((cpu, score))
                         seen.add(cpu.id)
+            
+            # AMD Ryzen series-only + frequency (e.g., "Ryzen 5" with 3.60 GHz)
+            if base_freq_mhz and not candidates:
+                ryzen_series_only = re.search(r'ryzen\s*(\d)', normalized, re.IGNORECASE)
+                if ryzen_series_only:
+                    series = ryzen_series_only.group(1)
+                    # Find Ryzen CPUs of this series with base frequency close to the listing
+                    best_freq_cpu = None
+                    best_freq_score = 0.0
+                    for cpu in self.cpus:
+                        if cpu.id in seen:
+                            continue
+                        cpu_norm = normalize_text(cpu.cpu_name)
+                        if 'ryzen' in cpu_norm.lower() and f'ryzen {series}' in cpu_norm.lower():
+                            if cpu.base_freq:
+                                cpu_freq_mhz = int(cpu.base_freq * 1000)
+                                freq_diff = abs(cpu_freq_mhz - base_freq_mhz)
+                                # Score based on frequency closeness
+                                if freq_diff <= 50:
+                                    score = 0.85
+                                elif freq_diff <= 100:
+                                    score = 0.75
+                                elif freq_diff <= 200:
+                                    score = 0.65
+                                elif freq_diff <= 300:
+                                    score = 0.55
+                                else:
+                                    score = 0.0
+                                if score > best_freq_score:
+                                    best_freq_score = score
+                                    best_freq_cpu = cpu
+                    if best_freq_cpu:
+                        candidates.append((best_freq_cpu, best_freq_score))
+                        seen.add(best_freq_cpu.id)
             
             # Intel Xeon patterns (including typo "xenon")
             xeon_match = re.search(r'xeon\s*([ew])?\s*(\d)[-\s]?(\d{4})', normalized_fixed, re.IGNORECASE)

@@ -1,0 +1,796 @@
+2026-07-29 22:42:14 | INFO     | ss_crawler | [scraper] 🚀 Initializing scraper...
+2026-07-29 22:42:14 | INFO     | ss_crawler | [database] Database connected: localhost:5433/ss_market
+2026-07-29 22:42:14 | INFO     | ss_crawler | [scraper] 📦 Database: postgresql+psycopg2://crawler:crawler_pass@localhost:5433/ss_market
+2026-07-29 22:42:14 | INFO     | ss_crawler | [matcher] GPUMatcher initialized with 631 GPUs
+2026-07-29 22:42:14 | INFO     | ss_crawler | [scraper] 🎮 Loaded 631 GPU references
+2026-07-29 22:42:14 | INFO     | ss_crawler | [scraper] 📊 Scrape run started: ID 60
+2026-07-29 22:42:14 | INFO     | ss_crawler | [scraper] 📄 Fetching category: https://www.ss.com/lv/electronics/computers/completing-pc/video/
+2026-07-29 22:42:14 | INFO     | ss_crawler | [crawler] Fetching category page: https://www.ss.com/lv/electronics/computers/completing-pc/video/
+2026-07-29 22:42:18 | INFO     | ss_crawler | [parser] Found 30 listings on page
+2026-07-29 22:42:18 | INFO     | ss_crawler | [scraper] 🔍 Found 30 listings to process
+2026-07-29 22:42:18 | INFO     | ss_crawler | [crawler] Fetching listing 1/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/fhdbx.html
+2026-07-29 22:42:20 | INFO     | ss_crawler | [repository] ✨ fhdbx: New
+2026-07-29 22:42:20 | INFO     | ss_crawler | [image_downloader] Downloaded image for fhdbx (stored as fhdbx_e74430ee.jpg, 80610 bytes)
+2026-07-29 22:42:20 | INFO     | ss_crawler | [scraper] Image saved locally: gpus\fhdbx_e74430ee.jpg
+2026-07-29 22:42:20 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: NVIDIA GeForce GT 1030 (90% confidence) | Gigabyte Gt 1030
+2026-07-29 22:42:20 | INFO     | ss_crawler | [crawler] Fetching listing 2/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/pchod.html
+2026-07-29 22:42:24 | WARNING  | ss_crawler | [listing_versioning] Legacy listing pchod v2 has NULL fingerprint, creating new version
+2026-07-29 22:42:24 | INFO     | ss_crawler | [repository] ✨ pchod_v3: New
+2026-07-29 22:42:24 | INFO     | ss_crawler | [image_downloader] Downloaded image for pchod_v3 (stored as pchod_602f851e.jpg, 108298 bytes)
+2026-07-29 22:42:24 | INFO     | ss_crawler | [scraper] Image saved locally: gpus\pchod_602f851e.jpg
+2026-07-29 22:42:24 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: AMD Radeon RX 470 (100% confidence) | Asus Mining-Rx470-4
+2026-07-29 22:42:24 | INFO     | ss_crawler | [crawler] Fetching listing 3/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/nhefi.html
+2026-07-29 22:42:26 | WARNING  | ss_crawler | [listing_versioning] Legacy listing nhefi v2 has NULL fingerprint, creating new version
+2026-07-29 22:42:26 | INFO     | ss_crawler | [repository] ✨ nhefi_v3: New
+2026-07-29 22:42:27 | INFO     | ss_crawler | [image_downloader] Downloaded image for nhefi_v3 (stored as nhefi_1e68543f.jpg, 233032 bytes)
+2026-07-29 22:42:27 | INFO     | ss_crawler | [scraper] Image saved locally: gpus\nhefi_1e68543f.jpg
+2026-07-29 22:42:27 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: NVIDIA GeForce GTX 970 (90% confidence) | MSI Gtx 970 gaming
+2026-07-29 22:42:27 | INFO     | ss_crawler | [crawler] Fetching listing 4/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/fdjpc.html
+2026-07-29 22:42:30 | INFO     | ss_crawler | [repository] ✨ fdjpc: New
+2026-07-29 22:42:30 | INFO     | ss_crawler | [image_downloader] Downloaded image for fdjpc (stored as fdjpc_d5e1ae65.jpg, 63839 bytes)
+2026-07-29 22:42:30 | INFO     | ss_crawler | [scraper] Image saved locally: gpus\fdjpc_d5e1ae65.jpg
+2026-07-29 22:42:30 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: NVIDIA GeForce RTX 5070 Ti (90% confidence) | Asus Rtx 5070 ti
+2026-07-29 22:42:30 | INFO     | ss_crawler | [crawler] Fetching listing 5/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/lpbpf.html
+2026-07-29 22:42:33 | INFO     | ss_crawler | [repository] ✨ lpbpf: New
+2026-07-29 22:42:33 | INFO     | ss_crawler | [image_downloader] Downloaded image for lpbpf (stored as lpbpf_99928fa1.jpg, 222461 bytes)
+2026-07-29 22:42:33 | INFO     | ss_crawler | [scraper] Image saved locally: gpus\lpbpf_99928fa1.jpg
+2026-07-29 22:42:33 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: NVIDIA GeForce RTX 3060 (86% confidence) | Gigabyte Rtx 3060 12gb
+2026-07-29 22:42:33 | INFO     | ss_crawler | [crawler] Fetching listing 6/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/mxiib.html
+2026-07-29 22:42:37 | INFO     | ss_crawler | [repository] ✨ mxiib: New
+2026-07-29 22:42:37 | INFO     | ss_crawler | [image_downloader] Downloaded image for mxiib (stored as mxiib_a130d0c0.jpg, 56966 bytes)
+2026-07-29 22:42:37 | INFO     | ss_crawler | [scraper] Image saved locally: gpus\mxiib_a130d0c0.jpg
+2026-07-29 22:42:37 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: NVIDIA GeForce RTX 3080 Ti (90% confidence) | nVidia Rtx 3080ti
+2026-07-29 22:42:37 | INFO     | ss_crawler | [crawler] Fetching listing 7/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/fehgd.html
+2026-07-29 22:42:40 | INFO     | ss_crawler | [repository] ✨ fehgd: New
+2026-07-29 22:42:40 | INFO     | ss_crawler | [image_downloader] Downloaded image for fehgd (stored as fehgd_fd2f8b87.jpg, 116927 bytes)
+2026-07-29 22:42:40 | INFO     | ss_crawler | [scraper] Image saved locally: gpus\fehgd_fd2f8b87.jpg
+2026-07-29 22:42:40 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: NVIDIA GeForce GTX 1060 6GB (75% confidence) | nVidia 1060 6gb
+2026-07-29 22:42:40 | INFO     | ss_crawler | [crawler] Fetching listing 8/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/gohkc.html
+2026-07-29 22:42:43 | INFO     | ss_crawler | [repository] ✨ gohkc: New
+2026-07-29 22:42:43 | INFO     | ss_crawler | [image_downloader] Downloaded image for gohkc (stored as gohkc_4588ee52.jpg, 71261 bytes)
+2026-07-29 22:42:43 | INFO     | ss_crawler | [scraper] Image saved locally: gpus\gohkc_4588ee52.jpg
+2026-07-29 22:42:43 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: NVIDIA GeForce GTX 1060 3GB (86% confidence) | MSI Gtx 1060
+2026-07-29 22:42:43 | INFO     | ss_crawler | [crawler] Fetching listing 9/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/elbeh.html
+2026-07-29 22:42:46 | INFO     | ss_crawler | [repository] ✨ elbeh: New
+2026-07-29 22:42:46 | INFO     | ss_crawler | [image_downloader] Downloaded image for elbeh (stored as elbeh_a1c48cca.jpg, 105195 bytes)
+2026-07-29 22:42:46 | INFO     | ss_crawler | [scraper] Image saved locally: gpus\elbeh_a1c48cca.jpg
+2026-07-29 22:42:46 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: NVIDIA GeForce RTX 3070 Ti (90% confidence) | EVGA Rtx 3070 ti
+2026-07-29 22:42:46 | INFO     | ss_crawler | [crawler] Fetching listing 10/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/fjffo.html
+2026-07-29 22:42:48 | INFO     | ss_crawler | [repository] ✨ fjffo: New
+2026-07-29 22:42:49 | INFO     | ss_crawler | [image_downloader] Downloaded image for fjffo (stored as fjffo_7d730fbc.jpg, 176245 bytes)
+2026-07-29 22:42:49 | INFO     | ss_crawler | [scraper] Image saved locally: gpus\fjffo_7d730fbc.jpg
+2026-07-29 22:42:49 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: NVIDIA GeForce RTX 5080 (90% confidence) | MSI Rtx 5080
+2026-07-29 22:42:49 | INFO     | ss_crawler | [crawler] Fetching listing 11/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/mxlxx.html
+2026-07-29 22:42:52 | INFO     | ss_crawler | [repository] ✨ mxlxx: New
+2026-07-29 22:42:52 | INFO     | ss_crawler | [image_downloader] Downloaded image for mxlxx (stored as mxlxx_56c1adb2.jpg, 69608 bytes)
+2026-07-29 22:42:52 | INFO     | ss_crawler | [scraper] Image saved locally: gpus\mxlxx_56c1adb2.jpg
+2026-07-29 22:42:52 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: AMD Radeon RX 460 (86% confidence) | Sapphire Rx 460 oc
+2026-07-29 22:42:52 | INFO     | ss_crawler | [crawler] Fetching listing 12/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/lknil.html
+2026-07-29 22:42:56 | INFO     | ss_crawler | [repository] ✨ lknil: New
+2026-07-29 22:42:56 | INFO     | ss_crawler | [image_downloader] Downloaded image for lknil (stored as lknil_7a58344a.jpg, 73496 bytes)
+2026-07-29 22:42:56 | INFO     | ss_crawler | [scraper] Image saved locally: gpus\lknil_7a58344a.jpg
+2026-07-29 22:42:56 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: NVIDIA GeForce RTX 4070 Ti (86% confidence) | Gigabyte 4070 ti
+2026-07-29 22:42:56 | INFO     | ss_crawler | [crawler] Fetching listing 13/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/boppgo.html
+2026-07-29 22:42:58 | INFO     | ss_crawler | [repository] ✨ boppgo: New
+2026-07-29 22:42:58 | INFO     | ss_crawler | [image_downloader] Downloaded image for boppgo (stored as boppgo_d150d75e.jpg, 42287 bytes)
+2026-07-29 22:42:58 | INFO     | ss_crawler | [scraper] Image saved locally: gpus\boppgo_d150d75e.jpg
+2026-07-29 22:42:58 | INFO     | ss_crawler | [scraper] ⚠️ LOW_CONFIDENCE: Matched: NVIDIA GeForce2 MX 200 (42% confidence) - BELOW THRESHOLD | nVidia Cmp170Hx
+2026-07-29 22:42:58 | INFO     | ss_crawler | [crawler] Fetching listing 14/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/ebcgn.html
+2026-07-29 22:43:00 | INFO     | ss_crawler | [listing_versioning] Legacy listing ebcgn v1 matches by computed fingerprint, updating
+2026-07-29 22:43:00 | INFO     | ss_crawler | [repository] ⏸️ ebcgn: Unchanged
+2026-07-29 22:43:00 | INFO     | ss_crawler | [image_downloader] Downloaded image for ebcgn (stored as ebcgn_99588fe7.jpg, 165064 bytes)
+2026-07-29 22:43:00 | INFO     | ss_crawler | [scraper] Image saved locally: gpus\ebcgn_99588fe7.jpg
+2026-07-29 22:43:00 | INFO     | ss_crawler | [scraper] ⚠️ LOW_CONFIDENCE: Matched: NVIDIA GeForce2 MX 200 (42% confidence) - BELOW THRESHOLD | Matrox G200A
+2026-07-29 22:43:00 | INFO     | ss_crawler | [crawler] Fetching listing 15/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/gixof.html
+2026-07-29 22:43:02 | INFO     | ss_crawler | [repository] ✨ gixof: New
+2026-07-29 22:43:02 | INFO     | ss_crawler | [image_downloader] Downloaded image for gixof (stored as gixof_7a96303b.jpg, 117133 bytes)
+2026-07-29 22:43:02 | INFO     | ss_crawler | [scraper] Image saved locally: gpus\gixof_7a96303b.jpg
+2026-07-29 22:43:02 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: AMD Radeon RX 5500 XT (86% confidence) | Gigabyte Rx5500Xt
+2026-07-29 22:43:02 | INFO     | ss_crawler | [crawler] Fetching listing 16/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/dixpo.html
+2026-07-29 22:43:05 | INFO     | ss_crawler | [repository] ✨ dixpo: New
+2026-07-29 22:43:05 | INFO     | ss_crawler | [image_downloader] Downloaded image for dixpo (stored as dixpo_a25abeb1.jpg, 43875 bytes)
+2026-07-29 22:43:05 | INFO     | ss_crawler | [scraper] Image saved locally: gpus\dixpo_a25abeb1.jpg
+2026-07-29 22:43:05 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: NVIDIA GeForce RTX 3070 (86% confidence) | Asus Rtx 3070
+2026-07-29 22:43:05 | INFO     | ss_crawler | [crawler] Fetching listing 17/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/gjdix.html
+2026-07-29 22:43:08 | INFO     | ss_crawler | [repository] ✨ gjdix: New
+2026-07-29 22:43:09 | INFO     | ss_crawler | [image_downloader] Downloaded image for gjdix (stored as gjdix_1a1ca632.jpg, 100853 bytes)
+2026-07-29 22:43:09 | INFO     | ss_crawler | [scraper] Image saved locally: gpus\gjdix_1a1ca632.jpg
+2026-07-29 22:43:09 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: NVIDIA GeForce GTX 1050 Ti (90% confidence) | nVidia Gtx 1050ti oc
+2026-07-29 22:43:09 | INFO     | ss_crawler | [crawler] Fetching listing 18/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/hibji.html
+2026-07-29 22:43:11 | INFO     | ss_crawler | [repository] ✨ hibji: New
+2026-07-29 22:43:11 | INFO     | ss_crawler | [image_downloader] Downloaded image for hibji (stored as hibji_0d83330d.jpg, 101146 bytes)
+2026-07-29 22:43:11 | INFO     | ss_crawler | [scraper] Image saved locally: gpus\hibji_0d83330d.jpg
+2026-07-29 22:43:11 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: NVIDIA GeForce GTX 760 (86% confidence) | Gigabyte Gtx 760
+2026-07-29 22:43:11 | INFO     | ss_crawler | [crawler] Fetching listing 19/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/hxchp.html
+2026-07-29 22:43:13 | INFO     | ss_crawler | [repository] ✨ hxchp: New
+2026-07-29 22:43:13 | INFO     | ss_crawler | [image_downloader] Downloaded image for hxchp (stored as hxchp_dd18b55d.jpg, 116508 bytes)
+2026-07-29 22:43:13 | INFO     | ss_crawler | [scraper] Image saved locally: gpus\hxchp_dd18b55d.jpg
+2026-07-29 22:43:13 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: NVIDIA GeForce GTX 1660 (86% confidence) | Gigabyte Gtx 1660
+2026-07-29 22:43:13 | INFO     | ss_crawler | [crawler] Fetching listing 20/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/mbfxe.html
+2026-07-29 22:43:15 | WARNING  | ss_crawler | [listing_versioning] Legacy listing mbfxe v1 has NULL fingerprint, creating new version
+2026-07-29 22:43:15 | INFO     | ss_crawler | [repository] ✨ mbfxe_v2: New
+2026-07-29 22:43:16 | INFO     | ss_crawler | [image_downloader] Downloaded image for mbfxe_v2 (stored as mbfxe_38d46a7c.jpg, 109472 bytes)
+2026-07-29 22:43:16 | INFO     | ss_crawler | [scraper] Image saved locally: gpus\mbfxe_38d46a7c.jpg
+2026-07-29 22:43:16 | INFO     | ss_crawler | [scraper] ⚠️ LOW_CONFIDENCE: Matched: AMD Radeon RX 6700 (63% confidence) - BELOW THRESHOLD | Sapphire Rx 6700 10gb
+2026-07-29 22:43:16 | INFO     | ss_crawler | [crawler] Fetching listing 21/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/cipfp.html
+2026-07-29 22:43:19 | INFO     | ss_crawler | [repository] ✨ cipfp: New
+2026-07-29 22:43:19 | INFO     | ss_crawler | [image_downloader] Downloaded image for cipfp (stored as cipfp_5dbb2e27.jpg, 66237 bytes)
+2026-07-29 22:43:19 | INFO     | ss_crawler | [scraper] Image saved locally: gpus\cipfp_5dbb2e27.jpg
+2026-07-29 22:43:19 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: NVIDIA GeForce GTX 1060 6GB (86% confidence) | Gigabyte Gtx 1060 6gb
+2026-07-29 22:43:19 | INFO     | ss_crawler | [crawler] Fetching listing 22/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/hibog.html
+2026-07-29 22:43:23 | INFO     | ss_crawler | [repository] ✨ hibog: New
+2026-07-29 22:43:23 | INFO     | ss_crawler | [image_downloader] Downloaded image for hibog (stored as hibog_85258777.jpg, 108218 bytes)
+2026-07-29 22:43:23 | INFO     | ss_crawler | [scraper] Image saved locally: gpus\hibog_85258777.jpg
+2026-07-29 22:43:23 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: NVIDIA GeForce GTX 1660 Super (75% confidence) | MSI 1660 super
+2026-07-29 22:43:23 | INFO     | ss_crawler | [crawler] Fetching listing 23/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/ennlh.html
+2026-07-29 22:43:26 | INFO     | ss_crawler | [repository] ✨ ennlh: New
+2026-07-29 22:43:26 | INFO     | ss_crawler | [image_downloader] Downloaded image for ennlh (stored as ennlh_c0c337e6.jpg, 110982 bytes)
+2026-07-29 22:43:26 | INFO     | ss_crawler | [scraper] Image saved locally: gpus\ennlh_c0c337e6.jpg
+2026-07-29 22:43:26 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: NVIDIA GeForce RTX 4060 Ti (86% confidence) | nVidia 4060 Ti
+2026-07-29 22:43:26 | INFO     | ss_crawler | [crawler] Fetching listing 24/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/ebbdo.html
+2026-07-29 22:43:29 | INFO     | ss_crawler | [repository] ✨ ebbdo: New
+2026-07-29 22:43:29 | INFO     | ss_crawler | [image_downloader] Downloaded image for ebbdo (stored as ebbdo_25d6042f.jpg, 159129 bytes)
+2026-07-29 22:43:29 | INFO     | ss_crawler | [scraper] Image saved locally: gpus\ebbdo_25d6042f.jpg
+2026-07-29 22:43:29 | INFO     | ss_crawler | [scraper] ⚠️ LOW_CONFIDENCE: Matched: NVIDIA GeForce RTX 4090 (55% confidence) - BELOW THRESHOLD | Gigabyte Rtx 4090 ti
+2026-07-29 22:43:29 | INFO     | ss_crawler | [crawler] Fetching listing 25/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/lldxl.html
+2026-07-29 22:43:32 | INFO     | ss_crawler | [repository] ✨ lldxl: New
+2026-07-29 22:43:32 | INFO     | ss_crawler | [image_downloader] Downloaded image for lldxl (stored as lldxl_8e5609ed.jpg, 91980 bytes)
+2026-07-29 22:43:32 | INFO     | ss_crawler | [scraper] Image saved locally: gpus\lldxl_8e5609ed.jpg
+2026-07-29 22:43:32 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: AMD Radeon RX 570 (86% confidence) | MSI Rx570
+2026-07-29 22:43:32 | INFO     | ss_crawler | [crawler] Fetching listing 26/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/kiope.html
+2026-07-29 22:43:33 | INFO     | ss_crawler | [repository] ✨ kiope: New
+2026-07-29 22:43:34 | INFO     | ss_crawler | [image_downloader] Downloaded image for kiope (stored as kiope_dfe87ac7.jpg, 95992 bytes)
+2026-07-29 22:43:34 | INFO     | ss_crawler | [scraper] Image saved locally: gpus\kiope_dfe87ac7.jpg
+2026-07-29 22:43:34 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: NVIDIA GeForce RTX 3060 (86% confidence) | Rtx3060
+2026-07-29 22:43:34 | INFO     | ss_crawler | [crawler] Fetching listing 27/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/exixh.html
+2026-07-29 22:43:36 | INFO     | ss_crawler | [repository] ✨ exixh: New
+2026-07-29 22:43:36 | INFO     | ss_crawler | [image_downloader] Downloaded image for exixh (stored as exixh_8b355187.jpg, 133273 bytes)
+2026-07-29 22:43:36 | INFO     | ss_crawler | [scraper] Image saved locally: gpus\exixh_8b355187.jpg
+2026-07-29 22:43:36 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: NVIDIA GeForce RTX 3060 (86% confidence) | PNY Rtx3060
+2026-07-29 22:43:36 | INFO     | ss_crawler | [crawler] Fetching listing 28/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/boploi.html
+2026-07-29 22:43:39 | INFO     | ss_crawler | [listing_versioning] Legacy listing boploi v1 matches by computed fingerprint, updating
+2026-07-29 22:43:39 | INFO     | ss_crawler | [repository] ⏸️ boploi: Unchanged
+2026-07-29 22:43:39 | INFO     | ss_crawler | [image_downloader] Downloaded image for boploi (stored as boploi_d6fe6303.jpg, 88814 bytes)
+2026-07-29 22:43:39 | INFO     | ss_crawler | [scraper] Image saved locally: gpus\boploi_d6fe6303.jpg
+2026-07-29 22:43:39 | INFO     | ss_crawler | [scraper] ⏭️ UNCHANGED: Matched: NVIDIA GeForce RTX 3070 Ti (90% confidence) | Palit 3070 ti
+2026-07-29 22:43:39 | INFO     | ss_crawler | [crawler] Fetching listing 29/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/gljkc.html
+2026-07-29 22:43:41 | INFO     | ss_crawler | [repository] ✨ gljkc: New
+2026-07-29 22:43:41 | INFO     | ss_crawler | [image_downloader] Downloaded image for gljkc (stored as gljkc_a7c6483e.jpg, 225405 bytes)
+2026-07-29 22:43:41 | INFO     | ss_crawler | [scraper] Image saved locally: gpus\gljkc_a7c6483e.jpg
+2026-07-29 22:43:41 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: NVIDIA GeForce GTX 960 (86% confidence) | MSI Gtx 960
+2026-07-29 22:43:41 | INFO     | ss_crawler | [crawler] Fetching listing 30/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/bjgmjh.html
+2026-07-29 22:43:43 | INFO     | ss_crawler | [parser] Skipping store listing by description: MSI Rtx5080 ventus
+2026-07-29 22:43:43 | INFO     | ss_crawler | [crawler] HTML sample saved: logs\html_samples\parse_failed_224343_20260729_224343.html
+2026-07-29 22:43:43 | INFO     | ss_crawler | [scraper] ❌ FAILED: Parse error: Could not extract listing data | N/A
+2026-07-29 22:43:43 | INFO     | ss_crawler | [scraper] 📄 Fetching category: https://www.ss.com/lv/electronics/computers/completing-pc/video/page2.html
+2026-07-29 22:43:43 | INFO     | ss_crawler | [crawler] Fetching category page: https://www.ss.com/lv/electronics/computers/completing-pc/video/page2.html
+2026-07-29 22:43:45 | INFO     | ss_crawler | [parser] Found 30 listings on page
+2026-07-29 22:43:45 | INFO     | ss_crawler | [scraper] 🔍 Found 30 listings to process
+2026-07-29 22:43:45 | INFO     | ss_crawler | [crawler] Fetching listing 1/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/looxh.html
+2026-07-29 22:43:49 | INFO     | ss_crawler | [repository] ✨ looxh: New
+2026-07-29 22:43:49 | INFO     | ss_crawler | [image_downloader] Downloaded image for looxh (stored as looxh_8bac1a56.jpg, 82344 bytes)
+2026-07-29 22:43:49 | INFO     | ss_crawler | [scraper] Image saved locally: gpus\looxh_8bac1a56.jpg
+2026-07-29 22:43:49 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: NVIDIA GeForce GT 710 (86% confidence) | MSI Gt710
+2026-07-29 22:43:49 | INFO     | ss_crawler | [crawler] Fetching listing 2/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/heeji.html
+2026-07-29 22:43:51 | INFO     | ss_crawler | [repository] ✨ heeji: New
+2026-07-29 22:43:51 | INFO     | ss_crawler | [image_downloader] Downloaded image for heeji (stored as heeji_f446998e.jpg, 67653 bytes)
+2026-07-29 22:43:51 | INFO     | ss_crawler | [scraper] Image saved locally: gpus\heeji_f446998e.jpg
+2026-07-29 22:43:51 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: AMD Radeon RX 570 (86% confidence) | Asus Rx 570
+2026-07-29 22:43:51 | INFO     | ss_crawler | [crawler] Fetching listing 3/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/exifi.html
+2026-07-29 22:43:53 | INFO     | ss_crawler | [repository] ✨ exifi: New
+2026-07-29 22:43:53 | INFO     | ss_crawler | [image_downloader] Downloaded image for exifi (stored as exifi_125ee9b1.jpg, 118215 bytes)
+2026-07-29 22:43:53 | INFO     | ss_crawler | [scraper] Image saved locally: gpus\exifi_125ee9b1.jpg
+2026-07-29 22:43:53 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: NVIDIA GeForce RTX 5070 Ti (90% confidence) | MSI Rtx 5070ti
+2026-07-29 22:43:53 | INFO     | ss_crawler | [crawler] Fetching listing 4/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/bkfep.html
+2026-07-29 22:43:55 | INFO     | ss_crawler | [repository] ✨ bkfep: New
+2026-07-29 22:43:55 | INFO     | ss_crawler | [image_downloader] Downloaded image for bkfep (stored as bkfep_bb48e29a.jpg, 53877 bytes)
+2026-07-29 22:43:55 | INFO     | ss_crawler | [scraper] Image saved locally: gpus\bkfep_bb48e29a.jpg
+2026-07-29 22:43:55 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: NVIDIA GeForce GTX 1060 3GB (86% confidence) | Gigabyte Gtx1060
+2026-07-29 22:43:55 | INFO     | ss_crawler | [crawler] Fetching listing 5/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/gfmhh.html
+2026-07-29 22:43:57 | INFO     | ss_crawler | [repository] ✨ gfmhh: New
+2026-07-29 22:43:57 | INFO     | ss_crawler | [image_downloader] Downloaded image for gfmhh (stored as gfmhh_4493698c.jpg, 112661 bytes)
+2026-07-29 22:43:57 | INFO     | ss_crawler | [scraper] Image saved locally: gpus\gfmhh_4493698c.jpg
+2026-07-29 22:43:57 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: NVIDIA GeForce GTX 1660 (86% confidence) | Zotac 1660 super
+2026-07-29 22:43:57 | INFO     | ss_crawler | [crawler] Fetching listing 6/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/enbxi.html
+2026-07-29 22:44:01 | INFO     | ss_crawler | [repository] ✨ enbxi: New
+2026-07-29 22:44:01 | INFO     | ss_crawler | [image_downloader] Downloaded image for enbxi (stored as enbxi_1f97768f.jpg, 150860 bytes)
+2026-07-29 22:44:01 | INFO     | ss_crawler | [scraper] Image saved locally: gpus\enbxi_1f97768f.jpg
+2026-07-29 22:44:01 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: NVIDIA GeForce RTX 3080 (86% confidence) | Manli rtx3080
+2026-07-29 22:44:01 | INFO     | ss_crawler | [crawler] Fetching listing 7/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/fifgd.html
+2026-07-29 22:44:04 | INFO     | ss_crawler | [repository] ✨ fifgd: New
+2026-07-29 22:44:04 | INFO     | ss_crawler | [image_downloader] Downloaded image for fifgd (stored as fifgd_2f45b87d.jpg, 125946 bytes)
+2026-07-29 22:44:04 | INFO     | ss_crawler | [scraper] Image saved locally: gpus\fifgd_2f45b87d.jpg
+2026-07-29 22:44:04 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: NVIDIA GeForce RTX 3080 Ti (90% confidence) | EVGA Rtx3080Ti ftw3
+2026-07-29 22:44:04 | INFO     | ss_crawler | [crawler] Fetching listing 8/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/bolpdx.html
+2026-07-29 22:44:06 | WARNING  | ss_crawler | [listing_versioning] Legacy listing bolpdx v1 has NULL fingerprint, creating new version
+2026-07-29 22:44:06 | INFO     | ss_crawler | [repository] ✨ bolpdx_v2: New
+2026-07-29 22:44:06 | INFO     | ss_crawler | [image_downloader] Downloaded image for bolpdx_v2 (stored as bolpdx_cecb0082.jpg, 81695 bytes)
+2026-07-29 22:44:06 | INFO     | ss_crawler | [scraper] Image saved locally: gpus\bolpdx_cecb0082.jpg
+2026-07-29 22:44:06 | INFO     | ss_crawler | [scraper] ❓ UNMATCHED: No GPU match found | Cmp 90hx
+2026-07-29 22:44:06 | INFO     | ss_crawler | [crawler] Fetching listing 9/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/fcpbl.html
+2026-07-29 22:44:08 | INFO     | ss_crawler | [repository] ✨ fcpbl: New
+2026-07-29 22:44:08 | INFO     | ss_crawler | [image_downloader] Downloaded image for fcpbl (stored as fcpbl_4d4fba4a.jpg, 96796 bytes)
+2026-07-29 22:44:08 | INFO     | ss_crawler | [scraper] Image saved locally: gpus\fcpbl_4d4fba4a.jpg
+2026-07-29 22:44:08 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: AMD Radeon RX 580 (86% confidence) | Gigabyte Rx 580 8gb
+2026-07-29 22:44:08 | INFO     | ss_crawler | [crawler] Fetching listing 10/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/bkcjhg.html
+2026-07-29 22:44:12 | WARNING  | ss_crawler | [listing_versioning] Legacy listing bkcjhg v1 has NULL fingerprint, creating new version
+2026-07-29 22:44:12 | INFO     | ss_crawler | [repository] ✨ bkcjhg_v2: New
+2026-07-29 22:44:12 | INFO     | ss_crawler | [image_downloader] Downloaded image for bkcjhg_v2 (stored as bkcjhg_5463b654.jpg, 70977 bytes)
+2026-07-29 22:44:12 | INFO     | ss_crawler | [scraper] Image saved locally: gpus\bkcjhg_5463b654.jpg
+2026-07-29 22:44:12 | INFO     | ss_crawler | [scraper] ❓ UNMATCHED: No GPU match found | nVidia Quadro K3100m
+2026-07-29 22:44:12 | INFO     | ss_crawler | [crawler] Fetching listing 11/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/fjdox.html
+2026-07-29 22:44:15 | INFO     | ss_crawler | [listing_versioning] Legacy listing fjdox v1 matches by computed fingerprint, updating
+2026-07-29 22:44:15 | INFO     | ss_crawler | [repository] ⏸️ fjdox: Unchanged
+2026-07-29 22:44:15 | INFO     | ss_crawler | [image_downloader] Downloaded image for fjdox (stored as fjdox_233f34ad.jpg, 89284 bytes)
+2026-07-29 22:44:15 | INFO     | ss_crawler | [scraper] Image saved locally: gpus\fjdox_233f34ad.jpg
+2026-07-29 22:44:15 | INFO     | ss_crawler | [scraper] ⏭️ UNCHANGED: Matched: NVIDIA GeForce GT 740 (86% confidence) | Gigabyte Gv-N740D5Oc-2G
+2026-07-29 22:44:15 | INFO     | ss_crawler | [crawler] Fetching listing 12/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/dexme.html
+2026-07-29 22:44:17 | WARNING  | ss_crawler | [listing_versioning] Legacy listing dexme v1 has NULL fingerprint, creating new version
+2026-07-29 22:44:17 | INFO     | ss_crawler | [repository] ✨ dexme_v2: New
+2026-07-29 22:44:17 | INFO     | ss_crawler | [image_downloader] Downloaded image for dexme_v2 (stored as dexme_35273a75.jpg, 80348 bytes)
+2026-07-29 22:44:17 | INFO     | ss_crawler | [scraper] Image saved locally: gpus\dexme_35273a75.jpg
+2026-07-29 22:44:17 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: NVIDIA GeForce GTX 1660 (86% confidence) | Gigabyte Geforce gtx 16
+2026-07-29 22:44:17 | INFO     | ss_crawler | [crawler] Fetching listing 13/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/mocxk.html
+2026-07-29 22:44:19 | INFO     | ss_crawler | [repository] ✨ mocxk: New
+2026-07-29 22:44:19 | INFO     | ss_crawler | [image_downloader] Downloaded image for mocxk (stored as mocxk_cc2421cb.jpg, 140453 bytes)
+2026-07-29 22:44:19 | INFO     | ss_crawler | [scraper] Image saved locally: gpus\mocxk_cc2421cb.jpg
+2026-07-29 22:44:19 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: NVIDIA GeForce GTX 1650 (90% confidence) | Gigabyte Gtx 1650
+2026-07-29 22:44:19 | INFO     | ss_crawler | [crawler] Fetching listing 14/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/mnoje.html
+2026-07-29 22:44:22 | INFO     | ss_crawler | [repository] ✨ mnoje: New
+2026-07-29 22:44:23 | INFO     | ss_crawler | [image_downloader] Downloaded image for mnoje (stored as mnoje_0bf98729.jpg, 122426 bytes)
+2026-07-29 22:44:23 | INFO     | ss_crawler | [scraper] Image saved locally: gpus\mnoje_0bf98729.jpg
+2026-07-29 22:44:23 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: NVIDIA GeForce GTX 1660 (86% confidence) | Gigabyte Gtx 1660
+2026-07-29 22:44:23 | INFO     | ss_crawler | [crawler] Fetching listing 15/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/fmflm.html
+2026-07-29 22:44:25 | WARNING  | ss_crawler | [parser] No price found for https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/fmflm.html
+2026-07-29 22:44:25 | INFO     | ss_crawler | [listing_versioning] Legacy listing fmflm v2 matches by computed fingerprint, updating
+2026-07-29 22:44:25 | INFO     | ss_crawler | [repository] ⏸️ fmflm: Unchanged
+2026-07-29 22:44:25 | INFO     | ss_crawler | [image_downloader] Downloaded image for fmflm (stored as fmflm_bf079b9e.jpg, 88640 bytes)
+2026-07-29 22:44:25 | INFO     | ss_crawler | [scraper] Image saved locally: gpus\fmflm_bf079b9e.jpg
+2026-07-29 22:44:25 | INFO     | ss_crawler | [scraper] ❓ UNMATCHED: No GPU match found | Покупаю видеокарты от 4 гб разных моделей по одной...
+2026-07-29 22:44:25 | INFO     | ss_crawler | [crawler] Fetching listing 16/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/gdchp.html
+2026-07-29 22:44:28 | INFO     | ss_crawler | [listing_versioning] Legacy listing gdchp v2 matches by computed fingerprint, updating
+2026-07-29 22:44:28 | INFO     | ss_crawler | [repository] ⏸️ gdchp: Unchanged
+2026-07-29 22:44:28 | INFO     | ss_crawler | [image_downloader] Downloaded image for gdchp (stored as gdchp_73b6270f.jpg, 116886 bytes)
+2026-07-29 22:44:28 | INFO     | ss_crawler | [scraper] Image saved locally: gpus\gdchp_73b6270f.jpg
+2026-07-29 22:44:28 | INFO     | ss_crawler | [scraper] ⏭️ UNCHANGED: Matched: NVIDIA GeForce 8800GTS 512 (75% confidence) | nVidia Quadro fx 580
+2026-07-29 22:44:28 | INFO     | ss_crawler | [crawler] Fetching listing 17/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/bopjof.html
+2026-07-29 22:44:32 | INFO     | ss_crawler | [repository] ✨ bopjof: New
+2026-07-29 22:44:32 | INFO     | ss_crawler | [image_downloader] Downloaded image for bopjof (stored as bopjof_17616ebb.jpg, 103110 bytes)
+2026-07-29 22:44:32 | INFO     | ss_crawler | [scraper] Image saved locally: gpus\bopjof_17616ebb.jpg
+2026-07-29 22:44:32 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: NVIDIA GeForce RTX 3070 Ti (90% confidence) | Gigabyte Aorus Master
+2026-07-29 22:44:32 | INFO     | ss_crawler | [crawler] Fetching listing 18/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/blgiel.html
+2026-07-29 22:44:34 | INFO     | ss_crawler | [listing_versioning] Legacy listing blgiel v2 matches by computed fingerprint, updating
+2026-07-29 22:44:34 | INFO     | ss_crawler | [repository] ⏸️ blgiel: Unchanged
+2026-07-29 22:44:34 | INFO     | ss_crawler | [image_downloader] Downloaded image for blgiel (stored as blgiel_b4ed2b13.jpg, 114011 bytes)
+2026-07-29 22:44:34 | INFO     | ss_crawler | [scraper] Image saved locally: gpus\blgiel_b4ed2b13.jpg
+2026-07-29 22:44:34 | INFO     | ss_crawler | [scraper] ⏭️ UNCHANGED: Matched: NVIDIA GeForce RTX 3070 (75% confidence) | Gigabyte 3070 gaming oc
+2026-07-29 22:44:34 | INFO     | ss_crawler | [crawler] Fetching listing 19/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/ceimm.html
+2026-07-29 22:44:37 | WARNING  | ss_crawler | [listing_versioning] Legacy listing ceimm v1 has NULL fingerprint, creating new version
+2026-07-29 22:44:37 | INFO     | ss_crawler | [repository] ✨ ceimm_v2: New
+2026-07-29 22:44:37 | INFO     | ss_crawler | [image_downloader] Downloaded image for ceimm_v2 (stored as ceimm_a3b004a5.jpg, 121541 bytes)
+2026-07-29 22:44:37 | INFO     | ss_crawler | [scraper] Image saved locally: gpus\ceimm_a3b004a5.jpg
+2026-07-29 22:44:37 | INFO     | ss_crawler | [scraper] ⚠️ LOW_CONFIDENCE: Matched: NVIDIA GeForce GTS 250 (45% confidence) - BELOW THRESHOLD | Gigabyte Geforce rtx
+2026-07-29 22:44:37 | INFO     | ss_crawler | [crawler] Fetching listing 20/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/mxfhh.html
+2026-07-29 22:44:40 | WARNING  | ss_crawler | [listing_versioning] Legacy listing mxfhh v1 has NULL fingerprint, creating new version
+2026-07-29 22:44:40 | INFO     | ss_crawler | [repository] ✨ mxfhh_v2: New
+2026-07-29 22:44:41 | INFO     | ss_crawler | [image_downloader] Downloaded image for mxfhh_v2 (stored as mxfhh_f336d14a.jpg, 177039 bytes)
+2026-07-29 22:44:41 | INFO     | ss_crawler | [scraper] Image saved locally: gpus\mxfhh_f336d14a.jpg
+2026-07-29 22:44:41 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: AMD Radeon RX 5700 XT 50th Anniv. (95% confidence) | Gigabyte Rx5700xt
+2026-07-29 22:44:41 | INFO     | ss_crawler | [crawler] Fetching listing 21/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/fdfml.html
+2026-07-29 22:44:44 | WARNING  | ss_crawler | [listing_versioning] Legacy listing fdfml v1 has NULL fingerprint, creating new version
+2026-07-29 22:44:44 | INFO     | ss_crawler | [repository] ✨ fdfml_v2: New
+2026-07-29 22:44:44 | INFO     | ss_crawler | [image_downloader] Downloaded image for fdfml_v2 (stored as fdfml_51173983.jpg, 93887 bytes)
+2026-07-29 22:44:44 | INFO     | ss_crawler | [scraper] Image saved locally: gpus\fdfml_51173983.jpg
+2026-07-29 22:44:44 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: NVIDIA GeForce RTX 5070 Ti (90% confidence) | Asus Rtx5070Ti
+2026-07-29 22:44:44 | INFO     | ss_crawler | [crawler] Fetching listing 22/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/febmi.html
+2026-07-29 22:44:46 | WARNING  | ss_crawler | [listing_versioning] Legacy listing febmi v2 has NULL fingerprint, creating new version
+2026-07-29 22:44:46 | INFO     | ss_crawler | [repository] ✨ febmi_v3: New
+2026-07-29 22:44:46 | INFO     | ss_crawler | [image_downloader] Downloaded image for febmi_v3 (stored as febmi_fb40fc4b.jpg, 118255 bytes)
+2026-07-29 22:44:46 | INFO     | ss_crawler | [scraper] Image saved locally: gpus\febmi_fb40fc4b.jpg
+2026-07-29 22:44:46 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: NVIDIA GeForce RTX 3070 (86% confidence) | EVGA Rtx 3070 ultra
+2026-07-29 22:44:46 | INFO     | ss_crawler | [crawler] Fetching listing 23/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/hfnpi.html
+2026-07-29 22:44:49 | INFO     | ss_crawler | [repository] ✨ hfnpi: New
+2026-07-29 22:44:49 | INFO     | ss_crawler | [image_downloader] Downloaded image for hfnpi (stored as hfnpi_e330df67.jpg, 64051 bytes)
+2026-07-29 22:44:49 | INFO     | ss_crawler | [scraper] Image saved locally: gpus\hfnpi_e330df67.jpg
+2026-07-29 22:44:49 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: NVIDIA GeForce RTX 2070 (90% confidence) | MSI 2070
+2026-07-29 22:44:49 | INFO     | ss_crawler | [crawler] Fetching listing 24/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/hgegp.html
+2026-07-29 22:44:52 | INFO     | ss_crawler | [repository] ✨ hgegp: New
+2026-07-29 22:44:52 | INFO     | ss_crawler | [image_downloader] Downloaded image for hgegp (stored as hgegp_5afa5b76.jpg, 29955 bytes)
+2026-07-29 22:44:52 | INFO     | ss_crawler | [scraper] Image saved locally: gpus\hgegp_5afa5b76.jpg
+2026-07-29 22:44:52 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: NVIDIA GeForce RTX 2060 (86% confidence) | Asus Rtx 2060
+2026-07-29 22:44:52 | INFO     | ss_crawler | [crawler] Fetching listing 25/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/hxbnp.html
+2026-07-29 22:44:54 | INFO     | ss_crawler | [repository] ✨ hxbnp: New
+2026-07-29 22:44:54 | INFO     | ss_crawler | [image_downloader] Downloaded image for hxbnp (stored as hxbnp_48e00277.jpg, 221319 bytes)
+2026-07-29 22:44:54 | INFO     | ss_crawler | [scraper] Image saved locally: gpus\hxbnp_48e00277.jpg
+2026-07-29 22:44:54 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: NVIDIA GeForce GTX 1070 Ti (90% confidence) | Asus Gtx 1070 ti
+2026-07-29 22:44:54 | INFO     | ss_crawler | [crawler] Fetching listing 26/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/lipjd.html
+2026-07-29 22:44:57 | INFO     | ss_crawler | [listing_versioning] Legacy listing lipjd v1 matches by computed fingerprint, updating
+2026-07-29 22:44:57 | INFO     | ss_crawler | [repository] ⏸️ lipjd: Unchanged
+2026-07-29 22:44:57 | INFO     | ss_crawler | [image_downloader] Downloaded image for lipjd (stored as lipjd_57effe7a.jpg, 81240 bytes)
+2026-07-29 22:44:57 | INFO     | ss_crawler | [scraper] Image saved locally: gpus\lipjd_57effe7a.jpg
+2026-07-29 22:44:57 | INFO     | ss_crawler | [scraper] ⏭️ UNCHANGED: Matched: NVIDIA GeForce RTX 3070 (86% confidence) | MSI 3070 non lhr
+2026-07-29 22:44:57 | INFO     | ss_crawler | [crawler] Fetching listing 27/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/bkckk.html
+2026-07-29 22:44:59 | INFO     | ss_crawler | [repository] ✨ bkckk: New
+2026-07-29 22:44:59 | INFO     | ss_crawler | [image_downloader] Downloaded image for bkckk (stored as bkckk_d4b7b221.jpg, 43303 bytes)
+2026-07-29 22:44:59 | INFO     | ss_crawler | [scraper] Image saved locally: gpus\bkckk_d4b7b221.jpg
+2026-07-29 22:44:59 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: NVIDIA GeForce RTX 3070 Ti (90% confidence) | MSI Rtx 3070 ti
+2026-07-29 22:44:59 | INFO     | ss_crawler | [crawler] Fetching listing 28/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/bipien.html
+2026-07-29 22:45:01 | INFO     | ss_crawler | [parser] Skipping store listing by description: Zotac Rtx 5060 solo
+2026-07-29 22:45:01 | INFO     | ss_crawler | [crawler] HTML sample saved: logs\html_samples\parse_failed_224501_20260729_224501.html
+2026-07-29 22:45:01 | INFO     | ss_crawler | [scraper] ❌ FAILED: Parse error: Could not extract listing data | N/A
+2026-07-29 22:45:01 | INFO     | ss_crawler | [crawler] Fetching listing 29/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/blxmnd.html
+2026-07-29 22:45:04 | INFO     | ss_crawler | [parser] Skipping store listing by description: PowerColor Rx 9060 xt
+2026-07-29 22:45:04 | INFO     | ss_crawler | [crawler] HTML sample saved: logs\html_samples\parse_failed_224504_20260729_224504.html
+2026-07-29 22:45:04 | INFO     | ss_crawler | [scraper] ❌ FAILED: Parse error: Could not extract listing data | N/A
+2026-07-29 22:45:04 | INFO     | ss_crawler | [crawler] Fetching listing 30/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/bkjjkm.html
+2026-07-29 22:45:06 | INFO     | ss_crawler | [parser] Skipping store listing by description: Inno3D Rtx 5060 ti
+2026-07-29 22:45:06 | INFO     | ss_crawler | [crawler] HTML sample saved: logs\html_samples\parse_failed_224506_20260729_224506.html
+2026-07-29 22:45:06 | INFO     | ss_crawler | [scraper] ❌ FAILED: Parse error: Could not extract listing data | N/A
+2026-07-29 22:45:06 | INFO     | ss_crawler | [scraper] 📄 Fetching category: https://www.ss.com/lv/electronics/computers/completing-pc/video/page3.html
+2026-07-29 22:45:06 | INFO     | ss_crawler | [crawler] Fetching category page: https://www.ss.com/lv/electronics/computers/completing-pc/video/page3.html
+2026-07-29 22:45:08 | INFO     | ss_crawler | [parser] Found 30 listings on page
+2026-07-29 22:45:08 | INFO     | ss_crawler | [scraper] 🔍 Found 30 listings to process
+2026-07-29 22:45:08 | INFO     | ss_crawler | [crawler] Fetching listing 1/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/ppmge.html
+2026-07-29 22:45:12 | INFO     | ss_crawler | [parser] Skipping store listing by description: Gigabyte Rtx 5070
+2026-07-29 22:45:12 | INFO     | ss_crawler | [crawler] HTML sample saved: logs\html_samples\parse_failed_224512_20260729_224512.html
+2026-07-29 22:45:12 | INFO     | ss_crawler | [scraper] ❌ FAILED: Parse error: Could not extract listing data | N/A
+2026-07-29 22:45:12 | INFO     | ss_crawler | [crawler] Fetching listing 2/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/bimopo.html
+2026-07-29 22:45:14 | INFO     | ss_crawler | [parser] Skipping store listing by description: MSI Rtx 5070
+2026-07-29 22:45:14 | INFO     | ss_crawler | [crawler] HTML sample saved: logs\html_samples\parse_failed_224514_20260729_224514.html
+2026-07-29 22:45:14 | INFO     | ss_crawler | [scraper] ❌ FAILED: Parse error: Could not extract listing data | N/A
+2026-07-29 22:45:14 | INFO     | ss_crawler | [crawler] Fetching listing 3/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/bxxgck.html
+2026-07-29 22:45:16 | INFO     | ss_crawler | [parser] Skipping store listing by description: Rx 9070
+2026-07-29 22:45:16 | INFO     | ss_crawler | [crawler] HTML sample saved: logs\html_samples\parse_failed_224516_20260729_224516.html
+2026-07-29 22:45:16 | INFO     | ss_crawler | [scraper] ❌ FAILED: Parse error: Could not extract listing data | N/A
+2026-07-29 22:45:16 | INFO     | ss_crawler | [crawler] Fetching listing 4/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/bkkpfx.html
+2026-07-29 22:45:18 | INFO     | ss_crawler | [parser] Skipping store listing by description: Sapphire Rx 9070 xt
+2026-07-29 22:45:18 | INFO     | ss_crawler | [crawler] HTML sample saved: logs\html_samples\parse_failed_224518_20260729_224518.html
+2026-07-29 22:45:18 | INFO     | ss_crawler | [scraper] ❌ FAILED: Parse error: Could not extract listing data | N/A
+2026-07-29 22:45:18 | INFO     | ss_crawler | [crawler] Fetching listing 5/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/blckfl.html
+2026-07-29 22:45:20 | INFO     | ss_crawler | [parser] Skipping store listing by description: Rx 9070 xt
+2026-07-29 22:45:20 | INFO     | ss_crawler | [crawler] HTML sample saved: logs\html_samples\parse_failed_224520_20260729_224520.html
+2026-07-29 22:45:20 | INFO     | ss_crawler | [scraper] ❌ FAILED: Parse error: Could not extract listing data | N/A
+2026-07-29 22:45:20 | INFO     | ss_crawler | [crawler] Fetching listing 6/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/blffdg.html
+2026-07-29 22:45:23 | INFO     | ss_crawler | [parser] Skipping store listing by description: Gigabyte Rtx 5070 ti
+2026-07-29 22:45:23 | INFO     | ss_crawler | [crawler] HTML sample saved: logs\html_samples\parse_failed_224523_20260729_224523.html
+2026-07-29 22:45:23 | INFO     | ss_crawler | [scraper] ❌ FAILED: Parse error: Could not extract listing data | N/A
+2026-07-29 22:45:23 | INFO     | ss_crawler | [crawler] Fetching listing 7/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/fkdgc.html
+2026-07-29 22:45:25 | INFO     | ss_crawler | [repository] ✨ fkdgc: New
+2026-07-29 22:45:25 | INFO     | ss_crawler | [image_downloader] Downloaded image for fkdgc (stored as fkdgc_245e3add.jpg, 82285 bytes)
+2026-07-29 22:45:25 | INFO     | ss_crawler | [scraper] Image saved locally: gpus\fkdgc_245e3add.jpg
+2026-07-29 22:45:25 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: NVIDIA GeForce RTX 4090 (90% confidence) | Asus Rtx4090
+2026-07-29 22:45:25 | INFO     | ss_crawler | [crawler] Fetching listing 8/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/hdglp.html
+2026-07-29 22:45:27 | WARNING  | ss_crawler | [listing_versioning] Legacy listing hdglp v1 has NULL fingerprint, creating new version
+2026-07-29 22:45:27 | INFO     | ss_crawler | [repository] ✨ hdglp_v2: New
+2026-07-29 22:45:27 | INFO     | ss_crawler | [image_downloader] Downloaded image for hdglp_v2 (stored as hdglp_127e3559.jpg, 121610 bytes)
+2026-07-29 22:45:27 | INFO     | ss_crawler | [scraper] Image saved locally: gpus\hdglp_127e3559.jpg
+2026-07-29 22:45:27 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: NVIDIA GeForce RTX 5080 (90% confidence) | nVidia Gainward 5080
+2026-07-29 22:45:27 | INFO     | ss_crawler | [crawler] Fetching listing 9/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/fdeig.html
+2026-07-29 22:45:28 | WARNING  | ss_crawler | [listing_versioning] Legacy listing fdeig v1 has NULL fingerprint, creating new version
+2026-07-29 22:45:28 | INFO     | ss_crawler | [repository] ✨ fdeig_v2: New
+2026-07-29 22:45:29 | INFO     | ss_crawler | [image_downloader] Downloaded image for fdeig_v2 (stored as fdeig_3e614475.jpg, 104066 bytes)
+2026-07-29 22:45:29 | INFO     | ss_crawler | [scraper] Image saved locally: gpus\fdeig_3e614475.jpg
+2026-07-29 22:45:29 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: NVIDIA GeForce RTX 5070 Ti (90% confidence) | Zotac 5070 Ti
+2026-07-29 22:45:29 | INFO     | ss_crawler | [crawler] Fetching listing 10/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/hxghf.html
+2026-07-29 22:45:31 | INFO     | ss_crawler | [repository] ✨ hxghf: New
+2026-07-29 22:45:31 | INFO     | ss_crawler | [image_downloader] Downloaded image for hxghf (stored as hxghf_bd688460.jpg, 134232 bytes)
+2026-07-29 22:45:31 | INFO     | ss_crawler | [scraper] Image saved locally: gpus\hxghf_bd688460.jpg
+2026-07-29 22:45:31 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: NVIDIA GeForce RTX 5070 (86% confidence) | Gigabyte Rtx 5070 eagle
+2026-07-29 22:45:31 | INFO     | ss_crawler | [crawler] Fetching listing 11/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/cbxhnp.html
+2026-07-29 22:45:35 | INFO     | ss_crawler | [listing_versioning] Legacy listing cbxhnp v2 matches by computed fingerprint, updating
+2026-07-29 22:45:35 | INFO     | ss_crawler | [repository] ⏸️ cbxhnp: Unchanged
+2026-07-29 22:45:35 | INFO     | ss_crawler | [image_downloader] Downloaded image for cbxhnp (stored as cbxhnp_8a43025b.jpg, 71401 bytes)
+2026-07-29 22:45:35 | INFO     | ss_crawler | [scraper] Image saved locally: gpus\cbxhnp_8a43025b.jpg
+2026-07-29 22:45:35 | INFO     | ss_crawler | [scraper] ⏭️ UNCHANGED: Matched: NVIDIA GeForce GTX 1060 3GB (86% confidence) | Palit Gtx 1060
+2026-07-29 22:45:35 | INFO     | ss_crawler | [crawler] Fetching listing 12/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/eobie.html
+2026-07-29 22:45:37 | INFO     | ss_crawler | [repository] ✨ eobie: New
+2026-07-29 22:45:37 | INFO     | ss_crawler | [image_downloader] Downloaded image for eobie (stored as eobie_046764ef.jpg, 71107 bytes)
+2026-07-29 22:45:37 | INFO     | ss_crawler | [scraper] Image saved locally: gpus\eobie_046764ef.jpg
+2026-07-29 22:45:37 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: NVIDIA GeForce RTX 3060 Ti (90% confidence) | Inno3D Rtx 3060ti
+2026-07-29 22:45:37 | INFO     | ss_crawler | [crawler] Fetching listing 13/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/enehp.html
+2026-07-29 22:45:40 | INFO     | ss_crawler | [repository] ✨ enehp: New
+2026-07-29 22:45:41 | INFO     | ss_crawler | [image_downloader] Downloaded image for enehp (stored as enehp_b44dbf8e.jpg, 65162 bytes)
+2026-07-29 22:45:41 | INFO     | ss_crawler | [scraper] Image saved locally: gpus\enehp_b44dbf8e.jpg
+2026-07-29 22:45:41 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: AMD Radeon RX 580 (86% confidence) | MSI Armor oc
+2026-07-29 22:45:41 | INFO     | ss_crawler | [crawler] Fetching listing 14/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/ekdli.html
+2026-07-29 22:45:42 | INFO     | ss_crawler | [repository] ✨ ekdli: New
+2026-07-29 22:45:43 | INFO     | ss_crawler | [image_downloader] Downloaded image for ekdli (stored as ekdli_383e076f.jpg, 61766 bytes)
+2026-07-29 22:45:43 | INFO     | ss_crawler | [scraper] Image saved locally: gpus\ekdli_383e076f.jpg
+2026-07-29 22:45:43 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: NVIDIA GeForce GTX 1060 6GB (86% confidence) | nVidia Strix 1060
+2026-07-29 22:45:43 | INFO     | ss_crawler | [crawler] Fetching listing 15/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/kjdjh.html
+2026-07-29 22:45:46 | INFO     | ss_crawler | [listing_versioning] Legacy listing kjdjh v1 matches by computed fingerprint, updating
+2026-07-29 22:45:46 | INFO     | ss_crawler | [repository] ⏸️ kjdjh: Unchanged
+2026-07-29 22:45:46 | INFO     | ss_crawler | [image_downloader] Downloaded image for kjdjh (stored as kjdjh_676706cc.jpg, 131109 bytes)
+2026-07-29 22:45:46 | INFO     | ss_crawler | [scraper] Image saved locally: gpus\kjdjh_676706cc.jpg
+2026-07-29 22:45:46 | INFO     | ss_crawler | [scraper] ⏭️ UNCHANGED: Matched: AMD Radeon RX 5700 XT (75% confidence) | Asus 5700 Xt
+2026-07-29 22:45:46 | INFO     | ss_crawler | [crawler] Fetching listing 16/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/cxpjlk.html
+2026-07-29 22:45:50 | INFO     | ss_crawler | [repository] ✨ cxpjlk: New
+2026-07-29 22:45:50 | INFO     | ss_crawler | [image_downloader] Downloaded image for cxpjlk (stored as cxpjlk_14d53ee2.jpg, 69756 bytes)
+2026-07-29 22:45:50 | INFO     | ss_crawler | [scraper] Image saved locally: gpus\cxpjlk_14d53ee2.jpg
+2026-07-29 22:45:50 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: NVIDIA GeForce RTX 3090 (86% confidence) | nVidia 3090
+2026-07-29 22:45:50 | INFO     | ss_crawler | [crawler] Fetching listing 17/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/llixl.html
+2026-07-29 22:45:52 | INFO     | ss_crawler | [repository] ✨ llixl: New
+2026-07-29 22:45:53 | INFO     | ss_crawler | [image_downloader] Downloaded image for llixl (stored as llixl_2cd3f74b.jpg, 74492 bytes)
+2026-07-29 22:45:53 | INFO     | ss_crawler | [scraper] Image saved locally: gpus\llixl_2cd3f74b.jpg
+2026-07-29 22:45:53 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: AMD Radeon RX 6500 XT (86% confidence) | Gigabyte Amd rx6500 rt
+2026-07-29 22:45:53 | INFO     | ss_crawler | [crawler] Fetching listing 18/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/bpxpie.html
+2026-07-29 22:45:55 | WARNING  | ss_crawler | [listing_versioning] Legacy listing bpxpie v2 has NULL fingerprint, creating new version
+2026-07-29 22:45:55 | INFO     | ss_crawler | [repository] Detected re-list: bpxpie (was bpxpie)
+2026-07-29 22:45:55 | INFO     | ss_crawler | [repository] ✨ bpxpie_v3: New
+2026-07-29 22:45:55 | INFO     | ss_crawler | [image_downloader] Downloaded image for bpxpie_v3 (stored as bpxpie_22317392.jpg, 100475 bytes)
+2026-07-29 22:45:55 | INFO     | ss_crawler | [scraper] Image saved locally: gpus\bpxpie_22317392.jpg
+2026-07-29 22:45:55 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: AMD Radeon RX 7900 XT (75% confidence) | Asus 7900Xtx
+2026-07-29 22:45:55 | INFO     | ss_crawler | [crawler] Fetching listing 19/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/eghjo.html
+2026-07-29 22:45:58 | INFO     | ss_crawler | [repository] ✨ eghjo: New
+2026-07-29 22:45:58 | INFO     | ss_crawler | [image_downloader] Downloaded image for eghjo (stored as eghjo_ac983a9e.jpg, 121539 bytes)
+2026-07-29 22:45:58 | INFO     | ss_crawler | [scraper] Image saved locally: gpus\eghjo_ac983a9e.jpg
+2026-07-29 22:45:58 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: NVIDIA GeForce GTX 1650 (90% confidence) | Gigabyte Gtx 1650 oc
+2026-07-29 22:45:58 | INFO     | ss_crawler | [crawler] Fetching listing 20/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/ndokf.html
+2026-07-29 22:46:00 | INFO     | ss_crawler | [listing_versioning] Legacy listing ndokf v2 matches by computed fingerprint, updating
+2026-07-29 22:46:00 | INFO     | ss_crawler | [repository] ⏸️ ndokf: Unchanged
+2026-07-29 22:46:00 | INFO     | ss_crawler | [image_downloader] Downloaded image for ndokf (stored as ndokf_dde3145c.jpg, 93411 bytes)
+2026-07-29 22:46:00 | INFO     | ss_crawler | [scraper] Image saved locally: gpus\ndokf_dde3145c.jpg
+2026-07-29 22:46:00 | INFO     | ss_crawler | [scraper] ⏭️ UNCHANGED: Matched: NVIDIA GeForce RTX 5070 Ti (90% confidence) | Gigabyte Rtx 5070 ti
+2026-07-29 22:46:00 | INFO     | ss_crawler | [crawler] Fetching listing 21/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/bkngle.html
+2026-07-29 22:46:03 | INFO     | ss_crawler | [listing_versioning] Legacy listing bkngle v2 matches by computed fingerprint, updating
+2026-07-29 22:46:03 | INFO     | ss_crawler | [repository] ⏸️ bkngle: Unchanged
+2026-07-29 22:46:03 | INFO     | ss_crawler | [image_downloader] Downloaded image for bkngle (stored as bkngle_b882859d.jpg, 58459 bytes)
+2026-07-29 22:46:03 | INFO     | ss_crawler | [scraper] Image saved locally: gpus\bkngle_b882859d.jpg
+2026-07-29 22:46:03 | INFO     | ss_crawler | [scraper] ⏭️ UNCHANGED: Matched: AMD Radeon RX 9070 XT (86% confidence) | Asus 9070 xt
+2026-07-29 22:46:03 | INFO     | ss_crawler | [crawler] Fetching listing 22/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/logmf.html
+2026-07-29 22:46:07 | INFO     | ss_crawler | [listing_versioning] Legacy listing logmf v2 matches by computed fingerprint, updating
+2026-07-29 22:46:07 | INFO     | ss_crawler | [repository] ⏸️ logmf: Unchanged
+2026-07-29 22:46:07 | INFO     | ss_crawler | [image_downloader] Downloaded image for logmf (stored as logmf_d42fac1b.jpg, 70914 bytes)
+2026-07-29 22:46:07 | INFO     | ss_crawler | [scraper] Image saved locally: gpus\logmf_d42fac1b.jpg
+2026-07-29 22:46:07 | INFO     | ss_crawler | [scraper] ⏭️ UNCHANGED: Matched: NVIDIA GeForce RTX 5070 Ti (90% confidence) | PNY Rtx 5070ti
+2026-07-29 22:46:07 | INFO     | ss_crawler | [crawler] Fetching listing 23/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/kiomc.html
+2026-07-29 22:46:11 | INFO     | ss_crawler | [listing_versioning] Legacy listing kiomc v2 matches by computed fingerprint, updating
+2026-07-29 22:46:11 | INFO     | ss_crawler | [repository] ⏸️ kiomc: Unchanged
+2026-07-29 22:46:11 | INFO     | ss_crawler | [image_downloader] Downloaded image for kiomc (stored as kiomc_61f6ad5f.jpg, 84520 bytes)
+2026-07-29 22:46:11 | INFO     | ss_crawler | [scraper] Image saved locally: gpus\kiomc_61f6ad5f.jpg
+2026-07-29 22:46:11 | INFO     | ss_crawler | [scraper] ⏭️ UNCHANGED: Matched: NVIDIA GeForce RTX 5070 Ti (90% confidence) | PNY 5070ti
+2026-07-29 22:46:11 | INFO     | ss_crawler | [crawler] Fetching listing 24/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/moghh.html
+2026-07-29 22:46:14 | INFO     | ss_crawler | [listing_versioning] Legacy listing moghh v2 matches by computed fingerprint, updating
+2026-07-29 22:46:14 | INFO     | ss_crawler | [repository] ⏸️ moghh: Unchanged
+2026-07-29 22:46:14 | INFO     | ss_crawler | [image_downloader] Downloaded image for moghh (stored as moghh_bb3312cd.jpg, 62717 bytes)
+2026-07-29 22:46:14 | INFO     | ss_crawler | [scraper] Image saved locally: gpus\moghh_bb3312cd.jpg
+2026-07-29 22:46:14 | INFO     | ss_crawler | [scraper] ⏭️ UNCHANGED: Matched: NVIDIA GeForce RTX 5070 (86% confidence) | MSI Rtx 5070
+2026-07-29 22:46:14 | INFO     | ss_crawler | [crawler] Fetching listing 25/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/demjh.html
+2026-07-29 22:46:16 | INFO     | ss_crawler | [listing_versioning] Legacy listing demjh v2 matches by computed fingerprint, updating
+2026-07-29 22:46:16 | INFO     | ss_crawler | [repository] ⏸️ demjh: Unchanged
+2026-07-29 22:46:16 | INFO     | ss_crawler | [image_downloader] Downloaded image for demjh (stored as demjh_65750d82.jpg, 110871 bytes)
+2026-07-29 22:46:16 | INFO     | ss_crawler | [scraper] Image saved locally: gpus\demjh_65750d82.jpg
+2026-07-29 22:46:16 | INFO     | ss_crawler | [scraper] ⏭️ UNCHANGED: Matched: AMD Radeon RX 9070 XT (86% confidence) | Asustek 9070Xt
+2026-07-29 22:46:16 | INFO     | ss_crawler | [crawler] Fetching listing 26/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/fbeeh.html
+2026-07-29 22:46:19 | INFO     | ss_crawler | [repository] ✨ fbeeh: New
+2026-07-29 22:46:19 | INFO     | ss_crawler | [image_downloader] Downloaded image for fbeeh (stored as fbeeh_bfd89d28.jpg, 101299 bytes)
+2026-07-29 22:46:19 | INFO     | ss_crawler | [scraper] Image saved locally: gpus\fbeeh_bfd89d28.jpg
+2026-07-29 22:46:19 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: NVIDIA GeForce RTX 4060 (86% confidence) | Gigabyte Rtx 4060 8gb
+2026-07-29 22:46:19 | INFO     | ss_crawler | [crawler] Fetching listing 27/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/bkejlk.html
+2026-07-29 22:46:21 | INFO     | ss_crawler | [listing_versioning] Legacy listing bkejlk v1 matches by computed fingerprint, updating
+2026-07-29 22:46:21 | INFO     | ss_crawler | [repository] ⏸️ bkejlk: Unchanged
+2026-07-29 22:46:21 | INFO     | ss_crawler | [image_downloader] Downloaded image for bkejlk (stored as bkejlk_aa592e37.jpg, 69293 bytes)
+2026-07-29 22:46:21 | INFO     | ss_crawler | [scraper] Image saved locally: gpus\bkejlk_aa592e37.jpg
+2026-07-29 22:46:21 | INFO     | ss_crawler | [scraper] ⏭️ UNCHANGED: Matched: AMD Radeon RX 9060 XT (90% confidence) | Sapphire Rx 9060 xt
+2026-07-29 22:46:21 | INFO     | ss_crawler | [crawler] Fetching listing 28/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/biohcc.html
+2026-07-29 22:46:24 | INFO     | ss_crawler | [listing_versioning] Legacy listing biohcc v2 matches by computed fingerprint, updating
+2026-07-29 22:46:24 | INFO     | ss_crawler | [repository] ⏸️ biohcc: Unchanged
+2026-07-29 22:46:24 | INFO     | ss_crawler | [image_downloader] Downloaded image for biohcc (stored as biohcc_7c8ca664.jpg, 85479 bytes)
+2026-07-29 22:46:24 | INFO     | ss_crawler | [scraper] Image saved locally: gpus\biohcc_7c8ca664.jpg
+2026-07-29 22:46:24 | INFO     | ss_crawler | [scraper] ⏭️ UNCHANGED: Matched: NVIDIA GeForce RTX 3050 8GB (86% confidence) | Gigabyte Rtx3050 oc 8gb
+2026-07-29 22:46:24 | INFO     | ss_crawler | [crawler] Fetching listing 29/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/bpxffj.html
+2026-07-29 22:46:26 | INFO     | ss_crawler | [listing_versioning] Legacy listing bpxffj v2 matches by computed fingerprint, updating
+2026-07-29 22:46:26 | INFO     | ss_crawler | [repository] ⏸️ bpxffj: Unchanged
+2026-07-29 22:46:26 | INFO     | ss_crawler | [image_downloader] Downloaded image for bpxffj (stored as bpxffj_45c3f39f.jpg, 122907 bytes)
+2026-07-29 22:46:26 | INFO     | ss_crawler | [scraper] Image saved locally: gpus\bpxffj_45c3f39f.jpg
+2026-07-29 22:46:26 | INFO     | ss_crawler | [scraper] ⏭️ UNCHANGED: Matched: AMD Radeon RX 9060 XT (90% confidence) | Asus 9060 xt
+2026-07-29 22:46:26 | INFO     | ss_crawler | [crawler] Fetching listing 30/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/mollj.html
+2026-07-29 22:46:29 | INFO     | ss_crawler | [listing_versioning] Legacy listing mollj v2 matches by computed fingerprint, updating
+2026-07-29 22:46:29 | INFO     | ss_crawler | [repository] ⏸️ mollj: Unchanged
+2026-07-29 22:46:30 | INFO     | ss_crawler | [image_downloader] Downloaded image for mollj (stored as mollj_ed8889fa.jpg, 76294 bytes)
+2026-07-29 22:46:30 | INFO     | ss_crawler | [scraper] Image saved locally: gpus\mollj_ed8889fa.jpg
+2026-07-29 22:46:30 | INFO     | ss_crawler | [scraper] ⏭️ UNCHANGED: Matched: NVIDIA GeForce RTX 5060 (86% confidence) | Gigabyte Rtx 5060
+2026-07-29 22:46:30 | INFO     | ss_crawler | [scraper] 📄 Fetching category: https://www.ss.com/lv/electronics/computers/completing-pc/video/page4.html
+2026-07-29 22:46:30 | INFO     | ss_crawler | [crawler] Fetching category page: https://www.ss.com/lv/electronics/computers/completing-pc/video/page4.html
+2026-07-29 22:46:32 | INFO     | ss_crawler | [parser] Found 26 listings on page
+2026-07-29 22:46:32 | INFO     | ss_crawler | [scraper] 🔍 Found 26 listings to process
+2026-07-29 22:46:32 | INFO     | ss_crawler | [crawler] Fetching listing 1/26: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/bigki.html
+2026-07-29 22:46:34 | INFO     | ss_crawler | [repository] ✨ bigki: New
+2026-07-29 22:46:34 | INFO     | ss_crawler | [image_downloader] Downloaded image for bigki (stored as bigki_54c95a67.jpg, 130541 bytes)
+2026-07-29 22:46:34 | INFO     | ss_crawler | [scraper] Image saved locally: gpus\bigki_54c95a67.jpg
+2026-07-29 22:46:34 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: NVIDIA GeForce GTX 1660 (86% confidence) | Asus Gtx 1660 Super
+2026-07-29 22:46:34 | INFO     | ss_crawler | [crawler] Fetching listing 2/26: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/bifmel.html
+2026-07-29 22:46:36 | WARNING  | ss_crawler | [listing_versioning] Legacy listing bifmel v1 has NULL fingerprint, creating new version
+2026-07-29 22:46:36 | INFO     | ss_crawler | [repository] ✨ bifmel_v2: New
+2026-07-29 22:46:36 | INFO     | ss_crawler | [image_downloader] Downloaded image for bifmel_v2 (stored as bifmel_1f0150ef.jpg, 74141 bytes)
+2026-07-29 22:46:36 | INFO     | ss_crawler | [scraper] Image saved locally: gpus\bifmel_1f0150ef.jpg
+2026-07-29 22:46:36 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: AMD Radeon RX 5500 XT (86% confidence) | Asus Rx5500Xt
+2026-07-29 22:46:36 | INFO     | ss_crawler | [crawler] Fetching listing 3/26: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/difhm.html
+2026-07-29 22:46:38 | INFO     | ss_crawler | [repository] ✨ difhm: New
+2026-07-29 22:46:39 | INFO     | ss_crawler | [image_downloader] Downloaded image for difhm (stored as difhm_8e3e124f.jpg, 144626 bytes)
+2026-07-29 22:46:39 | INFO     | ss_crawler | [scraper] Image saved locally: gpus\difhm_8e3e124f.jpg
+2026-07-29 22:46:39 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: NVIDIA GeForce GTX 1660 (86% confidence) | MSI Gtx 1660 super
+2026-07-29 22:46:39 | INFO     | ss_crawler | [crawler] Fetching listing 4/26: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/coejd.html
+2026-07-29 22:46:42 | INFO     | ss_crawler | [repository] ✨ coejd: New
+2026-07-29 22:46:42 | INFO     | ss_crawler | [image_downloader] Downloaded image for coejd (stored as coejd_dbe46be1.jpg, 71327 bytes)
+2026-07-29 22:46:42 | INFO     | ss_crawler | [scraper] Image saved locally: gpus\coejd_dbe46be1.jpg
+2026-07-29 22:46:42 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: AMD Radeon RX 9070 XT (86% confidence) | Asus Radeon rx 9070
+2026-07-29 22:46:42 | INFO     | ss_crawler | [crawler] Fetching listing 5/26: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/bpbecm.html
+2026-07-29 22:46:45 | WARNING  | ss_crawler | [listing_versioning] Legacy listing bpbecm v1 has NULL fingerprint, creating new version
+2026-07-29 22:46:45 | INFO     | ss_crawler | [repository] ✨ bpbecm_v2: New
+2026-07-29 22:46:45 | INFO     | ss_crawler | [image_downloader] Downloaded image for bpbecm_v2 (stored as bpbecm_b6fdec59.jpg, 116207 bytes)
+2026-07-29 22:46:45 | INFO     | ss_crawler | [scraper] Image saved locally: gpus\bpbecm_b6fdec59.jpg
+2026-07-29 22:46:45 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: AMD Radeon RX 580 (86% confidence) | Gigabyte Rx 580
+2026-07-29 22:46:45 | INFO     | ss_crawler | [crawler] Fetching listing 6/26: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/bkmdoe.html
+2026-07-29 22:46:48 | INFO     | ss_crawler | [listing_versioning] Legacy listing bkmdoe v1 matches by computed fingerprint, updating
+2026-07-29 22:46:48 | INFO     | ss_crawler | [repository] ⏸️ bkmdoe: Unchanged
+2026-07-29 22:46:49 | INFO     | ss_crawler | [image_downloader] Downloaded image for bkmdoe (stored as bkmdoe_603882d6.jpg, 50358 bytes)
+2026-07-29 22:46:49 | INFO     | ss_crawler | [scraper] Image saved locally: gpus\bkmdoe_603882d6.jpg
+2026-07-29 22:46:49 | INFO     | ss_crawler | [scraper] ⏭️ UNCHANGED: Matched: NVIDIA GeForce RTX 5070 Ti (90% confidence) | PNY 5070Ti
+2026-07-29 22:46:49 | INFO     | ss_crawler | [crawler] Fetching listing 7/26: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/bjpec.html
+2026-07-29 22:46:51 | INFO     | ss_crawler | [listing_versioning] Legacy listing bjpec v2 matches by computed fingerprint, updating
+2026-07-29 22:46:51 | INFO     | ss_crawler | [repository] ⏸️ bjpec: Unchanged
+2026-07-29 22:46:51 | INFO     | ss_crawler | [image_downloader] Downloaded image for bjpec (stored as bjpec_e93292ef.jpg, 138231 bytes)
+2026-07-29 22:46:51 | INFO     | ss_crawler | [scraper] Image saved locally: gpus\bjpec_e93292ef.jpg
+2026-07-29 22:46:51 | INFO     | ss_crawler | [scraper] ❓ UNMATCHED: No GPU match found | Gigabyte P106
+2026-07-29 22:46:51 | INFO     | ss_crawler | [crawler] Fetching listing 8/26: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/foxhe.html
+2026-07-29 22:46:55 | INFO     | ss_crawler | [repository] ✨ foxhe: New
+2026-07-29 22:46:55 | INFO     | ss_crawler | [image_downloader] Downloaded image for foxhe (stored as foxhe_21d763b7.jpg, 136689 bytes)
+2026-07-29 22:46:55 | INFO     | ss_crawler | [scraper] Image saved locally: gpus\foxhe_21d763b7.jpg
+2026-07-29 22:46:55 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: NVIDIA GeForce RTX 3080 Ti (90% confidence) | MSI 3080Ti
+2026-07-29 22:46:55 | INFO     | ss_crawler | [crawler] Fetching listing 9/26: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/bopnkk.html
+2026-07-29 22:46:57 | INFO     | ss_crawler | [listing_versioning] Legacy listing bopnkk v1 matches by computed fingerprint, updating
+2026-07-29 22:46:57 | INFO     | ss_crawler | [repository] ⏸️ bopnkk: Unchanged
+2026-07-29 22:46:58 | INFO     | ss_crawler | [image_downloader] Downloaded image for bopnkk (stored as bopnkk_b26922ef.jpg, 216866 bytes)
+2026-07-29 22:46:58 | INFO     | ss_crawler | [scraper] Image saved locally: gpus\bopnkk_b26922ef.jpg
+2026-07-29 22:46:58 | INFO     | ss_crawler | [scraper] ⏭️ UNCHANGED: Matched: AMD Radeon RX 570 (86% confidence) | Sapphire Rx 570
+2026-07-29 22:46:58 | INFO     | ss_crawler | [crawler] Fetching listing 10/26: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/bkghek.html
+2026-07-29 22:47:00 | INFO     | ss_crawler | [listing_versioning] Legacy listing bkghek v1 matches by computed fingerprint, updating
+2026-07-29 22:47:00 | INFO     | ss_crawler | [repository] ⏸️ bkghek: Unchanged
+2026-07-29 22:47:00 | INFO     | ss_crawler | [image_downloader] Downloaded image for bkghek (stored as bkghek_f6d6c94a.jpg, 187965 bytes)
+2026-07-29 22:47:00 | INFO     | ss_crawler | [scraper] Image saved locally: gpus\bkghek_f6d6c94a.jpg
+2026-07-29 22:47:00 | INFO     | ss_crawler | [scraper] ⏭️ UNCHANGED: Matched: NVIDIA GeForce RTX 3070 (86% confidence) | Gigabyte Rtx 3070
+2026-07-29 22:47:00 | INFO     | ss_crawler | [crawler] Fetching listing 11/26: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/nhdgk.html
+2026-07-29 22:47:02 | INFO     | ss_crawler | [repository] ✨ nhdgk: New
+2026-07-29 22:47:02 | INFO     | ss_crawler | [image_downloader] Downloaded image for nhdgk (stored as nhdgk_29f2d6ed.jpg, 153926 bytes)
+2026-07-29 22:47:02 | INFO     | ss_crawler | [scraper] Image saved locally: gpus\nhdgk_29f2d6ed.jpg
+2026-07-29 22:47:02 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: NVIDIA GeForce RTX 4070 Ti (86% confidence) | Gigabyte Rtx 4070ti
+2026-07-29 22:47:02 | INFO     | ss_crawler | [crawler] Fetching listing 12/26: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/fijbe.html
+2026-07-29 22:47:05 | INFO     | ss_crawler | [repository] ✨ fijbe: New
+2026-07-29 22:47:05 | INFO     | ss_crawler | [image_downloader] Downloaded image for fijbe (stored as fijbe_db227ab9.jpg, 97920 bytes)
+2026-07-29 22:47:05 | INFO     | ss_crawler | [scraper] Image saved locally: gpus\fijbe_db227ab9.jpg
+2026-07-29 22:47:05 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: NVIDIA GeForce RTX 3050 8GB (86% confidence) | Asus Rtx 3050 8G
+2026-07-29 22:47:05 | INFO     | ss_crawler | [crawler] Fetching listing 13/26: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/giief.html
+2026-07-29 22:47:07 | INFO     | ss_crawler | [repository] ✨ giief: New
+2026-07-29 22:47:07 | INFO     | ss_crawler | [image_downloader] Downloaded image for giief (stored as giief_8f077336.jpg, 65312 bytes)
+2026-07-29 22:47:07 | INFO     | ss_crawler | [scraper] Image saved locally: gpus\giief_8f077336.jpg
+2026-07-29 22:47:07 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: NVIDIA GeForce RTX 5060 (86% confidence) | Asus Rtx 5060
+2026-07-29 22:47:07 | INFO     | ss_crawler | [crawler] Fetching listing 14/26: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/eoinl.html
+2026-07-29 22:47:10 | INFO     | ss_crawler | [repository] ✨ eoinl: New
+2026-07-29 22:47:10 | INFO     | ss_crawler | [image_downloader] Downloaded image for eoinl (stored as eoinl_13918305.jpg, 71078 bytes)
+2026-07-29 22:47:10 | INFO     | ss_crawler | [scraper] Image saved locally: gpus\eoinl_13918305.jpg
+2026-07-29 22:47:10 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: NVIDIA GeForce RTX 5060 (86% confidence) | Asus Rtx 5060
+2026-07-29 22:47:10 | INFO     | ss_crawler | [crawler] Fetching listing 15/26: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/bmjho.html
+2026-07-29 22:47:12 | INFO     | ss_crawler | [repository] ✨ bmjho: New
+2026-07-29 22:47:12 | INFO     | ss_crawler | [image_downloader] Downloaded image for bmjho (stored as bmjho_a0d477d5.jpg, 75002 bytes)
+2026-07-29 22:47:12 | INFO     | ss_crawler | [scraper] Image saved locally: gpus\bmjho_a0d477d5.jpg
+2026-07-29 22:47:12 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: NVIDIA GeForce RTX 5060 Ti (86% confidence) | MSI Rtx 5060ti
+2026-07-29 22:47:12 | INFO     | ss_crawler | [crawler] Fetching listing 16/26: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/binppg.html
+2026-07-29 22:47:15 | INFO     | ss_crawler | [repository] ✨ binppg: New
+2026-07-29 22:47:15 | INFO     | ss_crawler | [image_downloader] Downloaded image for binppg (stored as binppg_0e35a6f1.jpg, 73193 bytes)
+2026-07-29 22:47:15 | INFO     | ss_crawler | [scraper] Image saved locally: gpus\binppg_0e35a6f1.jpg
+2026-07-29 22:47:15 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: NVIDIA GeForce RTX 5070 (86% confidence) | Gigabyte Rtx 5070
+2026-07-29 22:47:15 | INFO     | ss_crawler | [crawler] Fetching listing 17/26: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/nhcjo.html
+2026-07-29 22:47:18 | WARNING  | ss_crawler | [listing_versioning] Legacy listing nhcjo v1 has NULL fingerprint, creating new version
+2026-07-29 22:47:18 | INFO     | ss_crawler | [repository] ✨ nhcjo_v2: New
+2026-07-29 22:47:18 | INFO     | ss_crawler | [image_downloader] Downloaded image for nhcjo_v2 (stored as nhcjo_98ec7097.jpg, 72892 bytes)
+2026-07-29 22:47:18 | INFO     | ss_crawler | [scraper] Image saved locally: gpus\nhcjo_98ec7097.jpg
+2026-07-29 22:47:18 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: AMD Radeon RX 9060 XT (90% confidence) | Sapphire 9060 xt
+2026-07-29 22:47:18 | INFO     | ss_crawler | [crawler] Fetching listing 18/26: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/bkmlcg.html
+2026-07-29 22:47:22 | INFO     | ss_crawler | [listing_versioning] Legacy listing bkmlcg v2 matches by computed fingerprint, updating
+2026-07-29 22:47:22 | INFO     | ss_crawler | [repository] ⏸️ bkmlcg: Unchanged
+2026-07-29 22:47:22 | INFO     | ss_crawler | [image_downloader] Downloaded image for bkmlcg (stored as bkmlcg_418d1593.jpg, 48998 bytes)
+2026-07-29 22:47:22 | INFO     | ss_crawler | [scraper] Image saved locally: gpus\bkmlcg_418d1593.jpg
+2026-07-29 22:47:22 | INFO     | ss_crawler | [scraper] ⏭️ UNCHANGED: Matched: NVIDIA GeForce RTX 5070 Ti (90% confidence) | Asus Rtx 5070 ti
+2026-07-29 22:47:22 | INFO     | ss_crawler | [crawler] Fetching listing 19/26: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/fjhjd.html
+2026-07-29 22:47:25 | INFO     | ss_crawler | [listing_versioning] Legacy listing fjhjd v2 matches by computed fingerprint, updating
+2026-07-29 22:47:25 | INFO     | ss_crawler | [repository] ⏸️ fjhjd: Unchanged
+2026-07-29 22:47:26 | INFO     | ss_crawler | [image_downloader] Downloaded image for fjhjd (stored as fjhjd_d7db3b5e.jpg, 57039 bytes)
+2026-07-29 22:47:26 | INFO     | ss_crawler | [scraper] Image saved locally: gpus\fjhjd_d7db3b5e.jpg
+2026-07-29 22:47:26 | INFO     | ss_crawler | [scraper] ⏭️ UNCHANGED: Matched: AMD Radeon RX 9060 XT (90% confidence) | PowerColor 9060Xt
+2026-07-29 22:47:26 | INFO     | ss_crawler | [crawler] Fetching listing 20/26: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/bjnehj.html
+2026-07-29 22:47:28 | INFO     | ss_crawler | [listing_versioning] Legacy listing bjnehj v2 matches by computed fingerprint, updating
+2026-07-29 22:47:28 | INFO     | ss_crawler | [repository] ⏸️ bjnehj: Unchanged
+2026-07-29 22:47:28 | INFO     | ss_crawler | [image_downloader] Downloaded image for bjnehj (stored as bjnehj_1b91fa85.jpg, 72375 bytes)
+2026-07-29 22:47:28 | INFO     | ss_crawler | [scraper] Image saved locally: gpus\bjnehj_1b91fa85.jpg
+2026-07-29 22:47:28 | INFO     | ss_crawler | [scraper] ⏭️ UNCHANGED: Matched: AMD Radeon RX 9070 XT (86% confidence) | Asus Rx 9070 xt
+2026-07-29 22:47:28 | INFO     | ss_crawler | [crawler] Fetching listing 21/26: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/bioddc.html
+2026-07-29 22:47:32 | INFO     | ss_crawler | [repository] ✨ bioddc: New
+2026-07-29 22:47:32 | INFO     | ss_crawler | [image_downloader] Downloaded image for bioddc (stored as bioddc_f08c4241.jpg, 202559 bytes)
+2026-07-29 22:47:32 | INFO     | ss_crawler | [scraper] Image saved locally: gpus\bioddc_f08c4241.jpg
+2026-07-29 22:47:32 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: NVIDIA GeForce GTX 1050 Ti (90% confidence) | MSI Gtx1050Ti4Goc
+2026-07-29 22:47:32 | INFO     | ss_crawler | [crawler] Fetching listing 22/26: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/fmpck.html
+2026-07-29 22:47:35 | INFO     | ss_crawler | [repository] ✨ fmpck: New
+2026-07-29 22:47:36 | INFO     | ss_crawler | [image_downloader] Downloaded image for fmpck (stored as fmpck_d55ff7ed.jpg, 73353 bytes)
+2026-07-29 22:47:36 | INFO     | ss_crawler | [scraper] Image saved locally: gpus\fmpck_d55ff7ed.jpg
+2026-07-29 22:47:36 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: NVIDIA GeForce GT 710 (86% confidence) | MSI Gt 710 1gd3hlp
+2026-07-29 22:47:36 | INFO     | ss_crawler | [crawler] Fetching listing 23/26: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/bjjkek.html
+2026-07-29 22:47:39 | INFO     | ss_crawler | [listing_versioning] Legacy listing bjjkek v1 matches by computed fingerprint, updating
+2026-07-29 22:47:39 | INFO     | ss_crawler | [repository] ⏸️ bjjkek: Unchanged
+2026-07-29 22:47:39 | INFO     | ss_crawler | [image_downloader] Downloaded image for bjjkek (stored as bjjkek_750b8ff7.jpg, 122913 bytes)
+2026-07-29 22:47:39 | INFO     | ss_crawler | [scraper] Image saved locally: gpus\bjjkek_750b8ff7.jpg
+2026-07-29 22:47:39 | INFO     | ss_crawler | [scraper] ⏭️ UNCHANGED: Matched: NVIDIA GeForce RTX 2060 (86% confidence) | Palit Gaming rtx2060
+2026-07-29 22:47:39 | INFO     | ss_crawler | [crawler] Fetching listing 24/26: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/pcdpf.html
+2026-07-29 22:47:42 | WARNING  | ss_crawler | [listing_versioning] Legacy listing pcdpf v1 has NULL fingerprint, creating new version
+2026-07-29 22:47:42 | INFO     | ss_crawler | [repository] ✨ pcdpf_v2: New
+2026-07-29 22:47:42 | INFO     | ss_crawler | [image_downloader] Downloaded image for pcdpf_v2 (stored as pcdpf_769f1683.jpg, 99716 bytes)
+2026-07-29 22:47:42 | INFO     | ss_crawler | [scraper] Image saved locally: gpus\pcdpf_769f1683.jpg
+2026-07-29 22:47:42 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: NVIDIA GeForce GTX 1060 6GB (86% confidence) | MSI Gtx1060 armor
+2026-07-29 22:47:42 | INFO     | ss_crawler | [crawler] Fetching listing 25/26: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/bpxfhf.html
+2026-07-29 22:47:45 | INFO     | ss_crawler | [repository] ✨ bpxfhf: New
+2026-07-29 22:47:45 | INFO     | ss_crawler | [image_downloader] Downloaded image for bpxfhf (stored as bpxfhf_e67d6ac6.jpg, 68986 bytes)
+2026-07-29 22:47:45 | INFO     | ss_crawler | [scraper] Image saved locally: gpus\bpxfhf_e67d6ac6.jpg
+2026-07-29 22:47:45 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: NVIDIA GeForce RTX 5060 (86% confidence) | Inno3D Rtx 5060
+2026-07-29 22:47:45 | INFO     | ss_crawler | [crawler] Fetching listing 26/26: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/plodn.html
+2026-07-29 22:47:47 | INFO     | ss_crawler | [listing_versioning] Legacy listing plodn v2 matches by computed fingerprint, updating
+2026-07-29 22:47:47 | INFO     | ss_crawler | [repository] ⏸️ plodn: Unchanged
+2026-07-29 22:47:47 | INFO     | ss_crawler | [image_downloader] Downloaded image for plodn (stored as plodn_a0ce0191.jpg, 102629 bytes)
+2026-07-29 22:47:47 | INFO     | ss_crawler | [scraper] Image saved locally: gpus\plodn_a0ce0191.jpg
+2026-07-29 22:47:47 | INFO     | ss_crawler | [scraper] ⏭️ UNCHANGED: Matched: NVIDIA GeForce RTX 4070 Ti (86% confidence) | Zotac 4070 Ti
+2026-07-29 22:47:47 | INFO     | ss_crawler | [scraper] 📄 Fetching category: https://www.ss.com/lv/electronics/computers/completing-pc/video/page5.html
+2026-07-29 22:47:47 | INFO     | ss_crawler | [crawler] Fetching category page: https://www.ss.com/lv/electronics/computers/completing-pc/video/page5.html
+2026-07-29 22:47:49 | INFO     | ss_crawler | [parser] Found 30 listings on page
+2026-07-29 22:47:49 | INFO     | ss_crawler | [scraper] 🔍 Found 30 listings to process
+2026-07-29 22:47:49 | INFO     | ss_crawler | [crawler] Fetching listing 1/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/fhdbx.html
+2026-07-29 22:47:52 | INFO     | ss_crawler | [listing_versioning] Legacy listing fhdbx v1 matches by computed fingerprint, updating
+2026-07-29 22:47:52 | INFO     | ss_crawler | [repository] ⏸️ fhdbx: Unchanged
+2026-07-29 22:47:52 | INFO     | ss_crawler | [scraper] Image saved locally: gpus\fhdbx_e74430ee.jpg
+2026-07-29 22:47:52 | INFO     | ss_crawler | [scraper] ⏭️ UNCHANGED: Matched: NVIDIA GeForce GT 1030 (90% confidence) | Gigabyte Gt 1030
+2026-07-29 22:47:52 | INFO     | ss_crawler | [crawler] Fetching listing 2/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/pchod.html
+2026-07-29 22:47:55 | INFO     | ss_crawler | [listing_versioning] Legacy listing pchod v3 matches by computed fingerprint, updating
+2026-07-29 22:47:55 | INFO     | ss_crawler | [repository] ⏸️ pchod: Unchanged
+2026-07-29 22:47:55 | INFO     | ss_crawler | [scraper] Image saved locally: gpus\pchod_602f851e.jpg
+2026-07-29 22:47:55 | INFO     | ss_crawler | [scraper] ⏭️ UNCHANGED: Matched: AMD Radeon RX 470 (100% confidence) | Asus Mining-Rx470-4
+2026-07-29 22:47:55 | INFO     | ss_crawler | [crawler] Fetching listing 3/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/nhefi.html
+2026-07-29 22:47:58 | INFO     | ss_crawler | [listing_versioning] Legacy listing nhefi v3 matches by computed fingerprint, updating
+2026-07-29 22:47:58 | INFO     | ss_crawler | [repository] ⏸️ nhefi: Unchanged
+2026-07-29 22:47:58 | INFO     | ss_crawler | [scraper] Image saved locally: gpus\nhefi_1e68543f.jpg
+2026-07-29 22:47:58 | INFO     | ss_crawler | [scraper] ⏭️ UNCHANGED: Matched: NVIDIA GeForce GTX 970 (90% confidence) | MSI Gtx 970 gaming
+2026-07-29 22:47:58 | INFO     | ss_crawler | [crawler] Fetching listing 4/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/fdjpc.html
+2026-07-29 22:47:59 | INFO     | ss_crawler | [listing_versioning] Legacy listing fdjpc v1 matches by computed fingerprint, updating
+2026-07-29 22:47:59 | INFO     | ss_crawler | [repository] ⏸️ fdjpc: Unchanged
+2026-07-29 22:47:59 | INFO     | ss_crawler | [scraper] Image saved locally: gpus\fdjpc_d5e1ae65.jpg
+2026-07-29 22:47:59 | INFO     | ss_crawler | [scraper] ⏭️ UNCHANGED: Matched: NVIDIA GeForce RTX 5070 Ti (90% confidence) | Asus Rtx 5070 ti
+2026-07-29 22:47:59 | INFO     | ss_crawler | [crawler] Fetching listing 5/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/lpbpf.html
+2026-07-29 22:48:02 | INFO     | ss_crawler | [listing_versioning] Legacy listing lpbpf v1 matches by computed fingerprint, updating
+2026-07-29 22:48:02 | INFO     | ss_crawler | [repository] ⏸️ lpbpf: Unchanged
+2026-07-29 22:48:02 | INFO     | ss_crawler | [scraper] Image saved locally: gpus\lpbpf_99928fa1.jpg
+2026-07-29 22:48:02 | INFO     | ss_crawler | [scraper] ⏭️ UNCHANGED: Matched: NVIDIA GeForce RTX 3060 (86% confidence) | Gigabyte Rtx 3060 12gb
+2026-07-29 22:48:02 | INFO     | ss_crawler | [crawler] Fetching listing 6/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/mxiib.html
+2026-07-29 22:48:04 | INFO     | ss_crawler | [listing_versioning] Legacy listing mxiib v1 matches by computed fingerprint, updating
+2026-07-29 22:48:04 | INFO     | ss_crawler | [repository] ⏸️ mxiib: Unchanged
+2026-07-29 22:48:04 | INFO     | ss_crawler | [scraper] Image saved locally: gpus\mxiib_a130d0c0.jpg
+2026-07-29 22:48:04 | INFO     | ss_crawler | [scraper] ⏭️ UNCHANGED: Matched: NVIDIA GeForce RTX 3080 Ti (90% confidence) | nVidia Rtx 3080ti
+2026-07-29 22:48:04 | INFO     | ss_crawler | [crawler] Fetching listing 7/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/fehgd.html
+2026-07-29 22:48:06 | INFO     | ss_crawler | [listing_versioning] Legacy listing fehgd v1 matches by computed fingerprint, updating
+2026-07-29 22:48:06 | INFO     | ss_crawler | [repository] ⏸️ fehgd: Unchanged
+2026-07-29 22:48:06 | INFO     | ss_crawler | [scraper] Image saved locally: gpus\fehgd_fd2f8b87.jpg
+2026-07-29 22:48:06 | INFO     | ss_crawler | [scraper] ⏭️ UNCHANGED: Matched: NVIDIA GeForce GTX 1060 6GB (75% confidence) | nVidia 1060 6gb
+2026-07-29 22:48:06 | INFO     | ss_crawler | [crawler] Fetching listing 8/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/gohkc.html
+2026-07-29 22:48:09 | INFO     | ss_crawler | [listing_versioning] Legacy listing gohkc v1 matches by computed fingerprint, updating
+2026-07-29 22:48:09 | INFO     | ss_crawler | [repository] ⏸️ gohkc: Unchanged
+2026-07-29 22:48:09 | INFO     | ss_crawler | [scraper] Image saved locally: gpus\gohkc_4588ee52.jpg
+2026-07-29 22:48:09 | INFO     | ss_crawler | [scraper] ⏭️ UNCHANGED: Matched: NVIDIA GeForce GTX 1060 3GB (86% confidence) | MSI Gtx 1060
+2026-07-29 22:48:09 | INFO     | ss_crawler | [crawler] Fetching listing 9/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/elbeh.html
+2026-07-29 22:48:12 | INFO     | ss_crawler | [listing_versioning] Legacy listing elbeh v1 matches by computed fingerprint, updating
+2026-07-29 22:48:12 | INFO     | ss_crawler | [repository] ⏸️ elbeh: Unchanged
+2026-07-29 22:48:12 | INFO     | ss_crawler | [scraper] Image saved locally: gpus\elbeh_a1c48cca.jpg
+2026-07-29 22:48:12 | INFO     | ss_crawler | [scraper] ⏭️ UNCHANGED: Matched: NVIDIA GeForce RTX 3070 Ti (90% confidence) | EVGA Rtx 3070 ti
+2026-07-29 22:48:12 | INFO     | ss_crawler | [crawler] Fetching listing 10/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/fjffo.html
+2026-07-29 22:48:14 | INFO     | ss_crawler | [listing_versioning] Legacy listing fjffo v1 matches by computed fingerprint, updating
+2026-07-29 22:48:14 | INFO     | ss_crawler | [repository] ⏸️ fjffo: Unchanged
+2026-07-29 22:48:14 | INFO     | ss_crawler | [scraper] Image saved locally: gpus\fjffo_7d730fbc.jpg
+2026-07-29 22:48:14 | INFO     | ss_crawler | [scraper] ⏭️ UNCHANGED: Matched: NVIDIA GeForce RTX 5080 (90% confidence) | MSI Rtx 5080
+2026-07-29 22:48:14 | INFO     | ss_crawler | [crawler] Fetching listing 11/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/mxlxx.html
+2026-07-29 22:48:17 | INFO     | ss_crawler | [listing_versioning] Legacy listing mxlxx v1 matches by computed fingerprint, updating
+2026-07-29 22:48:17 | INFO     | ss_crawler | [repository] ⏸️ mxlxx: Unchanged
+2026-07-29 22:48:17 | INFO     | ss_crawler | [scraper] Image saved locally: gpus\mxlxx_56c1adb2.jpg
+2026-07-29 22:48:17 | INFO     | ss_crawler | [scraper] ⏭️ UNCHANGED: Matched: AMD Radeon RX 460 (86% confidence) | Sapphire Rx 460 oc
+2026-07-29 22:48:17 | INFO     | ss_crawler | [crawler] Fetching listing 12/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/lknil.html
+2026-07-29 22:48:19 | INFO     | ss_crawler | [listing_versioning] Legacy listing lknil v1 matches by computed fingerprint, updating
+2026-07-29 22:48:19 | INFO     | ss_crawler | [repository] ⏸️ lknil: Unchanged
+2026-07-29 22:48:19 | INFO     | ss_crawler | [scraper] Image saved locally: gpus\lknil_7a58344a.jpg
+2026-07-29 22:48:19 | INFO     | ss_crawler | [scraper] ⏭️ UNCHANGED: Matched: NVIDIA GeForce RTX 4070 Ti (86% confidence) | Gigabyte 4070 ti
+2026-07-29 22:48:19 | INFO     | ss_crawler | [crawler] Fetching listing 13/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/boppgo.html
+2026-07-29 22:48:21 | INFO     | ss_crawler | [listing_versioning] Legacy listing boppgo v1 matches by computed fingerprint, updating
+2026-07-29 22:48:21 | INFO     | ss_crawler | [repository] ⏸️ boppgo: Unchanged
+2026-07-29 22:48:21 | INFO     | ss_crawler | [scraper] Image saved locally: gpus\boppgo_d150d75e.jpg
+2026-07-29 22:48:21 | INFO     | ss_crawler | [scraper] ⚠️ LOW_CONFIDENCE: Matched: NVIDIA GeForce2 MX 200 (42% confidence) - BELOW THRESHOLD | nVidia Cmp170Hx
+2026-07-29 22:48:21 | INFO     | ss_crawler | [crawler] Fetching listing 14/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/ebcgn.html
+2026-07-29 22:48:24 | INFO     | ss_crawler | [listing_versioning] Legacy listing ebcgn v1 matches by computed fingerprint, updating
+2026-07-29 22:48:24 | INFO     | ss_crawler | [repository] ⏸️ ebcgn: Unchanged
+2026-07-29 22:48:24 | INFO     | ss_crawler | [scraper] Image saved locally: gpus\ebcgn_99588fe7.jpg
+2026-07-29 22:48:24 | INFO     | ss_crawler | [scraper] ⚠️ LOW_CONFIDENCE: Matched: NVIDIA GeForce2 MX 200 (42% confidence) - BELOW THRESHOLD | Matrox G200A
+2026-07-29 22:48:24 | INFO     | ss_crawler | [crawler] Fetching listing 15/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/gixof.html
+2026-07-29 22:48:27 | INFO     | ss_crawler | [listing_versioning] Legacy listing gixof v1 matches by computed fingerprint, updating
+2026-07-29 22:48:27 | INFO     | ss_crawler | [repository] ⏸️ gixof: Unchanged
+2026-07-29 22:48:27 | INFO     | ss_crawler | [scraper] Image saved locally: gpus\gixof_7a96303b.jpg
+2026-07-29 22:48:27 | INFO     | ss_crawler | [scraper] ⏭️ UNCHANGED: Matched: AMD Radeon RX 5500 XT (86% confidence) | Gigabyte Rx5500Xt
+2026-07-29 22:48:27 | INFO     | ss_crawler | [crawler] Fetching listing 16/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/dixpo.html
+2026-07-29 22:48:30 | INFO     | ss_crawler | [listing_versioning] Legacy listing dixpo v1 matches by computed fingerprint, updating
+2026-07-29 22:48:30 | INFO     | ss_crawler | [repository] ⏸️ dixpo: Unchanged
+2026-07-29 22:48:30 | INFO     | ss_crawler | [scraper] Image saved locally: gpus\dixpo_a25abeb1.jpg
+2026-07-29 22:48:30 | INFO     | ss_crawler | [scraper] ⏭️ UNCHANGED: Matched: NVIDIA GeForce RTX 3070 (86% confidence) | Asus Rtx 3070
+2026-07-29 22:48:30 | INFO     | ss_crawler | [crawler] Fetching listing 17/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/gjdix.html
+2026-07-29 22:48:33 | INFO     | ss_crawler | [listing_versioning] Legacy listing gjdix v1 matches by computed fingerprint, updating
+2026-07-29 22:48:33 | INFO     | ss_crawler | [repository] ⏸️ gjdix: Unchanged
+2026-07-29 22:48:33 | INFO     | ss_crawler | [scraper] Image saved locally: gpus\gjdix_1a1ca632.jpg
+2026-07-29 22:48:34 | INFO     | ss_crawler | [scraper] ⏭️ UNCHANGED: Matched: NVIDIA GeForce GTX 1050 Ti (90% confidence) | nVidia Gtx 1050ti oc
+2026-07-29 22:48:34 | INFO     | ss_crawler | [crawler] Fetching listing 18/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/hibji.html
+2026-07-29 22:48:37 | INFO     | ss_crawler | [listing_versioning] Legacy listing hibji v1 matches by computed fingerprint, updating
+2026-07-29 22:48:37 | INFO     | ss_crawler | [repository] ⏸️ hibji: Unchanged
+2026-07-29 22:48:37 | INFO     | ss_crawler | [scraper] Image saved locally: gpus\hibji_0d83330d.jpg
+2026-07-29 22:48:37 | INFO     | ss_crawler | [scraper] ⏭️ UNCHANGED: Matched: NVIDIA GeForce GTX 760 (86% confidence) | Gigabyte Gtx 760
+2026-07-29 22:48:37 | INFO     | ss_crawler | [crawler] Fetching listing 19/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/hxchp.html
+2026-07-29 22:48:39 | INFO     | ss_crawler | [listing_versioning] Legacy listing hxchp v1 matches by computed fingerprint, updating
+2026-07-29 22:48:39 | INFO     | ss_crawler | [repository] ⏸️ hxchp: Unchanged
+2026-07-29 22:48:39 | INFO     | ss_crawler | [scraper] Image saved locally: gpus\hxchp_dd18b55d.jpg
+2026-07-29 22:48:39 | INFO     | ss_crawler | [scraper] ⏭️ UNCHANGED: Matched: NVIDIA GeForce GTX 1660 (86% confidence) | Gigabyte Gtx 1660
+2026-07-29 22:48:39 | INFO     | ss_crawler | [crawler] Fetching listing 20/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/mbfxe.html
+2026-07-29 22:48:40 | INFO     | ss_crawler | [listing_versioning] Legacy listing mbfxe v2 matches by computed fingerprint, updating
+2026-07-29 22:48:40 | INFO     | ss_crawler | [repository] ⏸️ mbfxe: Unchanged
+2026-07-29 22:48:40 | INFO     | ss_crawler | [scraper] Image saved locally: gpus\mbfxe_38d46a7c.jpg
+2026-07-29 22:48:40 | INFO     | ss_crawler | [scraper] ⚠️ LOW_CONFIDENCE: Matched: AMD Radeon RX 6700 (63% confidence) - BELOW THRESHOLD | Sapphire Rx 6700 10gb
+2026-07-29 22:48:40 | INFO     | ss_crawler | [crawler] Fetching listing 21/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/cipfp.html
+2026-07-29 22:48:43 | INFO     | ss_crawler | [listing_versioning] Legacy listing cipfp v1 matches by computed fingerprint, updating
+2026-07-29 22:48:43 | INFO     | ss_crawler | [repository] ⏸️ cipfp: Unchanged
+2026-07-29 22:48:43 | INFO     | ss_crawler | [scraper] Image saved locally: gpus\cipfp_5dbb2e27.jpg
+2026-07-29 22:48:43 | INFO     | ss_crawler | [scraper] ⏭️ UNCHANGED: Matched: NVIDIA GeForce GTX 1060 6GB (86% confidence) | Gigabyte Gtx 1060 6gb
+2026-07-29 22:48:43 | INFO     | ss_crawler | [crawler] Fetching listing 22/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/hibog.html
+2026-07-29 22:48:47 | INFO     | ss_crawler | [listing_versioning] Legacy listing hibog v1 matches by computed fingerprint, updating
+2026-07-29 22:48:47 | INFO     | ss_crawler | [repository] ⏸️ hibog: Unchanged
+2026-07-29 22:48:47 | INFO     | ss_crawler | [scraper] Image saved locally: gpus\hibog_85258777.jpg
+2026-07-29 22:48:47 | INFO     | ss_crawler | [scraper] ⏭️ UNCHANGED: Matched: NVIDIA GeForce GTX 1660 Super (75% confidence) | MSI 1660 super
+2026-07-29 22:48:47 | INFO     | ss_crawler | [crawler] Fetching listing 23/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/ennlh.html
+2026-07-29 22:48:50 | INFO     | ss_crawler | [listing_versioning] Legacy listing ennlh v1 matches by computed fingerprint, updating
+2026-07-29 22:48:50 | INFO     | ss_crawler | [repository] ⏸️ ennlh: Unchanged
+2026-07-29 22:48:50 | INFO     | ss_crawler | [scraper] Image saved locally: gpus\ennlh_c0c337e6.jpg
+2026-07-29 22:48:50 | INFO     | ss_crawler | [scraper] ⏭️ UNCHANGED: Matched: NVIDIA GeForce RTX 4060 Ti (86% confidence) | nVidia 4060 Ti
+2026-07-29 22:48:50 | INFO     | ss_crawler | [crawler] Fetching listing 24/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/ebbdo.html
+2026-07-29 22:48:53 | INFO     | ss_crawler | [listing_versioning] Legacy listing ebbdo v1 matches by computed fingerprint, updating
+2026-07-29 22:48:53 | INFO     | ss_crawler | [repository] ⏸️ ebbdo: Unchanged
+2026-07-29 22:48:53 | INFO     | ss_crawler | [scraper] Image saved locally: gpus\ebbdo_25d6042f.jpg
+2026-07-29 22:48:53 | INFO     | ss_crawler | [scraper] ⚠️ LOW_CONFIDENCE: Matched: NVIDIA GeForce RTX 4090 (55% confidence) - BELOW THRESHOLD | Gigabyte Rtx 4090 ti
+2026-07-29 22:48:53 | INFO     | ss_crawler | [crawler] Fetching listing 25/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/lldxl.html
+2026-07-29 22:48:55 | INFO     | ss_crawler | [listing_versioning] Legacy listing lldxl v1 matches by computed fingerprint, updating
+2026-07-29 22:48:55 | INFO     | ss_crawler | [repository] ⏸️ lldxl: Unchanged
+2026-07-29 22:48:55 | INFO     | ss_crawler | [scraper] Image saved locally: gpus\lldxl_8e5609ed.jpg
+2026-07-29 22:48:55 | INFO     | ss_crawler | [scraper] ⏭️ UNCHANGED: Matched: AMD Radeon RX 570 (86% confidence) | MSI Rx570
+2026-07-29 22:48:55 | INFO     | ss_crawler | [crawler] Fetching listing 26/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/kiope.html
+2026-07-29 22:48:58 | INFO     | ss_crawler | [listing_versioning] Legacy listing kiope v1 matches by computed fingerprint, updating
+2026-07-29 22:48:58 | INFO     | ss_crawler | [repository] ⏸️ kiope: Unchanged
+2026-07-29 22:48:58 | INFO     | ss_crawler | [scraper] Image saved locally: gpus\kiope_dfe87ac7.jpg
+2026-07-29 22:48:58 | INFO     | ss_crawler | [scraper] ⏭️ UNCHANGED: Matched: NVIDIA GeForce RTX 3060 (86% confidence) | Rtx3060
+2026-07-29 22:48:58 | INFO     | ss_crawler | [crawler] Fetching listing 27/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/exixh.html
+2026-07-29 22:49:01 | INFO     | ss_crawler | [listing_versioning] Legacy listing exixh v1 matches by computed fingerprint, updating
+2026-07-29 22:49:01 | INFO     | ss_crawler | [repository] ⏸️ exixh: Unchanged
+2026-07-29 22:49:01 | INFO     | ss_crawler | [scraper] Image saved locally: gpus\exixh_8b355187.jpg
+2026-07-29 22:49:01 | INFO     | ss_crawler | [scraper] ⏭️ UNCHANGED: Matched: NVIDIA GeForce RTX 3060 (86% confidence) | PNY Rtx3060
+2026-07-29 22:49:01 | INFO     | ss_crawler | [crawler] Fetching listing 28/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/boploi.html
+2026-07-29 22:49:03 | INFO     | ss_crawler | [listing_versioning] Legacy listing boploi v1 matches by computed fingerprint, updating
+2026-07-29 22:49:03 | INFO     | ss_crawler | [repository] ⏸️ boploi: Unchanged
+2026-07-29 22:49:03 | INFO     | ss_crawler | [scraper] Image saved locally: gpus\boploi_d6fe6303.jpg
+2026-07-29 22:49:03 | INFO     | ss_crawler | [scraper] ⏭️ UNCHANGED: Matched: NVIDIA GeForce RTX 3070 Ti (90% confidence) | Palit 3070 ti
+2026-07-29 22:49:03 | INFO     | ss_crawler | [crawler] Fetching listing 29/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/gljkc.html
+2026-07-29 22:49:05 | INFO     | ss_crawler | [listing_versioning] Legacy listing gljkc v1 matches by computed fingerprint, updating
+2026-07-29 22:49:05 | INFO     | ss_crawler | [repository] ⏸️ gljkc: Unchanged
+2026-07-29 22:49:05 | INFO     | ss_crawler | [scraper] Image saved locally: gpus\gljkc_a7c6483e.jpg
+2026-07-29 22:49:05 | INFO     | ss_crawler | [scraper] ⏭️ UNCHANGED: Matched: NVIDIA GeForce GTX 960 (86% confidence) | MSI Gtx 960
+2026-07-29 22:49:05 | INFO     | ss_crawler | [crawler] Fetching listing 30/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/bjgmjh.html
+2026-07-29 22:49:08 | INFO     | ss_crawler | [parser] Skipping store listing by description: MSI Rtx5080 ventus
+2026-07-29 22:49:08 | INFO     | ss_crawler | [crawler] HTML sample saved: logs\html_samples\parse_failed_224908_20260729_224908.html
+2026-07-29 22:49:08 | INFO     | ss_crawler | [scraper] ❌ FAILED: Parse error: Could not extract listing data | N/A
+2026-07-29 22:49:08 | INFO     | ss_crawler | [scraper] 📄 Page limit reached (5), stopping
+2026-07-29 22:49:08 | INFO     | ss_crawler | [repository] Marked 283 listings as stale (not seen since 2026-07-22)
+2026-07-29 22:49:08 | INFO     | ss_crawler | [scraper] 🗑️ Marked 283 listings as stale
+2026-07-29 22:49:08 | INFO     | ss_crawler | [scraper] ✅ Scraping completed successfully

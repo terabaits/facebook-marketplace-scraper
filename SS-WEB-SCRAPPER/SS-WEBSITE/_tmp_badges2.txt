@@ -1,0 +1,136 @@
+﻿gpu is_new L1063: AL and BUY indicators             // NEW: Only show for listings from the current import (not in previous import)             let isNewListing = item.is_new === true;              if (isNewListing) {                 // New listing from current import - show NEW badge                 dealBadge += `<span cl
+---
+gpu STEAL L1061:               discoveredModels.add(modelKey);                 newModelsDiscovered.push(modelKey);             }              // Check for NEW, FIRST, STEAL and BUY indicators             // NEW: Only show for listings from the current import (not in previous import)             let isNewListing = item.is
+---
+gpu STEAL L1076: l appears!">✨ FIRST</span><br>`;             }              if (!isNewListing && item.price_stats && item.price_stats.below_avg) {                 // STEAL: only show if price is at least 15% below average                 const avgPrice = parseFloat(item.price_stats.avg);                 const currentPri
+---
+gpu STEAL L1081: _eur;                 const savingsPct = ((avgPrice - currentPrice) / avgPrice * 100);                  // Must be at least 15% below average to be a STEAL                 if (savingsPct >= 15) {                     dealBadge += `<span class="badge" style="background: #dc2626; color: white; font-weight: 
+---
+gpu STEAL L1083: dge += `<span class="badge" style="background: #dc2626; color: white; font-weight: bold;" title="Price is ${savingsPct.toFixed(0)}% below average!">🔥 STEAL</span><br>`;                 }             }              // Check if this is all-time lowest (BUY)             // Only show BUY if there's actual pr
+---
+gpu BUY L1061:     discoveredModels.add(modelKey);                 newModelsDiscovered.push(modelKey);             }              // Check for NEW, FIRST, STEAL and BUY indicators             // NEW: Only show for listings from the current import (not in previous import)             let isNewListing = item.is_new ===
+---
+gpu BUY L1087: e is ${savingsPct.toFixed(0)}% below average!">🔥 STEAL</span><br>`;                 }             }              // Check if this is all-time lowest (BUY)             // Only show BUY if there's actual price history with different prices             let isAllTimeLowest = false;              // Check if
+---
+gpu BUY L1088:  below average!">🔥 STEAL</span><br>`;                 }             }              // Check if this is all-time lowest (BUY)             // Only show BUY if there's actual price history with different prices             let isAllTimeLowest = false;              // Check if price decreased             i
+---
+gpu FIRST L1007: /th>                         <th>Actions</th>                     </tr>                 </thead>                 <tbody>         `;          // Track first occurrence of each GPU model - persist across sessions         const discoveredModelsKey = 'discovered_gpu_models';         let discoveredModels = ne
+---
+gpu FIRST L1053: ;             let priceIndicator = '';             let priceDecreasedBadge = '';             let dealBadge = '';              // Check if this is the first time we're seeing this model EVER             const modelKey = item.gpu_model || item.title;             const isFirstModelEver = modelKey && !discov
+---
+gpu FIRST L1055:        // Check if this is the first time we're seeing this model EVER             const modelKey = item.gpu_model || item.title;             const isFirstModelEver = modelKey && !discoveredModels.has(modelKey);             if (isFirstModelEver && modelKey) {                 discoveredModels.add(modelKey
+---
+gpu FIRST L1056:    const modelKey = item.gpu_model || item.title;             const isFirstModelEver = modelKey && !discoveredModels.has(modelKey);             if (isFirstModelEver && modelKey) {                 discoveredModels.add(modelKey);                 newModelsDiscovered.push(modelKey);             }            
+---
+gpu FIRST L1061: y) {                 discoveredModels.add(modelKey);                 newModelsDiscovered.push(modelKey);             }              // Check for NEW, FIRST, STEAL and BUY indicators             // NEW: Only show for listings from the current import (not in previous import)             let isNewListing = 
+---
+gpu FIRST L1070: ="background: #3b82f6; color: white; font-weight: bold;" title="New listing from current import!">🆕 NEW</span><br>`;             }              if (isFirstModelEver && modelKey) {                 // First model ever discovered - show FIRST badge                 dealBadge += `<span class="badge" style="ba
+---
+gpu FIRST L1071:  bold;" title="New listing from current import!">🆕 NEW</span><br>`;             }              if (isFirstModelEver && modelKey) {                 // First model ever discovered - show FIRST badge                 dealBadge += `<span class="badge" style="background: #9333ea; color: white; font-weight: bol
+---
+gpu FIRST L1071: rent import!">🆕 NEW</span><br>`;             }              if (isFirstModelEver && modelKey) {                 // First model ever discovered - show FIRST badge                 dealBadge += `<span class="badge" style="background: #9333ea; color: white; font-weight: bold;" title="First time this model ap
+---
+gpu FIRST L1072:  discovered - show FIRST badge                 dealBadge += `<span class="badge" style="background: #9333ea; color: white; font-weight: bold;" title="First time this model appears!">✨ FIRST</span><br>`;             }              if (!isNewListing && item.price_stats && item.price_stats.below_avg) {     
+---
+gpu FIRST L1072:              dealBadge += `<span class="badge" style="background: #9333ea; color: white; font-weight: bold;" title="First time this model appears!">✨ FIRST</span><br>`;             }              if (!isNewListing && item.price_stats && item.price_stats.below_avg) {                 // STEAL: only show if
+---
+gpu FIRST L1864:          // Sort base models by year released (extract year from model name or use API order)         // API returns models sorted by id DESC (newest first), so maintain that order         const sortedBaseModels = Array.from(baseModels.keys());          sortedBaseModels.forEach(baseName => {             
+---
+gpu unicorn L320: tion>                     <option value="asc">Ascending</option>                 </select>             </label>             <label>                 🦄 Unicorn:                 <div class="unicorn-switch" style="display: flex; gap: 4px; margin-top: 4px;">                     <button id="unicorn-all" class="u
+---
+gpu unicorn L321: ue="asc">Ascending</option>                 </select>             </label>             <label>                 🦄 Unicorn:                 <div class="unicorn-switch" style="display: flex; gap: 4px; margin-top: 4px;">                     <button id="unicorn-all" class="unicorn-btn active" onclick="setUnicor
+---
+gpu unicorn L322:             🦄 Unicorn:                 <div class="unicorn-switch" style="display: flex; gap: 4px; margin-top: 4px;">                     <button id="unicorn-all" class="unicorn-btn active" onclick="setUnicornFilter('all')" title="Show all listings">All</button>                     <button id="unicorn-only
+---
+gpu unicorn L322: n:                 <div class="unicorn-switch" style="display: flex; gap: 4px; margin-top: 4px;">                     <button id="unicorn-all" class="unicorn-btn active" onclick="setUnicornFilter('all')" title="Show all listings">All</button>                     <button id="unicorn-only" class="unicorn-btn
+---
+gpu unicorn L322: nicorn-switch" style="display: flex; gap: 4px; margin-top: 4px;">                     <button id="unicorn-all" class="unicorn-btn active" onclick="setUnicornFilter('all')" title="Show all listings">All</button>                     <button id="unicorn-only" class="unicorn-btn" onclick="setUnicornFilter('onl
+---
+gpu unicorn L323:  id="unicorn-all" class="unicorn-btn active" onclick="setUnicornFilter('all')" title="Show all listings">All</button>                     <button id="unicorn-only" class="unicorn-btn" onclick="setUnicornFilter('only')" title="Show only unicorn deals">🦄 Only</button>                     <button id="unicorn-
+---
+gpu unicorn L323: ss="unicorn-btn active" onclick="setUnicornFilter('all')" title="Show all listings">All</button>                     <button id="unicorn-only" class="unicorn-btn" onclick="setUnicornFilter('only')" title="Show only unicorn deals">🦄 Only</button>                     <button id="unicorn-exclude" class="unico
+---
+gpu unicorn L323: nclick="setUnicornFilter('all')" title="Show all listings">All</button>                     <button id="unicorn-only" class="unicorn-btn" onclick="setUnicornFilter('only')" title="Show only unicorn deals">🦄 Only</button>                     <button id="unicorn-exclude" class="unicorn-btn" onclick="setUnico
+---
+gpu unicorn L323: Show all listings">All</button>                     <button id="unicorn-only" class="unicorn-btn" onclick="setUnicornFilter('only')" title="Show only unicorn deals">🦄 Only</button>                     <button id="unicorn-exclude" class="unicorn-btn" onclick="setUnicornFilter('exclude')" title="Hide unicorn
+---
+gpu unicorn L324: "unicorn-only" class="unicorn-btn" onclick="setUnicornFilter('only')" title="Show only unicorn deals">🦄 Only</button>                     <button id="unicorn-exclude" class="unicorn-btn" onclick="setUnicornFilter('exclude')" title="Hide unicorn listings">🚫 Hide</button>                 </div>             <
+---
+gpu unicorn L324: icorn-btn" onclick="setUnicornFilter('only')" title="Show only unicorn deals">🦄 Only</button>                     <button id="unicorn-exclude" class="unicorn-btn" onclick="setUnicornFilter('exclude')" title="Hide unicorn listings">🚫 Hide</button>                 </div>             </label>             <lab
+---
+gpu unicorn L324: icornFilter('only')" title="Show only unicorn deals">🦄 Only</button>                     <button id="unicorn-exclude" class="unicorn-btn" onclick="setUnicornFilter('exclude')" title="Hide unicorn listings">🚫 Hide</button>                 </div>             </label>             <label>                 Sourc
+---
+gpu unicorn L324: unicorn deals">🦄 Only</button>                     <button id="unicorn-exclude" class="unicorn-btn" onclick="setUnicornFilter('exclude')" title="Hide unicorn listings">🚫 Hide</button>                 </div>             </label>             <label>                 Source:                 <select id="source-
+---
+gpu unicorn L956: ce', sourceFilter);     if (priceMin) params.append('price_min', priceMin);     if (priceMax) params.append('price_max', priceMax);     // Use triple unicorn switch state     if (unicornFilter === 'only') params.append('unicorn', 'only');     if (unicornFilter === 'exclude') params.append('unicorn', 'exclu
+---
+gpu unicorn L957: riceMin) params.append('price_min', priceMin);     if (priceMax) params.append('price_max', priceMax);     // Use triple unicorn switch state     if (unicornFilter === 'only') params.append('unicorn', 'only');     if (unicornFilter === 'exclude') params.append('unicorn', 'exclude');      try {         cons
+---
+gpu unicorn L957: Min);     if (priceMax) params.append('price_max', priceMax);     // Use triple unicorn switch state     if (unicornFilter === 'only') params.append('unicorn', 'only');     if (unicornFilter === 'exclude') params.append('unicorn', 'exclude');      try {         const response = await fetch('/api/gpus?' + p
+---
+gpu unicorn L958: ams.append('price_max', priceMax);     // Use triple unicorn switch state     if (unicornFilter === 'only') params.append('unicorn', 'only');     if (unicornFilter === 'exclude') params.append('unicorn', 'exclude');      try {         const response = await fetch('/api/gpus?' + params.toString());         
+---
+gpu unicorn L958: e triple unicorn switch state     if (unicornFilter === 'only') params.append('unicorn', 'only');     if (unicornFilter === 'exclude') params.append('unicorn', 'exclude');      try {         const response = await fetch('/api/gpus?' + params.toString());         const listings = await response.json();     
+---
+gpu unicorn L1197: ank ? '#' + Number(item.g3d_rank).toLocaleString() : '-'}</td>                     <td style="text-align: center;">                         ${item.is_unicorn ? `                             <span class="unicorn-badge" title="Only one listing of this model in all history!">🦄 UNICORN</span>                  
+---
+gpu unicorn L1198: '-'}</td>                     <td style="text-align: center;">                         ${item.is_unicorn ? `                             <span class="unicorn-badge" title="Only one listing of this model in all history!">🦄 UNICORN</span>                         ` : (item.price_stats ? `                     
+---
+gpu unicorn L1198:                ${item.is_unicorn ? `                             <span class="unicorn-badge" title="Only one listing of this model in all history!">🦄 UNICORN</span>                         ` : (item.price_stats ? `                             <div style="font-size: 0.875rem;">                              
+---
+gpu unicorn L2202:    } catch (error) {         console.error('Error flagging listing:', error);         alert('Failed to flag listing. Please try again.');     } }  // Unicorn filter state let unicornFilter = 'all';  function setUnicornFilter(mode) {     unicornFilter = mode;      // Update button styles     document.queryS
+---
+gpu unicorn L2203:     console.error('Error flagging listing:', error);         alert('Failed to flag listing. Please try again.');     } }  // Unicorn filter state let unicornFilter = 'all';  function setUnicornFilter(mode) {     unicornFilter = mode;      // Update button styles     document.querySelectorAll('.unicorn-btn'
+---
+gpu unicorn L2205: sting:', error);         alert('Failed to flag listing. Please try again.');     } }  // Unicorn filter state let unicornFilter = 'all';  function setUnicornFilter(mode) {     unicornFilter = mode;      // Update button styles     document.querySelectorAll('.unicorn-btn').forEach(btn => {         btn.class
+---
+gpu unicorn L2206: lert('Failed to flag listing. Please try again.');     } }  // Unicorn filter state let unicornFilter = 'all';  function setUnicornFilter(mode) {     unicornFilter = mode;      // Update button styles     document.querySelectorAll('.unicorn-btn').forEach(btn => {         btn.classList.remove('active');    
+---
+gpu unicorn L2209:  let unicornFilter = 'all';  function setUnicornFilter(mode) {     unicornFilter = mode;      // Update button styles     document.querySelectorAll('.unicorn-btn').forEach(btn => {         btn.classList.remove('active');     });      if (mode === 'all') {         document.getElementById('unicorn-all').clas
+---
+gpu unicorn L2214: ectorAll('.unicorn-btn').forEach(btn => {         btn.classList.remove('active');     });      if (mode === 'all') {         document.getElementById('unicorn-all').classList.add('active');     } else if (mode === 'only') {         document.getElementById('unicorn-only').classList.add('active');     } else 
+---
+gpu unicorn L2216: = 'all') {         document.getElementById('unicorn-all').classList.add('active');     } else if (mode === 'only') {         document.getElementById('unicorn-only').classList.add('active');     } else if (mode === 'exclude') {         document.getElementById('unicorn-exclude').classList.add('active');     
+---
+gpu unicorn L2218: ly') {         document.getElementById('unicorn-only').classList.add('active');     } else if (mode === 'exclude') {         document.getElementById('unicorn-exclude').classList.add('active');     }      loadListings(); }  // Load on page load document.addEventListener('DOMContentLoaded', () => {     loadL
+---
+gpu unicorn L2401: lay: block; }  /* Console icon styles */ .console-icon {     width: 100%;     height: 100%;     filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2)); }  /* Unicorn Switch Styles */ .unicorn-switch {     display: flex;     gap: 4px; }  .unicorn-btn {     padding: 6px 12px;     border: 2px solid #ddd;     backgrou
+---
+gpu unicorn L2402: icon styles */ .console-icon {     width: 100%;     height: 100%;     filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2)); }  /* Unicorn Switch Styles */ .unicorn-switch {     display: flex;     gap: 4px; }  .unicorn-btn {     padding: 6px 12px;     border: 2px solid #ddd;     background: white;     border-radi
+---
+gpu unicorn L2407: ight: 100%;     filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2)); }  /* Unicorn Switch Styles */ .unicorn-switch {     display: flex;     gap: 4px; }  .unicorn-btn {     padding: 6px 12px;     border: 2px solid #ddd;     background: white;     border-radius: 8px;     cursor: pointer;     font-size: 13px;    
+---
+gpu unicorn L2419: d: white;     border-radius: 8px;     cursor: pointer;     font-size: 13px;     font-weight: 500;     transition: all 0.2s ease;     color: #666; }  .unicorn-btn:hover {     border-color: #667eea;     color: #667eea; }  .unicorn-btn.active {     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%)
+---
+gpu unicorn L2424: 3px;     font-weight: 500;     transition: all 0.2s ease;     color: #666; }  .unicorn-btn:hover {     border-color: #667eea;     color: #667eea; }  .unicorn-btn.active {     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);     border-color: #667eea;     color: white;     box-shadow: 0 2px 8p
+---
+gpu unicorn L2431: deg, #667eea 0%, #764ba2 100%);     border-color: #667eea;     color: white;     box-shadow: 0 2px 8px rgba(102,126,234,0.4); }  [data-theme="dark"] .unicorn-btn {     background: #2a2a3a;     border-color: #444;     color: #aaa; }  [data-theme="dark"] .unicorn-btn:hover {     border-color: #667eea;     co
+---
+gpu unicorn L2437: gba(102,126,234,0.4); }  [data-theme="dark"] .unicorn-btn {     background: #2a2a3a;     border-color: #444;     color: #aaa; }  [data-theme="dark"] .unicorn-btn:hover {     border-color: #667eea;     color: #a0a0ff; }  [data-theme="dark"] .unicorn-btn.active {     background: linear-gradient(135deg, #667e
+---
+gpu unicorn L2442: rder-color: #444;     color: #aaa; }  [data-theme="dark"] .unicorn-btn:hover {     border-color: #667eea;     color: #a0a0ff; }  [data-theme="dark"] .unicorn-btn.active {     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);     border-color: #667eea;     color: white; } /* Model stat row hove
+---
+gpu discovered_ L1008:                <tbody>         `;          // Track first occurrence of each GPU model - persist across sessions         const discoveredModelsKey = 'discovered_gpu_models';         let discoveredModels = new Set();         try {             const stored = localStorage.getItem(discoveredModelsKey);            
+---
+cpu is_new L1145: rror('Error saving discovered CPU models:', e);     } }  function computeCpuDealBadges(item) {     let dealBadge = '';      const isNewListing = item.is_new === true;     if (isNewListing) {         dealBadge += `<span class="badge" style="background: #3b82f6; color: white; font-weight: bold;" title="New 
+---
+cpu STEAL L1154: dge += `<span class="badge" style="background: #dc2626; color: white; font-weight: bold;" title="Price is ${savingsPct.toFixed(0)}% below average!">🔥 STEAL</span><br>`;         }     }     return dealBadge; }  // Toggle column visibility function toggleColumn(columnId, visible) {     columnVisibility[col
+---
+cpu FIRST L1118: ', JSON.stringify(columnOrder));     localStorage.setItem('cpuColumnVisibility', JSON.stringify(columnVisibility)); }  // Discover-model tracking for FIRST badge (mirrors GPU page) const discoveredCpuModelsKey = 'discovered_cpu_models'; let discoveredCpuModels = new Set();  function loadDiscoveredCpuMode
+---
+cpu FIRST L1420: );         return;     }      // Check if already active     const isActive = dropdown.classList.contains('active');      if (!isActive) {         // First make it active (visible) so we can position it         updateColumnOptions();         dropdown.classList.add('active');          // Then update posit
+---
+cpu FIRST L1637: N/A'}</td>`;             case 'col-date':                 return `<td data-col="col-date" class="${hiddenClass}" ${style}>${(item.date_posted || item.first_seen_at || item.created_at) ? new Date(item.date_posted || item.first_seen_at || item.created_at).toLocaleDateString() : 'N/A'}</td>`;             ca
+---
+cpu FIRST L1637: data-col="col-date" class="${hiddenClass}" ${style}>${(item.date_posted || item.first_seen_at || item.created_at) ? new Date(item.date_posted || item.first_seen_at || item.created_at).toLocaleDateString() : 'N/A'}</td>`;             case 'col-actions': {                 // Keep a minimal gear placeholder
+---
+cpu FIRST L2239: ror) {         console.error('Error loading motherboard statistics:', error);     } }  async function loadListings() {     // Load column settings on first run     loadColumnSettings();      const activeOnly = document.getElementById('active-only').checked;     const highConfidence = document.getElementB
+---
+cpu FIRST L2770:  = document.getElementById('historyChart');     if (!chartContainer || !canvas || !historyChart) return;      // Reset any user-resized inline height first.     chartContainer.style.height = '';     canvas.style.height = '';      // Determine a compact minimum height that still shows every data label.   
+---
+cpu unicorn L1622: td>`;             case 'col-market':                 return `<td data-col="col-market" class="${hiddenClass}" ${style}>                     ${item.is_unicorn ? `                         <span style="background: linear-gradient(135deg, #9333ea, #c084fc); color: white; font-size: 0.75rem; padding: 4px 8px; b
+---
+cpu unicorn L1623: : 0.75rem; padding: 4px 8px; border-radius: 12px; font-weight: bold; display: inline-block;" title="Only one listing of this model in all history!">🦄 UNICORN</span>                     ` : (item.price_stats ? `                         <div style="font-size: 0.875rem;">                             Avg: €${i
+---
+cpu discovered_ L1119: olumnVisibility', JSON.stringify(columnVisibility)); }  // Discover-model tracking for FIRST badge (mirrors GPU page) const discoveredCpuModelsKey = 'discovered_cpu_models'; let discoveredCpuModels = new Set();  function loadDiscoveredCpuModels() {     try {         const stored = localStorage.getItem(discover
+---

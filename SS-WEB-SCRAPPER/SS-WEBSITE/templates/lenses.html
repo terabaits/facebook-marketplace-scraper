@@ -1,0 +1,1387 @@
+{% extends "base.html" %}
+
+{% block title %}Camera Lens Listings - SS-Crawler{% endblock %}
+
+{% block content %}
+<div class="section">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
+        <h2>📷 Camera Lens Listings</h2>
+        <div class="filters lens-filters" style="margin: 0; align-items: center;">
+            <label class="admin-field-toggle" style="display: inline-flex; align-items: center; gap: 0.5rem;">
+                <input type="checkbox" id="show-admin-fields" onchange="toggleAdminFields()">
+                <span>Show Listing ID in Popup</span>
+            </label>
+            <label>
+                <input type="checkbox" id="active-only" checked onchange="loadListings()">
+                <span>{{ t('Active only') }}</span>
+            </label>
+            <label class="{% if not is_staff %}staff-only{% endif %}">
+                <input type="checkbox" id="high-confidence" checked onchange="loadListings()">
+                <span>Matched only (≥50%)</span>
+            </label>
+            <label>
+                <input type="checkbox" id="price-drop-only" onchange="loadListings()">
+                <span>↓ Price drop only</span>
+            </label>
+            <label>
+                <span>Match:</span>
+                <select id="match-filter" onchange="loadListings()">
+                    <option value="all">{{ t('All') }}</option>
+                    <option value="matched">Matched</option>
+                    <option value="unknown">Unknown</option>
+                </select>
+            </label>
+            <label>
+                <span>Source:</span>
+                <select id="source-filter" onchange="loadListings()">
+                    <option value="all">All Sources</option>
+                    <option value="ss.com">SS.com</option>
+                    <option value="facebook_extension">Facebook</option>
+                </select>
+            </label>
+            <label>
+                <span>Brand:</span>
+                <select id="brand-filter" onchange="onBrandFilterChange()">
+                    <option value="">All Brands</option>
+                </select>
+            </label>
+            <label>
+                <span>Model:</span>
+                <select id="model-filter" onchange="loadListings()">
+                    <option value="">All Models</option>
+                </select>
+            </label>
+            <label>
+                <span>Mount:</span>
+                <select id="mount-filter" onchange="loadListings()">
+                    <option value="">All Mounts</option>
+                </select>
+            </label>
+            <label>
+                <span>Sort:</span>
+                <select id="sort-by" onchange="loadListings()">
+                    <option value="date_posted">{{ t('Date Posted') }}</option>
+                    <option value="price">{{ t('Price') }}</option>
+                </select>
+            </label>
+            <label>
+                <span>Order:</span>
+                <select id="sort-order" onchange="loadListings()">
+                    <option value="desc">{{ t('Descending') }}</option>
+                    <option value="asc">{{ t('Ascending') }}</option>
+                </select>
+            </label>
+            <label>
+                <span>Time:</span>
+                <select id="time-filter" onchange="loadListings()">
+                    <option value="all_time">All Time</option>
+                    <option value="month">Last Month</option>
+                    <option value="week">Last Week</option>
+                </select>
+            </label>
+        </div>
+    </div>
+
+    <div id="listings-container">
+        <div class="loading">Loading lens listings...</div>
+    </div>
+</div>
+
+<!-- Lens Models Grid Section -->
+<div class="section">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
+        <h2>📷 Lens Models</h2>
+        <div class="filters" style="margin: 0;">
+            <label>
+                Manufacturer:
+                <select id="model-brand-filter" onchange="loadLensModels()">
+                    <option value="">All Manufacturers</option>
+                </select>
+            </label>
+            <label>
+                Sort:
+                <select id="model-sort" onchange="loadLensModels()">
+                    <option value="listings_desc">Most Listings</option>
+                    <option value="listings_asc">Fewest Listings</option>
+                    <option value="price_desc">Price: High to Low</option>
+                    <option value="price_asc">Price: Low to High</option>
+                </select>
+            </label>
+        </div>
+    </div>
+    <div id="lens-models-container">
+        <div class="loading">Loading lens models...</div>
+    </div>
+</div>
+
+<div class="section">
+    <h2>📊 Lens Statistics</h2>
+    <div style="margin-bottom: 1rem;">
+        <label>
+            Filter by Brand:
+            <select id="stats-brand-filter" onchange="loadStats()">
+                <option value="">All Brands</option>
+            </select>
+        </label>
+        <label style="margin-left: 1rem;">
+            Filter by Mount:
+            <select id="stats-mount-filter" onchange="loadStats()">
+                <option value="">All Mounts</option>
+            </select>
+        </label>
+    </div>
+    <div id="lens-stats" class="stats-grid">
+        <div class="loading">Loading statistics...</div>
+    </div>
+</div>
+
+<!-- Listing Detail Modal -->
+<div id="listing-modal" class="modal-overlay">
+    <div class="modal" style="max-width: 800px;">
+        <div class="modal-header">
+            <h3 id="listing-title">{{ t('Listing Details') }}</h3>
+            <button class="modal-close" onclick="closeListingModal()">&times;</button>
+        </div>
+        <div id="listing-content">
+            <div id="listing-comparison"></div>
+        </div>
+    </div>
+</div>
+
+<!-- Lens Model Detail Modal -->
+<div id="lens-detail-modal" class="modal-overlay">
+    <div class="modal" style="max-width: 1000px; max-height: 90vh; overflow-y: auto;">
+        <div class="modal-header">
+            <h3 id="lens-detail-title">Lens Details</h3>
+            <button class="modal-close" onclick="closeLensDetailModal()">&times;</button>
+        </div>
+        <div id="lens-detail-content">
+            <div class="loading">Loading lens details...</div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='lens-icons-realistic.js') }}?v=5"></script>
+<script>
+// Cache for listing details
+const listingCache = new Map();
+let brands = [];
+let mounts = [];
+let lensModels = [];
+
+// Load lens models when brand changes
+async function onBrandFilterChange() {
+    const brand = document.getElementById('brand-filter').value;
+    const modelSelect = document.getElementById('model-filter');
+
+    // Reset model filter
+    modelSelect.innerHTML = '<option value="">All Models</option>';
+
+    if (!brand) {
+        // Load all models if no brand selected
+        loadLensModelsForFilter('');
+    } else {
+        // Load models for selected brand
+        loadLensModelsForFilter(brand);
+    }
+
+    // Trigger listing reload
+    loadListings();
+
+    // Trigger Canon animation if selected
+    if (brand === 'Canon') {
+        triggerCanonAnimation();
+    }
+}
+
+// Canon brand selection animation
+function triggerCanonAnimation() {
+    // Create full-screen overlay
+    const overlay = document.createElement('div');
+    overlay.id = 'canon-animation-overlay';
+    overlay.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+        z-index: 9999;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        animation: canonFadeIn 0.3s ease-out;
+    `;
+
+    // Add Canon logo and camera animation
+    overlay.innerHTML = `
+        <style>
+            @keyframes canonFadeIn {
+                from { opacity: 0; }
+                to { opacity: 1; }
+            }
+            @keyframes canonFadeOut {
+                from { opacity: 1; }
+                to { opacity: 0; }
+            }
+            @keyframes canonShutter {
+                0% { transform: scale(0.8); opacity: 0; }
+                20% { transform: scale(1); opacity: 1; }
+                40% { transform: scale(0.95); }
+                60% { transform: scale(1); }
+                80% { transform: scale(1); opacity: 1; }
+                100% { transform: scale(1.5); opacity: 0; }
+            }
+            @keyframes canonFlash {
+                0%, 90% { opacity: 0; }
+                50% { opacity: 1; }
+                100% { opacity: 0; }
+            }
+            .canon-camera {
+                width: 200px;
+                height: 150px;
+                position: relative;
+                animation: canonShutter 1.5s ease-out forwards;
+            }
+            .canon-logo {
+                font-size: 4rem;
+                font-weight: bold;
+                color: white;
+                font-family: Arial, sans-serif;
+                letter-spacing: 0.2em;
+                text-shadow: 0 0 20px rgba(255,255,255,0.5);
+                margin-top: 2rem;
+                opacity: 0;
+                animation: canonFadeIn 0.5s ease-out 0.5s forwards;
+            }
+            .canon-flash {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: white;
+                opacity: 0;
+                pointer-events: none;
+                animation: canonFlash 1.5s ease-out forwards;
+            }
+        </style>
+        <div class="canon-flash"></div>
+        <svg class="canon-camera" viewBox="0 0 200 150" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- Camera body -->
+            <rect x="10" y="40" width="180" height="100" rx="5" fill="#333" stroke="#555" stroke-width="2"/>
+            <!-- Grip -->
+            <rect x="10" y="40" width="40" height="100" rx="5" fill="#222"/>
+            <!-- Lens mount -->
+            <circle cx="100" cy="90" r="45" fill="#1a1a1a" stroke="#444" stroke-width="3"/>
+            <circle cx="100" cy="90" r="35" fill="#0a0a0a"/>
+            <!-- Lens -->
+            <circle cx="100" cy="90" r="25" fill="#111" stroke="#333" stroke-width="2"/>
+            <circle cx="100" cy="90" r="15" fill="#000"/>
+            <!-- Glass reflection -->
+            <ellipse cx="95" cy="85" rx="8" ry="5" fill="rgba(255,255,255,0.3)"/>
+            <!-- Viewfinder -->
+            <rect x="80" y="25" width="40" height="15" rx="2" fill="#222"/>
+            <rect x="85" y="20" width="30" height="10" rx="1" fill="#333"/>
+            <!-- Mode dial -->
+            <circle cx="165" cy="35" r="12" fill="#444" stroke="#666" stroke-width="2"/>
+            <circle cx="165" cy="35" r="8" fill="#333"/>
+            <!-- Shutter button -->
+            <circle cx="145" cy="30" r="6" fill="#c0392b"/>
+            <!-- Red Canon dot -->
+            <circle cx="175" cy="55" r="4" fill="#e74c3c"/>
+            <!-- Hot shoe -->
+            <rect x="90" y="15" width="20" height="8" fill="#222"/>
+        </svg>
+        <div class="canon-logo">CANON</div>
+    `;
+
+    document.body.appendChild(overlay);
+
+    // Remove after animation
+    setTimeout(() => {
+        overlay.style.animation = 'canonFadeOut 0.3s ease-out forwards';
+        setTimeout(() => {
+            overlay.remove();
+        }, 300);
+    }, 1500);
+}
+
+// Load lens models for the filter dropdown
+async function loadLensModelsForFilter(brand = '') {
+    const modelSelect = document.getElementById('model-filter');
+    modelSelect.innerHTML = '<option value="">All Models</option>';
+
+    try {
+        const params = new URLSearchParams();
+        params.append('sort', 'listings_desc');
+        if (brand) params.append('brand', brand);
+
+        const response = await fetch('/api/lens-models?' + params.toString());
+        lensModels = await response.json();
+
+        if (lensModels.error || !Array.isArray(lensModels)) {
+            console.error('Failed to load lens models:', lensModels.error);
+            return;
+        }
+
+        lensModels.forEach(model => {
+            const lensName = model.matched_lens_id?.replace(/_/g, ' ') || 'Unknown';
+            const option = document.createElement('option');
+            option.value = model.matched_lens_id;
+            option.textContent = `${lensName} (${model.active_listings} listings)`;
+            modelSelect.appendChild(option);
+        });
+
+    } catch (error) {
+        console.error('Error loading lens models:', error);
+    }
+}
+
+// Load brands and mounts on page load
+async function loadFilters() {
+    try {
+        // Load brands
+        const brandResponse = await fetch('/api/lens-brands');
+        brands = await brandResponse.json();
+        const brandSelect = document.getElementById('brand-filter');
+        const statsBrandSelect = document.getElementById('stats-brand-filter');
+        const modelBrandSelect = document.getElementById('model-brand-filter');
+        brands.forEach(brand => {
+            const option = document.createElement('option');
+            option.value = brand;
+            option.textContent = brand;
+            if (brandSelect) brandSelect.appendChild(option.cloneNode(true));
+            if (statsBrandSelect) statsBrandSelect.appendChild(option.cloneNode(true));
+            if (modelBrandSelect) modelBrandSelect.appendChild(option.cloneNode(true));
+        });
+
+        // Load mounts
+        const mountResponse = await fetch('/api/lens-mounts');
+        mounts = await mountResponse.json();
+        const mountSelect = document.getElementById('mount-filter');
+        const statsMountSelect = document.getElementById('stats-mount-filter');
+        mounts.forEach(mount => {
+            const option = document.createElement('option');
+            option.value = mount;
+            option.textContent = mount;
+            if (mountSelect) mountSelect.appendChild(option.cloneNode(true));
+            if (statsMountSelect) statsMountSelect.appendChild(option);
+        });
+    } catch (error) {
+        console.error('Error loading filters:', error);
+    }
+}
+
+async function getListingDetails(listingId) {
+    if (listingCache.has(listingId)) {
+        return listingCache.get(listingId);
+    }
+
+    try {
+        const response = await fetch(`/api/listing-details/${listingId}`);
+        const data = await response.json();
+        listingCache.set(listingId, data);
+        return data;
+    } catch (error) {
+        console.error('Error fetching listing details:', error);
+        return null;
+    }
+}
+
+function computeLensDealBadges(item) {
+    let dealBadge = '';
+    const isNewListing = item.is_new === true;
+
+    // NEW: server-side flag based on latest import date for lens category
+    if (isNewListing) {
+        dealBadge += `<span class="badge" style="background: #3b82f6; color: white; font-weight: bold;" title="New listing from current import!">🆕 NEW</span><br>`;
+    }
+
+    // STEAL: client-side, requires price_stats and ≥15% below model average. Suppressed for NEW listings.
+    if (!isNewListing && item.price_stats && item.price_stats.below_avg) {
+        const avgPrice = parseFloat(item.price_stats.avg);
+        const currentPrice = item.price_eur;
+        const savingsPct = ((avgPrice - currentPrice) / avgPrice * 100);
+        if (savingsPct >= 15) {
+            dealBadge += `<span class="badge" style="background: #dc2626; color: white; font-weight: bold;" title="Price is ${savingsPct.toFixed(0)}% below average!">🔥 STEAL</span><br>`;
+        }
+    }
+
+    return dealBadge;
+}
+
+async function loadListings() {
+    const activeOnly = document.getElementById('active-only').checked;
+    const highConfidence = document.getElementById('high-confidence').checked;
+    const priceDropOnly = document.getElementById('price-drop-only').checked;
+    const sortBy = document.getElementById('sort-by').value;
+    const sortOrder = document.getElementById('sort-order').value;
+    const timeFilter = document.getElementById('time-filter').value;
+    const brandFilter = document.getElementById('brand-filter').value;
+    const mountFilter = document.getElementById('mount-filter').value;
+    const modelFilter = document.getElementById('model-filter').value;
+    const sourceFilter = document.getElementById('source-filter').value;
+    const matchFilter = document.getElementById('match-filter')?.value || 'all';
+
+    const params = new URLSearchParams();
+    params.append('active', activeOnly);
+    params.append('sort', sortBy);
+    params.append('order', sortOrder);
+    params.append('time', timeFilter);
+    params.append('match_status', matchFilter);
+    if (highConfidence) params.append('min_confidence', '0.50');
+    if (priceDropOnly) params.append('price_drop', 'true');
+    if (brandFilter) params.append('brand', brandFilter);
+    if (mountFilter) params.append('mount', mountFilter);
+    if (modelFilter) params.append('model', modelFilter);
+    if (sourceFilter !== 'all') params.append('source', sourceFilter);
+
+    try {
+        const response = await fetch('/api/lenses?' + params.toString());
+
+        // Debug: Check if response is OK
+        if (!response.ok) {
+            const errorText = await response.text();
+            console.error('API Error:', response.status, errorText);
+            throw new Error(`HTTP ${response.status}: ${errorText.substring(0, 100)}`);
+        }
+
+        const listings = await response.json();
+
+        // Check if response is an array
+        if (!Array.isArray(listings)) {
+            console.error('Expected array, got:', typeof listings, listings);
+            if (listings.error) {
+                throw new Error(listings.error);
+            }
+            throw new Error('Invalid response format from API');
+        }
+
+        const container = document.getElementById('listings-container');
+
+        if (listings.length === 0) {
+            container.innerHTML = '<div class="loading">No lens listings found</div>';
+            return;
+        }
+
+        // Build table
+        let html = `
+            <table>
+                <thead>
+                    <tr>
+                        <th>Image</th>
+                        <th>Lens</th>
+                        <th>{{ t('Price') }}</th>
+                        <th>Brand/Mount</th>
+                        <th>Location</th>
+                        <th>Date</th>
+                        <th>Market Position</th>
+                        <th>Match</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+        `;
+
+        listings.forEach(item => {
+            const confidence = item.confidence_score || 0;
+            let confidenceClass = 'confidence-high';
+            if (confidence < 0.70) confidenceClass = 'confidence-medium';
+            if (confidence < 0.50) confidenceClass = 'confidence-low';
+
+            let priceDecreasedBadge = '';
+            if (item.has_price_decreased) {
+                const lastChange = item.price_changes?.[0];
+                if (lastChange && lastChange.change < 0) {
+                    priceDecreasedBadge = `<span class="badge badge-success" title="Price dropped">↓ Price Drop</span><br>`;
+                }
+            }
+
+            // Extract lens info from matched_lens_id
+            let lensInfo = '';
+            if (item.matched_lens_id) {
+                lensInfo = `<span class="badge badge-info">${item.matched_lens_id.replace(/_/g, ' ').substring(0, 40)}</span>`;
+            }
+
+            const brandMount = item.brand && item.mount ? `${item.brand} / ${item.mount}` : 
+                               item.brand ? item.brand : 
+                               item.mount ? item.mount : 'N/A';
+            
+            const dealBadge = computeLensDealBadges(item);
+
+            // Build row onclick handler - clicking any row opens the listing details popup
+            const rowClass = item.is_flagged ? 'flagged-row' : '';
+            const rowStyle = item.is_flagged ? 'display: none;' : 'cursor: pointer;';
+            const rowOnclick = item.is_flagged ? '' : `onclick=\"showListingDetail('${item.listing_id}')\" style=\"${rowStyle}\"`;
+
+            html += `
+                <tr class=\"${rowClass}\" ${rowOnclick}>
+                    <td class="listing-image-cell" style="position: relative;">
+                        ${dealBadge ? `<div style="position: absolute; top: 4px; right: 4px; display: flex; flex-direction: column; gap: 4px; z-index: 10;">${dealBadge}</div>` : ''}
+                        ${item.local_image_path || item.image_url ? (() => {
+                            const rowImgPath = item.local_image_path ? item.local_image_path.replace(/\\/g, '/') : null;
+                            const rowImgUrl = rowImgPath ? `/images/${rowImgPath}` : item.image_url;
+                            return `<img src="${rowImgUrl}" alt="${item.title}" class="listing-thumb" onclick="event.stopPropagation(); showImageModal('${rowImgUrl}', '${item.title.replace(/'/g, "\\'")}')">`;
+                        })() : '<div class="listing-thumb-placeholder">📷</div>'}
+                    </td>
+                    <td>
+                        <strong>${item.title.substring(0, 80)}${item.title.length > 80 ? '...' : ''}</strong>
+                        ${lensInfo ? `<br>${lensInfo}` : ''}
+                    </td>
+                    <td>
+                        ${priceDecreasedBadge}
+                        <span class="price">€${item.price_eur}</span>
+                    </td>
+                    <td>${brandMount}</td>
+                    <td>${item.seller_location || 'N/A'}</td>
+                    <td>${item.date_posted ? new Date(item.date_posted).toLocaleDateString() : 'N/A'}</td>
+                    <td style="text-align: center;">
+                        ${item.is_unicorn ? `
+                            <span style="background: linear-gradient(135deg, #ec4899, #8b5cf6); color: white; font-weight: bold; padding: 4px 8px; border-radius: 6px; font-size: 0.75rem; display: inline-block;" title="Only one listing of this model in all history!">🦄 UNICORN</span>
+                        ` : (item.price_stats ? `
+                            <div style="font-size: 0.85rem; color: var(--text-secondary);">
+                                Avg: €${item.price_stats.avg}<br>
+                                Range: €${item.price_stats.min} - €${item.price_stats.max}
+                            </div>
+                            <div style="margin-top: 0.25rem; width: 100%; height: 6px; background: var(--bar-bg); border-radius: 3px; overflow: hidden;" title="Price percentile: ${item.price_stats.percentile}%">
+                                <div style="height: 100%; background: linear-gradient(135deg, #667eea, #764ba2); width: ${item.price_stats.percentile}%;"></div>
+                            </div>
+                        ` : '<span style="font-size: 0.85rem; color: var(--text-secondary);">No price data</span>')}
+                    </td>
+                    <td>
+                        ${item.match_method !== 'none' ? `
+                            <span class="${confidenceClass}">${(confidence * 100).toFixed(0)}%</span>
+                            <br><small>${item.match_method}</small>
+                        ` : '<small class="text-muted">No match</small>'}
+                    </td>
+                    <td>
+                        ${item.matched_lens_id ? `<button class="btn btn-small btn-secondary" onclick="event.stopPropagation(); showLensDetail('${item.matched_lens_id}')">History</button>` : ''}
+                        <a href="${item.listing_url}" target="_blank" class="btn btn-small" onclick="event.stopPropagation()">View →</a>
+                        ${item.is_flagged ? '' : `<button class="btn btn-small" style="background: #e74c3c; color: white; margin-top: 4px;" onclick="event.stopPropagation(); showFlagModalWithCategories('${item.listing_id.replace(/'/g, "\\'").replace(/"/g, '&quot;')}', '${item.title.replace(/'/g, "\\'").replace(/"/g, '&quot;')}')">🚩 Flag</button>`}
+                    </td>
+                </tr>
+            `;
+        });
+
+        html += '</tbody>';
+
+        // Calculate summary
+        const totalPrice = listings.reduce((sum, item) => sum + (item.price_eur || 0), 0);
+        const avgPrice = totalPrice / listings.length;
+
+        html += `
+            <tfoot id="summary-row" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; font-weight: bold;">
+                <tr>
+                    <td colspan="2" style="text-align: right; padding: 0.75rem;">Summary:</td>
+                    <td style="padding: 0.75rem;">€${totalPrice.toFixed(2)} total</td>
+                    <td style="padding: 0.75rem; font-size: 0.85rem;">avg: €${avgPrice.toFixed(2)}</td>
+                    <td style="padding: 0.75rem;" colspan="5">${listings.length} listings shown</td>
+                </tr>
+            </tfoot>`;
+
+        html += '</table>';
+        container.innerHTML = html;
+
+    } catch (error) {
+        console.error('Full error:', error);
+        document.getElementById('listings-container').innerHTML =
+            `<div class="error">
+                <strong>Failed to load listings</strong><br>
+                Error: ${error.message}<br>
+                <small>Check browser console (F12) for details</small>
+            </div>`;
+    }
+}
+
+async function loadStats() {
+    try {
+        const brandFilter = document.getElementById('stats-brand-filter').value;
+        const mountFilter = document.getElementById('stats-mount-filter').value;
+
+        const params = new URLSearchParams();
+        if (brandFilter) params.append('brand', brandFilter);
+        if (mountFilter) params.append('mount', mountFilter);
+
+        const response = await fetch('/api/lens-models?' + params.toString());
+
+        if (!response.ok) {
+            const errorText = await response.text();
+            console.error('API Error:', response.status, errorText);
+            throw new Error(`HTTP ${response.status}: ${errorText.substring(0, 100)}`);
+        }
+
+        const models = await response.json();
+
+        // Check if response is an error object
+        if (models.error) {
+            throw new Error(models.error);
+        }
+
+        const container = document.getElementById('lens-stats');
+
+        if (!Array.isArray(models)) {
+            console.error('Expected array, got:', typeof models, models);
+            throw new Error('Invalid response format from API');
+        }
+
+        if (models.length === 0) {
+            container.innerHTML = '<div class="loading">No lens model statistics available</div>';
+            return;
+        }
+
+        let html = '';
+
+        // Update the lens models grid when stats filters change
+        loadLensModels();
+
+        container.style.maxHeight = '600px';
+        container.style.overflowY = 'auto';
+
+        // Show stats cards for lens models
+        models.forEach(model => {
+            const lensName = model.matched_lens_id?.replace(/_/g, ' ') || 'Unknown';
+            const iconSvg = typeof getLensIcon !== 'undefined' ? getLensIcon(lensName) : '';
+
+            // Launch price display
+            let launchPriceHtml = '';
+            if (model.launch_price_eur) {
+                const usdText = model.launch_price_usd ? ` ($${model.launch_price_usd} USD)` : '';
+                launchPriceHtml = `<br><small style="color: #666;">Launch: €${model.launch_price_eur}${usdText}</small>`;
+            }
+
+            // Brand/Mount display
+            let brandMountHtml = '';
+            if (model.brand || model.mount) {
+                const bmText = model.brand && model.mount ? `${model.brand} / ${model.mount}` :
+                              model.brand ? model.brand : model.mount;
+                brandMountHtml = `<br><small class="text-muted">${bmText}</small>`;
+            }
+
+            html += `
+                <div class="stat-card" style="border-left-color: #e91e63; display: flex; align-items: center; gap: 1rem; cursor: pointer;"
+                     onclick="showLensDetail('${model.matched_lens_id}')" title="Click to view all listings">
+                    <div style="width: 70px; height: 70px; flex-shrink: 0;">${iconSvg}</div>
+                    <div style="flex: 1;">
+                        <h3 style="margin: 0; font-size: 0.9rem; line-height: 1.2;">${lensName.substring(0, 35)}${lensName.length > 35 ? '...' : ''}</h3>
+                        <div class="stat-value" style="font-size: 1.5rem; margin-top: 0.3rem;">${model.active_listings}</div>
+                        <small>listings · Avg €${model.avg_price || 'N/A'}</small>
+                        ${brandMountHtml}
+                        ${launchPriceHtml}
+                    </div>
+                </div>
+            `;
+        });
+
+        container.innerHTML = html;
+
+    } catch (error) {
+        console.error('Error loading statistics:', error);
+        document.getElementById('lens-stats').innerHTML =
+            `<div class="error">
+                <strong>Failed to load statistics</strong><br>
+                ${error.message}<br>
+                <small>Check browser console (F12) for details</small>
+            </div>`;
+    }
+}
+
+async function showLensDetail(lensId) {
+    const modal = document.getElementById('lens-detail-modal');
+    const title = document.getElementById('lens-detail-title');
+    const content = document.getElementById('lens-detail-content');
+
+    modal.style.display = 'flex';
+    title.textContent = lensId.replace(/_/g, ' ');
+    content.innerHTML = '<div class="loading">Loading lens details...</div>';
+
+    try {
+        const response = await fetch(`/api/lens-details/${encodeURIComponent(lensId)}`);
+        const data = await response.json();
+
+        if (data.error) {
+            content.innerHTML = `<div class="error">
+                <strong>Error loading lens details</strong><br>
+                ${data.error}
+            </div>`;
+            return;
+        }
+
+        const lensInfo = data.lens_info || {};
+        const listings = data.listings || [];
+        const stats = data.stats || {
+            total_listings: listings.length,
+            active_count: listings.filter(l => l.is_active).length,
+            avg_price: listings.length > 0 ? (listings.reduce((sum, l) => sum + (l.price_eur || 0), 0) / listings.length).toFixed(2) : 0,
+            min_price: listings.length > 0 ? Math.min(...listings.map(l => l.price_eur || 0)) : 0,
+            max_price: listings.length > 0 ? Math.max(...listings.map(l => l.price_eur || 0)) : 0
+        };
+
+        let html = '';
+
+        // Lens info section
+        if (lensInfo) {
+            html += `
+                <div style="background: var(--badge-bg); color: var(--text-color); padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; border: 1px solid var(--border-color);">
+                    <h4 style="margin-top: 0; color: var(--text-color);">Lens Specifications</h4>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 0.5rem;">
+                        ${lensInfo.brand ? `<div><strong>Brand:</strong> ${lensInfo.brand}</div>` : ''}
+                        ${lensInfo.mount ? `<div><strong>Mount:</strong> ${lensInfo.mount}</div>` : ''}
+                        ${lensInfo.focal_length_mm ? `<div><strong>Focal Length:</strong> ${lensInfo.focal_length_mm}${lensInfo.max_focal_length_mm ? '-' + lensInfo.max_focal_length_mm + 'mm' : 'mm'}</div>` : ''}
+                        ${lensInfo.max_aperture ? `<div><strong>Max Aperture:</strong> f/${lensInfo.max_aperture}</div>` : ''}
+                        ${lensInfo.weight_g ? `<div><strong>Weight:</strong> ${lensInfo.weight_g}g</div>` : ''}
+                        ${lensInfo.length_mm ? `<div><strong>Length:</strong> ${lensInfo.length_mm}mm</div>` : ''}
+                        ${lensInfo.has_is ? `<div><strong>Image Stabilization:</strong> Yes</div>` : ''}
+                        ${lensInfo.has_wr ? `<div><strong>Weather Sealed:</strong> Yes</div>` : ''}
+                    </div>
+                    ${lensInfo.launch_price_eur ? `
+                        <div style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--border-color);">
+                            <strong>Launch Price:</strong> €${lensInfo.launch_price_eur}
+                            ${lensInfo.launch_price_usd ? `<span style="color: var(--text-secondary); font-size: 0.9em;"> ($${lensInfo.launch_price_usd} USD)</span>` : ''}
+                        </div>
+                    ` : ''}
+                    ${lensInfo.notes ? `<div style="margin-top: 0.5rem; font-size: 0.9em; color: var(--text-secondary);"><strong>Notes:</strong> ${lensInfo.notes}</div>` : ''}
+                </div>
+            `;
+        }
+
+        // Statistics section
+        html += `
+            <div style="margin-bottom: 1.5rem;">
+                <h4>Market Statistics</h4>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem;">
+                    <div class="stat-card" style="text-align: center; padding: 1rem;">
+                        <div class="stat-value" style="font-size: 2rem; color: #e91e63;">${stats.total_listings}</div>
+                        <small>{{ t('Total Listings') }}</small>
+                    </div>
+                    <div class="stat-card" style="text-align: center; padding: 1rem;">
+                        <div class="stat-value" style="font-size: 2rem; color: #27ae60;">${stats.active_count}</div>
+                        <small>Active</small>
+                    </div>
+                    <div class="stat-card" style="text-align: center; padding: 1rem;">
+                        <div class="stat-value" style="font-size: 2rem; color: #3498db;">€${stats.avg_price || 'N/A'}</div>
+                        <small>Average Price</small>
+                    </div>
+                    <div class="stat-card" style="text-align: center; padding: 1rem;">
+                        <div class="stat-value" style="font-size: 2rem; color: #f39c12;">€${stats.min_price || 'N/A'}</div>
+                        <small>Lowest Price</small>
+                    </div>
+                    <div class="stat-card" style="text-align: center; padding: 1rem;">
+                        <div class="stat-value" style="font-size: 2rem; color: #9b59b6;">€${stats.max_price || 'N/A'}</div>
+                        <small>Highest Price</small>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        // Listings table
+        if (listings.length > 0) {
+            html += `
+                <h4>All Listings (${listings.length})</h4>
+                <div style="max-height: 400px; overflow-y: auto;">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Title</th>
+                                <th>{{ t('Price') }}</th>
+                                <th>Location</th>
+                                <th>Date</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+            `;
+
+            listings.forEach(item => {
+                const statusClass = item.is_active ? 'badge-success' : 'badge-secondary';
+                const statusText = item.is_active ? 'Active' : 'Inactive';
+                const flaggedBadge = item.is_flagged ? `<span class="badge badge-danger" title="${item.flag_reason || ''}">⚑ Flagged</span>` : '';
+
+                html += `
+                    <tr class="${item.is_flagged ? 'flagged-row' : ''}">
+                        <td>
+                            <a href="${item.listing_url}" target="_blank" style="color: inherit; text-decoration: none;">
+                                ${item.title.substring(0, 60)}${item.title.length > 60 ? '...' : ''}
+                            </a>
+                            ${flaggedBadge}
+                        </td>
+                        <td><span class="price">€${item.price_eur}</span></td>
+                        <td>${item.seller_location || 'N/A'}</td>
+                        <td>${item.date_posted ? new Date(item.date_posted).toLocaleDateString() : 'N/A'}</td>
+                        <td><span class="badge ${statusClass}">${statusText}</span></td>
+                        <td>
+                            ${!item.is_flagged ? `
+                                <button class="btn btn-small btn-danger" onclick="flagListing('${item.listing_id}', '${lensId.replace(/'/g, "\\'")}')">⚑ Flag</button>
+                            ` : `
+                                <button class="btn btn-small btn-secondary" onclick="unflagListing('${item.listing_id}')">Unflag</button>
+                            `}
+                            <button class="btn btn-small btn-secondary" onclick="event.stopPropagation(); showListingDetail('${item.listing_id}')">{{ t('Details') }}</button>
+                            <a href="${item.listing_url}" target="_blank" class="btn btn-small">View</a>
+                        </td>
+                    </tr>
+                `;
+            });
+
+            html += `
+                        </tbody>
+                    </table>
+                </div>
+            `;
+        } else {
+            html += '<p class="loading">No listings found for this lens model.</p>';
+        }
+
+        content.innerHTML = html;
+
+    } catch (error) {
+        content.innerHTML = `<div class="error">Failed to load lens details: ${error.message}</div>`;
+    }
+}
+
+async function flagListing(listingId, lensName) {
+    const reason = prompt('Enter reason for flagging this listing:', 'Suspicious pricing');
+    if (!reason) return;
+
+    try {
+        const response = await fetch('/api/flag-listing', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                listing_id: listingId,
+                console_name: lensName,
+                reason: reason
+            })
+        });
+
+        const data = await response.json();
+        if (data.success) {
+            alert('Listing flagged successfully');
+            // Refresh the lens detail view
+            const lensId = document.getElementById('lens-detail-title').textContent.replace(/ /g, '_');
+            showLensDetail(lensId);
+        } else {
+            alert('Failed to flag listing: ' + (data.error || 'Unknown error'));
+        }
+    } catch (error) {
+        alert('Error flagging listing: ' + error.message);
+    }
+}
+
+async function unflagListing(listingId) {
+    if (!confirm('Are you sure you want to unflag this listing?')) return;
+
+    try {
+        const response = await fetch(`/api/unflag-listing/${listingId}`, {
+            method: 'POST'
+        });
+
+        const data = await response.json();
+        if (data.success) {
+            alert('Listing unflagged successfully');
+            // Refresh the lens detail view
+            const lensId = document.getElementById('lens-detail-title').textContent.replace(/ /g, '_');
+            showLensDetail(lensId);
+        } else {
+            alert('Failed to unflag listing: ' + (data.error || 'Unknown error'));
+        }
+    } catch (error) {
+        alert('Error unflagging listing: ' + error.message);
+    }
+}
+
+function closeLensDetailModal() {
+    document.getElementById('lens-detail-modal').style.display = 'none';
+}
+
+// Flag lens listing from main listings table
+async function flagLensListing(listingId, title) {
+    const comment = prompt(`Flag lens listing: ${title}\n\nEnter reason for flagging (e.g., "wrong lens", "suspicious", "spam"):`);
+    if (!comment) return;
+
+    try {
+        const response = await fetch('/api/flag-listing', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                listing_id: listingId,
+                comment: comment,
+                category: 'lens'
+            })
+        });
+
+        const data = await response.json();
+        if (data.success) {
+            alert('✅ Listing flagged successfully!');
+            loadListings(); // Refresh to show flag status
+        } else {
+            alert('Error: ' + (data.error || 'Failed to flag listing'));
+        }
+    } catch (error) {
+        console.error('Error flagging listing:', error);
+        alert('Failed to flag listing. Please try again.');
+    }
+}
+
+// Flag modal with categories function
+function showFlagModalWithCategories(listingId, title) {
+    const existingModal = document.getElementById('flag-modal');
+    if (existingModal) existingModal.remove();
+
+    const modalHtml = `
+        <div id="flag-modal" class="modal-overlay active" style="z-index: 2000;">
+            <div class="modal" style="max-width: 500px;">
+                <div class="modal-header">
+                    <h3>🚩 Flag Listing</h3>
+                    <button class="modal-close" onclick="closeFlagModal()">×</button>
+                </div>
+                <div style="padding: 1.5rem;">
+                    <p style="margin-bottom: 1rem;"><strong>Listing:</strong> ${title || listingId}</p>
+
+                    <div class="form-group" style="margin-bottom: 1rem;">
+                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Flag Category:</label>
+                        <select id="flag-category" style="width: 100%; padding: 0.5rem; border: 1px solid #ddd; border-radius: 6px;">
+                            <option value="IGNORE">IGNORE - Hide from listings</option>
+                            <option value="SKIP">SKIP - Skip in future scrapes</option>
+                            <option value="SCRAPPER">SCRAPPER - Scraper issue</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group" style="margin-bottom: 1rem;">
+                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Reason:</label>
+                        <textarea id="flag-reason" placeholder="Enter reason (e.g., Scam, Wrong specs, Sold)"
+                            style="width: 100%; padding: 0.75rem; border: 2px solid #e74c3c; border-radius: 8px; font-family: inherit; resize: vertical;"
+                            rows="3"></textarea>
+                    </div>
+
+                    <div style="display: flex; gap: 0.5rem; justify-content: flex-end;">
+                        <button class="btn btn-small btn-secondary" onclick="closeFlagModal()">{{ t('Cancel') }}</button>
+                        <button class="btn btn-small" style="background: #e74c3c;" onclick="submitFlagFromModal('${listingId}')">Submit Flag</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+
+    document.body.insertAdjacentHTML('beforeend', modalHtml);
+
+    document.getElementById('flag-modal').addEventListener('click', function(e) {
+        if (e.target === this) closeFlagModal();
+    });
+}
+
+function closeFlagModal() {
+    const modal = document.getElementById('flag-modal');
+    if (modal) modal.remove();
+}
+
+function removeListingRow(listingId) {
+    const rows = document.querySelectorAll('#listings-container tbody tr, table tbody tr');
+    rows.forEach(row => {
+        const onclick = row.getAttribute('onclick') || '';
+        const html = row.innerHTML;
+        if (onclick.includes("'" + listingId + "'") || html.includes("'" + listingId + "'") || html.includes(listingId)) {
+            row.style.transition = 'opacity 0.3s ease';
+            row.style.opacity = '0';
+            setTimeout(() => row.remove(), 300);
+        }
+    });
+}
+
+async function submitFlagFromModal(listingId) {
+    const categorySelect = document.getElementById('flag-category');
+    const reasonInput = document.getElementById('flag-reason');
+
+    const category = categorySelect ? categorySelect.value : 'IGNORE';
+    const reason = reasonInput ? reasonInput.value.trim() : '';
+
+    if (!reason) {
+        alert('Please enter a reason for flagging');
+        return;
+    }
+
+    try {
+        const response = await fetch('/api/flag-listing', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                listing_id: listingId,
+                comment: reason,
+                category: 'lens',
+                flag_category: category
+            })
+        });
+
+        const data = await response.json();
+        if (data.success) {
+            alert('✅ Listing flagged successfully!');
+            closeFlagModal();
+            loadListings();
+        } else {
+            alert('Error: ' + (data.error || 'Failed to flag listing'));
+        }
+    } catch (error) {
+        console.error('Error flagging listing:', error);
+        alert('Failed to flag listing. Please try again.');
+    }
+}
+
+// Image modal function
+function showImageModal(imageUrl, title) {
+    let modal = document.getElementById('image-preview-modal');
+    if (!modal) {
+        modal = document.createElement('div');
+        modal.id = 'image-preview-modal';
+        modal.className = 'modal-overlay';
+        modal.innerHTML = `
+            <div class="modal" style="max-width: 90%; max-height: 90%; padding: 0; overflow: hidden;">
+                <div style="position: relative; background: #000;">
+                    <button onclick="closeImageModal()" style="position: absolute; top: 10px; right: 10px; background: rgba(0,0,0,0.7); color: white; border: none; border-radius: 50%; width: 40px; height: 40px; font-size: 20px; cursor: pointer; z-index: 10;">&times;</button>
+                    <img id="preview-image" src="" alt="" style="max-width: 100%; max-height: 85vh; display: block; margin: 0 auto;">
+                </div>
+                <div style="padding: 1rem; background: white; text-align: center;">
+                    <p id="preview-title" style="margin: 0; font-weight: 600;"></p>
+                </div>
+            </div>
+        `;
+        document.body.appendChild(modal);
+        modal.addEventListener('click', function(e) {
+            if (e.target === modal) closeImageModal();
+        });
+    }
+    document.getElementById('preview-image').src = imageUrl;
+    document.getElementById('preview-image').alt = title;
+    document.getElementById('preview-title').textContent = title;
+    modal.classList.add('active');
+}
+
+function closeImageModal() {
+    const modal = document.getElementById('image-preview-modal');
+    if (modal) modal.classList.remove('active');
+}
+
+function toggleAdminFields() {
+    const checkbox = document.getElementById('show-admin-fields');
+    const body = document.body;
+    if (checkbox && checkbox.checked) {
+        body.classList.add('show-admin-fields');
+        body.setAttribute('data-admin', 'true');
+        localStorage.setItem('showListingId', 'true');
+    } else {
+        body.classList.remove('show-admin-fields');
+        body.setAttribute('data-admin', 'false');
+        localStorage.setItem('showListingId', 'false');
+    }
+}
+
+async function showListingDetail(listingId) {
+    const details = await getListingDetails(listingId);
+    if (!details) return;
+
+    const modal = document.getElementById('listing-modal');
+    const title = document.getElementById('listing-title');
+    const content = document.getElementById('listing-content');
+
+    title.textContent = details.current.title.substring(0, 80);
+
+    // Use local image if available, fallback to external URL (same logic as table rows and GPU popup)
+    const normalizedImagePath = details.current.local_image_path
+        ? details.current.local_image_path.replace(/\\/g, '/')
+        : null;
+    const detailImageUrl = normalizedImagePath
+        ? `/images/${normalizedImagePath}`
+        : details.current.image_url;
+
+    let html = `
+        <div style="margin-bottom: 1.5rem;">
+            <div style="display: grid; grid-template-columns: ${detailImageUrl ? '1fr 1fr' : '1fr'}; gap: 2rem;">
+                ${detailImageUrl ? `
+                    <div style="text-align: center;">
+                        <img src="${detailImageUrl}" alt="${details.current.title}" style="max-width: 100%; max-height: 300px; object-fit: contain; border-radius: 8px; cursor: pointer;" onclick="showImageModal('${detailImageUrl}', '${details.current.title.replace(/'/g, "\\'")}')">
+                    </div>
+                ` : ''}
+                <div>
+                    <h4>{{ t('Listing Details') }}</h4>
+                    ${localStorage.getItem('showListingId') !== 'false' ? `<p class="listing-id-field" style="display: block;"><strong>Listing ID:</strong> <code>${details.current.listing_id}</code></p>` : ''}
+                    <p><strong>Price:</strong> <span class="price" style="font-size: 1.5rem; color: #27ae60;">€${details.current.price_eur}</span></p>
+                    <p><strong>Location:</strong> ${details.current.seller_location || 'N/A'}</p>
+                    <p><strong>Date Posted:</strong> ${details.current.date_posted ? new Date(details.current.date_posted).toLocaleDateString() : 'N/A'}</p>
+                    ${details.current.matched_lens_id ? `
+                        <p><strong>Matched Lens:</strong> <span class="badge badge-info">${details.current.matched_lens_id.replace(/_/g, ' ')}</span></p>
+                        <p><strong>Confidence:</strong> ${((details.current.confidence_score || details.current.lens_confidence_score || 0) * 100).toFixed(0)}%</p>
+                    ` : '<p><em>No lens match</em></p>'}
+                    ${details.current.source ? `<p><strong>Source:</strong> ${details.current.source}</p>` : ''}
+                </div>
+            </div>
+        </div>
+    `;
+
+    if (details.current.description) {
+        html += `
+            <div style="margin-bottom: 1.5rem;">
+                <h4>{{ t('Description') }}</h4>
+                <div style="background: var(--badge-bg); color: var(--text-color); padding: 1rem; border-radius: 8px; max-height: 200px; overflow-y: auto; white-space: pre-wrap; font-size: 0.9rem; line-height: 1.5; border: 1px solid var(--border-color);">
+                    ${details.current.description}
+                </div>
+            </div>
+        `;
+    }
+
+    if (details.history && details.history.length > 0) {
+        html += `
+            <h4>Price History</h4>
+            <table style="margin-top: 1rem;">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Price (€)</th>
+                    </tr>
+                </thead>
+                <tbody>
+        `;
+
+        details.history.forEach(h => {
+            html += `
+                <tr>
+                    <td>${h.recorded_at ? new Date(h.recorded_at).toLocaleDateString() : 'N/A'}</td>
+                    <td>€${h.price_eur}</td>
+                </tr>
+            `;
+        });
+
+        html += '</tbody></table>';
+    } else {
+        html += '<p class="loading">No price history available</p>';
+    }
+
+    content.innerHTML = html;
+    modal.style.display = 'flex';
+}
+
+function closeListingModal() {
+    document.getElementById('listing-modal').style.display = 'none';
+}
+
+// Close modals on outside click
+document.addEventListener('click', function(e) {
+    const modal = document.getElementById('listing-modal');
+    const lensModal = document.getElementById('lens-detail-modal');
+    if (e.target === modal) {
+        closeListingModal();
+    }
+    if (e.target === lensModal) {
+        closeLensDetailModal();
+    }
+});
+
+// Load lens models grid with icons
+async function loadLensModels() {
+    try {
+        const sort = document.getElementById('model-sort').value;
+        const brandFilter = document.getElementById('model-brand-filter').value;
+        const mountFilter = document.getElementById('stats-mount-filter').value;
+
+        const params = new URLSearchParams();
+        params.append('sort', sort);
+        if (brandFilter) params.append('brand', brandFilter);
+        if (mountFilter) params.append('mount', mountFilter);
+
+        const response = await fetch('/api/lens-models?' + params.toString());
+        const models = await response.json();
+
+        if (models.error) {
+            throw new Error(models.error);
+        }
+
+        const container = document.getElementById('lens-models-container');
+
+        if (!Array.isArray(models) || models.length === 0) {
+            container.innerHTML = '<div class="loading">No lens models found</div>';
+            return;
+        }
+
+        // Build models grid with icons
+        let html = '<div class="lens-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1rem;">';
+
+        models.forEach(model => {
+            const lensName = model.matched_lens_id?.replace(/_/g, ' ') || 'Unknown';
+            const iconSvg = typeof getLensIcon !== 'undefined' ? getLensIcon(lensName) : '<div style="width: 70px; height: 70px; background: #f0f0f0; border-radius: 8px; display: flex; align-items: center; justify-content: center;">📷</div>';
+
+            // Launch price display
+            let launchPriceHtml = '';
+            if (model.launch_price_eur) {
+                const usdText = model.launch_price_usd ? ` ($${model.launch_price_usd} USD)` : '';
+                launchPriceHtml = `<br><small style="color: #666;">Launch: €${model.launch_price_eur}${usdText}</small>`;
+            }
+
+            // Brand/Mount display
+            let brandMountHtml = '';
+            if (model.brand || model.mount) {
+                const bmText = model.brand && model.mount ? `${model.brand} / ${model.mount}` :
+                              model.brand ? model.brand : model.mount;
+                brandMountHtml = `<br><small class="text-muted">${bmText}</small>`;
+            }
+
+            html += `
+                <div class="lens-model-card" style="background: white; border-radius: 12px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); overflow: hidden; cursor: pointer; transition: transform 0.2s;"
+                     onclick="showLensDetail('${model.matched_lens_id}')" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='none'">
+                    <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 1.5rem; color: white; display: flex; align-items: center; gap: 1rem;">
+                        <div style="width: 60px; height: 60px;">${iconSvg}</div>
+                        <div>
+                            <div style="font-size: 1.2rem; font-weight: bold;">${lensName.substring(0, 30)}${lensName.length > 30 ? '...' : ''}</div>
+                            <div style="font-size: 0.9rem; opacity: 0.9;">${model.active_listings} listings</div>
+                        </div>
+                    </div>
+                    <div style="padding: 1rem;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                            <span style="color: #666; font-size: 0.9rem;">Average Price:</span>
+                            <span style="font-size: 1.2rem; font-weight: bold; color: #10b981;">€${Number(model.avg_price).toFixed(2)}</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.85rem; color: #666;">
+                            <span>Range:</span>
+                            <span>€${Number(model.min_price).toFixed(0)} - €${Number(model.max_price).toFixed(0)}</span>
+                        </div>
+                        ${brandMountHtml}
+                        ${launchPriceHtml}
+                        <div style="margin-top: 1rem; display: flex; gap: 0.5rem;">
+                            <button class="btn btn-small" style="flex: 1;" onclick="event.stopPropagation(); showLensDetail('${model.matched_lens_id}')">View Listings</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        });
+
+        html += '</div>';
+        container.innerHTML = html;
+
+    } catch (error) {
+        console.error('Error loading lens models:', error);
+        document.getElementById('lens-models-container').innerHTML =
+            `<div class="error"><strong>Failed to load lens models</strong><br>${error.message}</div>`;
+    }
+}
+
+// Load on page load
+document.addEventListener('DOMContentLoaded', async () => {
+    // Check if lens icons are loaded
+    if (typeof getLensIcon === 'undefined') {
+        console.warn('getLensIcon function not found - lens icons may not display properly');
+    } else {
+        console.log('Lens icons loaded successfully');
+    }
+
+    // Read optional model preselection from URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const preselectedModel = urlParams.get('model');
+
+    await loadFilters();
+    await loadLensModelsForFilter();  // Load all models initially
+
+    // Preselect model from URL if present and valid
+    if (preselectedModel) {
+        const modelSelect = document.getElementById('model-filter');
+        const optionExists = Array.from(modelSelect.options).some(opt => opt.value === preselectedModel);
+        if (optionExists) {
+            modelSelect.value = preselectedModel;
+        }
+    }
+
+    loadListings();
+    loadStats();
+    loadLensModels();
+
+    // Restore admin-field toggle state
+    const adminToggle = document.getElementById('show-admin-fields');
+    if (adminToggle) {
+        const saved = localStorage.getItem('showListingId');
+        if (saved === 'true') {
+            adminToggle.checked = true;
+            toggleAdminFields();
+        }
+    }
+});
+</script>
+
+<style>
+.confidence-high { color: #27ae60; font-weight: 600; }
+.confidence-medium { color: #f39c12; font-weight: 600; }
+.confidence-low { color: #e74c3c; font-weight: 600; }
+.badge-info { background: #3498db; color: white; padding: 2px 8px; border-radius: 4px; font-size: 0.75rem; }
+.badge-success { background: #27ae60; color: white; padding: 2px 8px; border-radius: 4px; font-size: 0.75rem; }
+.badge-danger { background: #e74c3c; color: white; padding: 2px 8px; border-radius: 4px; font-size: 0.75rem; }
+.badge-secondary { background: #95a5a6; color: white; padding: 2px 8px; border-radius: 4px; font-size: 0.75rem; }
+.text-muted { color: #999; }
+.flagged-row { background-color: #fff5f5 !important; }
+.stat-card {
+    background: white;
+    border-radius: 8px;
+    padding: 1rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    border-left: 4px solid #3498db;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+.stat-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+.stat-value {
+    font-size: 2rem;
+    font-weight: 600;
+    color: #2c3e50;
+}
+.filters label {
+    margin-right: 0.5rem;
+}
+.filters select {
+    padding: 4px 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin-left: 4px;
+}
+
+/* Lens model card styles */
+.lens-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1rem;
+}
+.lens-model-card {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    overflow: hidden;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+.lens-model-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+/* Admin-only Listing ID field in detail popup */
+.admin-only.listing-id-field {
+    display: none;
+}
+body.show-admin-fields .admin-only.listing-id-field,
+body[data-admin="true"] .admin-only.listing-id-field {
+    display: block;
+}
+
+/* Toggle button for admin fields */
+.admin-field-toggle {
+    background: var(--badge-bg);
+    border: 1px solid var(--card-border);
+    color: var(--text-color);
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 0.875rem;
+    transition: all 0.3s;
+}
+.admin-field-toggle:hover {
+    background: var(--input-border);
+}
+</style>
+{% endblock %}

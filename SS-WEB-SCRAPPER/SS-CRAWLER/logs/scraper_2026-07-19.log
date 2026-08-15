@@ -1,0 +1,989 @@
+2026-07-19 14:02:55 | INFO     | ss_crawler | [cpu_scraper] Initializing CPU scraper...
+2026-07-19 14:02:55 | INFO     | ss_crawler | [database] Database connected: localhost:5433/ss_market
+2026-07-19 14:02:55 | INFO     | ss_crawler | [cpu_scraper] Database: postgresql+psycopg2://crawler:crawler_pass@localhost:5433/ss_market
+2026-07-19 14:02:56 | INFO     | ss_crawler | [cpu_matcher] CPUMatcher initialized with 5320 CPUs
+2026-07-19 14:02:56 | INFO     | ss_crawler | [cpu_scraper] Loaded 5320 CPU references
+2026-07-19 14:02:56 | INFO     | ss_crawler | [cpu_scraper] CPU scrape run started: ID 56
+2026-07-19 14:02:56 | INFO     | ss_crawler | [cpu_scraper] Fetching CPU category: https://www.ss.com/lv/electronics/computers/completing-pc/cpu/
+2026-07-19 14:02:56 | INFO     | ss_crawler | [crawler] Fetching CPU category page: https://www.ss.com/lv/electronics/computers/completing-pc/cpu/
+2026-07-19 14:02:58 | INFO     | ss_crawler | [cpu_parser] Found 30 listings on page
+2026-07-19 14:02:58 | INFO     | ss_crawler | [cpu_scraper] Found 30 CPU listings to process
+2026-07-19 14:02:58 | INFO     | ss_crawler | [crawler] Fetching CPU listing 1/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/ppkkp.html
+2026-07-19 14:03:01 | WARNING  | ss_crawler | [listing_versioning] Legacy listing ppkkp v1 has NULL fingerprint, creating new version
+2026-07-19 14:03:01 | INFO     | ss_crawler | [repository] ✨ ppkkp_v2: New - Intel Core i5-7400
+2026-07-19 14:03:01 | INFO     | ss_crawler | [image_downloader] Downloaded image for ppkkp_v2 (stored as ppkkp_090be342.jpg, 1668 bytes)
+2026-07-19 14:03:01 | INFO     | ss_crawler | [cpu_scraper] Image saved locally: cpus\ppkkp_090be342.jpg
+2026-07-19 14:03:01 | INFO     | ss_crawler | [cpu_scraper] NEW: Processed: new
+2026-07-19 14:03:01 | INFO     | ss_crawler | [crawler] Fetching CPU listing 2/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/hgclk.html
+2026-07-19 14:03:04 | INFO     | ss_crawler | [repository] ✨ hgclk: New - Intel Core i5-4670K
+2026-07-19 14:03:04 | INFO     | ss_crawler | [image_downloader] Downloaded image for hgclk (stored as hgclk_e1df1628.jpg, 4200 bytes)
+2026-07-19 14:03:04 | INFO     | ss_crawler | [cpu_scraper] Image saved locally: cpus\hgclk_e1df1628.jpg
+2026-07-19 14:03:04 | INFO     | ss_crawler | [cpu_scraper] NEW: Processed: new
+2026-07-19 14:03:04 | INFO     | ss_crawler | [crawler] Fetching CPU listing 3/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/hjxif.html
+2026-07-19 14:03:06 | WARNING  | ss_crawler | [listing_versioning] Legacy listing hjxif v1 has NULL fingerprint, creating new version
+2026-07-19 14:03:06 | INFO     | ss_crawler | [repository] ✨ hjxif_v2: New - Intel Core i7-8700
+2026-07-19 14:03:06 | INFO     | ss_crawler | [cpu_scraper] Image saved locally: cpus\hjxif_ce7011ba.jpg
+2026-07-19 14:03:06 | INFO     | ss_crawler | [cpu_scraper] NEW: Processed: new
+2026-07-19 14:03:06 | INFO     | ss_crawler | [crawler] Fetching CPU listing 4/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/fklkk.html
+2026-07-19 14:03:08 | WARNING  | ss_crawler | [listing_versioning] Legacy listing fklkk v1 has NULL fingerprint, creating new version
+2026-07-19 14:03:09 | INFO     | ss_crawler | [repository] ✨ fklkk_v2: New - Intel Core i5-10400
+2026-07-19 14:03:09 | INFO     | ss_crawler | [cpu_scraper] Image saved locally: cpus\fklkk_e942437a.jpg
+2026-07-19 14:03:09 | INFO     | ss_crawler | [cpu_scraper] NEW: Processed: new
+2026-07-19 14:03:09 | INFO     | ss_crawler | [crawler] Fetching CPU listing 5/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/ekknk.html
+2026-07-19 14:03:11 | INFO     | ss_crawler | [repository] ✨ ekknk: New - Intel Celeron G3930 @ 2.90GHz
+2026-07-19 14:03:12 | INFO     | ss_crawler | [image_downloader] Downloaded image for ekknk (stored as ekknk_cc32505c.jpg, 5028 bytes)
+2026-07-19 14:03:12 | INFO     | ss_crawler | [cpu_scraper] Image saved locally: cpus\ekknk_cc32505c.jpg
+2026-07-19 14:03:12 | INFO     | ss_crawler | [cpu_scraper] NEW: Processed: new
+2026-07-19 14:03:12 | INFO     | ss_crawler | [crawler] Fetching CPU listing 6/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/hdkkj.html
+2026-07-19 14:03:14 | INFO     | ss_crawler | [listing_versioning] Legacy listing hdkkj v1 matches by computed fingerprint, updating
+2026-07-19 14:03:14 | INFO     | ss_crawler | [repository] ⏸️ hdkkj: Unchanged - Intel Core i5-6500
+2026-07-19 14:03:14 | INFO     | ss_crawler | [cpu_scraper] Image saved locally: cpus\hdkkj_89f60087.jpg
+2026-07-19 14:03:14 | INFO     | ss_crawler | [cpu_scraper] UNCHANGED: Processed: unchanged
+2026-07-19 14:03:14 | INFO     | ss_crawler | [crawler] Fetching CPU listing 7/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/mblog.html
+2026-07-19 14:03:17 | INFO     | ss_crawler | [repository] ✨ mblog: New - AMD Ryzen 7 3800X
+2026-07-19 14:03:17 | INFO     | ss_crawler | [image_downloader] Downloaded image for mblog (stored as mblog_53139cfd.jpg, 4402 bytes)
+2026-07-19 14:03:17 | INFO     | ss_crawler | [cpu_scraper] Image saved locally: cpus\mblog_53139cfd.jpg
+2026-07-19 14:03:17 | INFO     | ss_crawler | [cpu_scraper] NEW: Processed: new
+2026-07-19 14:03:17 | INFO     | ss_crawler | [crawler] Fetching CPU listing 8/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/mxneb.html
+2026-07-19 14:03:19 | INFO     | ss_crawler | [repository] ✨ mxneb: New - Intel Core i7-6700
+2026-07-19 14:03:19 | INFO     | ss_crawler | [image_downloader] Downloaded image for mxneb (stored as mxneb_e858d39a.jpg, 2711 bytes)
+2026-07-19 14:03:19 | INFO     | ss_crawler | [cpu_scraper] Image saved locally: cpus\mxneb_e858d39a.jpg
+2026-07-19 14:03:19 | INFO     | ss_crawler | [cpu_scraper] NEW: Processed: new
+2026-07-19 14:03:19 | INFO     | ss_crawler | [crawler] Fetching CPU listing 9/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/mflfj.html
+2026-07-19 14:03:22 | INFO     | ss_crawler | [repository] ✨ mflfj: New - AMD Ryzen 7 3800X
+2026-07-19 14:03:22 | INFO     | ss_crawler | [image_downloader] Downloaded image for mflfj (stored as mflfj_53139cfd.jpg, 4402 bytes)
+2026-07-19 14:03:22 | INFO     | ss_crawler | [cpu_scraper] Image saved locally: cpus\mflfj_53139cfd.jpg
+2026-07-19 14:03:22 | INFO     | ss_crawler | [cpu_scraper] NEW: Processed: new
+2026-07-19 14:03:22 | INFO     | ss_crawler | [crawler] Fetching CPU listing 10/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/lnmin.html
+2026-07-19 14:03:24 | INFO     | ss_crawler | [repository] ✨ lnmin: New - AMD Ryzen 7 7700
+2026-07-19 14:03:25 | INFO     | ss_crawler | [image_downloader] Downloaded image for lnmin (stored as lnmin_5ff3ee14.jpg, 4084 bytes)
+2026-07-19 14:03:25 | INFO     | ss_crawler | [cpu_scraper] Image saved locally: cpus\lnmin_5ff3ee14.jpg
+2026-07-19 14:03:25 | INFO     | ss_crawler | [cpu_scraper] NEW: Processed: new
+2026-07-19 14:03:25 | INFO     | ss_crawler | [crawler] Fetching CPU listing 11/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/pmoec.html
+2026-07-19 14:03:28 | WARNING  | ss_crawler | [listing_versioning] Legacy listing pmoec v1 has NULL fingerprint, creating new version
+2026-07-19 14:03:28 | INFO     | ss_crawler | [repository] ✨ pmoec_v2: New - AMD Ryzen 5 7600
+2026-07-19 14:03:28 | INFO     | ss_crawler | [image_downloader] Downloaded image for pmoec_v2 (stored as pmoec_5ebf592a.jpg, 4323 bytes)
+2026-07-19 14:03:28 | INFO     | ss_crawler | [cpu_scraper] Image saved locally: cpus\pmoec_5ebf592a.jpg
+2026-07-19 14:03:28 | INFO     | ss_crawler | [cpu_scraper] NEW: Processed: new
+2026-07-19 14:03:28 | INFO     | ss_crawler | [crawler] Fetching CPU listing 12/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/fdbgn.html
+2026-07-19 14:03:30 | WARNING  | ss_crawler | [listing_versioning] Legacy listing fdbgn v1 has NULL fingerprint, creating new version
+2026-07-19 14:03:30 | INFO     | ss_crawler | [repository] ✨ fdbgn_v2: New - Intel Core i7-6700
+2026-07-19 14:03:30 | INFO     | ss_crawler | [cpu_scraper] Image saved locally: cpus\fdbgn_ebea929b.jpg
+2026-07-19 14:03:30 | INFO     | ss_crawler | [cpu_scraper] NEW: Processed: new
+2026-07-19 14:03:30 | INFO     | ss_crawler | [crawler] Fetching CPU listing 13/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/goejh.html
+2026-07-19 14:03:32 | INFO     | ss_crawler | [repository] ✨ goejh: New - AMD Ryzen 5 7500F
+2026-07-19 14:03:33 | INFO     | ss_crawler | [image_downloader] Downloaded image for goejh (stored as goejh_12f75c40.jpg, 4481 bytes)
+2026-07-19 14:03:33 | INFO     | ss_crawler | [cpu_scraper] Image saved locally: cpus\goejh_12f75c40.jpg
+2026-07-19 14:03:33 | INFO     | ss_crawler | [cpu_scraper] NEW: Processed: new
+2026-07-19 14:03:33 | INFO     | ss_crawler | [crawler] Fetching CPU listing 14/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/lndbn.html
+2026-07-19 14:03:35 | INFO     | ss_crawler | [repository] ✨ lndbn: New - Intel Core i7-8700K
+2026-07-19 14:03:35 | INFO     | ss_crawler | [cpu_scraper] NEW: Processed: new
+2026-07-19 14:03:35 | INFO     | ss_crawler | [crawler] Fetching CPU listing 15/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/bkgoe.html
+2026-07-19 14:03:38 | INFO     | ss_crawler | [repository] ✨ bkgoe: New - Intel Core i5-2500 @ 3.30GHz
+2026-07-19 14:03:39 | INFO     | ss_crawler | [image_downloader] Downloaded image for bkgoe (stored as bkgoe_8cb26e25.jpg, 1776 bytes)
+2026-07-19 14:03:39 | INFO     | ss_crawler | [cpu_scraper] Image saved locally: cpus\bkgoe_8cb26e25.jpg
+2026-07-19 14:03:39 | INFO     | ss_crawler | [cpu_scraper] NEW: Processed: new
+2026-07-19 14:03:39 | INFO     | ss_crawler | [crawler] Fetching CPU listing 16/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/ffjli.html
+2026-07-19 14:03:41 | WARNING  | ss_crawler | [listing_versioning] Legacy listing ffjli v1 has NULL fingerprint, creating new version
+2026-07-19 14:03:41 | INFO     | ss_crawler | [repository] ✨ ffjli_v2: New - Intel Core i5-3570 @ 3.40GHz
+2026-07-19 14:03:41 | INFO     | ss_crawler | [image_downloader] Downloaded image for ffjli_v2 (stored as ffjli_6f11221c.jpg, 1599 bytes)
+2026-07-19 14:03:41 | INFO     | ss_crawler | [cpu_scraper] Image saved locally: cpus\ffjli_6f11221c.jpg
+2026-07-19 14:03:41 | INFO     | ss_crawler | [cpu_scraper] NEW: Processed: new
+2026-07-19 14:03:41 | INFO     | ss_crawler | [crawler] Fetching CPU listing 17/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/nbbkn.html
+2026-07-19 14:03:44 | INFO     | ss_crawler | [listing_versioning] Legacy listing nbbkn v1 matches by computed fingerprint, updating
+2026-07-19 14:03:44 | INFO     | ss_crawler | [repository] ⏸️ nbbkn: Unchanged - Intel Core i5-9500
+2026-07-19 14:03:44 | INFO     | ss_crawler | [cpu_scraper] Image saved locally: cpus\nbbkn_e2e09f2e.jpg
+2026-07-19 14:03:44 | INFO     | ss_crawler | [cpu_scraper] UNCHANGED: Processed: unchanged
+2026-07-19 14:03:44 | INFO     | ss_crawler | [crawler] Fetching CPU listing 18/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/fnfhp.html
+2026-07-19 14:03:47 | INFO     | ss_crawler | [listing_versioning] Legacy listing fnfhp v1 matches by computed fingerprint, updating
+2026-07-19 14:03:47 | INFO     | ss_crawler | [repository] ⏸️ fnfhp: Unchanged - Intel Core i7-4770
+2026-07-19 14:03:47 | INFO     | ss_crawler | [cpu_scraper] Image saved locally: cpus\fnfhp_80be9ac8.jpg
+2026-07-19 14:03:47 | INFO     | ss_crawler | [cpu_scraper] UNCHANGED: Processed: unchanged
+2026-07-19 14:03:47 | INFO     | ss_crawler | [crawler] Fetching CPU listing 19/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/afnhm.html
+2026-07-19 14:03:49 | INFO     | ss_crawler | [repository] ✨ afnhm: New - Intel Core i5-2500K @ 3.30GHz
+2026-07-19 14:03:49 | INFO     | ss_crawler | [image_downloader] Downloaded image for afnhm (stored as afnhm_b9ef6335.jpg, 3484 bytes)
+2026-07-19 14:03:49 | INFO     | ss_crawler | [cpu_scraper] Image saved locally: cpus\afnhm_b9ef6335.jpg
+2026-07-19 14:03:49 | INFO     | ss_crawler | [cpu_scraper] NEW: Processed: new
+2026-07-19 14:03:49 | INFO     | ss_crawler | [crawler] Fetching CPU listing 20/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/gcndd.html
+2026-07-19 14:03:52 | INFO     | ss_crawler | [repository] ✨ gcndd: New - Intel Core i7-6700K
+2026-07-19 14:03:53 | INFO     | ss_crawler | [image_downloader] Downloaded image for gcndd (stored as gcndd_db85e04d.jpg, 5146 bytes)
+2026-07-19 14:03:53 | INFO     | ss_crawler | [cpu_scraper] Image saved locally: cpus\gcndd_db85e04d.jpg
+2026-07-19 14:03:53 | INFO     | ss_crawler | [cpu_scraper] NEW: Processed: new
+2026-07-19 14:03:53 | INFO     | ss_crawler | [crawler] Fetching CPU listing 21/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/hjhix.html
+2026-07-19 14:03:55 | INFO     | ss_crawler | [repository] ✨ hjhix: New - Intel Core i5-6500
+2026-07-19 14:03:55 | INFO     | ss_crawler | [image_downloader] Downloaded image for hjhix (stored as hjhix_de424622.jpg, 4689 bytes)
+2026-07-19 14:03:55 | INFO     | ss_crawler | [cpu_scraper] Image saved locally: cpus\hjhix_de424622.jpg
+2026-07-19 14:03:55 | INFO     | ss_crawler | [cpu_scraper] NEW: Processed: new
+2026-07-19 14:03:55 | INFO     | ss_crawler | [crawler] Fetching CPU listing 22/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/mlhin.html
+2026-07-19 14:03:58 | INFO     | ss_crawler | [repository] ✨ mlhin: New - Intel Core i5-7400
+2026-07-19 14:03:59 | INFO     | ss_crawler | [image_downloader] Downloaded image for mlhin (stored as mlhin_da3d5d42.jpg, 4876 bytes)
+2026-07-19 14:03:59 | INFO     | ss_crawler | [cpu_scraper] Image saved locally: cpus\mlhin_da3d5d42.jpg
+2026-07-19 14:03:59 | INFO     | ss_crawler | [cpu_scraper] NEW: Processed: new
+2026-07-19 14:03:59 | INFO     | ss_crawler | [crawler] Fetching CPU listing 23/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/hxnom.html
+2026-07-19 14:04:02 | INFO     | ss_crawler | [listing_versioning] Legacy listing hxnom v1 matches by computed fingerprint, updating
+2026-07-19 14:04:02 | INFO     | ss_crawler | [repository] ⏸️ hxnom: Unchanged - Intel Core i5-8500
+2026-07-19 14:04:02 | INFO     | ss_crawler | [cpu_scraper] Image saved locally: cpus\hxnom_a99fe0f3.jpg
+2026-07-19 14:04:02 | INFO     | ss_crawler | [cpu_scraper] UNCHANGED: Processed: unchanged
+2026-07-19 14:04:02 | INFO     | ss_crawler | [crawler] Fetching CPU listing 24/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/fbkdj.html
+2026-07-19 14:04:04 | INFO     | ss_crawler | [listing_versioning] Legacy listing fbkdj v1 matches by computed fingerprint, updating
+2026-07-19 14:04:04 | INFO     | ss_crawler | [repository] ⏸️ fbkdj: Unchanged - Intel Core i7-6700K
+2026-07-19 14:04:04 | INFO     | ss_crawler | [cpu_scraper] Image saved locally: cpus\fbkdj_d42b76bf.jpg
+2026-07-19 14:04:04 | INFO     | ss_crawler | [cpu_scraper] UNCHANGED: Processed: unchanged
+2026-07-19 14:04:04 | INFO     | ss_crawler | [crawler] Fetching CPU listing 25/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/hcflh.html
+2026-07-19 14:04:07 | INFO     | ss_crawler | [listing_versioning] Legacy listing hcflh v1 matches by computed fingerprint, updating
+2026-07-19 14:04:07 | INFO     | ss_crawler | [repository] ⏸️ hcflh: Unchanged - Intel Core i7-4790
+2026-07-19 14:04:07 | INFO     | ss_crawler | [cpu_scraper] Image saved locally: cpus\hcflh_093ac1c4.jpg
+2026-07-19 14:04:07 | INFO     | ss_crawler | [cpu_scraper] UNCHANGED: Processed: unchanged
+2026-07-19 14:04:07 | INFO     | ss_crawler | [crawler] Fetching CPU listing 26/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/dmkgo.html
+2026-07-19 14:04:09 | INFO     | ss_crawler | [repository] ✨ dmkgo: New - Intel Core i5-7500
+2026-07-19 14:04:09 | INFO     | ss_crawler | [image_downloader] Downloaded image for dmkgo (stored as dmkgo_b90c3f7d.jpg, 3696 bytes)
+2026-07-19 14:04:09 | INFO     | ss_crawler | [cpu_scraper] Image saved locally: cpus\dmkgo_b90c3f7d.jpg
+2026-07-19 14:04:09 | INFO     | ss_crawler | [cpu_scraper] NEW: Processed: new
+2026-07-19 14:04:09 | INFO     | ss_crawler | [crawler] Fetching CPU listing 27/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/foplf.html
+2026-07-19 14:04:13 | INFO     | ss_crawler | [repository] ✨ foplf: New - Intel Core i5-4670
+2026-07-19 14:04:13 | INFO     | ss_crawler | [image_downloader] Downloaded image for foplf (stored as foplf_4b6a68ea.jpg, 1913 bytes)
+2026-07-19 14:04:13 | INFO     | ss_crawler | [cpu_scraper] Image saved locally: cpus\foplf_4b6a68ea.jpg
+2026-07-19 14:04:13 | INFO     | ss_crawler | [cpu_scraper] NEW: Processed: new
+2026-07-19 14:04:13 | INFO     | ss_crawler | [crawler] Fetching CPU listing 28/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/mjflp.html
+2026-07-19 14:04:15 | WARNING  | ss_crawler | [listing_versioning] Legacy listing mjflp v1 has NULL fingerprint, creating new version
+2026-07-19 14:04:15 | INFO     | ss_crawler | [repository] ✨ mjflp_v2: New - AMD Ryzen 5 8400F
+2026-07-19 14:04:15 | INFO     | ss_crawler | [image_downloader] Downloaded image for mjflp_v2 (stored as mjflp_7362ab65.jpg, 4606 bytes)
+2026-07-19 14:04:15 | INFO     | ss_crawler | [cpu_scraper] Image saved locally: cpus\mjflp_7362ab65.jpg
+2026-07-19 14:04:15 | INFO     | ss_crawler | [cpu_scraper] NEW: Processed: new
+2026-07-19 14:04:15 | INFO     | ss_crawler | [crawler] Fetching CPU listing 29/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/fjgmi.html
+2026-07-19 14:04:18 | INFO     | ss_crawler | [repository] ✨ fjgmi: New - Intel Core i5-6400T
+2026-07-19 14:04:18 | INFO     | ss_crawler | [image_downloader] Downloaded image for fjgmi (stored as fjgmi_426c130b.jpg, 5369 bytes)
+2026-07-19 14:04:18 | INFO     | ss_crawler | [cpu_scraper] Image saved locally: cpus\fjgmi_426c130b.jpg
+2026-07-19 14:04:18 | INFO     | ss_crawler | [cpu_scraper] NEW: Processed: new
+2026-07-19 14:04:18 | INFO     | ss_crawler | [crawler] Fetching CPU listing 30/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/geine.html
+2026-07-19 14:04:20 | INFO     | ss_crawler | [listing_versioning] Legacy listing geine v1 matches by computed fingerprint, updating
+2026-07-19 14:04:20 | INFO     | ss_crawler | [repository] ⏸️ geine: Unchanged - AMD Ryzen 5 3400G
+2026-07-19 14:04:20 | INFO     | ss_crawler | [image_downloader] Downloaded image for geine (stored as geine_6d523fee.jpg, 4109 bytes)
+2026-07-19 14:04:20 | INFO     | ss_crawler | [cpu_scraper] Image saved locally: cpus\geine_6d523fee.jpg
+2026-07-19 14:04:20 | INFO     | ss_crawler | [cpu_scraper] UNCHANGED: Processed: unchanged
+2026-07-19 14:04:20 | INFO     | ss_crawler | [cpu_scraper] Fetching CPU category: https://www.ss.com/lv/electronics/computers/completing-pc/cpu/page2.html
+2026-07-19 14:04:20 | INFO     | ss_crawler | [crawler] Fetching CPU category page: https://www.ss.com/lv/electronics/computers/completing-pc/cpu/page2.html
+2026-07-19 14:04:22 | INFO     | ss_crawler | [cpu_parser] Found 25 listings on page
+2026-07-19 14:04:22 | INFO     | ss_crawler | [cpu_scraper] Found 25 CPU listings to process
+2026-07-19 14:04:22 | INFO     | ss_crawler | [crawler] Fetching CPU listing 1/25: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/lnmki.html
+2026-07-19 14:04:25 | INFO     | ss_crawler | [repository] ✨ lnmki: New - Intel Core i9-13900KS
+2026-07-19 14:04:25 | INFO     | ss_crawler | [image_downloader] Downloaded image for lnmki (stored as lnmki_3dafd56a.jpg, 5431 bytes)
+2026-07-19 14:04:25 | INFO     | ss_crawler | [cpu_scraper] Image saved locally: cpus\lnmki_3dafd56a.jpg
+2026-07-19 14:04:25 | INFO     | ss_crawler | [cpu_scraper] NEW: Processed: new
+2026-07-19 14:04:25 | INFO     | ss_crawler | [crawler] Fetching CPU listing 2/25: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/gcefo.html
+2026-07-19 14:04:27 | INFO     | ss_crawler | [repository] ✨ gcefo: New - AMD Ryzen 5 7500F
+2026-07-19 14:04:27 | INFO     | ss_crawler | [image_downloader] Downloaded image for gcefo (stored as gcefo_0b9a01e7.jpg, 3043 bytes)
+2026-07-19 14:04:27 | INFO     | ss_crawler | [cpu_scraper] Image saved locally: cpus\gcefo_0b9a01e7.jpg
+2026-07-19 14:04:27 | INFO     | ss_crawler | [cpu_scraper] NEW: Processed: new
+2026-07-19 14:04:27 | INFO     | ss_crawler | [crawler] Fetching CPU listing 3/25: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/eoxff.html
+2026-07-19 14:04:29 | WARNING  | ss_crawler | [listing_versioning] Legacy listing eoxff v1 has NULL fingerprint, creating new version
+2026-07-19 14:04:29 | INFO     | ss_crawler | [repository] ✨ eoxff_v2: New - AMD Ryzen 5 5600
+2026-07-19 14:04:29 | INFO     | ss_crawler | [cpu_scraper] Image saved locally: cpus\eoxff_2de4d42a.jpg
+2026-07-19 14:04:29 | INFO     | ss_crawler | [cpu_scraper] NEW: Processed: new
+2026-07-19 14:04:29 | INFO     | ss_crawler | [crawler] Fetching CPU listing 4/25: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/lccik.html
+2026-07-19 14:04:33 | INFO     | ss_crawler | [repository] ✨ lccik: New - AMD Ryzen 5 5600G
+2026-07-19 14:04:33 | INFO     | ss_crawler | [image_downloader] Downloaded image for lccik (stored as lccik_da8acef7.jpg, 4280 bytes)
+2026-07-19 14:04:33 | INFO     | ss_crawler | [cpu_scraper] Image saved locally: cpus\lccik_da8acef7.jpg
+2026-07-19 14:04:33 | INFO     | ss_crawler | [cpu_scraper] NEW: Processed: new
+2026-07-19 14:04:33 | INFO     | ss_crawler | [crawler] Fetching CPU listing 5/25: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/mcjmp.html
+2026-07-19 14:04:35 | INFO     | ss_crawler | [repository] ✨ mcjmp: New - Intel Core i3-3220 @ 3.30GHz
+2026-07-19 14:04:35 | INFO     | ss_crawler | [image_downloader] Downloaded image for mcjmp (stored as mcjmp_ebc3f8d1.jpg, 3383 bytes)
+2026-07-19 14:04:35 | INFO     | ss_crawler | [cpu_scraper] Image saved locally: cpus\mcjmp_ebc3f8d1.jpg
+2026-07-19 14:04:35 | INFO     | ss_crawler | [cpu_scraper] NEW: Processed: new
+2026-07-19 14:04:35 | INFO     | ss_crawler | [crawler] Fetching CPU listing 6/25: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/fxkei.html
+2026-07-19 14:04:38 | INFO     | ss_crawler | [repository] ✨ fxkei: New - Intel Core i5-9400
+2026-07-19 14:04:38 | INFO     | ss_crawler | [image_downloader] Downloaded image for fxkei (stored as fxkei_5c8d78d8.jpg, 4110 bytes)
+2026-07-19 14:04:38 | INFO     | ss_crawler | [cpu_scraper] Image saved locally: cpus\fxkei_5c8d78d8.jpg
+2026-07-19 14:04:38 | INFO     | ss_crawler | [cpu_scraper] NEW: Processed: new
+2026-07-19 14:04:38 | INFO     | ss_crawler | [crawler] Fetching CPU listing 7/25: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/pjgfj.html
+2026-07-19 14:04:41 | WARNING  | ss_crawler | [listing_versioning] Legacy listing pjgfj v1 has NULL fingerprint, creating new version
+2026-07-19 14:04:41 | INFO     | ss_crawler | [repository] ✨ pjgfj_v2: New - AMD Ryzen 9 9900X
+2026-07-19 14:04:41 | INFO     | ss_crawler | [cpu_scraper] Image saved locally: cpus\pjgfj_00ade4be.jpg
+2026-07-19 14:04:41 | INFO     | ss_crawler | [cpu_scraper] NEW: Processed: new
+2026-07-19 14:04:41 | INFO     | ss_crawler | [crawler] Fetching CPU listing 8/25: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/fnmil.html
+2026-07-19 14:04:44 | INFO     | ss_crawler | [repository] ✨ fnmil: New - Intel Core i7-10700K
+2026-07-19 14:04:44 | INFO     | ss_crawler | [image_downloader] Downloaded image for fnmil (stored as fnmil_782ff753.jpg, 2691 bytes)
+2026-07-19 14:04:44 | INFO     | ss_crawler | [cpu_scraper] Image saved locally: cpus\fnmil_782ff753.jpg
+2026-07-19 14:04:44 | INFO     | ss_crawler | [cpu_scraper] NEW: Processed: new
+2026-07-19 14:04:44 | INFO     | ss_crawler | [crawler] Fetching CPU listing 9/25: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/gklme.html
+2026-07-19 14:04:47 | INFO     | ss_crawler | [repository] ✨ gklme: New - Intel Pentium G4560 @ 3.50GHz
+2026-07-19 14:04:47 | INFO     | ss_crawler | [image_downloader] Downloaded image for gklme (stored as gklme_5028dfa4.jpg, 2378 bytes)
+2026-07-19 14:04:47 | INFO     | ss_crawler | [cpu_scraper] Image saved locally: cpus\gklme_5028dfa4.jpg
+2026-07-19 14:04:47 | INFO     | ss_crawler | [cpu_scraper] NEW: Processed: new
+2026-07-19 14:04:47 | INFO     | ss_crawler | [crawler] Fetching CPU listing 10/25: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/kojep.html
+2026-07-19 14:04:50 | WARNING  | ss_crawler | [listing_versioning] Legacy listing kojep v1 has NULL fingerprint, creating new version
+2026-07-19 14:04:50 | INFO     | ss_crawler | [repository] ✨ kojep_v2: New - Intel Core i3-10100
+2026-07-19 14:04:50 | INFO     | ss_crawler | [cpu_scraper] Image saved locally: cpus\kojep_62175828.jpg
+2026-07-19 14:04:50 | INFO     | ss_crawler | [cpu_scraper] NEW: Processed: new
+2026-07-19 14:04:50 | INFO     | ss_crawler | [crawler] Fetching CPU listing 11/25: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/fekmo.html
+2026-07-19 14:04:52 | WARNING  | ss_crawler | [listing_versioning] Legacy listing fekmo v1 has NULL fingerprint, creating new version
+2026-07-19 14:04:52 | INFO     | ss_crawler | [repository] ✨ fekmo_v2: New - Intel Core i9-14900KF
+2026-07-19 14:04:52 | INFO     | ss_crawler | [image_downloader] Downloaded image for fekmo_v2 (stored as fekmo_61e3c4b9.jpg, 4927 bytes)
+2026-07-19 14:04:52 | INFO     | ss_crawler | [cpu_scraper] Image saved locally: cpus\fekmo_61e3c4b9.jpg
+2026-07-19 14:04:52 | INFO     | ss_crawler | [cpu_scraper] NEW: Processed: new
+2026-07-19 14:04:52 | INFO     | ss_crawler | [crawler] Fetching CPU listing 12/25: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/fjnll.html
+2026-07-19 14:04:55 | INFO     | ss_crawler | [listing_versioning] Legacy listing fjnll v1 matches by computed fingerprint, updating
+2026-07-19 14:04:55 | INFO     | ss_crawler | [repository] ⏸️ fjnll: Unchanged - Intel Core i9-14900KF
+2026-07-19 14:04:55 | INFO     | ss_crawler | [cpu_scraper] Image saved locally: cpus\fjnll_e5c1170d.jpg
+2026-07-19 14:04:55 | INFO     | ss_crawler | [cpu_scraper] UNCHANGED: Processed: unchanged
+2026-07-19 14:04:55 | INFO     | ss_crawler | [crawler] Fetching CPU listing 13/25: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/boopej.html
+2026-07-19 14:04:57 | WARNING  | ss_crawler | [listing_versioning] Legacy listing boopej v1 has NULL fingerprint, creating new version
+2026-07-19 14:04:57 | INFO     | ss_crawler | [repository] ✨ boopej_v2: New - Intel Core i7-7700
+2026-07-19 14:04:57 | INFO     | ss_crawler | [cpu_scraper] Image saved locally: cpus\boopej_bcf1409e.jpg
+2026-07-19 14:04:57 | INFO     | ss_crawler | [cpu_scraper] NEW: Processed: new
+2026-07-19 14:04:57 | INFO     | ss_crawler | [crawler] Fetching CPU listing 14/25: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/ehihd.html
+2026-07-19 14:04:59 | INFO     | ss_crawler | [repository] ✨ ehihd: New - Intel Core i5-8500
+2026-07-19 14:04:59 | INFO     | ss_crawler | [image_downloader] Downloaded image for ehihd (stored as ehihd_63c2b403.jpg, 3595 bytes)
+2026-07-19 14:04:59 | INFO     | ss_crawler | [cpu_scraper] Image saved locally: cpus\ehihd_63c2b403.jpg
+2026-07-19 14:04:59 | INFO     | ss_crawler | [cpu_scraper] NEW: Processed: new
+2026-07-19 14:04:59 | INFO     | ss_crawler | [crawler] Fetching CPU listing 15/25: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/gmphn.html
+2026-07-19 14:05:01 | INFO     | ss_crawler | [repository] ✨ gmphn: New - AMD Ryzen 5 7600X
+2026-07-19 14:05:01 | INFO     | ss_crawler | [image_downloader] Downloaded image for gmphn (stored as gmphn_5ff15eef.jpg, 4393 bytes)
+2026-07-19 14:05:01 | INFO     | ss_crawler | [cpu_scraper] Image saved locally: cpus\gmphn_5ff15eef.jpg
+2026-07-19 14:05:01 | INFO     | ss_crawler | [cpu_scraper] NEW: Processed: new
+2026-07-19 14:05:01 | INFO     | ss_crawler | [crawler] Fetching CPU listing 16/25: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/bopgmd.html
+2026-07-19 14:05:04 | INFO     | ss_crawler | [repository] ✨ bopgmd: New - AMD Ryzen 5 8500G
+2026-07-19 14:05:04 | INFO     | ss_crawler | [image_downloader] Downloaded image for bopgmd (stored as bopgmd_f3dd8350.jpg, 3872 bytes)
+2026-07-19 14:05:04 | INFO     | ss_crawler | [cpu_scraper] Image saved locally: cpus\bopgmd_f3dd8350.jpg
+2026-07-19 14:05:04 | INFO     | ss_crawler | [cpu_scraper] NEW: Processed: new
+2026-07-19 14:05:04 | INFO     | ss_crawler | [crawler] Fetching CPU listing 17/25: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/lbmin.html
+2026-07-19 14:05:05 | INFO     | ss_crawler | [repository] ✨ lbmin: New - AMD Ryzen 5 5600G
+2026-07-19 14:05:05 | INFO     | ss_crawler | [image_downloader] Downloaded image for lbmin (stored as lbmin_b310e434.jpg, 3671 bytes)
+2026-07-19 14:05:05 | INFO     | ss_crawler | [cpu_scraper] Image saved locally: cpus\lbmin_b310e434.jpg
+2026-07-19 14:05:05 | INFO     | ss_crawler | [cpu_scraper] NEW: Processed: new
+2026-07-19 14:05:05 | INFO     | ss_crawler | [crawler] Fetching CPU listing 18/25: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/fdjmx.html
+2026-07-19 14:05:09 | INFO     | ss_crawler | [repository] ✨ fdjmx: New - Intel Core i7-8700K
+2026-07-19 14:05:09 | INFO     | ss_crawler | [image_downloader] Downloaded image for fdjmx (stored as fdjmx_8d5b883d.jpg, 5003 bytes)
+2026-07-19 14:05:09 | INFO     | ss_crawler | [cpu_scraper] Image saved locally: cpus\fdjmx_8d5b883d.jpg
+2026-07-19 14:05:09 | INFO     | ss_crawler | [cpu_scraper] NEW: Processed: new
+2026-07-19 14:05:09 | INFO     | ss_crawler | [crawler] Fetching CPU listing 19/25: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/efbel.html
+2026-07-19 14:05:12 | INFO     | ss_crawler | [listing_versioning] Legacy listing efbel v1 matches by computed fingerprint, updating
+2026-07-19 14:05:12 | INFO     | ss_crawler | [repository] ⏸️ efbel: Unchanged - Intel Core i5-6500
+2026-07-19 14:05:12 | INFO     | ss_crawler | [cpu_scraper] Image saved locally: cpus\efbel_c69f7d9e.jpg
+2026-07-19 14:05:12 | INFO     | ss_crawler | [cpu_scraper] UNCHANGED: Processed: unchanged
+2026-07-19 14:05:12 | INFO     | ss_crawler | [crawler] Fetching CPU listing 20/25: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/dncgp.html
+2026-07-19 14:05:16 | INFO     | ss_crawler | [listing_versioning] Legacy listing dncgp v1 matches by computed fingerprint, updating
+2026-07-19 14:05:16 | INFO     | ss_crawler | [repository] ⏸️ dncgp: Unchanged - Intel Core2 Quad Q8200 @ 2.33GHz
+2026-07-19 14:05:16 | INFO     | ss_crawler | [cpu_scraper] Image saved locally: cpus\dncgp_d0614065.jpg
+2026-07-19 14:05:16 | INFO     | ss_crawler | [cpu_scraper] UNCHANGED: Processed: unchanged
+2026-07-19 14:05:16 | INFO     | ss_crawler | [crawler] Fetching CPU listing 21/25: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/gxicd.html
+2026-07-19 14:05:19 | INFO     | ss_crawler | [repository] ✨ gxicd: New - AMD Ryzen 5 5500X3D
+2026-07-19 14:05:19 | INFO     | ss_crawler | [image_downloader] Downloaded image for gxicd (stored as gxicd_012c0eef.jpg, 3124 bytes)
+2026-07-19 14:05:19 | INFO     | ss_crawler | [cpu_scraper] Image saved locally: cpus\gxicd_012c0eef.jpg
+2026-07-19 14:05:19 | INFO     | ss_crawler | [cpu_scraper] NEW: Processed: new
+2026-07-19 14:05:19 | INFO     | ss_crawler | [crawler] Fetching CPU listing 22/25: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/hifej.html
+2026-07-19 14:05:22 | INFO     | ss_crawler | [listing_versioning] Legacy listing hifej v1 matches by computed fingerprint, updating
+2026-07-19 14:05:22 | INFO     | ss_crawler | [repository] ⏸️ hifej: Unchanged - Intel Core i5-7500
+2026-07-19 14:05:22 | INFO     | ss_crawler | [cpu_scraper] Image saved locally: cpus\hifej_ad388816.jpg
+2026-07-19 14:05:22 | INFO     | ss_crawler | [cpu_scraper] UNCHANGED: Processed: unchanged
+2026-07-19 14:05:22 | INFO     | ss_crawler | [crawler] Fetching CPU listing 23/25: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/lndcc.html
+2026-07-19 14:05:25 | INFO     | ss_crawler | [repository] ✨ lndcc: New - Intel Core i3-8100
+2026-07-19 14:05:25 | INFO     | ss_crawler | [image_downloader] Downloaded image for lndcc (stored as lndcc_5056ccf3.jpg, 4424 bytes)
+2026-07-19 14:05:25 | INFO     | ss_crawler | [cpu_scraper] Image saved locally: cpus\lndcc_5056ccf3.jpg
+2026-07-19 14:05:25 | INFO     | ss_crawler | [cpu_scraper] NEW: Processed: new
+2026-07-19 14:05:25 | INFO     | ss_crawler | [crawler] Fetching CPU listing 24/25: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/lnejh.html
+2026-07-19 14:05:28 | WARNING  | ss_crawler | [listing_versioning] Legacy listing lnejh v1 has NULL fingerprint, creating new version
+2026-07-19 14:05:28 | INFO     | ss_crawler | [repository] ✨ lnejh_v2: New - AMD Ryzen 7 7800X3D
+2026-07-19 14:05:28 | INFO     | ss_crawler | [cpu_scraper] Image saved locally: cpus\lnejh_7044c07e.jpg
+2026-07-19 14:05:28 | INFO     | ss_crawler | [cpu_scraper] NEW: Processed: new
+2026-07-19 14:05:28 | INFO     | ss_crawler | [crawler] Fetching CPU listing 25/25: https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/dceec.html
+2026-07-19 14:05:30 | INFO     | ss_crawler | [repository] ✨ dceec: New - Intel Xeon w5-2465X
+2026-07-19 14:05:30 | INFO     | ss_crawler | [image_downloader] Downloaded image for dceec (stored as dceec_60ebb09f.jpg, 2247 bytes)
+2026-07-19 14:05:30 | INFO     | ss_crawler | [cpu_scraper] Image saved locally: cpus\dceec_60ebb09f.jpg
+2026-07-19 14:05:30 | INFO     | ss_crawler | [cpu_scraper] NEW: Processed: new
+2026-07-19 14:05:30 | INFO     | ss_crawler | [cpu_scraper] Fetching CPU category: https://www.ss.com/lv/electronics/computers/completing-pc/cpu/page3.html
+2026-07-19 14:05:30 | INFO     | ss_crawler | [crawler] Fetching CPU category page: https://www.ss.com/lv/electronics/computers/completing-pc/cpu/page3.html
+2026-07-19 14:05:33 | INFO     | ss_crawler | [cpu_parser] Found 30 listings on page
+2026-07-19 14:05:33 | INFO     | ss_crawler | [cpu_scraper] Found 30 CPU listings to process
+2026-07-19 14:05:33 | INFO     | ss_crawler | [cpu_scraper] Fetching CPU category: https://www.ss.com/lv/electronics/computers/completing-pc/cpu/page4.html
+2026-07-19 14:05:33 | INFO     | ss_crawler | [crawler] Fetching CPU category page: https://www.ss.com/lv/electronics/computers/completing-pc/cpu/page4.html
+2026-07-19 14:05:35 | INFO     | ss_crawler | [cpu_parser] Found 30 listings on page
+2026-07-19 14:05:35 | INFO     | ss_crawler | [cpu_scraper] Found 30 CPU listings to process
+2026-07-19 14:05:35 | INFO     | ss_crawler | [cpu_scraper] Fetching CPU category: https://www.ss.com/lv/electronics/computers/completing-pc/cpu/page5.html
+2026-07-19 14:05:35 | INFO     | ss_crawler | [crawler] Fetching CPU category page: https://www.ss.com/lv/electronics/computers/completing-pc/cpu/page5.html
+2026-07-19 14:05:37 | INFO     | ss_crawler | [cpu_parser] Found 30 listings on page
+2026-07-19 14:05:37 | INFO     | ss_crawler | [cpu_scraper] Found 30 CPU listings to process
+2026-07-19 14:05:37 | INFO     | ss_crawler | [cpu_scraper] Page limit reached (5), stopping
+2026-07-19 14:05:37 | INFO     | ss_crawler | [repository] Marked 1194 listings as stale (not seen since 2026-07-12)
+2026-07-19 14:05:37 | INFO     | ss_crawler | [cpu_scraper] Marked 1194 listings as stale
+2026-07-19 14:05:37 | INFO     | ss_crawler | [cpu_scraper] CPU scraping completed successfully
+2026-07-19 14:53:06 | INFO     | ss_crawler | [database] Database connected: localhost:5433/ss_market
+2026-07-19 14:53:07 | INFO     | ss_crawler | [case_matcher] CaseMatcher initialized with 5742 case references
+2026-07-19 14:53:07 | INFO     | ss_crawler | [psu_matcher] PSUMatcher initialized with 2895 PSU references
+2026-07-19 14:53:07 | INFO     | ss_crawler | [cases_scraper] Loaded 5742 case and 2895 PSU references
+2026-07-19 14:53:07 | INFO     | ss_crawler | [cases_scraper] Scraping cases category: /lv/electronics/computers/completing-pc/cases/
+2026-07-19 14:53:07 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/lv/electronics/computers/completing-pc/cases/
+2026-07-19 14:53:09 | INFO     | ss_crawler | [cases_scraper] Found 60 listings on page 1
+2026-07-19 14:53:09 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/cases/mbndn.html
+2026-07-19 14:53:11 | INFO     | ss_crawler | [cases_scraper] [UPDATE] PSU mbndn: Updated (title)
+2026-07-19 14:53:11 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/cases/mbndn.html
+2026-07-19 14:53:13 | INFO     | ss_crawler | [cases_scraper] [UNCHANGED] PSU mbndn: Unchanged
+2026-07-19 14:53:13 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/cases/clfpc.html
+2026-07-19 14:53:17 | INFO     | ss_crawler | [cases_scraper] [NEW] PSU clfpc: New
+2026-07-19 14:53:17 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/cases/clfpc.html
+2026-07-19 14:53:21 | INFO     | ss_crawler | [cases_scraper] [UNCHANGED] PSU clfpc: Unchanged
+2026-07-19 14:53:21 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/cases/ccomdg.html
+2026-07-19 14:55:37 | INFO     | ss_crawler | [database] Database connected: localhost:5433/ss_market
+2026-07-19 14:55:38 | INFO     | ss_crawler | [case_matcher] CaseMatcher initialized with 5742 case references
+2026-07-19 14:55:38 | INFO     | ss_crawler | [psu_matcher] PSUMatcher initialized with 2895 PSU references
+2026-07-19 14:55:38 | INFO     | ss_crawler | [cases_scraper] Loaded 5742 case and 2895 PSU references
+2026-07-19 14:55:38 | INFO     | ss_crawler | [cases_scraper] Scraping cases category: /lv/electronics/computers/completing-pc/cases/
+2026-07-19 14:55:38 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/lv/electronics/computers/completing-pc/cases/
+2026-07-19 14:55:41 | INFO     | ss_crawler | [cases_scraper] Found 60 listings on page 1
+2026-07-19 14:55:41 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/cases/mbndn.html
+2026-07-19 14:55:44 | INFO     | ss_crawler | [cases_scraper] [UNCHANGED] PSU mbndn: Unchanged
+2026-07-19 14:55:44 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/cases/mbndn.html
+2026-07-19 14:55:47 | INFO     | ss_crawler | [cases_scraper] [UNCHANGED] PSU mbndn: Unchanged
+2026-07-19 14:55:47 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/cases/clfpc.html
+2026-07-19 14:55:49 | INFO     | ss_crawler | [cases_scraper] [UNCHANGED] PSU clfpc: Unchanged
+2026-07-19 14:55:49 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/cases/clfpc.html
+2026-07-19 14:55:52 | INFO     | ss_crawler | [cases_scraper] [UNCHANGED] PSU clfpc: Unchanged
+2026-07-19 14:55:52 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/cases/ccomdg.html
+2026-07-19 14:55:55 | INFO     | ss_crawler | [cases_scraper] [UPDATE] CASE ccomdg: Updated (price €45.00→€40.00, title, description, location)
+2026-07-19 14:55:55 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/cases/ccomdg.html
+2026-07-19 14:55:57 | INFO     | ss_crawler | [cases_scraper] [UNCHANGED] CASE ccomdg: Unchanged
+2026-07-19 14:55:57 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/cases/cdffkk.html
+2026-07-19 14:56:01 | INFO     | ss_crawler | [cases_scraper] [UPDATE] PSU cdffkk: Updated (title)
+2026-07-19 14:56:01 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/cases/cdffkk.html
+2026-07-19 14:56:04 | INFO     | ss_crawler | [cases_scraper] [UNCHANGED] PSU cdffkk: Unchanged
+2026-07-19 14:56:04 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/cases/cfbxgi.html
+2026-07-19 14:56:06 | INFO     | ss_crawler | [cases_scraper] [NEW] PSU cfbxgi -> Antec True Power: New
+2026-07-19 14:56:06 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/cases/cfbxgi.html
+2026-07-19 14:56:08 | INFO     | ss_crawler | [cases_scraper] [UNCHANGED] PSU cfbxgi -> Antec True Power: Unchanged
+2026-07-19 14:56:08 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/cases/cfmbim.html
+2026-07-19 14:56:11 | INFO     | ss_crawler | [cases_scraper] [NEW] PSU cfmbim -> be quiet! System Power 10: New
+2026-07-19 14:56:11 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/cases/cfmbim.html
+2026-07-19 14:56:13 | INFO     | ss_crawler | [cases_scraper] [UNCHANGED] PSU cfmbim -> be quiet! System Power 10: Unchanged
+2026-07-19 14:56:13 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/cases/cxlemp.html
+2026-07-19 14:56:17 | INFO     | ss_crawler | [cases_scraper] [NEW] CASE cxlemp -> HEC 7KJ9: New
+2026-07-19 14:56:17 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/cases/cxlemp.html
+2026-07-19 14:56:19 | INFO     | ss_crawler | [cases_scraper] [UNCHANGED] CASE cxlemp -> HEC 7KJ9: Unchanged
+2026-07-19 14:56:19 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/cases/bknfjj.html
+2026-07-19 14:56:22 | INFO     | ss_crawler | [cases_scraper] [NEW] CASE bknfjj -> OCPC MINI: New
+2026-07-19 14:56:22 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/cases/bknfjj.html
+2026-07-19 14:56:25 | INFO     | ss_crawler | [cases_scraper] [UNCHANGED] CASE bknfjj -> OCPC MINI: Unchanged
+2026-07-19 14:56:25 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/cases/alnox.html
+2026-07-19 14:56:27 | INFO     | ss_crawler | [cases_scraper] [NEW] PSU alnox: New
+2026-07-19 14:56:27 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/cases/alnox.html
+2026-07-19 14:56:29 | INFO     | ss_crawler | [cases_scraper] [UNCHANGED] PSU alnox: Unchanged
+2026-07-19 14:56:29 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/cases/pnieh.html
+2026-07-19 14:56:31 | INFO     | ss_crawler | [cases_scraper] [NEW] PSU pnieh: New
+2026-07-19 14:56:31 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/cases/pnieh.html
+2026-07-19 14:56:34 | INFO     | ss_crawler | [cases_scraper] [UNCHANGED] PSU pnieh: Unchanged
+2026-07-19 14:56:34 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/cases/dhnjh.html
+2026-07-19 16:05:18 | INFO     | ss_crawler | [database] Database connected: localhost:5433/ss_market
+2026-07-19 16:05:18 | INFO     | ss_crawler | [ssd_matcher] SSDMatcher initialized with 2453 SSDs
+2026-07-19 16:05:25 | INFO     | ss_crawler | [database] Database connected: localhost:5433/ss_market
+2026-07-19 16:05:26 | INFO     | ss_crawler | [case_matcher] CaseMatcher initialized with 5742 case references
+2026-07-19 16:05:30 | INFO     | ss_crawler | [database] Database connected: localhost:5433/ss_market
+2026-07-19 16:05:31 | INFO     | ss_crawler | [ssd_matcher] SSDMatcher initialized with 2453 SSDs
+2026-07-19 16:05:33 | INFO     | ss_crawler | [ssd_scraper] Initializing SSD scraper...
+2026-07-19 16:05:33 | INFO     | ss_crawler | [database] Database connected: localhost:5433/ss_market
+2026-07-19 16:05:33 | INFO     | ss_crawler | [ssd_scraper] Database: postgresql+psycopg2://crawler:crawler_pass@localhost:5433/ss_market
+2026-07-19 16:05:33 | INFO     | ss_crawler | [ssd_matcher] SSDMatcher initialized with 2453 SSDs
+2026-07-19 16:05:33 | INFO     | ss_crawler | [ssd_scraper] Loaded 2453 SSD references
+2026-07-19 16:05:33 | INFO     | ss_crawler | [ssd_scraper] Starting SSD scraper from https://www.ss.com/lv/electronics/computers/completing-pc/ssd/
+2026-07-19 16:05:33 | INFO     | ss_crawler | [ssd_scraper] Fetching page 1: https://www.ss.com/lv/electronics/computers/completing-pc/ssd/
+2026-07-19 16:05:33 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/lv/electronics/computers/completing-pc/ssd/
+2026-07-19 16:05:35 | INFO     | ss_crawler | [ssd_scraper] Found 32 listings on page 1, 32 new
+2026-07-19 16:05:35 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ssd/bbbffd.html
+2026-07-19 16:05:37 | INFO     | ss_crawler | [ssd_scraper] Matched bbbffd: ADATA SX6000 (100% confidence)
+2026-07-19 16:05:37 | INFO     | ss_crawler | [ssd_scraper] 🔄 bbbffd: Updated (price €37.00→€29.00, description)
+2026-07-19 16:05:37 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ssd/bbbffd.html
+2026-07-19 16:05:44 | INFO     | ss_crawler | [database] Database connected: localhost:5433/ss_market
+2026-07-19 16:05:44 | INFO     | ss_crawler | [ssd_matcher] SSDMatcher initialized with 2453 SSDs
+2026-07-19 16:05:50 | INFO     | ss_crawler | [database] Database connected: localhost:5433/ss_market
+2026-07-19 16:05:55 | INFO     | ss_crawler | [database] Database connected: localhost:5433/ss_market
+2026-07-19 16:05:56 | INFO     | ss_crawler | [ssd_matcher] SSDMatcher initialized with 2453 SSDs
+2026-07-19 16:06:08 | INFO     | ss_crawler | [database] Database connected: localhost:5433/ss_market
+2026-07-19 16:06:09 | INFO     | ss_crawler | [ssd_matcher] SSDMatcher initialized with 2453 SSDs
+2026-07-19 16:06:09 | ERROR    | ss_crawler | [database] Database transaction failed: 'SSDMatcher' object has no attribute '_normalize_title'
+2026-07-19 16:06:29 | INFO     | ss_crawler | [database] Database connected: localhost:5433/ss_market
+2026-07-19 16:06:29 | INFO     | ss_crawler | [ssd_matcher] SSDMatcher initialized with 2453 SSDs
+2026-07-19 16:06:46 | INFO     | ss_crawler | [database] Database connected: localhost:5433/ss_market
+2026-07-19 16:06:53 | INFO     | ss_crawler | [database] Database connected: localhost:5433/ss_market
+2026-07-19 16:07:06 | INFO     | ss_crawler | [database] Database connected: localhost:5433/ss_market
+2026-07-19 16:07:06 | INFO     | ss_crawler | [ssd_matcher] SSDMatcher initialized with 2453 SSDs
+2026-07-19 16:07:24 | INFO     | ss_crawler | [database] Database connected: localhost:5433/ss_market
+2026-07-19 16:07:25 | INFO     | ss_crawler | [ssd_matcher] SSDMatcher initialized with 2453 SSDs
+2026-07-19 16:07:39 | INFO     | ss_crawler | [database] Database connected: localhost:5433/ss_market
+2026-07-19 16:07:39 | INFO     | ss_crawler | [ssd_matcher] SSDMatcher initialized with 2453 SSDs
+2026-07-19 16:08:09 | INFO     | ss_crawler | [database] Database connected: localhost:5433/ss_market
+2026-07-19 16:08:09 | INFO     | ss_crawler | [ssd_matcher] SSDMatcher initialized with 2453 SSDs
+2026-07-19 16:08:17 | INFO     | ss_crawler | [database] Database connected: localhost:5433/ss_market
+2026-07-19 16:08:50 | INFO     | ss_crawler | [database] Database connected: localhost:5433/ss_market
+2026-07-19 16:08:50 | INFO     | ss_crawler | [ssd_matcher] SSDMatcher initialized with 2453 SSDs
+2026-07-19 16:09:08 | INFO     | ss_crawler | [database] Database connected: localhost:5433/ss_market
+2026-07-19 16:09:08 | INFO     | ss_crawler | [ssd_matcher] SSDMatcher initialized with 2453 SSDs
+2026-07-19 16:09:36 | INFO     | ss_crawler | [database] Database connected: localhost:5433/ss_market
+2026-07-19 16:09:36 | INFO     | ss_crawler | [ssd_matcher] SSDMatcher initialized with 2453 SSDs
+2026-07-19 16:10:15 | INFO     | ss_crawler | [database] Database connected: localhost:5433/ss_market
+2026-07-19 16:10:15 | INFO     | ss_crawler | [ssd_matcher] SSDMatcher initialized with 2453 SSDs
+2026-07-19 16:11:26 | INFO     | ss_crawler | [database] Database connected: localhost:5433/ss_market
+2026-07-19 16:11:26 | INFO     | ss_crawler | [ssd_matcher] SSDMatcher initialized with 2453 SSDs
+2026-07-19 16:11:50 | INFO     | ss_crawler | [database] Database connected: localhost:5433/ss_market
+2026-07-19 16:11:51 | INFO     | ss_crawler | [ssd_matcher] SSDMatcher initialized with 2453 SSDs
+2026-07-19 16:12:38 | INFO     | ss_crawler | [database] Database connected: localhost:5433/ss_market
+2026-07-19 16:12:38 | INFO     | ss_crawler | [ssd_matcher] SSDMatcher initialized with 2453 SSDs
+2026-07-19 16:13:03 | INFO     | ss_crawler | [database] Database connected: localhost:5433/ss_market
+2026-07-19 16:13:04 | INFO     | ss_crawler | [ssd_matcher] SSDMatcher initialized with 2453 SSDs
+2026-07-19 16:13:33 | INFO     | ss_crawler | [database] Database connected: localhost:5433/ss_market
+2026-07-19 16:13:33 | INFO     | ss_crawler | [ssd_matcher] SSDMatcher initialized with 2453 SSDs
+2026-07-19 16:13:41 | INFO     | ss_crawler | [database] Database connected: localhost:5433/ss_market
+2026-07-19 16:13:42 | INFO     | ss_crawler | [ssd_matcher] SSDMatcher initialized with 2453 SSDs
+2026-07-19 16:13:47 | INFO     | ss_crawler | [database] Database connected: localhost:5433/ss_market
+2026-07-19 16:13:53 | INFO     | ss_crawler | [database] Database connected: localhost:5433/ss_market
+2026-07-19 16:13:53 | INFO     | ss_crawler | [ssd_matcher] SSDMatcher initialized with 2453 SSDs
+2026-07-19 16:14:02 | INFO     | ss_crawler | [database] Database connected: localhost:5433/ss_market
+2026-07-19 16:14:11 | INFO     | ss_crawler | [database] Database connected: localhost:5433/ss_market
+2026-07-19 16:14:11 | INFO     | ss_crawler | [ssd_matcher] SSDMatcher initialized with 2453 SSDs
+2026-07-19 16:14:57 | INFO     | ss_crawler | [database] Database connected: localhost:5433/ss_market
+2026-07-19 16:14:57 | INFO     | ss_crawler | [ssd_matcher] SSDMatcher initialized with 2453 SSDs
+2026-07-19 16:15:08 | INFO     | ss_crawler | [database] Database connected: localhost:5433/ss_market
+2026-07-19 16:15:08 | INFO     | ss_crawler | [ssd_matcher] SSDMatcher initialized with 2453 SSDs
+2026-07-19 16:15:30 | INFO     | ss_crawler | [database] Database connected: localhost:5433/ss_market
+2026-07-19 16:15:31 | INFO     | ss_crawler | [ssd_matcher] SSDMatcher initialized with 2453 SSDs
+2026-07-19 16:15:46 | INFO     | ss_crawler | [database] Database connected: localhost:5433/ss_market
+2026-07-19 16:15:46 | INFO     | ss_crawler | [ssd_matcher] SSDMatcher initialized with 2453 SSDs
+2026-07-19 16:15:57 | INFO     | ss_crawler | [database] Database connected: localhost:5433/ss_market
+2026-07-19 16:15:57 | INFO     | ss_crawler | [ssd_matcher] SSDMatcher initialized with 2453 SSDs
+2026-07-19 16:16:07 | INFO     | ss_crawler | [database] Database connected: localhost:5433/ss_market
+2026-07-19 16:16:08 | INFO     | ss_crawler | [ssd_matcher] SSDMatcher initialized with 2453 SSDs
+2026-07-19 16:16:18 | INFO     | ss_crawler | [database] Database connected: localhost:5433/ss_market
+2026-07-19 16:16:18 | INFO     | ss_crawler | [ssd_matcher] SSDMatcher initialized with 2453 SSDs
+2026-07-19 16:16:30 | INFO     | ss_crawler | [database] Database connected: localhost:5433/ss_market
+2026-07-19 16:16:30 | INFO     | ss_crawler | [ssd_matcher] SSDMatcher initialized with 2453 SSDs
+2026-07-19 16:16:42 | INFO     | ss_crawler | [database] Database connected: localhost:5433/ss_market
+2026-07-19 16:16:42 | INFO     | ss_crawler | [ssd_matcher] SSDMatcher initialized with 2453 SSDs
+2026-07-19 16:29:44 | INFO     | ss_crawler | [database] Database connected: localhost:5433/ss_market
+2026-07-19 16:29:44 | INFO     | ss_crawler | [ssd_matcher] SSDMatcher initialized with 2453 SSDs
+2026-07-19 16:30:15 | INFO     | ss_crawler | [database] Database connected: localhost:5433/ss_market
+2026-07-19 16:30:15 | INFO     | ss_crawler | [ssd_matcher] SSDMatcher initialized with 2453 SSDs
+2026-07-19 16:30:22 | INFO     | ss_crawler | [database] Database connected: localhost:5433/ss_market
+2026-07-19 16:30:38 | INFO     | ss_crawler | [database] Database connected: localhost:5433/ss_market
+2026-07-19 16:30:39 | INFO     | ss_crawler | [ssd_matcher] SSDMatcher initialized with 2453 SSDs
+2026-07-19 16:31:12 | INFO     | ss_crawler | [database] Database connected: localhost:5433/ss_market
+2026-07-19 16:31:12 | INFO     | ss_crawler | [ssd_matcher] SSDMatcher initialized with 2453 SSDs
+2026-07-19 18:00:05 | INFO     | ss_crawler | [ssd_scraper] Initializing SSD scraper...
+2026-07-19 18:00:05 | INFO     | ss_crawler | [database] Database connected: localhost:5433/ss_market
+2026-07-19 18:00:05 | INFO     | ss_crawler | [ssd_scraper] Database: postgresql+psycopg2://crawler:crawler_pass@localhost:5433/ss_market
+2026-07-19 18:00:06 | INFO     | ss_crawler | [ssd_matcher] SSDMatcher initialized with 2453 SSDs
+2026-07-19 18:00:06 | INFO     | ss_crawler | [ssd_scraper] Loaded 2453 SSD references
+2026-07-19 18:00:06 | INFO     | ss_crawler | [ssd_scraper] Starting SSD scraper from https://www.ss.com/lv/electronics/computers/completing-pc/ssd/
+2026-07-19 18:00:06 | INFO     | ss_crawler | [ssd_scraper] Fetching page 1: https://www.ss.com/lv/electronics/computers/completing-pc/ssd/
+2026-07-19 18:00:06 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/lv/electronics/computers/completing-pc/ssd/
+2026-07-19 18:00:09 | INFO     | ss_crawler | [ssd_scraper] Found 32 listings on page 1, 32 new
+2026-07-19 18:00:09 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ssd/bbbffd.html
+2026-07-19 18:00:37 | INFO     | ss_crawler | [ssd_scraper] Matched bbbffd: ADATA SX6000 (100% confidence)
+2026-07-19 18:00:37 | INFO     | ss_crawler | [ssd_scraper] 🔄 bbbffd: Updated (content)
+2026-07-19 18:00:37 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ssd/bbbffd.html
+2026-07-19 18:01:05 | INFO     | ss_crawler | [ssd_scraper] Matched bbbffd: ADATA SX6000 (100% confidence)
+2026-07-19 18:01:05 | INFO     | ss_crawler | [ssd_scraper] 🔄 bbbffd: Updated (content)
+2026-07-19 18:01:05 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ssd/bbbffd.html
+2026-07-19 18:01:32 | INFO     | ss_crawler | [ssd_scraper] Matched bbbffd: ADATA SX6000 (100% confidence)
+2026-07-19 18:01:32 | INFO     | ss_crawler | [ssd_scraper] 🔄 bbbffd: Updated (content)
+2026-07-19 18:01:32 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ssd/cgmdfx.html
+2026-07-19 18:01:34 | INFO     | ss_crawler | [ssd_scraper] No match for cgmdfx: Intenso 512Gb Ssd disks piemērots klēpjdatoriem un
+2026-07-19 18:01:34 | INFO     | ss_crawler | [ssd_scraper] ⏸️ cgmdfx: Unchanged
+2026-07-19 18:01:34 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ssd/bheklo.html
+2026-07-19 18:01:40 | INFO     | ss_crawler | [ssd_scraper] Matched bheklo: Samsung 990 Pro (100% confidence)
+2026-07-19 18:01:40 | INFO     | ss_crawler | [ssd_scraper] ✅ bheklo: New
+2026-07-19 18:01:40 | INFO     | ss_crawler | [image_downloader] Downloaded image for bheklo (stored as bheklo_861858ea.jpg, 180811 bytes)
+2026-07-19 18:01:40 | INFO     | ss_crawler | [ssd_scraper] Image saved locally: ssds\bheklo_861858ea.jpg
+2026-07-19 18:01:40 | INFO     | ss_crawler | [ssd_scraper] Updated local_image_path in DB: True
+2026-07-19 18:01:40 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ssd/mecfm.html
+2026-07-19 18:01:48 | INFO     | ss_crawler | [ssd_scraper] Matched mecfm: Crucial BX500 (100% confidence)
+2026-07-19 18:01:48 | INFO     | ss_crawler | [ssd_scraper] ✅ mecfm: New
+2026-07-19 18:01:48 | INFO     | ss_crawler | [image_downloader] Downloaded image for mecfm (stored as mecfm_7233560b.jpg, 51567 bytes)
+2026-07-19 18:01:48 | INFO     | ss_crawler | [ssd_scraper] Image saved locally: ssds\mecfm_7233560b.jpg
+2026-07-19 18:01:48 | INFO     | ss_crawler | [ssd_scraper] Updated local_image_path in DB: True
+2026-07-19 18:01:48 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ssd/bojpof.html
+2026-07-19 18:01:54 | INFO     | ss_crawler | [ssd_scraper] Matched bojpof: Kingston A400 (100% confidence)
+2026-07-19 18:01:54 | INFO     | ss_crawler | [ssd_scraper] 🔄 bojpof: Updated (title, description)
+2026-07-19 18:01:54 | INFO     | ss_crawler | [ssd_scraper] Image saved locally: ssds\bojpof_55bb81a4.jpg
+2026-07-19 18:01:54 | INFO     | ss_crawler | [ssd_scraper] Updated local_image_path in DB: True
+2026-07-19 18:01:54 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ssd/bfhgkd.html
+2026-07-19 18:02:01 | INFO     | ss_crawler | [ssd_scraper] Matched bfhgkd: Kingston A400 (100% confidence)
+2026-07-19 18:02:01 | INFO     | ss_crawler | [ssd_scraper] 🔄 bfhgkd: Updated (price €45.00→€55.00, description, location, match)
+2026-07-19 18:02:01 | INFO     | ss_crawler | [image_downloader] Downloaded image for bfhgkd (stored as bfhgkd_5be53cd3.jpg, 98829 bytes)
+2026-07-19 18:02:01 | INFO     | ss_crawler | [ssd_scraper] Image saved locally: ssds\bfhgkd_5be53cd3.jpg
+2026-07-19 18:02:01 | INFO     | ss_crawler | [ssd_scraper] Updated local_image_path in DB: True
+2026-07-19 18:02:01 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ssd/bdocnc.html
+2026-07-19 18:02:07 | INFO     | ss_crawler | [ssd_scraper] No match for bdocnc: Ssd 60Gb В наличии 100шт
+2026-07-19 18:02:07 | INFO     | ss_crawler | [ssd_scraper] 🔄 bdocnc: Updated (description, location, match)
+2026-07-19 18:02:07 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ssd/cgmlxk.html
+2026-07-19 18:02:10 | INFO     | ss_crawler | [ssd_scraper] No match for cgmlxk: 16gab 120gb ssd, cena par visiem. Smart: good, not
+2026-07-19 18:02:10 | INFO     | ss_crawler | [ssd_scraper] ✅ cgmlxk: New
+2026-07-19 18:02:10 | INFO     | ss_crawler | [image_downloader] Downloaded image for cgmlxk (stored as cgmlxk_0ead3549.jpg, 102257 bytes)
+2026-07-19 18:02:10 | INFO     | ss_crawler | [ssd_scraper] Image saved locally: ssds\cgmlxk_0ead3549.jpg
+2026-07-19 18:02:10 | INFO     | ss_crawler | [ssd_scraper] Updated local_image_path in DB: True
+2026-07-19 18:02:10 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ssd/cgmhei.html
+2026-07-19 18:02:14 | INFO     | ss_crawler | [ssd_scraper] No match for cgmhei: 4tb ssd, ar augstu izturību. Atrodas centrā, lieto
+2026-07-19 18:02:14 | INFO     | ss_crawler | [ssd_scraper] ✅ cgmhei: New
+2026-07-19 18:02:14 | INFO     | ss_crawler | [image_downloader] Downloaded image for cgmhei (stored as cgmhei_50177a2e.jpg, 106626 bytes)
+2026-07-19 18:02:14 | INFO     | ss_crawler | [ssd_scraper] Image saved locally: ssds\cgmhei_50177a2e.jpg
+2026-07-19 18:02:14 | INFO     | ss_crawler | [ssd_scraper] Updated local_image_path in DB: True
+2026-07-19 18:02:14 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ssd/jlhcm.html
+2026-07-19 18:02:17 | INFO     | ss_crawler | [ssd_scraper] No match for jlhcm: Intel 4tb pcie 3.1x4 ssd. Augstas izturības ssd di
+2026-07-19 18:02:17 | INFO     | ss_crawler | [ssd_scraper] 🔄 jlhcm: Updated (price €299.00→€249.00, description)
+2026-07-19 18:02:17 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ssd/bedcbg.html
+2026-07-19 18:02:21 | INFO     | ss_crawler | [ssd_scraper] Matched bedcbg: Intel 545s (100% confidence)
+2026-07-19 18:02:21 | INFO     | ss_crawler | [ssd_scraper] 🔄 bedcbg: Updated (title, description, match)
+2026-07-19 18:02:21 | INFO     | ss_crawler | [image_downloader] Downloaded image for bedcbg (stored as bedcbg_bc9ae123.jpg, 25651 bytes)
+2026-07-19 18:02:21 | INFO     | ss_crawler | [ssd_scraper] Image saved locally: ssds\bedcbg_bc9ae123.jpg
+2026-07-19 18:02:21 | INFO     | ss_crawler | [ssd_scraper] Updated local_image_path in DB: True
+2026-07-19 18:02:21 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ssd/cdpxic.html
+2026-07-19 18:02:24 | WARNING  | ss_crawler | [ssd_scraper] Skipping cdpxic: contains forbidden snippet
+2026-07-19 18:02:24 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ssd/cebeif.html
+2026-07-19 18:02:27 | WARNING  | ss_crawler | [ssd_scraper] Skipping cebeif: contains forbidden snippet
+2026-07-19 18:02:27 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ssd/cgmkfo.html
+2026-07-19 18:02:31 | WARNING  | ss_crawler | [ssd_scraper] Skipping cgmkfo: contains forbidden snippet
+2026-07-19 18:02:31 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ssd/bolgop.html
+2026-07-19 18:02:33 | INFO     | ss_crawler | [ssd_scraper] No match for bolgop: Pārdodu lieliskus Ssd diskus.
+2026-07-19 18:02:33 | INFO     | ss_crawler | [ssd_scraper] ✅ bolgop: New
+2026-07-19 18:02:33 | INFO     | ss_crawler | [image_downloader] Downloaded image for bolgop (stored as bolgop_dcc34a6c.jpg, 83394 bytes)
+2026-07-19 18:02:33 | INFO     | ss_crawler | [ssd_scraper] Image saved locally: ssds\bolgop_dcc34a6c.jpg
+2026-07-19 18:02:33 | INFO     | ss_crawler | [ssd_scraper] Updated local_image_path in DB: True
+2026-07-19 18:02:33 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ssd/bdniph.html
+2026-07-19 18:02:39 | INFO     | ss_crawler | [ssd_scraper] Matched bdniph: Samsung 870 QVO (100% confidence)
+2026-07-19 18:02:39 | INFO     | ss_crawler | [ssd_scraper] 🔄 bdniph: Updated (price €490.00→€480.00, description)
+2026-07-19 18:02:39 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ssd/cglick.html
+2026-07-19 18:02:42 | WARNING  | ss_crawler | [ssd_scraper] Skipping cglick: contains forbidden snippet
+2026-07-19 18:02:42 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ssd/boncfe.html
+2026-07-19 18:02:49 | INFO     | ss_crawler | [ssd_scraper] Matched boncfe: Kingston A400 (100% confidence)
+2026-07-19 18:02:49 | INFO     | ss_crawler | [ssd_scraper] 🔄 boncfe: Updated (title, description, location, match)
+2026-07-19 18:02:49 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ssd/bfhxex.html
+2026-07-19 18:02:53 | INFO     | ss_crawler | [ssd_scraper] No match for bfhxex: Jauni nvme 256Gb Ssd diski komplektā ar pagarinātā
+2026-07-19 18:02:53 | INFO     | ss_crawler | [ssd_scraper] 🔄 bfhxex: Updated (description, location)
+2026-07-19 18:02:53 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ssd/cdlbkj.html
+2026-07-19 18:03:03 | INFO     | ss_crawler | [ssd_scraper] Matched cdlbkj: WD My Passport SSD (NVMe) (100% confidence)
+2026-07-19 18:03:03 | INFO     | ss_crawler | [ssd_scraper] 🔄 cdlbkj: Updated (price €380.00→€440.00, title, description, location, match)
+2026-07-19 18:03:03 | INFO     | ss_crawler | [image_downloader] Downloaded image for cdlbkj (stored as cdlbkj_0cd8cb59.jpg, 73742 bytes)
+2026-07-19 18:03:03 | INFO     | ss_crawler | [ssd_scraper] Image saved locally: ssds\cdlbkj_0cd8cb59.jpg
+2026-07-19 18:03:03 | INFO     | ss_crawler | [ssd_scraper] Updated local_image_path in DB: True
+2026-07-19 18:03:03 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ssd/mdchk.html
+2026-07-19 18:03:04 | WARNING  | ss_crawler | [ssd_scraper] Skipping mdchk: contains forbidden snippet
+2026-07-19 18:03:04 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ssd/cdxmpx.html
+2026-07-19 18:03:11 | INFO     | ss_crawler | [ssd_scraper] Matched cdxmpx: Samsung 9100 Pro (100% confidence)
+2026-07-19 18:03:12 | INFO     | ss_crawler | [ssd_scraper] 🔄 cdxmpx: Updated (description, location)
+2026-07-19 18:03:12 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ssd/mhngk.html
+2026-07-19 18:03:17 | INFO     | ss_crawler | [ssd_scraper] Matched mhngk: Samsung 860 EVO (100% confidence)
+2026-07-19 18:03:17 | INFO     | ss_crawler | [ssd_scraper] 🔄 mhngk: Updated (description, location, match)
+2026-07-19 18:03:17 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ssd/cgmhme.html
+2026-07-19 18:03:24 | INFO     | ss_crawler | [ssd_scraper] Matched cgmhme: WD SN8100 (100% confidence)
+2026-07-19 18:03:24 | INFO     | ss_crawler | [ssd_scraper] ✅ cgmhme: New
+2026-07-19 18:03:25 | INFO     | ss_crawler | [image_downloader] Downloaded image for cgmhme (stored as cgmhme_bf7a0d86.jpg, 67916 bytes)
+2026-07-19 18:03:25 | INFO     | ss_crawler | [ssd_scraper] Image saved locally: ssds\cgmhme_bf7a0d86.jpg
+2026-07-19 18:03:25 | INFO     | ss_crawler | [ssd_scraper] Updated local_image_path in DB: True
+2026-07-19 18:03:25 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ssd/cglopk.html
+2026-07-19 18:03:32 | INFO     | ss_crawler | [ssd_scraper] Matched cglopk: WD Green (100% confidence)
+2026-07-19 18:03:32 | INFO     | ss_crawler | [ssd_scraper] 🔄 cglopk: Updated (price €90.00→€80.00, title, description)
+2026-07-19 18:03:32 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ssd/cgmhie.html
+2026-07-19 18:03:38 | INFO     | ss_crawler | [ssd_scraper] Matched cgmhie: Crucial BX500 (100% confidence)
+2026-07-19 18:03:38 | INFO     | ss_crawler | [ssd_scraper] ✅ cgmhie: New
+2026-07-19 18:03:39 | INFO     | ss_crawler | [image_downloader] Downloaded image for cgmhie (stored as cgmhie_625cc002.jpg, 62029 bytes)
+2026-07-19 18:03:39 | INFO     | ss_crawler | [ssd_scraper] Image saved locally: ssds\cgmhie_625cc002.jpg
+2026-07-19 18:03:39 | INFO     | ss_crawler | [ssd_scraper] Updated local_image_path in DB: True
+2026-07-19 18:03:39 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ssd/cgmhen.html
+2026-07-19 18:03:44 | INFO     | ss_crawler | [ssd_scraper] Matched cgmhen: Samsung 870 EVO (100% confidence)
+2026-07-19 18:03:44 | INFO     | ss_crawler | [ssd_scraper] ✅ cgmhen: New
+2026-07-19 18:03:44 | INFO     | ss_crawler | [image_downloader] Downloaded image for cgmhen (stored as cgmhen_dd41605a.jpg, 39804 bytes)
+2026-07-19 18:03:44 | INFO     | ss_crawler | [ssd_scraper] Image saved locally: ssds\cgmhen_dd41605a.jpg
+2026-07-19 18:03:44 | INFO     | ss_crawler | [ssd_scraper] Updated local_image_path in DB: True
+2026-07-19 18:03:44 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ssd/cgmhel.html
+2026-07-19 18:03:51 | INFO     | ss_crawler | [ssd_scraper] Matched cgmhel: Lexar NM790 (100% confidence)
+2026-07-19 18:03:51 | INFO     | ss_crawler | [ssd_scraper] ✅ cgmhel: New
+2026-07-19 18:03:51 | INFO     | ss_crawler | [image_downloader] Downloaded image for cgmhel (stored as cgmhel_a7d94211.jpg, 83121 bytes)
+2026-07-19 18:03:51 | INFO     | ss_crawler | [ssd_scraper] Image saved locally: ssds\cgmhel_a7d94211.jpg
+2026-07-19 18:03:51 | INFO     | ss_crawler | [ssd_scraper] Updated local_image_path in DB: True
+2026-07-19 18:03:51 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ssd/cgmhek.html
+2026-07-19 18:03:58 | INFO     | ss_crawler | [ssd_scraper] Matched cgmhek: Samsung T5 EVO (100% confidence)
+2026-07-19 18:03:58 | INFO     | ss_crawler | [ssd_scraper] ✅ cgmhek: New
+2026-07-19 18:03:58 | INFO     | ss_crawler | [image_downloader] Downloaded image for cgmhek (stored as cgmhek_caabdf5d.jpg, 79277 bytes)
+2026-07-19 18:03:58 | INFO     | ss_crawler | [ssd_scraper] Image saved locally: ssds\cgmhek_caabdf5d.jpg
+2026-07-19 18:03:58 | INFO     | ss_crawler | [ssd_scraper] Updated local_image_path in DB: True
+2026-07-19 18:03:58 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ssd/cgmheh.html
+2026-07-19 18:04:05 | INFO     | ss_crawler | [ssd_scraper] Matched cgmheh: WD Green (100% confidence)
+2026-07-19 18:04:05 | INFO     | ss_crawler | [ssd_scraper] ✅ cgmheh: New
+2026-07-19 18:04:05 | INFO     | ss_crawler | [image_downloader] Downloaded image for cgmheh (stored as cgmheh_9d9f7905.jpg, 74845 bytes)
+2026-07-19 18:04:05 | INFO     | ss_crawler | [ssd_scraper] Image saved locally: ssds\cgmheh_9d9f7905.jpg
+2026-07-19 18:04:05 | INFO     | ss_crawler | [ssd_scraper] Updated local_image_path in DB: True
+2026-07-19 18:04:05 | INFO     | ss_crawler | [ssd_scraper] Next page URL: https://www.ss.com/lv/electronics/computers/completing-pc/ssd/page2.html
+2026-07-19 18:04:05 | INFO     | ss_crawler | [ssd_scraper] Fetching page 2: https://www.ss.com/lv/electronics/computers/completing-pc/ssd/page2.html
+2026-07-19 18:04:05 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/lv/electronics/computers/completing-pc/ssd/page2.html
+2026-07-19 18:04:08 | INFO     | ss_crawler | [ssd_scraper] Found 23 listings on page 2, 23 new
+2026-07-19 18:04:08 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ssd/cgmgjm.html
+2026-07-19 18:04:18 | INFO     | ss_crawler | [ssd_scraper] Matched cgmgjm: ADATA Legend 960/Max (100% confidence)
+2026-07-19 18:04:18 | INFO     | ss_crawler | [ssd_scraper] ✅ cgmgjm: New
+2026-07-19 18:04:18 | INFO     | ss_crawler | [image_downloader] Downloaded image for cgmgjm (stored as cgmgjm_d4792f92.jpg, 76411 bytes)
+2026-07-19 18:04:18 | INFO     | ss_crawler | [ssd_scraper] Image saved locally: ssds\cgmgjm_d4792f92.jpg
+2026-07-19 18:04:18 | INFO     | ss_crawler | [ssd_scraper] Updated local_image_path in DB: True
+2026-07-19 18:04:18 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ssd/cgmgjm.html
+2026-07-19 18:04:29 | INFO     | ss_crawler | [ssd_scraper] Matched cgmgjm: ADATA Legend 960/Max (100% confidence)
+2026-07-19 18:04:29 | INFO     | ss_crawler | [ssd_scraper] ⏸️ cgmgjm: Unchanged
+2026-07-19 18:04:29 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ssd/cgmgjm.html
+2026-07-19 18:04:40 | INFO     | ss_crawler | [ssd_scraper] Matched cgmgjm: ADATA Legend 960/Max (100% confidence)
+2026-07-19 18:04:40 | INFO     | ss_crawler | [ssd_scraper] ⏸️ cgmgjm: Unchanged
+2026-07-19 18:04:40 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ssd/cgmgjb.html
+2026-07-19 18:04:46 | INFO     | ss_crawler | [ssd_scraper] Matched cgmgjb: Seagate FireCuda 530 (100% confidence)
+2026-07-19 18:04:46 | INFO     | ss_crawler | [ssd_scraper] ⏸️ cgmgjb: Unchanged
+2026-07-19 18:04:46 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ssd/ccpjxj.html
+2026-07-19 18:04:47 | WARNING  | ss_crawler | [ssd_scraper] Skipping ccpjxj: contains forbidden snippet
+2026-07-19 18:04:47 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ssd/bpnicm.html
+2026-07-19 18:04:50 | WARNING  | ss_crawler | [ssd_scraper] Skipping bpnicm: contains forbidden snippet
+2026-07-19 18:04:50 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ssd/bfgbdn.html
+2026-07-19 18:04:55 | INFO     | ss_crawler | [ssd_scraper] Matched bfgbdn: Transcend SSD230S (100% confidence)
+2026-07-19 18:04:55 | INFO     | ss_crawler | [ssd_scraper] ⏸️ bfgbdn: Unchanged
+2026-07-19 18:04:55 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ssd/ccilhn.html
+2026-07-19 18:05:03 | INFO     | ss_crawler | [ssd_scraper] Matched ccilhn: Kingston A400 (100% confidence)
+2026-07-19 18:05:03 | INFO     | ss_crawler | [ssd_scraper] 🔄 ccilhn: Updated (content)
+2026-07-19 18:05:03 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ssd/cckeii.html
+2026-07-19 18:05:09 | INFO     | ss_crawler | [ssd_scraper] Matched cckeii: Samsung T9 (100% confidence)
+2026-07-19 18:05:09 | INFO     | ss_crawler | [ssd_scraper] 🔄 cckeii: Updated (content)
+2026-07-19 18:05:09 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ssd/mecfg.html
+2026-07-19 18:05:16 | INFO     | ss_crawler | [ssd_scraper] Matched mecfg: Samsung T9 (100% confidence)
+2026-07-19 18:05:16 | INFO     | ss_crawler | [ssd_scraper] 🔄 mecfg: Updated (content)
+2026-07-19 18:05:16 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ssd/blcfpb.html
+2026-07-19 18:05:21 | INFO     | ss_crawler | [ssd_scraper] Matched blcfpb: SanDisk Extreme PRO Port. V2 (100% confidence)
+2026-07-19 18:05:21 | INFO     | ss_crawler | [ssd_scraper] 🔄 blcfpb: Updated (content)
+2026-07-19 18:05:21 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ssd/cdconp.html
+2026-07-19 18:05:24 | INFO     | ss_crawler | [ssd_scraper] No match for cdconp: Pārdodu m. 2 Nvme Ssd uz 1Tb Xpg. Disks ir ideālā 
+2026-07-19 18:05:24 | INFO     | ss_crawler | [ssd_scraper] ⏸️ cdconp: Unchanged
+2026-07-19 18:05:24 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ssd/bhenxg.html
+2026-07-19 18:05:32 | INFO     | ss_crawler | [ssd_scraper] Matched bhenxg: WD Green (100% confidence)
+2026-07-19 18:05:32 | INFO     | ss_crawler | [ssd_scraper] ⏸️ bhenxg: Unchanged
+2026-07-19 18:05:32 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ssd/bdemlo.html
+2026-07-19 18:05:35 | INFO     | ss_crawler | [ssd_scraper] No match for bdemlo: Продам малопользованый жёсткий диск. На 2Тb.
+2026-07-19 18:05:35 | INFO     | ss_crawler | [ssd_scraper] ⏸️ bdemlo: Unchanged
+2026-07-19 18:05:35 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ssd/bopkkl.html
+2026-07-19 18:05:38 | INFO     | ss_crawler | [ssd_scraper] Matched bopkkl: Intel 545s (100% confidence)
+2026-07-19 18:05:38 | INFO     | ss_crawler | [ssd_scraper] ⏸️ bopkkl: Unchanged
+2026-07-19 18:05:38 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ssd/bebobc.html
+2026-07-19 18:05:40 | INFO     | ss_crawler | [ssd_scraper] No match for bebobc: Продаём Ssd Intel 180Gb , в рабочем состоянии. Tes
+2026-07-19 18:05:40 | INFO     | ss_crawler | [ssd_scraper] 🔄 bebobc: Updated (content)
+2026-07-19 18:05:40 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ssd/bommeg.html
+2026-07-19 18:05:46 | INFO     | ss_crawler | [ssd_scraper] No match for bommeg: Pārdodu teicamā stāvoklī Kingston Dc450R, 2.5", 3.
+2026-07-19 18:05:46 | INFO     | ss_crawler | [ssd_scraper] 🔄 bommeg: Updated (match)
+2026-07-19 18:05:46 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ssd/cgjgfg.html
+2026-07-19 18:05:49 | INFO     | ss_crawler | [ssd_scraper] No match for cgjgfg: Nopirku 25.gada decembrī, jauns ar ksenukai garant
+2026-07-19 18:05:49 | INFO     | ss_crawler | [ssd_scraper] 🔄 cgjgfg: Updated (description, location)
+2026-07-19 18:05:49 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ssd/cgljid.html
+2026-07-19 18:05:52 | INFO     | ss_crawler | [ssd_scraper] No match for cgljid: Jauni nvme 256Gb Ssd diski komplektā ar pagarinātā
+2026-07-19 18:05:52 | INFO     | ss_crawler | [ssd_scraper] 🔄 cgljid: Updated (description, location)
+2026-07-19 18:05:52 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ssd/bompdg.html
+2026-07-19 18:05:59 | INFO     | ss_crawler | [ssd_scraper] Matched bompdg: Kingston A400 (100% confidence)
+2026-07-19 18:05:59 | INFO     | ss_crawler | [ssd_scraper] 🔄 bompdg: Updated (description, location, match)
+2026-07-19 18:05:59 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ssd/bdkkjl.html
+2026-07-19 18:06:02 | WARNING  | ss_crawler | [ssd_scraper] Skipping bdkkjl: contains forbidden snippet
+2026-07-19 18:06:02 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ssd/lnido.html
+2026-07-19 18:06:10 | INFO     | ss_crawler | [ssd_scraper] Matched lnido: Crucial MX500 (100% confidence)
+2026-07-19 18:06:10 | INFO     | ss_crawler | [ssd_scraper] 🔄 lnido: Updated (description, location, match)
+2026-07-19 18:06:10 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ssd/cgmebj.html
+2026-07-19 18:06:13 | INFO     | ss_crawler | [ssd_scraper] No match for cgmebj: Keg60Zns512G kioxia eg6 512gb nvme pcie gen4x4 m. 
+2026-07-19 18:06:13 | INFO     | ss_crawler | [ssd_scraper] 🔄 cgmebj: Updated (description, location)
+2026-07-19 18:06:13 | INFO     | ss_crawler | [ssd_scraper] Next page URL: https://www.ss.com/ru/electronics/computers/completing-pc/ssd/page2.html
+2026-07-19 18:06:13 | INFO     | ss_crawler | [ssd_scraper] Fetching page 3: https://www.ss.com/ru/electronics/computers/completing-pc/ssd/page2.html
+2026-07-19 18:06:13 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/ru/electronics/computers/completing-pc/ssd/page2.html
+2026-07-19 18:06:16 | INFO     | ss_crawler | [ssd_scraper] Found 23 listings on page 3, 23 new
+2026-07-19 18:06:16 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/ru/electronics/computers/completing-pc/ssd/cgmgjm.html
+2026-07-19 18:06:26 | INFO     | ss_crawler | [ssd_scraper] Matched cgmgjm: ADATA Legend 960/Max (100% confidence)
+2026-07-19 18:06:26 | INFO     | ss_crawler | [ssd_scraper] 🔄 cgmgjm: Updated (description, location)
+2026-07-19 18:06:26 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/ru/electronics/computers/completing-pc/ssd/cgmgjm.html
+2026-07-19 18:06:37 | INFO     | ss_crawler | [ssd_scraper] Matched cgmgjm: ADATA Legend 960/Max (100% confidence)
+2026-07-19 18:06:37 | INFO     | ss_crawler | [ssd_scraper] 🔄 cgmgjm: Updated (content)
+2026-07-19 18:06:37 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/ru/electronics/computers/completing-pc/ssd/cgmgjm.html
+2026-07-19 18:06:48 | INFO     | ss_crawler | [ssd_scraper] Matched cgmgjm: ADATA Legend 960/Max (100% confidence)
+2026-07-19 18:06:48 | INFO     | ss_crawler | [ssd_scraper] 🔄 cgmgjm: Updated (content)
+2026-07-19 18:06:48 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/ru/electronics/computers/completing-pc/ssd/cgmgjb.html
+2026-07-19 18:06:53 | INFO     | ss_crawler | [ssd_scraper] Matched cgmgjb: Seagate FireCuda 530 (100% confidence)
+2026-07-19 18:06:53 | INFO     | ss_crawler | [ssd_scraper] ⏸️ cgmgjb: Unchanged
+2026-07-19 18:06:53 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/ru/electronics/computers/completing-pc/ssd/ccpjxj.html
+2026-07-19 18:06:56 | WARNING  | ss_crawler | [ssd_scraper] Skipping ccpjxj: contains forbidden snippet
+2026-07-19 18:06:56 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/ru/electronics/computers/completing-pc/ssd/bpnicm.html
+2026-07-19 18:06:58 | WARNING  | ss_crawler | [ssd_scraper] Skipping bpnicm: contains forbidden snippet
+2026-07-19 18:06:58 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/ru/electronics/computers/completing-pc/ssd/bfgbdn.html
+2026-07-19 18:07:04 | INFO     | ss_crawler | [ssd_scraper] Matched bfgbdn: Transcend SSD230S (100% confidence)
+2026-07-19 18:07:04 | INFO     | ss_crawler | [ssd_scraper] 🔄 bfgbdn: Updated (description, location)
+2026-07-19 18:07:04 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/ru/electronics/computers/completing-pc/ssd/ccilhn.html
+2026-07-19 18:07:10 | INFO     | ss_crawler | [ssd_scraper] Matched ccilhn: Kingston A400 (100% confidence)
+2026-07-19 18:07:10 | INFO     | ss_crawler | [ssd_scraper] 🔄 ccilhn: Updated (description, location)
+2026-07-19 18:07:10 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/ru/electronics/computers/completing-pc/ssd/cckeii.html
+2026-07-19 18:07:16 | INFO     | ss_crawler | [ssd_scraper] Matched cckeii: Samsung T9 (100% confidence)
+2026-07-19 18:07:16 | INFO     | ss_crawler | [ssd_scraper] 🔄 cckeii: Updated (description, location)
+2026-07-19 18:07:16 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/ru/electronics/computers/completing-pc/ssd/mecfg.html
+2026-07-19 18:07:23 | INFO     | ss_crawler | [ssd_scraper] Matched mecfg: Samsung T9 (100% confidence)
+2026-07-19 18:07:23 | INFO     | ss_crawler | [ssd_scraper] 🔄 mecfg: Updated (description, location)
+2026-07-19 18:07:23 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/ru/electronics/computers/completing-pc/ssd/blcfpb.html
+2026-07-19 18:07:28 | INFO     | ss_crawler | [ssd_scraper] Matched blcfpb: SanDisk Extreme PRO Port. V2 (100% confidence)
+2026-07-19 18:07:28 | INFO     | ss_crawler | [ssd_scraper] 🔄 blcfpb: Updated (description, location)
+2026-07-19 18:07:28 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/ru/electronics/computers/completing-pc/ssd/cdconp.html
+2026-07-19 18:07:31 | INFO     | ss_crawler | [ssd_scraper] No match for cdconp: Pārdodu m. 2 Nvme Ssd uz 1Tb Xpg. Disks ir ideālā 
+2026-07-19 18:07:31 | INFO     | ss_crawler | [ssd_scraper] ⏸️ cdconp: Unchanged
+2026-07-19 18:07:31 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/ru/electronics/computers/completing-pc/ssd/bhenxg.html
+2026-07-19 18:07:39 | INFO     | ss_crawler | [ssd_scraper] Matched bhenxg: WD Green (100% confidence)
+2026-07-19 18:07:39 | INFO     | ss_crawler | [ssd_scraper] ⏸️ bhenxg: Unchanged
+2026-07-19 18:07:39 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/ru/electronics/computers/completing-pc/ssd/bdemlo.html
+2026-07-19 18:07:42 | INFO     | ss_crawler | [ssd_scraper] No match for bdemlo: Продам малопользованый жёсткий диск. На 2Тb.
+2026-07-19 18:07:42 | INFO     | ss_crawler | [ssd_scraper] ⏸️ bdemlo: Unchanged
+2026-07-19 18:07:42 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/ru/electronics/computers/completing-pc/ssd/bopkkl.html
+2026-07-19 18:07:45 | INFO     | ss_crawler | [ssd_scraper] Matched bopkkl: Intel 545s (100% confidence)
+2026-07-19 18:07:45 | INFO     | ss_crawler | [ssd_scraper] 🔄 bopkkl: Updated (description, location)
+2026-07-19 18:07:45 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/ru/electronics/computers/completing-pc/ssd/bebobc.html
+2026-07-19 18:07:48 | INFO     | ss_crawler | [ssd_scraper] No match for bebobc: Продаём Ssd Intel 180Gb , в рабочем состоянии. Tes
+2026-07-19 18:07:48 | INFO     | ss_crawler | [ssd_scraper] 🔄 bebobc: Updated (description, location)
+2026-07-19 18:07:48 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/ru/electronics/computers/completing-pc/ssd/bommeg.html
+2026-07-19 18:07:56 | INFO     | ss_crawler | [ssd_scraper] No match for bommeg: Pārdodu teicamā stāvoklī Kingston Dc450R, 2.5", 3.
+2026-07-19 18:07:56 | INFO     | ss_crawler | [ssd_scraper] 🔄 bommeg: Updated (description, location)
+2026-07-19 18:07:56 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/ru/electronics/computers/completing-pc/ssd/cgjgfg.html
+2026-07-19 18:07:58 | INFO     | ss_crawler | [ssd_scraper] No match for cgjgfg: Nopirku 25.gada decembrī, jauns ar ksenukai garant
+2026-07-19 18:07:58 | INFO     | ss_crawler | [ssd_scraper] 🔄 cgjgfg: Updated (description, location)
+2026-07-19 18:07:58 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/ru/electronics/computers/completing-pc/ssd/cgljid.html
+2026-07-19 18:08:00 | INFO     | ss_crawler | [ssd_scraper] No match for cgljid: Jauni nvme 256Gb Ssd diski komplektā ar pagarinātā
+2026-07-19 18:08:00 | INFO     | ss_crawler | [ssd_scraper] 🔄 cgljid: Updated (description, location)
+2026-07-19 18:08:00 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/ru/electronics/computers/completing-pc/ssd/bompdg.html
+2026-07-19 18:08:08 | INFO     | ss_crawler | [ssd_scraper] Matched bompdg: Kingston A400 (100% confidence)
+2026-07-19 18:08:08 | INFO     | ss_crawler | [ssd_scraper] 🔄 bompdg: Updated (description, location)
+2026-07-19 18:08:08 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/ru/electronics/computers/completing-pc/ssd/bdkkjl.html
+2026-07-19 18:08:11 | WARNING  | ss_crawler | [ssd_scraper] Skipping bdkkjl: contains forbidden snippet
+2026-07-19 18:08:11 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/ru/electronics/computers/completing-pc/ssd/lnido.html
+2026-07-19 18:08:17 | INFO     | ss_crawler | [ssd_scraper] Matched lnido: Crucial MX500 (100% confidence)
+2026-07-19 18:08:17 | INFO     | ss_crawler | [ssd_scraper] 🔄 lnido: Updated (description, location)
+2026-07-19 18:08:17 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/ru/electronics/computers/completing-pc/ssd/cgmebj.html
+2026-07-19 18:08:19 | INFO     | ss_crawler | [ssd_scraper] No match for cgmebj: Keg60Zns512G kioxia eg6 512gb nvme pcie gen4x4 m. 
+2026-07-19 18:08:19 | INFO     | ss_crawler | [ssd_scraper] 🔄 cgmebj: Updated (description, location)
+2026-07-19 18:08:19 | INFO     | ss_crawler | [ssd_scraper] Next page URL: https://www.ss.com/lv/electronics/computers/completing-pc/ssd/page2.html
+2026-07-19 18:08:19 | INFO     | ss_crawler | [ssd_scraper] Fetching page 4: https://www.ss.com/lv/electronics/computers/completing-pc/ssd/page2.html
+2026-07-19 18:08:19 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/lv/electronics/computers/completing-pc/ssd/page2.html
+2026-07-19 18:08:22 | INFO     | ss_crawler | [ssd_scraper] Found 23 listings on page 4, 0 new
+2026-07-19 18:08:22 | INFO     | ss_crawler | [ssd_scraper] Next page URL: https://www.ss.com/ru/electronics/computers/completing-pc/ssd/page2.html
+2026-07-19 18:08:22 | INFO     | ss_crawler | [ssd_scraper] Fetching page 5: https://www.ss.com/ru/electronics/computers/completing-pc/ssd/page2.html
+2026-07-19 18:08:22 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/ru/electronics/computers/completing-pc/ssd/page2.html
+2026-07-19 18:08:24 | INFO     | ss_crawler | [ssd_scraper] Found 23 listings on page 5, 0 new
+2026-07-19 18:08:24 | INFO     | ss_crawler | [ssd_scraper] Next page URL: https://www.ss.com/lv/electronics/computers/completing-pc/ssd/page2.html
+2026-07-19 18:08:24 | INFO     | ss_crawler | [ssd_scraper] Reached max pages limit (5)
+2026-07-19 18:08:24 | INFO     | ss_crawler | [ssd_scraper] SSD scraping complete. Stats: {'processed': 78, 'new': 12, 'updated': 42, 'unchanged': 13, 'failed': 0, 'matched': 46, 'skipped': 11}
+2026-07-19 18:30:32 | INFO     | ss_crawler | [motherboard_scraper] Initializing Motherboard scraper...
+2026-07-19 18:30:32 | INFO     | ss_crawler | [database] Database connected: localhost:5433/ss_market
+2026-07-19 18:30:32 | INFO     | ss_crawler | [motherboard_scraper] Database: postgresql+psycopg2://crawler:crawler_pass@localhost:5433/ss_market
+2026-07-19 18:30:32 | INFO     | ss_crawler | [motherboard_scraper] MotherboardMatcher initialized with 5732 motherboards
+2026-07-19 18:30:32 | INFO     | ss_crawler | [motherboard_scraper] Loaded 5732 motherboard references
+2026-07-19 18:30:32 | INFO     | ss_crawler | [motherboard_scraper] Starting Motherboard scraper from https://www.ss.com/lv/electronics/computers/completing-pc/motherboards/
+2026-07-19 18:30:32 | INFO     | ss_crawler | [motherboard_scraper] Fetching page 1: https://www.ss.com/lv/electronics/computers/completing-pc/motherboards/
+2026-07-19 18:30:32 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/lv/electronics/computers/completing-pc/motherboards/
+2026-07-19 18:30:34 | INFO     | ss_crawler | [motherboard_scraper] Found 60 listings on page 1, 60 new
+2026-07-19 18:30:34 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/elifk.html
+2026-07-19 18:30:36 | ERROR    | ss_crawler | [motherboard_scraper] Error scraping listing elifk: "Listing" object has no field "is_special_listing"
+2026-07-19 18:30:36 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/elifk.html
+2026-07-19 18:30:39 | ERROR    | ss_crawler | [motherboard_scraper] Error scraping listing elifk: "Listing" object has no field "is_special_listing"
+2026-07-19 18:30:39 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/bixleo.html
+2026-07-19 18:30:41 | ERROR    | ss_crawler | [motherboard_scraper] Error scraping listing bixleo: "Listing" object has no field "is_special_listing"
+2026-07-19 18:30:41 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/bixleo.html
+2026-07-19 18:30:44 | ERROR    | ss_crawler | [motherboard_scraper] Error scraping listing bixleo: "Listing" object has no field "is_special_listing"
+2026-07-19 18:30:44 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/cgxbjk.html
+2026-07-19 18:30:46 | ERROR    | ss_crawler | [motherboard_scraper] Error scraping listing cgxbjk: "Listing" object has no field "is_special_listing"
+2026-07-19 18:30:46 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/cgxbjk.html
+2026-07-19 18:30:49 | ERROR    | ss_crawler | [motherboard_scraper] Error scraping listing cgxbjk: "Listing" object has no field "is_special_listing"
+2026-07-19 18:30:49 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/kdjog.html
+2026-07-19 18:30:51 | ERROR    | ss_crawler | [motherboard_scraper] Error scraping listing kdjog: "Listing" object has no field "is_special_listing"
+2026-07-19 18:30:51 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/kdjog.html
+2026-07-19 18:30:53 | ERROR    | ss_crawler | [motherboard_scraper] Error scraping listing kdjog: "Listing" object has no field "is_special_listing"
+2026-07-19 18:30:53 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/jmonx.html
+2026-07-19 18:30:56 | ERROR    | ss_crawler | [motherboard_scraper] Error scraping listing jmonx: "Listing" object has no field "is_special_listing"
+2026-07-19 18:30:56 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/jmonx.html
+2026-07-19 18:30:59 | ERROR    | ss_crawler | [motherboard_scraper] Error scraping listing jmonx: "Listing" object has no field "is_special_listing"
+2026-07-19 18:30:59 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/gkkbb.html
+2026-07-19 18:31:02 | ERROR    | ss_crawler | [motherboard_scraper] Error scraping listing gkkbb: "Listing" object has no field "is_special_listing"
+2026-07-19 18:31:02 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/gkkbb.html
+2026-07-19 18:31:05 | ERROR    | ss_crawler | [motherboard_scraper] Error scraping listing gkkbb: "Listing" object has no field "is_special_listing"
+2026-07-19 18:31:05 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/dfbgk.html
+2026-07-19 18:31:08 | ERROR    | ss_crawler | [motherboard_scraper] Error scraping listing dfbgk: "Listing" object has no field "is_special_listing"
+2026-07-19 18:31:08 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/dfbgk.html
+2026-07-19 18:31:11 | ERROR    | ss_crawler | [motherboard_scraper] Error scraping listing dfbgk: "Listing" object has no field "is_special_listing"
+2026-07-19 18:31:11 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/dpcff.html
+2026-07-19 18:31:13 | ERROR    | ss_crawler | [motherboard_scraper] Error scraping listing dpcff: "Listing" object has no field "is_special_listing"
+2026-07-19 18:31:13 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/dpcff.html
+2026-07-19 18:31:15 | ERROR    | ss_crawler | [motherboard_scraper] Error scraping listing dpcff: "Listing" object has no field "is_special_listing"
+2026-07-19 18:31:15 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/geiii.html
+2026-07-19 18:31:18 | ERROR    | ss_crawler | [motherboard_scraper] Error scraping listing geiii: "Listing" object has no field "is_special_listing"
+2026-07-19 18:31:18 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/geiii.html
+2026-07-19 18:31:21 | ERROR    | ss_crawler | [motherboard_scraper] Error scraping listing geiii: "Listing" object has no field "is_special_listing"
+2026-07-19 18:31:21 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/fcbdf.html
+2026-07-19 18:31:23 | INFO     | ss_crawler | [motherboard_scraper] Marking listing fcbdf as special: contains 'komplektā' (bundle/combo)
+2026-07-19 18:31:23 | ERROR    | ss_crawler | [motherboard_scraper] Error scraping listing fcbdf: "Listing" object has no field "is_special_listing"
+2026-07-19 18:31:23 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/fcbdf.html
+2026-07-19 18:31:26 | INFO     | ss_crawler | [motherboard_scraper] Marking listing fcbdf as special: contains 'komplektā' (bundle/combo)
+2026-07-19 18:31:26 | ERROR    | ss_crawler | [motherboard_scraper] Error scraping listing fcbdf: "Listing" object has no field "is_special_listing"
+2026-07-19 18:31:26 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/lobhn.html
+2026-07-19 18:31:30 | ERROR    | ss_crawler | [motherboard_scraper] Error scraping listing lobhn: "Listing" object has no field "is_special_listing"
+2026-07-19 18:31:30 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/lobhn.html
+2026-07-19 18:31:33 | ERROR    | ss_crawler | [motherboard_scraper] Error scraping listing lobhn: "Listing" object has no field "is_special_listing"
+2026-07-19 18:31:33 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/gxgii.html
+2026-07-19 18:31:35 | ERROR    | ss_crawler | [motherboard_scraper] Error scraping listing gxgii: "Listing" object has no field "is_special_listing"
+2026-07-19 18:31:35 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/gxgii.html
+2026-07-19 18:31:38 | ERROR    | ss_crawler | [motherboard_scraper] Error scraping listing gxgii: "Listing" object has no field "is_special_listing"
+2026-07-19 18:31:38 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/jpgjx.html
+2026-07-19 18:31:40 | INFO     | ss_crawler | [motherboard_scraper] Marking listing jpgjx as special: contains 'komplektā' (bundle/combo)
+2026-07-19 18:31:40 | ERROR    | ss_crawler | [motherboard_scraper] Error scraping listing jpgjx: "Listing" object has no field "is_special_listing"
+2026-07-19 18:31:40 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/jpgjx.html
+2026-07-19 18:31:43 | INFO     | ss_crawler | [motherboard_scraper] Marking listing jpgjx as special: contains 'komplektā' (bundle/combo)
+2026-07-19 18:31:43 | ERROR    | ss_crawler | [motherboard_scraper] Error scraping listing jpgjx: "Listing" object has no field "is_special_listing"
+2026-07-19 18:31:43 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/dcpen.html
+2026-07-19 18:31:45 | ERROR    | ss_crawler | [motherboard_scraper] Error scraping listing dcpen: "Listing" object has no field "is_special_listing"
+2026-07-19 18:31:45 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/dcpen.html
+2026-07-19 18:31:48 | ERROR    | ss_crawler | [motherboard_scraper] Error scraping listing dcpen: "Listing" object has no field "is_special_listing"
+2026-07-19 18:31:48 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/kbcxn.html
+2026-07-19 18:31:51 | ERROR    | ss_crawler | [motherboard_scraper] Error scraping listing kbcxn: "Listing" object has no field "is_special_listing"
+2026-07-19 18:31:51 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/kbcxn.html
+2026-07-19 18:31:52 | ERROR    | ss_crawler | [motherboard_scraper] Error scraping listing kbcxn: "Listing" object has no field "is_special_listing"
+2026-07-19 18:31:52 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/fnffb.html
+2026-07-19 18:31:56 | ERROR    | ss_crawler | [motherboard_scraper] Error scraping listing fnffb: "Listing" object has no field "is_special_listing"
+2026-07-19 18:31:56 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/fnffb.html
+2026-07-19 18:31:59 | ERROR    | ss_crawler | [motherboard_scraper] Error scraping listing fnffb: "Listing" object has no field "is_special_listing"
+2026-07-19 18:31:59 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/longh.html
+2026-07-19 18:32:00 | INFO     | ss_crawler | [motherboard_scraper] Marking listing longh as special: contains 'komplektā' (bundle/combo)
+2026-07-19 18:32:00 | ERROR    | ss_crawler | [motherboard_scraper] Error scraping listing longh: "Listing" object has no field "is_special_listing"
+2026-07-19 18:32:00 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/longh.html
+2026-07-19 18:32:02 | INFO     | ss_crawler | [motherboard_scraper] Marking listing longh as special: contains 'komplektā' (bundle/combo)
+2026-07-19 18:32:02 | ERROR    | ss_crawler | [motherboard_scraper] Error scraping listing longh: "Listing" object has no field "is_special_listing"
+2026-07-19 18:32:02 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/mocbk.html
+2026-07-19 18:32:04 | ERROR    | ss_crawler | [motherboard_scraper] Error scraping listing mocbk: "Listing" object has no field "is_special_listing"
+2026-07-19 18:32:04 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/mocbk.html
+2026-07-19 18:32:06 | ERROR    | ss_crawler | [motherboard_scraper] Error scraping listing mocbk: "Listing" object has no field "is_special_listing"
+2026-07-19 18:32:06 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/bjdlcd.html
+2026-07-19 18:32:09 | INFO     | ss_crawler | [motherboard_scraper] Marking listing bjdlcd as special: contains 'komplektā' (bundle/combo)
+2026-07-19 18:32:09 | ERROR    | ss_crawler | [motherboard_scraper] Error scraping listing bjdlcd: "Listing" object has no field "is_special_listing"
+2026-07-19 18:32:09 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/bjdlcd.html
+2026-07-19 18:32:12 | INFO     | ss_crawler | [motherboard_scraper] Marking listing bjdlcd as special: contains 'komplektā' (bundle/combo)
+2026-07-19 18:32:12 | ERROR    | ss_crawler | [motherboard_scraper] Error scraping listing bjdlcd: "Listing" object has no field "is_special_listing"
+2026-07-19 18:32:12 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/pkjej.html
+2026-07-19 18:32:15 | ERROR    | ss_crawler | [motherboard_scraper] Error scraping listing pkjej: "Listing" object has no field "is_special_listing"
+2026-07-19 18:32:15 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/pkjej.html
+2026-07-19 18:32:17 | ERROR    | ss_crawler | [motherboard_scraper] Error scraping listing pkjej: "Listing" object has no field "is_special_listing"
+2026-07-19 18:32:17 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/pmklh.html
+2026-07-19 18:32:20 | ERROR    | ss_crawler | [motherboard_scraper] Error scraping listing pmklh: "Listing" object has no field "is_special_listing"
+2026-07-19 18:32:20 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/pmklh.html
+2026-07-19 18:32:23 | ERROR    | ss_crawler | [motherboard_scraper] Error scraping listing pmklh: "Listing" object has no field "is_special_listing"
+2026-07-19 18:32:23 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/beegn.html
+2026-07-19 18:32:25 | ERROR    | ss_crawler | [motherboard_scraper] Error scraping listing beegn: "Listing" object has no field "is_special_listing"
+2026-07-19 18:32:25 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/beegn.html
+2026-07-19 18:32:28 | ERROR    | ss_crawler | [motherboard_scraper] Error scraping listing beegn: "Listing" object has no field "is_special_listing"
+2026-07-19 18:32:28 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/fjnhf.html
+2026-07-19 18:32:32 | ERROR    | ss_crawler | [motherboard_scraper] Error scraping listing fjnhf: "Listing" object has no field "is_special_listing"
+2026-07-19 18:32:32 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/fjnhf.html
+2026-07-19 18:32:35 | ERROR    | ss_crawler | [motherboard_scraper] Error scraping listing fjnhf: "Listing" object has no field "is_special_listing"
+2026-07-19 18:32:35 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/hfjcm.html
+2026-07-19 18:32:38 | ERROR    | ss_crawler | [motherboard_scraper] Error scraping listing hfjcm: "Listing" object has no field "is_special_listing"
+2026-07-19 18:32:38 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/hfjcm.html
+2026-07-19 18:32:41 | ERROR    | ss_crawler | [motherboard_scraper] Error scraping listing hfjcm: "Listing" object has no field "is_special_listing"
+2026-07-19 18:32:41 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/gdlgl.html
+2026-07-19 18:32:43 | INFO     | ss_crawler | [motherboard_scraper] Marking listing gdlgl as special: contains 'komplektā' (bundle/combo)
+2026-07-19 18:32:43 | ERROR    | ss_crawler | [motherboard_scraper] Error scraping listing gdlgl: "Listing" object has no field "is_special_listing"
+2026-07-19 18:32:43 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/gdlgl.html
+2026-07-19 18:32:46 | INFO     | ss_crawler | [motherboard_scraper] Marking listing gdlgl as special: contains 'komplektā' (bundle/combo)
+2026-07-19 18:32:46 | ERROR    | ss_crawler | [motherboard_scraper] Error scraping listing gdlgl: "Listing" object has no field "is_special_listing"
+2026-07-19 18:32:46 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/jodeg.html
+2026-07-19 18:32:48 | ERROR    | ss_crawler | [motherboard_scraper] Error scraping listing jodeg: "Listing" object has no field "is_special_listing"
+2026-07-19 18:32:48 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/jodeg.html
+2026-07-19 18:32:50 | ERROR    | ss_crawler | [motherboard_scraper] Error scraping listing jodeg: "Listing" object has no field "is_special_listing"
+2026-07-19 18:32:50 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/gpgbx.html
+2026-07-19 18:32:52 | ERROR    | ss_crawler | [motherboard_scraper] Error scraping listing gpgbx: "Listing" object has no field "is_special_listing"
+2026-07-19 18:32:52 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/gpgbx.html
+2026-07-19 18:32:54 | ERROR    | ss_crawler | [motherboard_scraper] Error scraping listing gpgbx: "Listing" object has no field "is_special_listing"
+2026-07-19 18:32:54 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/pmklj.html
+2026-07-19 18:32:57 | ERROR    | ss_crawler | [motherboard_scraper] Error scraping listing pmklj: "Listing" object has no field "is_special_listing"
+2026-07-19 18:32:57 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/pmklj.html
+2026-07-19 18:33:01 | ERROR    | ss_crawler | [motherboard_scraper] Error scraping listing pmklj: "Listing" object has no field "is_special_listing"
+2026-07-19 18:33:01 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/jmcib.html
+2026-07-19 18:33:03 | ERROR    | ss_crawler | [motherboard_scraper] Error scraping listing jmcib: "Listing" object has no field "is_special_listing"
+2026-07-19 18:33:03 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/jmcib.html
+2026-07-19 18:33:04 | ERROR    | ss_crawler | [motherboard_scraper] Error scraping listing jmcib: "Listing" object has no field "is_special_listing"
+2026-07-19 18:33:04 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/flofg.html
+2026-07-19 18:33:08 | ERROR    | ss_crawler | [motherboard_scraper] Error scraping listing flofg: "Listing" object has no field "is_special_listing"
+2026-07-19 18:33:08 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/flofg.html
+2026-07-19 18:33:10 | ERROR    | ss_crawler | [motherboard_scraper] Error scraping listing flofg: "Listing" object has no field "is_special_listing"
+2026-07-19 18:33:10 | INFO     | ss_crawler | [motherboard_scraper] Fetching page 2: https://www.ss.com/lv/electronics/computers/completing-pc/motherboards/page2.html
+2026-07-19 18:33:10 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/lv/electronics/computers/completing-pc/motherboards/page2.html
+2026-07-19 18:33:13 | INFO     | ss_crawler | [motherboard_scraper] Found 38 listings on page 2, 38 new
+2026-07-19 18:33:13 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/fddex.html
+2026-07-19 18:33:16 | ERROR    | ss_crawler | [motherboard_scraper] Error scraping listing fddex: "Listing" object has no field "is_special_listing"
+2026-07-19 18:33:16 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/fddex.html
+2026-07-19 18:33:18 | ERROR    | ss_crawler | [motherboard_scraper] Error scraping listing fddex: "Listing" object has no field "is_special_listing"
+2026-07-19 18:33:18 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/deegp.html
+2026-07-19 18:33:21 | ERROR    | ss_crawler | [motherboard_scraper] Error scraping listing deegp: "Listing" object has no field "is_special_listing"
+2026-07-19 18:33:21 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/deegp.html
+2026-07-19 18:33:24 | ERROR    | ss_crawler | [motherboard_scraper] Error scraping listing deegp: "Listing" object has no field "is_special_listing"
+2026-07-19 18:33:24 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/enjmm.html
+2026-07-19 18:33:25 | ERROR    | ss_crawler | [motherboard_scraper] Error scraping listing enjmm: "Listing" object has no field "is_special_listing"
+2026-07-19 18:33:25 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/enjmm.html
+2026-07-19 18:33:28 | ERROR    | ss_crawler | [motherboard_scraper] Error scraping listing enjmm: "Listing" object has no field "is_special_listing"
+2026-07-19 18:33:28 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/hfccn.html
+2026-07-19 18:33:30 | ERROR    | ss_crawler | [motherboard_scraper] Error scraping listing hfccn: "Listing" object has no field "is_special_listing"
+2026-07-19 18:33:30 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/hfccn.html
+2026-07-19 18:33:34 | ERROR    | ss_crawler | [motherboard_scraper] Error scraping listing hfccn: "Listing" object has no field "is_special_listing"
+2026-07-19 18:33:34 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/gopbk.html
+2026-07-19 18:33:35 | ERROR    | ss_crawler | [motherboard_scraper] Error scraping listing gopbk: "Listing" object has no field "is_special_listing"
+2026-07-19 18:33:35 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/gopbk.html
+2026-07-19 18:33:37 | ERROR    | ss_crawler | [motherboard_scraper] Error scraping listing gopbk: "Listing" object has no field "is_special_listing"
+2026-07-19 18:33:37 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/hgegh.html
+2026-07-19 18:33:40 | ERROR    | ss_crawler | [motherboard_scraper] Error scraping listing hgegh: "Listing" object has no field "is_special_listing"
+2026-07-19 18:33:40 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/hgegh.html
+2026-07-19 18:33:42 | ERROR    | ss_crawler | [motherboard_scraper] Error scraping listing hgegh: "Listing" object has no field "is_special_listing"
+2026-07-19 18:33:42 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/depod.html
+2026-07-19 18:33:45 | ERROR    | ss_crawler | [motherboard_scraper] Error scraping listing depod: "Listing" object has no field "is_special_listing"
+2026-07-19 18:33:45 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/depod.html
+2026-07-19 18:33:48 | ERROR    | ss_crawler | [motherboard_scraper] Error scraping listing depod: "Listing" object has no field "is_special_listing"
+2026-07-19 18:33:48 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/dniix.html
+2026-07-19 18:33:50 | ERROR    | ss_crawler | [motherboard_scraper] Error scraping listing dniix: "Listing" object has no field "is_special_listing"
+2026-07-19 18:33:50 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/dniix.html
+2026-07-19 18:33:52 | ERROR    | ss_crawler | [motherboard_scraper] Error scraping listing dniix: "Listing" object has no field "is_special_listing"
+2026-07-19 18:33:52 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/fgnld.html
+2026-07-19 18:33:54 | ERROR    | ss_crawler | [motherboard_scraper] Error scraping listing fgnld: "Listing" object has no field "is_special_listing"
+2026-07-19 18:33:54 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/fgnld.html
+2026-07-19 18:33:56 | ERROR    | ss_crawler | [motherboard_scraper] Error scraping listing fgnld: "Listing" object has no field "is_special_listing"
+2026-07-19 18:33:56 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/fffdp.html
+2026-07-19 18:33:59 | INFO     | ss_crawler | [motherboard_scraper] Marking listing fffdp as special: contains 'komplektā' (bundle/combo)
+2026-07-19 18:33:59 | ERROR    | ss_crawler | [motherboard_scraper] Error scraping listing fffdp: "Listing" object has no field "is_special_listing"
+2026-07-19 18:33:59 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/fffdp.html
+2026-07-19 18:34:01 | INFO     | ss_crawler | [motherboard_scraper] Marking listing fffdp as special: contains 'komplektā' (bundle/combo)
+2026-07-19 18:34:01 | ERROR    | ss_crawler | [motherboard_scraper] Error scraping listing fffdp: "Listing" object has no field "is_special_listing"
+2026-07-19 18:34:01 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/bhcxi.html
+2026-07-19 18:34:02 | ERROR    | ss_crawler | [motherboard_scraper] Error scraping listing bhcxi: "Listing" object has no field "is_special_listing"
+2026-07-19 18:34:02 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/bhcxi.html
+2026-07-19 18:34:05 | ERROR    | ss_crawler | [motherboard_scraper] Error scraping listing bhcxi: "Listing" object has no field "is_special_listing"
+2026-07-19 18:34:05 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/cgmxb.html
+2026-07-19 18:34:08 | ERROR    | ss_crawler | [motherboard_scraper] Error scraping listing cgmxb: "Listing" object has no field "is_special_listing"
+2026-07-19 18:34:08 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/cgmxb.html
+2026-07-19 18:34:11 | ERROR    | ss_crawler | [motherboard_scraper] Error scraping listing cgmxb: "Listing" object has no field "is_special_listing"
+2026-07-19 18:34:11 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/gfpco.html
+2026-07-19 18:34:14 | ERROR    | ss_crawler | [motherboard_scraper] Error scraping listing gfpco: "Listing" object has no field "is_special_listing"
+2026-07-19 18:34:14 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/gfpco.html
+2026-07-19 18:34:16 | ERROR    | ss_crawler | [motherboard_scraper] Error scraping listing gfpco: "Listing" object has no field "is_special_listing"
+2026-07-19 18:34:16 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/jnknl.html
+2026-07-19 18:34:19 | ERROR    | ss_crawler | [motherboard_scraper] Error scraping listing jnknl: "Listing" object has no field "is_special_listing"
+2026-07-19 18:34:19 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/jnknl.html
+2026-07-19 18:34:22 | ERROR    | ss_crawler | [motherboard_scraper] Error scraping listing jnknl: "Listing" object has no field "is_special_listing"
+2026-07-19 18:34:22 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/jmomx.html
+2026-07-19 18:34:25 | ERROR    | ss_crawler | [motherboard_scraper] Error scraping listing jmomx: "Listing" object has no field "is_special_listing"
+2026-07-19 18:34:25 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/jmomx.html
+2026-07-19 18:34:28 | ERROR    | ss_crawler | [motherboard_scraper] Error scraping listing jmomx: "Listing" object has no field "is_special_listing"
+2026-07-19 18:34:28 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/eohnm.html
+2026-07-19 18:34:31 | ERROR    | ss_crawler | [motherboard_scraper] Error scraping listing eohnm: "Listing" object has no field "is_special_listing"
+2026-07-19 18:34:31 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/eohnm.html
+2026-07-19 18:34:34 | ERROR    | ss_crawler | [motherboard_scraper] Error scraping listing eohnm: "Listing" object has no field "is_special_listing"
+2026-07-19 18:34:34 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/bikxj.html
+2026-07-19 18:34:36 | ERROR    | ss_crawler | [motherboard_scraper] Error scraping listing bikxj: "Listing" object has no field "is_special_listing"
+2026-07-19 18:34:36 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/bikxj.html
+2026-07-19 18:34:38 | ERROR    | ss_crawler | [motherboard_scraper] Error scraping listing bikxj: "Listing" object has no field "is_special_listing"
+2026-07-19 18:34:38 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/jmbbm.html
+2026-07-19 18:34:42 | ERROR    | ss_crawler | [motherboard_scraper] Error scraping listing jmbbm: "Listing" object has no field "is_special_listing"
+2026-07-19 18:34:42 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/jmbbm.html
+2026-07-19 18:34:45 | ERROR    | ss_crawler | [motherboard_scraper] Error scraping listing jmbbm: "Listing" object has no field "is_special_listing"
+2026-07-19 18:34:45 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/exxbx.html
+2026-07-19 18:34:48 | ERROR    | ss_crawler | [motherboard_scraper] Error scraping listing exxbx: "Listing" object has no field "is_special_listing"
+2026-07-19 18:34:48 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/exxbx.html
+2026-07-19 18:34:51 | ERROR    | ss_crawler | [motherboard_scraper] Error scraping listing exxbx: "Listing" object has no field "is_special_listing"
+2026-07-19 18:34:51 | INFO     | ss_crawler | [motherboard_scraper] Fetching page 3: https://www.ss.com/lv/electronics/computers/completing-pc/motherboards/
+2026-07-19 18:34:51 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/lv/electronics/computers/completing-pc/motherboards/
+2026-07-19 18:34:53 | INFO     | ss_crawler | [motherboard_scraper] Found 60 listings on page 3, 0 new
+2026-07-19 18:34:53 | INFO     | ss_crawler | [motherboard_scraper] Reached max pages limit (3)
+2026-07-19 18:34:53 | INFO     | ss_crawler | [motherboard_scraper] Motherboard scraping complete. Stats: {'processed': 98, 'new': 0, 'updated': 0, 'unchanged': 0, 'failed': 98, 'matched': 0}

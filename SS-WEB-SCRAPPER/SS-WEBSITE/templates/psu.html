@@ -1,0 +1,319 @@
+{% extends "base.html" %}
+
+{% block title %}PSU Listings - SS-Crawler{% endblock %}
+
+{% block content %}
+<div class="section">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
+        <h2>{{ t('PSU Listings') }}</h2>
+        <div class="filters" style="margin: 0;">
+            <label>
+                <input type="checkbox" id="active-only" checked onchange="loadListings()">
+                Active only
+            </label>
+            <label class="{% if not is_staff %}staff-only{% endif %}">
+                <input type="checkbox" id="high-confidence" checked onchange="loadListings()">
+                High confidence (≥70%)
+            </label>
+            <label>
+                Sort:
+                <select id="sort-by" onchange="loadListings()">
+                    <option value="date_posted">{{ t('Date Posted') }}</option>
+                    <option value="price">{{ t('Price') }}</option>
+                </select>
+            </label>
+            <label>
+                Order:
+                <select id="sort-order" onchange="loadListings()">
+                    <option value="desc">{{ t('Descending') }}</option>
+                    <option value="asc">{{ t('Ascending') }}</option>
+                </select>
+            </label>
+            <label>
+                Time:
+                <select id="time-filter" onchange="loadListings()">
+                    <option value="all_time">All Time</option>
+                    <option value="month">Last Month</option>
+                    <option value="week">Last Week</option>
+                </select>
+            </label>
+            <label>
+                Wattage:
+                <select id="wattage-filter" onchange="loadListings()">
+                    <option value="">{{ t('All') }}</option>
+                    <option value="400">400W</option>
+                    <option value="450">450W</option>
+                    <option value="500">500W</option>
+                    <option value="550">550W</option>
+                    <option value="600">600W</option>
+                    <option value="650">650W</option>
+                    <option value="700">700W</option>
+                    <option value="750">750W</option>
+                    <option value="800">800W</option>
+                    <option value="850">850W</option>
+                    <option value="900">900W</option>
+                    <option value="1000">1000W</option>
+                    <option value="1200">1200W</option>
+                    <option value="1500">1500W</option>
+                </select>
+                <span style="display: inline-flex; align-items: center; gap: 0.25rem; margin-left: 0.5rem; font-weight: 500; color: #00d4ff; cursor: pointer;" title="Exact size: only PSUs with the selected wattage. When checked: selected wattage and higher.">
+                    <input type="checkbox" id="wattage-min-mode" onchange="loadListings()" style="accent-color: #00d4ff; width: 16px; height: 16px; cursor: pointer; vertical-align: middle;">
+                    <span id="wattage-min-label">≥ selected</span>
+                    <span style="font-size: 0.85rem; color: #888;">ⓘ</span>
+                </span>
+            </label>
+            <span id="wattage-avg-price" style="font-weight: 600; color: #667eea; min-width: 120px;"></span>
+        </div>
+    </div>
+
+    <div id="listings-container">
+        <div class="loading">Loading PSU listings...</div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+function computePSUDealBadges(item) {
+    let dealBadge = '';
+    const isNewListing = item.is_new === true;
+    if (isNewListing) {
+        dealBadge += `<span class="badge" style="background: #3b82f6; color: white; font-weight: bold;" title="New listing from current import!">🆕 NEW</span><br>`;
+    }
+    if (!isNewListing && item.price_stats && item.price_stats.below_avg) {
+        const avgPrice = parseFloat(item.price_stats.avg);
+        const currentPrice = item.price_eur;
+        const savingsPct = ((avgPrice - currentPrice) / avgPrice * 100);
+        if (savingsPct >= 15) {
+            dealBadge += `<span class="badge" style="background: #dc2626; color: white; font-weight: bold;" title="Price is ${savingsPct.toFixed(0)}% below average!">🔥 STEAL</span><br>`;
+        }
+    }
+    return dealBadge;
+}
+
+async function loadListings() {
+    const activeOnly = document.getElementById('active-only').checked;
+    const highConfidence = document.getElementById('high-confidence').checked;
+    const sortBy = document.getElementById('sort-by').value;
+    const sortOrder = document.getElementById('sort-order').value;
+    const timeFilter = document.getElementById('time-filter').value;
+
+    const params = new URLSearchParams();
+    params.append('active', activeOnly);
+    params.append('sort', sortBy);
+    params.append('order', sortOrder);
+    params.append('time', timeFilter);
+    if (highConfidence) params.append('min_confidence', '0.70');
+    
+    const wattageFilter = document.getElementById('wattage-filter')?.value || '';
+    const wattageMinMode = document.getElementById('wattage-min-mode')?.checked || false;
+    if (wattageFilter) {
+        params.append('wattage', wattageFilter);
+        params.append('wattage_mode', wattageMinMode ? 'min' : 'exact');
+    }
+
+    try {
+        const response = await fetch('/api/psus?' + params.toString());
+        let listings = await response.json();
+
+        const container = document.getElementById('listings-container');
+
+        // Check for API error
+        if (listings.error) {
+            throw new Error(listings.error);
+        }
+
+        // Ensure listings is an array
+        if (!Array.isArray(listings)) {
+            console.error('Expected array, got:', typeof listings, listings);
+            throw new Error('Invalid response format from API');
+        }
+
+        if (listings.length === 0) {
+            container.innerHTML = '<div class="loading">No listings found</div>';
+            return;
+        }
+
+        // Fetch price history for all listings
+        const listingsWithHistory = await Promise.all(
+            listings.map(async item => {
+                try {
+                    const historyRes = await fetch(`/api/price-history/${item.listing_id}`);
+                    const historyData = await historyRes.json();
+                    return {...item, ...historyData};
+                } catch (e) {
+                    return item;
+                }
+            })
+        );
+
+        let html = `
+            <table>
+                <thead>
+                    <tr>
+                        <th>Image</th>
+                        <th>Matched Model</th>
+                        <th>{{ t('Wattage') }}</th>
+                        <th>{{ t('Price') }}</th>
+                        <th>Location</th>
+                        <th>Date</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+        `;
+
+        listingsWithHistory.forEach(item => {
+            const psuName = item.psu_name || item.title;
+            const wattage = item.psu_wattage ? `${item.psu_wattage}W` : 'N/A';
+            const dealBadge = computePSUDealBadges(item);
+
+            const confidence = item.psu_confidence_score || 0;
+            let confidenceClass = 'confidence-high';
+            if (confidence < 0.70) confidenceClass = 'confidence-medium';
+            if (confidence < 0.50) confidenceClass = 'confidence-low';
+
+            // Check if has history
+            const hasHistory = item.history && item.history.length > 0;
+
+            // Price decrease badge
+            let priceDecreaseBadge = '';
+            if (item.has_price_decreased) {
+                priceDecreaseBadge = '<span class="badge badge-success">↓ Price Drop</span><br>';
+            }
+
+            const psuImgPath = item.local_image_path ? item.local_image_path.replace(/\\/g, '/') : null;
+            const psuImgUrl = psuImgPath ? `/images/${psuImgPath}` : item.image_url;
+
+            html += `
+                <tr style="cursor: pointer;" onclick="showSharedListingDetail('${item.listing_id}', ${hasHistory})">
+                    <td class="listing-image-cell" style="position: relative;">
+                        ${dealBadge ? `<div style="position: absolute; top: 4px; right: 4px; display: flex; flex-direction: column; gap: 4px; z-index: 10;">${dealBadge}</div>` : ''}
+                        ${psuImgUrl ? `<img src="${psuImgUrl}" alt="${psuName}" class="listing-thumb" onclick="event.stopPropagation(); showImageModal('${psuImgUrl}', '${psuName.replace(/'/g, "\'")}')">` : '<div class="listing-thumb-placeholder">{{ t('PSU') }}</div>'}
+                    </td>
+                    <td>
+                        <strong>${psuName}</strong>
+                        ${item.psu_match_method ? `<br><small class="${confidenceClass}">${(confidence*100).toFixed(0)}% confidence</small>` : ''}
+                    </td>
+                    <td>${wattage}</td>
+                    <td>
+                        ${priceDecreaseBadge}
+                        <span class="price">€${item.price_eur}</span>
+                    </td>
+                    <td>${item.seller_location || 'N/A'}</td>
+                    <td>${(item.date_posted || item.first_seen_at || item.created_at) ? new Date(item.date_posted || item.first_seen_at || item.created_at).toLocaleDateString() : 'N/A'}</td>
+                    <td>
+                        <button class="btn btn-small btn-secondary" onclick="event.stopPropagation(); showSharedListingDetail('${item.listing_id}', ${hasHistory})" title="View listing details">{{ t('Details') }}</button>
+                        <a href="${item.listing_url}" target="_blank" class="btn btn-small">View →</a>
+                    </td>
+                </tr>
+            `;
+        });
+
+        html += '</tbody></table>';
+        container.innerHTML = html;
+        
+        // Update wattage summary
+        updateWattageStats();
+        
+    } catch (error) {
+        document.getElementById('listings-container').innerHTML = 
+            `<div class="error">Failed to load listings: ${error.message}</div>`;
+    }
+}
+
+async function updateWattageStats() {
+    const wattageFilter = document.getElementById('wattage-filter');
+    const avgDisplay = document.getElementById('wattage-avg-price');
+    if (!wattageFilter || !avgDisplay) return;
+    
+    const selectedWattage = wattageFilter.value;
+    const minMode = document.getElementById('wattage-min-mode')?.checked || false;
+    if (!selectedWattage) {
+        avgDisplay.textContent = '';
+        return;
+    }
+    
+    try {
+        const response = await fetch('/api/psus?active=true');
+        const allListings = await response.json();
+        
+        if (!Array.isArray(allListings)) {
+            avgDisplay.textContent = '';
+            return;
+        }
+        
+        const targetWattage = parseInt(selectedWattage);
+        const matching = allListings.filter(item => {
+            if (!item.psu_wattage) return false;
+            const w = parseInt(item.psu_wattage);
+            return minMode ? w >= targetWattage : w === targetWattage;
+        });
+        
+        if (matching.length === 0) {
+            avgDisplay.textContent = `${targetWattage}W${minMode ? '+' : ''}: no data`;
+        } else {
+            const total = matching.reduce((sum, item) => sum + (parseFloat(item.price_eur) || 0), 0);
+            const avg = total / matching.length;
+            avgDisplay.textContent = `${targetWattage}W${minMode ? '+' : ''} avg: €${avg.toFixed(2)} (${matching.length})`;
+        }
+    } catch (error) {
+        console.error('Error updating wattage stats:', error);
+        avgDisplay.textContent = '';
+    }
+}
+
+// Load on page load
+document.addEventListener('DOMContentLoaded', loadListings);
+
+// Show image modal
+function showImageModal(imageUrl, title) {
+    const existingModal = document.querySelector('.image-modal-overlay');
+    if (existingModal) {
+        existingModal.remove();
+    }
+
+    const modal = document.createElement('div');
+    modal.className = 'image-modal-overlay';
+    modal.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.9);
+        z-index: 9999;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: zoom-out;
+    `;
+
+    const img = document.createElement('img');
+    img.src = imageUrl;
+    img.alt = title || 'Image';
+    img.style.cssText = `
+        max-width: 90%;
+        max-height: 90%;
+        object-fit: contain;
+        border-radius: 8px;
+    `;
+
+    modal.appendChild(img);
+    document.body.appendChild(modal);
+
+    const closeModal = function() {
+        modal.remove();
+    };
+
+    modal.addEventListener('click', closeModal);
+
+    img.addEventListener('click', function(e) {
+        e.stopPropagation();
+    });
+}
+
+// Expose to global scope
+window.showImageModal = showImageModal;
+</script>
+{% endblock %}

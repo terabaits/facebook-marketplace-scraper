@@ -2,27 +2,17 @@ scraper:
   base_url: "https://www.ss.com"
   category_path: "/lv/electronics/computers/completing-pc/video/"
   request_timeout: 30
-  
-  # Retry configuration
   retry_attempts: 5
   retry_delays: [1, 2, 4, 8, 16]
   retryable_status: [500, 502, 503, 504, 408, 429]
-  stop_on_status: [403]  # Stop immediately if blocked
-  
-  # Throttling
+  stop_on_status: [403]
   throttle_min: 1.5
   throttle_max: 3.5
-  
-  # Testing options
   test_mode: false
-  max_listings: 0  # 0 = unlimited, 1 = one item test
+  max_listings: 0
   save_html_samples: true
   html_samples_dir: "logs/html_samples"
-  
-  # Stale detection
   stale_after_days: 7
-  
-  # Matching threshold (0.0-1.0)
   min_confidence_threshold: 0.70
 
 database:
@@ -41,5 +31,5 @@ logging:
   level: INFO
   file: "logs/scraper_{date}.log"
   console: true
-  max_bytes: 10485760  # 10MB
+  max_bytes: 10485760
   backup_count: 5

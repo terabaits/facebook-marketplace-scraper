@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+
+{% block title %}{{ t('My Profile') }} - SS-Crawler{% endblock %}
+
+{% block content %}
+<div class="section" style="max-width: 600px; margin: 2rem auto;">
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+        <h2>{{ t('My Profile') }}</h2>
+        <a href="/logout" class="btn btn-small">{{ t('Logout') }}</a>
+    </div>
+
+    <div class="card" style="margin-top: 1rem;">
+        <p><strong>{{ t('Username') }}:</strong> {{ user.username }}</p>
+        <p><strong>{{ t('Role') }}:</strong> {{ user.role }}</p>
+        <p><strong>{{ t('Subscription') }}:</strong> {{ user.subscription_status }}
+            {% if user.subscription_tier %}({{ user.subscription_tier }}){% endif %}
+            {% if user.subscription_expires_at %}<br><small>{{ t('Expires') }}: {{ user.subscription_expires_at.strftime('%Y-%m-%d %H:%M') }}</small>{% endif %}
+        </p>
+
+        <hr style="border: 0; border-top: 1px solid var(--table-border); margin: 1rem 0;">
+
+        <h3>{{ t('Update profile') }}</h3>
+        <form id="profile-form" style="display: flex; flex-direction: column; gap: 0.75rem;">
+            <label>
+                {{ t('Email') }}
+                <input type="email" id="profile-email" value="{{ user.email or '' }}" style="width: 100%;">
+            </label>
+            <label>
+                {{ t('New password (leave blank to keep current)') }}
+                <input type="password" id="profile-password" style="width: 100%;">
+            </label>
+            <button type="submit" class="btn btn-primary">{{ t('Save changes') }}</button>
+        </form>
+        <div id="profile-msg" style="margin-top: 0.5rem;"></div>
+    </div>
+
+    <div class="card" style="margin-top: 1rem;">
+        <h3>{{ t('Accessible pages') }}</h3>
+        <ul>
+            {% for page in allowed_pages %}
+            <li>{{ page }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    {% if user.role == 'admin' %}
+    <div style="margin-top: 1rem; text-align: center;">
+        <a href="/admin" class="btn btn-primary">{{ t('Admin Panel') }}</a>
+    </div>
+    {% endif %}
+</div>
+
+<script>
+    document.getElementById('profile-form').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const payload = {
+            email: document.getElementById('profile-email').value,
+            password: document.getElementById('profile-password').value
+        };
+        const resp = await fetch('/api/profile', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(payload)
+        });
+        const msg = document.getElementById('profile-msg');
+        if (resp.ok) {
+            msg.innerHTML = '<span style="color: green;">' + t('Profile updated') + '.</span>';
+            document.getElementById('profile-password').value = '';
+        } else {
+            const data = await resp.json();
+            msg.innerHTML = `<span style="color: red;">${data.error || t('Failed to update')}</span>`;
+        }
+    });
+</script>
+{% endblock %}

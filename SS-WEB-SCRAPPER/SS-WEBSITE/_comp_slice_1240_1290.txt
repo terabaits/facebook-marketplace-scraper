@@ -1,0 +1,51 @@
+        `;
+    } catch (error) {
+        console.error('Error loading price history:', error);
+        return '';
+    }
+}
+
+function buildListingInfo(listing) {
+    const statusBadge = listing.is_active 
+        ? '<span class="status-badge active">Active</span>'
+        : '<span class="status-badge inactive">Inactive</span>';
+    
+    const buildType = listing.build_type || 'custom';
+    const buildTypeColors = {
+        'custom': '#3498db',
+        'prebuilt': '#e74c3c',
+        'office': '#f39c12'
+    };
+    const buildTypeLabels = {
+        'custom': '🛠️ Custom Build',
+        'prebuilt': '📦 Prebuilt',
+        'office': '💼 Office PC'
+    };
+    const buildTypeBadge = `<span class="status-badge" style="background: ${buildTypeColors[buildType] || '#3498db'}; color: white;">${buildTypeLabels[buildType] || buildType}</span>`;
+    
+    const isAdminMode = localStorage.getItem('adminMode') === 'true';
+    
+    return `
+        <div class="detail-section">
+            <h4 class="section-title">📋 Listing Information</h4>
+            <div class="info-grid">
+                <div class="info-row">
+                    <span class="info-label">Listing ID</span>
+                    <span class="info-value mono">${listing.listing_id || 'N/A'}</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Status</span>
+                    <span class="info-value">${statusBadge}</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Build Type</span>
+                    <span class="info-value">${buildTypeBadge}</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Toggle Status</span>
+                    <span class="info-value">
+                        <label class="toggle-label">
+                            <input type="checkbox" ${buildType === 'prebuilt' ? 'checked' : ''} 
+                                onchange="togglePrebuiltStatus('${listing.listing_id}', this.checked)">
+                            <span>Mark as Prebuilt</span>
+                        </label>

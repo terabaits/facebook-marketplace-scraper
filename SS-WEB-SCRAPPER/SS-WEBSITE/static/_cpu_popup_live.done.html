@@ -1,0 +1,6 @@
+﻿<!DOCTYPE html>
+<html><head><meta charset="utf-8"><title>CPU popup</title>
+<style>body,html{margin:0;padding:0;height:100%;}</style>
+</head><body>
+<iframe src="http://localhost:5000/laptops" style="width:100%;height:100%;border:0;" onload="setTimeout(()=>{const f=this.contentDocument;const el=f.getElementById('cpu-options');if(el){el.classList.add('open');const trigger=f.querySelector('#cpu-filter-group .lfg-flat');if(trigger)trigger.click();}},500)"></iframe>
+</body></html>

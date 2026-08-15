@@ -1,0 +1,65 @@
+@app.route('/api/monitor-models')
+def get_monitor_models():
+    """Get monitor model statistics."""
+    conn = get_db_connection()
+    cursor = conn.cursor(cursor_factory=RealDictCursor)
+    
+    try:
+        # Check if monitor_models table exists
+        cursor.execute("""
+            SELECT EXISTS (
+                SELECT FROM information_schema.tables 
+                WHERE table_name = 'monitor_models'
+            )
+        """)
+        result = cursor.fetchone()
+        table_exists = result.get('exists', False) if result else False
+        
+        if not table_exists:
+            cursor.close()
+            conn.close()
+            return jsonify([])
+        
+        cursor.execute("""
+            SELECT 
+                m.id,
+                m.brand,
+                m.model,
+                m.size,
+                m.resolution,
+                m.refresh_rate,
+                COUNT(l.listing_id) as active_listings,
+                ROUND(AVG(l.price_eur)::numeric, 2) as avg_price,
+                MIN(l.price_eur) as min_price,
+                MAX(l.price_eur) as max_price
+            FROM monitor_models m
+            JOIN listings l ON m.id = l.monitor_model_id
+            WHERE l.category = 'monitor' AND l.is_active = true
+            GROUP BY m.id, m.brand, m.model, m.size, m.resolution, m.refresh_rate
+            ORDER BY avg_price DESC
+        """)
+        
+        models = cursor.fetchall()
+        cursor.close()
+        conn.close()
+        
+        # Convert Decimal to float for JSON serialization
+        models_dict = [convert_decimal_to_float(dict(row)) for row in models]
+        return jsonify(models_dict)
+        
+    except Exception as e:
+        cursor.close()
+        conn.close()
+        return jsonify({'error': str(e)}), 500
+
+
+# RAM routes
+@app.route('/ram')
+def ram_page():
+    """RAM listings page."""
+    return render_template('ram.html')
+
+
+@app.route('/api/rams')
+def get_ram():
+ 

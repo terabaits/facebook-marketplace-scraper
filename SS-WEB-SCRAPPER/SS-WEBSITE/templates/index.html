@@ -2,112 +2,254 @@
 
 {% block content %}
 <div class="stats-grid" id="stats-container">
-    <div class="loading">Loading statistics...</div>
+    <div class="loading">{{ t('Loading...') }}</div>
 </div>
 
 <div class="section">
-    <h2>Price Trends</h2>
-    <div class="chart-container">
-        <canvas id="priceChart"></canvas>
+    <h2>💰 {{ t('Potential Earnings by Category') }}</h2>
+    <p class="section-description">{{ t('Calculated as: (max_price - min_price) × listing_count') }}</p>
+    <div class="stats-grid" id="earnings-container">
+        <div class="loading">{{ t('Loading...') }}</div>
     </div>
 </div>
 
 <div class="section">
-    <h2>Quick Links</h2>
+    <h2>📈 {{ t('Price Trends Over Time') }}</h2>
+    <div class="filters">
+        <label>
+            {{ t('Time Period') }}:
+            <select id="trendTimeFilter" onchange="loadPriceTrends()">
+                <option value="week">{{ t('Last Week') }}</option>
+                <option value="month" selected>{{ t('Last Month') }}</option>
+                <option value="year">{{ t('Last Year') }}</option>
+                <option value="all_time">{{ t('All Time') }}</option>
+            </select>
+        </label>
+        <label>
+            {{ t('Category') }}:
+            <select id="trendCategoryFilter" onchange="loadPriceTrends()">
+                <option value="all" selected>{{ t('All Categories') }}</option>
+                <option value="gpu">{{ t('GPUs') }}</option>
+                <option value="cpu">{{ t('CPUs') }}</option>
+                <option value="ssd">{{ t('SSDs') }}</option>
+                <option value="ram">{{ t('RAM') }}</option>
+                <option value="psu">{{ t('PSUs') }}</option>
+                <option value="case">{{ t('Cases') }}</option>
+            </select>
+        </label>
+    </div>
+    <div class="chart-container">
+        <canvas id="priceChart"></canvas>
+    </div>
+    <div id="priceTrendsLegend" style="margin-top: 1rem; text-align: center;"></div>
+</div>
+
+<div class="section">
+    <h2>{{ t('Quick Links') }}</h2>
     <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
-        <a href="/gpu" class="btn">View GPU Listings →</a>
-        <a href="/cpu" class="btn">View CPU Listings →</a>
-        <a href="/models" class="btn">Model Statistics →</a>
+        <a href="/gpu" class="btn">{{ t('View GPU Listings') }} →</a>
+        <a href="/cpu" class="btn">{{ t('View CPU Listings') }} →</a>
+        <a href="/lenses" class="btn">{{ t('View Lens Listings') }} →</a>
+        <a href="/models" class="btn">{{ t('Model Statistics') }} →</a>
     </div>
 </div>
 {% endblock %}
 
 {% block scripts %}
 <script>
+// Format currency
+function formatCurrency(value) {
+    if (value === null || value === undefined) return '€0';
+    return '€' + value.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
+
 // Load and display stats
 async function loadStats() {
     try {
-        const response = await fetch('/api/stats');
-        const stats = await response.json();
-        
+        // Load both stats and earnings in parallel
+        const [statsResponse, earningsResponse] = await Promise.all([
+            fetch('/api/stats'),
+            fetch('/api/category-earnings')
+        ]);
+
+        const stats = await statsResponse.json();
+        const earnings = await earningsResponse.json();
+
         const container = document.getElementById('stats-container');
         container.innerHTML = `
             <div class="stat-card gpu">
-                <h3>GPU Listings</h3>
+                <h3>${t('GPU Listings')}</h3>
                 <div class="stat-value">${stats.gpu.active_listings}</div>
-                <small>${stats.gpu.matched} matched · Avg €${stats.gpu.avg_price || 'N/A'}</small>
+                <small>${stats.gpu.matched} ${t('matched')} · Avg €${stats.gpu.avg_price || 'N/A'}</small>
             </div>
-            
+
             <div class="stat-card cpu">
-                <h3>CPU Listings</h3>
+                <h3>${t('CPU Listings')}</h3>
                 <div class="stat-value">${stats.cpu.active_listings}</div>
-                <small>${stats.cpu.matched} matched · Avg €${stats.cpu.avg_price || 'N/A'}</small>
+                <small>${stats.cpu.matched} ${t('matched')} · Avg €${stats.cpu.avg_price || 'N/A'}</small>
             </div>
-            
-            <div class="stat-card gpu">
-                <h3>GPU Unmatched</h3>
-                <div class="stat-value" style="color: #e74c3c;">${stats.gpu.unmatched}</div>
-                <small>need manual review</small>
+
+            <div class="stat-card gpu" style="border-left-color: #f39c12;">
+                <h3>${t('SSD Listings')}</h3>
+                <div class="stat-value">${stats.ssd?.active_listings || 0}</div>
+                <small>${stats.ssd?.matched || 0} ${t('matched')} · Avg €${stats.ssd?.avg_price || 'N/A'}</small>
             </div>
-            
-            <div class="stat-card cpu">
-                <h3>CPU Unmatched</h3>
-                <div class="stat-value" style="color: #e74c3c;">${stats.cpu.unmatched}</div>
-                <small>need manual review</small>
+
+            <div class="stat-card cpu" style="border-left-color: #e74c3c;">
+                <h3>${t('RAM Listings')}</h3>
+                <div class="stat-value">${stats.ram?.active_listings || 0}</div>
+                <small>${stats.ram?.matched || 0} ${t('matched')} · Avg €${stats.ram?.avg_price || 'N/A'}</small>
+            </div>
+
+            <div class="stat-card gpu" style="border-left-color: #27ae60;">
+                <h3>${t('PSU Listings')}</h3>
+                <div class="stat-value">${stats.psu?.active_listings || 0}</div>
+                <small>${stats.psu?.matched || 0} ${t('matched')} · Avg €${stats.psu?.avg_price || 'N/A'}</small>
+            </div>
+
+            <div class="stat-card cpu" style="border-left-color: #9b59b6;">
+                <h3>${t('Case Listings')}</h3>
+                <div class="stat-value">${stats.case?.active_listings || 0}</div>
+                <small>${stats.case?.matched || 0} ${t('matched')} · Avg €${stats.case?.avg_price || 'N/A'}</small>
+            </div>
+
+            <div class="stat-card gpu" style="border-left-color: #e91e63;">
+                <h3>${t('Lens Listings')}</h3>
+                <div class="stat-value">${stats.lens?.active_listings || 0}</div>
+                <small>${stats.lens?.matched || 0} ${t('matched')} · Avg €${stats.lens?.avg_price || 'N/A'}</small>
             </div>
         `;
-        
-        // Create price chart
-        createPriceChart();
-        
+
+        // Render earnings cards
+        const earningsContainer = document.getElementById('earnings-container');
+        const earningsOrder = ['gpu', 'cpu', 'ssd', 'ram', 'psu', 'case', 'lens'];
+        const earningsColors = {
+            'gpu': '#667eea',
+            'cpu': '#764ba2',
+            'ssd': '#f39c12',
+            'ram': '#e74c3c',
+            'psu': '#27ae60',
+            'case': '#9b59b6',
+            'lens': '#e91e63'
+        };
+
+        let earningsHTML = '';
+        earningsOrder.forEach(category => {
+            const data = earnings[category];
+            if (data && data.opportunity > 0) {
+                const avgPrice = data.avg_price || 0;
+                const listingCount = data.listing_count || 0;
+                const opportunity = data.opportunity || 0;
+                const color = earningsColors[category] || '#667eea';
+                const label = category.toUpperCase();
+
+                earningsHTML += `
+                    <div class="stat-card earnings-card" style="border-left-color: ${color};">
+                        <h3>${label} ${t('Potential Earnings')}</h3>
+                        <div class="earnings">${formatCurrency(opportunity)}</div>
+                        <small>${listingCount} ${t('listings')} · ${t('avg')} €${avgPrice.toFixed(2)} · ${t('spread')} €${(data.max_price - data.min_price).toFixed(2)}</small>
+                    </div>
+                `;
+            }
+        });
+
+        if (earningsHTML === '') {
+            earningsContainer.innerHTML = `<div class="no-data" style="grid-column: 1/-1;">${t('No earnings data available')}</div>`;
+        } else {
+            earningsContainer.innerHTML = earningsHTML;
+        }
     } catch (error) {
-        document.getElementById('stats-container').innerHTML = 
-            `<div class="error">Failed to load statistics</div>`;
+        document.getElementById('stats-container').innerHTML = `<div class="error">${t('Failed to load statistics')}: ${error.message}</div>`;
+        document.getElementById('earnings-container').innerHTML = `<div class="error">${t('Failed to load earnings data')}</div>`;
     }
 }
 
-async function createPriceChart() {
-    const ctx = document.getElementById('priceChart').getContext('2d');
-    
-    // Fetch GPU data for chart
-    const response = await fetch('/api/gpu-models');
-    const models = await response.json();
-    
-    // Sort by avg price and take top 10
-    const topModels = models.slice(0, 10);
-    
-    new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: topModels.map(m => `${m.vendor} ${m.model}`.substring(0, 25)),
-            datasets: [{
-                label: 'Average Price (€)',
-                data: topModels.map(m => m.avg_price),
-                backgroundColor: 'rgba(102, 126, 234, 0.8)',
-                borderColor: 'rgba(102, 126, 234, 1)',
-                borderWidth: 1
-            }, {
-                label: 'Min Price (€)',
-                data: topModels.map(m => m.min_price),
-                backgroundColor: 'rgba(39, 174, 96, 0.6)',
-                borderColor: 'rgba(39, 174, 96, 1)',
-                borderWidth: 1
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                legend: { position: 'top' }
-            },
-            scales: {
-                y: { beginAtZero: true }
-            }
+// Load price trends chart
+let priceChart = null;
+
+async function loadPriceTrends() {
+    try {
+        const timeFilter = document.getElementById('trendTimeFilter').value;
+        const categoryFilter = document.getElementById('trendCategoryFilter').value;
+
+        const response = await fetch(`/api/price-trends?time=${timeFilter}&category=${categoryFilter}`);
+        const data = await response.json();
+
+        const ctx = document.getElementById('priceChart').getContext('2d');
+
+        if (priceChart) {
+            priceChart.destroy();
         }
-    });
+
+        const datasets = data.datasets || [];
+        if (datasets.length === 0) {
+            document.getElementById('priceTrendsLegend').innerHTML = `<div class="no-data">${t('No price trend data available for the selected filters')}</div>`;
+            return;
+        }
+
+        const colors = ['#667eea', '#764ba2', '#f39c12', '#e74c3c', '#27ae60', '#9b59b6', '#e91e63'];
+        datasets.forEach((dataset, index) => {
+            dataset.borderColor = colors[index % colors.length];
+            dataset.backgroundColor = colors[index % colors.length] + '20';
+            dataset.fill = false;
+            dataset.tension = 0.4;
+        });
+
+        priceChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: data.labels || [],
+                datasets: datasets
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                    title: {
+                        display: false
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            callback: function(value) {
+                                return '€' + value;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // Update legend with trend info
+        let legendHTML = '';
+        if (data.trend_info) {
+            Object.entries(data.trend_info).forEach(([category, info]) => {
+                const trendClass = info.direction === 'up' ? 'trend-up' : (info.direction === 'down' ? 'trend-down' : '');
+                const arrow = info.direction === 'up' ? '↑' : (info.direction === 'down' ? '↓' : '→');
+                legendHTML += `
+                    <span style="margin: 0 1rem;">
+                        <strong>${category.toUpperCase()}:</strong>
+                        <span class="trend-value ${trendClass}">${arrow} ${info.percentage.toFixed(1)}%</span>
+                        (${formatCurrency(info.change)})
+                    </span>
+                `;
+            });
+        }
+        document.getElementById('priceTrendsLegend').innerHTML = legendHTML || '';
+    } catch (error) {
+        document.getElementById('priceTrendsLegend').innerHTML = `<div class="error">${t('Failed to load price trends')}: ${error.message}</div>`;
+    }
 }
 
-// Load on page load
-document.addEventListener('DOMContentLoaded', loadStats);
+// Load everything on page load
+document.addEventListener('DOMContentLoaded', function() {
+    loadStats();
+    loadPriceTrends();
+});
 </script>
 {% endblock %}

@@ -1,0 +1,104 @@
+{
+  "columns": [
+    {
+      "id": "problems",
+      "title": "Problems",
+      "color": "#e74c3c",
+      "tasks": []
+    },
+    {
+      "id": "assignment",
+      "title": "Assignment",
+      "color": "#f39c12",
+      "tasks": [
+        {
+          "id": "T003",
+          "title": "test",
+          "page": "",
+          "category": "",
+          "priority": "High",
+          "fix": "",
+          "column": "assignment",
+          "created": "2026-06-21T15:31:32.433267",
+          "updated": "2026-06-21T15:31:32.433267",
+          "linked_tasks": [
+            {
+              "task_id": "T092",
+              "relationship_type": "similar_to"
+            }
+          ],
+          "linked_task_id": "T092",
+          "relationship_type": "similar_to"
+        }
+      ]
+    },
+    {
+      "id": "talking",
+      "title": "Talking",
+      "color": "#9b59b6",
+      "tasks": [
+        {
+          "id": "T001",
+          "title": "Setup OpenClaw Project Board",
+          "page": "General",
+          "category": "DevOps",
+          "priority": "High",
+          "column": "talking",
+          "created": "2026-06-17T23:30:00",
+          "updated": "2026-06-17T23:30:00"
+        },
+        {
+          "id": "T002",
+          "title": "RAM price calculation with outlier filtering",
+          "page": "RAM",
+          "category": "Backend",
+          "priority": "High",
+          "fix": "Use percentile-based filtering (10th-90th) with bounds checking",
+          "column": "talking",
+          "created": "2026-06-17T22:00:00",
+          "updated": "2026-06-17T22:30:00"
+        }
+      ]
+    },
+    {
+      "id": "progress",
+      "title": "In Progress",
+      "color": "#3498db",
+      "tasks": []
+    },
+    {
+      "id": "future",
+      "title": "Future Box",
+      "color": "#34495e",
+      "tasks": []
+    },
+    {
+      "id": "solved",
+      "title": "Solved",
+      "color": "#27ae60",
+      "tasks": []
+    }
+  ],
+  "next_id": 4,
+  "categories": [
+    "Backend",
+    "Frontend",
+    "UI/UX",
+    "Database",
+    "API",
+    "Scraper",
+    "DevOps",
+    "Documentation"
+  ],
+  "pages": [
+    "CPU",
+    "GPU",
+    "RAM",
+    "SSD",
+    "Motherboards",
+    "Monitors",
+    "PSU",
+    "Cases",
+    "General"
+  ]
+}

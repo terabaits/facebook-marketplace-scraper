@@ -12,6 +12,7 @@ services:
       - pg_data:/var/lib/postgresql/data
       - ./src/database/schema.sql:/docker-entrypoint-initdb.d/01_schema.sql
       - ./src/database/import_reference.sql:/docker-entrypoint-initdb.d/02_import.sql
+      - ./src/database/import_ram.sql:/docker-entrypoint-initdb.d/03_import_ram.sql
       - ./data:/data
     ports:
       - "5433:5432"

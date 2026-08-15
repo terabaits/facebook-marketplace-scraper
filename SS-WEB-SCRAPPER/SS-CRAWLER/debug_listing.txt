@@ -1,0 +1,11 @@
+Listing content:
+- Title: Canon Ef 24-70 f2.8
+- Description contains: "Canon EF 24-70mm f/2.8L II USM"
+- Modelis: Ef 24-70 f2.8 (no II!)
+- "Pardodu jo iegadajos RF versiju" = "Selling because I bought the RF version"
+
+The issue: Description mentions "II USM" which triggers Gen 2 detection, but the actual product (Modelis field) says "Ef 24-70 f2.8" without II.
+
+The seller is describing what they bought (RF version) but the actual item for sale is the older EF lens.
+
+Solution: Need to prioritize the Modelis field (model) over general description text for generation detection.

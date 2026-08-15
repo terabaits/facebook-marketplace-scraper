@@ -1,0 +1,21 @@
+            setTimeout(() => {
+                loadComputers();
+                document.getElementById('computer-modal').classList.remove('active');
+            }, 1500);
+        } else {
+            alert('Error: ' + (data.error || 'Failed to flag listing'));
+        }
+    } catch (error) {
+        console.error('Error flagging listing:', error);
+        alert('Failed to flag listing. See console for details.');
+    }
+}
+
+// Toggle flag section collapse
+function toggleFlagSection() {
+    const section = document.getElementById('flag-section');
+    const btn = document.getElementById('flag-toggle-btn');
+    const content = document.getElementById('flag-section-content');
+    
+    if (section.classList.contains('collapsed')) {
+        section.classList.remove('collapsed');

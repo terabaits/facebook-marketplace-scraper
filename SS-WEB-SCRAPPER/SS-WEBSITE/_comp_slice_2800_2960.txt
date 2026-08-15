@@ -1,0 +1,161 @@
+.info-value.mono {
+    font-family: monospace;
+    font-size: 0.85rem;
+    user-select: all;
+}
+
+.status-badge {
+    padding: 0.25rem 0.75rem;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.status-badge.active {
+    background: #e8f5e9;
+    color: #27ae60;
+}
+
+.status-badge.inactive {
+    background: #ffebee;
+    color: #e74c3c;
+}
+
+.toggle-label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+}
+
+.toggle-label input {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+}
+
+.admin-select {
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+    font-size: 0.875rem;
+    transition: all 0.2s ease;
+}
+
+.admin-select.success {
+    background: #27ae60;
+    color: white;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    margin-top: 1rem;
+}
+
+/* Description Box */
+.description-box {
+    background: var(--section-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 8px;
+    padding: 0.75rem;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.description-content {
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: var(--text-color);
+    white-space: pre-wrap;
+}
+
+/* System Specs */
+.specs-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+}
+
+.spec-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5rem;
+    background: var(--section-bg);
+    border-radius: 6px;
+    font-size: 0.9rem;
+}
+
+.no-data {
+    text-align: center;
+    color: #888;
+    padding: 2rem;
+}
+
+.no-components {
+    color: #999;
+    font-style: italic;
+}
+
+/* Listing Badges */
+.badge {
+    display: inline-block;
+    padding: 0.25rem 0.5rem;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    margin: 0.125rem;
+}
+
+.badge-cpu {
+    background: #667eea;
+    color: white;
+}
+
+.badge-gpu {
+    background: #764ba2;
+    color: white;
+}
+
+.badge-ram {
+    background: #27ae60;
+    color: white;
+}
+
+.badge-ssd {
+    background: #3498db;
+    color: white;
+}
+
+/* Listing Image */
+.listing-image-wrapper {
+    position: relative;
+    display: inline-block;
+}
+
+.listing-thumb {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.listing-thumb-placeholder {
+    width: 80px;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--section-bg);
+    border-radius: 8px;
+    font-size: 2rem;
+}
+
+.prebuilt-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;

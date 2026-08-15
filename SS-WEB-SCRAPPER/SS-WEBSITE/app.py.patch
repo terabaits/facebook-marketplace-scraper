@@ -1,0 +1,10 @@
+--- a/app.py
++++ b/app.py
+@@ -5729,6 +5729,7 @@ def get_psus():
+             l.first_seen_at,
+             l.is_active,
+             l.image_url,
++            l.local_image_path,
+             l.listing_url,
+             l.psu_confidence_score,
+             l.psu_match_method,

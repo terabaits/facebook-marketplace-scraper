@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Computer Listings - SS-Crawler Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #1a1a2e;
+            color: #eaeaea;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px 0;
+            margin-bottom: 30px;
+            border-radius: 10px;
+        }
+        
+        h1 {
+            text-align: center;
+            font-size: 2rem;
+        }
+        
+        .stats-bar {
+            display: flex;
+            justify-content: space-around;
+            background: #252542;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .stat-item {
+            text-align: center;
+            padding: 10px;
+        }
+        
+        .stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #667eea;
+        }
+        
+        .stat-label {
+            color: #888;
+            font-size: 0.9rem;
+        }
+        
+        .controls {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        
+        input, button, select {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+        
+        input {
+            background: #252542;
+            color: #eaeaea;
+            flex: 1;
+            min-width: 200px;
+        }
+        
+        nav a:hover {
+            background: #667eea !important;
+        }
+        
+        button {
+            background: #667eea;
+            color: white;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        button:hover {
+            background: #5568d3;
+        }
+        
+        button.flag-btn {
+            background: #e74c3c;
+        }
+        
+        button.flag-btn:hover {
+            background: #c0392b;
+        }
+        
+        .listings-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #252542;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        .listings-table th {
+            background: #667eea;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+        
+        .listings-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #3a3a5c;
+        }
+        
+        .listings-table tr:hover {
+            background: #2e2e50;
+            cursor: pointer;
+        }
+        
+        .listings-table tr.flagged {
+            background: rgba(231, 76, 60, 0.2);
+        }
+        
+        .component-badges {
+            display: flex;
+            gap: 5px;
+            flex-wrap: wrap;
+        }
+        
+        .badge {
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+        
+        .badge-cpu { background: #3498db; }
+        .badge-gpu { background: #e74c3c; }
+        .badge-ram { background: #2ecc71; }
+        .badge-ssd { background: #f39c12; }
+        .badge-psu { background: #9b59b6; }
+        .badge-case { background: #1abc9c; }
+        
+        .price {
+            font-weight: bold;
+            color: #2ecc71;
+        }
+        
+        .price-diff-positive {
+            color: #e74c3c;
+        }
+        
+        .price-diff-negative {
+            color: #2ecc71;
+        }
+        
+        .confidence {
+            font-size: 0.85rem;
+        }
+        
+        .confidence-high { color: #2ecc71; }
+        .confidence-medium { color: #f39c12; }
+        .confidence-low { color: #e74c3c; }
+        
+        /* Modal */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            overflow-y: auto;
+        }
+        
+        .modal {
+            background: #252542;
+            max-width: 900px;
+            margin: 50px auto;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        .modal-header {
+            background: #667eea;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .modal-body {
+            padding: 20px;
+        }
+        
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: white;
+        }
+        
+        .component-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .component-card {
+            background: #1a1a2e;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .component-card h4 {
+            margin-bottom: 10px;
+            color: #667eea;
+        }
+        
+        .component-card p {
+            margin: 5px 0;
+            font-size: 0.9rem;
+        }
+        
+        .component-card .price {
+            font-size: 1.1rem;
+            margin-top: 10px;
+        }
+        
+        .totals-section {
+            margin-top: 20px;
+            padding: 20px;
+            background: #1a1a2e;
+            border-radius: 8px;
+        }
+        
+        .totals-section h3 {
+            margin-bottom: 15px;
+            color: #667eea;
+        }
+        
+        .totals-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #3a3a5c;
+        }
+        
+        .totals-row:last-child {
+            border-bottom: none;
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 2px solid #667eea;
+        }
+        
+        .flag-section {
+            margin-top: 20px;
+            padding: 20px;
+            background: #1a1a2e;
+            border-radius: 8px;
+        }
+        
+        .flag-section h3 {
+            margin-bottom: 15px;
+            color: #e74c3c;
+        }
+        
+        .flag-section textarea {
+            width: 100%;
+            min-height: 100px;
+            padding: 10px;
+            background: #252542;
+            border: 1px solid #3a3a5c;
+            color: #eaeaea;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #888;
+        }
+        
+        .error {
+            background: #e74c3c;
+            color: white;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>💻 Computer Listings Dashboard</h1>
+        </header>
+        
+        <nav style="background: #252542; padding: 15px; margin-bottom: 20px; border-radius: 10px; text-align: center;">
+            <a href="/" style="color: #eaeaea; text-decoration: none; padding: 10px 20px; margin: 0 5px; border-radius: 5px; display: inline-block; transition: background 0.3s;">🏠 Home</a>
+            <a href="/computers" style="background: #667eea; color: #eaeaea; text-decoration: none; padding: 10px 20px; margin: 0 5px; border-radius: 5px; display: inline-block;">💻 Computers</a>
+            <a href="/cameras" style="color: #eaeaea; text-decoration: none; padding: 10px 20px; margin: 0 5px; border-radius: 5px; display: inline-block; transition: background 0.3s;">📷 Cameras</a>
+        </nav>
+        
+        <div class="stats-bar" id="statsBar">
+            <div class="stat-item">
+                <div class="stat-value" id="totalListings">-</div>
+                <div class="stat-label">Total Listings</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="withCpu">-</div>
+                <div class="stat-label">With CPU</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="withGpu">-</div>
+                <div class="stat-label">With GPU</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="flaggedCount">-</div>
+                <div class="stat-label">Flagged</div>
+            </div>
+        </div>
+        
+        <div class="controls">
+            <input type="text" id="searchInput" placeholder="Search listings...">
+            <button onclick="searchListings()">Search</button>
+            <button onclick="loadListings()">Refresh</button>
+            <button onclick="showFlagged()">Show Flagged</button>
+            <select id="limitSelect" onchange="loadListings()">
+                <option value="50">50 per page</option>
+                <option value="100" selected>100 per page</option>
+                <option value="200">200 per page</option>
+            </select>
+        </div>
+        
+        <div id="errorMessage"></div>
+        
+        <table class="listings-table">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Price</th>
+                    <th>Components</th>
+                    <th>Match Quality</th>
+                    <th>Price Diff</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="listingsTableBody">
+                <tr><td colspan="6" class="loading">Loading...</td></tr>
+            </tbody>
+        </table>
+        
+        <div class="pagination" id="pagination"></div>
+    </div>
+    
+    <!-- Detail Modal -->
+    <div class="modal-overlay" id="detailModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 id="modalTitle">Listing Details</h2>
+                <button class="modal-close" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-body" id="modalBody">
+                <!-- Content loaded dynamically -->
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        let currentOffset = 0;
+        let currentLimit = 100;
+        
+        // Load stats on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            loadStats();
+            loadListings();
+        });
+        
+        async function loadStats() {
+            try {
+                const response = await fetch('/api/computers/stats');
+                const data = await response.json();
+                
+                if (data.success) {
+                    document.getElementById('totalListings').textContent = data.stats.total;
+                    document.getElementById('withCpu').textContent = data.stats.with_cpu;
+                    document.getElementById('withGpu').textContent = data.stats.with_gpu;
+                    document.getElementById('flaggedCount').textContent = data.stats.flagged;
+                }
+            } catch (error) {
+                console.error('Error loading stats:', error);
+            }
+        }
+        
+        async function loadListings(offset = 0) {
+            currentOffset = offset;
+            currentLimit = parseInt(document.getElementById('limitSelect').value);
+            
+            const tbody = document.getElementById('listingsTableBody');
+            tbody.innerHTML = '<tr><td colspan="6" class="loading">Loading...</td></tr>';
+            
+            try {
+                const response = await fetch(`/api/computers?limit=${currentLimit}&offset=${offset}`);
+                const data = await response.json();
+                
+                if (data.success) {
+                    displayListings(data.listings);
+                    updatePagination(data.count);
+                } else {
+                    showError(data.error);
+                }
+            } catch (error) {
+                showError('Failed to load listings');
+            }
+        }
+        
+        function displayListings(listings) {
+            const tbody = document.getElementById('listingsTableBody');
+            tbody.innerHTML = '';
+            
+            listings.forEach(listing => {
+                const row = document.createElement('tr');
+                if (listing.is_flagged) {
+                    row.classList.add('flagged');
+                }
+                
+                // Component badges
+                const components = [];
+                if (listing.matched_cpu_id) components.push({type: 'cpu', label: 'CPU'});
+                if (listing.matched_gpu_id) components.push({type: 'gpu', label: 'GPU'});
+                if (listing.matched_ram_id) components.push({type: 'ram', label: 'RAM'});
+                // SSD1 - show if matched (including generic -1)
+                if (listing.matched_ssd_id) components.push({type: 'ssd', label: 'SSD'});
+                // SSD2 - show if matched
+                if (listing.matched_ssd2_id) components.push({type: 'ssd', label: 'SSD2'});
+                // SSD3 - show if matched
+                if (listing.matched_ssd3_id) components.push({type: 'ssd', label: 'SSD3'});
+                if (listing.matched_psu_id || listing.fallback_psu_wattage) components.push({type: 'psu', label: 'PSU'});
+                if (listing.matched_case_id || listing.fallback_case_price) components.push({type: 'case', label: 'Case'});
+                
+                const badgesHtml = components.map(c => 
+                    `<span class="badge badge-${c.type}">${c.label}</span>`
+                ).join('');
+                
+                // Calculate average confidence
+                const confidences = [
+                    listing.cpu_confidence,
+                    listing.gpu_confidence,
+                    listing.ram_confidence,
+                    listing.ssd_confidence
+                ].filter(c => c !== null);
+                
+                const avgConf = confidences.length > 0 
+                    ? confidences.reduce((a, b) => a + b, 0) / confidences.length 
+                    : 0;
+                
+                let confClass = 'confidence-low';
+                if (avgConf >= 0.8) confClass = 'confidence-high';
+                else if (avgConf >= 0.6) confClass = 'confidence-medium';
+                
+                // Price difference
+                let priceDiffHtml = '-';
+                if (listing.price_difference_eur !== null) {
+                    const diffClass = listing.price_difference_eur > 0 ? 'price-diff-positive' : 'price-diff-negative';
+                    const sign = listing.price_difference_eur > 0 ? '+' : '';
+                    priceDiffHtml = `<span class="${diffClass}">${sign}€${listing.price_difference_eur.toFixed(2)}</span>`;
+                }
+                
+                row.innerHTML = `
+                    <td>${escapeHtml(listing.title.substring(0, 60))}${listing.title.length > 60 ? '...' : ''}</td>
+                    <td class="price">€${listing.price_eur.toFixed(2)}</td>
+                    <td><div class="component-badges">${badgesHtml}</div></td>
+                    <td class="confidence ${confClass}">${(avgConf * 100).toFixed(0)}%</td>
+                    <td>${priceDiffHtml}</td>
+                    <td>
+                        <button onclick="showDetails('${listing.listing_id}')">Details</button>
+                        <button class="flag-btn" onclick="flagListing('${listing.listing_id}')">Flag</button>
+                    </td>
+                `;
+                
+                row.onclick = (e) => {
+                    if (!e.target.tagName === 'BUTTON') {
+                        showDetails(listing.listing_id);
+                    }
+                };
+                
+                tbody.appendChild(row);
+            });
+        }
+        
+        async function showDetails(listingId) {
+            const modal = document.getElementById('detailModal');
+            const body = document.getElementById('modalBody');
+            
+            body.innerHTML = '<div class="loading">Loading...</div>';
+            modal.style.display = 'block';
+            
+            try {
+                const response = await fetch(`/api/computers/${listingId}`);
+                const data = await response.json();
+                
+                if (data.success) {
+                    renderDetailModal(data);
+                } else {
+                    body.innerHTML = `<div class="error">Error: ${data.error}</div>`;
+                }
+            } catch (error) {
+                body.innerHTML = '<div class="error">Failed to load details</div>';
+            }
+        }
+        
+        function renderDetailModal(data) {
+            const listing = data.listing;
+            const breakdown = data.breakdown;
+            
+            document.getElementById('modalTitle').textContent = 'Listing Details';
+            
+            let componentsHtml = '';
+            const components = [
+                {key: 'cpu', name: 'CPU', color: '#3498db'},
+                {key: 'gpu', name: 'GPU', color: '#e74c3c'},
+                {key: 'ram', name: 'RAM', color: '#2ecc71'},
+                {key: 'ssd', name: 'SSD', color: '#f39c12'},
+                {key: 'ssd2', name: 'SSD 2', color: '#f39c12'},
+                {key: 'ssd3', name: 'SSD 3', color: '#f39c12'},
+                {key: 'psu', name: 'PSU', color: '#9b59b6'},
+                {key: 'case', name: 'Case', color: '#1abc9c'},
+                {key: 'motherboard', name: 'Motherboard', color: '#e67e22'}
+            ];
+            
+            componentsHtml = components.map(comp => {
+                const compData = breakdown?.[comp.key];
+                const avgPrice = breakdown?.[`${comp.key}_avg_price`] || breakdown?.[`${comp.key}_price`];
+                
+                if (!compData) return '';
+                
+                const details = [];
+                if (compData.model || compData.name) details.push(compData.model || compData.name);
+                if (compData.processor_number) details.push(compData.processor_number);
+                if (compData.vendor) details.push(compData.vendor);
+                if (compData.speed) details.push(compData.speed);
+                if (compData.wattage) details.push(`${compData.wattage}W`);
+                if (compData.capacity_gb) details.push(`${compData.capacity_gb}GB`);
+                
+                return `
+                    <div class="component-card" style="border-left-color: ${comp.color}">
+                        <h4>${comp.name}</h4>
+                        <p>${details.join(' - ') || 'Component detected'}</p>
+                        ${avgPrice ? `<p class="price">Avg Price: €${avgPrice.toFixed(2)}</p>` : ''}
+                    </div>
+                `;
+            }).join('');
+            
+            let totalsHtml = '';
+            if (breakdown) {
+                totalsHtml = `
+                    <div class="totals-section">
+                        <h3>Price Breakdown</h3>
+                        ${breakdown.detected_total ? `
+                            <div class="totals-row">
+                                <span>Detected Components Total:</span>
+                                <span>€${breakdown.detected_total.toFixed(2)}</span>
+                            </div>
+                        ` : ''}
+                        <div class="totals-row">
+                            <span>Fallback Components Total:</span>
+                            <span>€${breakdown.fallback_total.toFixed(2)}</span>
+                        </div>
+                        <div class="totals-row">
+                            <span>Grand Total (Estimated):</span>
+                            <span>€${breakdown.grand_total.toFixed(2)}</span>
+                        </div>
+                        <div class="totals-row">
+                            <span>Listing Price:</span>
+                            <span>€${listing.price_eur.toFixed(2)}</span>
+                        </div>
+                        <div class="totals-row">
+                            <span>Price Difference:</span>
+                            <span class="${breakdown.price_difference > 0 ? 'price-diff-positive' : 'price-diff-negative'}">
+                                ${breakdown.price_difference > 0 ? '+' : ''}€${breakdown.price_difference.toFixed(2)}
+                            </span>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            document.getElementById('modalBody').innerHTML = `
+                <p><strong>Title:</strong> ${escapeHtml(listing.title)}</p>
+                <p><strong>Price:</strong> €${listing.price_eur.toFixed(2)}</p>
+                <p><strong>Location:</strong> ${escapeHtml(listing.seller_location || 'N/A')}</p>
+                <p><strong>URL:</strong> <a href="${listing.listing_url}" target="_blank">View on ss.com</a></p>
+                
+                <h3 style="margin-top: 20px; color: #667eea;">Components</h3>
+                <div class="component-grid">
+                    ${componentsHtml}
+                </div>
+                
+                ${totalsHtml}
+                
+                <div class="flag-section">
+                    <h3>Flag for Review</h3>
+                    <textarea id="flagComment" placeholder="Enter reason for flagging..."></textarea>
+                    <button class="flag-btn" onclick="submitFlag('${listing.listing_id}')">Flag Listing</button>
+                </div>
+            `;
+        }
+        
+        async function submitFlag(listingId) {
+            const comment = document.getElementById('flagComment').value;
+            
+            try {
+                const response = await fetch(`/api/computers/${listingId}/flag`, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({
+                        is_flagged: true,
+                        flag_reason: 'Manual review',
+                        flag_comment: comment
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    alert('Listing flagged successfully');
+                    closeModal();
+                    loadListings(currentOffset);
+                    loadStats();
+                } else {
+                    alert('Failed to flag listing: ' + data.error);
+                }
+            } catch (error) {
+                alert('Error flagging listing');
+            }
+        }
+        
+        async function flagListing(listingId) {
+            const reason = prompt('Enter reason for flagging:');
+            if (!reason) return;
+            
+            try {
+                const response = await fetch(`/api/computers/${listingId}/flag`, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({
+                        is_flagged: true,
+                        flag_reason: reason,
+                        flag_comment: reason
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    loadListings(currentOffset);
+                    loadStats();
+                } else {
+                    alert('Failed to flag listing');
+                }
+            } catch (error) {
+                alert('Error flagging listing');
+            }
+        }
+        
+        async function searchListings() {
+            const query = document.getElementById('searchInput').value.trim();
+            if (!query) return;
+            
+            const tbody = document.getElementById('listingsTableBody');
+            tbody.innerHTML = '<tr><td colspan="6" class="loading">Searching...</td></tr>';
+            
+            try {
+                const response = await fetch(`/api/computers/search?q=${encodeURIComponent(query)}`);
+                const data = await response.json();
+                
+                if (data.success) {
+                    displayListings(data.listings);
+                    document.getElementById('pagination').innerHTML = '';
+                } else {
+                    showError(data.error);
+                }
+            } catch (error) {
+                showError('Search failed');
+            }
+        }
+        
+        async function showFlagged() {
+            const tbody = document.getElementById('listingsTableBody');
+            tbody.innerHTML = '<tr><td colspan="6" class="loading">Loading flagged listings...</td></tr>';
+            
+            try {
+                const response = await fetch('/api/computers/flagged');
+                const data = await response.json();
+                
+                if (data.success) {
+                    displayListings(data.listings);
+                    document.getElementById('pagination').innerHTML = '';
+                } else {
+                    showError(data.error);
+                }
+            } catch (error) {
+                showError('Failed to load flagged listings');
+            }
+        }
+        
+        function updatePagination(count) {
+            const total = Math.ceil(count / currentLimit);
+            const current = Math.floor(currentOffset / currentLimit) + 1;
+            
+            let html = '';
+            if (current > 1) {
+                html += `<button onclick="loadListings(${currentOffset - currentLimit})">Previous</button>`;
+            }
+            html += `<span>Page ${current}</span>`;
+            if (count === currentLimit) {
+                html += `<button onclick="loadListings(${currentOffset + currentLimit})">Next</button>`;
+            }
+            
+            document.getElementById('pagination').innerHTML = html;
+        }
+        
+        function closeModal() {
+            document.getElementById('detailModal').style.display = 'none';
+        }
+        
+        function showError(message) {
+            document.getElementById('errorMessage').innerHTML = `<div class="error">${escapeHtml(message)}</div>`;
+            setTimeout(() => {
+                document.getElementById('errorMessage').innerHTML = '';
+            }, 5000);
+        }
+        
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+        
+        // Close modal when clicking outside
+        document.getElementById('detailModal').onclick = (e) => {
+            if (e.target.id === 'detailModal') {
+                closeModal();
+            }
+        };
+        
+        // Search on Enter key
+        document.getElementById('searchInput').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                searchListings();
+            }
+        });
+    </script>
+</body>
+</html>

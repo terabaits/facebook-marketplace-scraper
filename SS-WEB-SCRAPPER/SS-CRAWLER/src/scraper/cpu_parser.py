@@ -19,7 +19,8 @@ class CPUListingParser:
         'title': 'h2',
         'price': '.ads_price',
         'description': '#msg_div_msg',
-        'image': 'img.pic_thumbnail',
+        'image_full': 'img#msg_img_img',
+        'image_thumb': 'img.pic_thumbnail',
         'date': 'td.msg_footer',
         'location': 'td.ads_contacts',
         'brand_row': 'td.ads_opt_name:-soup-contains("Marka")',
@@ -170,21 +171,58 @@ class CPUListingParser:
             if 'Vieta' in label:
                 value_td = td.find_next_sibling('td', class_='ads_contacts')
                 if value_td:
-                    return value_td.get_text(strip=True)
+                    location = value_td.get_text(strip=True)
+                    # Skip online stores
+                    if 'veikals' in location.lower() or 'interneta' in location.lower():
+                        logger.info(f"Skipping online store listing: {location}")
+                        return None
+                    # Skip if location looks like a brand name (not a place)
+                    brand_names = ['gigabyte', 'asus', 'msi', 'evga', 'sapphire', 'xfx', 'palit', 'zotac', 
+                                   'nvidia', 'amd', 'intel', 'kingston', 'crucial', 'samsung', 'wd', 
+                                   'seagate', 'toshiba', 'corsair', 'cooler master', 'be quiet', 
+                                   'seasonic', 'thermaltake', 'phanteks', 'nzxt', 'fractal']
+                    if any(brand in location.lower() for brand in brand_names):
+                        logger.info(f"Skipping brand name as location: {location}")
+                        return None
+                    return location
         return None
     
     def _extract_image(self) -> Optional[str]:
-        """Extract main image URL."""
-        img = self.soup.select_one(self.SELECTORS['image'])
-        if img:
-            src = img.get('src') or img.get('data-src')
+        """Extract main image URL. Prefer the full-size gallery image, fall back to thumbnail."""
+        # SS.com listing pages link to an 800 px gallery image via the anchor around
+        # the thumbnail. Look for a parent <a> href that points to the .800.jpg version.
+        thumb = self.soup.select_one(self.SELECTORS['image_thumb'])
+        if thumb:
+            parent_a = thumb.find_parent('a', href=True)
+            if parent_a:
+                href = parent_a['href']
+                if '.800.' in href or '/gallery/' in href:
+                    return self._normalize_image_url(href)
+
+        # If no full-size anchor exists, derive the full image from the thumbnail URL.
+        # SS.com thumbnails end with .t.jpg and the full gallery image uses .800.jpg.
+        if thumb:
+            src = thumb.get('src') or thumb.get('data-src')
             if src:
-                if src.startswith('//'):
-                    return f"https:{src}"
-                elif src.startswith('/'):
-                    return f"https://www.ss.com{src}"
-                return src
+                full_src = re.sub(r'\.t\.(jpe?g|png|webp|gif)$', r'.800.\1', src, flags=re.IGNORECASE)
+                return self._normalize_image_url(full_src)
+
+        # Fallback: look for any full-size gallery image by id.
+        for selector in (self.SELECTORS['image_full'], self.SELECTORS['image_thumb']):
+            img = self.soup.select_one(selector)
+            if img:
+                src = img.get('src') or img.get('data-src')
+                if src:
+                    return self._normalize_image_url(src)
         return None
+
+    def _normalize_image_url(self, src: str) -> str:
+        """Normalize a relative image URL to absolute."""
+        if src.startswith('//'):
+            return f"https:{src}"
+        if src.startswith('/'):
+            return f"https://www.ss.com{src}"
+        return src
     
     def parse(self) -> Optional[Listing]:
         """
@@ -209,12 +247,23 @@ class CPUListingParser:
             logger.error(f"No title found for {self.url}")
             return None
         
+        # Skip buying listings (Pērku = "I buy")
+        if 'pērku' in title.lower() or 'perku' in title.lower():
+            logger.info(f"Skipping buying listing: {title}")
+            return None
+        
         price = self._extract_price()
         if price is None:
             logger.warning(f"No price found for {self.url}")
         
         date_posted = self._extract_date()
         location = self._extract_location()
+        
+        # Skip online store listings
+        if location is None:
+            logger.info(f"Skipping online store listing: {self.url}")
+            return None
+        
         image_url = self._extract_image()
         
         # Extract base frequency for CPU matching

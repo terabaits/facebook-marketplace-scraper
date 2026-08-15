@@ -14,15 +14,15 @@
             <label>
                 Sort:
                 <select id="sort-by" onchange="loadCameras()">
-                    <option value="date_posted">Date Posted</option>
-                    <option value="price">Price</option>
+                    <option value="date_posted">{{ t('Date Posted') }}</option>
+                    <option value="price">{{ t('Price') }}</option>
                 </select>
             </label>
             <label>
                 Order:
                 <select id="sort-order" onchange="loadCameras()">
-                    <option value="desc">Descending</option>
-                    <option value="asc">Ascending</option>
+                    <option value="desc">{{ t('Descending') }}</option>
+                    <option value="asc">{{ t('Ascending') }}</option>
                 </select>
             </label>
             <label>
@@ -49,7 +49,7 @@
     <!-- Stats Panel -->
     <div class="stats-grid" style="margin-bottom: 2rem;">
         <div class="stat-card">
-            <h3>Total Listings</h3>
+            <h3>{{ t('Total Listings') }}</h3>
             <div class="stat-value" id="stat-total">-</div>
         </div>
         <div class="stat-card">
@@ -57,7 +57,7 @@
             <div class="stat-value" id="stat-active">-</div>
         </div>
         <div class="stat-card">
-            <h3>Avg Price</h3>
+            <h3>{{ t('Avg Price') }}</h3>
             <div class="stat-value" id="stat-avg-price">-</div>
         </div>
         <div class="stat-card">
@@ -208,6 +208,28 @@ async function onBrandFilterChange() {
 }
 
 // Load camera listings
+function computeCameraDealBadges(item) {
+    let dealBadge = '';
+    const isNewListing = item.is_new === true;
+
+    // NEW: server-side flag based on latest import date for camera category
+    if (isNewListing) {
+        dealBadge += `<span class="badge" style="background: #3b82f6; color: white; font-weight: bold;" title="New listing from current import!">🆕 NEW</span><br>`;
+    }
+
+    // STEAL: requires price_stats and ≥15% below model average. Suppressed for NEW listings.
+    if (!isNewListing && item.price_stats && item.price_stats.below_avg) {
+        const avgPrice = parseFloat(item.price_stats.avg);
+        const currentPrice = item.price_eur;
+        const savingsPct = ((avgPrice - currentPrice) / avgPrice * 100);
+        if (savingsPct >= 15) {
+            dealBadge += `<span class="badge" style="background: #dc2626; color: white; font-weight: bold;" title="Price is ${savingsPct.toFixed(0)}% below average!">🔥 STEAL</span><br>`;
+        }
+    }
+
+    return dealBadge;
+}
+
 async function loadCameras() {
     const activeOnly = document.getElementById('active-only').checked;
     const sortBy = document.getElementById('sort-by').value;
@@ -247,19 +269,22 @@ async function loadCameras() {
                     <tr>
                         <th>Image</th>
                         <th>Title</th>
-                        <th>Price</th>
+                        <th>{{ t('Price') }}</th>
                         <th>Camera</th>
                         <th>Sensor</th>
                         <th>Lenses</th>
                         <th>Location</th>
+                        <th>Market Position</th>
                         <th>Date</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
         `;
-        
+
         data.listings.forEach(item => {
+            const dealBadge = computeCameraDealBadges(item);
+
             const imageHtml = item.image_url 
                 ? `<img src="${item.image_url}" alt="Camera" class="listing-thumb" loading="lazy">`
                 : '<div class="listing-thumb-placeholder">📸</div>';
@@ -285,14 +310,17 @@ async function loadCameras() {
             const lensesCount = item.detected_lenses ? item.detected_lenses.length : 0;
             const lensesBadge = lensesCount > 0 
                 ? `<span class="badge" style="background: #e74c3c; color: white;">${lensesCount} lens${lensesCount > 1 ? 'es' : ''}</span>`
-                : '<span class="badge" style="background: #95a5a6;">No lenses</span>';
+                : '';
             
             const safeListingId = item.listing_id ? item.listing_id.replace(/'/g, "\\'").replace(/"/g, '&quot;') : '';
             const safeTitle = item.title ? item.title.replace(/'/g, "\\'").replace(/"/g, '&quot;') : '';
             
             html += `
                 <tr class="clickable" onclick="showCameraDetail('${safeListingId}')">
-                    <td class="listing-image-cell">${imageHtml}</td>
+                    <td class="listing-image-cell" style="position: relative;">
+                        ${dealBadge ? `<div style="position: absolute; top: 4px; right: 4px; display: flex; flex-direction: column; gap: 4px; z-index: 10;">${dealBadge}</div>` : ''}
+                        ${imageHtml}
+                    </td>
                     <td style="max-width: 300px;">
                         <div style="font-weight: 600; margin-bottom: 0.25rem;">${item.title || 'Untitled'}</div>
                         <div style="font-size: 0.75rem; color: #888;">${item.listing_id || ''}</div>
@@ -302,6 +330,19 @@ async function loadCameras() {
                     <td>${sensorBadge}</td>
                     <td>${lensesBadge}</td>
                     <td>${item.seller_location || 'N/A'}</td>
+                    <td style="text-align: center;">
+                        ${item.is_unicorn ? `
+                            <span style="background: linear-gradient(135deg, #ec4899, #8b5cf6); color: white; font-weight: bold; padding: 4px 8px; border-radius: 6px; font-size: 0.75rem; display: inline-block;" title="Only one listing of this camera model in all history!">🦄 UNICORN</span>
+                        ` : (item.price_stats ? `
+                            <div style="font-size: 0.85rem; color: var(--text-secondary);">
+                                Avg: €${item.price_stats.avg}<br>
+                                Range: €${item.price_stats.min} - €${item.price_stats.max}
+                            </div>
+                            <div style="margin-top: 0.25rem; width: 100%; height: 6px; background: var(--bar-bg); border-radius: 3px; overflow: hidden;" title="Price percentile: ${item.price_stats.percentile}%">
+                                <div style="height: 100%; background: linear-gradient(135deg, #667eea, #764ba2); width: ${item.price_stats.percentile}%;"></div>
+                            </div>
+                        ` : '<span style="font-size: 0.85rem; color: var(--text-secondary);">No price data</span>')}
+                    </td>
                     <td>${item.date_posted ? new Date(item.date_posted).toLocaleDateString() : 'N/A'}</td>
                     <td>
                         <button class="btn btn-small" onclick="event.stopPropagation(); showCameraDetail('${safeListingId}')">View</button>
@@ -311,7 +352,7 @@ async function loadCameras() {
                 </tr>
             `;
         });
-        
+
         html += '</tbody></table>';
         container.innerHTML = html;
         
@@ -343,17 +384,18 @@ async function showCameraDetail(listingId) {
         
         // Build lenses HTML with enhanced display
         let lensesHtml = '';
-        if (data.lenses && data.lenses.length > 0) {
+        const lenses = data.lenses || [];
+        if (lenses.length > 0) {
             lensesHtml = `
-                <h4 style="margin-top: 1.5rem; margin-bottom: 0.75rem;">🔭 Detected Compatible Lenses (${data.lenses.length})</h4>
+                <h4 style="margin-top: 1.5rem; margin-bottom: 0.75rem;">🔭 Detected Lenses (${lenses.length})</h4>
                 <div style="background: var(--card-bg); padding: 1rem; border-radius: 8px;">
                     <p style="font-size: 0.85rem; color: #888; margin-bottom: 1rem;">
-                        <em>Lenses detected from listing title and description that may be compatible with this camera.</em>
+                        <em>${lenses.some(l => l.match_source === 'database') ? 'Lenses linked from this listing. ' : ''}Lenses detected from listing title and description that may be compatible with this camera.</em>
                     </p>
                     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 0.75rem;">
-                        ${data.lenses.map(lens => `
+                        ${lenses.map(lens => `
                             <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 0.75rem; border-radius: 8px; color: white;">
-                                <div style="font-weight: 600; margin-bottom: 0.25rem;">${lens.name}</div>
+                                <div style="font-weight: 600; margin-bottom: 0.25rem;">${lens.slug ? `<a href="/lenses?model=${encodeURIComponent(lens.slug)}" target="_blank" style="color: white; text-decoration: underline;">${lens.name}</a>` : lens.name}</div>
                                 ${lens.brand ? `<div style="font-size: 0.75rem; opacity: 0.9;">Brand: ${lens.brand}</div>` : ''}
                                 ${lens.mount_type ? `<div style="font-size: 0.75rem; opacity: 0.9;">Mount: ${lens.mount_type}</div>` : ''}
                                 ${lens.focal_length ? `<div style="font-size: 0.75rem; opacity: 0.9;">Focal: ${lens.focal_length}</div>` : ''}
@@ -365,12 +407,8 @@ async function showCameraDetail(listingId) {
                 </div>
             `;
         } else {
-            lensesHtml = `
-                <h4 style="margin-top: 1.5rem; margin-bottom: 0.75rem;">🔭 Detected Lenses</h4>
-                <div style="background: var(--card-bg); padding: 1rem; border-radius: 8px; color: var(--text-secondary); border: 1px solid var(--border-color);">
-                    <p>No lenses detected in this listing.</p>
-                </div>
-            `;
+            // Camera body listings often don't include a lens; don't show a "not detected" block.
+            lensesHtml = '';
         }
         
         // Build cost analysis HTML
@@ -456,7 +494,7 @@ async function showCameraDetail(listingId) {
                                 <textarea id="flag-comment-${listing.listing_id}" placeholder="Enter reason (e.g., Scam, Wrong specs, Sold)" rows="1" oninput="autoResizeTextarea(this)" style="width: 100%; padding: 0.75rem; border: 2px solid #e74c3c; border-radius: 8px; margin-bottom: 0.75rem; font-family: inherit;"></textarea>
                                 <div class="flag-actions" style="display: flex; gap: 0.5rem; justify-content: flex-end;">
                                     <button class="btn btn-small" onclick="submitFlag('${listing.listing_id}')" style="background: #e74c3c;">Submit Flag</button>
-                                    <button class="btn btn-small btn-secondary" onclick="hideFlagSection('${listing.listing_id}')">Cancel</button>
+                                    <button class="btn btn-small btn-secondary" onclick="hideFlagSection('${listing.listing_id}')">{{ t('Cancel') }}</button>
                                 </div>
                             </div>
                         </div>
@@ -605,7 +643,7 @@ async function showFlagModal(listingId, title) {
                     </div>
                     
                     <div style="display: flex; gap: 0.5rem; justify-content: flex-end;">
-                        <button class="btn btn-small btn-secondary" onclick="closeFlagModal()">Cancel</button>
+                        <button class="btn btn-small btn-secondary" onclick="closeFlagModal()">{{ t('Cancel') }}</button>
                         <button class="btn btn-small" style="background: #e74c3c;" onclick="submitFlagFromModal('${safeId}')">Submit Flag</button>
                     </div>
                 </div>
@@ -699,16 +737,7 @@ document.getElementById('brand-filter').addEventListener('change', () => {
 
 <style>
 /* Camera page specific styles */
-.listing-thumb {
-    width: 80px;
-    height: 60px;
-    object-fit: cover;
-    border-radius: 6px;
-}
-
 .listing-thumb-placeholder {
-    width: 80px;
-    height: 60px;
     background: linear-gradient(135deg, #e74c3c 0%, #f39c12 100%);
     border-radius: 6px;
     display: flex;

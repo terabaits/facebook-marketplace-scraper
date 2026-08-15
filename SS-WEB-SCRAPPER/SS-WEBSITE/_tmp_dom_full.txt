@@ -1,0 +1,60 @@
+﻿2096         input.addEventListener('keypress', function(e) {
+2097             if (e.key === 'Enter') {
+2098                 addListingById();
+2099             }
+2100         });
+2101     }
+2102 }, 100);
+2103 
+2104 // Initialize on page load
+2105 document.addEventListener('DOMContentLoaded', function() {
+2106     // Restore saved toggle states
+2107     const savedPrebuiltOnly = localStorage.getItem('computersPrebuiltOnly');
+2108     const savedHidePrebuilt = localStorage.getItem('computersHidePrebuilt');
+2109     const savedSortBy = localStorage.getItem('computersSortBy');
+2110     const savedSortOrder = localStorage.getItem('computersSortOrder');
+2111 
+2112     if (savedPrebuiltOnly !== null) {
+2113         document.getElementById('prebuilt-only').checked = savedPrebuiltOnly === 'true';
+2114     }
+2115     if (savedHidePrebuilt !== null) {
+2116         document.getElementById('hide-prebuilt').checked = savedHidePrebuilt === 'true';
+2117     }
+2118     if (savedSortBy !== null) {
+2119         document.getElementById('sort-by').value = savedSortBy;
+2120     }
+2121     if (savedSortOrder !== null) {
+2122         document.getElementById('sort-order').value = savedSortOrder;
+2123     }
+2124 
+2125     // Close modals on outside click
+2126     document.getElementById('computer-modal').addEventListener('click', function(e) {
+2127         if (e.target === this) closeComputerModal();
+2128     });
+2129 
+2130     document.getElementById('image-preview-modal').addEventListener('click', function(e) {
+2131         if (e.target === this) closeImageModal();
+2132     });
+2133 
+2134     // Add listing modal outside click
+2135     document.getElementById('add-listing-modal').addEventListener('click', function(e) {
+2136         if (e.target === this) closeAddListingModal();
+2137     });
+2138 
+2139     // RAM wrong modal outside click
+2140     const ramWrongModal = document.getElementById('ram-wrong-modal');
+2141     if (ramWrongModal) {
+2142         ramWrongModal.addEventListener('click', function(e) {
+2143             if (e.target === this) closeRamWrongModal();
+2144         });
+2145     }
+2146 
+2147     loadStats();
+2148     loadComputers();
+2149 });
+2150 </script>
+2151 
+2152 <style>
+2153 /* Page Header */
+2154 .page-header {
+2155     display: flex;

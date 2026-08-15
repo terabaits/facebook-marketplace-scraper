@@ -1,0 +1,389 @@
+@app.route('/api/gpus')
+def get_gpus():
+    """Get GPU listings with filters and sorting."""
+    conn = None
+    cursor = None
+    try:
+        conn = get_db_connection()
+    except Exception as e:
+        import traceback
+        traceback.print_exc()
+        # Always return an array to prevent frontend .map() errors
+        return jsonify([]), 500
+
+    cursor = conn.cursor(cursor_factory=RealDictCursor)
+
+    # Get query parameters
+    show_active = request.args.get('active', 'true').lower() == 'true'
+    min_confidence = float(request.args.get('min_confidence', 0))
+    time_filter = request.args.get('time', 'all_time')  # week, month, all_time
+    sort_by = request.args.get('sort', 'date_posted')  # price, date_posted
+    sort_order = request.args.get('order', 'desc')  # asc, desc
+
+    # NEW: GPU-specific filter parameters
+    vendor_filter = request.args.get('vendor', '')
+    model_filter = request.args.get('model', '')
+    vram_filter = request.args.get('vram', '')
+    strict_match = request.args.get('strict_match', 'false').lower() == 'true'
+    source_filter = request.args.get('source', '')
+    price_min = request.args.get('price_min', '')
+    price_max = request.args.get('price_max', '')
+    unicorn_filter = request.args.get('unicorn', '')
+
+    use_active_avg = request.args.get('use_active_avg', 'false').lower() == 'true'
+    # DEBUG: Log filter parameters
+
+    params = []
+    where_clauses = ["l.category = 'gpu'"]
+
+    if show_active:
+        where_clauses.append("l.is_active = true")
+    if min_confidence > 0:
+        where_clauses.append("l.confidence_score >= %s")
+        params.append(min_confidence)
+
+    # NEW: Add price range filter
+    if price_min:
+        where_clauses.append("l.price_eur >= %s")
+        params.append(float(price_min))
+    if price_max:
+        where_clauses.append("l.price_eur <= %s")
+        params.append(float(price_max))
+
+    # NEW: Add vendor filter (exclude 'all')
+    if vendor_filter and vendor_filter.lower() != 'all':
+        where_clauses.append("g.vendor ILIKE %s")
+        params.append(f'%{vendor_filter}%')
+
+    # NEW: Add model filter (exclude 'all') - use LIKE to match base model names (e.g., "GeForce GTX 1060" matches "GeForce GTX 1060 6GB")
+    if model_filter and model_filter.lower() != 'all':
+        # Match models that start with the base name (handles "GeForce GTX 1060" matching "GeForce GTX 1060 6GB" and "GeForce GTX 1060 3GB")
+        where_clauses.append("g.model ILIKE %s")
+        params.append(f'{model_filter}%')
+
+        # Strict match: exclude Ti/Super/XT variants by title AND require high confidence score
+        if strict_match:
+            where_clauses.append("(l.title NOT ILIKE '%%ti%%' AND l.title NOT ILIKE '%%super%%' AND l.title NOT ILIKE '%%xt%%')")
+            where_clauses.append("l.confidence_score >= 0.90")
+
+    # NEW: Add VRAM filter with optional exact/min mode
+    if vram_filter:
+        try:
+            # The vram_gb column stores VRAM in MB, but the frontend presents it in GB.
+            # The value sent by the frontend is the raw MB value, so use it directly.
+            vram_mb = int(vram_filter)
+            vram_mode = request.args.get('vram_mode', 'exact').lower()
+            if vram_mode == 'min':
+                where_clauses.append("g.vram_gb >= %s")
+            else:
+                where_clauses.append("g.vram_gb = %s")
+            params.append(vram_mb)
+        except ValueError:
+            pass  # Ignore invalid vram values
+
+    # DEBUG: Log VRAM filter parameters explicitly
+
+    # NEW: Add source filter
+    if source_filter and source_filter.lower() != 'all':
+        where_clauses.append("l.source = %s")
+        params.append(source_filter)
+
+    # Exclude flagged listings (unless viewing flagged specifically)
+    if request.args.get('include_flagged', '').lower() != 'true':
+        where_clauses.append("NOT EXISTS (SELECT 1 FROM flagged_listings fl WHERE fl.listing_id = l.listing_id)")
+
+    # Build the query
+    query = f"""
+        WITH best_passmark AS (
+            SELECT DISTINCT ON (gpu_reference_id)
+                gpu_reference_id,
+                g3d_mark,
+                g2d_mark
+            FROM gpu_reference_passmark
+            WHERE g3d_mark IS NOT NULL
+            ORDER BY gpu_reference_id, g3d_mark DESC
+        ),
+        gpu_scores AS (
+            SELECT
+                gpu_reference_id,
+                g3d_mark,
+                g2d_mark,
+                RANK() OVER (ORDER BY g3d_mark DESC) as g3d_rank,
+                COUNT(*) OVER () as total_ranked
+            FROM best_passmark
+        )
+        SELECT
+            l.listing_id,
+            l.title,
+            l.price_eur,
+            l.seller_location,
+            l.date_posted,
+            l.first_seen_at,
+            l.is_active,
+            l.confidence_score,
+            l.match_method,
+            l.matched_gpu_id,
+            l.source,
+            l.local_image_path,
+            g.vendor,
+            g.model as gpu_model,
+            g.vram_gb,
+            g.year_released,
+            g.msrp_usd,
+            l.image_url,
+            l.listing_url,
+            gs.g3d_mark,
+            gs.g2d_mark,
+            gs.g3d_rank,
+            gs.total_ranked
+        FROM listings l
+        LEFT JOIN gpu_reference g ON l.matched_gpu_id = g.id
+        LEFT JOIN gpu_scores gs ON g.id = gs.gpu_reference_id
+        WHERE {' AND '.join(where_clauses)}
+    """
+
+    # Add time filter
+    query += get_time_filter_sql(time_filter)
+
+    # Add sorting
+    sort_column = 'l.price_eur' if sort_by == 'price' else 'l.date_posted'
+    sort_dir = 'ASC' if sort_order == 'asc' else 'DESC'
+    query += f" ORDER BY {sort_column} {sort_dir} LIMIT 100"
+
+    try:
+        cursor.execute(query, params)
+        listings = cursor.fetchall()
+
+        # Add price statistics for each GPU model (active-only or all listings)
+        gpu_stats = {}
+        flagged_clause = "AND NOT EXISTS (SELECT 1 FROM flagged_listings fl WHERE fl.listing_id = l.listing_id)" if use_active_avg else ""
+        cursor.execute(f"""
+            SELECT
+                g.id,
+                g.vendor,
+                g.model,
+                ROUND(AVG(l.price_eur)::numeric, 2) as avg_price,
+                MIN(l.price_eur) as min_price,
+                MAX(l.price_eur) as max_price,
+                COUNT(*) as listing_count
+            FROM listings l
+            JOIN gpu_reference g ON l.matched_gpu_id = g.id
+            WHERE l.category = 'gpu'
+                {flagged_clause}
+            GROUP BY g.id, g.vendor, g.model
+        """)
+        for row in cursor.fetchall():
+            gpu_stats[row['id']] = dict(row)
+
+        # Enhance listings with price comparison and format VRAM
+        enhanced_listings = []
+
+        for listing in listings:
+            listing_dict = dict(listing)
+            # Format VRAM from MB to GB
+            if listing_dict.get('vram_gb'):
+                listing_dict['vram_gb'] = format_vram(listing_dict['vram_gb'])
+
+            # Hide Andele location, show X instead
+            if listing_dict.get('seller_location', '').lower() == 'andele':
+                listing_dict['seller_location'] = 'X'
+
+            if listing_dict.get('matched_gpu_id') and listing_dict['matched_gpu_id'] in gpu_stats:
+                stats = gpu_stats[listing_dict['matched_gpu_id']]
+                listing_dict['price_stats'] = {
+                    'avg': stats['avg_price'],
+                    'min': stats['min_price'],
+                    'max': stats['max_price'],
+                    'below_avg': listing_dict['price_eur'] < stats['avg_price'],
+                    'percentile': round((listing_dict['price_eur'] - stats['min_price']) /
+                                      (stats['max_price'] - stats['min_price']) * 100, 1)
+                                      if stats['max_price'] > stats['min_price'] else 50,
+                    'listing_count': stats['listing_count']  # Add count for unicorn detection
+                }
+                # Mark as unicorn if only 1 listing exists for this model
+                if stats['listing_count'] == 1:
+                    listing_dict['is_unicorn'] = True
+
+            # Mark as new if this listing is from the latest import for GPU category
+            listing_dict['is_new'] = is_listing_new(listing_dict.get('first_seen_at'), 'gpu')
+
+            # Format g3d_rank as percentile tier if available
+            if listing_dict.get('g3d_rank') and listing_dict.get('total_ranked'):
+                total = listing_dict['total_ranked']
+                rank = listing_dict['g3d_rank']
+                if total > 0:
+                    listing_dict['performance_tier'] = f"Top {round((rank / total) * 100, 1)}%"
+
+            if listing_dict['is_new']:
+                listing_dict['new_badge_reason'] = 'first_seen_today'
+            enhanced_listings.append(listing_dict)
+
+        # Apply unicorn filter (only/exclude)
+        if unicorn_filter == 'only':
+            enhanced_listings = [l for l in enhanced_listings if l.get('is_unicorn')]
+        elif unicorn_filter == 'exclude':
+            enhanced_listings = [l for l in enhanced_listings if not l.get('is_unicorn')]
+
+        cursor.close()
+        conn.close()
+
+        return jsonify(enhanced_listings)
+
+    except Exception as e:
+        import traceback
+        traceback.print_exc()
+        if cursor:
+            cursor.close()
+        if conn:
+            conn.close()
+        # Always return an array to prevent frontend .map() errors
+        return jsonify([]), 500
+
+
+@app.route('/api/gpu-performance-stats')
+def get_gpu_performance_stats():
+    """Return GPU performance/price scatter and vendor averages for charts."""
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor(cursor_factory=RealDictCursor)
+
+        cursor.execute("""
+            WITH best_passmark AS (
+                SELECT DISTINCT ON (gpu_reference_id)
+                    gpu_reference_id,
+                    g3d_mark,
+                    g2d_mark
+                FROM gpu_reference_passmark
+                WHERE g3d_mark IS NOT NULL
+                ORDER BY gpu_reference_id, g3d_mark DESC
+            ),
+            gpu_price_stats AS (
+                SELECT
+                    g.id,
+                    g.vendor,
+                    g.model,
+                    g.vram_gb,
+                    AVG(l.price_eur) as avg_price,
+                    MIN(l.price_eur) as min_price,
+                    MAX(l.price_eur) as max_price,
+                    COUNT(*) as listing_count
+                FROM listings l
+                JOIN gpu_reference g ON l.matched_gpu_id = g.id
+                WHERE l.category = 'gpu'
+                    AND NOT EXISTS (SELECT 1 FROM flagged_listings fl WHERE fl.listing_id = l.listing_id)
+                GROUP BY g.id, g.vendor, g.model, g.vram_gb
+            )
+            SELECT
+                p.gpu_reference_id,
+                g.vendor,
+                g.model,
+                g.vram_gb,
+                p.g3d_mark,
+                p.g2d_mark,
+                s.avg_price,
+                s.min_price,
+                s.max_price,
+                s.listing_count,
+                CASE WHEN p.g3d_mark > 0 AND s.avg_price > 0
+                     THEN ROUND((s.avg_price / p.g3d_mark)::numeric, 4)
+                     ELSE NULL
+                END as price_per_g3d
+            FROM best_passmark p
+            JOIN gpu_reference g ON p.gpu_reference_id = g.id
+            LEFT JOIN gpu_price_stats s ON g.id = s.id
+            WHERE s.avg_price IS NOT NULL
+            ORDER BY p.g3d_mark DESC
+            LIMIT 10
+        """)
+        scatter = [dict(row) for row in cursor.fetchall()]
+
+        cursor.execute("""
+            WITH best_passmark AS (
+                SELECT DISTINCT ON (gpu_reference_id)
+                    gpu_reference_id,
+                    g3d_mark
+                FROM gpu_reference_passmark
+                WHERE g3d_mark IS NOT NULL
+                ORDER BY gpu_reference_id, g3d_mark DESC
+            )
+            SELECT g.vendor, ROUND(AVG(p.g3d_mark)::numeric, 0) as avg_g3d, COUNT(*) as gpu_count
+            FROM best_passmark p
+            JOIN gpu_reference g ON p.gpu_reference_id = g.id
+            GROUP BY g.vendor
+            ORDER BY avg_g3d DESC
+        """)
+        vendor_avg = [dict(row) for row in cursor.fetchall()]
+
+        cursor.execute("""
+            WITH best_passmark AS (
+                SELECT DISTINCT ON (gpu_reference_id)
+                    gpu_reference_id,
+                    g3d_mark
+                FROM gpu_reference_passmark
+                WHERE g3d_mark IS NOT NULL
+                ORDER BY gpu_reference_id, g3d_mark DESC
+            ),
+            gpu_value AS (
+                SELECT
+                    g.id,
+                    g.vendor,
+                    g.model,
+                    p.g3d_mark,
+                    AVG(l.price_eur) as avg_price,
+                    CASE WHEN p.g3d_mark > 0 AND AVG(l.price_eur) > 0
+                         THEN AVG(l.price_eur) / p.g3d_mark
+                         ELSE NULL
+                    END as price_per_g3d
+                FROM listings l
+                JOIN gpu_reference g ON l.matched_gpu_id = g.id
+                JOIN best_passmark p ON g.id = p.gpu_reference_id
+                WHERE l.category = 'gpu'
+                    AND NOT EXISTS (SELECT 1 FROM flagged_listings fl WHERE fl.listing_id = l.listing_id)
+                GROUP BY g.id, g.vendor, g.model, p.g3d_mark
+            )
+            SELECT
+                CASE
+                    WHEN price_per_g3d < 0.05 THEN '0.00-0.05 €/pt'
+                    WHEN price_per_g3d < 0.10 THEN '0.05-0.10 €/pt'
+                    WHEN price_per_g3d < 0.20 THEN '0.10-0.20 €/pt'
+                    WHEN price_per_g3d < 0.50 THEN '0.20-0.50 €/pt'
+                    WHEN price_per_g3d < 1.00 THEN '0.50-1.00 €/pt'
+                    ELSE '>1.00 €/pt'
+                END as bucket,
+                COUNT(*) as gpu_count
+            FROM gpu_value
+            WHERE price_per_g3d IS NOT NULL
+            GROUP BY 1
+            ORDER BY MIN(price_per_g3d)
+        """)
+        value_buckets = [dict(row) for row in cursor.fetchall()]
+
+        cursor.close()
+        conn.close()
+
+        # Best-value dataset: lowest € per G3D point among matched models
+        value_per_point = []
+        for row in sorted(scatter, key=lambda r: r['price_per_g3d'] or float('inf')):
+            if row.get('price_per_g3d') and row.get('g3d_mark'):
+                value_per_point.append({
+                    'x': float(row['g3d_mark']),
+                    'y': float(row['price_per_g3d']),
+                    'label': f"{row['vendor']} {row['model']}",
+                    'vram': format_vram(row.get('vram_gb')),
+                    'avg_price': float(row['avg_price']) if row.get('avg_price') else None
+                })
+        value_per_point = value_per_point[:10]
+
+        return jsonify({
+            'scatter': scatter,
+            'vendor_avg_g3d': vendor_avg,
+            'value_buckets': value_buckets,
+            'value_per_point': value_per_point
+        })
+    except Exception as e:
+        import traceback
+        traceback.print_exc()
+        return jsonify({'scatter': [], 'vendor_avg_g3d': [], 'value_buckets': []}), 500
+
+
+@app.route('/api/cpus')

@@ -11,6 +11,7 @@ from src.scraper.cpu_parser import CPUListingParser
 from src.scraper.cpu_matcher import CPUMatcher
 from src.utils.config import AppConfig, ScraperConfig
 from src.utils.logger import get_logger
+from src.utils.image_downloader import ImageDownloader
 
 logger = get_logger("cpu_scraper")
 
@@ -34,7 +35,12 @@ class CPUScraper:
             'failed': 0,
             'unmatched': 0,
             'low_confidence': 0,
+            'images_downloaded': 0,
         }
+        
+        # Track processed listing IDs to avoid duplicates within the same run
+        self._processed_ids: set = set()
+        self.image_downloader: Optional[ImageDownloader] = None
     
     def initialize(self):
         """Initialize database and load CPU references."""
@@ -51,6 +57,9 @@ class CPUScraper:
         
         logger.info(f"Loaded {len(cpus)} CPU references")
         
+        # Initialize image downloader
+        self.image_downloader = ImageDownloader(base_dir="images/cpus")
+        
         # Ensure HTML samples directory
         if self.config.scraper.save_html_samples:
             Path(self.config.scraper.html_samples_dir).mkdir(parents=True, exist_ok=True)
@@ -61,7 +70,7 @@ class CPUScraper:
         
         Returns:
             Tuple of (listing, action, message)
-            action: 'new', 'updated', 'unchanged', 'failed', 'unmatched', 'low_confidence'
+            action: 'new', 'updated', 'unchanged', 'failed', 'unmatched', 'low_confidence', 'duplicate'
         """
         # Parse HTML
         parser = CPUListingParser(html, url)
@@ -103,6 +112,18 @@ class CPUScraper:
             if action == 'new':
                 action = db_action
                 message = f"Processed: {db_action}"
+            
+            # Download image if available
+            if listing.image_url and self.image_downloader:
+                local_image_path = self.image_downloader.download_image(
+                    listing.image_url,
+                    listing.listing_id
+                )
+                if local_image_path:
+                    self.stats['images_downloaded'] += 1
+                    logger.info(f"Image saved locally: {local_image_path}")
+                    # Update database with local image path
+                    ListingRepository.update_local_image_path(session, listing.listing_id, local_image_path)
         
         return listing, action, message
     
@@ -133,6 +154,13 @@ class CPUScraper:
         logger.info(f"Found {len(links)} CPU listings to process")
         
         for idx, link in enumerate(links, 1):
+            # Skip if already processed this run (prevents duplicate errors from pagination)
+            listing_id = link.split('/')[-1].replace('.html', '')
+            if listing_id in self._processed_ids:
+                logger.debug(f"Skipping duplicate listing in this run: {listing_id}")
+                continue
+            self._processed_ids.add(listing_id)
+            
             self.stats['total'] += 1
             
             # Fetch listing

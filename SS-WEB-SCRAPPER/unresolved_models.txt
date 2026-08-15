@@ -1,0 +1,277 @@
+# Total unique unresolved: 275
+
+Acer	Acer Aspire 3	None	15"	1
+Acer	Acer nitro 5	None	15"	1
+Acer	All	None	15"	1
+Acer	Aspire	None	15"	1
+Acer	Aspire 5	None	15"	1
+Acer	Extensa	None	15"	1
+Acer	F5-573G	None	15"	1
+Acer	N22C6	None	15"	1
+Acer	Nitro	None	17"	1
+Acer	Nitro 5	None	16"	1
+Acer	Nitro 5	None	15"	1
+Acer	Nitro5	None	16"	1
+Apple	4324a	None	12"	1
+Apple	Air	None	15"	1
+Apple	Air	None	14"	1
+Apple	Apple Macbook	None	13"	1
+Apple	M1 Pro 16”	None	16"	1
+Apple	Mac	None	13"	1
+Apple	Macbook	None	13"	1
+Apple	Macbook	None	None	1
+Apple	Macbook 12	None	12"	1
+Apple	Macbook Air	None	14"	1
+Apple	Macbook Air	None	12"	1
+Apple	Macbook Air	None	15"	1
+Apple	Macbook Air 13	None	12"	1
+Apple	Macbook Air 13	None	13"	1
+Apple	Macbook Pro	None	16"	1
+Apple	Macbook Pro	None	14"	1
+Apple	Macbook Pro	None	17"	1
+Apple	Macbook Pro	None	13"	1
+Apple	Macbook Pro 14	None	14"	1
+Apple	Macbook Pro 16	None	16"	1
+Apple	Macook Pro	None	13"	1
+Apple	Macook Pro	None	15"	1
+Apple	Mgn63Ru/a	None	13"	1
+Apple	Myd82Ze/a	None	13"	1
+Apple	Pro	None	15"	1
+Apple	Pro	None	13"	1
+Apple	Pro 13.3	None	13"	1
+Asus	8	None	15"	1
+Asus	B5404Cma	None	14"	1
+Asus	ExpertBook	None	15"	1
+Asus	ExpertBook	None	14"	1
+Asus	Fx504g	None	15"	1
+Asus	Fx505D	None	15"	1
+Asus	Fx507Ze	None	15"	1
+Asus	Fx516pe	None	15"	1
+Asus	Fx707Z	None	17"	1
+Asus	Gl753V	None	17"	1
+Asus	L1500Cd	None	15"	1
+Asus	M1605Ya	None	15"	1
+Asus	Nx90Jq	None	18"	1
+Asus	ROG Strix	None	16"	1
+Asus	TUF Dash	None	15"	1
+Asus	TUF Gaming	None	15"	1
+Asus	TUF Gaming	None	17"	1
+Asus	TUF Gaming	None	16"	1
+Asus	Ux310Uqk	None	14"	1
+Asus	Ux3404V	None	14"	1
+Asus	Ux482Egr	None	14"	1
+Asus	Vibobook k513e	None	15"	1
+Asus	Visi	None	15"	1
+Asus	Visible On	None	15"	1
+Asus	Vivibook go 15	None	15"	1
+Asus	VivoBook	None	15"	1
+Asus	VivoBook	None	14"	1
+Asus	VivoBook 14	None	14"	1
+Asus	VivoBook 14	None	15"	1
+Asus	VivoBook 15	None	15"	1
+Asus	VivoBook 16	None	15"	1
+Asus	X200ma	None	12"	1
+Asus	X513Ean	None	15"	1
+Asus	X551Ca	None	15"	1
+Asus	X5dc	None	15"	1
+Asus	Zbook 14x Oled	None	14"	1
+Asus	ZenBook	None	14"	1
+Asus	ZenBook	None	15"	1
+Asus	ZenBook 13	None	13"	1
+Asus	ZenBook 14	None	14"	1
+Cits	82Vg	None	15"	1
+Cits	C47Ipm1K	None	14"	1
+Cits	Dg	None	10"	1
+Cits	Hp omer	None	15"	1
+Cits	Hp, dell, lenov	None	15"	1
+Cits	Huawei Matebok	None	14"	1
+Cits	Idealpad 3	None	14"	1
+Cits	Ideapad 1	None	15"	1
+Cits	Laptop Go	None	12"	1
+Cits	Lenovo	None	14"	1
+Cits	Magicbook pro	None	16"	1
+Cits	Matebook 14D	None	14"	1
+Cits	Matebook 14s	None	14"	1
+Cits	Matebookd14	None	15"	1
+Cits	Nbd-Wxx9	None	14"	1
+Cits	Nblb-Wax9N	None	14"	1
+Cits	Redmibook 14	None	14"	1
+Cits	Rlef-Xx	None	17"	1
+Cits	Surface Laptop	None	14"	1
+Cits	Surface Pro 4	None	12"	1
+Cits	Surface Pro 7+	None	13"	1
+Cits	Surface Pro 7+	None	12"	1
+Cits	Surface go2	None	13"	1
+Cits	Teclast F6 +	None	13"	1
+Cits	Thinkpad 16	None	15"	1
+Cits	Любой/visus	None	None	1
+Dell	11	None	11"	1
+Dell	14z (N411z)	None	14"	1
+Dell	15 3510	None	15"	1
+Dell	3510	None	15"	1
+Dell	3521	None	15"	1
+Dell	3540	None	15"	1
+Dell	3558	None	15"	1
+Dell	3570	None	15"	1
+Dell	3580	None	15"	1
+Dell	5520	None	15"	1
+Dell	5580	None	15"	1
+Dell	7420 2in1	None	14"	1
+Dell	7490	None	14"	1
+Dell	Dc15255	None	15"	1
+Dell	Dell	None	14"	1
+Dell	Desktop-88Dee6	None	15"	1
+Dell	G5	None	15"	1
+Dell	I5-1334U	None	15"	1
+Dell	Inspirion 15	None	15"	1
+Dell	Inspiron5406	None	14"	1
+Dell	Latitude	None	13"	1
+Dell	Visi	None	None	1
+Dell	Vostro	None	15"	1
+Dell	Vostro 15	None	15"	1
+Dell	Vpstro 15	None	15"	1
+Dell	XPS 13	None	13"	1
+HP	14S-Cf3028Tu	None	15"	1
+HP	14S-Dq2535Tu	None	14"	1
+HP	15-Fc0062Ny	None	15"	1
+HP	15-fc0xxx	None	15"	1
+HP	15-fc0xxx	None	16"	1
+HP	155-Eq1Xxx	None	15"	1
+HP	15S	None	15"	1
+HP	15S-Fq5333Ng	None	14"	1
+HP	15S-eq2007ny	None	15"	1
+HP	15s-eq2xxx	None	15"	1
+HP	16-am0139nn	None	16"	1
+HP	22H2	None	8"	1
+HP	250 G5	None	15"	1
+HP	250 G6	None	15"	1
+HP	250 G9	None	15"	1
+HP	250g7	None	15"	1
+HP	255 G8	None	15"	1
+HP	3168	None	15"	1
+HP	430 G5	None	13"	1
+HP	430 g2	None	13"	1
+HP	445 G8	None	14"	1
+HP	745 g6	None	14"	1
+HP	820 G1	None	13"	1
+HP	840 G1	None	14"	1
+HP	840 G2	None	14"	1
+HP	840 G7	None	14"	1
+HP	840 g8	None	14"	1
+HP	850 G3	None	15"	1
+HP	Dv6000	None	15"	1
+HP	Elitebook840G3	None	14"	1
+HP	F0lio 947om	None	14"	1
+HP	Folio 1040 g3	None	14"	1
+HP	Gaming 3	None	15"	1
+HP	Hp	None	15"	1
+HP	Hp 15-fc0006ny	None	15"	1
+HP	Hp 845 g7	None	14"	1
+HP	Hp envy ts	None	15"	1
+HP	Hp laptop 15	None	15"	1
+HP	Hp soectre	None	13"	1
+HP	Laptop 15	None	15"	1
+HP	Leno	None	14"	1
+HP	Omnibook flip	None	14"	1
+HP	Omninook 5 fli	None	14"	1
+HP	Pavilion15t-au	None	15"	1
+HP	Pro 650 G8	None	15"	1
+HP	ProBook	None	15"	1
+HP	Rtl8723be	None	15"	1
+HP	Victus	None	16"	1
+Lenovo/IBM	13w yoga gen2	None	13"	1
+Lenovo/IBM	20354	None	15"	1
+Lenovo/IBM	20Ev003Emh	None	15"	1
+Lenovo/IBM	20bv000bus	None	15"	1
+Lenovo/IBM	785953g	None	15"	1
+Lenovo/IBM	80Ue	None	15"	1
+Lenovo/IBM	81Ah	None	17"	1
+Lenovo/IBM	81V5	None	15"	1
+Lenovo/IBM	81X2	None	14"	1
+Lenovo/IBM	82C7	None	15"	1
+Lenovo/IBM	82K1	None	15"	1
+Lenovo/IBM	82R9	None	14"	1
+Lenovo/IBM	82Rq	None	15"	1
+Lenovo/IBM	82Vg	None	15"	1
+Lenovo/IBM	82Xq	None	15"	1
+Lenovo/IBM	82h8	None	15"	1
+Lenovo/IBM	83Bf	None	15"	1
+Lenovo/IBM	83Jg	None	15"	1
+Lenovo/IBM	Gaming 3	None	15"	1
+Lenovo/IBM	Gaming 3 15ach	None	15"	1
+Lenovo/IBM	IdeaPad	None	14"	1
+Lenovo/IBM	IdeaPad 1	None	15"	1
+Lenovo/IBM	IdeaPad 15	None	15"	1
+Lenovo/IBM	IdeaPad 3	None	15"	1
+Lenovo/IBM	IdeaPad 3	None	17"	1
+Lenovo/IBM	IdeaPad 3	None	14"	1
+Lenovo/IBM	IdeaPad 5	None	14"	1
+Lenovo/IBM	IdeaPad Gaming	None	16"	1
+Lenovo/IBM	IdeaPad Gaming	None	15"	1
+Lenovo/IBM	Ideagaming 3	None	16"	1
+Lenovo/IBM	Ip flex 3	None	12"	1
+Lenovo/IBM	L0Q	None	15"	1
+Lenovo/IBM	Legion 5	None	15"	1
+Lenovo/IBM	Lenovo	None	15"	1
+Lenovo/IBM	Lenovo ideapad	None	15"	1
+Lenovo/IBM	P1 Gen 8	None	16"	1
+Lenovo/IBM	Slim 3	None	15"	1
+Lenovo/IBM	T14s	None	14"	1
+Lenovo/IBM	T14s gen1	None	14"	1
+Lenovo/IBM	T440s	None	14"	1
+Lenovo/IBM	T450s	None	14"	1
+Lenovo/IBM	T460s	None	14"	1
+Lenovo/IBM	T490s	None	14"	1
+Lenovo/IBM	Think pad e31	None	13"	1
+Lenovo/IBM	ThinkBook 14	None	14"	1
+Lenovo/IBM	ThinkPad	None	14"	1
+Lenovo/IBM	Thinkbook14 g2	None	14"	1
+Lenovo/IBM	Thinkpadx1Yoga	None	14"	1
+Lenovo/IBM	Visi	None	None	1
+Lenovo/IBM	X1 Yoga G6	None	14"	1
+Lenovo/IBM	X1 carbon gen8	None	14"	1
+Lenovo/IBM	Yoga 9	None	14"	1
+Msi	15 f13mg	None	15"	1
+Msi	B2Hwfkg-063Nl	None	15"	1
+Msi	Bravo 15 c7v	None	15"	1
+Msi	Cyborg 15	None	15"	1
+Msi	Cyborg 15 a12u	None	15"	1
+Msi	Ge66 raider	None	15"	1
+Msi	Gf 65 Thin Ue	None	15"	1
+Msi	Gf36	None	16"	1
+Msi	Gf63	None	15"	1
+Msi	Gf63 10sc	None	15"	1
+Msi	Gf63 12uc	None	15"	1
+Msi	Gf63 Thin	None	15"	1
+Msi	Gf63 thn 12udx	None	15"	1
+Msi	Gl65 leopard	None	15"	1
+Msi	Gp72 2qe pro	None	18"	1
+Msi	Gs65 Stealth	None	16"	1
+Msi	Intel Core	None	17"	1
+Msi	Katana	None	17"	1
+Msi	Katana 12	None	16"	1
+Msi	Modern 15	None	15"	1
+Msi	Modern 15b7m	None	15"	1
+Msi	Ms16R8	None	15"	1
+Msi	Msi gf63	None	17"	1
+Msi	Msi modern 15	None	15"	1
+Msi	Pulse Gl66	None	15"	1
+Msi	Pulse gl76	None	17"	1
+Msi	Raider ge68hx	None	15"	1
+Msi	Sword 17	None	17"	1
+Msi	Thin	None	15"	1
+Msi	Thin 15	None	15"	1
+Msi	Thin 15-b13ve	None	14"	1
+Msi	Vector 16	None	16"	1
+Msi	Vector 16 hx	None	16"	1
+Msi	Visi	None	None	1
+NEC	Cyborg 15	None	15"	1
+Panasonic	Cf-31	None	13"	1
+Panasonic	Cf-Xz6	None	12"	1
+Panasonic	Fz55	None	14"	1
+Samsung	Galaxy Book 4	None	16"	1
+Samsung	Galaxy Book2	None	14"	1
+Samsung	Np750Xfg	None	15"	1
+Samsung	Np900X4C	None	13"	1
+Sony	Sve171G11M	None	17"	1
+Sony	Vaio	None	14"	1

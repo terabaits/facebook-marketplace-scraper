@@ -1,0 +1,16 @@
+Success!
+Title: SS.COM Komplektējošie datoriem - RAM, Cena 70 €. Operatīvā atmiņa Crucial 8Gb Ddr5 4800   Jauna, DDR5 CL: MHz Atmiņas - Sludinājumi
+RAM Manufacturer: 'Crucial'
+RAM Model: None
+RAM Type: 'DDR'
+RAM Frequency: 4800
+Capacity: 8
+
+Type of ram_manufacturer: <class 'str'>
+
+Description:
+Operatīvā atmiņa Crucial 8Gb Ddr5 4800 Mhz Jauna, nelietota, orģinālā iepakojumā Apjoms: 8 GB Maksimālā takts frekvence: 4800 MHz Atmiņas tips: DDR5 CL: CL 40 KIT: Single module
+Manufacturer: Crucial
+RAM Type: DDR
+Frequency: 4800 MHz
+Condition: jaun.

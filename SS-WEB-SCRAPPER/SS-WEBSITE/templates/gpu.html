@@ -39,7 +39,8 @@
     /* Image column - centered thumbnail */
     .gpu-listings-table th:nth-child(1),
     .gpu-listings-table td:nth-child(1) {
-        width: 7%;
+        width: 5.5%;
+        min-width: 84px;
         text-align: center !important;
         vertical-align: middle;
     }
@@ -47,6 +48,8 @@
     .gpu-listings-table td:nth-child(1) .listing-thumb,
     .gpu-listings-table td:nth-child(1) .listing-thumb-placeholder {
         margin: 0 auto;
+        width: 72px;
+        height: 72px;
     }
 
     /* Styled compare checkbox - thick custom box */
@@ -89,6 +92,43 @@
     }
     tr.compare-row-checked:hover td {
         background: rgba(102, 126, 234, 0.25) !important;
+    }
+
+    .vram-mode-toggle {
+        background: transparent;
+        border: 1px solid #e74c3c;
+        color: #e74c3c;
+        border-radius: 50%;
+        width: 26px;
+        height: 26px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: transform 0.25s ease, background 0.2s ease, box-shadow 0.2s ease;
+        flex-shrink: 0;
+        padding: 0;
+    }
+
+    .vram-mode-toggle:hover {
+        background: rgba(231, 76, 60, 0.12);
+    }
+
+    .vram-mode-toggle.min-mode {
+        background: rgba(231, 76, 60, 0.18);
+        box-shadow: 0 0 8px rgba(231, 76, 60, 0.35);
+        animation: vram-toggle-pulse 1.2s ease-in-out infinite;
+    }
+
+    @keyframes vram-toggle-pulse {
+        0%, 100% { transform: scale(1); }
+        50% { transform: scale(1.12); }
+    }
+
+    .vram-mode-toggle .vram-mode-arrow {
+        font-weight: bold;
+        font-size: 0.95rem;
+        line-height: 1;
     }
 
     /* Brand column - centered */
@@ -248,6 +288,21 @@
         overflow: hidden;
     }
 
+    /* GPU dashboard grids must always fill container width */
+    .gpu-stats-grid,
+    .gpu-stats-subgrid,
+    .gpu-charts-grid,
+    .gpu-value-grid {
+        width: 100%;
+    }
+    .gpu-stats-grid > div,
+    .gpu-stats-subgrid > div,
+    .gpu-charts-grid > div,
+    .gpu-value-grid > div {
+        min-width: 0;
+        overflow-wrap: break-word;
+    }
+
 
 
 /* Custom filter icon buttons */
@@ -294,6 +349,38 @@
         height: 22px;
         pointer-events: none;
     }
+
+    /* Vendor-specific filter icon buttons */
+    .filter-icon-btn.vendor-nvidia { border-color: #76b900; color: #76b900; background: rgba(118,185,0,0.12); }
+    .filter-icon-btn.vendor-nvidia.active { background: linear-gradient(135deg, #76b900 0%, #4a7a00 100%); border-color: #4a7a00; color: #fff; }
+    .filter-icon-btn.vendor-amd { border-color: #ed1c24; color: #ed1c24; background: rgba(237,28,36,0.12); }
+    .filter-icon-btn.vendor-amd.active { background: linear-gradient(135deg, #ed1c24 0%, #9a0006 100%); border-color: #9a0006; color: #fff; }
+    .filter-icon-btn.vendor-intel { border-color: #0071c5; color: #0071c5; background: rgba(0,113,197,0.12); }
+    .filter-icon-btn.vendor-intel.active { background: linear-gradient(135deg, #0071c5 0%, #004e88 100%); border-color: #004e88; color: #fff; }
+
+    /* Smaller vendor icons, shown inline next to the Model dropdown */
+    .vendor-icon-bar.filter-icon-bar { gap: 6px; vertical-align: middle; }
+    .vendor-icon-bar .filter-icon-btn {
+        width: 30px;
+        height: 30px;
+        border-radius: 8px;
+        border-width: 1.5px;
+    }
+    .vendor-icon-bar .filter-icon-btn svg {
+        width: 16px;
+        height: 16px;
+    }
+    .vendor-icon-bar .filter-icon-btn:hover,
+    .vendor-icon-bar .filter-icon-btn:focus-visible {
+        transform: translateY(-2px) scale(1.08);
+    }
+
+    /* Keep model dropdown width constant (at least as wide as the AMD list) */
+    #model-filter {
+        min-width: 260px;
+        width: auto;
+    }
+
     @keyframes iconGlow {
         from { box-shadow: 0 0 8px rgba(118, 75, 162, 0.55), 0 0 18px rgba(102, 126, 234, 0.35); }
         to { box-shadow: 0 0 18px rgba(118, 75, 162, 0.85), 0 0 32px rgba(102, 126, 234, 0.65); }
@@ -681,11 +768,9 @@ async function loadMostSoldModels() {
     if (!container) return;
 
     // Get toggle state
-    const useLivePrices = document.getElementById('use-live-prices')?.checked || false;
-
     try {
         const useActiveAvgStats = document.getElementById('use-active-avg')?.checked || false;
-        const response = await fetch(`/api/gpu-model-stats?use_live_prices=${useLivePrices}&use_active_avg=${useActiveAvgStats}`);
+        const response = await fetch(`/api/gpu-model-stats?use_active_avg=${useActiveAvgStats}`);
         const data = await response.json();
 
         if (!data.models || data.models.length === 0) {
@@ -753,11 +838,7 @@ async function loadMostSoldModels() {
 // Filter listings by model
 function filterByModel(vendor, model) {
     // Set vendor filter
-    const vendorSelect = document.getElementById('vendor-filter');
-    if (vendorSelect) {
-        vendorSelect.value = vendor;
-        onVendorChange();
-    }
+    selectGPUVendor(vendor);
 
     // Set model filter
     const modelSelect = document.getElementById('model-filter');
@@ -773,7 +854,7 @@ function filterByModel(vendor, model) {
 {% block content %}
 <!-- Statistics Dashboard Grid -->
 <div class="section" id="stats-section" style="margin-bottom: 2rem;">
-    <div style="display: grid; grid-template-columns: 1fr 3fr; gap: 1.5rem;">
+    <div style="display: grid; grid-template-columns: 1fr 3fr; gap: 1.5rem;" class="gpu-stats-grid">
         <!-- Most Listed GPU Models (1/4) -->
         <div style="background: var(--card-bg); border-radius: 8px; padding: 1rem; border: 1px solid var(--card-border);">
             <h3 style="margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
@@ -785,7 +866,7 @@ function filterByModel(vendor, model) {
         </div>
 
         <!-- Other Statistics (3/4) -->
-        <div style="display: grid; grid-template-columns: 0.6fr 2fr; grid-template-rows: auto auto; gap: 1rem; align-items: start;">
+        <div style="display: grid; grid-template-columns: 0.6fr 2fr; grid-template-rows: auto auto; gap: 1rem; align-items: start;" class="gpu-stats-subgrid">
             <!-- By Source (Left 1/3) -->
             <div style="background: var(--card-bg); border-radius: 8px; padding: 1rem; border: 1px solid var(--card-border);">
                 <h4 style="margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem;">
@@ -829,7 +910,7 @@ function filterByModel(vendor, model) {
     </div>
 
     <!-- Performance / Price Charts -->
-    <div style="display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 1.5rem; margin-top: 1.5rem;">
+    <div style="display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 1.5rem; margin-top: 1.5rem;" class="gpu-charts-grid">
         <div style="background: var(--card-bg); border-radius: 8px; padding: 1rem; border: 1px solid var(--card-border);">
             <h3 style="margin-bottom: 1rem;">💹 Price vs G3D Performance</h3>
             <div class="perf-chart-box">
@@ -865,7 +946,7 @@ function filterByModel(vendor, model) {
     </div>
 
     <!-- Value-per-point chart -->
-    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 1.5rem;">
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 1.5rem;" class="gpu-value-grid">
         <div style="background: var(--card-bg); border-radius: 8px; padding: 1rem; border: 1px solid var(--card-border);">
             <h3 style="margin-bottom: 1rem;">💶 Price per G3D Point (lower = better)</h3>
             <div class="perf-chart-box">
@@ -895,7 +976,7 @@ function filterByModel(vendor, model) {
                         <circle cx="12" cy="12" r="3"/>
                     </svg>
                 </button>
-                <button type="button" class="filter-icon-btn" data-target="high-confidence"
+                <button type="button" class="filter-icon-btn {% if not is_staff %}staff-only{% endif %}" data-target="high-confidence"
                         title="{{ t('High confidence (≥70%)') }}" aria-pressed="false"
                         onclick="toggleFilterIcon(this, 'high-confidence')">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -924,7 +1005,8 @@ function filterByModel(vendor, model) {
                         title="{{ t('Active-only averages') }}" aria-pressed="false"
                         onclick="toggleFilterIcon(this, 'use-active-avg')">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/>
+                        <circle cx="12" cy="12" r="9"/>
+                        <line x1="5" y1="12" x2="19" y2="12"/>
                     </svg>
                 </button>
             </div>
@@ -933,17 +1015,30 @@ function filterByModel(vendor, model) {
             <input type="checkbox" id="price-drop-only" onchange="loadListings()" class="hidden-filter">
             <input type="checkbox" id="show-avg-price" onchange="loadListings()" class="hidden-filter">
             <input type="checkbox" id="use-active-avg" onchange="loadListings()" class="hidden-filter">
-            <label>
-                Vendor:
-                <select id="vendor-filter" onchange="onVendorChange()">
-                    <option value="all">All Vendors</option>
-                    <option value="NVIDIA">NVIDIA</option>
-                    <option value="AMD">AMD</option>
-                    <option value="Intel">Intel</option>
-                </select>
-            </label>
+            <input type="hidden" id="vendor-filter" value="all">
             <label>
                 Model:
+                <div class="filter-icon-bar vendor-icon-bar" id="vendor-icon-bar">
+                    <button type="button" class="filter-icon-btn vendor-nvidia" data-vendor="NVIDIA" title="NVIDIA" onclick="selectGPUVendor('NVIDIA')">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="2.5" y="5" width="19" height="14" rx="2.5"/>
+                            <path d="M12 8c-3.5 0-6 2-6 4s2.5 4 6 4 6-2 6-4-2.5-4-6-4z"/>
+                            <circle cx="12" cy="12" r="2.5" fill="currentColor" stroke="none"/>
+                        </svg>
+                    </button>
+                    <button type="button" class="filter-icon-btn vendor-amd" data-vendor="AMD" title="AMD" onclick="selectGPUVendor('AMD')">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="3" y="3" width="18" height="18" rx="2"/>
+                            <path d="M8 8l8 8M16 8L8 16"/>
+                        </svg>
+                    </button>
+                    <button type="button" class="filter-icon-btn vendor-intel" data-vendor="Intel" title="Intel" onclick="selectGPUVendor('Intel')">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+                            <ellipse cx="12" cy="12" rx="10" ry="6"/>
+                            <text x="12" y="15" text-anchor="middle" font-size="6.5" font-weight="700" fill="currentColor" stroke="none">Intel</text>
+                        </svg>
+                    </button>
+                </div>
                 <select id="model-filter" onchange="onModelChange()">
                     <option value="all">All Models</option>
                 </select>
@@ -955,14 +1050,15 @@ function filterByModel(vendor, model) {
             </label>
             <label style="background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); border: 1px solid #00d4ff; border-radius: 20px; padding: 0.5rem 1rem;">
                 <span style="color: #00d4ff; font-weight: 500; font-size: 0.875rem;">💾 VRAM</span>
-                <select id="vram-filter" onchange="loadListings()" style="margin-top: 4px; min-width: 110px;">
-                    <option value="">All VRAM</option>
-                </select>
-                <span style="display: inline-flex; align-items: center; gap: 0.4rem; margin-left: 0; margin-top: 4px; font-weight: 500; color: #00d4ff; cursor: help;">
-                    <input type="checkbox" id="vram-min-mode" onchange="onVramModeChange()" style="accent-color: #00d4ff; width: 16px; height: 16px; cursor: pointer; vertical-align: middle;" title="Switch between exact-size list and 8GB+ minimum list">
-                    <span id="vram-min-label" style="white-space: nowrap;">Exact size</span>
-                    <span style="display: inline-flex; align-items: center; justify-content: center; width: 18px; height: 18px; border-radius: 50%; background: rgba(136,136,136,0.25); color: #888; font-size: 0.75rem; font-weight: 600;" title="Unchecked: pick an exact VRAM size from 4GB to 32GB. Checked: pick a minimum VRAM threshold from 8GB+ to 32GB+. Options larger than 32GB are hidden.">i</span>
-                </span>
+                <div style="display: flex; align-items: center; gap: 0.5rem; margin-top: 4px;">
+                    <button type="button" id="vram-mode-toggle" class="vram-mode-toggle" onclick="toggleVramMode()" title="Exact size (click for ≥ selected)" aria-pressed="false">
+                        <span class="vram-mode-arrow">&lt;</span>
+                    </button>
+                    <input type="checkbox" id="vram-min-mode" onchange="onVramModeChange()" style="display: none;">
+                    <select id="vram-filter" onchange="loadListings()" style="min-width: 110px;">
+                        <option value="">All VRAM</option>
+                    </select>
+                </div>
             </label>
             <label style="background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); border: 1px solid #00d4ff; border-radius: 20px; padding: 0.5rem 1rem;">
                 <span style="color: #00d4ff; font-weight: 500; font-size: 0.875rem;">💶 Price Range</span>
@@ -999,14 +1095,9 @@ function filterByModel(vendor, model) {
             <button id="compare-btn" class="btn btn-small" style="background: linear-gradient(135deg, #667eea, #764ba2); color: white; border: none; align-self: center;" onclick="goToCompare()" disabled>
                 Compare <span id="compare-count">0</span>
             </button>
-            <label>
-                🦄 Unicorn:
-                <div class="unicorn-switch" style="display: flex; gap: 4px; margin-top: 4px;">
-                    <button id="unicorn-all" class="unicorn-btn active" onclick="setUnicornFilter('all')" title="Show all listings">{{ t('All') }}</button>
-                    <button id="unicorn-only" class="unicorn-btn" onclick="setUnicornFilter('only')" title="Show only unicorn deals">🦄 Only</button>
-                    <button id="unicorn-exclude" class="unicorn-btn" onclick="setUnicornFilter('exclude')" title="Hide unicorn listings">🚫 Hide</button>
-                </div>
-            </label>
+            <button type="button" id="unicorn-toggle" class="filter-icon-btn" onclick="toggleUnicorn()" title="Show only unicorn deals" aria-pressed="false">
+                🦄
+            </button>
             <label>
                 Source:
                 <select id="source-filter" onchange="loadListings()">
@@ -1023,11 +1114,6 @@ function filterByModel(vendor, model) {
                     <option value="month">Last Month</option>
                     <option value="week">Last Week</option>
                 </select>
-            </label>
-            <label style="background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); border: 1px solid #00d4ff; border-radius: 20px; padding: 0.5rem 1rem; cursor: pointer; transition: all 0.3s ease;">
-                <input type="checkbox" id="use-live-prices" onchange="loadMostSoldModels()" style="accent-color: #00d4ff; width: 18px; height: 18px; cursor: pointer; vertical-align: middle; margin-right: 0.5rem;">
-                <span style="color: #00d4ff; font-weight: 500; font-size: 0.875rem;">⚡ Live Prices</span>
-                <span style="font-size: 0.75rem; color: #888; margin-left: 4px;" title="Calculate avg from actual sold listings (accurate but slower)">i</span>
             </label>
         </div>
     </div>
@@ -1405,9 +1491,8 @@ async function loadListings() {
                         ${item.year_released ? `<span style="font-weight: 600; color: #888;">${item.year_released}</span>` : '-'}
                     </td>
                     <td style="position: relative; padding: 0.75rem 0.5rem;">
-                        <div style="display: inline-flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; position: relative;">
-                            ${priceDecreasedBadge ? `<span style="position: absolute; top: 0; left: 50%; transform: translate(-50%, -70%); font-size: 0.55rem; padding: 1px 4px; border-radius: 3px; background: #16a34a; color: white; font-weight: bold; white-space: nowrap; z-index: 5; box-shadow: 0 1px 3px rgba(0,0,0,0.3); line-height: 1;">↓ Drop</span>` : ''}
-                            <span class="${priceClass}" style="font-size: 1.15rem; font-weight: 700; ${priceDecreasedBadge ? 'padding-top: 8px;' : ''} ${item.price_stats ? (item.price_stats.below_avg ? 'color: #16a34a;' : 'color: #000000;') : ''}">€${item.price_eur}</span>
+                        <div style="display: inline-flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
+                            <span class="${priceClass}" style="font-size: 1.15rem; font-weight: 700; ${item.price_stats ? (item.price_stats.below_avg ? 'color: #16a34a;' : 'color: #000000;') : ''}">€${item.price_eur}</span>
                             ${priceIndicator ? priceIndicator : ''}
                             ${showAvgPrice && item.price_stats ? `<span style="color: #888; font-size: 0.75rem;">avg €${item.price_stats.avg}</span>` : ''}
                         </div>
@@ -1593,30 +1678,45 @@ function updateMonthlyAvgChart(listings) {
     const labels = months.map(m => { const [y, mon] = m.split('-'); return `${mon}/${y}`; });
     const monthIndex = Object.fromEntries(months.map((m, i) => [m, i]));
 
-    // Group by GPU model, then by month, collecting prices to average
+    // Group by GPU model, then by month, collecting prices + G3D scores
     const byModel = {};
+    const monthlyG3d = {};
     listings.forEach(item => {
         const d = item.date_posted || item.first_seen_at;
         if (!d) return;
         const month = new Date(d).toISOString().slice(0, 7);
-        const model = (item.gpu_model || item.title || 'Unknown').replace(/\b(GeForce|Radeon|AMD|NVIDIA|Intel)\s*/gi, '').trim() || 'Unknown';
         const idx = monthIndex[month];
-        if (!byModel[model]) byModel[model] = {};
-        if (!byModel[model][idx]) byModel[model][idx] = [];
-        byModel[model][idx].push(parseFloat(item.price_eur) || 0);
+        const model = (item.gpu_model || item.title || 'Unknown').replace(/\b(GeForce|Radeon|AMD|NVIDIA|Intel)\s*/gi, '').trim() || 'Unknown';
+        const price = parseFloat(item.price_eur) || 0;
+        const g3d = parseFloat(item.g3d_mark) || 0;
+
+        if (!byModel[model]) byModel[model] = { months: {}, g3dValues: [] };
+        if (!byModel[model].months[idx]) byModel[model].months[idx] = [];
+        byModel[model].months[idx].push(price);
+        if (g3d > 0) byModel[model].g3dValues.push(g3d);
+
+        if (g3d > 0) {
+            if (!monthlyG3d[idx]) monthlyG3d[idx] = { sum: 0, count: 0 };
+            monthlyG3d[idx].sum += g3d;
+            monthlyG3d[idx].count += 1;
+        }
     });
 
     const palette = ['#667eea', '#10b981', '#f59e0b', '#ef4444', '#8B5CF6', '#06b6d4', '#ec4899', '#84cc16', '#f97316', '#6366f1', '#14b8a6', '#f43f5e', '#a855f7', '#22c55e', '#eab308'];
 
-    const datasets = Object.entries(byModel).map(([model, monthMap], idx) => {
-        const points = Object.entries(monthMap).map(([x, prices]) => ({
+    const datasets = Object.entries(byModel).map(([model, info], idx) => {
+        const points = Object.entries(info.months).map(([x, prices]) => ({
             x: Number(x),
             y: prices.reduce((a, b) => a + b, 0) / prices.length,
             count: prices.length
         })).sort((a, b) => a.x - b.x);
+        const avgG3d = info.g3dValues.length
+            ? Math.round(info.g3dValues.reduce((a, b) => a + b, 0) / info.g3dValues.length)
+            : null;
         return {
             label: model,
             data: points,
+            g3d: avgG3d,
             borderColor: palette[idx % palette.length],
             backgroundColor: palette[idx % palette.length],
             showLine: true,
@@ -1624,9 +1724,37 @@ function updateMonthlyAvgChart(listings) {
             tension: 0.3,
             pointRadius: 4,
             pointHoverRadius: 6,
-            borderWidth: 2
+            borderWidth: 2,
+            yAxisID: 'y'
         };
     });
+
+    // Add a single average-G3D line on a secondary axis
+    const g3dPoints = months.map((m, i) => {
+        const bucket = monthlyG3d[i];
+        return {
+            x: i,
+            y: bucket ? Math.round(bucket.sum / bucket.count) : null,
+            count: bucket ? bucket.count : 0
+        };
+    }).filter(p => p.y !== null);
+
+    if (g3dPoints.length > 0) {
+        datasets.push({
+            label: 'Avg G3D Mark',
+            data: g3dPoints,
+            borderColor: '#f59e0b',
+            backgroundColor: '#f59e0b',
+            borderDash: [6, 4],
+            showLine: true,
+            spanGaps: false,
+            tension: 0.3,
+            pointRadius: 5,
+            pointHoverRadius: 7,
+            borderWidth: 2,
+            yAxisID: 'y-g3d'
+        });
+    }
 
     if (monthlyAvgChart) monthlyAvgChart.destroy();
     monthlyAvgChart = new Chart(ctx, {
@@ -1637,20 +1765,33 @@ function updateMonthlyAvgChart(listings) {
             maintainAspectRatio: false,
             animation: false,
             parsing: { x: 'x', y: 'y' },
+            interaction: { mode: 'nearest', axis: 'x', intersect: false },
             plugins: {
                 legend: { display: true, position: 'bottom', labels: { boxWidth: 12, font: { size: 10 } } },
                 tooltip: {
                     callbacks: {
                         label: (ctx) => {
                             const p = ctx.raw;
+                            if (ctx.dataset.label === 'Avg G3D Mark') {
+                                const noun = p.count === 1 ? 'listing' : 'listings';
+                                return `Avg G3D Mark: ${Number(p.y).toFixed(0)} (${p.count} ${noun})`;
+                            }
                             const noun = p.count === 1 ? 'listing' : 'listings';
-                            return `${ctx.dataset.label}: Avg €${Number(p.y).toFixed(0)} (${p.count} ${noun})`;
+                            const g3dPart = ctx.dataset.g3d ? ` | G3D ${ctx.dataset.g3d}` : '';
+                            return `${ctx.dataset.label}: Avg €${Number(p.y).toFixed(0)} (${p.count} ${noun}${g3dPart})`;
                         }
                     }
                 }
             },
             scales: {
                 y: { beginAtZero: false, title: { display: true, text: 'Average Price (€)' } },
+                'y-g3d': {
+                    type: 'linear',
+                    position: 'right',
+                    title: { display: true, text: 'G3D Mark' },
+                    grid: { drawOnChartArea: false },
+                    beginAtZero: false
+                },
                 x: {
                     type: 'linear',
                     position: 'bottom',
@@ -2284,6 +2425,20 @@ async function loadGpuModels() {
 // Call on page load
 document.addEventListener('DOMContentLoaded', loadGpuModels);
 
+// Set vendor filter from icon click and update model list (toggle off to "all")
+function selectGPUVendor(vendor) {
+    const hidden = document.getElementById('vendor-filter');
+    const current = hidden ? hidden.value : 'all';
+    const next = current === vendor ? 'all' : vendor;
+    if (hidden) hidden.value = next;
+
+    document.querySelectorAll('#vendor-icon-bar .filter-icon-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.vendor === next);
+    });
+
+    onVendorChange();
+}
+
 // Populate model dropdown based on vendor selection
 function onVendorChange() {
     const vendorSelect = document.getElementById('vendor-filter');
@@ -2449,14 +2604,25 @@ function vramDisplayLabel(mb) {
     return `${gb} GB (${mb} MB)`;
 }
 
-// Handle VRAM mode checkbox toggle - updates label and refreshes listings
+// Handle VRAM mode toggle - updates the select options and refreshes listings
 function onVramModeChange() {
     const checkbox = document.getElementById('vram-min-mode');
-    const label = document.getElementById('vram-min-label');
-    if (checkbox && label) {
-        label.textContent = checkbox.checked ? '≥ selected' : 'Exact size';
+    const btn = document.getElementById('vram-mode-toggle');
+    const isMin = checkbox && checkbox.checked;
+    if (btn) {
+        btn.classList.toggle('min-mode', isMin);
+        btn.setAttribute('aria-pressed', isMin);
+        btn.title = isMin ? 'Minimum size (click for exact size)' : 'Exact size (click for minimum size)';
     }
+    updateVramFilter();
     loadListings();
+}
+
+function toggleVramMode() {
+    const checkbox = document.getElementById('vram-min-mode');
+    if (!checkbox) return;
+    checkbox.checked = !checkbox.checked;
+    onVramModeChange();
 }
 
 // Handle model change - update VRAM options then reload listings
@@ -2664,28 +2830,27 @@ async function submitFlagFromModal(listingId) {
 // Unicorn filter state
 let unicornFilter = 'all';
 
-function setUnicornFilter(mode) {
-    unicornFilter = mode;
-
-    // Update button styles
-    document.querySelectorAll('.unicorn-btn').forEach(btn => {
-        btn.classList.remove('active');
-    });
-
-    if (mode === 'all') {
-        document.getElementById('unicorn-all').classList.add('active');
-    } else if (mode === 'only') {
-        document.getElementById('unicorn-only').classList.add('active');
-    } else if (mode === 'exclude') {
-        document.getElementById('unicorn-exclude').classList.add('active');
-    }
-
+function toggleUnicorn() {
+    unicornFilter = (unicornFilter === 'only') ? 'all' : 'only';
+    const btn = document.getElementById('unicorn-toggle');
+    const on = unicornFilter === 'only';
+    btn.classList.toggle('active', on);
+    btn.setAttribute('aria-pressed', on ? 'true' : 'false');
+    btn.title = on ? 'Showing only unicorn deals (click to show all)' : 'Show only unicorn deals';
     loadListings();
 }
 
 function updateCompareSelection() {
-    const checkboxes = document.querySelectorAll('.compare-checkbox:checked');
-    const ids = Array.from(checkboxes).map(cb => cb.value);
+    // Keep a persistent set so selections survive vendor/model switches
+    const savedIds = new Set(JSON.parse(localStorage.getItem('gpu_compare_ids') || '[]'));
+    document.querySelectorAll('.compare-checkbox').forEach(cb => {
+        if (cb.checked) {
+            savedIds.add(cb.value);
+        } else {
+            savedIds.delete(cb.value);
+        }
+    });
+    const ids = [...savedIds];
     const count = ids.length;
     document.getElementById('compare-count').textContent = count;
     document.getElementById('compare-btn').disabled = count < 2 || count > 4;

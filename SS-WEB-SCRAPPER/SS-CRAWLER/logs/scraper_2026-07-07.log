@@ -1,0 +1,1330 @@
+2026-07-07 15:04:08 | INFO     | ss_crawler | [ram_scraper] Initializing RAM scraper...
+2026-07-07 15:04:08 | INFO     | ss_crawler | [database] Database connected: localhost:5433/ss_market
+2026-07-07 15:04:08 | INFO     | ss_crawler | [ram_scraper] Database: postgresql+psycopg2://crawler:crawler_pass@localhost:5433/ss_market
+2026-07-07 15:04:08 | INFO     | ss_crawler | [ram_matcher] RAMMatcher initialized with 5284 RAM references
+2026-07-07 15:04:08 | INFO     | ss_crawler | [ram_scraper] Loaded 5284 RAM references
+2026-07-07 15:04:08 | INFO     | ss_crawler | [ram_scraper] Starting RAM scraper from https://www.ss.com/lv/electronics/computers/completing-pc/ram/
+2026-07-07 15:04:08 | INFO     | ss_crawler | [ram_scraper] Fetching page 1: https://www.ss.com/lv/electronics/computers/completing-pc/ram/
+2026-07-07 15:04:08 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/lv/electronics/computers/completing-pc/ram/
+2026-07-07 15:04:11 | INFO     | ss_crawler | [ram_scraper] Found 32 listings on page 1, 32 new
+2026-07-07 15:04:11 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/bkchfc.html
+2026-07-07 15:04:14 | INFO     | ss_crawler | [ram_scraper] Matched bkchfc: SK Hynix HMT41GU6MFR8C-PB 8 GB (100% confidence)
+2026-07-07 15:04:14 | INFO     | ss_crawler | [ram_scraper] 💰 bkchfc: Updated (title)
+2026-07-07 15:04:14 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/bkchfc.html
+2026-07-07 15:04:16 | INFO     | ss_crawler | [ram_scraper] Matched bkchfc: SK Hynix HMT41GU6MFR8C-PB 8 GB (100% confidence)
+2026-07-07 15:04:16 | INFO     | ss_crawler | [ram_scraper] 💰 bkchfc: Updated (content)
+2026-07-07 15:04:16 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/bkchfc.html
+2026-07-07 15:04:20 | INFO     | ss_crawler | [ram_scraper] Matched bkchfc: SK Hynix HMT41GU6MFR8C-PB 8 GB (100% confidence)
+2026-07-07 15:04:20 | INFO     | ss_crawler | [ram_scraper] 💰 bkchfc: Updated (content)
+2026-07-07 15:04:20 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/fifdl.html
+2026-07-07 15:04:22 | INFO     | ss_crawler | [ram_scraper] Matched fifdl: TEAMGROUP Elite Plus 16 GB (100% confidence)
+2026-07-07 15:04:22 | INFO     | ss_crawler | [ram_scraper] ✨ fifdl: New
+2026-07-07 15:04:22 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/djllh.html
+2026-07-07 15:04:25 | INFO     | ss_crawler | [ram_scraper] Matched djllh: Corsair Vengeance RGB Pro 32 GB (100% confidence)
+2026-07-07 15:04:25 | INFO     | ss_crawler | [ram_scraper] ✨ djllh: New
+2026-07-07 15:04:25 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/fnbnn.html
+2026-07-07 15:53:24 | INFO     | ss_crawler | [ram_scraper] Initializing RAM scraper...
+2026-07-07 15:53:24 | INFO     | ss_crawler | [database] Database connected: localhost:5433/ss_market
+2026-07-07 15:53:24 | INFO     | ss_crawler | [ram_scraper] Database: postgresql+psycopg2://crawler:crawler_pass@localhost:5433/ss_market
+2026-07-07 15:53:24 | INFO     | ss_crawler | [ram_matcher] RAMMatcher initialized with 5284 RAM references
+2026-07-07 15:53:24 | INFO     | ss_crawler | [ram_scraper] Loaded 5284 RAM references
+2026-07-07 15:53:24 | INFO     | ss_crawler | [ram_scraper] Starting RAM scraper from https://www.ss.com/lv/electronics/computers/completing-pc/ram/
+2026-07-07 15:53:24 | INFO     | ss_crawler | [ram_scraper] Fetching page 1: https://www.ss.com/lv/electronics/computers/completing-pc/ram/
+2026-07-07 15:53:24 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/lv/electronics/computers/completing-pc/ram/
+2026-07-07 15:53:26 | INFO     | ss_crawler | [ram_scraper] Found 32 listings on page 1, 32 new
+2026-07-07 15:53:26 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/bkchfc.html
+2026-07-07 15:53:29 | INFO     | ss_crawler | [ram_scraper] Matched bkchfc: SK Hynix HMT41GU6MFR8C-PB 8 GB (100% confidence)
+2026-07-07 15:53:29 | INFO     | ss_crawler | [ram_scraper] 💰 bkchfc: Updated (title)
+2026-07-07 15:53:29 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/bkchfc.html
+2026-07-07 15:53:31 | INFO     | ss_crawler | [ram_scraper] Matched bkchfc: SK Hynix HMT41GU6MFR8C-PB 8 GB (100% confidence)
+2026-07-07 15:53:31 | INFO     | ss_crawler | [ram_scraper] 💰 bkchfc: Updated (content)
+2026-07-07 15:53:31 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/bkchfc.html
+2026-07-07 15:53:34 | INFO     | ss_crawler | [ram_scraper] Matched bkchfc: SK Hynix HMT41GU6MFR8C-PB 8 GB (100% confidence)
+2026-07-07 15:53:34 | INFO     | ss_crawler | [ram_scraper] 💰 bkchfc: Updated (content)
+2026-07-07 15:53:34 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/fifdl.html
+2026-07-07 15:53:36 | INFO     | ss_crawler | [ram_scraper] Matched fifdl: TEAMGROUP Elite Plus 16 GB (100% confidence)
+2026-07-07 15:53:36 | INFO     | ss_crawler | [ram_scraper] 💰 fifdl: Updated (title)
+2026-07-07 15:53:36 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/djllh.html
+2026-07-07 15:53:39 | INFO     | ss_crawler | [ram_scraper] Matched djllh: Corsair Vengeance RGB Pro 32 GB (100% confidence)
+2026-07-07 15:53:39 | INFO     | ss_crawler | [ram_scraper] 💰 djllh: Updated (title)
+2026-07-07 15:53:39 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/fnbnn.html
+2026-07-07 15:53:42 | INFO     | ss_crawler | [ram_scraper] Matched fnbnn: SK Hynix hma81gu6cjr8n-vk 8 GB (100% confidence)
+2026-07-07 15:53:42 | INFO     | ss_crawler | [ram_scraper] ✨ fnbnn: New
+2026-07-07 15:53:42 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/loxdn.html
+2026-07-07 15:53:44 | INFO     | ss_crawler | [ram_scraper] Matched loxdn: Crucial Sport LT 16 GB (100% confidence)
+2026-07-07 15:53:44 | INFO     | ss_crawler | [ram_scraper] ✨ loxdn: New
+2026-07-07 15:53:44 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/dofok.html
+2026-07-07 16:02:37 | INFO     | ss_crawler | [ram_scraper] Initializing RAM scraper...
+2026-07-07 16:02:37 | INFO     | ss_crawler | [database] Database connected: localhost:5433/ss_market
+2026-07-07 16:02:37 | INFO     | ss_crawler | [ram_scraper] Database: postgresql+psycopg2://crawler:crawler_pass@localhost:5433/ss_market
+2026-07-07 16:02:38 | INFO     | ss_crawler | [ram_matcher] RAMMatcher initialized with 5284 RAM references
+2026-07-07 16:02:38 | INFO     | ss_crawler | [ram_scraper] Loaded 5284 RAM references
+2026-07-07 16:02:38 | INFO     | ss_crawler | [ram_scraper] Starting RAM scraper from https://www.ss.com/lv/electronics/computers/completing-pc/ram/
+2026-07-07 16:02:38 | INFO     | ss_crawler | [ram_scraper] Fetching page 1: https://www.ss.com/lv/electronics/computers/completing-pc/ram/
+2026-07-07 16:02:38 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/lv/electronics/computers/completing-pc/ram/
+2026-07-07 16:02:41 | INFO     | ss_crawler | [ram_scraper] Found 32 listings on page 1, 32 new
+2026-07-07 16:02:41 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/bkchfc.html
+2026-07-07 16:02:44 | INFO     | ss_crawler | [ram_scraper] Matched bkchfc: SK Hynix HMT41GU6MFR8C-PB 8 GB (100% confidence)
+2026-07-07 16:02:44 | INFO     | ss_crawler | [ram_scraper] 💰 bkchfc: Updated (content)
+2026-07-07 16:02:44 | INFO     | ss_crawler | [image_downloader] Downloaded image for bkchfc (stored as bkchfc_bc5d8962.jpg, 7894 bytes)
+2026-07-07 16:02:44 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\bkchfc_bc5d8962.jpg
+2026-07-07 16:02:44 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/bkchfc.html
+2026-07-07 16:02:45 | INFO     | ss_crawler | [ram_scraper] Matched bkchfc: SK Hynix HMT41GU6MFR8C-PB 8 GB (100% confidence)
+2026-07-07 16:02:45 | INFO     | ss_crawler | [ram_scraper] 💰 bkchfc: Updated (content)
+2026-07-07 16:02:45 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\bkchfc_bc5d8962.jpg
+2026-07-07 16:02:45 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/bkchfc.html
+2026-07-07 16:02:49 | INFO     | ss_crawler | [ram_scraper] Matched bkchfc: SK Hynix HMT41GU6MFR8C-PB 8 GB (100% confidence)
+2026-07-07 16:02:49 | INFO     | ss_crawler | [ram_scraper] 💰 bkchfc: Updated (content)
+2026-07-07 16:02:49 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\bkchfc_bc5d8962.jpg
+2026-07-07 16:02:49 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/fifdl.html
+2026-07-07 16:02:51 | INFO     | ss_crawler | [ram_scraper] Matched fifdl: TEAMGROUP Elite Plus 16 GB (100% confidence)
+2026-07-07 16:02:51 | INFO     | ss_crawler | [ram_scraper] 💰 fifdl: Updated (content)
+2026-07-07 16:02:51 | INFO     | ss_crawler | [image_downloader] Downloaded image for fifdl (stored as fifdl_b7dbdb3e.jpg, 3107 bytes)
+2026-07-07 16:02:51 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\fifdl_b7dbdb3e.jpg
+2026-07-07 16:02:51 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/djllh.html
+2026-07-07 16:02:53 | INFO     | ss_crawler | [ram_scraper] Matched djllh: Corsair Vengeance RGB Pro 32 GB (100% confidence)
+2026-07-07 16:02:53 | INFO     | ss_crawler | [ram_scraper] 💰 djllh: Updated (content)
+2026-07-07 16:02:53 | INFO     | ss_crawler | [image_downloader] Downloaded image for djllh (stored as djllh_ad1b5e47.jpg, 5406 bytes)
+2026-07-07 16:02:53 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\djllh_ad1b5e47.jpg
+2026-07-07 16:02:53 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/fnbnn.html
+2026-07-07 16:02:55 | INFO     | ss_crawler | [ram_scraper] Matched fnbnn: SK Hynix hma81gu6cjr8n-vk 8 GB (100% confidence)
+2026-07-07 16:02:55 | INFO     | ss_crawler | [ram_scraper] ⏸️ fnbnn: Unchanged
+2026-07-07 16:02:55 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/loxdn.html
+2026-07-07 16:02:58 | INFO     | ss_crawler | [ram_scraper] Matched loxdn: Crucial Sport LT 16 GB (100% confidence)
+2026-07-07 16:02:58 | INFO     | ss_crawler | [ram_scraper] ⏸️ loxdn: Unchanged
+2026-07-07 16:02:58 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/dofok.html
+2026-07-07 16:03:01 | INFO     | ss_crawler | [ram_scraper] Matched dofok: Kingston FURY Beast 64 GB (100% confidence)
+2026-07-07 16:03:01 | INFO     | ss_crawler | [ram_scraper] ✨ dofok: New
+2026-07-07 16:03:01 | INFO     | ss_crawler | [image_downloader] Downloaded image for dofok (stored as dofok_663117dc.jpg, 4258 bytes)
+2026-07-07 16:03:01 | INFO     | ss_crawler | [ram_scraper] Image saved locally: rams\dofok_663117dc.jpg
+2026-07-07 16:03:01 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/ebgcp.html
+2026-07-07 16:03:05 | INFO     | ss_crawler | [ram_scraper] Matched ebgcp: G.Skill Trident Z5 64 GB (100% confidence)
+2026-07-07 16:03:05 | INFO     | ss_crawler | [ram_scraper] ✨ ebgcp: New
+2026-07-07 16:03:05 | INFO     | ss_crawler | [image_downloader] Downloaded image for ebgcp (stored as ebgcp_20bc1f45.jpg, 4582 bytes)
+2026-07-07 16:03:05 | INFO     | ss_crawler | [ram_scraper] Image saved locally: rams\ebgcp_20bc1f45.jpg
+2026-07-07 16:03:05 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/mofxd.html
+2026-07-07 16:03:07 | INFO     | ss_crawler | [ram_scraper] Matched mofxd: Corsair ValueSelect 4 GB (100% confidence)
+2026-07-07 16:03:07 | INFO     | ss_crawler | [ram_scraper] 💰 mofxd: Updated (title, description, location, match)
+2026-07-07 16:14:23 | INFO     | ss_crawler | [image_downloader] Downloaded image for bkchfc (stored as bkchfc_d8f60304.jpg, 184134 bytes)
+2026-07-07 16:25:11 | INFO     | ss_crawler | [database] Database connected: localhost:5433/ss_market
+2026-07-07 16:25:11 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/bjhhn.html
+2026-07-07 16:25:13 | INFO     | ss_crawler | [image_downloader] Downloaded image for bjhhn (stored as bjhhn_2d31c650.jpg, 72479 bytes)
+2026-07-07 16:25:14 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/bkchfc.html
+2026-07-07 16:25:16 | INFO     | ss_crawler | [image_downloader] Downloaded image for bkchfc (stored as bkchfc_d8f60304.jpg, 184134 bytes)
+2026-07-07 16:25:17 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/bknxjn.html
+2026-07-07 16:25:20 | INFO     | ss_crawler | [image_downloader] Downloaded image for bknxjn (stored as bknxjn_c256ca8f.jpg, 89318 bytes)
+2026-07-07 16:25:21 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/bxbidg.html
+2026-07-07 16:25:24 | INFO     | ss_crawler | [image_downloader] Downloaded image for bxbidg (stored as bxbidg_881e34d8.jpg, 110446 bytes)
+2026-07-07 16:25:25 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/bxcbjc.html
+2026-07-07 16:25:26 | INFO     | ss_crawler | [image_downloader] Downloaded image for bxcbjc (stored as bxcbjc_c7abd1f2.jpg, 101957 bytes)
+2026-07-07 16:25:27 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/bxccni.html
+2026-07-07 16:25:30 | INFO     | ss_crawler | [image_downloader] Downloaded image for bxccni (stored as bxccni_64bb872b.jpg, 95279 bytes)
+2026-07-07 16:25:31 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/bxccnk.html
+2026-07-07 16:25:34 | INFO     | ss_crawler | [image_downloader] Downloaded image for bxccnk (stored as bxccnk_f0c1574c.jpg, 68229 bytes)
+2026-07-07 16:25:35 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/bxcmgk.html
+2026-07-07 16:25:37 | INFO     | ss_crawler | [image_downloader] Downloaded image for bxcmgk (stored as bxcmgk_a61def44.jpg, 143076 bytes)
+2026-07-07 16:25:38 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/bxxlep.html
+2026-07-07 16:25:42 | INFO     | ss_crawler | [image_downloader] Downloaded image for bxxlep (stored as bxxlep_43fcba8b.jpg, 144109 bytes)
+2026-07-07 16:25:43 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/cglhbo.html
+2026-07-07 16:25:46 | INFO     | ss_crawler | [image_downloader] Downloaded image for cglhbo (stored as cglhbo_59ce4f19.jpg, 146725 bytes)
+2026-07-07 16:25:47 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/cglhgl.html
+2026-07-07 16:25:50 | INFO     | ss_crawler | [image_downloader] Downloaded image for cglhgl (stored as cglhgl_97375333.jpg, 82237 bytes)
+2026-07-07 16:25:51 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/cglhng.html
+2026-07-07 16:25:54 | INFO     | ss_crawler | [image_downloader] Downloaded image for cglhng (stored as cglhng_4f0289b0.jpg, 71864 bytes)
+2026-07-07 16:25:55 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/cglhnh.html
+2026-07-07 16:25:57 | INFO     | ss_crawler | [image_downloader] Downloaded image for cglhnh (stored as cglhnh_87e946d9.jpg, 87462 bytes)
+2026-07-07 16:25:58 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/cglhop.html
+2026-07-07 16:26:02 | INFO     | ss_crawler | [image_downloader] Downloaded image for cglhop (stored as cglhop_dba993ac.jpg, 185140 bytes)
+2026-07-07 16:26:03 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/cglidn.html
+2026-07-07 16:26:05 | INFO     | ss_crawler | [image_downloader] Downloaded image for cglidn (stored as cglidn_881e34d8.jpg, 110446 bytes)
+2026-07-07 16:26:06 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/cmkcx.html
+2026-07-07 16:26:08 | INFO     | ss_crawler | [image_downloader] Trying fallback image URL for cmkcx: https://i.ss.com/gallery/7/1207/301580/computers-completing-pc-ram-60315840.t.jpg
+2026-07-07 16:26:08 | WARNING  | ss_crawler | [image_downloader] Image too small for cmkcx (49 bytes), skipping save
+2026-07-07 16:26:09 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/dgedj.html
+2026-07-07 16:26:12 | INFO     | ss_crawler | [image_downloader] Downloaded image for dgedj (stored as dgedj_743dbf8f.jpg, 148614 bytes)
+2026-07-07 16:26:13 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/didxx.html
+2026-07-07 16:26:16 | INFO     | ss_crawler | [image_downloader] Downloaded image for didxx (stored as didxx_0a3d0dc7.jpg, 161239 bytes)
+2026-07-07 16:26:17 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/dihnh.html
+2026-07-07 16:26:19 | INFO     | ss_crawler | [image_downloader] Downloaded image for dihnh (stored as dihnh_0667599f.jpg, 96930 bytes)
+2026-07-07 16:26:20 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/djcho.html
+2026-07-07 16:26:22 | INFO     | ss_crawler | [image_downloader] Trying fallback image URL for djcho: https://i.ss.com/gallery/7/1300/324875/computers-completing-pc-ram-64974866.t.jpg
+2026-07-07 16:26:22 | WARNING  | ss_crawler | [image_downloader] Image too small for djcho (49 bytes), skipping save
+2026-07-07 16:26:23 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/djllh.html
+2026-07-07 16:26:26 | INFO     | ss_crawler | [image_downloader] Downloaded image for djllh (stored as djllh_7d941c3a.jpg, 133961 bytes)
+2026-07-07 16:26:27 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/dnkhg.html
+2026-07-07 16:26:29 | INFO     | ss_crawler | [image_downloader] Downloaded image for dnkhg (stored as dnkhg_7689ad32.jpg, 121685 bytes)
+2026-07-07 16:26:30 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/dnlmk.html
+2026-07-07 16:26:33 | INFO     | ss_crawler | [image_downloader] Downloaded image for dnlmk (stored as dnlmk_881e34d8.jpg, 110446 bytes)
+2026-07-07 16:26:34 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/dofok.html
+2026-07-07 16:26:37 | INFO     | ss_crawler | [image_downloader] Downloaded image for dofok (stored as dofok_82dfa3d7.jpg, 64660 bytes)
+2026-07-07 16:26:38 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/dpmnf.html
+2026-07-07 16:26:40 | INFO     | ss_crawler | [image_downloader] Downloaded image for dpmnf (stored as dpmnf_6ebe3a17.jpg, 97725 bytes)
+2026-07-07 16:26:41 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/ebgcp.html
+2026-07-07 16:26:43 | INFO     | ss_crawler | [image_downloader] Downloaded image for ebgcp (stored as ebgcp_a1aa0534.jpg, 70333 bytes)
+2026-07-07 16:26:44 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/edome.html
+2026-07-07 16:26:47 | INFO     | ss_crawler | [image_downloader] Downloaded image for edome (stored as edome_3492d2d1.jpg, 79627 bytes)
+2026-07-07 16:26:48 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/eelde.html
+2026-07-07 16:26:50 | INFO     | ss_crawler | [image_downloader] Downloaded image for eelde (stored as eelde_5cff496b.jpg, 49293 bytes)
+2026-07-07 16:26:51 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/eiife.html
+2026-07-07 16:26:55 | INFO     | ss_crawler | [image_downloader] Downloaded image for eiife (stored as eiife_ad1cedeb.jpg, 103223 bytes)
+2026-07-07 16:26:56 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/ekdfi.html
+2026-07-07 16:26:57 | INFO     | ss_crawler | [image_downloader] Downloaded image for ekdfi (stored as ekdfi_509f1741.jpg, 83294 bytes)
+2026-07-07 16:26:58 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/elimx.html
+2026-07-07 16:27:00 | INFO     | ss_crawler | [image_downloader] Downloaded image for elimx (stored as elimx_924328fc.jpg, 206149 bytes)
+2026-07-07 16:27:01 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/eogkn.html
+2026-07-07 16:27:03 | INFO     | ss_crawler | [image_downloader] Downloaded image for eogkn (stored as eogkn_dd53a32b.jpg, 91984 bytes)
+2026-07-07 16:27:04 | INFO     | ss_crawler | [crawler] Fetching : https://www.facebook.com/marketplace/item/1462640088732744/?ref=search&referral_code=null&referral_story_type=post&tracking=browse_serp%3Ab187ae07-ca4e-42f3-9568-9cfe90c53549
+2026-07-07 16:27:05 | WARNING  | ss_crawler | [crawler] ⚠ Retryable error 400, waiting 1s...
+2026-07-07 16:27:06 | WARNING  | ss_crawler | [crawler] ⚠ Retryable error 400, waiting 2s...
+2026-07-07 16:27:09 | WARNING  | ss_crawler | [crawler] ⚠ Retryable error 400, waiting 4s...
+2026-07-07 16:27:13 | WARNING  | ss_crawler | [crawler] ⚠ Retryable error 400, waiting 8s...
+2026-07-07 16:27:21 | ERROR    | ss_crawler | [crawler] ✗ Max retries exceeded for https://www.facebook.com/marketplace/item/1462640088732744/?ref=search&referral_code=null&referral_story_type=post&tracking=browse_serp%3Ab187ae07-ca4e-42f3-9568-9cfe90c53549
+2026-07-07 16:27:21 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/fcbce.html
+2026-07-07 16:27:24 | INFO     | ss_crawler | [image_downloader] Downloaded image for fcbce (stored as fcbce_7a6ef93b.jpg, 97493 bytes)
+2026-07-07 16:27:25 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/fclff.html
+2026-07-07 16:27:27 | INFO     | ss_crawler | [image_downloader] Downloaded image for fclff (stored as fclff_05c644ad.jpg, 101580 bytes)
+2026-07-07 16:27:28 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/fgjpj.html
+2026-07-07 16:27:31 | INFO     | ss_crawler | [image_downloader] Downloaded image for fgjpj (stored as fgjpj_275495c6.jpg, 124173 bytes)
+2026-07-07 16:27:32 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/fifdl.html
+2026-07-07 16:27:34 | INFO     | ss_crawler | [image_downloader] Downloaded image for fifdl (stored as fifdl_64259688.jpg, 128474 bytes)
+2026-07-07 16:27:35 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/fifie.html
+2026-07-07 16:27:39 | INFO     | ss_crawler | [image_downloader] Downloaded image for fifie (stored as fifie_f1a02226.jpg, 61370 bytes)
+2026-07-07 16:27:40 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/fkneo.html
+2026-07-07 16:27:42 | INFO     | ss_crawler | [image_downloader] Downloaded image for fkneo (stored as fkneo_0465d66f.jpg, 134656 bytes)
+2026-07-07 16:27:43 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/fmfpe.html
+2026-07-07 16:27:46 | INFO     | ss_crawler | [image_downloader] Downloaded image for fmfpe (stored as fmfpe_6a8c230b.jpg, 123449 bytes)
+2026-07-07 16:27:47 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/fnbnn.html
+2026-07-07 16:27:49 | INFO     | ss_crawler | [image_downloader] Downloaded image for fnbnn (stored as fnbnn_09f30edf.jpg, 156587 bytes)
+2026-07-07 16:27:50 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/fnlfe.html
+2026-07-07 16:27:52 | INFO     | ss_crawler | [image_downloader] Downloaded image for fnlfe (stored as fnlfe_ae2740d9.jpg, 82294 bytes)
+2026-07-07 16:27:53 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/gbebc.html
+2026-07-07 16:27:56 | INFO     | ss_crawler | [image_downloader] Downloaded image for gbebc (stored as gbebc_5b0a1013.jpg, 87483 bytes)
+2026-07-07 16:27:57 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/gfhpj.html
+2026-07-07 16:28:00 | INFO     | ss_crawler | [image_downloader] Downloaded image for gfhpj (stored as gfhpj_80ab5ec0.jpg, 39204 bytes)
+2026-07-07 16:28:01 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/gncij.html
+2026-07-07 16:28:04 | INFO     | ss_crawler | [image_downloader] Downloaded image for gncij (stored as gncij_a9672e4d.jpg, 87735 bytes)
+2026-07-07 16:28:05 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/gpgfx.html
+2026-07-07 16:28:08 | INFO     | ss_crawler | [image_downloader] Downloaded image for gpgfx (stored as gpgfx_93c17a0b.jpg, 109172 bytes)
+2026-07-07 16:28:09 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/hbgle.html
+2026-07-07 16:28:11 | INFO     | ss_crawler | [image_downloader] Downloaded image for hbgle (stored as hbgle_b333a890.jpg, 135545 bytes)
+2026-07-07 16:28:12 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/hbjdm.html
+2026-07-07 16:28:14 | INFO     | ss_crawler | [image_downloader] Downloaded image for hbjdm (stored as hbjdm_4a6b39e9.jpg, 195671 bytes)
+2026-07-07 16:28:15 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/hfggm.html
+2026-07-07 16:28:18 | INFO     | ss_crawler | [image_downloader] Downloaded image for hfggm (stored as hfggm_41caa8a2.jpg, 78116 bytes)
+2026-07-07 16:28:19 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/hfngn.html
+2026-07-07 16:28:23 | INFO     | ss_crawler | [image_downloader] Downloaded image for hfngn (stored as hfngn_881e34d8.jpg, 110446 bytes)
+2026-07-07 16:28:24 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/hgchm.html
+2026-07-07 16:28:28 | INFO     | ss_crawler | [image_downloader] Downloaded image for hgchm (stored as hgchm_ab570e4b.jpg, 41978 bytes)
+2026-07-07 16:28:29 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/lmool.html
+2026-07-07 16:28:30 | INFO     | ss_crawler | [image_downloader] Downloaded image for lmool (stored as lmool_b88d5ead.jpg, 56766 bytes)
+2026-07-07 16:28:31 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/lnnfo.html
+2026-07-07 16:28:35 | INFO     | ss_crawler | [image_downloader] Trying fallback image URL for lnnfo: https://i.ss.com/gallery/6/1198/299408/computers-completing-pc-ram-59881589.t.jpg
+2026-07-07 16:28:35 | WARNING  | ss_crawler | [image_downloader] Image too small for lnnfo (49 bytes), skipping save
+2026-07-07 16:28:36 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/lobpp.html
+2026-07-07 16:28:37 | INFO     | ss_crawler | [image_downloader] Downloaded image for lobpp (stored as lobpp_ab67e645.jpg, 214321 bytes)
+2026-07-07 16:28:38 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/loxdn.html
+2026-07-07 16:28:41 | INFO     | ss_crawler | [image_downloader] Downloaded image for loxdn (stored as loxdn_4b5ca3c0.jpg, 43959 bytes)
+2026-07-07 16:28:42 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/mbbpn.html
+2026-07-07 16:28:44 | INFO     | ss_crawler | [image_downloader] Downloaded image for mbbpn (stored as mbbpn_b03f7c61.jpg, 57300 bytes)
+2026-07-07 16:28:45 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/mbche.html
+2026-07-07 16:28:48 | INFO     | ss_crawler | [image_downloader] Downloaded image for mbche (stored as mbche_ccd18c17.jpg, 95071 bytes)
+2026-07-07 16:28:49 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/mffch.html
+2026-07-07 16:28:53 | INFO     | ss_crawler | [image_downloader] Downloaded image for mffch (stored as mffch_07604af9.jpg, 105713 bytes)
+2026-07-07 16:28:54 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/mighh.html
+2026-07-07 16:28:57 | INFO     | ss_crawler | [image_downloader] Downloaded image for mighh (stored as mighh_0d394548.jpg, 101408 bytes)
+2026-07-07 16:28:58 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/mofxd.html
+2026-07-07 16:29:00 | INFO     | ss_crawler | [image_downloader] Downloaded image for mofxd (stored as mofxd_fd96cbd8.jpg, 155212 bytes)
+2026-07-07 16:29:01 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/mxcmc.html
+2026-07-07 16:29:03 | INFO     | ss_crawler | [image_downloader] Downloaded image for mxcmc (stored as mxcmc_4f368035.jpg, 67192 bytes)
+2026-07-07 16:29:05 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/opiic.html
+2026-07-07 16:29:07 | INFO     | ss_crawler | [image_downloader] Downloaded image for opiic (stored as opiic_466b1886.jpg, 75848 bytes)
+2026-07-07 16:29:08 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/opjll.html
+2026-07-07 16:29:11 | INFO     | ss_crawler | [image_downloader] Downloaded image for opjll (stored as opjll_881e34d8.jpg, 110446 bytes)
+2026-07-07 16:29:12 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/phjxp.html
+2026-07-07 16:29:14 | INFO     | ss_crawler | [image_downloader] Downloaded image for phjxp (stored as phjxp_21a68db0.jpg, 92265 bytes)
+2026-07-07 16:29:15 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/piddi.html
+2026-07-07 16:29:18 | INFO     | ss_crawler | [image_downloader] Downloaded image for piddi (stored as piddi_8cb9b629.jpg, 132759 bytes)
+2026-07-07 16:29:19 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/pjdlf.html
+2026-07-07 16:29:22 | INFO     | ss_crawler | [image_downloader] Downloaded image for pjdlf (stored as pjdlf_e8f4050e.jpg, 113410 bytes)
+2026-07-07 17:48:23 | INFO     | ss_crawler | [ram_scraper] Initializing RAM scraper...
+2026-07-07 17:48:23 | INFO     | ss_crawler | [database] Database connected: localhost:5433/ss_market
+2026-07-07 17:48:23 | INFO     | ss_crawler | [ram_scraper] Database: postgresql+psycopg2://crawler:crawler_pass@localhost:5433/ss_market
+2026-07-07 17:48:24 | INFO     | ss_crawler | [ram_matcher] RAMMatcher initialized with 5284 RAM references
+2026-07-07 17:48:24 | INFO     | ss_crawler | [ram_scraper] Loaded 5284 RAM references
+2026-07-07 17:48:24 | INFO     | ss_crawler | [ram_scraper] Starting RAM scraper from https://www.ss.com/lv/electronics/computers/completing-pc/ram/
+2026-07-07 17:48:24 | INFO     | ss_crawler | [ram_scraper] Fetching page 1: https://www.ss.com/lv/electronics/computers/completing-pc/ram/
+2026-07-07 17:48:24 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/lv/electronics/computers/completing-pc/ram/
+2026-07-07 17:48:27 | INFO     | ss_crawler | [ram_scraper] Found 32 listings on page 1, 32 new
+2026-07-07 17:48:27 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/bkchfc.html
+2026-07-07 17:48:30 | INFO     | ss_crawler | [ram_scraper] Matched bkchfc: SK Hynix HMT41GU6MFR8C-PB 8 GB (100% confidence)
+2026-07-07 17:48:30 | INFO     | ss_crawler | [ram_scraper] 💰 bkchfc: Updated (title)
+2026-07-07 17:48:30 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\bkchfc_d8f60304.jpg
+2026-07-07 17:48:30 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/bkchfc.html
+2026-07-07 17:48:33 | INFO     | ss_crawler | [ram_scraper] Matched bkchfc: SK Hynix HMT41GU6MFR8C-PB 8 GB (100% confidence)
+2026-07-07 17:48:33 | INFO     | ss_crawler | [ram_scraper] 💰 bkchfc: Updated (content)
+2026-07-07 17:48:33 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\bkchfc_d8f60304.jpg
+2026-07-07 17:48:33 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/bkchfc.html
+2026-07-07 17:48:35 | INFO     | ss_crawler | [ram_scraper] Matched bkchfc: SK Hynix HMT41GU6MFR8C-PB 8 GB (100% confidence)
+2026-07-07 17:48:35 | INFO     | ss_crawler | [ram_scraper] 💰 bkchfc: Updated (content)
+2026-07-07 17:48:35 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\bkchfc_d8f60304.jpg
+2026-07-07 17:48:35 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/fifdl.html
+2026-07-07 17:48:37 | INFO     | ss_crawler | [ram_scraper] Matched fifdl: TEAMGROUP Elite Plus 16 GB (100% confidence)
+2026-07-07 17:48:37 | INFO     | ss_crawler | [ram_scraper] 💰 fifdl: Updated (title)
+2026-07-07 17:48:37 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\fifdl_64259688.jpg
+2026-07-07 17:48:37 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/djllh.html
+2026-07-07 17:48:40 | INFO     | ss_crawler | [ram_scraper] Matched djllh: Corsair Vengeance RGB Pro 32 GB (100% confidence)
+2026-07-07 17:48:40 | INFO     | ss_crawler | [ram_scraper] 💰 djllh: Updated (title)
+2026-07-07 17:48:40 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\djllh_7d941c3a.jpg
+2026-07-07 17:48:40 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/fnbnn.html
+2026-07-07 17:48:43 | INFO     | ss_crawler | [ram_scraper] Matched fnbnn: SK Hynix hma81gu6cjr8n-vk 8 GB (100% confidence)
+2026-07-07 17:48:43 | INFO     | ss_crawler | [ram_scraper] 💰 fnbnn: Updated (title)
+2026-07-07 17:48:43 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\fnbnn_09f30edf.jpg
+2026-07-07 17:48:43 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/loxdn.html
+2026-07-07 17:48:47 | INFO     | ss_crawler | [ram_scraper] Matched loxdn: Crucial Sport LT 16 GB (100% confidence)
+2026-07-07 17:48:47 | INFO     | ss_crawler | [ram_scraper] 💰 loxdn: Updated (title)
+2026-07-07 17:48:47 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\loxdn_4b5ca3c0.jpg
+2026-07-07 17:48:47 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/dofok.html
+2026-07-07 17:48:49 | INFO     | ss_crawler | [ram_scraper] Matched dofok: Kingston FURY Beast 64 GB (100% confidence)
+2026-07-07 17:48:49 | INFO     | ss_crawler | [ram_scraper] 💰 dofok: Updated (title)
+2026-07-07 17:48:49 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\dofok_82dfa3d7.jpg
+2026-07-07 17:48:49 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/ebgcp.html
+2026-07-07 17:48:51 | INFO     | ss_crawler | [ram_scraper] Matched ebgcp: G.Skill Trident Z5 64 GB (100% confidence)
+2026-07-07 17:48:51 | INFO     | ss_crawler | [ram_scraper] 💰 ebgcp: Updated (title)
+2026-07-07 17:48:51 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\ebgcp_a1aa0534.jpg
+2026-07-07 17:48:51 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/mofxd.html
+2026-07-07 17:48:54 | INFO     | ss_crawler | [ram_scraper] Matched mofxd: Corsair ValueSelect 4 GB (100% confidence)
+2026-07-07 17:48:54 | INFO     | ss_crawler | [ram_scraper] 💰 mofxd: Updated (title, description, location, match)
+2026-07-07 17:48:54 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\mofxd_fd96cbd8.jpg
+2026-07-07 17:48:54 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/gkjll.html
+2026-07-07 17:48:57 | INFO     | ss_crawler | [ram_scraper] Matched gkjll: Kingston HyperX Fury 32 GB (100% confidence)
+2026-07-07 17:48:57 | INFO     | ss_crawler | [ram_scraper] ✨ gkjll: New
+2026-07-07 17:48:57 | INFO     | ss_crawler | [image_downloader] Downloaded image for gkjll (stored as gkjll_ce48b3a7.jpg, 48175 bytes)
+2026-07-07 17:48:57 | INFO     | ss_crawler | [ram_scraper] Image saved locally: rams\gkjll_ce48b3a7.jpg
+2026-07-07 17:48:57 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/hxfmc.html
+2026-07-07 17:49:00 | INFO     | ss_crawler | [ram_scraper] No match for hxfmc: SS.COM Komplektējošie datoriem - RAM, Cena 80 €. P
+2026-07-07 17:49:00 | INFO     | ss_crawler | [ram_scraper] ✨ hxfmc: New
+2026-07-07 17:49:00 | INFO     | ss_crawler | [image_downloader] Downloaded image for hxfmc (stored as hxfmc_e402c5af.jpg, 62579 bytes)
+2026-07-07 17:49:00 | INFO     | ss_crawler | [ram_scraper] Image saved locally: rams\hxfmc_e402c5af.jpg
+2026-07-07 17:49:00 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/fnlfe.html
+2026-07-07 17:49:03 | INFO     | ss_crawler | [ram_scraper] Matched fnlfe: Samsung M378A1K43CB2-CRC 8 GB (100% confidence)
+2026-07-07 17:49:03 | INFO     | ss_crawler | [ram_scraper] 💰 fnlfe: Updated (title)
+2026-07-07 17:49:03 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\fnlfe_ae2740d9.jpg
+2026-07-07 17:49:03 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/hghmj.html
+2026-07-07 17:49:05 | INFO     | ss_crawler | [ram_scraper] Matched hghmj: Kingston FURY Beast 32 GB (100% confidence)
+2026-07-07 17:49:05 | INFO     | ss_crawler | [ram_scraper] ✨ hghmj: New
+2026-07-07 17:49:05 | INFO     | ss_crawler | [image_downloader] Downloaded image for hghmj (stored as hghmj_dd5579bb.jpg, 54574 bytes)
+2026-07-07 17:49:05 | INFO     | ss_crawler | [ram_scraper] Image saved locally: rams\hghmj_dd5579bb.jpg
+2026-07-07 17:49:05 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/ebpxc.html
+2026-07-07 17:49:07 | INFO     | ss_crawler | [ram_scraper] Matched ebpxc: Kingston FURY Beast 32 GB (100% confidence)
+2026-07-07 17:49:07 | INFO     | ss_crawler | [ram_scraper] ✨ ebpxc: New
+2026-07-07 17:49:07 | INFO     | ss_crawler | [image_downloader] Downloaded image for ebpxc (stored as ebpxc_ab5bd103.jpg, 56604 bytes)
+2026-07-07 17:49:07 | INFO     | ss_crawler | [ram_scraper] Image saved locally: rams\ebpxc_ab5bd103.jpg
+2026-07-07 17:49:07 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/fiplf.html
+2026-07-07 17:49:09 | INFO     | ss_crawler | [ram_scraper] Matched fiplf: Corsair Vengeance RGB 32 GB (100% confidence)
+2026-07-07 17:49:09 | INFO     | ss_crawler | [ram_scraper] ✨ fiplf: New
+2026-07-07 17:49:09 | INFO     | ss_crawler | [image_downloader] Downloaded image for fiplf (stored as fiplf_cff2e83a.jpg, 52236 bytes)
+2026-07-07 17:49:09 | INFO     | ss_crawler | [ram_scraper] Image saved locally: rams\fiplf_cff2e83a.jpg
+2026-07-07 17:49:09 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/hhmeh.html
+2026-07-07 17:49:12 | INFO     | ss_crawler | [ram_scraper] Matched hhmeh: GOODRAM IRDM PRO 16 GB (100% confidence)
+2026-07-07 17:49:12 | INFO     | ss_crawler | [ram_scraper] ✨ hhmeh: New
+2026-07-07 17:49:12 | INFO     | ss_crawler | [image_downloader] Downloaded image for hhmeh (stored as hhmeh_085000c5.jpg, 41866 bytes)
+2026-07-07 17:49:12 | INFO     | ss_crawler | [ram_scraper] Image saved locally: rams\hhmeh_085000c5.jpg
+2026-07-07 17:49:12 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/flnhh.html
+2026-07-07 17:49:15 | INFO     | ss_crawler | [ram_scraper] Matched flnhh: Corsair Vengeance RGB RS 32 GB (100% confidence)
+2026-07-07 17:49:15 | INFO     | ss_crawler | [ram_scraper] ✨ flnhh: New
+2026-07-07 17:49:16 | INFO     | ss_crawler | [image_downloader] Downloaded image for flnhh (stored as flnhh_cec91525.jpg, 66069 bytes)
+2026-07-07 17:49:16 | INFO     | ss_crawler | [ram_scraper] Image saved locally: rams\flnhh_cec91525.jpg
+2026-07-07 17:49:16 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/lgieh.html
+2026-07-07 17:49:18 | INFO     | ss_crawler | [ram_scraper] Matched lgieh: Kingston KVR16N11/8 8 GB (100% confidence)
+2026-07-07 17:49:18 | INFO     | ss_crawler | [ram_scraper] ✨ lgieh: New
+2026-07-07 17:49:18 | INFO     | ss_crawler | [image_downloader] Downloaded image for lgieh (stored as lgieh_84806200.jpg, 158339 bytes)
+2026-07-07 17:49:18 | INFO     | ss_crawler | [ram_scraper] Image saved locally: rams\lgieh_84806200.jpg
+2026-07-07 17:49:18 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/dmlfo.html
+2026-07-07 17:49:21 | INFO     | ss_crawler | [ram_scraper] Matched dmlfo: GOODRAM IRDM 64 GB (100% confidence)
+2026-07-07 17:49:21 | INFO     | ss_crawler | [ram_scraper] ✨ dmlfo: New
+2026-07-07 17:49:22 | INFO     | ss_crawler | [image_downloader] Downloaded image for dmlfo (stored as dmlfo_cb3f1316.jpg, 160454 bytes)
+2026-07-07 17:49:22 | INFO     | ss_crawler | [ram_scraper] Image saved locally: rams\dmlfo_cb3f1316.jpg
+2026-07-07 17:49:22 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/opiof.html
+2026-07-07 17:49:25 | INFO     | ss_crawler | [ram_scraper] Matched opiof: Kingston FURY Beast 16 GB (100% confidence)
+2026-07-07 17:49:25 | INFO     | ss_crawler | [ram_scraper] ✨ opiof: New
+2026-07-07 17:49:25 | INFO     | ss_crawler | [image_downloader] Downloaded image for opiof (stored as opiof_5b01dc12.jpg, 47005 bytes)
+2026-07-07 17:49:25 | INFO     | ss_crawler | [ram_scraper] Image saved locally: rams\opiof_5b01dc12.jpg
+2026-07-07 17:49:25 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/olixc.html
+2026-07-07 17:49:27 | INFO     | ss_crawler | [ram_scraper] Matched olixc: Kingston FURY Beast 32 GB (100% confidence)
+2026-07-07 17:49:27 | INFO     | ss_crawler | [ram_scraper] ✨ olixc: New
+2026-07-07 17:49:27 | INFO     | ss_crawler | [image_downloader] Downloaded image for olixc (stored as olixc_a7c004f9.jpg, 53528 bytes)
+2026-07-07 17:49:27 | INFO     | ss_crawler | [ram_scraper] Image saved locally: rams\olixc_a7c004f9.jpg
+2026-07-07 17:49:27 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/eelde.html
+2026-07-07 17:49:29 | INFO     | ss_crawler | [ram_scraper] Matched eelde: Kingston FURY Beast 32 GB (100% confidence)
+2026-07-07 17:49:29 | INFO     | ss_crawler | [ram_scraper] 💰 eelde: Updated (title, description, location)
+2026-07-07 17:49:29 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\eelde_5cff496b.jpg
+2026-07-07 17:49:29 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/cglhgl.html
+2026-07-07 17:49:30 | INFO     | ss_crawler | [ram_scraper] Matched cglhgl: ADATA XPG Lancer Blade RGB 32 GB (100% confidence)
+2026-07-07 17:49:30 | INFO     | ss_crawler | [ram_scraper] 💰 cglhgl: Updated (price €380.00→€370.00, title, description, location, match)
+2026-07-07 17:49:30 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\cglhgl_97375333.jpg
+2026-07-07 17:49:30 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/bxxxxd.html
+2026-07-07 17:49:33 | INFO     | ss_crawler | [ram_scraper] Matched bxxxxd: Kingston FURY Beast 64 GB (100% confidence)
+2026-07-07 17:49:33 | INFO     | ss_crawler | [ram_scraper] 💰 bxxxxd: Updated (price €620.00→€600.00, title)
+2026-07-07 17:49:34 | INFO     | ss_crawler | [image_downloader] Downloaded image for bxxxxd (stored as bxxxxd_07dd38f0.jpg, 68975 bytes)
+2026-07-07 17:49:34 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\bxxxxd_07dd38f0.jpg
+2026-07-07 17:49:34 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/onnbn.html
+2026-07-07 17:49:36 | INFO     | ss_crawler | [ram_scraper] Matched onnbn: Kingston FURY Beast 64 GB (100% confidence)
+2026-07-07 17:49:36 | INFO     | ss_crawler | [ram_scraper] 💰 onnbn: Updated (price €620.00→€600.00, title)
+2026-07-07 17:49:36 | INFO     | ss_crawler | [image_downloader] Downloaded image for onnbn (stored as onnbn_6fa17a91.jpg, 83667 bytes)
+2026-07-07 17:49:36 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\onnbn_6fa17a91.jpg
+2026-07-07 17:49:36 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/dgmlf.html
+2026-07-07 17:49:39 | INFO     | ss_crawler | [ram_scraper] Matched dgmlf: SK Hynix HMT41GU6MFR8C-PB 8 GB (100% confidence)
+2026-07-07 17:49:39 | INFO     | ss_crawler | [ram_scraper] ✨ dgmlf: New
+2026-07-07 17:49:40 | INFO     | ss_crawler | [image_downloader] Downloaded image for dgmlf (stored as dgmlf_b54ffbc0.jpg, 102529 bytes)
+2026-07-07 17:49:40 | INFO     | ss_crawler | [ram_scraper] Image saved locally: rams\dgmlf_b54ffbc0.jpg
+2026-07-07 17:49:40 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/hhnep.html
+2026-07-07 17:49:41 | INFO     | ss_crawler | [ram_scraper] Matched hhnep: Corsair Vengeance LPX 16 GB (100% confidence)
+2026-07-07 17:49:41 | INFO     | ss_crawler | [ram_scraper] ✨ hhnep: New
+2026-07-07 17:49:41 | INFO     | ss_crawler | [image_downloader] Downloaded image for hhnep (stored as hhnep_b86a2d69.jpg, 75126 bytes)
+2026-07-07 17:49:41 | INFO     | ss_crawler | [ram_scraper] Image saved locally: rams\hhnep_b86a2d69.jpg
+2026-07-07 17:49:41 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/gfbdc.html
+2026-07-07 17:49:45 | INFO     | ss_crawler | [ram_scraper] Matched gfbdc: SK Hynix HMT351U7BFR8A-H9 4 GB (100% confidence)
+2026-07-07 17:49:45 | INFO     | ss_crawler | [ram_scraper] 💰 gfbdc: Updated (title, description)
+2026-07-07 17:49:45 | INFO     | ss_crawler | [image_downloader] Downloaded image for gfbdc (stored as gfbdc_e5863272.jpg, 62223 bytes)
+2026-07-07 17:49:45 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\gfbdc_e5863272.jpg
+2026-07-07 17:49:45 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/bhxhn.html
+2026-07-07 17:49:48 | INFO     | ss_crawler | [ram_scraper] No match for bhxhn: SS.COM Komplektējošie datoriem - RAM, Cena 9 €. Hy
+2026-07-07 17:49:48 | INFO     | ss_crawler | [ram_scraper] 💰 bhxhn: Updated (title, description)
+2026-07-07 17:49:49 | INFO     | ss_crawler | [image_downloader] Downloaded image for bhxhn (stored as bhxhn_9bfc39ef.jpg, 109038 bytes)
+2026-07-07 17:49:49 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\bhxhn_9bfc39ef.jpg
+2026-07-07 17:49:49 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/lnomb.html
+2026-07-07 17:49:51 | INFO     | ss_crawler | [ram_scraper] Matched lnomb: G.Skill Aegis 32 GB (100% confidence)
+2026-07-07 17:49:51 | INFO     | ss_crawler | [ram_scraper] ✨ lnomb: New
+2026-07-07 17:49:51 | INFO     | ss_crawler | [image_downloader] Downloaded image for lnomb (stored as lnomb_4370d6f9.jpg, 149387 bytes)
+2026-07-07 17:49:51 | INFO     | ss_crawler | [ram_scraper] Image saved locally: rams\lnomb_4370d6f9.jpg
+2026-07-07 17:49:51 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/cjpbh.html
+2026-07-07 17:49:53 | INFO     | ss_crawler | [ram_scraper] Matched cjpbh: Crucial CT32G48C40U5 32 GB (100% confidence)
+2026-07-07 17:49:53 | INFO     | ss_crawler | [ram_scraper] ✨ cjpbh: New
+2026-07-07 17:49:53 | INFO     | ss_crawler | [image_downloader] Downloaded image for cjpbh (stored as cjpbh_8a7c7877.jpg, 133375 bytes)
+2026-07-07 17:49:53 | INFO     | ss_crawler | [ram_scraper] Image saved locally: rams\cjpbh_8a7c7877.jpg
+2026-07-07 17:49:53 | INFO     | ss_crawler | [ram_scraper] Next page URL: https://www.ss.com/lv/electronics/computers/completing-pc/ram/page4.html
+2026-07-07 17:49:53 | INFO     | ss_crawler | [ram_scraper] Fetching page 2: https://www.ss.com/lv/electronics/computers/completing-pc/ram/page4.html
+2026-07-07 17:49:53 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/lv/electronics/computers/completing-pc/ram/page4.html
+2026-07-07 17:49:56 | INFO     | ss_crawler | [ram_scraper] Found 14 listings on page 2, 14 new
+2026-07-07 17:49:56 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/pjxod.html
+2026-07-07 17:49:59 | INFO     | ss_crawler | [ram_scraper] No match for pjxod: SS.COM Komplektējošie datoriem - RAM, Cena 300 €. 
+2026-07-07 17:49:59 | INFO     | ss_crawler | [ram_scraper] ✨ pjxod: New
+2026-07-07 17:49:59 | INFO     | ss_crawler | [image_downloader] Downloaded image for pjxod (stored as pjxod_f4c7526a.jpg, 79489 bytes)
+2026-07-07 17:49:59 | INFO     | ss_crawler | [ram_scraper] Image saved locally: rams\pjxod_f4c7526a.jpg
+2026-07-07 17:49:59 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/pjxod.html
+2026-07-07 17:50:02 | INFO     | ss_crawler | [ram_scraper] No match for pjxod: SS.COM Komplektējošie datoriem - RAM, Cena 300 €. 
+2026-07-07 17:50:02 | INFO     | ss_crawler | [ram_scraper] ⏸️ pjxod: Unchanged
+2026-07-07 17:50:02 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/pjxod.html
+2026-07-07 17:50:04 | INFO     | ss_crawler | [ram_scraper] No match for pjxod: SS.COM Komplektējošie datoriem - RAM, Cena 300 €. 
+2026-07-07 17:50:04 | INFO     | ss_crawler | [ram_scraper] ⏸️ pjxod: Unchanged
+2026-07-07 17:50:04 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/lnpgo.html
+2026-07-07 17:50:07 | INFO     | ss_crawler | [ram_scraper] Matched lnpgo: Kingston Savage 8 GB (100% confidence)
+2026-07-07 17:50:07 | INFO     | ss_crawler | [ram_scraper] ✨ lnpgo: New
+2026-07-07 17:50:07 | INFO     | ss_crawler | [image_downloader] Downloaded image for lnpgo (stored as lnpgo_6baad8f0.jpg, 76930 bytes)
+2026-07-07 17:50:07 | INFO     | ss_crawler | [ram_scraper] Image saved locally: rams\lnpgo_6baad8f0.jpg
+2026-07-07 17:50:07 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/hebkc.html
+2026-07-07 17:50:09 | INFO     | ss_crawler | [ram_scraper] Matched hebkc: Kingston HyperX Fury 16 GB (100% confidence)
+2026-07-07 17:50:09 | INFO     | ss_crawler | [ram_scraper] ✨ hebkc: New
+2026-07-07 17:50:10 | INFO     | ss_crawler | [image_downloader] Downloaded image for hebkc (stored as hebkc_7b7f39db.jpg, 80999 bytes)
+2026-07-07 17:50:10 | INFO     | ss_crawler | [ram_scraper] Image saved locally: rams\hebkc_7b7f39db.jpg
+2026-07-07 17:50:10 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/hxpcf.html
+2026-07-07 17:50:13 | INFO     | ss_crawler | [ram_scraper] Matched hxpcf: Crucial Ballistix 16 GB (100% confidence)
+2026-07-07 17:50:13 | INFO     | ss_crawler | [ram_scraper] ✨ hxpcf: New
+2026-07-07 17:50:13 | INFO     | ss_crawler | [image_downloader] Downloaded image for hxpcf (stored as hxpcf_b7e0ff88.jpg, 72745 bytes)
+2026-07-07 17:50:13 | INFO     | ss_crawler | [ram_scraper] Image saved locally: rams\hxpcf_b7e0ff88.jpg
+2026-07-07 17:50:13 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/emdbx.html
+2026-07-07 17:50:15 | INFO     | ss_crawler | [ram_scraper] Matched emdbx: G.Skill Aegis 16 GB (100% confidence)
+2026-07-07 17:50:15 | INFO     | ss_crawler | [ram_scraper] ✨ emdbx: New
+2026-07-07 17:50:15 | INFO     | ss_crawler | [image_downloader] Downloaded image for emdbx (stored as emdbx_94e94bc0.jpg, 43382 bytes)
+2026-07-07 17:50:15 | INFO     | ss_crawler | [ram_scraper] Image saved locally: rams\emdbx_94e94bc0.jpg
+2026-07-07 17:50:15 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/gggcj.html
+2026-07-07 17:50:18 | INFO     | ss_crawler | [ram_scraper] Matched gggcj: Corsair Vengeance RGB RT 32 GB (100% confidence)
+2026-07-07 17:50:18 | INFO     | ss_crawler | [ram_scraper] ✨ gggcj: New
+2026-07-07 17:50:18 | INFO     | ss_crawler | [image_downloader] Downloaded image for gggcj (stored as gggcj_fe4a3c79.jpg, 72607 bytes)
+2026-07-07 17:50:18 | INFO     | ss_crawler | [ram_scraper] Image saved locally: rams\gggcj_fe4a3c79.jpg
+2026-07-07 17:50:18 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/pkjcd.html
+2026-07-07 17:50:22 | INFO     | ss_crawler | [ram_scraper] No match for pkjcd: SS.COM Komplektējošie datoriem - RAM, Cena 170 €. 
+2026-07-07 17:50:22 | INFO     | ss_crawler | [ram_scraper] ✨ pkjcd: New
+2026-07-07 17:50:22 | INFO     | ss_crawler | [image_downloader] Downloaded image for pkjcd (stored as pkjcd_ec8e5525.jpg, 78627 bytes)
+2026-07-07 17:50:22 | INFO     | ss_crawler | [ram_scraper] Image saved locally: rams\pkjcd_ec8e5525.jpg
+2026-07-07 17:50:22 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/dplxl.html
+2026-07-07 17:50:24 | INFO     | ss_crawler | [ram_scraper] Matched dplxl: Kingston FURY Beast 32 GB (100% confidence)
+2026-07-07 17:50:24 | INFO     | ss_crawler | [ram_scraper] ✨ dplxl: New
+2026-07-07 17:50:24 | INFO     | ss_crawler | [image_downloader] Downloaded image for dplxl (stored as dplxl_e709216f.jpg, 99494 bytes)
+2026-07-07 17:50:24 | INFO     | ss_crawler | [ram_scraper] Image saved locally: rams\dplxl_e709216f.jpg
+2026-07-07 17:50:24 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/cgkgfk.html
+2026-07-07 17:50:25 | INFO     | ss_crawler | [ram_scraper] Matched cgkgfk: Kingston FURY Beast 32 GB (100% confidence)
+2026-07-07 17:50:25 | INFO     | ss_crawler | [ram_scraper] ✨ cgkgfk: New
+2026-07-07 17:50:26 | INFO     | ss_crawler | [image_downloader] Downloaded image for cgkgfk (stored as cgkgfk_3b2a92cb.jpg, 42790 bytes)
+2026-07-07 17:50:26 | INFO     | ss_crawler | [ram_scraper] Image saved locally: rams\cgkgfk_3b2a92cb.jpg
+2026-07-07 17:50:26 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/beldj.html
+2026-07-07 17:50:27 | INFO     | ss_crawler | [ram_scraper] No match for beldj: SS.COM Komplektējošie datoriem - RAM, Cena 150 €. 
+2026-07-07 17:50:27 | INFO     | ss_crawler | [ram_scraper] 💰 beldj: Updated (title, description)
+2026-07-07 17:50:28 | INFO     | ss_crawler | [image_downloader] Downloaded image for beldj (stored as beldj_aa644ba2.jpg, 57612 bytes)
+2026-07-07 17:50:28 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\beldj_aa644ba2.jpg
+2026-07-07 17:50:28 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/mmfkn.html
+2026-07-07 17:50:31 | INFO     | ss_crawler | [ram_scraper] Matched mmfkn: G.Skill Ripjaws V 32 GB (100% confidence)
+2026-07-07 17:50:31 | INFO     | ss_crawler | [ram_scraper] ✨ mmfkn: New
+2026-07-07 17:50:31 | INFO     | ss_crawler | [image_downloader] Downloaded image for mmfkn (stored as mmfkn_9a64b3c5.jpg, 85338 bytes)
+2026-07-07 17:50:31 | INFO     | ss_crawler | [ram_scraper] Image saved locally: rams\mmfkn_9a64b3c5.jpg
+2026-07-07 17:50:31 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/pxpkb.html
+2026-07-07 17:50:33 | INFO     | ss_crawler | [ram_scraper] Matched pxpkb: G.Skill Trident Z 16 GB (100% confidence)
+2026-07-07 17:50:33 | INFO     | ss_crawler | [ram_scraper] ✨ pxpkb: New
+2026-07-07 17:50:33 | INFO     | ss_crawler | [image_downloader] Downloaded image for pxpkb (stored as pxpkb_87b1b3e4.jpg, 96731 bytes)
+2026-07-07 17:50:33 | INFO     | ss_crawler | [ram_scraper] Image saved locally: rams\pxpkb_87b1b3e4.jpg
+2026-07-07 17:50:33 | INFO     | ss_crawler | [ram_scraper] Next page URL: https://www.ss.com/ru/electronics/computers/completing-pc/ram/page4.html
+2026-07-07 17:50:33 | INFO     | ss_crawler | [ram_scraper] Fetching page 3: https://www.ss.com/ru/electronics/computers/completing-pc/ram/page4.html
+2026-07-07 17:50:33 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/ru/electronics/computers/completing-pc/ram/page4.html
+2026-07-07 17:50:36 | INFO     | ss_crawler | [ram_scraper] Found 14 listings on page 3, 14 new
+2026-07-07 17:50:36 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/ru/electronics/computers/completing-pc/ram/pjxod.html
+2026-07-07 17:50:40 | INFO     | ss_crawler | [ram_scraper] Matched pjxod: SK Hynix HMA81GU6MFR8N-UH 8 GB (58% confidence)
+2026-07-07 17:50:40 | WARNING  | ss_crawler | [ram_scraper] ⚠️ LOW_CONFIDENCE: pjxod (confidence 58.24%)
+2026-07-07 17:50:40 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\pjxod_f4c7526a.jpg
+2026-07-07 17:50:40 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/ru/electronics/computers/completing-pc/ram/pjxod.html
+2026-07-07 17:50:41 | INFO     | ss_crawler | [ram_scraper] Matched pjxod: SK Hynix HMA81GU6MFR8N-UH 8 GB (58% confidence)
+2026-07-07 17:50:41 | WARNING  | ss_crawler | [ram_scraper] ⚠️ LOW_CONFIDENCE: pjxod (confidence 58.24%)
+2026-07-07 17:50:41 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\pjxod_f4c7526a.jpg
+2026-07-07 17:50:41 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/ru/electronics/computers/completing-pc/ram/pjxod.html
+2026-07-07 17:50:45 | INFO     | ss_crawler | [ram_scraper] Matched pjxod: SK Hynix HMA81GU6MFR8N-UH 8 GB (58% confidence)
+2026-07-07 17:50:45 | WARNING  | ss_crawler | [ram_scraper] ⚠️ LOW_CONFIDENCE: pjxod (confidence 58.24%)
+2026-07-07 17:50:45 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\pjxod_f4c7526a.jpg
+2026-07-07 17:50:45 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/ru/electronics/computers/completing-pc/ram/lnpgo.html
+2026-07-07 17:50:47 | INFO     | ss_crawler | [ram_scraper] Matched lnpgo: Kingston 1500 4 GB (100% confidence)
+2026-07-07 17:50:47 | INFO     | ss_crawler | [ram_scraper] 💰 lnpgo: Updated (title, description, location, match)
+2026-07-07 17:50:47 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\lnpgo_6baad8f0.jpg
+2026-07-07 17:50:47 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/ru/electronics/computers/completing-pc/ram/hebkc.html
+2026-07-07 17:50:49 | INFO     | ss_crawler | [ram_scraper] Matched hebkc: Kingston HyperX Fury 16 GB (99% confidence)
+2026-07-07 17:50:49 | INFO     | ss_crawler | [ram_scraper] 💰 hebkc: Updated (title, description, location, match)
+2026-07-07 17:50:49 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\hebkc_7b7f39db.jpg
+2026-07-07 17:50:49 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/ru/electronics/computers/completing-pc/ram/hxpcf.html
+2026-07-07 17:50:50 | INFO     | ss_crawler | [ram_scraper] Matched hxpcf: Crucial Ballistix 16 GB (100% confidence)
+2026-07-07 17:50:50 | INFO     | ss_crawler | [ram_scraper] 💰 hxpcf: Updated (title, description, location, match)
+2026-07-07 17:50:50 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\hxpcf_b7e0ff88.jpg
+2026-07-07 17:50:50 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/ru/electronics/computers/completing-pc/ram/emdbx.html
+2026-07-07 17:50:52 | INFO     | ss_crawler | [ram_scraper] Matched emdbx: G.Skill Aegis 16 GB (100% confidence)
+2026-07-07 17:50:52 | INFO     | ss_crawler | [ram_scraper] 💰 emdbx: Updated (title, description, location, match)
+2026-07-07 17:50:52 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\emdbx_94e94bc0.jpg
+2026-07-07 17:50:52 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/ru/electronics/computers/completing-pc/ram/gggcj.html
+2026-07-07 17:50:55 | INFO     | ss_crawler | [ram_scraper] Matched gggcj: Corsair Vengeance RGB RT 32 GB (100% confidence)
+2026-07-07 17:50:55 | INFO     | ss_crawler | [ram_scraper] 💰 gggcj: Updated (title, description, location, match)
+2026-07-07 17:50:55 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\gggcj_fe4a3c79.jpg
+2026-07-07 17:50:55 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/ru/electronics/computers/completing-pc/ram/pkjcd.html
+2026-07-07 17:50:57 | INFO     | ss_crawler | [ram_scraper] No match for pkjcd: SS.COM Комплектующие к компьютерам - RAM, Цена 170
+2026-07-07 17:50:57 | INFO     | ss_crawler | [ram_scraper] 💰 pkjcd: Updated (title, description, location)
+2026-07-07 17:50:57 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\pkjcd_ec8e5525.jpg
+2026-07-07 17:50:57 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/ru/electronics/computers/completing-pc/ram/dplxl.html
+2026-07-07 17:50:59 | INFO     | ss_crawler | [ram_scraper] Matched dplxl: Kingston FURY Beast 16 GB (100% confidence)
+2026-07-07 17:50:59 | INFO     | ss_crawler | [ram_scraper] 💰 dplxl: Updated (title, description, location, match)
+2026-07-07 17:50:59 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\dplxl_e709216f.jpg
+2026-07-07 17:50:59 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/ru/electronics/computers/completing-pc/ram/cgkgfk.html
+2026-07-07 17:51:02 | INFO     | ss_crawler | [ram_scraper] Matched cgkgfk: Kingston FURY Beast 16 GB (100% confidence)
+2026-07-07 17:51:02 | INFO     | ss_crawler | [ram_scraper] 💰 cgkgfk: Updated (title, description, location, match)
+2026-07-07 17:51:02 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\cgkgfk_3b2a92cb.jpg
+2026-07-07 17:51:02 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/ru/electronics/computers/completing-pc/ram/beldj.html
+2026-07-07 17:51:04 | INFO     | ss_crawler | [ram_scraper] Matched beldj: GeIL GeIL 16GB (77% confidence)
+2026-07-07 17:51:04 | INFO     | ss_crawler | [ram_scraper] 💰 beldj: Updated (title, description, location, match)
+2026-07-07 17:51:04 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\beldj_aa644ba2.jpg
+2026-07-07 17:51:04 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/ru/electronics/computers/completing-pc/ram/mmfkn.html
+2026-07-07 17:51:08 | INFO     | ss_crawler | [ram_scraper] Matched mmfkn: G.Skill Ripjaws V 32 GB (100% confidence)
+2026-07-07 17:51:08 | INFO     | ss_crawler | [ram_scraper] 💰 mmfkn: Updated (title, description, location, match)
+2026-07-07 17:51:08 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\mmfkn_9a64b3c5.jpg
+2026-07-07 17:51:08 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/ru/electronics/computers/completing-pc/ram/pxpkb.html
+2026-07-07 17:51:11 | INFO     | ss_crawler | [ram_scraper] Matched pxpkb: G.Skill NT 8 GB (75% confidence)
+2026-07-07 17:51:11 | INFO     | ss_crawler | [ram_scraper] 💰 pxpkb: Updated (title, description, location, match)
+2026-07-07 17:51:11 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\pxpkb_87b1b3e4.jpg
+2026-07-07 17:51:11 | INFO     | ss_crawler | [ram_scraper] Next page URL: https://www.ss.com/lv/electronics/computers/completing-pc/ram/page4.html
+2026-07-07 17:51:11 | INFO     | ss_crawler | [ram_scraper] Fetching page 4: https://www.ss.com/lv/electronics/computers/completing-pc/ram/page4.html
+2026-07-07 17:51:11 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/lv/electronics/computers/completing-pc/ram/page4.html
+2026-07-07 17:51:14 | INFO     | ss_crawler | [ram_scraper] Found 14 listings on page 4, 0 new
+2026-07-07 17:51:14 | INFO     | ss_crawler | [ram_scraper] Next page URL: https://www.ss.com/ru/electronics/computers/completing-pc/ram/page4.html
+2026-07-07 17:51:14 | INFO     | ss_crawler | [ram_scraper] Fetching page 5: https://www.ss.com/ru/electronics/computers/completing-pc/ram/page4.html
+2026-07-07 17:51:14 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/ru/electronics/computers/completing-pc/ram/page4.html
+2026-07-07 17:51:16 | INFO     | ss_crawler | [ram_scraper] Found 14 listings on page 5, 0 new
+2026-07-07 17:51:16 | INFO     | ss_crawler | [ram_scraper] Next page URL: https://www.ss.com/lv/electronics/computers/completing-pc/ram/page4.html
+2026-07-07 17:51:16 | INFO     | ss_crawler | [ram_scraper] Reached max pages limit (5)
+2026-07-07 17:51:16 | INFO     | ss_crawler | [ram_scraper] RAM scraping complete. Stats: {'processed': 60, 'new': 26, 'updated': 32, 'unchanged': 2, 'failed': 0, 'matched': 52}
+2026-07-07 18:21:18 | INFO     | ss_crawler | [ram_scraper] Initializing RAM scraper...
+2026-07-07 18:21:18 | INFO     | ss_crawler | [database] Database connected: localhost:5433/ss_market
+2026-07-07 18:21:18 | INFO     | ss_crawler | [ram_scraper] Database: postgresql+psycopg2://crawler:crawler_pass@localhost:5433/ss_market
+2026-07-07 18:21:19 | INFO     | ss_crawler | [ram_matcher] RAMMatcher initialized with 5284 RAM references
+2026-07-07 18:21:19 | INFO     | ss_crawler | [ram_scraper] Loaded 5284 RAM references
+2026-07-07 18:21:19 | INFO     | ss_crawler | [ram_scraper] Starting RAM scraper from https://www.ss.com/lv/electronics/computers/completing-pc/ram/
+2026-07-07 18:21:19 | INFO     | ss_crawler | [ram_scraper] Fetching page 1: https://www.ss.com/lv/electronics/computers/completing-pc/ram/
+2026-07-07 18:21:19 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/lv/electronics/computers/completing-pc/ram/
+2026-07-07 18:21:22 | INFO     | ss_crawler | [ram_scraper] Found 32 listings on page 1, 32 new
+2026-07-07 18:21:22 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/bkchfc.html
+2026-07-07 18:21:25 | INFO     | ss_crawler | [ram_scraper] Matched bkchfc: SK Hynix HMT41GU6MFR8C-PB 8 GB (100% confidence)
+2026-07-07 18:21:25 | INFO     | ss_crawler | [ram_scraper] 💰 bkchfc: Updated (title)
+2026-07-07 18:21:25 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\bkchfc_d8f60304.jpg
+2026-07-07 18:21:25 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/bkchfc.html
+2026-07-07 18:21:28 | INFO     | ss_crawler | [ram_scraper] Matched bkchfc: SK Hynix HMT41GU6MFR8C-PB 8 GB (100% confidence)
+2026-07-07 18:21:28 | INFO     | ss_crawler | [ram_scraper] 💰 bkchfc: Updated (content)
+2026-07-07 18:21:28 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\bkchfc_d8f60304.jpg
+2026-07-07 18:21:28 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/bkchfc.html
+2026-07-07 18:21:31 | INFO     | ss_crawler | [ram_scraper] Matched bkchfc: SK Hynix HMT41GU6MFR8C-PB 8 GB (100% confidence)
+2026-07-07 18:21:31 | INFO     | ss_crawler | [ram_scraper] 💰 bkchfc: Updated (content)
+2026-07-07 18:21:31 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\bkchfc_d8f60304.jpg
+2026-07-07 18:21:31 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/fifdl.html
+2026-07-07 18:21:34 | INFO     | ss_crawler | [ram_scraper] Matched fifdl: TEAMGROUP Elite Plus 16 GB (100% confidence)
+2026-07-07 18:21:34 | INFO     | ss_crawler | [ram_scraper] 💰 fifdl: Updated (title)
+2026-07-07 18:21:34 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\fifdl_64259688.jpg
+2026-07-07 18:21:34 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/djllh.html
+2026-07-07 18:21:37 | INFO     | ss_crawler | [ram_scraper] Matched djllh: Corsair Vengeance RGB Pro 32 GB (100% confidence)
+2026-07-07 18:21:37 | INFO     | ss_crawler | [ram_scraper] 💰 djllh: Updated (title)
+2026-07-07 18:21:37 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\djllh_7d941c3a.jpg
+2026-07-07 18:21:37 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/fnbnn.html
+2026-07-07 18:21:39 | INFO     | ss_crawler | [ram_scraper] Matched fnbnn: SK Hynix hma81gu6cjr8n-vk 8 GB (100% confidence)
+2026-07-07 18:21:39 | INFO     | ss_crawler | [ram_scraper] 💰 fnbnn: Updated (title)
+2026-07-07 18:21:39 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\fnbnn_09f30edf.jpg
+2026-07-07 18:21:39 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/loxdn.html
+2026-07-07 18:21:41 | INFO     | ss_crawler | [ram_scraper] Matched loxdn: Crucial Sport LT 16 GB (100% confidence)
+2026-07-07 18:21:41 | INFO     | ss_crawler | [ram_scraper] 💰 loxdn: Updated (title)
+2026-07-07 18:21:41 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\loxdn_4b5ca3c0.jpg
+2026-07-07 18:21:41 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/dofok.html
+2026-07-07 18:21:44 | INFO     | ss_crawler | [ram_scraper] Matched dofok: Kingston FURY Beast 64 GB (100% confidence)
+2026-07-07 18:21:44 | INFO     | ss_crawler | [ram_scraper] 💰 dofok: Updated (title)
+2026-07-07 18:21:44 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\dofok_82dfa3d7.jpg
+2026-07-07 18:21:44 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/ebgcp.html
+2026-07-07 18:21:46 | INFO     | ss_crawler | [ram_scraper] Matched ebgcp: G.Skill Trident Z5 64 GB (100% confidence)
+2026-07-07 18:21:46 | INFO     | ss_crawler | [ram_scraper] 💰 ebgcp: Updated (title)
+2026-07-07 18:21:46 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\ebgcp_a1aa0534.jpg
+2026-07-07 18:21:46 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/mofxd.html
+2026-07-07 18:21:48 | INFO     | ss_crawler | [ram_scraper] Matched mofxd: Corsair ValueSelect 4 GB (100% confidence)
+2026-07-07 18:21:48 | INFO     | ss_crawler | [ram_scraper] 💰 mofxd: Updated (title)
+2026-07-07 18:21:48 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\mofxd_fd96cbd8.jpg
+2026-07-07 18:21:48 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/gkjll.html
+2026-07-07 18:21:51 | INFO     | ss_crawler | [ram_scraper] Matched gkjll: Kingston HyperX Fury 32 GB (100% confidence)
+2026-07-07 18:21:51 | INFO     | ss_crawler | [ram_scraper] 💰 gkjll: Updated (title)
+2026-07-07 18:21:51 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\gkjll_ce48b3a7.jpg
+2026-07-07 18:21:51 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/hxfmc.html
+2026-07-07 18:21:53 | INFO     | ss_crawler | [ram_scraper] No match for hxfmc: SS.COM Komplektējošie datoriem - RAM, Cena 80 €. P
+2026-07-07 18:21:53 | INFO     | ss_crawler | [ram_scraper] 💰 hxfmc: Updated (title)
+2026-07-07 18:21:53 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\hxfmc_e402c5af.jpg
+2026-07-07 18:21:53 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/fnlfe.html
+2026-07-07 18:21:56 | INFO     | ss_crawler | [ram_scraper] Matched fnlfe: Samsung M378A1K43CB2-CRC 8 GB (100% confidence)
+2026-07-07 18:21:56 | INFO     | ss_crawler | [ram_scraper] 💰 fnlfe: Updated (title)
+2026-07-07 18:21:56 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\fnlfe_ae2740d9.jpg
+2026-07-07 18:21:56 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/hghmj.html
+2026-07-07 18:21:59 | INFO     | ss_crawler | [ram_scraper] Matched hghmj: Kingston FURY Beast 32 GB (100% confidence)
+2026-07-07 18:21:59 | INFO     | ss_crawler | [ram_scraper] 💰 hghmj: Updated (title)
+2026-07-07 18:21:59 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\hghmj_dd5579bb.jpg
+2026-07-07 18:21:59 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/ebpxc.html
+2026-07-07 18:22:01 | INFO     | ss_crawler | [ram_scraper] Matched ebpxc: Kingston FURY Beast 32 GB (100% confidence)
+2026-07-07 18:22:01 | INFO     | ss_crawler | [ram_scraper] 💰 ebpxc: Updated (title)
+2026-07-07 18:22:01 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\ebpxc_ab5bd103.jpg
+2026-07-07 18:22:01 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/fiplf.html
+2026-07-07 18:22:03 | INFO     | ss_crawler | [ram_scraper] Matched fiplf: Corsair Vengeance RGB 32 GB (100% confidence)
+2026-07-07 18:22:03 | INFO     | ss_crawler | [ram_scraper] ⏸️ fiplf: Unchanged
+2026-07-07 18:22:03 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/hhmeh.html
+2026-07-07 18:22:06 | INFO     | ss_crawler | [ram_scraper] Matched hhmeh: GOODRAM IRDM PRO 16 GB (100% confidence)
+2026-07-07 18:22:06 | INFO     | ss_crawler | [ram_scraper] 💰 hhmeh: Updated (title)
+2026-07-07 18:22:06 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\hhmeh_085000c5.jpg
+2026-07-07 18:22:06 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/flnhh.html
+2026-07-07 18:22:09 | INFO     | ss_crawler | [ram_scraper] Matched flnhh: Corsair Vengeance RGB RS 32 GB (100% confidence)
+2026-07-07 18:22:09 | INFO     | ss_crawler | [ram_scraper] 💰 flnhh: Updated (title)
+2026-07-07 18:22:09 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\flnhh_cec91525.jpg
+2026-07-07 18:22:09 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/lgieh.html
+2026-07-07 18:22:12 | INFO     | ss_crawler | [ram_scraper] Matched lgieh: Kingston KVR16N11/8 8 GB (100% confidence)
+2026-07-07 18:22:12 | INFO     | ss_crawler | [ram_scraper] 💰 lgieh: Updated (title)
+2026-07-07 18:22:12 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\lgieh_84806200.jpg
+2026-07-07 18:22:12 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/dmlfo.html
+2026-07-07 18:22:15 | INFO     | ss_crawler | [ram_scraper] Matched dmlfo: GOODRAM IRDM 64 GB (100% confidence)
+2026-07-07 18:22:15 | INFO     | ss_crawler | [ram_scraper] 💰 dmlfo: Updated (title)
+2026-07-07 18:22:15 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\dmlfo_cb3f1316.jpg
+2026-07-07 18:22:15 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/opiof.html
+2026-07-07 18:22:18 | INFO     | ss_crawler | [ram_scraper] Matched opiof: Kingston FURY Beast 16 GB (100% confidence)
+2026-07-07 18:22:18 | INFO     | ss_crawler | [ram_scraper] 💰 opiof: Updated (title)
+2026-07-07 18:22:18 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\opiof_5b01dc12.jpg
+2026-07-07 18:22:18 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/olixc.html
+2026-07-07 18:22:20 | INFO     | ss_crawler | [ram_scraper] Matched olixc: Kingston FURY Beast 32 GB (100% confidence)
+2026-07-07 18:22:20 | INFO     | ss_crawler | [ram_scraper] 💰 olixc: Updated (title)
+2026-07-07 18:22:20 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\olixc_a7c004f9.jpg
+2026-07-07 18:22:20 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/eelde.html
+2026-07-07 18:22:23 | INFO     | ss_crawler | [ram_scraper] Matched eelde: Kingston FURY Beast 32 GB (100% confidence)
+2026-07-07 18:22:23 | INFO     | ss_crawler | [ram_scraper] 💰 eelde: Updated (title)
+2026-07-07 18:22:23 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\eelde_5cff496b.jpg
+2026-07-07 18:22:23 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/cglhgl.html
+2026-07-07 18:22:25 | INFO     | ss_crawler | [ram_scraper] Matched cglhgl: ADATA XPG Lancer Blade RGB 32 GB (100% confidence)
+2026-07-07 18:22:25 | INFO     | ss_crawler | [ram_scraper] 💰 cglhgl: Updated (title)
+2026-07-07 18:22:25 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\cglhgl_97375333.jpg
+2026-07-07 18:22:25 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/bxxxxd.html
+2026-07-07 18:22:27 | INFO     | ss_crawler | [ram_scraper] Matched bxxxxd: Kingston FURY Beast 64 GB (100% confidence)
+2026-07-07 18:22:27 | INFO     | ss_crawler | [ram_scraper] 💰 bxxxxd: Updated (content)
+2026-07-07 18:22:27 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\bxxxxd_07dd38f0.jpg
+2026-07-07 18:22:27 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/onnbn.html
+2026-07-07 18:22:29 | INFO     | ss_crawler | [ram_scraper] Matched onnbn: Kingston FURY Beast 64 GB (100% confidence)
+2026-07-07 18:22:29 | INFO     | ss_crawler | [ram_scraper] 💰 onnbn: Updated (title)
+2026-07-07 18:22:29 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\onnbn_6fa17a91.jpg
+2026-07-07 18:22:29 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/dgmlf.html
+2026-07-07 18:22:31 | INFO     | ss_crawler | [ram_scraper] Matched dgmlf: SK Hynix HMT41GU6MFR8C-PB 8 GB (100% confidence)
+2026-07-07 18:22:31 | INFO     | ss_crawler | [ram_scraper] 💰 dgmlf: Updated (title)
+2026-07-07 18:22:31 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\dgmlf_b54ffbc0.jpg
+2026-07-07 18:22:31 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/hhnep.html
+2026-07-07 18:22:34 | INFO     | ss_crawler | [ram_scraper] Matched hhnep: Corsair Vengeance LPX 16 GB (100% confidence)
+2026-07-07 18:22:34 | INFO     | ss_crawler | [ram_scraper] 💰 hhnep: Updated (title)
+2026-07-07 18:22:34 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\hhnep_b86a2d69.jpg
+2026-07-07 18:22:34 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/gfbdc.html
+2026-07-07 18:22:37 | INFO     | ss_crawler | [ram_scraper] Matched gfbdc: SK Hynix HMT351U7BFR8A-H9 4 GB (100% confidence)
+2026-07-07 18:22:37 | INFO     | ss_crawler | [ram_scraper] 💰 gfbdc: Updated (title)
+2026-07-07 18:22:37 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\gfbdc_e5863272.jpg
+2026-07-07 18:22:37 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/bhxhn.html
+2026-07-07 18:22:40 | INFO     | ss_crawler | [ram_scraper] No match for bhxhn: SS.COM Komplektējošie datoriem - RAM, Cena 9 €. Hy
+2026-07-07 18:22:40 | INFO     | ss_crawler | [ram_scraper] 💰 bhxhn: Updated (title)
+2026-07-07 18:22:40 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\bhxhn_9bfc39ef.jpg
+2026-07-07 18:22:40 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/lnomb.html
+2026-07-07 18:22:43 | INFO     | ss_crawler | [ram_scraper] Matched lnomb: G.Skill Aegis 32 GB (100% confidence)
+2026-07-07 18:22:43 | INFO     | ss_crawler | [ram_scraper] 💰 lnomb: Updated (title)
+2026-07-07 18:22:43 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\lnomb_4370d6f9.jpg
+2026-07-07 18:22:43 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/cjpbh.html
+2026-07-07 18:22:45 | INFO     | ss_crawler | [ram_scraper] Matched cjpbh: Crucial CT32G48C40U5 32 GB (100% confidence)
+2026-07-07 18:22:45 | INFO     | ss_crawler | [ram_scraper] 💰 cjpbh: Updated (title)
+2026-07-07 18:22:45 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\cjpbh_8a7c7877.jpg
+2026-07-07 18:22:45 | INFO     | ss_crawler | [ram_scraper] Next page URL: https://www.ss.com/lv/electronics/computers/completing-pc/ram/page4.html
+2026-07-07 18:22:45 | INFO     | ss_crawler | [ram_scraper] Fetching page 2: https://www.ss.com/lv/electronics/computers/completing-pc/ram/page4.html
+2026-07-07 18:22:45 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/lv/electronics/computers/completing-pc/ram/page4.html
+2026-07-07 18:22:48 | INFO     | ss_crawler | [ram_scraper] Found 14 listings on page 2, 14 new
+2026-07-07 18:22:48 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/pjxod.html
+2026-07-07 18:22:51 | INFO     | ss_crawler | [ram_scraper] No match for pjxod: SS.COM Komplektējošie datoriem - RAM, Cena 300 €. 
+2026-07-07 18:22:51 | INFO     | ss_crawler | [ram_scraper] ✨ pjxod: New
+2026-07-07 18:22:51 | INFO     | ss_crawler | [ram_scraper] Image saved locally: rams\pjxod_f4c7526a.jpg
+2026-07-07 18:22:51 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/pjxod.html
+2026-07-07 18:22:55 | INFO     | ss_crawler | [ram_scraper] No match for pjxod: SS.COM Komplektējošie datoriem - RAM, Cena 300 €. 
+2026-07-07 18:22:55 | INFO     | ss_crawler | [ram_scraper] ⏸️ pjxod: Unchanged
+2026-07-07 18:22:55 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/pjxod.html
+2026-07-07 18:22:57 | INFO     | ss_crawler | [ram_scraper] No match for pjxod: SS.COM Komplektējošie datoriem - RAM, Cena 300 €. 
+2026-07-07 18:22:57 | INFO     | ss_crawler | [ram_scraper] ⏸️ pjxod: Unchanged
+2026-07-07 18:22:57 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/lnpgo.html
+2026-07-07 18:23:00 | INFO     | ss_crawler | [ram_scraper] Matched lnpgo: Kingston Savage 8 GB (100% confidence)
+2026-07-07 18:23:00 | INFO     | ss_crawler | [ram_scraper] ✨ lnpgo: New
+2026-07-07 18:23:00 | INFO     | ss_crawler | [ram_scraper] Image saved locally: rams\lnpgo_6baad8f0.jpg
+2026-07-07 18:23:00 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/hebkc.html
+2026-07-07 18:23:03 | INFO     | ss_crawler | [ram_scraper] Matched hebkc: Kingston HyperX Fury 16 GB (100% confidence)
+2026-07-07 18:23:03 | INFO     | ss_crawler | [ram_scraper] ✨ hebkc: New
+2026-07-07 18:23:03 | INFO     | ss_crawler | [ram_scraper] Image saved locally: rams\hebkc_7b7f39db.jpg
+2026-07-07 18:23:03 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/hxpcf.html
+2026-07-07 18:23:06 | INFO     | ss_crawler | [ram_scraper] Matched hxpcf: Crucial Ballistix 16 GB (100% confidence)
+2026-07-07 18:23:06 | INFO     | ss_crawler | [ram_scraper] ✨ hxpcf: New
+2026-07-07 18:23:06 | INFO     | ss_crawler | [ram_scraper] Image saved locally: rams\hxpcf_b7e0ff88.jpg
+2026-07-07 18:23:06 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/emdbx.html
+2026-07-07 18:23:08 | INFO     | ss_crawler | [ram_scraper] Matched emdbx: G.Skill Aegis 16 GB (100% confidence)
+2026-07-07 18:23:08 | INFO     | ss_crawler | [ram_scraper] ⏸️ emdbx: Unchanged
+2026-07-07 18:23:08 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/gggcj.html
+2026-07-07 18:23:11 | INFO     | ss_crawler | [ram_scraper] Matched gggcj: Corsair Vengeance RGB RT 32 GB (100% confidence)
+2026-07-07 18:23:11 | INFO     | ss_crawler | [ram_scraper] ✨ gggcj: New
+2026-07-07 18:23:11 | INFO     | ss_crawler | [ram_scraper] Image saved locally: rams\gggcj_fe4a3c79.jpg
+2026-07-07 18:23:11 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/pkjcd.html
+2026-07-07 18:23:13 | INFO     | ss_crawler | [ram_scraper] No match for pkjcd: SS.COM Komplektējošie datoriem - RAM, Cena 170 €. 
+2026-07-07 18:23:13 | INFO     | ss_crawler | [ram_scraper] ✨ pkjcd: New
+2026-07-07 18:23:13 | INFO     | ss_crawler | [ram_scraper] Image saved locally: rams\pkjcd_ec8e5525.jpg
+2026-07-07 18:23:13 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/dplxl.html
+2026-07-07 18:23:16 | INFO     | ss_crawler | [ram_scraper] Matched dplxl: Kingston FURY Beast 32 GB (100% confidence)
+2026-07-07 18:23:16 | INFO     | ss_crawler | [ram_scraper] ⏸️ dplxl: Unchanged
+2026-07-07 18:23:16 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/cgkgfk.html
+2026-07-07 18:23:19 | INFO     | ss_crawler | [ram_scraper] Matched cgkgfk: Kingston FURY Beast 32 GB (100% confidence)
+2026-07-07 18:23:19 | INFO     | ss_crawler | [ram_scraper] ⏸️ cgkgfk: Unchanged
+2026-07-07 18:23:19 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/beldj.html
+2026-07-07 18:23:23 | INFO     | ss_crawler | [ram_scraper] No match for beldj: SS.COM Komplektējošie datoriem - RAM, Cena 150 €. 
+2026-07-07 18:23:23 | INFO     | ss_crawler | [ram_scraper] 💰 beldj: Updated (title, description, location, match)
+2026-07-07 18:23:23 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\beldj_aa644ba2.jpg
+2026-07-07 18:23:23 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/mmfkn.html
+2026-07-07 18:23:24 | INFO     | ss_crawler | [ram_scraper] Matched mmfkn: G.Skill Ripjaws V 32 GB (100% confidence)
+2026-07-07 18:23:24 | INFO     | ss_crawler | [ram_scraper] ✨ mmfkn: New
+2026-07-07 18:23:24 | INFO     | ss_crawler | [ram_scraper] Image saved locally: rams\mmfkn_9a64b3c5.jpg
+2026-07-07 18:23:24 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/pxpkb.html
+2026-07-07 18:23:27 | INFO     | ss_crawler | [ram_scraper] Matched pxpkb: G.Skill Trident Z 16 GB (100% confidence)
+2026-07-07 18:23:27 | INFO     | ss_crawler | [ram_scraper] ⏸️ pxpkb: Unchanged
+2026-07-07 18:23:27 | INFO     | ss_crawler | [ram_scraper] Next page URL: https://www.ss.com/ru/electronics/computers/completing-pc/ram/page4.html
+2026-07-07 18:23:27 | INFO     | ss_crawler | [ram_scraper] Fetching page 3: https://www.ss.com/ru/electronics/computers/completing-pc/ram/page4.html
+2026-07-07 18:23:27 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/ru/electronics/computers/completing-pc/ram/page4.html
+2026-07-07 18:23:30 | INFO     | ss_crawler | [ram_scraper] Found 14 listings on page 3, 14 new
+2026-07-07 18:23:30 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/ru/electronics/computers/completing-pc/ram/pjxod.html
+2026-07-07 18:23:32 | INFO     | ss_crawler | [ram_scraper] Matched pjxod: SK Hynix HMA81GU6MFR8N-UH 8 GB (58% confidence)
+2026-07-07 18:23:32 | WARNING  | ss_crawler | [ram_scraper] ⚠️ LOW_CONFIDENCE: pjxod (confidence 58.24%)
+2026-07-07 18:23:32 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\pjxod_f4c7526a.jpg
+2026-07-07 18:23:32 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/ru/electronics/computers/completing-pc/ram/pjxod.html
+2026-07-07 18:23:34 | INFO     | ss_crawler | [ram_scraper] Matched pjxod: SK Hynix HMA81GU6MFR8N-UH 8 GB (58% confidence)
+2026-07-07 18:23:34 | WARNING  | ss_crawler | [ram_scraper] ⚠️ LOW_CONFIDENCE: pjxod (confidence 58.24%)
+2026-07-07 18:23:34 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\pjxod_f4c7526a.jpg
+2026-07-07 18:23:34 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/ru/electronics/computers/completing-pc/ram/pjxod.html
+2026-07-07 18:23:37 | INFO     | ss_crawler | [ram_scraper] Matched pjxod: SK Hynix HMA81GU6MFR8N-UH 8 GB (58% confidence)
+2026-07-07 18:23:37 | WARNING  | ss_crawler | [ram_scraper] ⚠️ LOW_CONFIDENCE: pjxod (confidence 58.24%)
+2026-07-07 18:23:37 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\pjxod_f4c7526a.jpg
+2026-07-07 18:23:37 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/ru/electronics/computers/completing-pc/ram/lnpgo.html
+2026-07-07 18:23:39 | INFO     | ss_crawler | [ram_scraper] Matched lnpgo: Kingston 1500 4 GB (100% confidence)
+2026-07-07 18:23:39 | INFO     | ss_crawler | [ram_scraper] 💰 lnpgo: Updated (title, description, location, match)
+2026-07-07 18:23:39 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\lnpgo_6baad8f0.jpg
+2026-07-07 18:23:39 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/ru/electronics/computers/completing-pc/ram/hebkc.html
+2026-07-07 18:23:42 | INFO     | ss_crawler | [ram_scraper] Matched hebkc: Kingston HyperX Fury 16 GB (99% confidence)
+2026-07-07 18:23:42 | INFO     | ss_crawler | [ram_scraper] 💰 hebkc: Updated (title, description, location, match)
+2026-07-07 18:23:42 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\hebkc_7b7f39db.jpg
+2026-07-07 18:23:42 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/ru/electronics/computers/completing-pc/ram/hxpcf.html
+2026-07-07 18:23:44 | INFO     | ss_crawler | [ram_scraper] Matched hxpcf: Crucial Ballistix 16 GB (100% confidence)
+2026-07-07 18:23:44 | INFO     | ss_crawler | [ram_scraper] 💰 hxpcf: Updated (title, description, location, match)
+2026-07-07 18:23:44 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\hxpcf_b7e0ff88.jpg
+2026-07-07 18:23:44 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/ru/electronics/computers/completing-pc/ram/emdbx.html
+2026-07-07 18:23:46 | INFO     | ss_crawler | [ram_scraper] Matched emdbx: G.Skill Aegis 16 GB (100% confidence)
+2026-07-07 18:23:46 | INFO     | ss_crawler | [ram_scraper] 💰 emdbx: Updated (content)
+2026-07-07 18:23:46 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\emdbx_94e94bc0.jpg
+2026-07-07 18:23:46 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/ru/electronics/computers/completing-pc/ram/gggcj.html
+2026-07-07 18:23:49 | INFO     | ss_crawler | [ram_scraper] Matched gggcj: Corsair Vengeance RGB RT 32 GB (100% confidence)
+2026-07-07 18:23:49 | INFO     | ss_crawler | [ram_scraper] 💰 gggcj: Updated (title, description, location, match)
+2026-07-07 18:23:49 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\gggcj_fe4a3c79.jpg
+2026-07-07 18:23:49 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/ru/electronics/computers/completing-pc/ram/pkjcd.html
+2026-07-07 18:23:51 | INFO     | ss_crawler | [ram_scraper] No match for pkjcd: SS.COM Комплектующие к компьютерам - RAM, Цена 170
+2026-07-07 18:23:51 | INFO     | ss_crawler | [ram_scraper] 💰 pkjcd: Updated (title, description, location)
+2026-07-07 18:23:51 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\pkjcd_ec8e5525.jpg
+2026-07-07 18:23:51 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/ru/electronics/computers/completing-pc/ram/dplxl.html
+2026-07-07 18:23:53 | INFO     | ss_crawler | [ram_scraper] Matched dplxl: Kingston FURY Beast 16 GB (100% confidence)
+2026-07-07 18:23:53 | INFO     | ss_crawler | [ram_scraper] 💰 dplxl: Updated (content)
+2026-07-07 18:23:53 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\dplxl_e709216f.jpg
+2026-07-07 18:23:53 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/ru/electronics/computers/completing-pc/ram/cgkgfk.html
+2026-07-07 18:23:56 | INFO     | ss_crawler | [ram_scraper] Matched cgkgfk: Kingston FURY Beast 16 GB (100% confidence)
+2026-07-07 18:23:56 | INFO     | ss_crawler | [ram_scraper] 💰 cgkgfk: Updated (content)
+2026-07-07 18:23:56 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\cgkgfk_3b2a92cb.jpg
+2026-07-07 18:23:56 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/ru/electronics/computers/completing-pc/ram/beldj.html
+2026-07-07 18:24:00 | INFO     | ss_crawler | [ram_scraper] Matched beldj: GeIL GeIL 16GB (77% confidence)
+2026-07-07 18:24:00 | INFO     | ss_crawler | [ram_scraper] 💰 beldj: Updated (title, description, location, match)
+2026-07-07 18:24:00 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\beldj_aa644ba2.jpg
+2026-07-07 18:24:00 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/ru/electronics/computers/completing-pc/ram/mmfkn.html
+2026-07-07 18:24:03 | INFO     | ss_crawler | [ram_scraper] Matched mmfkn: G.Skill Ripjaws V 32 GB (100% confidence)
+2026-07-07 18:24:03 | INFO     | ss_crawler | [ram_scraper] 💰 mmfkn: Updated (title, description, location, match)
+2026-07-07 18:24:03 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\mmfkn_9a64b3c5.jpg
+2026-07-07 18:24:03 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/ru/electronics/computers/completing-pc/ram/pxpkb.html
+2026-07-07 18:24:06 | INFO     | ss_crawler | [ram_scraper] Matched pxpkb: G.Skill NT 8 GB (75% confidence)
+2026-07-07 18:24:06 | INFO     | ss_crawler | [ram_scraper] 💰 pxpkb: Updated (content)
+2026-07-07 18:24:06 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\pxpkb_87b1b3e4.jpg
+2026-07-07 18:24:06 | INFO     | ss_crawler | [ram_scraper] Next page URL: https://www.ss.com/lv/electronics/computers/completing-pc/ram/page4.html
+2026-07-07 18:24:06 | INFO     | ss_crawler | [ram_scraper] Fetching page 4: https://www.ss.com/lv/electronics/computers/completing-pc/ram/page4.html
+2026-07-07 18:24:06 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/lv/electronics/computers/completing-pc/ram/page4.html
+2026-07-07 18:24:08 | INFO     | ss_crawler | [ram_scraper] Found 14 listings on page 4, 0 new
+2026-07-07 18:24:08 | INFO     | ss_crawler | [ram_scraper] Next page URL: https://www.ss.com/ru/electronics/computers/completing-pc/ram/page4.html
+2026-07-07 18:24:08 | INFO     | ss_crawler | [ram_scraper] Fetching page 5: https://www.ss.com/ru/electronics/computers/completing-pc/ram/page4.html
+2026-07-07 18:24:08 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/ru/electronics/computers/completing-pc/ram/page4.html
+2026-07-07 18:24:11 | INFO     | ss_crawler | [ram_scraper] Found 14 listings on page 5, 0 new
+2026-07-07 18:24:11 | INFO     | ss_crawler | [ram_scraper] Next page URL: https://www.ss.com/lv/electronics/computers/completing-pc/ram/page4.html
+2026-07-07 18:24:11 | INFO     | ss_crawler | [ram_scraper] Reached max pages limit (5)
+2026-07-07 18:24:11 | INFO     | ss_crawler | [ram_scraper] RAM scraping complete. Stats: {'processed': 60, 'new': 7, 'updated': 46, 'unchanged': 7, 'failed': 0, 'matched': 52}
+2026-07-07 18:33:26 | INFO     | ss_crawler | [ram_scraper] Initializing RAM scraper...
+2026-07-07 18:33:26 | INFO     | ss_crawler | [database] Database connected: localhost:5433/ss_market
+2026-07-07 18:33:26 | INFO     | ss_crawler | [ram_scraper] Database: postgresql+psycopg2://crawler:crawler_pass@localhost:5433/ss_market
+2026-07-07 18:33:26 | INFO     | ss_crawler | [ram_matcher] RAMMatcher initialized with 5284 RAM references
+2026-07-07 18:33:26 | INFO     | ss_crawler | [ram_scraper] Loaded 5284 RAM references
+2026-07-07 18:33:26 | INFO     | ss_crawler | [ram_scraper] Starting RAM scraper from https://www.ss.com/lv/electronics/computers/completing-pc/ram/
+2026-07-07 18:33:26 | INFO     | ss_crawler | [ram_scraper] Fetching page 1: https://www.ss.com/lv/electronics/computers/completing-pc/ram/
+2026-07-07 18:33:26 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/lv/electronics/computers/completing-pc/ram/
+2026-07-07 18:33:28 | INFO     | ss_crawler | [ram_scraper] Found 32 listings on page 1, 32 new
+2026-07-07 18:33:28 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/bkchfc.html
+2026-07-07 18:33:31 | INFO     | ss_crawler | [ram_scraper] Matched bkchfc: SK Hynix HMT41GU6MFR8C-PB 8 GB (100% confidence)
+2026-07-07 18:33:31 | INFO     | ss_crawler | [ram_scraper] 💰 bkchfc: Updated (content)
+2026-07-07 18:33:31 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\bkchfc_d8f60304.jpg
+2026-07-07 18:33:31 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/bkchfc.html
+2026-07-07 18:33:33 | INFO     | ss_crawler | [ram_scraper] Matched bkchfc: SK Hynix HMT41GU6MFR8C-PB 8 GB (100% confidence)
+2026-07-07 18:33:33 | INFO     | ss_crawler | [ram_scraper] 💰 bkchfc: Updated (content)
+2026-07-07 18:33:33 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\bkchfc_d8f60304.jpg
+2026-07-07 18:33:33 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/bkchfc.html
+2026-07-07 18:33:35 | INFO     | ss_crawler | [ram_scraper] Matched bkchfc: SK Hynix HMT41GU6MFR8C-PB 8 GB (100% confidence)
+2026-07-07 18:33:35 | INFO     | ss_crawler | [ram_scraper] 💰 bkchfc: Updated (content)
+2026-07-07 18:33:35 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\bkchfc_d8f60304.jpg
+2026-07-07 18:33:35 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/fifdl.html
+2026-07-07 18:33:38 | INFO     | ss_crawler | [ram_scraper] Matched fifdl: TEAMGROUP Elite Plus 16 GB (100% confidence)
+2026-07-07 18:33:38 | INFO     | ss_crawler | [ram_scraper] 💰 fifdl: Updated (content)
+2026-07-07 18:33:38 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\fifdl_64259688.jpg
+2026-07-07 18:33:38 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/djllh.html
+2026-07-07 18:33:41 | INFO     | ss_crawler | [ram_scraper] Matched djllh: Corsair Vengeance RGB Pro 32 GB (100% confidence)
+2026-07-07 18:33:41 | INFO     | ss_crawler | [ram_scraper] 💰 djllh: Updated (content)
+2026-07-07 18:33:41 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\djllh_7d941c3a.jpg
+2026-07-07 18:33:41 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/fnbnn.html
+2026-07-07 18:33:43 | INFO     | ss_crawler | [ram_scraper] Matched fnbnn: SK Hynix hma81gu6cjr8n-vk 8 GB (100% confidence)
+2026-07-07 18:33:43 | INFO     | ss_crawler | [ram_scraper] 💰 fnbnn: Updated (content)
+2026-07-07 18:33:43 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\fnbnn_09f30edf.jpg
+2026-07-07 18:33:43 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/loxdn.html
+2026-07-07 18:33:46 | INFO     | ss_crawler | [ram_scraper] Matched loxdn: Crucial Sport LT 16 GB (100% confidence)
+2026-07-07 18:33:46 | INFO     | ss_crawler | [ram_scraper] 💰 loxdn: Updated (content)
+2026-07-07 18:33:46 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\loxdn_4b5ca3c0.jpg
+2026-07-07 18:33:46 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/dofok.html
+2026-07-07 18:33:48 | INFO     | ss_crawler | [ram_scraper] Matched dofok: Kingston FURY Beast 64 GB (100% confidence)
+2026-07-07 18:33:48 | INFO     | ss_crawler | [ram_scraper] 💰 dofok: Updated (content)
+2026-07-07 18:33:48 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\dofok_82dfa3d7.jpg
+2026-07-07 18:33:48 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/ebgcp.html
+2026-07-07 18:33:49 | INFO     | ss_crawler | [ram_scraper] Matched ebgcp: G.Skill Trident Z5 64 GB (100% confidence)
+2026-07-07 18:33:49 | INFO     | ss_crawler | [ram_scraper] 💰 ebgcp: Updated (content)
+2026-07-07 18:33:49 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\ebgcp_a1aa0534.jpg
+2026-07-07 18:33:49 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/mofxd.html
+2026-07-07 18:33:51 | INFO     | ss_crawler | [ram_scraper] Matched mofxd: Corsair ValueSelect 4 GB (100% confidence)
+2026-07-07 18:33:51 | INFO     | ss_crawler | [ram_scraper] 💰 mofxd: Updated (content)
+2026-07-07 18:33:51 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\mofxd_fd96cbd8.jpg
+2026-07-07 18:33:51 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/gkjll.html
+2026-07-07 18:33:53 | INFO     | ss_crawler | [ram_scraper] Matched gkjll: Kingston HyperX Fury 32 GB (100% confidence)
+2026-07-07 18:33:53 | INFO     | ss_crawler | [ram_scraper] 💰 gkjll: Updated (content)
+2026-07-07 18:33:53 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\gkjll_ce48b3a7.jpg
+2026-07-07 18:33:53 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/hxfmc.html
+2026-07-07 18:33:56 | INFO     | ss_crawler | [ram_scraper] No match for hxfmc: SS.COM Komplektējošie datoriem - RAM, Cena 80 €. P
+2026-07-07 18:33:56 | INFO     | ss_crawler | [ram_scraper] 💰 hxfmc: Updated (content)
+2026-07-07 18:33:56 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\hxfmc_e402c5af.jpg
+2026-07-07 18:33:56 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/fnlfe.html
+2026-07-07 18:34:00 | INFO     | ss_crawler | [ram_scraper] Matched fnlfe: Samsung M378A1K43CB2-CRC 8 GB (100% confidence)
+2026-07-07 18:34:00 | INFO     | ss_crawler | [ram_scraper] 💰 fnlfe: Updated (content)
+2026-07-07 18:34:00 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\fnlfe_ae2740d9.jpg
+2026-07-07 18:34:00 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/hghmj.html
+2026-07-07 18:34:03 | INFO     | ss_crawler | [ram_scraper] Matched hghmj: Kingston FURY Beast 32 GB (100% confidence)
+2026-07-07 18:34:03 | INFO     | ss_crawler | [ram_scraper] 💰 hghmj: Updated (content)
+2026-07-07 18:34:03 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\hghmj_dd5579bb.jpg
+2026-07-07 18:34:03 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/ebpxc.html
+2026-07-07 18:34:05 | INFO     | ss_crawler | [ram_scraper] Matched ebpxc: Kingston FURY Beast 32 GB (100% confidence)
+2026-07-07 18:34:05 | INFO     | ss_crawler | [ram_scraper] 💰 ebpxc: Updated (content)
+2026-07-07 18:34:05 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\ebpxc_ab5bd103.jpg
+2026-07-07 18:34:05 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/fiplf.html
+2026-07-07 18:34:08 | INFO     | ss_crawler | [ram_scraper] Matched fiplf: Corsair Vengeance RGB 32 GB (100% confidence)
+2026-07-07 18:34:08 | INFO     | ss_crawler | [ram_scraper] ⏸️ fiplf: Unchanged
+2026-07-07 18:34:09 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/hhmeh.html
+2026-07-07 18:34:12 | INFO     | ss_crawler | [ram_scraper] Matched hhmeh: GOODRAM IRDM PRO 16 GB (100% confidence)
+2026-07-07 18:34:12 | INFO     | ss_crawler | [ram_scraper] 💰 hhmeh: Updated (content)
+2026-07-07 18:34:12 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\hhmeh_085000c5.jpg
+2026-07-07 18:34:12 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/flnhh.html
+2026-07-07 18:34:14 | INFO     | ss_crawler | [ram_scraper] Matched flnhh: Corsair Vengeance RGB RS 32 GB (100% confidence)
+2026-07-07 18:34:14 | INFO     | ss_crawler | [ram_scraper] 💰 flnhh: Updated (content)
+2026-07-07 18:34:14 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\flnhh_cec91525.jpg
+2026-07-07 18:34:14 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/lgieh.html
+2026-07-07 18:34:16 | INFO     | ss_crawler | [ram_scraper] Matched lgieh: Kingston KVR16N11/8 8 GB (100% confidence)
+2026-07-07 18:34:16 | INFO     | ss_crawler | [ram_scraper] 💰 lgieh: Updated (content)
+2026-07-07 18:34:16 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\lgieh_84806200.jpg
+2026-07-07 18:34:16 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/dmlfo.html
+2026-07-07 18:34:18 | INFO     | ss_crawler | [ram_scraper] Matched dmlfo: GOODRAM IRDM 64 GB (100% confidence)
+2026-07-07 18:34:18 | INFO     | ss_crawler | [ram_scraper] 💰 dmlfo: Updated (content)
+2026-07-07 18:34:18 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\dmlfo_cb3f1316.jpg
+2026-07-07 18:34:18 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/opiof.html
+2026-07-07 18:34:21 | INFO     | ss_crawler | [ram_scraper] Matched opiof: Kingston FURY Beast 16 GB (100% confidence)
+2026-07-07 18:34:21 | INFO     | ss_crawler | [ram_scraper] 💰 opiof: Updated (content)
+2026-07-07 18:34:21 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\opiof_5b01dc12.jpg
+2026-07-07 18:34:21 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/olixc.html
+2026-07-07 18:34:24 | INFO     | ss_crawler | [ram_scraper] Matched olixc: Kingston FURY Beast 32 GB (100% confidence)
+2026-07-07 18:34:24 | INFO     | ss_crawler | [ram_scraper] 💰 olixc: Updated (content)
+2026-07-07 18:34:24 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\olixc_a7c004f9.jpg
+2026-07-07 18:34:24 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/eelde.html
+2026-07-07 18:34:27 | INFO     | ss_crawler | [ram_scraper] Matched eelde: Kingston FURY Beast 32 GB (100% confidence)
+2026-07-07 18:34:27 | INFO     | ss_crawler | [ram_scraper] 💰 eelde: Updated (content)
+2026-07-07 18:34:27 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\eelde_5cff496b.jpg
+2026-07-07 18:34:27 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/cglhgl.html
+2026-07-07 18:34:29 | INFO     | ss_crawler | [ram_scraper] Matched cglhgl: ADATA XPG Lancer Blade RGB 32 GB (100% confidence)
+2026-07-07 18:34:29 | INFO     | ss_crawler | [ram_scraper] 💰 cglhgl: Updated (content)
+2026-07-07 18:34:29 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\cglhgl_97375333.jpg
+2026-07-07 18:34:29 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/bxxxxd.html
+2026-07-07 18:34:31 | INFO     | ss_crawler | [ram_scraper] Matched bxxxxd: Kingston FURY Beast 64 GB (100% confidence)
+2026-07-07 18:34:31 | INFO     | ss_crawler | [ram_scraper] 💰 bxxxxd: Updated (content)
+2026-07-07 18:34:31 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\bxxxxd_07dd38f0.jpg
+2026-07-07 18:34:31 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/onnbn.html
+2026-07-07 18:34:34 | INFO     | ss_crawler | [ram_scraper] Matched onnbn: Kingston FURY Beast 64 GB (100% confidence)
+2026-07-07 18:34:34 | INFO     | ss_crawler | [ram_scraper] 💰 onnbn: Updated (content)
+2026-07-07 18:34:34 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\onnbn_6fa17a91.jpg
+2026-07-07 18:34:34 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/dgmlf.html
+2026-07-07 18:34:36 | INFO     | ss_crawler | [ram_scraper] Matched dgmlf: SK Hynix HMT41GU6MFR8C-PB 8 GB (100% confidence)
+2026-07-07 18:34:36 | INFO     | ss_crawler | [ram_scraper] 💰 dgmlf: Updated (content)
+2026-07-07 18:34:36 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\dgmlf_b54ffbc0.jpg
+2026-07-07 18:34:36 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/hhnep.html
+2026-07-07 18:34:39 | INFO     | ss_crawler | [ram_scraper] Matched hhnep: Corsair Vengeance LPX 16 GB (100% confidence)
+2026-07-07 18:34:39 | INFO     | ss_crawler | [ram_scraper] 💰 hhnep: Updated (content)
+2026-07-07 18:34:39 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\hhnep_b86a2d69.jpg
+2026-07-07 18:34:39 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/gfbdc.html
+2026-07-07 18:34:41 | INFO     | ss_crawler | [ram_scraper] Matched gfbdc: SK Hynix HMT351U7BFR8A-H9 4 GB (100% confidence)
+2026-07-07 18:34:41 | INFO     | ss_crawler | [ram_scraper] 💰 gfbdc: Updated (content)
+2026-07-07 18:34:41 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\gfbdc_e5863272.jpg
+2026-07-07 18:34:41 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/bhxhn.html
+2026-07-07 18:34:43 | INFO     | ss_crawler | [ram_scraper] No match for bhxhn: SS.COM Komplektējošie datoriem - RAM, Cena 9 €. Hy
+2026-07-07 18:34:43 | INFO     | ss_crawler | [ram_scraper] 💰 bhxhn: Updated (content)
+2026-07-07 18:34:43 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\bhxhn_9bfc39ef.jpg
+2026-07-07 18:34:43 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/lnomb.html
+2026-07-07 18:34:46 | INFO     | ss_crawler | [ram_scraper] Matched lnomb: G.Skill Aegis 32 GB (100% confidence)
+2026-07-07 18:34:46 | INFO     | ss_crawler | [ram_scraper] 💰 lnomb: Updated (content)
+2026-07-07 18:34:46 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\lnomb_4370d6f9.jpg
+2026-07-07 18:34:46 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/cjpbh.html
+2026-07-07 18:34:48 | INFO     | ss_crawler | [ram_scraper] Matched cjpbh: Crucial CT32G48C40U5 32 GB (100% confidence)
+2026-07-07 18:34:48 | INFO     | ss_crawler | [ram_scraper] 💰 cjpbh: Updated (content)
+2026-07-07 18:34:48 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\cjpbh_8a7c7877.jpg
+2026-07-07 18:34:48 | INFO     | ss_crawler | [ram_scraper] Next page URL: https://www.ss.com/lv/electronics/computers/completing-pc/ram/page4.html
+2026-07-07 18:34:48 | INFO     | ss_crawler | [ram_scraper] Fetching page 2: https://www.ss.com/lv/electronics/computers/completing-pc/ram/page4.html
+2026-07-07 18:34:48 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/lv/electronics/computers/completing-pc/ram/page4.html
+2026-07-07 18:34:52 | INFO     | ss_crawler | [ram_scraper] Found 14 listings on page 2, 14 new
+2026-07-07 18:34:52 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/pjxod.html
+2026-07-07 18:34:55 | INFO     | ss_crawler | [ram_scraper] No match for pjxod: SS.COM Komplektējošie datoriem - RAM, Cena 300 €. 
+2026-07-07 18:34:55 | INFO     | ss_crawler | [ram_scraper] ✨ pjxod: New
+2026-07-07 18:34:55 | INFO     | ss_crawler | [ram_scraper] Image saved locally: rams\pjxod_f4c7526a.jpg
+2026-07-07 18:34:55 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/pjxod.html
+2026-07-07 18:34:57 | INFO     | ss_crawler | [ram_scraper] No match for pjxod: SS.COM Komplektējošie datoriem - RAM, Cena 300 €. 
+2026-07-07 18:34:57 | INFO     | ss_crawler | [ram_scraper] ⏸️ pjxod: Unchanged
+2026-07-07 18:34:57 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/pjxod.html
+2026-07-07 18:35:00 | INFO     | ss_crawler | [ram_scraper] No match for pjxod: SS.COM Komplektējošie datoriem - RAM, Cena 300 €. 
+2026-07-07 18:35:00 | INFO     | ss_crawler | [ram_scraper] ⏸️ pjxod: Unchanged
+2026-07-07 18:35:00 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/lnpgo.html
+2026-07-07 18:35:02 | INFO     | ss_crawler | [ram_scraper] Matched lnpgo: Kingston Savage 8 GB (100% confidence)
+2026-07-07 18:35:02 | INFO     | ss_crawler | [ram_scraper] ✨ lnpgo: New
+2026-07-07 18:35:02 | INFO     | ss_crawler | [ram_scraper] Image saved locally: rams\lnpgo_6baad8f0.jpg
+2026-07-07 18:35:02 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/hebkc.html
+2026-07-07 18:35:05 | INFO     | ss_crawler | [ram_scraper] Matched hebkc: Kingston HyperX Fury 16 GB (100% confidence)
+2026-07-07 18:35:05 | INFO     | ss_crawler | [ram_scraper] ✨ hebkc: New
+2026-07-07 18:35:05 | INFO     | ss_crawler | [ram_scraper] Image saved locally: rams\hebkc_7b7f39db.jpg
+2026-07-07 18:35:05 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/hxpcf.html
+2026-07-07 18:35:09 | INFO     | ss_crawler | [ram_scraper] Matched hxpcf: Crucial Ballistix 16 GB (100% confidence)
+2026-07-07 18:35:09 | INFO     | ss_crawler | [ram_scraper] ✨ hxpcf: New
+2026-07-07 18:35:09 | INFO     | ss_crawler | [ram_scraper] Image saved locally: rams\hxpcf_b7e0ff88.jpg
+2026-07-07 18:35:09 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/emdbx.html
+2026-07-07 18:35:11 | INFO     | ss_crawler | [ram_scraper] Matched emdbx: G.Skill Aegis 16 GB (100% confidence)
+2026-07-07 18:35:11 | INFO     | ss_crawler | [ram_scraper] 💰 emdbx: Updated (title, description, location, match)
+2026-07-07 18:35:11 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\emdbx_94e94bc0.jpg
+2026-07-07 18:35:11 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/gggcj.html
+2026-07-07 18:35:13 | INFO     | ss_crawler | [ram_scraper] Matched gggcj: Corsair Vengeance RGB RT 32 GB (100% confidence)
+2026-07-07 18:35:13 | INFO     | ss_crawler | [ram_scraper] ✨ gggcj: New
+2026-07-07 18:35:13 | INFO     | ss_crawler | [ram_scraper] Image saved locally: rams\gggcj_fe4a3c79.jpg
+2026-07-07 18:35:13 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/pkjcd.html
+2026-07-07 18:35:15 | INFO     | ss_crawler | [ram_scraper] No match for pkjcd: SS.COM Komplektējošie datoriem - RAM, Cena 170 €. 
+2026-07-07 18:35:15 | INFO     | ss_crawler | [ram_scraper] ✨ pkjcd: New
+2026-07-07 18:35:15 | INFO     | ss_crawler | [ram_scraper] Image saved locally: rams\pkjcd_ec8e5525.jpg
+2026-07-07 18:35:15 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/dplxl.html
+2026-07-07 18:35:18 | INFO     | ss_crawler | [ram_scraper] Matched dplxl: Kingston FURY Beast 32 GB (100% confidence)
+2026-07-07 18:35:18 | INFO     | ss_crawler | [ram_scraper] 💰 dplxl: Updated (title, description, location, match)
+2026-07-07 18:35:18 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\dplxl_e709216f.jpg
+2026-07-07 18:35:18 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/cgkgfk.html
+2026-07-07 18:35:20 | INFO     | ss_crawler | [ram_scraper] Matched cgkgfk: Kingston FURY Beast 32 GB (100% confidence)
+2026-07-07 18:35:20 | INFO     | ss_crawler | [ram_scraper] 💰 cgkgfk: Updated (title, description, location, match)
+2026-07-07 18:35:20 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\cgkgfk_3b2a92cb.jpg
+2026-07-07 18:35:20 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/beldj.html
+2026-07-07 18:35:24 | INFO     | ss_crawler | [ram_scraper] No match for beldj: SS.COM Komplektējošie datoriem - RAM, Cena 150 €. 
+2026-07-07 18:35:24 | INFO     | ss_crawler | [ram_scraper] 💰 beldj: Updated (title, description, location, match)
+2026-07-07 18:35:24 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\beldj_aa644ba2.jpg
+2026-07-07 18:35:24 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/mmfkn.html
+2026-07-07 18:35:27 | INFO     | ss_crawler | [ram_scraper] Matched mmfkn: G.Skill Ripjaws V 32 GB (100% confidence)
+2026-07-07 18:35:27 | INFO     | ss_crawler | [ram_scraper] ✨ mmfkn: New
+2026-07-07 18:35:27 | INFO     | ss_crawler | [ram_scraper] Image saved locally: rams\mmfkn_9a64b3c5.jpg
+2026-07-07 18:35:27 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/pxpkb.html
+2026-07-07 18:35:29 | INFO     | ss_crawler | [ram_scraper] Matched pxpkb: G.Skill Trident Z 16 GB (100% confidence)
+2026-07-07 18:35:29 | INFO     | ss_crawler | [ram_scraper] 💰 pxpkb: Updated (title, description, location, match)
+2026-07-07 18:35:29 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\pxpkb_87b1b3e4.jpg
+2026-07-07 18:35:29 | INFO     | ss_crawler | [ram_scraper] Next page URL: https://www.ss.com/ru/electronics/computers/completing-pc/ram/page4.html
+2026-07-07 18:35:29 | INFO     | ss_crawler | [ram_scraper] Fetching page 3: https://www.ss.com/ru/electronics/computers/completing-pc/ram/page4.html
+2026-07-07 18:35:29 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/ru/electronics/computers/completing-pc/ram/page4.html
+2026-07-07 18:35:32 | INFO     | ss_crawler | [ram_scraper] Found 14 listings on page 3, 14 new
+2026-07-07 18:35:32 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/ru/electronics/computers/completing-pc/ram/pjxod.html
+2026-07-07 18:35:36 | INFO     | ss_crawler | [ram_scraper] Matched pjxod: SK Hynix HMA81GU6MFR8N-UH 8 GB (58% confidence)
+2026-07-07 18:35:36 | WARNING  | ss_crawler | [ram_scraper] ⚠️ LOW_CONFIDENCE: pjxod (confidence 58.24%)
+2026-07-07 18:35:36 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\pjxod_f4c7526a.jpg
+2026-07-07 18:35:36 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/ru/electronics/computers/completing-pc/ram/pjxod.html
+2026-07-07 18:35:38 | INFO     | ss_crawler | [ram_scraper] Matched pjxod: SK Hynix HMA81GU6MFR8N-UH 8 GB (58% confidence)
+2026-07-07 18:35:38 | WARNING  | ss_crawler | [ram_scraper] ⚠️ LOW_CONFIDENCE: pjxod (confidence 58.24%)
+2026-07-07 18:35:38 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\pjxod_f4c7526a.jpg
+2026-07-07 18:35:38 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/ru/electronics/computers/completing-pc/ram/pjxod.html
+2026-07-07 18:35:41 | INFO     | ss_crawler | [ram_scraper] Matched pjxod: SK Hynix HMA81GU6MFR8N-UH 8 GB (58% confidence)
+2026-07-07 18:35:41 | WARNING  | ss_crawler | [ram_scraper] ⚠️ LOW_CONFIDENCE: pjxod (confidence 58.24%)
+2026-07-07 18:35:41 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\pjxod_f4c7526a.jpg
+2026-07-07 18:35:41 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/ru/electronics/computers/completing-pc/ram/lnpgo.html
+2026-07-07 18:35:43 | INFO     | ss_crawler | [ram_scraper] Matched lnpgo: Kingston 1500 4 GB (100% confidence)
+2026-07-07 18:35:43 | INFO     | ss_crawler | [ram_scraper] 💰 lnpgo: Updated (title, description, location, match)
+2026-07-07 18:35:43 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\lnpgo_6baad8f0.jpg
+2026-07-07 18:35:43 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/ru/electronics/computers/completing-pc/ram/hebkc.html
+2026-07-07 18:35:46 | INFO     | ss_crawler | [ram_scraper] Matched hebkc: Kingston HyperX Fury 16 GB (99% confidence)
+2026-07-07 18:35:46 | INFO     | ss_crawler | [ram_scraper] 💰 hebkc: Updated (title, description, location, match)
+2026-07-07 18:35:46 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\hebkc_7b7f39db.jpg
+2026-07-07 18:35:46 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/ru/electronics/computers/completing-pc/ram/hxpcf.html
+2026-07-07 18:35:48 | INFO     | ss_crawler | [ram_scraper] Matched hxpcf: Crucial Ballistix 16 GB (100% confidence)
+2026-07-07 18:35:48 | INFO     | ss_crawler | [ram_scraper] 💰 hxpcf: Updated (title, description, location, match)
+2026-07-07 18:35:48 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\hxpcf_b7e0ff88.jpg
+2026-07-07 18:35:48 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/ru/electronics/computers/completing-pc/ram/emdbx.html
+2026-07-07 18:35:50 | INFO     | ss_crawler | [ram_scraper] Matched emdbx: G.Skill Aegis 16 GB (100% confidence)
+2026-07-07 18:35:50 | INFO     | ss_crawler | [ram_scraper] 💰 emdbx: Updated (title, description, location, match)
+2026-07-07 18:35:50 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\emdbx_94e94bc0.jpg
+2026-07-07 18:35:50 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/ru/electronics/computers/completing-pc/ram/gggcj.html
+2026-07-07 18:35:53 | INFO     | ss_crawler | [ram_scraper] Matched gggcj: Corsair Vengeance RGB RT 32 GB (100% confidence)
+2026-07-07 18:35:53 | INFO     | ss_crawler | [ram_scraper] 💰 gggcj: Updated (title, description, location, match)
+2026-07-07 18:35:53 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\gggcj_fe4a3c79.jpg
+2026-07-07 18:35:53 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/ru/electronics/computers/completing-pc/ram/pkjcd.html
+2026-07-07 18:35:55 | INFO     | ss_crawler | [ram_scraper] No match for pkjcd: SS.COM Комплектующие к компьютерам - RAM, Цена 170
+2026-07-07 18:35:55 | INFO     | ss_crawler | [ram_scraper] 💰 pkjcd: Updated (title, description, location)
+2026-07-07 18:35:55 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\pkjcd_ec8e5525.jpg
+2026-07-07 18:35:55 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/ru/electronics/computers/completing-pc/ram/dplxl.html
+2026-07-07 18:35:58 | INFO     | ss_crawler | [ram_scraper] Matched dplxl: Kingston FURY Beast 16 GB (100% confidence)
+2026-07-07 18:35:58 | INFO     | ss_crawler | [ram_scraper] 💰 dplxl: Updated (title, description, location, match)
+2026-07-07 18:35:58 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\dplxl_e709216f.jpg
+2026-07-07 18:35:58 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/ru/electronics/computers/completing-pc/ram/cgkgfk.html
+2026-07-07 18:36:02 | INFO     | ss_crawler | [ram_scraper] Matched cgkgfk: Kingston FURY Beast 16 GB (100% confidence)
+2026-07-07 18:36:02 | INFO     | ss_crawler | [ram_scraper] 💰 cgkgfk: Updated (title, description, location, match)
+2026-07-07 18:36:02 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\cgkgfk_3b2a92cb.jpg
+2026-07-07 18:36:02 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/ru/electronics/computers/completing-pc/ram/beldj.html
+2026-07-07 18:36:05 | INFO     | ss_crawler | [ram_scraper] Matched beldj: GeIL GeIL 16GB (77% confidence)
+2026-07-07 18:36:05 | INFO     | ss_crawler | [ram_scraper] 💰 beldj: Updated (title, description, location, match)
+2026-07-07 18:36:05 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\beldj_aa644ba2.jpg
+2026-07-07 18:36:05 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/ru/electronics/computers/completing-pc/ram/mmfkn.html
+2026-07-07 18:36:08 | INFO     | ss_crawler | [ram_scraper] Matched mmfkn: G.Skill Ripjaws V 32 GB (100% confidence)
+2026-07-07 18:36:08 | INFO     | ss_crawler | [ram_scraper] 💰 mmfkn: Updated (title, description, location, match)
+2026-07-07 18:36:08 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\mmfkn_9a64b3c5.jpg
+2026-07-07 18:36:08 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/ru/electronics/computers/completing-pc/ram/pxpkb.html
+2026-07-07 18:36:11 | INFO     | ss_crawler | [ram_scraper] Matched pxpkb: G.Skill NT 8 GB (75% confidence)
+2026-07-07 18:36:11 | INFO     | ss_crawler | [ram_scraper] 💰 pxpkb: Updated (title, description, location, match)
+2026-07-07 18:36:11 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\pxpkb_87b1b3e4.jpg
+2026-07-07 18:36:11 | INFO     | ss_crawler | [ram_scraper] Next page URL: https://www.ss.com/lv/electronics/computers/completing-pc/ram/page4.html
+2026-07-07 18:36:11 | INFO     | ss_crawler | [ram_scraper] Fetching page 4: https://www.ss.com/lv/electronics/computers/completing-pc/ram/page4.html
+2026-07-07 18:36:11 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/lv/electronics/computers/completing-pc/ram/page4.html
+2026-07-07 18:36:13 | INFO     | ss_crawler | [ram_scraper] Found 14 listings on page 4, 0 new
+2026-07-07 18:36:13 | INFO     | ss_crawler | [ram_scraper] Next page URL: https://www.ss.com/ru/electronics/computers/completing-pc/ram/page4.html
+2026-07-07 18:36:13 | INFO     | ss_crawler | [ram_scraper] Fetching page 5: https://www.ss.com/ru/electronics/computers/completing-pc/ram/page4.html
+2026-07-07 18:36:13 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/ru/electronics/computers/completing-pc/ram/page4.html
+2026-07-07 18:36:16 | INFO     | ss_crawler | [ram_scraper] Found 14 listings on page 5, 0 new
+2026-07-07 18:36:16 | INFO     | ss_crawler | [ram_scraper] Next page URL: https://www.ss.com/lv/electronics/computers/completing-pc/ram/page4.html
+2026-07-07 18:36:16 | INFO     | ss_crawler | [ram_scraper] Reached max pages limit (5)
+2026-07-07 18:36:16 | INFO     | ss_crawler | [ram_scraper] RAM scraping complete. Stats: {'processed': 60, 'new': 7, 'updated': 50, 'unchanged': 3, 'failed': 0, 'matched': 52}
+2026-07-07 19:02:48 | INFO     | ss_crawler | [ram_scraper] Initializing RAM scraper...
+2026-07-07 19:02:48 | INFO     | ss_crawler | [database] Database connected: localhost:5433/ss_market
+2026-07-07 19:02:48 | INFO     | ss_crawler | [ram_scraper] Database: postgresql+psycopg2://crawler:crawler_pass@localhost:5433/ss_market
+2026-07-07 19:02:49 | INFO     | ss_crawler | [ram_matcher] RAMMatcher initialized with 5281 RAM references
+2026-07-07 19:02:49 | INFO     | ss_crawler | [ram_scraper] Loaded 5281 RAM references
+2026-07-07 19:02:49 | INFO     | ss_crawler | [ram_scraper] Starting RAM scraper from https://www.ss.com/lv/electronics/computers/completing-pc/ram/
+2026-07-07 19:02:49 | INFO     | ss_crawler | [ram_scraper] Fetching page 1: https://www.ss.com/lv/electronics/computers/completing-pc/ram/
+2026-07-07 19:02:49 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/lv/electronics/computers/completing-pc/ram/
+2026-07-07 19:02:52 | INFO     | ss_crawler | [ram_scraper] Found 32 listings on page 1, 32 new
+2026-07-07 19:02:52 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/bkchfc.html
+2026-07-07 19:02:55 | INFO     | ss_crawler | [ram_scraper] Matched bkchfc: SK Hynix HMT41GU6MFR8C-PB 8 GB (100% confidence)
+2026-07-07 19:02:55 | INFO     | ss_crawler | [ram_scraper] 💰 bkchfc: Updated (title)
+2026-07-07 19:02:55 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\bkchfc_d8f60304.jpg
+2026-07-07 19:02:55 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/bkchfc.html
+2026-07-07 19:02:58 | INFO     | ss_crawler | [ram_scraper] Matched bkchfc: SK Hynix HMT41GU6MFR8C-PB 8 GB (100% confidence)
+2026-07-07 19:02:58 | INFO     | ss_crawler | [ram_scraper] 💰 bkchfc: Updated (content)
+2026-07-07 19:02:58 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\bkchfc_d8f60304.jpg
+2026-07-07 19:02:58 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/bkchfc.html
+2026-07-07 19:03:01 | INFO     | ss_crawler | [ram_scraper] Matched bkchfc: SK Hynix HMT41GU6MFR8C-PB 8 GB (100% confidence)
+2026-07-07 19:03:01 | INFO     | ss_crawler | [ram_scraper] 💰 bkchfc: Updated (content)
+2026-07-07 19:03:01 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\bkchfc_d8f60304.jpg
+2026-07-07 19:03:01 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/fifdl.html
+2026-07-07 19:03:04 | INFO     | ss_crawler | [ram_scraper] Matched fifdl: TEAMGROUP Elite Plus 16 GB (100% confidence)
+2026-07-07 19:03:04 | INFO     | ss_crawler | [ram_scraper] 💰 fifdl: Updated (title)
+2026-07-07 19:03:04 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\fifdl_64259688.jpg
+2026-07-07 19:03:04 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/djllh.html
+2026-07-07 19:03:06 | INFO     | ss_crawler | [ram_scraper] Matched djllh: Corsair Vengeance RGB Pro 32 GB (100% confidence)
+2026-07-07 19:03:06 | INFO     | ss_crawler | [ram_scraper] 💰 djllh: Updated (title)
+2026-07-07 19:03:06 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\djllh_7d941c3a.jpg
+2026-07-07 19:03:06 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/fnbnn.html
+2026-07-07 19:03:08 | INFO     | ss_crawler | [ram_scraper] Matched fnbnn: SK Hynix hma81gu6cjr8n-vk 8 GB (100% confidence)
+2026-07-07 19:03:08 | INFO     | ss_crawler | [ram_scraper] 💰 fnbnn: Updated (title)
+2026-07-07 19:03:08 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\fnbnn_09f30edf.jpg
+2026-07-07 19:03:08 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/loxdn.html
+2026-07-07 19:03:11 | INFO     | ss_crawler | [ram_scraper] Matched loxdn: Crucial Sport LT 16 GB (100% confidence)
+2026-07-07 19:03:11 | INFO     | ss_crawler | [ram_scraper] 💰 loxdn: Updated (title)
+2026-07-07 19:03:11 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\loxdn_4b5ca3c0.jpg
+2026-07-07 19:03:11 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/dofok.html
+2026-07-07 19:03:14 | INFO     | ss_crawler | [ram_scraper] Matched dofok: Kingston FURY Beast 64 GB (100% confidence)
+2026-07-07 19:03:14 | INFO     | ss_crawler | [ram_scraper] 💰 dofok: Updated (title)
+2026-07-07 19:03:14 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\dofok_82dfa3d7.jpg
+2026-07-07 19:03:14 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/mofxd.html
+2026-07-07 19:03:16 | INFO     | ss_crawler | [ram_scraper] Matched mofxd: Corsair ValueSelect 4 GB (100% confidence)
+2026-07-07 19:03:16 | INFO     | ss_crawler | [ram_scraper] 💰 mofxd: Updated (title)
+2026-07-07 19:03:16 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\mofxd_fd96cbd8.jpg
+2026-07-07 19:03:16 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/gkjll.html
+2026-07-07 19:03:19 | INFO     | ss_crawler | [ram_scraper] Matched gkjll: Kingston HyperX Fury 32 GB (100% confidence)
+2026-07-07 19:03:19 | INFO     | ss_crawler | [ram_scraper] 💰 gkjll: Updated (title)
+2026-07-07 19:03:19 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\gkjll_ce48b3a7.jpg
+2026-07-07 19:03:19 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/hxfmc.html
+2026-07-07 19:03:22 | INFO     | ss_crawler | [ram_scraper] No match for hxfmc: SS.COM Komplektējošie datoriem - RAM, Cena 80 €. P
+2026-07-07 19:03:22 | INFO     | ss_crawler | [ram_scraper] 💰 hxfmc: Updated (title)
+2026-07-07 19:03:22 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\hxfmc_e402c5af.jpg
+2026-07-07 19:03:22 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/fnlfe.html
+2026-07-07 19:03:24 | INFO     | ss_crawler | [ram_scraper] Matched fnlfe: Samsung M378A1K43CB2-CRC 8 GB (100% confidence)
+2026-07-07 19:03:24 | INFO     | ss_crawler | [ram_scraper] 💰 fnlfe: Updated (title)
+2026-07-07 19:03:24 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\fnlfe_ae2740d9.jpg
+2026-07-07 19:03:24 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/hghmj.html
+2026-07-07 19:03:27 | INFO     | ss_crawler | [ram_scraper] Matched hghmj: Kingston FURY Beast 32 GB (100% confidence)
+2026-07-07 19:03:27 | INFO     | ss_crawler | [ram_scraper] 💰 hghmj: Updated (title)
+2026-07-07 19:03:27 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\hghmj_dd5579bb.jpg
+2026-07-07 19:03:27 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/ebpxc.html
+2026-07-07 19:03:29 | INFO     | ss_crawler | [ram_scraper] Matched ebpxc: Kingston FURY Beast 32 GB (100% confidence)
+2026-07-07 19:03:29 | INFO     | ss_crawler | [ram_scraper] 💰 ebpxc: Updated (title)
+2026-07-07 19:03:29 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\ebpxc_ab5bd103.jpg
+2026-07-07 19:03:29 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/fiplf.html
+2026-07-07 19:03:32 | INFO     | ss_crawler | [ram_scraper] Skipping test: contains retail-new phrase 'jauna. iepakojumā. garantija - 2 gadi'
+2026-07-07 19:03:32 | INFO     | ss_crawler | [ram_scraper] Matched fiplf: Corsair Vengeance RGB 32 GB (100% confidence)
+2026-07-07 19:03:32 | INFO     | ss_crawler | [ram_scraper] 💰 fiplf: Updated (title)
+2026-07-07 19:03:32 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\fiplf_cff2e83a.jpg
+2026-07-07 19:03:32 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/hhmeh.html
+2026-07-07 19:03:35 | INFO     | ss_crawler | [ram_scraper] Matched hhmeh: GOODRAM IRDM PRO 16 GB (100% confidence)
+2026-07-07 19:03:35 | INFO     | ss_crawler | [ram_scraper] 💰 hhmeh: Updated (title)
+2026-07-07 19:03:35 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\hhmeh_085000c5.jpg
+2026-07-07 19:03:35 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/flnhh.html
+2026-07-07 19:03:37 | INFO     | ss_crawler | [ram_scraper] Matched flnhh: Corsair Vengeance RGB RS 32 GB (100% confidence)
+2026-07-07 19:03:37 | INFO     | ss_crawler | [ram_scraper] 💰 flnhh: Updated (title)
+2026-07-07 19:03:37 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\flnhh_cec91525.jpg
+2026-07-07 19:03:37 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/lgieh.html
+2026-07-07 19:03:39 | INFO     | ss_crawler | [ram_scraper] Matched lgieh: Kingston KVR16N11/8 8 GB (100% confidence)
+2026-07-07 19:03:39 | INFO     | ss_crawler | [ram_scraper] 💰 lgieh: Updated (content)
+2026-07-07 19:03:39 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\lgieh_84806200.jpg
+2026-07-07 19:03:39 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/dmlfo.html
+2026-07-07 19:03:42 | INFO     | ss_crawler | [ram_scraper] Matched dmlfo: GOODRAM IRDM 64 GB (100% confidence)
+2026-07-07 19:03:42 | INFO     | ss_crawler | [ram_scraper] 💰 dmlfo: Updated (title)
+2026-07-07 19:03:42 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\dmlfo_cb3f1316.jpg
+2026-07-07 19:03:42 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/opiof.html
+2026-07-07 19:03:45 | INFO     | ss_crawler | [ram_scraper] Matched opiof: Kingston FURY Beast 16 GB (100% confidence)
+2026-07-07 19:03:45 | INFO     | ss_crawler | [ram_scraper] 💰 opiof: Updated (title)
+2026-07-07 19:03:45 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\opiof_5b01dc12.jpg
+2026-07-07 19:03:45 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/olixc.html
+2026-07-07 19:03:47 | INFO     | ss_crawler | [ram_scraper] Matched olixc: Kingston FURY Beast 32 GB (100% confidence)
+2026-07-07 19:03:47 | INFO     | ss_crawler | [ram_scraper] 💰 olixc: Updated (title)
+2026-07-07 19:03:47 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\olixc_a7c004f9.jpg
+2026-07-07 19:03:47 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/eelde.html
+2026-07-07 19:03:49 | INFO     | ss_crawler | [ram_scraper] Matched eelde: Kingston FURY Beast 32 GB (100% confidence)
+2026-07-07 19:03:49 | INFO     | ss_crawler | [ram_scraper] 💰 eelde: Updated (title)
+2026-07-07 19:03:49 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\eelde_5cff496b.jpg
+2026-07-07 19:03:49 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/cglhgl.html
+2026-07-07 19:03:53 | INFO     | ss_crawler | [ram_scraper] Matched cglhgl: ADATA XPG Lancer Blade RGB 32 GB (100% confidence)
+2026-07-07 19:03:53 | INFO     | ss_crawler | [ram_scraper] 💰 cglhgl: Updated (title)
+2026-07-07 19:03:53 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\cglhgl_97375333.jpg
+2026-07-07 19:03:53 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/bxxxxd.html
+2026-07-07 19:03:55 | INFO     | ss_crawler | [ram_scraper] Matched bxxxxd: Kingston FURY Beast 64 GB (100% confidence)
+2026-07-07 19:03:55 | INFO     | ss_crawler | [ram_scraper] 💰 bxxxxd: Updated (title)
+2026-07-07 19:03:55 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\bxxxxd_07dd38f0.jpg
+2026-07-07 19:03:55 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/onnbn.html
+2026-07-07 19:03:59 | INFO     | ss_crawler | [ram_scraper] Matched onnbn: Kingston FURY Beast 64 GB (100% confidence)
+2026-07-07 19:03:59 | INFO     | ss_crawler | [ram_scraper] 💰 onnbn: Updated (title)
+2026-07-07 19:03:59 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\onnbn_6fa17a91.jpg
+2026-07-07 19:03:59 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/dgmlf.html
+2026-07-07 19:04:00 | INFO     | ss_crawler | [ram_scraper] Matched dgmlf: SK Hynix HMT41GU6MFR8C-PB 8 GB (100% confidence)
+2026-07-07 19:04:00 | INFO     | ss_crawler | [ram_scraper] 💰 dgmlf: Updated (title)
+2026-07-07 19:04:00 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\dgmlf_b54ffbc0.jpg
+2026-07-07 19:04:00 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/hhnep.html
+2026-07-07 19:04:02 | INFO     | ss_crawler | [ram_scraper] Matched hhnep: Corsair Vengeance LPX 16 GB (100% confidence)
+2026-07-07 19:04:02 | INFO     | ss_crawler | [ram_scraper] ⏸️ hhnep: Unchanged
+2026-07-07 19:04:02 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/gfbdc.html
+2026-07-07 19:04:06 | INFO     | ss_crawler | [ram_scraper] Matched gfbdc: SK Hynix HMT351U7BFR8A-H9 4 GB (100% confidence)
+2026-07-07 19:04:06 | INFO     | ss_crawler | [ram_scraper] 💰 gfbdc: Updated (title)
+2026-07-07 19:04:06 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\gfbdc_e5863272.jpg
+2026-07-07 19:04:06 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/bhxhn.html
+2026-07-07 19:04:08 | INFO     | ss_crawler | [ram_scraper] No match for bhxhn: SS.COM Komplektējošie datoriem - RAM, Cena 9 €. Hy
+2026-07-07 19:04:08 | INFO     | ss_crawler | [ram_scraper] 💰 bhxhn: Updated (title)
+2026-07-07 19:04:08 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\bhxhn_9bfc39ef.jpg
+2026-07-07 19:04:08 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/lnomb.html
+2026-07-07 19:04:11 | INFO     | ss_crawler | [ram_scraper] Matched lnomb: G.Skill Aegis 32 GB (100% confidence)
+2026-07-07 19:04:11 | INFO     | ss_crawler | [ram_scraper] 💰 lnomb: Updated (title)
+2026-07-07 19:04:11 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\lnomb_4370d6f9.jpg
+2026-07-07 19:04:11 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/cjpbh.html
+2026-07-07 19:04:15 | INFO     | ss_crawler | [ram_scraper] Matched cjpbh: Crucial CT32G48C40U5 32 GB (100% confidence)
+2026-07-07 19:04:15 | INFO     | ss_crawler | [ram_scraper] 💰 cjpbh: Updated (title)
+2026-07-07 19:04:15 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\cjpbh_8a7c7877.jpg
+2026-07-07 19:04:15 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/eppkg.html
+2026-07-07 19:04:16 | INFO     | ss_crawler | [ram_scraper] No match for eppkg: SS.COM Komplektējošie datoriem - RAM, Cena 120 €. 
+2026-07-07 19:04:16 | INFO     | ss_crawler | [ram_scraper] ✨ eppkg: New
+2026-07-07 19:04:17 | INFO     | ss_crawler | [image_downloader] Downloaded image for eppkg (stored as eppkg_cf74feef.jpg, 131074 bytes)
+2026-07-07 19:04:17 | INFO     | ss_crawler | [ram_scraper] Image saved locally: rams\eppkg_cf74feef.jpg
+2026-07-07 19:04:17 | INFO     | ss_crawler | [ram_scraper] Next page URL: https://www.ss.com/lv/electronics/computers/completing-pc/ram/page4.html
+2026-07-07 19:04:17 | INFO     | ss_crawler | [ram_scraper] Fetching page 2: https://www.ss.com/lv/electronics/computers/completing-pc/ram/page4.html
+2026-07-07 19:04:17 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/lv/electronics/computers/completing-pc/ram/page4.html
+2026-07-07 19:04:19 | INFO     | ss_crawler | [ram_scraper] Found 13 listings on page 2, 13 new
+2026-07-07 19:04:19 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/lnpgo.html
+2026-07-07 19:04:22 | INFO     | ss_crawler | [ram_scraper] Matched lnpgo: Kingston Savage 8 GB (100% confidence)
+2026-07-07 19:04:22 | INFO     | ss_crawler | [ram_scraper] ✨ lnpgo: New
+2026-07-07 19:04:22 | INFO     | ss_crawler | [ram_scraper] Image saved locally: rams\lnpgo_6baad8f0.jpg
+2026-07-07 19:04:22 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/lnpgo.html
+2026-07-07 19:04:24 | INFO     | ss_crawler | [ram_scraper] Matched lnpgo: Kingston Savage 8 GB (100% confidence)
+2026-07-07 19:04:24 | INFO     | ss_crawler | [ram_scraper] ⏸️ lnpgo: Unchanged
+2026-07-07 19:04:24 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/lnpgo.html
+2026-07-07 19:04:26 | INFO     | ss_crawler | [ram_scraper] Matched lnpgo: Kingston Savage 8 GB (100% confidence)
+2026-07-07 19:04:27 | INFO     | ss_crawler | [ram_scraper] ⏸️ lnpgo: Unchanged
+2026-07-07 19:04:27 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/hebkc.html
+2026-07-07 19:04:28 | INFO     | ss_crawler | [ram_scraper] Matched hebkc: Kingston HyperX Fury 16 GB (100% confidence)
+2026-07-07 19:04:28 | INFO     | ss_crawler | [ram_scraper] ✨ hebkc: New
+2026-07-07 19:04:28 | INFO     | ss_crawler | [ram_scraper] Image saved locally: rams\hebkc_7b7f39db.jpg
+2026-07-07 19:04:28 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/hxpcf.html
+2026-07-07 19:04:30 | INFO     | ss_crawler | [ram_scraper] Matched hxpcf: Crucial Ballistix 16 GB (100% confidence)
+2026-07-07 19:04:30 | INFO     | ss_crawler | [ram_scraper] ✨ hxpcf: New
+2026-07-07 19:04:30 | INFO     | ss_crawler | [ram_scraper] Image saved locally: rams\hxpcf_b7e0ff88.jpg
+2026-07-07 19:04:30 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/emdbx.html
+2026-07-07 19:04:32 | INFO     | ss_crawler | [ram_scraper] Matched emdbx: G.Skill Aegis 16 GB (100% confidence)
+2026-07-07 19:04:32 | INFO     | ss_crawler | [ram_scraper] 💰 emdbx: Updated (title, description, location, match)
+2026-07-07 19:04:32 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\emdbx_94e94bc0.jpg
+2026-07-07 19:04:32 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/gggcj.html
+2026-07-07 19:04:34 | INFO     | ss_crawler | [ram_scraper] Matched gggcj: Corsair Vengeance RGB RT 32 GB (100% confidence)
+2026-07-07 19:04:34 | INFO     | ss_crawler | [ram_scraper] ✨ gggcj: New
+2026-07-07 19:04:34 | INFO     | ss_crawler | [ram_scraper] Image saved locally: rams\gggcj_fe4a3c79.jpg
+2026-07-07 19:04:34 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/pkjcd.html
+2026-07-07 19:04:37 | INFO     | ss_crawler | [ram_scraper] No match for pkjcd: SS.COM Komplektējošie datoriem - RAM, Cena 170 €. 
+2026-07-07 19:04:37 | INFO     | ss_crawler | [ram_scraper] ✨ pkjcd: New
+2026-07-07 19:04:37 | INFO     | ss_crawler | [ram_scraper] Image saved locally: rams\pkjcd_ec8e5525.jpg
+2026-07-07 19:04:37 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/dplxl.html
+2026-07-07 19:04:40 | INFO     | ss_crawler | [ram_scraper] Matched dplxl: Kingston FURY Beast 32 GB (100% confidence)
+2026-07-07 19:04:40 | INFO     | ss_crawler | [ram_scraper] 💰 dplxl: Updated (title, description, location, match)
+2026-07-07 19:04:40 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\dplxl_e709216f.jpg
+2026-07-07 19:04:40 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/cgkgfk.html
+2026-07-07 19:04:43 | INFO     | ss_crawler | [ram_scraper] Matched cgkgfk: Kingston FURY Beast 32 GB (100% confidence)
+2026-07-07 19:04:43 | INFO     | ss_crawler | [ram_scraper] 💰 cgkgfk: Updated (title, description, location, match)
+2026-07-07 19:04:43 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\cgkgfk_3b2a92cb.jpg
+2026-07-07 19:04:43 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/beldj.html
+2026-07-07 19:04:46 | INFO     | ss_crawler | [ram_scraper] No match for beldj: SS.COM Komplektējošie datoriem - RAM, Cena 150 €. 
+2026-07-07 19:04:46 | INFO     | ss_crawler | [ram_scraper] 💰 beldj: Updated (title, description, location, match)
+2026-07-07 19:04:46 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\beldj_aa644ba2.jpg
+2026-07-07 19:04:46 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/mmfkn.html
+2026-07-07 19:04:49 | INFO     | ss_crawler | [ram_scraper] Matched mmfkn: G.Skill Ripjaws V 32 GB (100% confidence)
+2026-07-07 19:04:49 | INFO     | ss_crawler | [ram_scraper] ✨ mmfkn: New
+2026-07-07 19:04:49 | INFO     | ss_crawler | [ram_scraper] Image saved locally: rams\mmfkn_9a64b3c5.jpg
+2026-07-07 19:04:49 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/pxpkb.html
+2026-07-07 19:04:51 | INFO     | ss_crawler | [ram_scraper] Matched pxpkb: G.Skill Trident Z 16 GB (100% confidence)
+2026-07-07 19:04:51 | INFO     | ss_crawler | [ram_scraper] 💰 pxpkb: Updated (title, description, location, match)
+2026-07-07 19:04:51 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\pxpkb_87b1b3e4.jpg
+2026-07-07 19:04:51 | INFO     | ss_crawler | [ram_scraper] Next page URL: https://www.ss.com/ru/electronics/computers/completing-pc/ram/page4.html
+2026-07-07 19:04:51 | INFO     | ss_crawler | [ram_scraper] Fetching page 3: https://www.ss.com/ru/electronics/computers/completing-pc/ram/page4.html
+2026-07-07 19:04:51 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/ru/electronics/computers/completing-pc/ram/page4.html
+2026-07-07 19:04:54 | INFO     | ss_crawler | [ram_scraper] Found 13 listings on page 3, 13 new
+2026-07-07 19:04:54 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/ru/electronics/computers/completing-pc/ram/lnpgo.html
+2026-07-07 19:04:58 | INFO     | ss_crawler | [ram_scraper] Matched lnpgo: Kingston 1500 4 GB (100% confidence)
+2026-07-07 19:04:58 | INFO     | ss_crawler | [ram_scraper] 💰 lnpgo: Updated (title, description, location, match)
+2026-07-07 19:04:58 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\lnpgo_6baad8f0.jpg
+2026-07-07 19:04:58 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/ru/electronics/computers/completing-pc/ram/lnpgo.html
+2026-07-07 19:05:01 | INFO     | ss_crawler | [ram_scraper] Matched lnpgo: Kingston 1500 4 GB (100% confidence)
+2026-07-07 19:05:01 | INFO     | ss_crawler | [ram_scraper] 💰 lnpgo: Updated (content)
+2026-07-07 19:05:01 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\lnpgo_6baad8f0.jpg
+2026-07-07 19:05:01 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/ru/electronics/computers/completing-pc/ram/lnpgo.html
+2026-07-07 19:05:04 | INFO     | ss_crawler | [ram_scraper] Matched lnpgo: Kingston 1500 4 GB (100% confidence)
+2026-07-07 19:05:04 | INFO     | ss_crawler | [ram_scraper] 💰 lnpgo: Updated (content)
+2026-07-07 19:05:04 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\lnpgo_6baad8f0.jpg
+2026-07-07 19:05:04 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/ru/electronics/computers/completing-pc/ram/hebkc.html
+2026-07-07 19:05:07 | INFO     | ss_crawler | [ram_scraper] Matched hebkc: Kingston HyperX Fury 16 GB (99% confidence)
+2026-07-07 19:05:07 | INFO     | ss_crawler | [ram_scraper] 💰 hebkc: Updated (title, description, location, match)
+2026-07-07 19:05:07 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\hebkc_7b7f39db.jpg
+2026-07-07 19:05:07 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/ru/electronics/computers/completing-pc/ram/hxpcf.html
+2026-07-07 19:05:10 | INFO     | ss_crawler | [ram_scraper] Matched hxpcf: Crucial Ballistix 16 GB (100% confidence)
+2026-07-07 19:05:10 | INFO     | ss_crawler | [ram_scraper] 💰 hxpcf: Updated (title, description, location, match)
+2026-07-07 19:05:10 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\hxpcf_b7e0ff88.jpg
+2026-07-07 19:05:10 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/ru/electronics/computers/completing-pc/ram/emdbx.html
+2026-07-07 19:05:13 | INFO     | ss_crawler | [ram_scraper] Matched emdbx: G.Skill Aegis 16 GB (100% confidence)
+2026-07-07 19:05:13 | INFO     | ss_crawler | [ram_scraper] 💰 emdbx: Updated (title, description, match)
+2026-07-07 19:05:13 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\emdbx_94e94bc0.jpg
+2026-07-07 19:05:13 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/ru/electronics/computers/completing-pc/ram/gggcj.html
+2026-07-07 19:05:15 | INFO     | ss_crawler | [ram_scraper] Matched gggcj: Corsair Vengeance RGB RT 32 GB (100% confidence)
+2026-07-07 19:05:15 | INFO     | ss_crawler | [ram_scraper] 💰 gggcj: Updated (title, description, location, match)
+2026-07-07 19:05:15 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\gggcj_fe4a3c79.jpg
+2026-07-07 19:05:15 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/ru/electronics/computers/completing-pc/ram/pkjcd.html
+2026-07-07 19:05:18 | INFO     | ss_crawler | [ram_scraper] No match for pkjcd: SS.COM Комплектующие к компьютерам - RAM, Цена 170
+2026-07-07 19:05:18 | INFO     | ss_crawler | [ram_scraper] 💰 pkjcd: Updated (title, description, location)
+2026-07-07 19:05:18 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\pkjcd_ec8e5525.jpg
+2026-07-07 19:05:18 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/ru/electronics/computers/completing-pc/ram/dplxl.html
+2026-07-07 19:05:21 | INFO     | ss_crawler | [ram_scraper] Matched dplxl: Kingston FURY Beast 16 GB (100% confidence)
+2026-07-07 19:05:21 | INFO     | ss_crawler | [ram_scraper] 💰 dplxl: Updated (title, description, match)
+2026-07-07 19:05:21 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\dplxl_e709216f.jpg
+2026-07-07 19:05:21 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/ru/electronics/computers/completing-pc/ram/cgkgfk.html
+2026-07-07 19:05:23 | INFO     | ss_crawler | [ram_scraper] Matched cgkgfk: Kingston FURY Beast 16 GB (100% confidence)
+2026-07-07 19:05:23 | INFO     | ss_crawler | [ram_scraper] 💰 cgkgfk: Updated (title, description, match)
+2026-07-07 19:05:23 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\cgkgfk_3b2a92cb.jpg
+2026-07-07 19:05:23 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/ru/electronics/computers/completing-pc/ram/beldj.html
+2026-07-07 19:05:26 | INFO     | ss_crawler | [ram_scraper] Matched beldj: GeIL GeIL 16GB (77% confidence)
+2026-07-07 19:05:26 | INFO     | ss_crawler | [ram_scraper] 💰 beldj: Updated (title, description, match)
+2026-07-07 19:05:26 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\beldj_aa644ba2.jpg
+2026-07-07 19:05:26 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/ru/electronics/computers/completing-pc/ram/mmfkn.html
+2026-07-07 19:05:28 | INFO     | ss_crawler | [ram_scraper] Matched mmfkn: G.Skill Ripjaws V 32 GB (100% confidence)
+2026-07-07 19:05:28 | INFO     | ss_crawler | [ram_scraper] 💰 mmfkn: Updated (title, description, match)
+2026-07-07 19:05:28 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\mmfkn_9a64b3c5.jpg
+2026-07-07 19:05:28 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/ru/electronics/computers/completing-pc/ram/pxpkb.html
+2026-07-07 19:05:31 | INFO     | ss_crawler | [ram_scraper] Matched pxpkb: G.Skill NT 8 GB (75% confidence)
+2026-07-07 19:05:31 | INFO     | ss_crawler | [ram_scraper] 💰 pxpkb: Updated (title, description, match)
+2026-07-07 19:05:31 | INFO     | ss_crawler | [ram_scraper] Image updated: rams\pxpkb_87b1b3e4.jpg
+2026-07-07 19:05:31 | INFO     | ss_crawler | [ram_scraper] Next page URL: https://www.ss.com/lv/electronics/computers/completing-pc/ram/page4.html
+2026-07-07 19:05:31 | INFO     | ss_crawler | [ram_scraper] Fetching page 4: https://www.ss.com/lv/electronics/computers/completing-pc/ram/page4.html
+2026-07-07 19:05:31 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/lv/electronics/computers/completing-pc/ram/page4.html
+2026-07-07 19:05:33 | INFO     | ss_crawler | [ram_scraper] Found 13 listings on page 4, 0 new
+2026-07-07 19:05:33 | INFO     | ss_crawler | [ram_scraper] Next page URL: https://www.ss.com/ru/electronics/computers/completing-pc/ram/page4.html
+2026-07-07 19:05:33 | INFO     | ss_crawler | [ram_scraper] Fetching page 5: https://www.ss.com/ru/electronics/computers/completing-pc/ram/page4.html
+2026-07-07 19:05:33 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/ru/electronics/computers/completing-pc/ram/page4.html
+2026-07-07 19:05:37 | INFO     | ss_crawler | [ram_scraper] Found 13 listings on page 5, 0 new
+2026-07-07 19:05:37 | INFO     | ss_crawler | [ram_scraper] Next page URL: https://www.ss.com/lv/electronics/computers/completing-pc/ram/page4.html
+2026-07-07 19:05:37 | INFO     | ss_crawler | [ram_scraper] Reached max pages limit (5)
+2026-07-07 19:05:37 | INFO     | ss_crawler | [ram_scraper] RAM scraping complete. Stats: {'processed': 58, 'new': 7, 'updated': 48, 'unchanged': 3, 'failed': 0, 'matched': 52}

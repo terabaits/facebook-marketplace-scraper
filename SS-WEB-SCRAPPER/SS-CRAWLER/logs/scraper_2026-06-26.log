@@ -1,0 +1,106 @@
+2026-06-26 18:31:13 | INFO     | ss_crawler | [database] Database connected: localhost:5433/ss_market
+2026-06-26 18:31:13 | INFO     | ss_crawler | [fetch_missing_images] Found 0 listings without image_url and 33 thumbnail URLs to upgrade; processing 33 in this run.
+2026-06-26 18:31:14 | INFO     | ss_crawler | [fetch_missing_images] Upgrading thumbnail for hxnom: https://i.ss.com/gallery/7/1204/300965/computers-completing-pc-cpu-60192856.t.jpg -> https://i.ss.com/gallery/7/1204/300965/computers-completing-pc-cpu-60192856.800.jpg
+2026-06-26 18:31:14 | INFO     | ss_crawler | [image_downloader] Downloaded image for hxnom (stored as hxnom_e6735e89.jpg)
+2026-06-26 18:31:14 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for hxnom -> hxnom_e6735e89.jpg
+2026-06-26 18:31:14 | INFO     | ss_crawler | [fetch_missing_images] Upgrading thumbnail for hdkkj: https://i.ss.com/gallery/6/1036/258812/computers-completing-pc-cpu-51762280.t.jpg -> https://i.ss.com/gallery/6/1036/258812/computers-completing-pc-cpu-51762280.800.jpg
+2026-06-26 18:31:14 | INFO     | ss_crawler | [image_downloader] Downloaded image for hdkkj (stored as hdkkj_b41c0da5.jpg)
+2026-06-26 18:31:14 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for hdkkj -> hdkkj_b41c0da5.jpg
+2026-06-26 18:31:15 | INFO     | ss_crawler | [fetch_missing_images] Upgrading thumbnail for fnfhp: https://i.ss.com/gallery/8/1430/357418/computers-completing-pc-cpu-71483510.t.jpg -> https://i.ss.com/gallery/8/1430/357418/computers-completing-pc-cpu-71483510.800.jpg
+2026-06-26 18:31:15 | INFO     | ss_crawler | [image_downloader] Downloaded image for fnfhp (stored as fnfhp_69a1c750.jpg)
+2026-06-26 18:31:15 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for fnfhp -> fnfhp_69a1c750.jpg
+2026-06-26 18:31:16 | INFO     | ss_crawler | [fetch_missing_images] Upgrading thumbnail for pjlmb: https://i.ss.com/gallery/8/1496/373982/computers-completing-pc-cpu-74796202.t.jpg -> https://i.ss.com/gallery/8/1496/373982/computers-completing-pc-cpu-74796202.800.jpg
+2026-06-26 18:31:16 | INFO     | ss_crawler | [image_downloader] Downloaded image for pjlmb (stored as pjlmb_2dbdbe18.jpg)
+2026-06-26 18:31:16 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for pjlmb -> pjlmb_2dbdbe18.jpg
+2026-06-26 18:31:16 | INFO     | ss_crawler | [fetch_missing_images] Upgrading thumbnail for mjffp: https://i.ss.com/gallery/8/1496/373890/computers-completing-pc-cpu-74777978.t.jpg -> https://i.ss.com/gallery/8/1496/373890/computers-completing-pc-cpu-74777978.800.jpg
+2026-06-26 18:31:16 | INFO     | ss_crawler | [image_downloader] Downloaded image for mjffp (stored as mjffp_332412e9.jpg)
+2026-06-26 18:31:16 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for mjffp -> mjffp_332412e9.jpg
+2026-06-26 18:31:17 | INFO     | ss_crawler | [fetch_missing_images] Upgrading thumbnail for nbbkn: https://i.ss.com/gallery/7/1365/341023/computers-completing-pc-cpu-68204473.t.jpg -> https://i.ss.com/gallery/7/1365/341023/computers-completing-pc-cpu-68204473.800.jpg
+2026-06-26 18:31:17 | INFO     | ss_crawler | [image_downloader] Downloaded image for nbbkn (stored as nbbkn_1a6c7056.jpg)
+2026-06-26 18:31:17 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for nbbkn -> nbbkn_1a6c7056.jpg
+2026-06-26 18:31:18 | INFO     | ss_crawler | [fetch_missing_images] Upgrading thumbnail for hifej: https://i.ss.com/gallery/7/1204/300965/computers-completing-pc-cpu-60192871.t.jpg -> https://i.ss.com/gallery/7/1204/300965/computers-completing-pc-cpu-60192871.800.jpg
+2026-06-26 18:31:18 | INFO     | ss_crawler | [image_downloader] Downloaded image for hifej (stored as hifej_defa9019.jpg)
+2026-06-26 18:31:18 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for hifej -> hifej_defa9019.jpg
+2026-06-26 18:31:18 | INFO     | ss_crawler | [fetch_missing_images] Upgrading thumbnail for fgegn: https://i.ss.com/gallery/8/1498/374275/computers-completing-pc-cpu-74854920.t.jpg -> https://i.ss.com/gallery/8/1498/374275/computers-completing-pc-cpu-74854920.800.jpg
+2026-06-26 18:31:18 | INFO     | ss_crawler | [image_downloader] Downloaded image for fgegn (stored as fgegn_1b3937f5.jpg)
+2026-06-26 18:31:18 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for fgegn -> fgegn_1b3937f5.jpg
+2026-06-26 18:31:19 | INFO     | ss_crawler | [fetch_missing_images] Upgrading thumbnail for fjnll: https://i.ss.com/gallery/8/1499/374530/computers-completing-pc-cpu-74905866.t.jpg -> https://i.ss.com/gallery/8/1499/374530/computers-completing-pc-cpu-74905866.800.jpg
+2026-06-26 18:31:19 | INFO     | ss_crawler | [image_downloader] Downloaded image for fjnll (stored as fjnll_04ee999f.jpg)
+2026-06-26 18:31:19 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for fjnll -> fjnll_04ee999f.jpg
+2026-06-26 18:31:20 | INFO     | ss_crawler | [fetch_missing_images] Upgrading thumbnail for ffjli: https://i.ss.com/gallery/8/1499/374573/computers-completing-pc-cpu-74914517.t.jpg -> https://i.ss.com/gallery/8/1499/374573/computers-completing-pc-cpu-74914517.800.jpg
+2026-06-26 18:31:20 | INFO     | ss_crawler | [image_downloader] Downloaded image for ffjli (stored as ffjli_ae3bb7d0.jpg)
+2026-06-26 18:31:20 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for ffjli -> ffjli_ae3bb7d0.jpg
+2026-06-26 18:31:20 | INFO     | ss_crawler | [fetch_missing_images] Upgrading thumbnail for fbkdj: https://i.ss.com/gallery/8/1455/363619/computers-completing-pc-cpu-72723700.t.jpg -> https://i.ss.com/gallery/8/1455/363619/computers-completing-pc-cpu-72723700.800.jpg
+2026-06-26 18:31:20 | INFO     | ss_crawler | [image_downloader] Downloaded image for fbkdj (stored as fbkdj_80b4022f.jpg)
+2026-06-26 18:31:20 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for fbkdj -> fbkdj_80b4022f.jpg
+2026-06-26 18:31:21 | INFO     | ss_crawler | [fetch_missing_images] Upgrading thumbnail for hjxif: https://i.ss.com/gallery/8/1455/363749/computers-completing-pc-cpu-72749745.t.jpg -> https://i.ss.com/gallery/8/1455/363749/computers-completing-pc-cpu-72749745.800.jpg
+2026-06-26 18:31:21 | INFO     | ss_crawler | [image_downloader] Downloaded image for hjxif (stored as hjxif_1bab064d.jpg)
+2026-06-26 18:31:21 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for hjxif -> hjxif_1bab064d.jpg
+2026-06-26 18:31:22 | INFO     | ss_crawler | [fetch_missing_images] Upgrading thumbnail for fklkk: https://i.ss.com/gallery/8/1453/363126/computers-completing-pc-cpu-72625089.t.jpg -> https://i.ss.com/gallery/8/1453/363126/computers-completing-pc-cpu-72625089.800.jpg
+2026-06-26 18:31:22 | INFO     | ss_crawler | [image_downloader] Downloaded image for fklkk (stored as fklkk_7b45c47e.jpg)
+2026-06-26 18:31:22 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for fklkk -> fklkk_7b45c47e.jpg
+2026-06-26 18:31:22 | INFO     | ss_crawler | [fetch_missing_images] Upgrading thumbnail for bmxhf: https://i.ss.com/gallery/7/1204/300965/computers-completing-pc-cpu-60192832.t.jpg -> https://i.ss.com/gallery/7/1204/300965/computers-completing-pc-cpu-60192832.800.jpg
+2026-06-26 18:31:22 | INFO     | ss_crawler | [image_downloader] Downloaded image for bmxhf (stored as bmxhf_e8175cfb.jpg)
+2026-06-26 18:31:22 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for bmxhf -> bmxhf_e8175cfb.jpg
+2026-06-26 18:31:23 | INFO     | ss_crawler | [fetch_missing_images] Upgrading thumbnail for hjlxh: https://i.ss.com/gallery/7/1327/331600/computers-completing-pc-cpu-66319897.t.jpg -> https://i.ss.com/gallery/7/1327/331600/computers-completing-pc-cpu-66319897.800.jpg
+2026-06-26 18:31:23 | INFO     | ss_crawler | [image_downloader] Downloaded image for hjlxh (stored as hjlxh_df918df4.jpg)
+2026-06-26 18:31:23 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for hjlxh -> hjlxh_df918df4.jpg
+2026-06-26 18:31:24 | INFO     | ss_crawler | [fetch_missing_images] Upgrading thumbnail for mjgde: https://i.ss.com/gallery/8/1406/351444/computers-completing-pc-cpu-70288639.t.jpg -> https://i.ss.com/gallery/8/1406/351444/computers-completing-pc-cpu-70288639.800.jpg
+2026-06-26 18:31:24 | INFO     | ss_crawler | [image_downloader] Downloaded image for mjgde (stored as mjgde_6a830c67.jpg)
+2026-06-26 18:31:24 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for mjgde -> mjgde_6a830c67.jpg
+2026-06-26 18:31:24 | INFO     | ss_crawler | [fetch_missing_images] Upgrading thumbnail for hjfbj: https://i.ss.com/gallery/8/1488/371873/computers-completing-pc-cpu-74374535.t.jpg -> https://i.ss.com/gallery/8/1488/371873/computers-completing-pc-cpu-74374535.800.jpg
+2026-06-26 18:31:24 | INFO     | ss_crawler | [image_downloader] Downloaded image for hjfbj (stored as hjfbj_c58d5874.jpg)
+2026-06-26 18:31:24 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for hjfbj -> hjfbj_c58d5874.jpg
+2026-06-26 18:31:25 | INFO     | ss_crawler | [fetch_missing_images] Upgrading thumbnail for dxhjl: https://i.ss.com/gallery/8/1501/375127/computers-completing-pc-cpu-75025303.t.jpg -> https://i.ss.com/gallery/8/1501/375127/computers-completing-pc-cpu-75025303.800.jpg
+2026-06-26 18:31:25 | INFO     | ss_crawler | [image_downloader] Downloaded image for dxhjl (stored as dxhjl_2d9c9507.jpg)
+2026-06-26 18:31:25 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for dxhjl -> dxhjl_2d9c9507.jpg
+2026-06-26 18:31:26 | INFO     | ss_crawler | [fetch_missing_images] Upgrading thumbnail for pmfbx: https://i.ss.com/gallery/8/1483/370642/computers-completing-pc-cpu-74128214.t.jpg -> https://i.ss.com/gallery/8/1483/370642/computers-completing-pc-cpu-74128214.800.jpg
+2026-06-26 18:31:26 | INFO     | ss_crawler | [image_downloader] Downloaded image for pmfbx (stored as pmfbx_5e83d7b3.jpg)
+2026-06-26 18:31:26 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for pmfbx -> pmfbx_5e83d7b3.jpg
+2026-06-26 18:31:26 | INFO     | ss_crawler | [fetch_missing_images] Upgrading thumbnail for hcflh: https://i.ss.com/gallery/8/1450/362390/computers-completing-pc-cpu-72477872.t.jpg -> https://i.ss.com/gallery/8/1450/362390/computers-completing-pc-cpu-72477872.800.jpg
+2026-06-26 18:31:27 | INFO     | ss_crawler | [image_downloader] Downloaded image for hcflh (stored as hcflh_3a060a7f.jpg)
+2026-06-26 18:31:27 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for hcflh -> hcflh_3a060a7f.jpg
+2026-06-26 18:31:27 | INFO     | ss_crawler | [fetch_missing_images] Upgrading thumbnail for hjcmo: https://i.ss.com/gallery/8/1503/375505/computers-completing-pc-cpu-75100963.t.jpg -> https://i.ss.com/gallery/8/1503/375505/computers-completing-pc-cpu-75100963.800.jpg
+2026-06-26 18:31:27 | INFO     | ss_crawler | [image_downloader] Downloaded image for hjcmo (stored as hjcmo_874e6c61.jpg)
+2026-06-26 18:31:27 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for hjcmo -> hjcmo_874e6c61.jpg
+2026-06-26 18:31:28 | INFO     | ss_crawler | [fetch_missing_images] Upgrading thumbnail for dncgp: https://i.ss.com/gallery/8/1503/375639/computers-completing-pc-cpu-75127776.t.jpg -> https://i.ss.com/gallery/8/1503/375639/computers-completing-pc-cpu-75127776.800.jpg
+2026-06-26 18:31:28 | INFO     | ss_crawler | [image_downloader] Downloaded image for dncgp (stored as dncgp_56ae0c3f.jpg)
+2026-06-26 18:31:28 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for dncgp -> dncgp_56ae0c3f.jpg
+2026-06-26 18:31:29 | INFO     | ss_crawler | [fetch_missing_images] Upgrading thumbnail for hkkig: https://i.ss.com/gallery/8/1503/375676/computers-completing-pc-cpu-75135029.t.jpg -> https://i.ss.com/gallery/8/1503/375676/computers-completing-pc-cpu-75135029.800.jpg
+2026-06-26 18:31:29 | INFO     | ss_crawler | [image_downloader] Downloaded image for hkkig (stored as hkkig_8c6c4f67.jpg)
+2026-06-26 18:31:29 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for hkkig -> hkkig_8c6c4f67.jpg
+2026-06-26 18:31:29 | INFO     | ss_crawler | [fetch_missing_images] Upgrading thumbnail for bmxhi: https://i.ss.com/gallery/8/1503/375706/computers-completing-pc-cpu-75141054.t.jpg -> https://i.ss.com/gallery/8/1503/375706/computers-completing-pc-cpu-75141054.800.jpg
+2026-06-26 18:31:29 | INFO     | ss_crawler | [image_downloader] Downloaded image for bmxhi (stored as bmxhi_8b33fb52.jpg)
+2026-06-26 18:31:29 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for bmxhi -> bmxhi_8b33fb52.jpg
+2026-06-26 18:31:30 | INFO     | ss_crawler | [fetch_missing_images] Upgrading thumbnail for efbel: https://i.ss.com/gallery/8/1504/375841/computers-completing-pc-cpu-75168106.t.jpg -> https://i.ss.com/gallery/8/1504/375841/computers-completing-pc-cpu-75168106.800.jpg
+2026-06-26 18:31:30 | INFO     | ss_crawler | [image_downloader] Downloaded image for efbel (stored as efbel_1bac8d6a.jpg)
+2026-06-26 18:31:30 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for efbel -> efbel_1bac8d6a.jpg
+2026-06-26 18:31:31 | INFO     | ss_crawler | [fetch_missing_images] Upgrading thumbnail for gfokc: https://i.ss.com/gallery/8/1504/375881/computers-completing-pc-cpu-75176068.t.jpg -> https://i.ss.com/gallery/8/1504/375881/computers-completing-pc-cpu-75176068.800.jpg
+2026-06-26 18:31:31 | INFO     | ss_crawler | [image_downloader] Downloaded image for gfokc (stored as gfokc_95328112.jpg)
+2026-06-26 18:31:31 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for gfokc -> gfokc_95328112.jpg
+2026-06-26 18:31:32 | INFO     | ss_crawler | [fetch_missing_images] Upgrading thumbnail for hkjph: https://i.ss.com/gallery/8/1504/375987/computers-completing-pc-cpu-75197240.t.jpg -> https://i.ss.com/gallery/8/1504/375987/computers-completing-pc-cpu-75197240.800.jpg
+2026-06-26 18:31:32 | INFO     | ss_crawler | [image_downloader] Downloaded image for hkjph (stored as hkjph_01f4f81c.jpg)
+2026-06-26 18:31:32 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for hkjph -> hkjph_01f4f81c.jpg
+2026-06-26 18:31:32 | INFO     | ss_crawler | [fetch_missing_images] Upgrading thumbnail for phgxk: https://i.ss.com/gallery/8/1505/376058/computers-completing-pc-cpu-75211425.t.jpg -> https://i.ss.com/gallery/8/1505/376058/computers-completing-pc-cpu-75211425.800.jpg
+2026-06-26 18:31:32 | INFO     | ss_crawler | [image_downloader] Downloaded image for phgxk (stored as phgxk_6afde6f7.jpg)
+2026-06-26 18:31:32 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for phgxk -> phgxk_6afde6f7.jpg
+2026-06-26 18:31:33 | INFO     | ss_crawler | [fetch_missing_images] Upgrading thumbnail for ehfgo: https://i.ss.com/gallery/8/1505/376138/computers-completing-pc-cpu-75227515.t.jpg -> https://i.ss.com/gallery/8/1505/376138/computers-completing-pc-cpu-75227515.800.jpg
+2026-06-26 18:31:33 | INFO     | ss_crawler | [image_downloader] Downloaded image for ehfgo (stored as ehfgo_a7e13784.jpg)
+2026-06-26 18:31:33 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for ehfgo -> ehfgo_a7e13784.jpg
+2026-06-26 18:31:34 | INFO     | ss_crawler | [fetch_missing_images] Upgrading thumbnail for pjlnl: https://i.ss.com/gallery/8/1496/373957/computers-completing-pc-cpu-74791267.t.jpg -> https://i.ss.com/gallery/8/1496/373957/computers-completing-pc-cpu-74791267.800.jpg
+2026-06-26 18:31:34 | INFO     | ss_crawler | [image_downloader] Downloaded image for pjlnl (stored as pjlnl_04c3a8d0.jpg)
+2026-06-26 18:31:34 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for pjlnl -> pjlnl_04c3a8d0.jpg
+2026-06-26 18:31:34 | INFO     | ss_crawler | [fetch_missing_images] Upgrading thumbnail for hmjnp: https://i.ss.com/gallery/8/1506/376417/computers-completing-pc-cpu-75283364.t.jpg -> https://i.ss.com/gallery/8/1506/376417/computers-completing-pc-cpu-75283364.800.jpg
+2026-06-26 18:31:34 | INFO     | ss_crawler | [image_downloader] Downloaded image for hmjnp (stored as hmjnp_7e6d662f.jpg)
+2026-06-26 18:31:34 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for hmjnp -> hmjnp_7e6d662f.jpg
+2026-06-26 18:31:35 | INFO     | ss_crawler | [fetch_missing_images] Upgrading thumbnail for edfhx: https://i.ss.com/gallery/8/1507/376556/computers-completing-pc-cpu-75311117.t.jpg -> https://i.ss.com/gallery/8/1507/376556/computers-completing-pc-cpu-75311117.800.jpg
+2026-06-26 18:31:35 | INFO     | ss_crawler | [image_downloader] Downloaded image for edfhx (stored as edfhx_08632f14.jpg)
+2026-06-26 18:31:35 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for edfhx -> edfhx_08632f14.jpg
+2026-06-26 18:31:36 | INFO     | ss_crawler | [fetch_missing_images] Upgrading thumbnail for bkxjh: https://i.ss.com/gallery/8/1452/362967/computers-completing-pc-cpu-72593319.t.jpg -> https://i.ss.com/gallery/8/1452/362967/computers-completing-pc-cpu-72593319.800.jpg
+2026-06-26 18:31:36 | INFO     | ss_crawler | [image_downloader] Downloaded image for bkxjh (stored as bkxjh_77219564.jpg)
+2026-06-26 18:31:36 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for bkxjh -> bkxjh_77219564.jpg
+2026-06-26 18:31:36 | INFO     | ss_crawler | [fetch_missing_images] Run complete: processed=33, image_url_found=0, upgraded=33, downloaded=33, failed=0
+2026-06-26 19:04:13 | INFO     | ss_crawler | [database] Database connected: localhost:5433/ss_market
+2026-06-26 19:04:13 | INFO     | ss_crawler | [download_missing_andele_images] No active Andele listings missing images.
+2026-06-26 20:51:35 | INFO     | ss_crawler | [database] Database connected: localhost:5433/ss_market
+2026-06-26 20:51:35 | INFO     | ss_crawler | [download_missing_andele_images] No active Andele listings missing images.

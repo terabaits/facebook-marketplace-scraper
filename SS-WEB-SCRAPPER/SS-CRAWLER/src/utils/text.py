@@ -28,7 +28,11 @@ def normalize_text(text: str) -> str:
     # Step 2: Remove combining marks (diacritics)
     text = ''.join(c for c in text if not unicodedata.combining(c))
     
-    # Step 3: Basic Cyrillic transliteration
+    # Step 3: Preserve specific patterns before removing special chars
+    # G.Skill -> gskill (keep as one word)
+    text = re.sub(r'g\.\s*skill', 'gskill', text, flags=re.IGNORECASE)
+    
+    # Step 4: Basic Cyrillic transliteration
     cyrillic_map = str.maketrans({
         'а': 'a', 'б': 'b', 'в': 'v', 'г': 'g', 'д': 'd',
         'е': 'e', 'ё': 'yo', 'ж': 'zh', 'з': 'z', 'и': 'i',
@@ -50,8 +54,10 @@ def normalize_text(text: str) -> str:
     # Step 4: Lowercase
     text = text.lower()
     
-    # Step 5: Keep only alphanumeric and spaces
-    text = re.sub(r'[^a-z0-9\s]', '', text)
+    # Step 5: Keep only alphanumeric, spaces, and decimal points (for numbers like 1.38)
+    # But first, replace colons with spaces to separate words like "psu:XILENCE" -> "psu XILENCE"
+    text = re.sub(r':', ' ', text)
+    text = re.sub(r'[^a-z0-9\s.]', '', text)
     
     # Step 6: Collapse whitespace
     text = re.sub(r'\s+', ' ', text).strip()
@@ -85,7 +91,9 @@ def extract_gpu_tokens(text: str) -> List[str]:
         r'gt\s*\d{3,4}',
         r'gs\s*\d{3,4}',
         # AMD patterns
-        r'rx\s*\d{4}\s*(?:xt|xtx)?',  # RX 570, RX 5700 XT
+        r'rx\s*6\d{3}\s*(?:xt|xtx)?',  # RX 6000 series (6800, 6900, etc.)
+        r'rx\s*5\d{3}\s*(?:xt|xtx)?',  # RX 5000 series (5700, 5600, etc.)
+        r'rx\s*\d{3,4}\s*(?:xt|xtx)?',  # RX 570, RX 5700 XT (general pattern)
         r'rx\s*vega\s*\d+',  # RX Vega 56, RX Vega 64
         r'radeon\s*(?:rx|r[0-9x]|hd|vega)\s*\d*',
         r'vega\s*\d+',
@@ -153,16 +161,28 @@ def extract_cpu_tokens(text: str) -> List[str]:
     
     # Try to find patterns in original text first (before normalization destroys dashes)
     original_patterns = [
-        # Intel Core with dash and suffix (K, KF, F, T, KS) - case insensitive
-        r'i[3579]\s*-\s*\d{3,5}\s*(?:kf|ks|k|f|t)?',
-        # AMD Ryzen patterns
-        r'ryzen\s*\d?\s*\d{3,4}\s*(?:x|xt|3d|x3d)?',
-        # Intel Xeon patterns
-        r'xeon\s*(?:[ew])?\d*[-]?\d{4}',
+        # Intel Core with dash/space and suffix (K, KF, F, T, KS, S) - case insensitive
+        # Also handles cases where suffix is attached: "i5 14400f", "i5-14400F", "i5-4460S"
+        r'i[3579]\s*[-]?\s*\d{3,5}(?:\s*(?:kf|ks|k|f|t|s))?\b',
+        r'i[3579]\s*[-]?\s*\d{3,5}(?:kf|ks|k|f|t|s)\b',  # For attached suffixes like "14400f"
+        # AMD Ryzen patterns with suffixes (X, XT, 3D, X3D, G, F for APU)
+        r'ryzen\s*\d?\s*\d{3,4}\s*(?:x|xt|3d|x3d|g|f)?',
+        # AMD Ryzen with 3D suffix specifically (e.g., 5800X3D, 7800X3D)
+        r'ryzen\s*\d?\s*\d{4}x3d',
+        # AMD without "Ryzen" word but with series + model (e.g., "AMD 5 9600X")
+        r'amd\s*(?:ryzen\s*)?[3579]?\s*\d{4}\s*(?:x|xt|3d|x3d|g|f)?',
+        # AMD Ryzen with G suffix (APU) like 5600G, 5700G
+        r'r[3579]\s*\d{3,4}g',
+        # AMD Ryzen with F suffix like 8700F
+        r'r[3579]\s*\d{3,4}f',
+        # Intel Xeon patterns - including v-version (e.g., E5-2680 v4)
+        r'xeon\s*(?:[ew])?\d*[-]?\d{4}(?:\s*v\d+)?',
     ]
     
-    # Also check for common typo "xenon"
+    # Also check for common typos
     text_fixed = text.lower().replace('xenon', 'xeon')
+    # Fix common typo "phamtom" -> "phenom"
+    text_fixed = text_fixed.replace('phamtom', 'phenom')
     for pattern in original_patterns:
         matches = re.findall(pattern, text_fixed, re.IGNORECASE)
         for match in matches:
@@ -171,27 +191,58 @@ def extract_cpu_tokens(text: str) -> List[str]:
             tokens.add(clean)
             # Add normalized format (no spaces/dashes)
             tokens.add(clean.replace('-', ''))
-            # Add with dash
-            m = re.match(r'(i[3579])-?(\d{3,5})(kf|ks|k|f|t)?', clean)
+            
+            # For Intel patterns, extract with suffix (e.g., "14400f" from "i5 14400f")
+            # Handle patterns like "i514400", "i5-14400", "i5 14400f"
+            m = re.match(r'(i[3579])-?(\d{3,5})(kf|ks|k|f|t|s)?', clean)
             if m:
                 tier, num, suffix = m.groups()
+                # Always add the token with suffix (e.g., "i5-14400f" or "i514400f")
                 if suffix:
                     tokens.add(f"{tier}-{num}{suffix}")
+                    tokens.add(f"{tier}{num}{suffix}")  # Also add without dash
                 else:
                     tokens.add(f"{tier}-{num}")
+                    tokens.add(f"{tier}{num}")
+                
+                # Also add the base token without suffix for matching
+                tokens.add(f"{tier}{num}")
+                tokens.add(f"{tier}-{num}")
+    
+    # AMD Phenom II patterns (e.g., "Phenom II X6 1100T")
+    phenom_patterns = [
+        r'phenom\s*ii\s*x[46]\s*\d{4}\w*',
+        r'phenom\s*x[46]\s*\d{4}\w*',
+        r'fx\s*-\s*\d{4}',
+    ]
+    for pattern in phenom_patterns:
+        matches = re.findall(pattern, text_fixed, re.IGNORECASE)
+        for match in matches:
+            clean = match.lower().replace(' ', '').strip()
+            tokens.add(clean)
     
     # Also check normalized text for patterns without dashes
     patterns = [
         # Intel Core series (i3, i5, i7, i9) - after normalization no dash
-        r'i[3579]\d{3,5}(?:kf|ks|k|f|t)?',
+        r'i[3579]\d{3,5}(?:kf|ks|k|f|t|s)?',
         # AMD Ryzen patterns
         r'ryzen\s*\d?\s*\d{3,4}\s*(?:x|xt|3d)?',
         r'r[3579]\s*\d{3,4}\s*(?:x|xt|3d)?',
+        # AMD without "Ryzen" word (e.g., "amd59600x")
+        r'amd[3579]?\s*\d{4}\s*(?:x|xt|3d|g|f)?',
         # AMD FX/Athlon
         r'fx\s*-\s*\d{4}',
         r'athlon\s*\w+',
-        # Older Intel
+        # Older Intel Core 2 Duo/Quad
         r'core\s*2\s*(?:duo|quad)',
+        r'core2(?:duo|quad)',
+        # Intel Q-series (Core 2 Quad Q9550, Q9650, etc.)
+        r'q\d{4}',
+        # Intel E-series (Core 2 Duo E8400, etc.)
+        r'e\d{4}',
+        # Intel i-series (e.g., "i7 10700K")
+        r'i[3579]\s*\d{4,5}',
+        # Pentium/Celeron
         r'pentium\s*\w*',
         r'celeron\s*\w*',
         # Xeon patterns
@@ -210,13 +261,28 @@ def extract_cpu_tokens(text: str) -> List[str]:
                 # Insert dash after i3/i5/i7/i9 for Intel
                 if match[2].isdigit():
                     # Find where the number ends and suffix begins
-                    m = re.match(r'(i[3579])(\d+)(kf|ks|k|f|t)?', match, re.IGNORECASE)
+                    m = re.match(r'(i[3579])(\d+)(kf|ks|k|f|t|s)?', match, re.IGNORECASE)
                     if m:
                         tier, num, suffix = m.groups()
                         if suffix:
                             tokens.add(f"{tier}-{num}{suffix}")
                         else:
                             tokens.add(f"{tier}-{num}")
+            # Handle Q-series (Core 2 Quad) like Q9550
+            elif match[0] == 'q' and len(match) == 5 and match[1:].isdigit():
+                tokens.add(match)  # q9550
+                tokens.add(f"core2quad-{match}")  # core2quad-q9550
+            # Handle AMD Ryzen with 3D suffix (e.g., 5800X3D)
+            elif '3d' in match or 'x3d' in match:
+                # Add both normalized and with suffix
+                tokens.add(match.replace(' ', ''))  # ryzen75800x3d
+                tokens.add(match.replace(' ', '').replace('3d', ''))  # ryzen75800x
+                tokens.add(match.replace(' ', '').replace('ryzen', '').replace('3d', ''))  # 75800x
+                tokens.add(match.replace(' ', '').replace('ryzen', ''))  # 75800x3d
+            # Handle E-series (Core 2 Duo) like E8400
+            elif match[0] == 'e' and len(match) == 5 and match[1:].isdigit():
+                tokens.add(match)  # e8400
+                tokens.add(f"core2duo-{match}")  # core2duo-e8400
     
     return list(tokens)
 

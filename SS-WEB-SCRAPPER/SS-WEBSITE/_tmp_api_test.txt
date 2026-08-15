@@ -1,0 +1,7 @@
+﻿success True
+count 100
+0 lpief_v2 Datori un orgtehnika/Datori/ Pārdod price 100.0 new True buy False ps {'all_time_min': None, 'avg': 100.0, 'below_avg': False, 'has_variation': False, 'listing_count': 2, 'max': 100.0, 'min': 100.0, 'percentile': 50.0, 'savings_pct': 0.0}
+1 lpief Datori un orgtehnika/Datori/ Pārdod price 100.0 new True buy False ps {'all_time_min': None, 'avg': 100.0, 'below_avg': False, 'has_variation': False, 'listing_count': 2, 'max': 100.0, 'min': 100.0, 'percentile': 50.0, 'savings_pct': 0.0}
+2 pxdcj Datori un orgtehnika/Datori/ Pārdod price 450.0 new True buy False ps {'all_time_min': None, 'avg': 450.0, 'below_avg': False, 'has_variation': False, 'listing_count': 2, 'max': 450.0, 'min': 450.0, 'percentile': 50.0, 'savings_pct': 0.0}
+3 pxdcj_v2 Datori un orgtehnika/Datori/ Pārdod price 450.0 new True buy False ps {'all_time_min': None, 'avg': 450.0, 'below_avg': False, 'has_variation': False, 'listing_count': 2, 'max': 450.0, 'min': 450.0, 'percentile': 50.0, 'savings_pct': 0.0}
+4 pcblb Datori un orgtehnika/Datori/ Pārdod price 150.0 new True buy False ps {'all_time_min': None, 'avg': 150.0, 'below_avg': False, 'has_variation': False, 'listing_count': 1, 'max': 150.0, 'min': 150.0, 'percentile': 50.0, 'savings_pct': 0.0}

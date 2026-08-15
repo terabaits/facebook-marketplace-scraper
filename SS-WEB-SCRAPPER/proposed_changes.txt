@@ -1,0 +1,252 @@
+﻿=== 195 deterministic changes ===
+  [15] Asus: 'VivoBook' → 'VivoBook', None
+  [20] Apple: 'Macbook Air 13' → 'MacBook Air', '13'
+  [21] Lenovo/IBM: 'Gaming 3' → 'IdeaPad Gaming 3', None
+  [23] HP: '840 G7' → 'EliteBook 840', 'G7'
+  [25] Asus: 'VivoBook 15' → 'VivoBook 15', None
+  [26] Lenovo/IBM: 'IdeaPad 3' → 'IdeaPad 3', None
+  [28] Dell: 'Latitude' → 'Latitude', None
+  [29] Asus: 'ZenBook 14' → 'ZenBook 14', None
+  [32] HP: '250 G5' → 'HP 250', 'G5'
+  [35] HP: '15S' → 'HP 15s', None
+  [36] Lenovo/IBM: '82Vg' → 'Legion 5', '82VG'
+  [37] Apple: 'Air' → 'MacBook Air', None
+  [39] HP: '255 G8' → 'HP 255', 'G8'
+  [41] Apple: 'Pro' → 'MacBook Pro', None
+  [42] Asus: 'Ux482Egr' → 'ZenBook Duo 14', 'UX482EGR'
+  [18] Msi: 'Cyborg 15' → 'Cyborg 15', None
+  [43] Dell: '3570' → 'Latitude 15', '3570'
+  [44] Dell: 'Dc15255' → 'Inspiron 15', 'DC15255'
+  [46] Apple: 'Mac' → 'MacBook', None
+  [47] HP: 'Laptop 15' → 'HP Laptop 15', None
+  [48] Asus: 'ZenBook' → 'ZenBook', None
+  [52] Apple: 'Macbook Air' → 'MacBook Air', None
+  [55] Asus: 'VivoBook' → 'VivoBook', None
+  [57] Asus: 'Vivibook go 15' → 'Vivobook Go 15', None
+  [60] Lenovo/IBM: 'T490s' → 'ThinkPad T490s', 'T490s'
+  [62] Acer: 'Aspire 5' → 'Aspire 5', None
+  [64] Cits: 'Surface Laptop' → 'Surface Laptop', None
+  [66] Lenovo/IBM: 'IdeaPad 5' → 'IdeaPad 5', None
+  [68] HP: 'ProBook' → 'ProBook', None
+  [70] Apple: 'Macbook Pro' → 'MacBook Pro', None
+  [71] Dell: 'XPS 13' → 'XPS 13', None
+  [72] Msi: 'Modern 15' → 'Modern 15', None
+  [73] Cits: 'Hp omer' → 'Omen', None
+  [77] Dell: 'Inspiron5406' → 'Inspiron 14', '5406 2-in-1'
+  [79] Msi: 'Msi modern 15' → 'Modern 15', None
+  [83] Samsung: 'Np750Xfg' → 'Galaxy Book 4', 'NP750XFG'
+  [84] Dell: '11' → 'Inspiron', '11'
+  [85] Acer: 'Extensa' → 'Extensa', None
+  [88] HP: '15-fc0xxx' → 'HP 15', 'FC0000'
+  [91] HP: 'Victus' → 'Victus', None
+  [95] Acer: 'Acer Aspire 3' → 'Aspire 3', None
+  [97] Dell: 'Vpstro 15' → 'Vostro 15', None
+  [100] Asus: 'X551Ca' → 'VivoBook', 'X551CA'
+  [102] HP: '250 G9' → 'HP 250', 'G9'
+  [103] Asus: 'VivoBook 14' → 'VivoBook 14', None
+  [104] HP: 'Omnibook flip' → 'HP OmniBook Flip', None
+  [106] HP: 'Pavilion15t-au' → 'Pavilion 15t', 'AU'
+  [110] Lenovo/IBM: 'T440s' → 'ThinkPad T440s', 'T440s'
+  [112] Msi: 'Gl65 leopard' → 'GL65 Leopard', None
+  [118] Samsung: 'Np900X4C' → 'Series 9', 'NP900X4C'
+  [120] HP: '840 g8' → 'EliteBook 840', 'G8'
+  [123] HP: '445 G8' → 'ProBook 445', 'G8'
+  [125] HP: '155-Eq1Xxx' → 'HP 15', 'EQ1000'
+  [256] Asus: 'Fx516pe' → 'TUF Dash', 'FX516PE'
+  [130] Asus: 'L1500Cd' → 'ExpertBook L1', 'L1500CD'
+  [132] HP: '16-am0139nn' → 'HP 16', 'AM0139NN'
+  [138] Cits: 'Magicbook pro' → 'MagicBook Pro', None
+  [140] Apple: 'Macbook 12' → 'MacBook', '12'
+  [141] HP: '15-fc0xxx' → 'HP 15', 'FC0000'
+  [142] Samsung: 'Galaxy Book2' → 'Galaxy Book 2', None
+  [144] Dell: '3558' → 'Inspiron 15', '3558'
+  [145] Cits: 'Matebook 14D' → 'MateBook D 14', None
+  [331] Dell: '5580' → 'Latitude 15', '5580'
+  [153] Samsung: 'Galaxy Book 4' → 'Galaxy Book 4', None
+  [159] Cits: '82Vg' → 'Legion 5', '82VG'
+  [162] Cits: 'Ideapad 1' → 'IdeaPad 1', None
+  [163] Lenovo/IBM: 'P1 Gen 8' → 'ThinkPad P1', 'Gen 8'
+  [175] Acer: 'Nitro5' → 'Nitro 5', None
+  [176] Asus: 'VivoBook 14' → 'VivoBook 14', None
+  [416] Msi: 'Thin' → 'Thin', None
+  [181] Lenovo/IBM: 'Thinkpadx1Yoga' → 'ThinkPad X1 Yoga', None
+  [189] Msi: 'Modern 15b7m' → 'Modern 15', 'B7M'
+  [199] Dell: '3540' → 'Inspiron 15', '3540'
+  [201] Msi: 'Thin 15-b13ve' → 'Thin 15', 'B13VE'
+  [206] HP: '15S-Fq5333Ng' → 'HP 15s', 'FQ5333NG'
+  [208] Dell: '3580' → 'Latitude 15', '3580'
+  [209] Lenovo/IBM: 'T460s' → 'ThinkPad T460s', 'T460s'
+  [217] HP: '840 G2' → 'EliteBook 840', 'G2'
+  [218] Asus: '8' → 'VivoBook', None
+  [224] Asus: 'Nx90Jq' → 'NX90JQ', 'NX90JQ'
+  [226] HP: '430 g2' → 'ProBook 430', 'G2'
+  [230] Dell: 'Inspirion 15' → 'Inspiron 15', None
+  [232] Lenovo/IBM: 'T450s' → 'ThinkPad T450s', 'T450s'
+  [234] HP: '430 G5' → 'EliteBook 430', 'G5'
+  [246] Msi: 'Cyborg 15 a12u' → 'Cyborg 15', 'A12U'
+  [247] Msi: 'Gp72 2qe pro' → 'GP72', '2QE Pro'
+  [250] Apple: 'Myd82Ze/a' → 'MacBook Air', 'MYD82ZE/A'
+  [264] Lenovo/IBM: '82h8' → 'IdeaPad 3', '82H8'
+  [269] Asus: 'Gl753V' → 'ROG GL753V', 'GL753V'
+  [270] Apple: 'Macbook Pro 14' → 'MacBook Pro', '14'
+  [279] Msi: 'Sword 17' → 'Sword 17', None
+  [282] Asus: 'Ux3404V' → 'ZenBook 14', 'UX3404V'
+  [284] Asus: 'Vibobook k513e' → 'VivoBook', 'K513E'
+  [288] HP: 'Hp 845 g7' → 'EliteBook 845', 'G7'
+  [290] HP: '14S-Cf3028Tu' → 'HP 14s', 'CF3028TU'
+  [294] Msi: 'Gf63' → 'GF63', None
+  [295] Cits: 'Surface Pro 7+' → 'Surface Pro 7+', None
+  [296] HP: 'Hp 15-fc0006ny' → 'HP 15', 'FC0006NY'
+  [297] Acer: 'F5-573G' → 'Aspire F5', 'F5-573G'
+  [300] Acer: 'Nitro 5' → 'Nitro 5', None
+  [305] Lenovo/IBM: '82Rq' → 'IdeaPad 5', '82RQ'
+  [306] Lenovo/IBM: 'IdeaPad 15' → 'IdeaPad 15', None
+  [307] Asus: 'X200ma' → 'VivoBook', 'X200MA'
+  [311] Cits: 'Huawei Matebok' → 'MateBook', None
+  [312] Apple: 'Air' → 'MacBook Air', None
+  [315] Asus: 'X513Ean' → 'VivoBook 15', 'X513EA'
+  [318] Apple: 'Macbook Pro 16' → 'MacBook Pro', '16'
+  [89] Msi: 'Katana' → 'Katana', None
+  [158] Msi: 'Vector 16' → 'Vector 16', None
+  [164] Asus: 'Fx707Z' → 'TUF Gaming', 'FX707Z'
+  [172] Msi: 'Pulse Gl66' → 'Pulse GL66', None
+  [193] Lenovo/IBM: 'Gaming 3 15ach' → 'IdeaPad Gaming 3', '15ACH'
+  [308] Msi: 'Gf63 10sc' → 'GF63', '10SC'
+  [353] Msi: 'Gs65 Stealth' → 'GS65 Stealth', None
+  [381] Msi: 'Msi gf63' → 'GF63', None
+  [407] Acer: 'Nitro' → 'Nitro', None
+  [408] Msi: 'Gf63 thn 12udx' → 'GF63 Thin', '12UDX'
+  [418] Msi: 'Pulse gl76' → 'Pulse GL76', None
+  [432] Lenovo/IBM: 'Legion 5' → 'Legion 5', None
+  [463] Msi: 'Vector 16 hx' → 'Vector 16 HX', None
+  [324] Dell: '14z (N411z)' → 'Inspiron 14z', 'N411Z'
+  [524] Msi: 'Ge66 raider' → 'Raider GE66', None
+  [528] Acer: 'Acer nitro 5' → 'Nitro 5', None
+  [551] Dell: 'G5' → 'G Series', 'G5'
+  [24] Lenovo/IBM: 'IdeaPad Gaming' → 'IdeaPad Gaming', None
+  [56] Asus: 'ZenBook' → 'ZenBook', None
+  [156] Asus: 'TUF Gaming' → 'TUF Gaming', None
+  [303] Asus: 'TUF Dash' → 'TUF Dash', None
+  [316] Asus: 'TUF Gaming' → 'TUF Gaming', None
+  [401] Asus: 'TUF Gaming' → 'TUF Gaming', None
+  [415] Asus: 'ROG Strix' → 'ROG Strix', None
+  [330] HP: 'Hp laptop 15' → 'HP Laptop 15', None
+  [332] Lenovo/IBM: '82K1' → 'Legion 5', '82K1'
+  [335] Lenovo/IBM: '81V5' → 'IdeaPad 320', '81V5'
+  [337] HP: '840 G1' → 'EliteBook 840', 'G1'
+  [339] Lenovo/IBM: 'X1 Yoga G6' → 'ThinkPad X1 Yoga', 'Gen 6'
+  [341] Apple: '4324a' → 'MacBook', None
+  [346] Msi: 'Gf 65 Thin Ue' → 'GF65 Thin', 'UE'
+  [348] Msi: 'Ms16R8' → 'Thin 15', 'B12VE'
+  [352] Apple: 'Macbook Air' → 'MacBook Air', None
+  [299] Lenovo/IBM: 'IdeaPad 3' → 'IdeaPad 3', None
+  [357] Asus: 'ExpertBook' → 'ExpertBook', None
+  [358] Cits: 'Matebook 14s' → 'MateBook 14s', None
+  [359] Msi: 'Gf63 Thin' → 'GF63 Thin', None
+  [360] Asus: 'Fx504g' → 'TUF Gaming', 'FX504G'
+  [363] Dell: '3521' → 'Inspiron 15', '3521'
+  [367] Lenovo/IBM: 'T14s gen1' → 'ThinkPad T14s', 'Gen 1'
+  [368] Asus: 'B5404Cma' → 'ExpertBook B5', 'B5404CMA'
+  [372] Dell: '7490' → 'Latitude 7490', '7490'
+  [376] Asus: 'Zbook 14x Oled' → 'ZenBook 14X OLED', None
+  [377] Apple: 'Macook Pro' → 'MacBook Pro', None
+  [379] Lenovo/IBM: '82C7' → 'IdeaPad 330', '82C7'
+  [383] Msi: 'Thin 15' → 'Thin 15', None
+  [385] HP: '15-Fc0062Ny' → 'HP 15', 'FC0062NY'
+  [386] Apple: 'Pro 13.3' → 'MacBook Pro', '13.3'
+  [387] Dell: 'Vostro' → 'Vostro', None
+  [389] Dell: '3510' → 'Inspiron 15', '3510'
+  [393] Lenovo/IBM: '83Bf' → 'IdeaPad 3', '83BF'
+  [394] Cits: 'Laptop Go' → 'Surface Laptop Go', None
+  [399] Asus: 'ExpertBook' → 'ExpertBook', None
+  [403] Lenovo/IBM: 'ThinkBook 14' → 'ThinkBook 14', None
+  [405] Cits: 'Thinkpad 16' → 'ThinkPad 16', None
+  [410] Asus: 'VivoBook 16' → 'VivoBook 16', None
+  [411] HP: 'Pro 650 G8' → 'EliteBook 650', 'G8'
+  [414] Asus: 'Fx507Ze' → 'TUF Gaming', 'FX507ZE'
+  [417] HP: '820 G1' → 'EliteBook 820', 'G1'
+  [419] Apple: 'Macbook' → 'MacBook', None
+  [420] Lenovo/IBM: '81Ah' → 'IdeaPad 700', '81AH'
+  [423] Dell: '7420 2in1' → 'Latitude 7420', '7420 2-in-1'
+  [427] Asus: 'Ux310Uqk' → 'ZenBook 13', 'UX310UQK'
+  [437] HP: '15s-eq2xxx' → 'HP 15s', 'EQ2000'
+  [438] Msi: 'Katana 12' → 'Katana 12', None
+  [441] Cits: 'Matebookd14' → 'MateBook D 14', None
+  [442] Lenovo/IBM: 'Ideagaming 3' → 'IdeaPad Gaming 3', None
+  [443] Cits: 'Surface Pro 7+' → 'Surface Pro 7+', None
+  [451] Apple: 'Macbook' → 'MacBook', None
+  [452] Lenovo/IBM: '20bv000bus' → 'ThinkPad', '20BV000BUS'
+  [456] Lenovo/IBM: '13w yoga gen2' → 'ThinkPad 13w Yoga', 'Gen 2'
+  [457] Lenovo/IBM: 'Lenovo ideapad' → 'IdeaPad', None
+  [461] HP: 'Hp envy ts' → 'Envy TouchSmart', None
+  [462] Lenovo/IBM: '82Xq' → 'IdeaPad 3', '82XQ'
+  [464] Apple: 'Macook Pro' → 'MacBook Pro', None
+  [465] Lenovo/IBM: '83Jg' → 'IdeaPad', '83JG'
+  [467] Lenovo/IBM: 'Yoga 9' → 'Yoga 9', None
+  [470] HP: '14S-Dq2535Tu' → 'HP 14s', 'DQ2535TU'
+  [474] Lenovo/IBM: 'IdeaPad Gaming' → 'IdeaPad Gaming', None
+  [475] Apple: 'Macbook Pro' → 'MacBook Pro', None
+  [476] Cits: 'Idealpad 3' → 'IdeaPad 3', None
+  [480] HP: '850 G3' → 'EliteBook 850', 'G3'
+  [481] Lenovo/IBM: 'T14s' → 'ThinkPad T14s', None
+  [482] Msi: 'Gf36' → 'GF36', 'GF36'
+  [487] Panasonic: 'Fz55' → 'Toughbook FZ-55', 'FZ-55'
+  [489] Lenovo/IBM: 'L0Q' → 'LOQ', None
+  [492] Lenovo/IBM: 'IdeaPad 1' → 'IdeaPad 1', None
+  [502] Lenovo/IBM: '20Ev003Emh' → 'ThinkPad', '20EV003EMH'
+  [504] Lenovo/IBM: 'IdeaPad' → 'IdeaPad', None
+  [505] Lenovo/IBM: 'Slim 3' → 'IdeaPad Slim 3', None
+  [506] Lenovo/IBM: '80Ue' → 'IdeaPad', '80UE'
+  [514] HP: 'Folio 1040 g3' → 'EliteBook Folio 1040', 'G3'
+  [515] HP: '15S-eq2007ny' → 'HP 15s', 'EQ2007NY'
+  [516] Cits: 'Surface go2' → 'Surface Go 2', None
+  [518] Asus: 'ZenBook 13' → 'ZenBook 13', None
+  [522] HP: 'Gaming 3' → 'IdeaPad Gaming 3', None
+  [523] HP: 'Omninook 5 fli' → 'HP OmniBook 5 Flip', None
+  [525] NEC: 'Cyborg 15' → 'Cyborg 15', None
+  [526] HP: '745 g6' → 'EliteBook 745', 'G6'
+  [527] Asus: 'Fx505D' → 'TUF Gaming', 'FX505D'
+  [529] HP: 'Elitebook840G3' → 'EliteBook 840', 'G3'
+  [535] HP: 'Hp soectre' → 'Spectre', None
+  [539] Lenovo/IBM: 'IdeaPad 3' → 'IdeaPad 3', None
+  [543] Cits: 'Surface Pro 4' → 'Surface Pro 4', None
+  [544] Apple: 'Apple Macbook' → 'MacBook', None
+  [545] Sony: 'Sve171G11M' → 'VAIO', 'SVE171G11M'
+  [547] Msi: 'B2Hwfkg-063Nl' → 'Cyborg A15 AI', 'B2HWFKG'
+  [548] Cits: 'Redmibook 14' → 'RedmiBook 14', None
+  [549] Asus: 'M1605Ya' → 'Vivobook 16', 'M1605YA'
+  [550] Apple: 'Macbook Air 13' → 'MacBook Air', '13'
+  [556] Panasonic: 'Cf-31' → 'Toughbook CF-31', 'CF-31'
+  [557] HP: '3168' → 'HP 3168', '3168'
+  [565] Sony: 'Vaio' → 'VAIO', None
+  [568] Acer: 'Nitro 5' → 'Nitro 5', None
+  [573] HP: 'F0lio 947om' → 'EliteBook Folio 9470', 'M'
+  [579] Apple: 'Pro' → 'MacBook Pro', None
+  [580] Msi: 'Raider ge68hx' → 'Raider GE68 HX', None
+  [584] Panasonic: 'Cf-Xz6' → 'Toughbook CF-XZ6', 'CF-XZ6'
+  [589] Lenovo/IBM: 'ThinkPad' → 'ThinkPad', None
+  [612] Lenovo/IBM: '81X2' → 'IdeaPad 320', '81X2'
+  [615] Dell: '15 3510' → 'Inspiron 15', '3510'
+  [5] Apple: 'Macbook Pro' → 'MacBook Pro', None
+  [6] Apple: 'Macbook Pro' → 'MacBook Pro', None
+  [7] Dell: 'Vostro 15' → 'Vostro 15', None
+  [8] Acer: 'Aspire' → 'Aspire', None
+  [617] Lenovo/IBM: 'Thinkbook14 g2' → 'ThinkBook 14', 'G2'
+  [618] Apple: 'Macbook Air' → 'MacBook Air', None
+  [619] Msi: 'Bravo 15 c7v' → 'Bravo 15', 'C7V'
+  [621] Dell: '5520' → 'Latitude 15', '5520'
+  [624] Msi: 'Gf63 12uc' → 'GF63', '12UC'
+  [625] Msi: '15 f13mg' → 'Modern 15', 'F13MG'
+  [632] Cits: 'Teclast F6 +' → 'Teclast F6 Plus', None
+  [633] Lenovo/IBM: 'Ip flex 3' → 'IdeaPad Flex 3', None
+  [634] Asus: 'X5dc' → 'X5DC', 'X5DC'
+  [636] Lenovo/IBM: '82R9' → 'ThinkBook', '82R9'
+  [640] Apple: 'Mgn63Ru/a' → 'MacBook Air', 'MGN63RU/A'
+  [592] HP: '250g7' → 'HP 250', 'G7'
+  [594] HP: 'Dv6000' → 'Pavilion dv6000', 'dv6000'
+  [596] Acer: 'N22C6' → 'Chromebook', 'N22C6'
+  [597] Lenovo/IBM: 'Think pad e31' → 'ThinkPad E31', 'E31'
+  [598] HP: '250 G6' → 'HP 250', 'G6'
+  [601] Lenovo/IBM: '20354' → 'IdeaPad', '20354'
+  [605] Lenovo/IBM: 'X1 carbon gen8' → 'ThinkPad X1 Carbon', 'Gen 8'
+  [608] Apple: 'M1 Pro 16”' → 'MacBook Pro', '16'

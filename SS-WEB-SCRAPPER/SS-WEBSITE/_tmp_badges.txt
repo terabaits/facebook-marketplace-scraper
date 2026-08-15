@@ -1,0 +1,19 @@
+﻿python : Traceback (most recent call last):
+At line:1 char:63
++ ... [Console]::OutputEncoding = [System.Text.Encoding]::UTF8; python -c "
++                                                               ~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (Traceback (most recent call last)::String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+  File "<string>", line 11, in <module>
+  File "C:\Users\goldm\AppData\Local\Programs\Python\Python310\lib\encodings\cp1252.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+UnicodeEncodeError: 'charmap' codec can't encode character '\U0001f525' in position 135: character maps to <undefined>
+gpu is_new L1063:     // NEW: Only show for listings from the current import (not in previous import)             let isNewListing = item.is_new === true;              if (isNewListing) {                 // New listing from current import - show NEW badge         
+---
+gpu STEAL L1061: .add(modelKey);                 newModelsDiscovered.push(modelKey);             }              // Check for NEW, FIRST, STEAL and BUY indicators             // NEW: Only show for listings from the current import (not in previous import)         
+---
+gpu STEAL L1076: `;             }              if (!isNewListing && item.price_stats && item.price_stats.below_avg) {                 // STEAL: only show if price is at least 15% below average                 const avgPrice = parseFloat(item.price_stats.avg);   
+---
+gpu STEAL L1081: vingsPct = ((avgPrice - currentPrice) / avgPrice * 100);                  // Must be at least 15% below average to be a STEAL                 if (savingsPct >= 15) {                     dealBadge += `<span class="badge" style="background: #dc262
+---

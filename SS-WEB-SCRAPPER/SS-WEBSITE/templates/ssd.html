@@ -2,31 +2,319 @@
 
 {% block title %}SSD Listings - SS-Crawler{% endblock %}
 
+{% block extra_css %}
+
+    .stat-card.ssd { border-left: 4px solid #27ae60; }
+    
+    .badge-new { background: #28a745; color: #fff; padding: 0.15rem 0.4rem; border-radius: 0.25rem; font-size: 0.75rem; font-weight: 600; white-space: nowrap; }
+    
+    .badge-new-hover { position: absolute; top: 6px; left: 6px; z-index: 5; box-shadow: 0 2px 6px rgba(0,0,0,0.25); pointer-events: none; }
+    
+    .listing-image-cell { position: relative; display: inline-block; }
+    
+    .chart-wrapper {
+        background: #f8f9fa;
+        border-radius: 8px;
+        padding: 1rem;
+    }
+    
+    .chart-container {
+        position: relative;
+        height: 300px;
+    }
+    
+    .capacity-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 1rem;
+    }
+
+    .capacity-table th,
+    .capacity-table td {
+        padding: 0.75rem;
+        text-align: left;
+        border-bottom: 1px solid #eee;
+    }
+
+    .capacity-table th {
+        background: #f8f9fa;
+        font-weight: 600;
+        color: #666;
+    }
+
+    .capacity-table tr:hover {
+        background: #f8f9fa;
+    }
+
+    .capacity-bar {
+        height: 20px;
+        background: #e9ecef;
+        border-radius: 4px;
+        overflow: hidden;
+    }
+
+    .capacity-bar-fill {
+        height: 100%;
+        background: linear-gradient(90deg, #667eea, #764ba2);
+        border-radius: 4px;
+    }
+
+    .stats-grid-4 {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 1.5rem;
+    }
+
+    .price-list {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+        gap: 0.75rem;
+        padding: 1rem 0;
+    }
+
+    .price-list-item {
+        background: var(--card-bg, #fff);
+        border: 1px solid var(--border-color, #eee);
+        border-radius: 8px;
+        padding: 0.6rem;
+        text-align: center;
+        transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .price-list-item:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    }
+
+    .price-list-item .range-label {
+        font-size: 0.85rem;
+        font-weight: 600;
+        color: var(--text-color, #333);
+        margin-bottom: 0.3rem;
+    }
+
+    .price-list-item .range-price {
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: #3498db;
+    }
+
+    .price-list-item .range-count {
+        font-size: 0.75rem;
+        color: #888;
+        margin-top: 0.2rem;
+    }
+
+    /* Dark mode chart fixes */
+    [data-theme="dark"] .chart-wrapper {
+        background: var(--card-bg);
+    }
+
+    [data-theme="dark"] .chart-wrapper h3 {
+        color: var(--text-color);
+    }
+
+    /* Chart labels in dark mode - Chart.js global defaults */
+    [data-theme="dark"] {
+        --chart-text-color: #e0e0e0;
+        --chart-grid-color: #444;
+    }
+    
+    /* Capacity tag inline with SSD name */
+    .capacity-tag {
+        display: inline-block;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        font-size: 0.75rem;
+        font-weight: 600;
+        padding: 0.2rem 0.5rem;
+        border-radius: 12px;
+        margin-left: 0.5rem;
+        vertical-align: middle;
+        white-space: nowrap;
+    }
+    
+    [data-theme="dark"] .capacity-tag {
+        color: #fff;
+    }
+    
+    /* SSD detail popup: tighter table rows */
+    .ssd-detail-table td,
+    .ssd-detail-table th {
+        padding: 0.25rem 0.35rem;
+        vertical-align: top;
+        line-height: 1.2;
+    }
+    
+    /* SSD detail popup: smaller headings */
+    #ssd-content h4 {
+        margin: 0.75rem 0 0.35rem 0;
+        font-size: 1rem;
+    }
+    
+    /* SSD detail popup: tighter image section */
+    #ssd-content img {
+        margin-bottom: 0.5rem;
+    }
+    
+    /* Clickable rows */
+    tr.clickable {
+        cursor: pointer;
+    }
+    tr.clickable:hover {
+        background: var(--hover-bg, #f8f9fa);
+    }
+    .badge-success {
+        background: #27ae60;
+        color: white;
+        padding: 0.15rem 0.4rem;
+        border-radius: 4px;
+        font-size: 0.75rem;
+        font-weight: 600;
+    }
+
+<script>
+// Set Chart.js defaults for dark mode
+function updateChartTheme() {
+    const isDark = document.documentElement.getAttribute('data-theme') === 'dark' || 
+                   (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches && 
+                    !document.documentElement.getAttribute('data-theme'));
+    
+    // Use WHITE text in dark mode for better visibility
+    Chart.defaults.color = isDark ? '#ffffff' : '#666';
+    Chart.defaults.borderColor = isDark ? '#555' : '#ddd';
+    Chart.defaults.scale.grid.color = isDark ? 'rgba(255,255,255,0.2)' : '#eee';
+    Chart.defaults.scale.ticks.color = isDark ? '#ffffff' : '#333';
+    Chart.defaults.plugins.legend.labels.color = isDark ? '#ffffff' : '#333';
+}
+
+// Initial setup
+updateChartTheme();
+
+// Listen for theme changes on the document element - use named function for removal
+const observerCallback = (mutations) => {
+    mutations.forEach((mutation) => {
+        if (mutation.attributeName === 'data-theme') {
+            updateChartTheme();
+        }
+    });
+};
+const observer = new MutationObserver(observerCallback);
+observer.observe(document.documentElement, { attributes: true });
+
+// Cleanup function to remove duplicate listeners
+if (window.ssdThemeChangeListener) {
+    window.matchMedia('(prefers-color-scheme: dark)').removeEventListener('change', window.ssdThemeChangeListener);
+}
+window.ssdThemeChangeListener = updateChartTheme;
+window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', window.ssdThemeChangeListener);
+</script>
+{% endblock %}
+
 {% block content %}
+<!-- Statistics Section -->
+<div class="section" id="stats-section">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
+        <h2>📊 SSD Statistics</h2>
+        <div class="filters" style="margin: 0;">
+            <label>
+                Time:
+                <select id="stats-time-filter" onchange="loadStats()">
+                    <option value="all_time">All Time</option>
+                    <option value="month">Last Month</option>
+                    <option value="week">Last Week</option>
+                </select>
+            </label>
+        </div>
+    </div>
+    
+    <div class="stats-grid" id="stats-container">
+        <div class="stat-card ssd">
+            <h3>{{ t('Total Listings') }}</h3>
+            <div class="stat-value" id="stat-total">-</div>
+        </div>
+        <div class="stat-card ssd">
+            <h3>{{ t('Avg Price') }}</h3>
+            <div class="stat-value" id="stat-avg-price">-</div>
+        </div>
+        <div class="stat-card ssd">
+            <h3>Avg Cost/GB</h3>
+            <div class="stat-value" id="stat-cost-per-gb">-</div>
+        </div>
+        <div class="stat-card ssd">
+            <h3>Total Capacity</h3>
+            <div class="stat-value" id="stat-total-capacity">-</div>
+        </div>
+    </div>
+    
+    <!-- Capacity Distribution Charts -->
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 2rem;">
+        <div class="chart-wrapper">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                <h3 style="margin: 0; text-align: center; flex: 1;">Capacity Distribution by Listings</h3>
+                <label style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.85rem; cursor: pointer; white-space: nowrap;">
+                    <input type="checkbox" id="simplified-capacity-toggle" onchange="loadStats()">
+                    <span>Simplified</span>
+                </label>
+            </div>
+            <div class="chart-container">
+                <canvas id="capacityListingsChart"></canvas>
+            </div>
+        </div>
+        <div class="chart-wrapper">
+            <h3 style="margin-bottom: 1rem; text-align: center;">Cost per GB by Capacity Range</h3>
+            <div class="chart-container">
+                <canvas id="costPerGbChart"></canvas>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Average Cost per GB Over Time -->
+    <div style="margin-top: 2rem;">
+        <div class="chart-wrapper">
+            <h3 style="margin-bottom: 1rem; text-align: center;">Average Cost per GB Over Time</h3>
+            <div class="chart-container">
+                <canvas id="avgCostPerGbTimelineChart"></canvas>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Average Price by Capacity Range -->
+    <div style="margin-top: 2rem;">
+        <div class="chart-wrapper">
+            <h3 style="margin-bottom: 1rem; text-align: center;">Average Price by Capacity Range</h3>
+            <div id="avgPriceList" class="price-list">
+                <div class="loading">Loading capacity prices...</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- SSD Listings Section -->
 <div class="section">
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
-        <h2>SSD Listings</h2>
+        <h2>{{ t('SSD Listings') }}</h2>
         <div class="filters" style="margin: 0;">
             <label>
                 <input type="checkbox" id="active-only" checked onchange="loadListings()">
                 Active only
             </label>
-            <label>
+            <label class="{% if not is_staff %}staff-only{% endif %}">
                 <input type="checkbox" id="high-confidence" checked onchange="loadListings()">
                 High confidence (≥70%)
             </label>
             <label>
                 Sort:
                 <select id="sort-by" onchange="loadListings()">
-                    <option value="date_posted">Date Posted</option>
-                    <option value="price">Price</option>
+                    <option value="date_posted">{{ t('Date Posted') }}</option>
+                    <option value="price">{{ t('Price') }}</option>
                 </select>
             </label>
             <label>
                 Order:
                 <select id="sort-order" onchange="loadListings()">
-                    <option value="desc">Descending</option>
-                    <option value="asc">Ascending</option>
+                    <option value="desc">{{ t('Descending') }}</option>
+                    <option value="asc">{{ t('Ascending') }}</option>
                 </select>
             </label>
             <label>
@@ -37,6 +325,67 @@
                     <option value="week">Last Week</option>
                 </select>
             </label>
+            <label>
+                Manufacturer:
+                <select id="brand-filter" onchange="loadListings()">
+                    <option value="">All Manufacturers</option>
+                    <option value="Samsung">Samsung</option>
+                    <option value="Crucial">Crucial</option>
+                    <option value="WD">WD</option>
+                    <option value="Kingston">Kingston</option>
+                    <option value="ADATA">ADATA</option>
+                    <option value="Seagate">Seagate</option>
+                    <option value="SanDisk">SanDisk</option>
+                    <option value="Corsair">Corsair</option>
+                    <option value="Team">Team</option>
+                    <option value="Patriot">Patriot</option>
+                </select>
+            </label>
+            <label>
+                Model:
+                <select id="model-filter" onchange="loadListings()">
+                    <option value="">All Models</option>
+                </select>
+            </label>
+            <label>
+                Capacity:
+                <select id="capacity-filter" onchange="loadListings()">
+                    <option value="">All Capacities</option>
+                    <option value="128">128GB (120-128GB)</option>
+                    <option value="256">256GB (240-256GB)</option>
+                    <option value="512">512GB (480-512GB)</option>
+                    <option value="1024">1TB (960GB-1TB)</option>
+                    <option value="2048">2TB (1.9-2TB)</option>
+                    <option value="4096">4TB (3.8-4TB)</option>
+                    <option value="8192">8TB (7.6-8TB)</option>
+                    <option value="16384">16TB+</option>
+                </select>
+            </label>
+            <label>
+                Source:
+                <select id="source-filter" onchange="loadListings()">
+                    <option value="all">All Sources</option>
+                    <option value="ss.com">SS.com</option>
+                    <option value="andelemandele">Andele Mandele</option>
+                    <option value="facebook_extension">Facebook</option>
+                </select>
+            </label>
+            <label>
+                Location:
+                <select id="location-filter" onchange="loadListings()">
+                    <option value="">None</option>
+                </select>
+            </label>
+            <label>
+                Interface type:
+                <select id="interface-type-filter" onchange="loadListings()">
+                    <option value="">{{ t('All') }}</option>
+                    <option value="SATA">SATA</option>
+                    <option value="NVMe">NVMe</option>
+                    <option value="Portable">Portable</option>
+                    <option value="Other">Other</option>
+                </select>
+            </label>
         </div>
     </div>
     
@@ -45,25 +394,105 @@
     </div>
 </div>
 
-<div class="section">
-    <h2>Price Distribution</h2>
-    <div class="chart-container">
-        <canvas id="priceDistChart"></canvas>
+<!-- SSD Detail Modal -->
+<div id="ssd-modal" class="modal-overlay">
+    <div class="modal" style="max-width: 1200px; max-height: 90vh; overflow-y: auto;">
+        <div class="modal-header" style="position: sticky; top: 0; background: var(--modal-bg); z-index: 10;">
+            <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+                <h3 id="ssd-title">SSD Details</h3>
+                <div style="display: flex; gap: 0.5rem; align-items: center;">
+                    <button id="flag-ssd-btn" class="btn btn-small" style="background: #dc3545; color: white; border: none;">Flag</button>
+                    <button class="modal-close" onclick="closeSSDModal()">&times;</button>
+                </div>
+            </div>
+        </div>
+        <div id="ssd-content"></div>
     </div>
 </div>
 
-<!-- Model History Modal -->
-<div id="history-modal" class="modal-overlay">
-    <div class="modal">
+<!-- Flag Modal -->
+<div id="flag-modal" class="modal-overlay">
+    <div class="modal" style="max-width: 500px;">
         <div class="modal-header">
-            <h3 id="history-title">Model Price History</h3>
-            <button class="modal-close" onclick="closeModal()">&times;</button>
+            <h3>Flag Listing</h3>
+            <button class="modal-close" onclick="closeFlagModal()">&times;</button>
         </div>
-        <div id="history-content">
-            <div class="history-chart">
-                <canvas id="historyChart"></canvas>
+        <div style="padding: 1.5rem;">
+            <p style="margin-bottom: 1rem;">Select a reason for flagging this listing:</p>
+            <div style="display: flex; flex-direction: column; gap: 0.75rem; margin-bottom: 1.5rem;">
+                <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                    <input type="radio" name="flag-reason" value="ssd_mismatch" checked onchange="toggleSSDFlagFields()">
+                    <span>SSD model mismatch</span>
+                </label>
+                <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                    <input type="radio" name="flag-reason" value="wrong_price" onchange="toggleSSDFlagFields()">
+                    <span>Wrong price</span>
+                </label>
+                <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                    <input type="radio" name="flag-reason" value="sold" onchange="toggleSSDFlagFields()">
+                    <span>Already sold</span>
+                </label>
+                <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                    <input type="radio" name="flag-reason" value="spam" onchange="toggleSSDFlagFields()">
+                    <span>Spam/Scam</span>
+                </label>
+                <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                    <input type="radio" name="flag-reason" value="other" onchange="toggleSSDFlagFields()">
+                    <span>Other</span>
+                </label>
+                <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                    <input type="radio" name="flag-reason" value="skip" onchange="toggleSSDFlagFields()">
+                    <span>Skip</span>
+                </label>
             </div>
-            <div id="history-listings"></div>
+            
+            <!-- SSD Size Fields -->
+            <div id="flag-ssd-size-container" style="margin-bottom: 1rem;">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 0.75rem;">
+                    <div>
+                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Detected Size:</label>
+                        <input type="text" id="flag-ssd-detected-size" class="flag-text-input" placeholder="e.g., 512GB" readonly style="background: #f5f5f5; width: 100%; padding: 0.5rem; border: 1px solid #ddd; border-radius: 4px;">
+                    </div>
+                    <div>
+                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Correct Size:</label>
+                        <input type="text" id="flag-ssd-correct-size" class="flag-text-input" placeholder="Enter SSD ID to auto-fill" readonly style="background: #f5f5f5; width: 100%; padding: 0.5rem; border: 1px solid #ddd; border-radius: 4px;">
+                    </div>
+                </div>
+                <!-- Comparison Checkbox -->
+                <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer; margin-bottom: 1rem; padding: 0.5rem; background: var(--table-row-alt-bg, #f0f0f0); border-radius: 4px; color: var(--text-color, #333);">
+                    <input type="checkbox" id="flag-ssd-size-correct" onchange="toggleSSDSizeCorrect()">
+                    <span>✓ Size comparison is correct (detected matches actual)</span>
+                </label>
+            </div>
+            
+            <div id="flag-ssd-id-container" style="margin-bottom: 1rem; display: none;">
+                <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Correct SSD ID:</label>
+                <input type="text" id="flag-ssd-correct-id" class="flag-text-input" placeholder="Enter SSD reference ID (e.g., 123)" onblur="fetchSSDSizeById()" style="width: 100%; padding: 0.5rem; border: 1px solid #ddd; border-radius: 4px;">
+                <small style="display: block; margin-top: 0.25rem; color: #666;">Enter ID and press Tab to auto-fill size</small>
+            </div>
+            
+            <div id="flag-comment-container" style="margin-bottom: 1rem;">
+                <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Comment (optional):</label>
+                <textarea id="flag-comment" style="width: 100%; padding: 0.5rem; border-radius: 4px; border: 1px solid #ddd; min-height: 60px;"></textarea>
+            </div>
+            
+            <div style="display: flex; gap: 1rem; justify-content: flex-end;">
+                <button class="btn btn-secondary" onclick="closeFlagModal()">{{ t('Cancel') }}</button>
+                <button id="flag-submit-btn" class="btn" style="background: #dc3545; color: white;" onclick="submitFlag()">Submit Flag</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Image Preview Modal -->
+<div id="image-preview-modal" class="modal-overlay">
+    <div class="modal" style="max-width: 90%; max-height: 90%; padding: 0; overflow: hidden;">
+        <div style="position: relative; background: #000;">
+            <button onclick="closeImageModal()" style="position: absolute; top: 10px; right: 10px; background: rgba(0,0,0,0.7); color: white; border: none; border-radius: 50%; width: 40px; height: 40px; font-size: 20px; cursor: pointer; z-index: 10;">&times;</button>
+            <img id="preview-image" src="" alt="" style="max-width: 100%; max-height: 85vh; display: block; margin: 0 auto;">
+        </div>
+        <div style="padding: 1rem; background: var(--card-bg); text-align: center;">
+            <p id="preview-title" style="margin: 0; font-weight: 600; color: var(--text-color);"></p>
         </div>
     </div>
 </div>
@@ -71,8 +500,632 @@
 
 {% block scripts %}
 <script>
-let priceChart = null;
-let historyChart = null;
+let capacityListingsChart = null;
+let costPerGbChart = null;
+let avgPriceList = null;
+let avgCostPerGbTimelineChart = null;
+
+// Helper function to group capacities into filter ranges
+function groupCapacitiesIntoRanges(capacityData, simplified = false) {
+    let ranges;
+    
+    if (simplified) {
+        // Simplified view: 128GB, 256GB, 512GB, 1TB, 2TB, 4TB, 8TB, 16TB
+        ranges = [
+            { label: '128GB', min: 120, max: 128, key: 128 },
+            { label: '256GB', min: 240, max: 256, key: 256 },
+            { label: '512GB', min: 480, max: 512, key: 512 },
+            { label: '1TB', min: 960, max: 1024, key: 1024 },
+            { label: '2TB', min: 1900, max: 2048, key: 2048 },
+            { label: '4TB', min: 3800, max: 4096, key: 4096 },
+            { label: '8TB', min: 7500, max: 8192, key: 8192 },
+            { label: '16TB', min: 15000, max: 16384, key: 16384 }
+        ];
+    } else {
+        // Full view with all ranges
+        ranges = [
+            { label: '120-128GB', min: 120, max: 128, key: 128 },
+            { label: '240-256GB', min: 240, max: 256, key: 256 },
+            { label: '480-512GB', min: 480, max: 512, key: 512 },
+            { label: '960GB-1TB', min: 960, max: 1024, key: 1024 },
+            { label: '1.9-2TB', min: 1900, max: 2048, key: 2048 },
+            { label: '4TB', min: 3800, max: 4096, key: 4096 },
+            { label: '8TB', min: 7500, max: 8192, key: 8192 },
+            { label: '16TB', min: 15000, max: 16384, key: 16384 }
+        ];
+    }
+    
+    const grouped = {};
+    
+    // Initialize all ranges with zero values
+    ranges.forEach(range => {
+        grouped[range.key] = {
+            capacity_gb: range.key,
+            label: range.label,
+            listing_count: 0,
+            total_price: 0,
+            avg_price: 0,
+            cost_per_gb: 0
+        };
+    });
+    
+    // Group data into ranges
+    capacityData.forEach(item => {
+        const capacity = item.capacity_gb;
+        for (const range of ranges) {
+            if (capacity >= range.min && capacity <= range.max) {
+                grouped[range.key].listing_count += item.listing_count || 0;
+                grouped[range.key].total_price += (item.avg_price || 0) * (item.listing_count || 0);
+                break;
+            }
+        }
+    });
+    
+    // Calculate averages
+    const result = [];
+    ranges.forEach(range => {
+        const group = grouped[range.key];
+        if (group.listing_count > 0) {
+            group.avg_price = group.total_price / group.listing_count;
+            // Calculate cost per GB based on average price
+            const midCapacity = (range.min + Math.min(range.max, range.key * 2)) / 2;
+            group.cost_per_gb = group.avg_price / midCapacity;
+            result.push(group);
+        }
+    });
+    
+    return result;
+}
+
+function groupCapacitiesIntoRangesByInterface(capacityData) {
+    // Same ranges as groupCapacitiesIntoRanges
+    const ranges = [
+        { label: '120-128GB', min: 120, max: 128, key: 128 },
+        { label: '240-256GB', min: 240, max: 256, key: 256 },
+        { label: '480-512GB', min: 480, max: 512, key: 512 },
+        { label: '960GB-1TB', min: 960, max: 1024, key: 1024 },
+        { label: '1.9-2TB', min: 1900, max: 2048, key: 2048 },
+        { label: '4TB', min: 3800, max: 4096, key: 4096 },
+        { label: '8TB', min: 7500, max: 8192, key: 8192 },
+        { label: '16TB', min: 15000, max: 16384, key: 16384 }
+    ];
+
+    const grouped = {};
+    const interfaces = new Set();
+
+    ranges.forEach(range => {
+        grouped[range.key] = { label: range.label, min: range.min, max: range.max };
+    });
+
+    capacityData.forEach(item => {
+        const iface = item.interface_type || 'Other';
+        interfaces.add(iface);
+        const capacity = item.capacity_gb;
+        for (const range of ranges) {
+            if (capacity >= range.min && capacity <= range.max) {
+                if (!grouped[range.key][iface]) {
+                    grouped[range.key][iface] = { listing_count: 0, total_price: 0 };
+                }
+                grouped[range.key][iface].listing_count += item.listing_count || 0;
+                grouped[range.key][iface].total_price += (item.avg_price || 0) * (item.listing_count || 0);
+                break;
+            }
+        }
+    });
+
+    const result = {};
+    interfaces.forEach(iface => {
+        result[iface] = [];
+    });
+
+    ranges.forEach(range => {
+        interfaces.forEach(iface => {
+            const g = grouped[range.key][iface];
+            if (g && g.listing_count > 0) {
+                const avgPrice = g.total_price / g.listing_count;
+                const midCapacity = (range.min + Math.min(range.max, range.key * 2)) / 2;
+                result[iface].push({
+                    label: range.label,
+                    cost_per_gb: avgPrice / midCapacity,
+                    avg_price: avgPrice,
+                    listing_count: g.listing_count
+                });
+            } else {
+                result[iface].push(null);
+            }
+        });
+    });
+
+    result.interfaces = Array.from(interfaces).sort();
+    result.labels = ranges.map(r => r.label);
+    return result;
+}
+
+// Load statistics and charts
+async function loadStats() {
+    const timeFilter = document.getElementById('stats-time-filter').value;
+    
+    try {
+        const response = await fetch('/api/ssd-statistics?time=' + timeFilter);
+        const stats = await response.json();
+        
+        // Update stat cards - ensure numeric conversion
+        const avgPrice = parseFloat(stats.avg_price) || 0;
+        const avgCostPerGb = parseFloat(stats.avg_cost_per_gb) || 0;
+        document.getElementById('stat-total').textContent = stats.total_listings?.toLocaleString() || '0';
+        document.getElementById('stat-avg-price').textContent = '€' + avgPrice.toFixed(2);
+        document.getElementById('stat-cost-per-gb').textContent = '€' + avgCostPerGb.toFixed(3);
+        
+        // Format total capacity
+        const totalCapacity = stats.total_capacity || 0;
+        let capacityText;
+        if (totalCapacity >= 1024) {
+            capacityText = (totalCapacity / 1024).toFixed(1) + ' TB';
+        } else {
+            capacityText = totalCapacity.toLocaleString() + ' GB';
+        }
+        document.getElementById('stat-total-capacity').textContent = capacityText;
+        
+        // Render charts
+        renderCharts(stats);
+
+        // Fetch and render cost/GB timeline
+        try {
+            const timelineResponse = await fetch('/api/ssd-cost-per-gb-timeline?time=' + timeFilter);
+            const timelineData = await timelineResponse.json();
+            renderCostPerGbTimelineChart(timelineData);
+        } catch (e) {
+            console.error('Error loading cost/GB timeline:', e);
+        }
+        
+    } catch (error) {
+        console.error('Error loading stats:', error);
+    }
+}
+
+// Populate the Location dropdown with unique seller locations from all active SSDs
+async function populateLocationOptions() {
+    const select = document.getElementById('location-filter');
+    if (!select) return;
+    const currentValue = select.value;
+
+    try {
+        const resp = await fetch('/api/ssds?active=true');
+        const allListings = await resp.json();
+        if (!Array.isArray(allListings)) return;
+
+        const locations = new Set();
+        for (const item of allListings) {
+            const loc = item.seller_location;
+            if (loc && loc !== 'X') {
+                locations.add(loc);
+            }
+        }
+        const sorted = Array.from(locations).sort();
+
+        // Preserve selected value if still valid
+        select.innerHTML = '<option value="">None</option>';
+        for (const loc of sorted) {
+            const opt = document.createElement('option');
+            opt.value = loc;
+            opt.textContent = loc;
+            select.appendChild(opt);
+        }
+        if (sorted.includes(currentValue)) {
+            select.value = currentValue;
+        }
+    } catch (err) {
+        console.error('Error loading locations:', err);
+    }
+}
+
+// Render capacity distribution charts
+function renderCharts(stats) {
+    const capacityData = stats.capacity_distribution || [];
+    console.log('Rendering charts with data:', capacityData);
+    
+    if (!capacityData || capacityData.length === 0) {
+        console.warn('No capacity data available for charts');
+        return;
+    }
+    
+    // Check if simplified view is enabled
+    const simplifiedToggle = document.getElementById('simplified-capacity-toggle');
+    const useSimplified = simplifiedToggle ? simplifiedToggle.checked : false;
+    
+    // Destroy existing charts
+    if (capacityListingsChart) {
+        capacityListingsChart.destroy();
+        capacityListingsChart = null;
+    }
+    if (costPerGbChart) {
+        costPerGbChart.destroy();
+        costPerGbChart = null;
+    }
+
+    // Hide any previous price list
+    const avgPriceListEl = document.getElementById('avgPriceList');
+    if (avgPriceListEl) {
+        avgPriceListEl.innerHTML = '<div class="loading">Loading capacity prices...</div>';
+    }
+    
+    // Sort by capacity for consistent display
+    capacityData.sort((a, b) => a.capacity_gb - b.capacity_gb);
+    console.log('Sorted capacity data:', capacityData);
+    
+    // Group capacities into ranges for Cost and Avg Price charts
+    // These charts always show all data (not affected by simplified toggle)
+    const rangedData = groupCapacitiesIntoRanges(capacityData, false);
+    console.log('Ranged capacity data (all ranges):', rangedData);
+
+    // Build per-interface overlay data for cost per GB chart
+    const interfaceColors = {
+        'SATA': '#3498db',
+        'NVMe': '#e74c3c',
+        'Portable': '#f1c40f',
+        'Other': '#95a5a6'
+    };
+    const byInterface = groupCapacitiesIntoRangesByInterface(stats.capacity_distribution_by_interface || []);
+    console.log('Ranged capacity data by interface:', byInterface);
+
+    const interfaceOrder = ['SATA', 'NVMe', 'Portable', 'Other'];
+    const availableInterfaces = interfaceOrder.filter(i => byInterface.interfaces.includes(i));
+
+    const costDatasets = [{
+        label: 'Overall',
+        data: rangedData.map(d => d.cost_per_gb),
+        borderColor: '#27ae60',
+        backgroundColor: 'rgba(39, 174, 96, 0.1)',
+        borderWidth: 5,
+        pointBackgroundColor: '#27ae60',
+        pointBorderColor: '#fff',
+        pointBorderWidth: 2,
+        pointRadius: 6,
+        pointHoverRadius: 10,
+        fill: true,
+        tension: 0.3,
+        order: 1,
+        shadowColor: 'rgba(39, 174, 96, 0.5)',
+        shadowBlur: 12,
+        shadowOffsetX: 0,
+        shadowOffsetY: 0
+    }];
+
+    // Track which interface line is currently "active" (solid)
+    if (!window.ssdActiveInterface) window.ssdActiveInterface = null;
+
+    availableInterfaces.forEach(iface => {
+        const color = interfaceColors[iface] || '#9b59b6';
+        const isActive = window.ssdActiveInterface === iface;
+        costDatasets.push({
+            label: `${iface}`,
+            data: byInterface[iface].map(d => d ? d.cost_per_gb : null),
+            borderColor: color,
+            backgroundColor: 'transparent',
+            borderWidth: isActive ? 3 : 2,
+            borderDash: isActive ? [] : [6, 4],
+            pointBackgroundColor: color,
+            pointBorderColor: '#fff',
+            pointBorderWidth: 1,
+            pointRadius: isActive ? 5 : 4,
+            pointHoverRadius: isActive ? 8 : 6,
+            pointHitRadius: 12,
+            fill: false,
+            tension: 0.3,
+            spanGaps: true,
+            order: 2,
+            interfaceName: iface
+        });
+    });
+    
+    // Chart 1: Capacity Distribution by Listings (Bar Chart)
+    // This chart is affected by the simplified toggle
+    const chart1Data = useSimplified ? groupCapacitiesIntoRanges(capacityData, true) : capacityData;
+    const chart1Labels = chart1Data.map(d => useSimplified ? d.label : d.capacity_gb + 'GB');
+    const chart1Counts = chart1Data.map(d => d.listing_count);
+    
+    const listingsCtx = document.getElementById('capacityListingsChart').getContext('2d');
+    capacityListingsChart = new Chart(listingsCtx, {
+        type: 'bar',
+        data: {
+            labels: chart1Labels,
+            datasets: [{
+                label: 'Number of Listings',
+                data: chart1Counts,
+                backgroundColor: [
+                    '#667eea',
+                    '#764ba2',
+                    '#f093fb',
+                    '#f5576c',
+                    '#4facfe',
+                    '#00f2fe',
+                    '#43e97b',
+                    '#fa709a'
+                ],
+                borderRadius: 8,
+                borderWidth: 0
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    display: false
+                },
+                tooltip: {
+                    backgroundColor: function(context) {
+                        return document.documentElement.getAttribute('data-theme') === 'dark' ? 'rgba(255,255,255,0.9)' : 'rgba(0,0,0,0.8)';
+                    },
+                    titleColor: function(context) {
+                        return document.documentElement.getAttribute('data-theme') === 'dark' ? '#333' : '#fff';
+                    },
+                    bodyColor: function(context) {
+                        return document.documentElement.getAttribute('data-theme') === 'dark' ? '#333' : '#fff';
+                    },
+                    callbacks: {
+                        label: function(context) {
+                            const d = chart1Data[context.dataIndex];
+                            return [
+                                `Listings: ${d.listing_count}`,
+                                `Avg Price: €${d.avg_price.toFixed(2)}`
+                            ];
+                        }
+                    }
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        stepSize: 1,
+                        color: function(context) {
+                            return document.documentElement.getAttribute('data-theme') === 'dark' ? '#e0e0e0' : '#333';
+                        }
+                    },
+                    grid: {
+                        color: function(context) {
+                            return document.documentElement.getAttribute('data-theme') === 'dark' ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)';
+                        }
+                    }
+                },
+                x: {
+                    ticks: {
+                        color: function(context) {
+                            return document.documentElement.getAttribute('data-theme') === 'dark' ? '#e0e0e0' : '#333';
+                        }
+                    },
+                    grid: {
+                        display: false
+                    }
+                }
+            }
+        }
+    });
+    
+    // Chart 2: Cost per GB by Capacity Range (Line Chart with Points)
+    const costCtx = document.getElementById('costPerGbChart').getContext('2d');
+    costPerGbChart = new Chart(costCtx, {
+        type: 'line',
+        data: {
+            labels: rangedData.map(d => d.label),
+            datasets: costDatasets
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            onClick: function(e, elements, chart) {
+                if (!elements || elements.length === 0) return;
+                const dsIndex = elements[0].datasetIndex;
+                const ds = chart.data.datasets[dsIndex];
+                if (!ds || !ds.interfaceName) return;
+                if (window.ssdActiveInterface === ds.interfaceName) {
+                    window.ssdActiveInterface = null;
+                } else {
+                    window.ssdActiveInterface = ds.interfaceName;
+                }
+                chart.data.datasets.forEach(dataset => {
+                    if (dataset.interfaceName) {
+                        const active = window.ssdActiveInterface === dataset.interfaceName;
+                        dataset.borderDash = active ? [] : [6, 4];
+                        dataset.borderWidth = active ? 3 : 2;
+                        dataset.pointRadius = active ? 5 : 4;
+                        dataset.pointHoverRadius = active ? 8 : 6;
+                    }
+                });
+                chart.update();
+            },
+            onHover: function(e, elements, chart) {
+                e.native.target.style.cursor = elements && elements.length > 0 && chart.data.datasets[elements[0].datasetIndex].interfaceName ? 'pointer' : 'default';
+            },
+            plugins: {
+                legend: {
+                    display: true,
+                    labels: {
+                        color: function(context) {
+                            return document.documentElement.getAttribute('data-theme') === 'dark' ? '#e0e0e0' : '#333';
+                        }
+                    },
+                    onClick: function(e, legendItem, legend) {
+                        const index = legendItem.datasetIndex;
+                        const ci = legend.chart;
+                        const ds = ci.data.datasets[index];
+                        // Only interface lines (not Overall) toggle solid/dashed
+                        if (ds.interfaceName) {
+                            if (window.ssdActiveInterface === ds.interfaceName) {
+                                window.ssdActiveInterface = null;
+                            } else {
+                                window.ssdActiveInterface = ds.interfaceName;
+                            }
+                            // Re-render chart to apply solid/dashed styles
+                            ci.data.datasets.forEach(dataset => {
+                                if (dataset.interfaceName) {
+                                    const active = window.ssdActiveInterface === dataset.interfaceName;
+                                    dataset.borderDash = active ? [] : [6, 4];
+                                    dataset.borderWidth = active ? 3 : 2;
+                                    dataset.pointRadius = active ? 5 : 4;
+                                    dataset.pointHoverRadius = active ? 8 : 6;
+                                }
+                            });
+                            ci.update();
+                        } else {
+                            // Default behavior for Overall
+                            const meta = ci.getDatasetMeta(index);
+                            meta.hidden = meta.hidden === null ? !ci.data.datasets[index].hidden : null;
+                            ci.update();
+                        }
+                    }
+                },
+                tooltip: {
+                    backgroundColor: function(context) {
+                        return document.documentElement.getAttribute('data-theme') === 'dark' ? 'rgba(255,255,255,0.9)' : 'rgba(0,0,0,0.8)';
+                    },
+                    titleColor: function(context) {
+                        return document.documentElement.getAttribute('data-theme') === 'dark' ? '#333' : '#fff';
+                    },
+                    bodyColor: function(context) {
+                        return document.documentElement.getAttribute('data-theme') === 'dark' ? '#333' : '#fff';
+                    },
+                    callbacks: {
+                        label: function(context) {
+                            const dataset = costDatasets[context.datasetIndex];
+                            if (context.datasetIndex === 0) {
+                                const d = rangedData[context.dataIndex];
+                                return [
+                                    `${dataset.label}: €${d.cost_per_gb.toFixed(3)}`,
+                                    `Avg Price: €${d.avg_price.toFixed(2)}`,
+                                    `Listings: ${d.listing_count}`
+                                ];
+                            }
+                            const iface = dataset.label;
+                            const d = byInterface[iface][context.dataIndex];
+                            if (!d) return `${dataset.label}: no data`;
+                            return [
+                                `${dataset.label}: €${d.cost_per_gb.toFixed(3)}`,
+                                `Avg Price: €${d.avg_price.toFixed(2)}`,
+                                `Listings: ${d.listing_count}`
+                            ];
+                        }
+                    }
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    title: {
+                        display: true,
+                        text: 'EUR per GB',
+                        color: function(context) {
+                            return document.documentElement.getAttribute('data-theme') === 'dark' ? '#e0e0e0' : '#333';
+                        }
+                    },
+                    ticks: {
+                        color: function(context) {
+                            return document.documentElement.getAttribute('data-theme') === 'dark' ? '#e0e0e0' : '#333';
+                        }
+                    },
+                    grid: {
+                        color: function(context) {
+                            return document.documentElement.getAttribute('data-theme') === 'dark' ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)';
+                        }
+                    }
+                },
+                x: {
+                    ticks: {
+                        color: function(context) {
+                            return document.documentElement.getAttribute('data-theme') === 'dark' ? '#e0e0e0' : '#333';
+                        }
+                    },
+                    grid: {
+                        display: false
+                    }
+                }
+            }
+        }
+    });
+    
+    // Render simple price list for Average Price by Capacity Range
+    renderAvgPriceList(rangedData);
+}
+
+// Render average cost per GB over months timeline
+function renderCostPerGbTimelineChart(timeSeriesData) {
+    if (avgCostPerGbTimelineChart) {
+        avgCostPerGbTimelineChart.destroy();
+        avgCostPerGbTimelineChart = null;
+    }
+    if (!timeSeriesData || timeSeriesData.length === 0) return;
+
+    const ctx = document.getElementById('avgCostPerGbTimelineChart').getContext('2d');
+    avgCostPerGbTimelineChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: timeSeriesData.map(d => {
+                const date = new Date(d.month);
+                return date.toLocaleDateString('default', { year: 'numeric', month: 'short' });
+            }),
+            datasets: [{
+                label: 'Avg Cost per GB (EUR)',
+                data: timeSeriesData.map(d => d.avg_cost_per_gb),
+                borderColor: '#e74c3c',
+                backgroundColor: 'rgba(231, 76, 60, 0.1)',
+                borderWidth: 3,
+                pointBackgroundColor: '#e74c3c',
+                pointBorderColor: '#fff',
+                pointBorderWidth: 2,
+                pointRadius: 5,
+                pointHoverRadius: 8,
+                fill: true,
+                tension: 0.3
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { display: false },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            const d = timeSeriesData[context.dataIndex];
+                            return [
+                                `Cost/GB: €${d.avg_cost_per_gb.toFixed(4)}`,
+                                `Avg Price: €${d.avg_price.toFixed(2)}`,
+                                `Listings: ${d.listing_count}`
+                            ];
+                        }
+                    }
+                }
+            },
+            scales: {
+                y: { beginAtZero: false, title: { display: true, text: 'EUR per GB' } },
+                x: { grid: { display: false } }
+            }
+        }
+    });
+}
+
+// Render simple list of capacity ranges with average prices
+function renderAvgPriceList(rangedData) {
+    const listEl = document.getElementById('avgPriceList');
+    if (!listEl) return;
+
+    if (!rangedData || rangedData.length === 0) {
+        listEl.innerHTML = '<div class="loading">No capacity data available</div>';
+        return;
+    }
+
+    listEl.innerHTML = rangedData.map(d => `
+        <div class="price-list-item">
+            <div class="range-label">${d.label}</div>
+            <div class="range-price">€${d.avg_price.toFixed(2)}</div>
+            <div class="range-count">${d.listing_count} listing${d.listing_count === 1 ? '' : 's'}</div>
+        </div>
+    `).join('');
+}
+
+// Existing loadListings function
+let allSSDs = [];
 
 async function loadListings() {
     const activeOnly = document.getElementById('active-only').checked;
@@ -80,6 +1133,9 @@ async function loadListings() {
     const sortBy = document.getElementById('sort-by').value;
     const sortOrder = document.getElementById('sort-order').value;
     const timeFilter = document.getElementById('time-filter').value;
+    const brandFilter = document.getElementById('brand-filter')?.value || '';
+    const modelFilter = document.getElementById('model-filter')?.value || '';
+    const capacityFilter = document.getElementById('capacity-filter')?.value || '';
     
     const params = new URLSearchParams();
     params.append('active', activeOnly);
@@ -87,10 +1143,43 @@ async function loadListings() {
     params.append('order', sortOrder);
     params.append('time', timeFilter);
     if (highConfidence) params.append('min_confidence', '0.70');
+    if (brandFilter) params.append('brand', brandFilter);
+    if (modelFilter) params.append('model', modelFilter);
+    if (capacityFilter) params.append('capacity', capacityFilter);
+    const sourceFilter = document.getElementById('source-filter')?.value || 'all';
+    if (sourceFilter !== 'all') params.append('source', sourceFilter);
+    const location = document.getElementById('location-filter')?.value || '';
+    if (location) params.append('location', location);
+    const interfaceType = document.getElementById('interface-type-filter')?.value || '';
+    if (interfaceType) params.append('interface_type', interfaceType);
     
     try {
         const response = await fetch('/api/ssds?' + params.toString());
         const listings = await response.json();
+        
+        // Populate model filter options based on brand selection
+        const modelSelect = document.getElementById('model-filter');
+        if (listings.length > 0) {
+            // Get unique models from filtered listings
+            const models = [...new Set(listings.map(l => l.ssd_model).filter(Boolean))].sort();
+            
+            // Save current selection
+            const currentModel = modelSelect.value;
+            
+            // Clear and rebuild options (keep "All Models")
+            modelSelect.innerHTML = '<option value="">All Models</option>';
+            models.forEach(model => {
+                const option = document.createElement('option');
+                option.value = model;
+                option.textContent = model;
+                modelSelect.appendChild(option);
+            });
+            
+            // Restore selection if it still exists
+            if (currentModel && models.includes(currentModel)) {
+                modelSelect.value = currentModel;
+            }
+        }
         
         const container = document.getElementById('listings-container');
         
@@ -99,168 +1188,635 @@ async function loadListings() {
             return;
         }
         
-        let html = '<div class="table-container"><table><thead><tr>';
-        html += '<th>ID</th><th>SSD</th><th>Capacity</th><th>Price</th><th>Location</th><th>Confidence</th><th>Posted</th><th>Link</th>';
-        html += '</tr></thead><tbody>';
+        // Fetch price history for all listings
+        const listingsWithHistory = await fetchPriceHistoryForListings(listings);
         
-        listings.forEach(l => {
-            const capacity = l.capacity_gb ? `${l.capacity_gb} GB` : 'N/A';
-            const confidence = l.ssd_confidence_score ? `${(l.ssd_confidence_score * 100).toFixed(0)}%` : 'N/A';
-            const ssdName = l.ssd_brand ? `${l.ssd_brand} ${l.ssd_model}` : 'Unknown';
-            const ssdCell = l.ssd_brand 
-                ? `<a href="#" onclick="showModelHistory(${l.matched_ssd_id}, '${l.ssd_brand} ${l.ssd_model}', 'ssd'); return false;" style="color: #667eea; text-decoration: none;">${ssdName}</a>`
-                : 'Unknown';
+        let html = `
+            <table>
+                <thead>
+                    <tr>
+                        <th>Image</th>
+                        <th>Listing ID</th>
+                        <th>{{ t('SSD') }}</th>
+                        <th>{{ t('Capacity') }}</th>
+                        <th>{{ t('Interface') }}</th>
+                        <th>{{ t('Type') }}</th>
+                        <th>{{ t('Price') }}</th>
+                        <th>Location</th>
+                        <th>Date</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+        `;
+        
+        // Store listings globally for flag modal access
+        allSSDs = listingsWithHistory;
+        
+        // Populate exclude location options from full active set
+        populateLocationOptions();
+        
+        listingsWithHistory.forEach(item => {
+            const ssdName = item.ssd_model ? `${item.ssd_brand} ${item.ssd_model}` : item.title;
+            // Use l.capacity_gb or s.capacity_gb (ssd_capacity_gb)
+            // Handle null, undefined, or 0 values properly
+            let capacityVal = item.capacity_gb || item.ssd_capacity_gb;
+            let capacity;
+            if (capacityVal && capacityVal > 0) {
+                capacity = `${capacityVal}GB`;
+            } else {
+                // Try to extract capacity from title as fallback
+                const capacityMatch = item.title.match(/(\d+)\s?(?:GB|TB|gb|tb)/i);
+                if (capacityMatch) {
+                    const extractedVal = parseInt(capacityMatch[1]);
+                    const unit = item.title.toLowerCase().includes('tb') ? 'TB' : 'GB';
+                    capacity = `${extractedVal}${unit}`;
+                } else {
+                    capacity = '<span style="color: #999; font-style: italic;">Unknown</span>';
+                }
+            }
             
-            html += `<tr>
-                <td>${l.listing_id}</td>
-                <td>${ssdCell}</td>
-                <td>${capacity}</td>
-                <td class="price">€${l.price_eur}</td>
-                <td>${l.seller_location || 'N/A'}</td>
-                <td>${confidence}</td>
-                <td>${new Date(l.date_posted).toLocaleDateString()}</td>
-                <td><a href="${l.listing_url}" target="_blank" class="action-btn">View</a></td>
-            </tr>`;
+            const confidence = item.ssd_confidence_score || 0;
+            let confidenceClass = 'confidence-high';
+            if (confidence < 0.70) confidenceClass = 'confidence-medium';
+            if (confidence < 0.50) confidenceClass = 'confidence-low';
+            
+            // Check if has history
+            const hasHistory = item.history && item.history.length > 0;
+            
+            // Compute capacity tag (only if detected)
+            let capacityTag = '';
+            if (capacityVal && capacityVal > 0) {
+                capacityTag = `&nbsp;<span class="capacity-tag">${capacity}</span>`;
+            }
+
+            // Escape for onclick
+            const safeListingId = item.listing_id ? item.listing_id.replace(/'/g, "\\'") : '';
+            const normalizedImagePath = item.local_image_path ? item.local_image_path.replace(/\\/g, '/') : null;
+            const safeImageUrl = normalizedImagePath ? `/images/${normalizedImagePath}` : (item.image_url ? item.image_url.replace(/'/g, "\\'") : '');
+
+            const safeModalImageUrl = normalizedImagePath ? `/images/${normalizedImagePath}` : (item.image_url || '');
+            const safeSsdName = ssdName.replace(/'/g, "\\'");
+            
+            // Handle date formatting: fall back to first_seen_at / created_at when date_posted is null
+            let effectiveDate = item.date_posted || item.first_seen_at || item.created_at;
+            let dateStr = 'N/A';
+            if (effectiveDate) {
+                try {
+                    const date = new Date(effectiveDate);
+                    if (!isNaN(date.getTime())) {
+                        dateStr = date.toLocaleDateString();
+                    }
+                } catch (e) {
+                    dateStr = effectiveDate || 'N/A';
+                }
+            }
+            
+            html += `
+                <tr class="clickable" onclick="showSSDDetail('${safeListingId}')">
+                    <td class="listing-image-cell" onclick="event.stopPropagation()">
+                        ${item.is_new ? '<span class="badge badge-new badge-new-hover">New</span>' : ''}
+                        ${safeImageUrl ? `<img src="${safeImageUrl}" alt="${ssdName}" class="listing-thumb" onclick="event.stopPropagation(); showImageModal('${safeModalImageUrl}', '${safeSsdName}')">` : '<div class="listing-thumb-placeholder">📷</div>'}
+                    </td>
+                    <td onclick="event.stopPropagation()">
+                        <code style="font-size: 0.85rem;">${item.listing_id}</code>
+                    </td>
+                    <td>
+                        <strong>${ssdName}</strong>${capacityTag}
+                        ${item.ssd_match_method ? `<br><small class="${confidenceClass}">${(confidence*100).toFixed(0)}% confidence</small>` : ''}
+                    </td>
+                    <td>${capacity}</td>
+                    <td>${item.interface || 'N/A'}</td>
+                    <td><span class="badge badge-success">${item.interface_type || 'N/A'}</span></td>
+                    <td>
+                        ${renderPriceDecreaseBadge(item)}
+                        <span class="price">€${item.price_eur}</span>
+                    </td>
+                    <td>${item.seller_location || 'N/A'}</td>
+                    <td>${dateStr}</td>
+                    <td onclick="event.stopPropagation()">
+                        ${renderHistoryButton(item.listing_id, hasHistory)}
+                        <a href="${item.listing_url}" target="_blank" class="btn btn-small">View →</a>
+                    </td>
+                </tr>
+            `;
         });
         
-        html += '</tbody></table></div>';
+        html += `
+                </tbody>
+                <tfoot id="summary-row" style="display: none; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; font-weight: bold;">
+                    <tr>
+                        <td colspan="3" style="text-align: right; padding: 0.75rem;">Summary:</td>
+                        <td id="summary-total-price" style="padding: 0.75rem;">-</td>
+                        <td id="summary-avg-price" style="padding: 0.75rem; font-size: 0.85rem;">-</td>
+                        <td id="summary-count" style="padding: 0.75rem;" colspan="2">- listings</td>
+                    </tr>
+                </tfoot>
+            </table>
+        `;
         container.innerHTML = html;
         
-        // Update price distribution chart
-        updatePriceChart(listings);
+        // Show summary row if enabled in settings
+        const showSummary = localStorage.getItem('showSummaryFields') === 'true';
+        const summaryRow = document.getElementById('summary-row');
+        if (showSummary && summaryRow) {
+            summaryRow.style.display = 'table-row-group';
+            // Calculate totals
+            const totalPrice = listingsWithHistory.reduce((sum, item) => sum + parseFloat(item.price_eur || 0), 0);
+            const avgPrice = listingsWithHistory.length > 0 ? totalPrice / listingsWithHistory.length : 0;
+            const count = listingsWithHistory.length;
+            document.getElementById('summary-total-price').textContent = `€${totalPrice.toFixed(2)} total`;
+            document.getElementById('summary-avg-price').textContent = `avg: €${avgPrice.toFixed(2)}`;
+            document.getElementById('summary-count').textContent = `${count} listings shown`;
+        }
         
     } catch (error) {
         document.getElementById('listings-container').innerHTML = 
-            `<div class="error">Error loading listings: ${error.message}</div>`;
+            `<div class="error">Failed to load listings: ${error.message}</div>`;
     }
 }
 
-function updatePriceChart(listings) {
-    const matched = listings.filter(l => l.ssd_confidence_score >= 0.70);
-    
-    const ranges = {
-        'Under €50': 0,
-        '€50-100': 0,
-        '€100-200': 0,
-        '€200-500': 0,
-        'Over €500': 0
-    };
-    
-    matched.forEach(l => {
-        const price = l.price_eur;
-        if (price < 50) ranges['Under €50']++;
-        else if (price < 100) ranges['€50-100']++;
-        else if (price < 200) ranges['€100-200']++;
-        else if (price < 500) ranges['€200-500']++;
-        else ranges['Over €500']++;
-    });
-    
-    const ctx = document.getElementById('priceDistChart').getContext('2d');
-    
-    if (priceChart) {
-        priceChart.destroy();
-    }
-    
-    priceChart = new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: Object.keys(ranges),
-            datasets: [{
-                label: 'Listings',
-                data: Object.values(ranges),
-                backgroundColor: ['#667eea', '#764ba2', '#f093fb', '#f5576c', '#4facfe']
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                legend: { display: false }
-            },
-            scales: {
-                y: { beginAtZero: true, ticks: { stepSize: 1 } }
-            }
-        }
-    });
-}
-
-async function showModelHistory(modelId, modelName, category) {
-    document.getElementById('history-title').textContent = modelName + ' - Price History';
-    document.getElementById('history-modal').style.display = 'flex';
+// Show SSD detail modal
+async function showSSDDetail(listingId) {
+    console.log('Opening SSD detail for:', listingId);
     
     try {
-        const response = await fetch(`/api/price-history/${modelId}?category=${category}`);
+        const response = await fetch(`/api/ssds/${listingId}`);
         const data = await response.json();
         
-        // Update chart
-        const ctx = document.getElementById('historyChart').getContext('2d');
-        
-        if (historyChart) {
-            historyChart.destroy();
+        if (!data.success) {
+            console.error('Error:', data.error);
+            return;
         }
         
-        const prices = data.map(d => d.price_eur);
-        const dates = data.map(d => new Date(d.date_posted).toLocaleDateString());
+        const listing = data.listing;
+        const ssdName = listing.ssd_model ? `${listing.ssd_brand} ${listing.ssd_model}` : listing.title;
         
-        historyChart = new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: dates,
-                datasets: [{
-                    label: 'Price (EUR)',
-                    data: prices,
-                    borderColor: '#667eea',
-                    backgroundColor: 'rgba(102, 126, 234, 0.1)',
-                    fill: true,
-                    tension: 0.3
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: { legend: { display: false } },
-                scales: { y: { beginAtZero: true } }
-            }
-        });
+        document.getElementById('ssd-title').textContent = ssdName;
         
-        // Show listings
-        let html = '<h4>All Historical Listings</h4>';
-        html += '<div class="table-container"><table><thead><tr>';
-        html += '<th>ID</th><th>Price</th><th>Location</th><th>Posted</th><th>Link</th>';
-        html += '</tr></thead><tbody>';
+        // Set up flag button handler
+        const flagBtn = document.getElementById('flag-ssd-btn');
+        if (flagBtn) {
+            flagBtn.onclick = function() { showFlagModal(listingId); };
+        }
         
-        data.forEach(l => {
-            html += `<tr>
-                <td>${l.listing_id}</td>
-                <td class="price">€${l.price_eur}</td>
-                <td>${l.seller_location || 'N/A'}</td>
-                <td>${new Date(l.date_posted).toLocaleDateString()}</td>
-                <td><a href="${l.listing_url}" target="_blank" class="action-btn">View</a></td>
-            </tr>`;
-        });
+        const normalizedImagePath = listing.local_image_path ? listing.local_image_path.replace(/\\/g, '/') : null;
+        const detailImageUrl = normalizedImagePath ? `/images/${normalizedImagePath}` : listing.image_url;
+        const detailModalImageUrl = normalizedImagePath ? `/images/${normalizedImagePath}` : (listing.image_url || '');
+
+        // Build modal content
+        let html = `
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; padding: 0.75rem;">
+                <div>
+                    <h4 style="color: var(--text-color); margin-bottom: 0.5rem;">📷 Listing Image</h4>
+                    ${detailImageUrl 
+                        ? `<img src="${detailImageUrl}" alt="${ssdName}" style="max-width: 100%; border-radius: 8px; cursor: pointer;" onclick="showImageModal('${detailModalImageUrl}', '${ssdName}')">`
+                        : `<div style="background: #eee; height: 200px; display: flex; align-items: center; justify-content: center; border-radius: 8px;">📷 No Image</div>`
+                    }
+                </div>
+                <div>
+                    <h4 style="color: var(--text-color); margin-bottom: 0.5rem;">💾 SSD Information</h4>
+                    <table class="ssd-detail-table" style="width: 100%; color: var(--text-color);">
+                        <tr><td><strong>Brand:</strong></td><td>${listing.ssd_brand || 'N/A'}</td></tr>
+                        <tr><td><strong>Model:</strong></td><td>${listing.ssd_model || 'N/A'}</td></tr>
+                        <tr><td><strong>Capacity:</strong></td><td>${(listing.capacity_gb || listing.ssd_capacity_gb) ? ((listing.capacity_gb || listing.ssd_capacity_gb)) + 'GB' : 'N/A'}</td></tr>
+                        <tr><td><strong>Interface:</strong></td><td>${listing.interface || 'N/A'}</td></tr>
+                        <tr><td><strong>Form Factor:</strong></td><td>${listing.form_factor || 'N/A'}</td></tr>
+                        <tr><td><strong>Read Speed:</strong></td><td>${listing.read_speed_mb ? listing.read_speed_mb + ' MB/s' : 'N/A'}</td></tr>
+                        <tr><td><strong>Write Speed:</strong></td><td>${listing.write_speed_mb ? listing.write_speed_mb + ' MB/s' : 'N/A'}</td></tr>
+                        <tr><td><strong>NAND Type:</strong></td><td>${listing.nand_type || 'N/A'}</td></tr>
+                        <tr><td><strong>Controller:</strong></td><td>${listing.controller || 'N/A'}</td></tr>
+                    </table>
+                    
+                    <h4 style="color: var(--text-color); margin: 0.75rem 0 0.5rem 0;">💰 Pricing</h4>
+                    <table class="ssd-detail-table" style="width: 100%; color: var(--text-color);">
+                        <tr><td><strong>Current Price:</strong></td><td>€${listing.price_eur}</td></tr>
+                        <tr><td><strong>Cost per GB:</strong></td><td>${(listing.capacity_gb || listing.ssd_capacity_gb) ? '€' + (listing.price_eur / (listing.capacity_gb || listing.ssd_capacity_gb)).toFixed(3) : 'N/A'}</td></tr>
+                        <tr><td><strong>Confidence Score:</strong></td><td>${listing.ssd_confidence_score ? (listing.ssd_confidence_score * 100).toFixed(0) + '%' : 'N/A'}</td></tr>
+                    </table>
+                </div>
+            </div>
+            
+            <div style="padding: 0.75rem; border-top: 1px solid var(--border-color); margin-top: 0.75rem;">
+                <h4 style="color: var(--text-color); margin-bottom: 0.5rem;">📝 Description</h4>
+                <div style="background: var(--section-bg); padding: 0.75rem; border-radius: 6px; color: var(--text-color); white-space: pre-wrap; max-height: 160px; overflow-y: auto;">
+                    ${listing.description ? listing.description.replace(/\n/g, '<br>') : 'No description available'}
+                </div>
+            </div>
+            
+            <div style="padding: 0.75rem; border-top: 1px solid var(--border-color); margin-top: 0.75rem;">
+                <h4 style="color: var(--text-color); margin-bottom: 0.5rem;">📋 Listing Details</h4>
+                <table style="width: 100%; color: var(--text-color);">
+                    <tr><td><strong>Listing ID:</strong></td><td><code>${listing.listing_id}</code></td></tr>
+                    <tr><td><strong>Title:</strong></td><td>${listing.title}</td></tr>
+                    <tr><td><strong>Seller Location:</strong></td><td>${listing.seller_location || 'N/A'}</td></tr>
+                    <tr><td><strong>Date Posted:</strong></td><td>${(() => { const d = listing.date_posted || listing.first_seen_at || listing.created_at; return d ? new Date(d).toLocaleDateString() : 'N/A'; })()}</td></tr>
+                    <tr><td><strong>Status:</strong></td><td>${listing.is_active ? '✅ Active' : '⏸️ Inactive'}</td></tr>
+                    <tr><td><strong>Match Method:</strong></td><td>${listing.ssd_match_method || 'N/A'}</td></tr>
+                </table>
+            </div>
+            
+            <div style="padding: 0.75rem; border-top: 1px solid var(--border-color); text-align: center;">
+                <a href="${listing.listing_url}" target="_blank" class="btn" style="margin-right: 0.5rem;">🔗 View Original Listing</a>
+                <button class="btn btn-secondary" onclick="closeSSDModal()">✕ Close</button>
+            </div>
+        `;
         
-        html += '</tbody></table></div>';
-        document.getElementById('history-listings').innerHTML = html;
+        document.getElementById('ssd-content').innerHTML = html;
+        document.getElementById('ssd-modal').classList.add('active');
         
     } catch (error) {
-        document.getElementById('history-listings').innerHTML = 
-            `<div class="error">Error loading history: ${error.message}</div>`;
+        console.error('Error loading SSD detail:', error);
     }
 }
 
-function closeModal() {
-    document.getElementById('history-modal').style.display = 'none';
+function closeSSDModal() {
+    const modal = document.getElementById('ssd-modal');
+    if (modal) modal.classList.remove('active');
 }
 
-// Close modal when clicking outside
-window.onclick = function(event) {
-    const modal = document.getElementById('history-modal');
-    if (event.target === modal) {
-        closeModal();
+// Close modal on background click
+document.addEventListener('click', function(e) {
+    const modal = document.getElementById('ssd-modal');
+    if (e.target === modal) {
+        closeSSDModal();
+    }
+});
+
+// Fetch price history for listings
+async function fetchPriceHistoryForListings(listings) {
+    const listingsWithHistory = [];
+    for (const listing of listings) {
+        try {
+            const response = await fetch(`/api/price-history/${listing.listing_id}`);
+            const data = await response.json();
+            listing.history = Array.isArray(data) ? data : (data.history || []);
+        } catch (error) {
+            listing.history = [];
+        }
+        listingsWithHistory.push(listing);
+    }
+    return listingsWithHistory;
+}
+
+// Render price decrease badge
+function renderPriceDecreaseBadge(listing) {
+    if (!listing.history || listing.history.length < 2) return '';
+    
+    const currentPrice = parseFloat(listing.price_eur);
+    const previousPrice = listing.history[1].price_eur;
+    const decrease = previousPrice - currentPrice;
+    const percent = ((decrease / previousPrice) * 100).toFixed(1);
+    
+    if (decrease > 0) {
+        return `<span class="price-badge decrease" title="Down from €${previousPrice}">↓ ${percent}%</span>`;
+    }
+    return '';
+}
+
+// Render history button
+function renderHistoryButton(listingId, hasHistory) {
+    if (!hasHistory) return '';
+    const safeListingId = listingId ? listingId.replace(/'/g, "\\'") : '';
+    return `<button class="btn btn-small btn-secondary" onclick="event.stopPropagation(); showPriceHistory('${safeListingId}')" title="View price history">📈</button>`;
+}
+
+// Show price history modal
+async function showPriceHistory(listingId) {
+    try {
+        const response = await fetch(`/api/price-history/${listingId}`);
+        const data = await response.json();
+        
+        const history = Array.isArray(data) ? data : (data.history || []);
+        if (!history || history.length === 0) {
+            alert('No price history available');
+            return;
+        }
+        let html = `
+            <div style="padding: 1rem;">
+                <h4 style="color: var(--text-color); margin-bottom: 1rem;">📈 Price History</h4>
+                <table style="width: 100%; color: var(--text-color);">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>{{ t('Price') }}</th>
+                            <th>Change</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+        `;
+        
+        let prevPrice = null;
+        history.forEach(h => {
+            const date = new Date(h.recorded_at || h.created_at).toLocaleDateString();
+            const price = `€${h.price_eur}`;
+            let change = '-';
+            if (prevPrice !== null) {
+                const diff = h.price_eur - prevPrice;
+                if (diff > 0) change = `↑ +€${diff.toFixed(2)}`;
+                else if (diff < 0) change = `↓ -€${Math.abs(diff).toFixed(2)}`;
+            }
+            prevPrice = h.price_eur;
+            
+            html += `
+                <tr>
+                    <td>${date}</td>
+                    <td>${price}</td>
+                    <td>${change}</td>
+                </tr>
+            `;
+        });
+        
+        html += `
+                    </tbody>
+                </table>
+            </div>
+        `;
+        
+        // Create temporary modal for price history
+        let modal = document.getElementById('price-history-modal');
+        if (!modal) {
+            modal = document.createElement('div');
+            modal.id = 'price-history-modal';
+            modal.className = 'modal-overlay';
+            modal.innerHTML = `
+                <div class="modal" style="max-width: 500px;">
+                    <div class="modal-header">
+                        <h3>Price History</h3>
+                        <button class="modal-close" onclick="document.getElementById('price-history-modal').classList.remove('active')">&times;</button>
+                    </div>
+                    <div id="price-history-content"></div>
+                </div>
+            `;
+            document.body.appendChild(modal);
+            modal.addEventListener('click', function(e) {
+                if (e.target === modal) modal.classList.remove('active');
+            });
+        }
+        
+        document.getElementById('price-history-content').innerHTML = html;
+        modal.classList.add('active');
+        
+    } catch (error) {
+        console.error('Error loading price history:', error);
+    }
+}
+
+// Image modal function
+function showImageModal(imageUrl, title) {
+    let modal = document.getElementById('image-preview-modal');
+    if (!modal) {
+        modal = document.createElement('div');
+        modal.id = 'image-preview-modal';
+        modal.className = 'modal-overlay';
+        modal.innerHTML = `
+            <div class="modal" style="max-width: 90%; max-height: 90%; padding: 0; overflow: hidden;">
+                <div style="position: relative; background: #000;">
+                    <button onclick="closeImageModal()" style="position: absolute; top: 10px; right: 10px; background: rgba(0,0,0,0.7); color: white; border: none; border-radius: 50%; width: 40px; height: 40px; font-size: 20px; cursor: pointer; z-index: 10;">&times;</button>
+                    <img id="preview-image" src="" alt="" style="max-width: 100%; max-height: 85vh; display: block; margin: 0 auto;">
+                </div>
+                <div style="padding: 1rem; background: white; text-align: center;">
+                    <p id="preview-title" style="margin: 0; font-weight: 600;"></p>
+                </div>
+            </div>
+        `;
+        document.body.appendChild(modal);
+        modal.addEventListener('click', function(e) {
+            if (e.target === modal) closeImageModal();
+        });
+    }
+    document.getElementById('preview-image').src = imageUrl;
+    document.getElementById('preview-image').alt = title;
+    document.getElementById('preview-title').textContent = title;
+    modal.classList.add('active');
+}
+
+function closeImageModal() {
+    const modal = document.getElementById('image-preview-modal');
+    if (modal) modal.classList.remove('active');
+}
+
+// Flag functionality
+let currentListingId = null;
+let currentSSDListing = null;
+
+function toggleSSDFlagFields() {
+    const selectedReason = document.querySelector('#flag-modal input[name="flag-reason"]:checked');
+    const sizeContainer = document.getElementById('flag-ssd-size-container');
+    const idContainer = document.getElementById('flag-ssd-id-container');
+    
+    const isMismatch = selectedReason && selectedReason.value === 'ssd_mismatch';
+    
+    if (sizeContainer) {
+        sizeContainer.style.display = isMismatch ? 'block' : 'none';
+    }
+    if (idContainer) {
+        idContainer.style.display = isMismatch ? 'block' : 'none';
+    }
+
+    // Skip is a soft pass-through reason; keep comment field visible and submit enabled
+}
+
+function showFlagModal(listingId) {
+    currentListingId = listingId;
+    
+    // Find the listing data to populate detected size
+    const listing = allSSDs ? allSSDs.find(s => s.listing_id === listingId) : null;
+    currentSSDListing = listing;
+    
+    // Populate detected size if available
+    const detectedSizeEl = document.getElementById('flag-ssd-detected-size');
+    if (detectedSizeEl && listing) {
+        const capacity = listing.capacity_gb || listing.ssd_capacity_gb;
+        detectedSizeEl.value = capacity ? capacity + 'GB' : '';
+    }
+    
+    // Clear correct size and ID
+    const correctSizeEl = document.getElementById('flag-ssd-correct-size');
+    if (correctSizeEl) correctSizeEl.value = '';
+    
+    const correctIdEl = document.getElementById('flag-ssd-correct-id');
+    if (correctIdEl) correctIdEl.value = '';
+    
+    const commentEl = document.getElementById('flag-comment');
+    if (commentEl) commentEl.value = '';
+    
+    // Reset submit button
+    const submitBtn = document.getElementById('flag-submit-btn');
+    if (submitBtn) {
+        submitBtn.innerHTML = 'Submit Flag';
+        submitBtn.style.background = '#dc3545';
+        submitBtn.disabled = false;
+    }
+    
+    const modal = document.getElementById('flag-modal');
+    if (modal) {
+        modal.classList.add('active');
+    }
+    
+    // Initialize field visibility
+    toggleSSDFlagFields();
+}
+
+function closeFlagModal() {
+    const modal = document.getElementById('flag-modal');
+    if (modal) modal.classList.remove('active');
+    currentListingId = null;
+    currentSSDListing = null;
+}
+
+// Fetch SSD size by ID and populate correct size field
+async function fetchSSDSizeById() {
+    const idInput = document.getElementById('flag-ssd-correct-id');
+    const correctSizeInput = document.getElementById('flag-ssd-correct-size');
+    const checkbox = document.getElementById('flag-ssd-size-correct');
+    
+    if (!idInput || !correctSizeInput) return;
+    
+    const ssdId = idInput.value.trim();
+    if (!ssdId) {
+        correctSizeInput.value = '';
+        return;
+    }
+    
+    try {
+        // Fetch SSD details from the API
+        const response = await fetch(`/api/ssd-details/${ssdId}`);
+        if (response.ok) {
+            const data = await response.json();
+            if (data.success && data.ssd) {
+                const capacity = data.ssd.capacity_gb || data.ssd.ssd_capacity_gb;
+                if (capacity) {
+                    correctSizeInput.value = capacity + 'GB';
+                    // Check if it matches detected size
+                    const detectedSize = document.getElementById('flag-ssd-detected-size')?.value;
+                    if (detectedSize && checkbox) {
+                        checkbox.checked = (detectedSize === capacity + 'GB');
+                    }
+                }
+            } else {
+                // SSD not found - allow manual entry
+                correctSizeInput.readOnly = false;
+                correctSizeInput.style.background = 'white';
+                correctSizeInput.placeholder = 'Enter size manually (SSD ID not found)';
+            }
+        } else {
+            // API error - allow manual entry
+            correctSizeInput.readOnly = false;
+            correctSizeInput.style.background = 'white';
+            correctSizeInput.placeholder = 'Enter size manually';
+        }
+    } catch (error) {
+        console.error('Error fetching SSD size:', error);
+        // Allow manual entry on error
+        correctSizeInput.readOnly = false;
+        correctSizeInput.style.background = 'white';
+    }
+}
+
+// Toggle correct size when checkbox is checked
+function toggleSSDSizeCorrect() {
+    const checkbox = document.getElementById('flag-ssd-size-correct');
+    const detectedSizeInput = document.getElementById('flag-ssd-detected-size');
+    const correctSizeInput = document.getElementById('flag-ssd-correct-size');
+    
+    if (!checkbox || !detectedSizeInput || !correctSizeInput) return;
+    
+    if (checkbox.checked) {
+        // Copy detected size to correct size
+        correctSizeInput.value = detectedSizeInput.value;
+        correctSizeInput.readOnly = true;
+        correctSizeInput.style.background = '#e8f5e9'; // Light green
+    } else {
+        // Clear and allow manual entry
+        correctSizeInput.value = '';
+        correctSizeInput.readOnly = false;
+        correctSizeInput.style.background = 'white';
+    }
+}
+
+async function submitFlag() {
+    if (!currentListingId) return;
+    
+    const selectedReason = document.querySelector('#flag-modal input[name="flag-reason"]:checked');
+    const reason = selectedReason ? selectedReason.value : 'other';
+    const commentEl = document.getElementById('flag-comment');
+    const comment = commentEl ? commentEl.value.trim() : '';
+    const correctIdEl = document.getElementById('flag-ssd-correct-id');
+    const correctId = correctIdEl ? correctIdEl.value.trim() : '';
+    const detectedSizeEl = document.getElementById('flag-ssd-detected-size');
+    const detectedSize = detectedSizeEl ? detectedSizeEl.value.trim() : '';
+    const correctSizeEl = document.getElementById('flag-ssd-correct-size');
+    const correctSize = correctSizeEl ? correctSizeEl.value.trim() : '';
+
+    let finalComment = '';
+    
+    if (reason === 'ssd_mismatch') {
+        const parts = [];
+        if (detectedSize && correctSize) {
+            parts.push(`Scrapper scrapped ${detectedSize}, should have been ${correctSize}`);
+        }
+        if (correctId) {
+            parts.push(`Should have matched with ID: ${correctId}`);
+        }
+        if (comment) {
+            parts.push(comment);
+        }
+        finalComment = parts.join('. ');
+    } else if (reason === 'skip') {
+        if (comment) {
+            finalComment = `Skip listings with "${comment}" in description`;
+        } else {
+            finalComment = 'Skip listing';
+        }
+    } else if (reason === 'spam') {
+        // Spam/scam must have comment
+        if (!comment) {
+            alert('Please enter a comment describing why this is spam/scam');
+            return;
+        }
+        finalComment = `SPAM/SCAM: ${comment}`;
+    } else {
+        finalComment = comment;
+    }
+    
+    try {
+        const response = await fetch('/api/flag-listing', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                listing_id: currentListingId,
+                reason: reason,
+                comment: finalComment
+            })
+        });
+        
+        const result = await response.json();
+        
+        if (result.success) {
+            // Close the flag popup immediately on success
+            closeFlagModal();
+            loadListings();
+        } else {
+            alert('Error: ' + (result.error || 'Unknown error'));
+        }
+    } catch (error) {
+        alert('Error flagging listing: ' + error.message);
     }
 }
 
 // Load on page load
-document.addEventListener('DOMContentLoaded', loadListings);
+document.addEventListener('DOMContentLoaded', function() {
+    loadStats();
+    loadListings();
+    
+    // Flag modal close on outside click
+    const flagModal = document.getElementById('flag-modal');
+    if (flagModal) {
+        flagModal.addEventListener('click', function(e) {
+            if (e.target === this) closeFlagModal();
+        });
+    }
+});
 </script>
 {% endblock %}

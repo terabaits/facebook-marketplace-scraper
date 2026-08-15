@@ -1,0 +1,21 @@
+    if (input) {
+        input.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                addListingById();
+            }
+        });
+    }
+}, 100);
+
+// Initialize on page load
+document.addEventListener('DOMContentLoaded', function() {
+    // Restore saved toggle states
+    const savedPrebuiltOnly = localStorage.getItem('computersPrebuiltOnly');
+    const savedHidePrebuilt = localStorage.getItem('computersHidePrebuilt');
+    const savedSortBy = localStorage.getItem('computersSortBy');
+    const savedSortOrder = localStorage.getItem('computersSortOrder');
+    
+    if (savedPrebuiltOnly !== null) {
+        document.getElementById('prebuilt-only').checked = savedPrebuiltOnly === 'true';
+    }
+    if (savedHidePrebuilt !== null) {

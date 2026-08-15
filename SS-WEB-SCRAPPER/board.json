@@ -1,0 +1,2697 @@
+{
+  "categories": [
+    "Frontend",
+    "Backend",
+    "Scraper",
+    "UI/UX"
+  ],
+  "columns": [
+    {
+      "color": "#e74c3c",
+      "id": "problems",
+      "tasks": [],
+      "title": "Problems"
+    },
+    {
+      "color": "#f39c12",
+      "id": "assignment",
+      "tasks": [
+        {
+          "category": "",
+          "column": "assignment",
+          "created": "2026-07-01T21:31:21.819392",
+          "fix": "",
+          "id": "T164",
+          "linked_task_id": null,
+          "page": "Project Board",
+          "priority": "Medium",
+          "relationship_type": null,
+          "title": "when solving a task, add an option to create a folder and store it in future box",
+          "updated": "2026-07-01T21:31:21.819392"
+        },
+        {
+          "category": "Frontend",
+          "column": "assignment",
+          "created": "2026-06-27T23:58:00.207047",
+          "fix": "",
+          "id": "T159",
+          "linked_task_id": null,
+          "page": "Project Board",
+          "priority": "Medium",
+          "relationship_type": null,
+          "reopen_history": [
+            {
+              "previous_completed_at": null,
+              "reopened_at": "2026-07-01T21:33:05.114855",
+              "update": "when you search drop down list should appear of the finds. move the search bar to left so its next page filter."
+            }
+          ],
+          "title": "Add an option to search across all tickets in one place",
+          "updated": "2026-07-01T21:33:05.114855"
+        },
+        {
+          "category": "Frontend",
+          "column": "assignment",
+          "created": "2026-06-27T13:10:34.347914",
+          "fix": "",
+          "id": "T134",
+          "linked_task_id": null,
+          "movedAt": "2026-06-29T16:18:02.329941",
+          "page": "Project Board",
+          "priority": "Medium",
+          "relationship_type": null,
+          "reopen_history": [
+            {
+              "previous_completed_at": null,
+              "reopened_at": "2026-07-01T21:36:11.366854",
+              "update": "in the pop up window under the Future folder add button to load the same folder as the linked task from the future box folder"
+            }
+          ],
+          "title": "When I add a new task from future box to assigment, spawn a new task with the dragged tasked linked",
+          "updated": "2026-07-01T21:36:11.366854"
+        },
+        {
+          "category": "Frontend",
+          "column": "assignment",
+          "created": "2026-06-27T15:14:43.007628",
+          "fix": "",
+          "id": "T144",
+          "linked_task_id": null,
+          "page": "Project Board",
+          "priority": "Medium",
+          "relationship_type": null,
+          "reopen_history": [
+            {
+              "previous_completed_at": null,
+              "reopened_at": "2026-07-01T21:38:23.811693",
+              "update": "in the pop up window make the doe snppet minimed that you can open"
+            }
+          ],
+          "started_at": "2026-06-29T13:45:37.623850+00:00",
+          "title": "Add code snippet field for when I click on a tickets in assigment box and reopen them from there",
+          "updated": "2026-07-01T21:38:23.811693"
+        },
+        {
+          "category": "Frontend",
+          "column": "assignment",
+          "created": "2026-07-01T21:44:23.900971",
+          "fix": "",
+          "id": "T165",
+          "linked_task_id": null,
+          "page": "CPU",
+          "priority": "Medium",
+          "relationship_type": null,
+          "title": "limit \"Most Listed\" chart to be 2 rows. so its same hight with MB by Year and Price By Vendor boxes",
+          "updated": "2026-07-01T21:44:23.900971"
+        },
+        {
+          "category": "Frontend",
+          "column": "assignment",
+          "created": "2026-07-01T22:43:04.192083",
+          "fix": "",
+          "folder_id": "F-20260701224304-4340322b",
+          "future_folder_id": "F-20260701224304-4340322b",
+          "id": "T166",
+          "linked_task_id": "T139",
+          "linked_tasks": [
+            {
+              "relationship_type": "linked",
+              "task_id": "T139"
+            }
+          ],
+          "page": "SSD",
+          "priority": "Medium",
+          "relationship_type": "linked",
+          "title": "make the image in pop up for portrait images max-width = 70% and center it in column",
+          "updated": "2026-07-01T22:43:04.281843",
+          "updated_at": "2026-07-01T22:43:04.281843"
+        },
+        {
+          "category": "Backend",
+          "column": "assignment",
+          "created": "2026-06-24T22:30:09.516769",
+          "fix": "Updated motherboards.html: On successful flag via submitFlag(), the flagged listing is now removed from window.allListings and renderListings(window.allListings) is called to refresh the table immediately without a full page reload.",
+          "id": "T107",
+          "linked_task_id": null,
+          "movedAt": "2026-06-29T16:08:44.933954",
+          "page": "Motherboards",
+          "priority": "Medium",
+          "relationship_type": null,
+          "reopen_history": [
+            {
+              "previous_completed_at": "2026-06-24T19:35:20.628Z",
+              "reopened_at": "2026-06-27T15:10:41.283371",
+              "update": "The flagged listings remains in the list after flag still. Now When I flag a listing, all of the listings disappear and I need tor reload the page. Afterwards all of the listings including the one I flagged are still there. I checked the admin page and there I see the flagged listing."
+            },
+            {
+              "previous_completed_at": null,
+              "reopened_at": "2026-07-01T22:49:39.737165",
+              "update": "works fine, until you refresh the page the flagged listings are back there."
+            }
+          ],
+          "started_at": "2026-06-24T19:32:47.208836Z",
+          "title": "when flag a listing in pop up window it doesnt remove the listing from page",
+          "updated": "2026-07-01T22:49:39.737165"
+        },
+        {
+          "category": "Frontend",
+          "column": "assignment",
+          "created": "2026-06-19T11:27:28.871859",
+          "fix": "Added image popup to Case listings: Added thumbnail with onclick handler, implemented showImageModal() function, exposed to global scope",
+          "id": "T059",
+          "linked_task_id": null,
+          "page": "Cases",
+          "priority": "Medium",
+          "relationship_type": null,
+          "reopen_history": [
+            {
+              "previous_completed_at": "2026-06-19T16:08:00",
+              "reopened_at": "2026-06-27T14:31:50.443234",
+              "update": "I think you did not understand the task. Pop up window should show detailed information about the listings.\n\nSource, Description, image, location, data, price, historical listing price"
+            },
+            {
+              "previous_completed_at": "2026-06-29T14:57:29.974438",
+              "reopened_at": "2026-07-01T22:51:16.061214",
+              "update": "Doesnt work. Maybe solution like in T060 can fix this."
+            }
+          ],
+          "started_at": "2026-06-29T14:55:31.754860",
+          "status": "talking",
+          "title": "Case pop up window doesnt work",
+          "updated": "2026-07-01T22:51:16.061214",
+          "updated_at": "2026-06-29T14:57:29.974438"
+        },
+        {
+          "category": "Backend",
+          "column": "assignment",
+          "created": "2026-06-27T14:59:57.106421",
+          "fix": "",
+          "id": "T142",
+          "linked_task_id": null,
+          "page": "Monitors",
+          "priority": "Medium",
+          "relationship_type": null,
+          "reopen_history": [
+            {
+              "previous_completed_at": null,
+              "reopened_at": "2026-07-01T22:53:45.026885",
+              "update": "I dont think this task was solved"
+            }
+          ],
+          "started_at": "2026-06-29T13:40:36.122051+00:00",
+          "title": "Why are there no \"Creator\" monitors? What specs would a creator monitor have? Can this information be located in our monitor_reference table?",
+          "updated": "2026-07-01T22:53:45.026885"
+        },
+        {
+          "category": "Frontend",
+          "column": "assignment",
+          "created": "2026-07-01T22:55:09.911722",
+          "fix": "",
+          "id": "T167",
+          "linked_task_id": null,
+          "page": "Consoles",
+          "priority": "Medium",
+          "relationship_type": null,
+          "title": "pop up window doesnt open when you click on the listing",
+          "updated": "2026-07-01T22:55:09.911722"
+        },
+        {
+          "category": "Frontend",
+          "code_snippet": "<div style=\"background: #f8f9fa; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem;\">\n                    <h4 style=\"margin-top: 0;\">Lens Specifications</h4>\n                    <div style=\"display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 0.5rem;\">\n                        \n                        \n                        \n                        \n                        \n                        \n                        \n                        \n                    </div>\n                    \n                    \n                </div>",
+          "column": "assignment",
+          "created": "2026-07-01T22:58:46.077823",
+          "fix": "",
+          "id": "T168",
+          "linked_task_id": null,
+          "page": "Lenses",
+          "priority": "Medium",
+          "relationship_type": null,
+          "title": "fix color of this in dark mode in pop up window",
+          "updated": "2026-07-01T22:58:46.077823"
+        },
+        {
+          "category": "Frontend",
+          "column": "assignment",
+          "created": "2026-06-27T14:14:13.247778",
+          "fix": "Added an admin toggle \"Show Listing ID in Popup\" to lenses.html. The toggle is persisted in localStorage and shows/hides a Listing ID field inside the shared listing-detail popup via the .admin-only.listing-id-field CSS class.",
+          "folder_id": "F-20260627141412-3d3ecd45",
+          "future_folder_id": "F-20260627141412-3d3ecd45",
+          "id": "T140",
+          "linked_task_id": null,
+          "movedAt": "2026-06-29T16:28:06.026545",
+          "page": "Lenses",
+          "priority": "Medium",
+          "relationship_type": null,
+          "reopen_history": [
+            {
+              "previous_completed_at": null,
+              "reopened_at": "2026-07-01T22:59:11.537853",
+              "update": "pop up window doesnt show the listing ID"
+            }
+          ],
+          "title": "add admin functionality of \"Show Listing ID in Popup\"",
+          "updated": "2026-07-01T22:59:11.536898",
+          "updated_at": "2026-06-27T14:14:13.570250"
+        }
+      ],
+      "title": "Assignment"
+    },
+    {
+      "color": "#3498db",
+      "id": "progress",
+      "tasks": [],
+      "title": "In Progress"
+    },
+    {
+      "color": "#9b59b6",
+      "id": "talking",
+      "tasks": [
+        {
+          "category": "Scraper",
+          "column": "talking",
+          "completed_at": "2026-06-25T13:35:00.000000",
+          "created": "2026-06-25T12:59:27.154801",
+          "fix": "Created src/utils/download_missing_andele_images.py in SS-CRAWLER, mirroring the T077 ss.com downloader pattern. It selects active Andele (source='andelemandele') listings with image_url but no local_image_path, downloads images via ImageDownloader into images/<category> folders, and updates listings.local_image_path. Supports --dry-run and --limit. Tested with a live run: 1 listing downloaded successfully and local_image_path persisted in DB.",
+          "folder_id": "F-20260625125926-3cb29754",
+          "future_folder_id": "F-20260625125926-3cb29754",
+          "id": "T116",
+          "linked_task_id": "T077",
+          "linked_tasks": [
+            {
+              "relationship_type": "similar_to",
+              "task_id": "T077"
+            }
+          ],
+          "page": "",
+          "priority": "Medium",
+          "relationship_type": "similar_to",
+          "started_at": "2026-06-25T13:28:29.500640",
+          "title": "create a scrapper that will check and download all images for andele listings",
+          "updated": "2026-06-25T13:35:00.000000"
+        },
+        {
+          "category": "Backend",
+          "column": "talking",
+          "completed_at": "2026-06-19T15:55:00",
+          "created": "2026-06-19T11:04:37.091229",
+          "fix": "CPU Socket is loaded from /api/cpu-models API (socket field in cpu_reference table). Displayed in: 1) #cpu-socket-info element above CPU dropdown, 2) CPU component details section under socket key, 3) Used for Match Chipset button enabling",
+          "id": "T055",
+          "linked_task_id": null,
+          "page": "PC Builder",
+          "priority": "Medium",
+          "relationship_type": null,
+          "started_at": "2026-06-19T15:51:00",
+          "title": "where does the detected CPU socket gets loaded in?",
+          "updated": "2026-06-19T15:55:00"
+        },
+        {
+          "category": "Frontend",
+          "column": "talking",
+          "created": "2026-06-18T16:23:35.659390",
+          "fix": "Updated gpu.html: Changed the grid template columns from '1fr 2fr' to '0.6fr 2fr', which reduces the width of the 'By Source' column to 60% of its original size. This allows the 'Price by Vendor' (Price by Vendro) chart to take up more space and reduces the dead space in the By Source section.",
+          "id": "T024",
+          "page": "GPU",
+          "priority": "Medium",
+          "reopen_history": [
+            {
+              "previous_completed_at": "2026-06-18T17:08:00",
+              "reopened_at": "2026-06-25T12:55:07.799012",
+              "update": "Why was \"Price by Vendor\" siwtched places with \"Top Deals\""
+            }
+          ],
+          "started_at": "2026-06-18T17:06:00",
+          "title": "Make \"By source\" smaller in length. There is alot of dead space and  that way \"Price by Vendro\" chart can go up",
+          "updated": "2026-06-29T14:05:24.591672"
+        },
+        {
+          "category": "Frontend",
+          "column": "talking",
+          "completed_at": "2026-06-29T13:49:13.373593",
+          "created": "2026-06-26T19:49:03.515836",
+          "fix": "Added an 'Include future folders' checkbox to the Project Board filter bar (default unchecked). Updated taskMatchesFilters() so tasks with future_folder_id or folder_id are hidden from column task lists when the toggle is off. Existing column text search and dropdown filters continue to work for both regular and future-folder tasks when the toggle is on. Future column folders themselves remain visible regardless of the toggle so they can still be browsed directly.",
+          "id": "T131",
+          "linked_task_id": null,
+          "page": "Project Board",
+          "priority": "Medium",
+          "relationship_type": null,
+          "reopen_history": [
+            {
+              "previous_completed_at": "2026-06-26T20:55:00",
+              "reopened_at": "2026-06-27T13:02:02.165094",
+              "update": "Once I change the filter, it should not close all the folder. It should keep the ones that were open open, and the ones that were closed, keep them closed."
+            }
+          ],
+          "started_at": "2026-06-29T13:48:05.447373",
+          "status": "talking",
+          "title": "filter should also filter out task tickets in future folder",
+          "updated": "2026-06-27T13:02:02.165094",
+          "updated_at": "2026-06-29T14:43:35.000958"
+        },
+        {
+          "category": "Frontend",
+          "column": "talking",
+          "completed_at": "2026-06-29T14:36:11.749113",
+          "created": "2026-06-27T13:09:27.058766",
+          "fix": "",
+          "folder_id": "F-20260626184910-ffd72a21",
+          "future_folder_id": "F-20260626184910-ffd72a21",
+          "id": "T133",
+          "linked_task_id": "T125",
+          "linked_tasks": [
+            {
+              "relationship_type": "linked",
+              "task_id": "T125"
+            }
+          ],
+          "page": "GPU",
+          "priority": "Medium",
+          "relationship_type": "linked",
+          "started_at": "2026-06-29T13:50:09.864712",
+          "status": "talking",
+          "title": "Do the same fix fo this page as you did in T125",
+          "updated": "2026-06-27T13:09:27.392186",
+          "updated_at": "2026-06-29T14:43:35.000958"
+        },
+        {
+          "category": "Backend",
+          "column": "talking",
+          "completed_at": "2026-06-29T14:46:35.876184",
+          "created": "2026-06-19T10:17:45.801692",
+          "fix": "",
+          "id": "T052",
+          "linked_task_id": null,
+          "page": "PC Builder",
+          "priority": "Medium",
+          "relationship_type": null,
+          "started_at": "2026-06-29T14:39:33.725456",
+          "status": "talking",
+          "title": "in RAM section add option to calculate avg price based on capacity and type from all ram model listings we have",
+          "updated": "2026-06-27T15:20:08.197783",
+          "updated_at": "2026-06-29T14:46:35.876184"
+        },
+        {
+          "category": "Backend",
+          "code_snippet": "<select id=\"psu-wattage-filter\" onchange=\"filterPSU()\" style=\"flex: 1; padding: 0.4rem; border: 1px solid var(--border-color); border-radius: 4px; background: var(--card-bg); color: var(--text-primary);\">\n                                <option value=\"\">Any</option>\n                                <option value=\"400\">400W</option>\n                                <option value=\"500\">500W</option>\n                                <option value=\"550\">550W</option>\n                                <option value=\"600\">600W</option>\n                                <option value=\"650\">650W</option>\n                                <option value=\"750\">750W</option>\n                                <option value=\"850\">850W</option>\n                                <option value=\"1000\">1000W</option>\n                                <option value=\"1200\">1200W+</option>\n                            </select>",
+          "column": "talking",
+          "completed_at": "2026-06-29T14:55:31.754860",
+          "created": "2026-06-19T10:26:39.777276",
+          "fix": "Added PSU wattage filter to PC Builder: Dropdown with wattage options (400W-1200W+), filterPSU() calculates avg price and count, shows info panel, filters PSU dropdown, clearBuild() resets wattage filter",
+          "id": "T054",
+          "linked_task_id": null,
+          "page": "PC Builder",
+          "priority": "Medium",
+          "relationship_type": null,
+          "reopen_history": [
+            {
+              "previous_completed_at": "2026-06-19T15:50:00",
+              "reopened_at": "2026-06-27T15:13:43.607923",
+              "update": "Make the dropdown more destinct in dark mode. Also If a particular PSU is not selected, use the avg price of all the PSU options of that wattage in Total Esimate box"
+            }
+          ],
+          "started_at": "2026-06-29T14:46:35.876184",
+          "status": "talking",
+          "title": "in \"PSU\" section add an option to pick you wattage and alculate avg price from our PSU listings with that wattage",
+          "updated": "2026-06-27T15:17:50.748950",
+          "updated_at": "2026-06-29T14:55:31.754860"
+        },
+        {
+          "category": "Scraper",
+          "column": "talking",
+          "created": "2026-06-19T15:46:51.069850",
+          "fix": "Created src/utils/download_missing_matched_images.py. Counts ss.com listings without local_image_path, filters to DB-matched listings, downloads images via ImageDownloader, and updates listings.local_image_path.",
+          "folder_id": "F-20260625125926-3cb29754",
+          "future_folder_id": "F-20260625125926-3cb29754",
+          "id": "T077",
+          "linked_task_id": "T116",
+          "linked_tasks": [
+            {
+              "relationship_type": "similar_to",
+              "task_id": "T116"
+            }
+          ],
+          "movedAt": "2026-06-29T15:35:25.254745",
+          "page": "",
+          "priority": "Medium",
+          "relationship_type": "similar_to",
+          "reopen_history": [
+            {
+              "previous_completed_at": "2026-06-24T13:22:13.895085Z",
+              "reopened_at": "2026-06-27T15:03:34.969223",
+              "update": "It doesnt seem to know how to download images for monitors.\n\nPS G:\\Github\\SS-WEB-SCRAPPER\\SS-CRAWLER> python  src/utils/download_missing_matched_images.py -monitors\nC:\\Users\\goldm\\AppData\\Local\\Programs\\Python\\Python310\\lib\\site-packages\\requests\\__init__.py:109: RequestsDependencyWarning: urllib3 (2.6.3) or chardet (7.4.3)/charset_normalizer (2.1.1) doesn't match a supported version!\n  warnings.warn(\nusage: download_missing_matched_images.py [-h] [--dry-run] [--limit LIMIT]  \ndownload_missing_matched_images.py: error: unrecognized arguments: -monitors\nPS G:\\Github\\SS-WEB-SCRAPPER\\SS-CRAWLER> ^C\nPS G:\\Github\\SS-WEB-SCRAPPER\\SS-CRAWLER>"
+            }
+          ],
+          "started_at": "2026-06-24T13:02:59.533870Z",
+          "title": "Create a python code that checks how many listings dont have an image. Once downloader is going trough listings that doesnt have an image, download the image only for those listings that description matches database for ss.com",
+          "updated": "2026-06-27T15:03:34.969223"
+        },
+        {
+          "category": "",
+          "column": "talking",
+          "created": "2026-06-25T12:52:21.146092",
+          "fix": "Updated templates/lenses.html showListingDetail() to render the listing image in the detail popup. Mirrors the robust image pattern from motherboards.html and gpu.html: normalizes local_image_path backslashes, prefers /images/<local_image_path> over image_url, and only renders the image column when a URL exists. Clicking the image opens the existing showImageModal() lightbox. The API already exposes image_url and local_image_path via /api/listing-details, so no backend changes were required.",
+          "id": "T115",
+          "linked_task_id": null,
+          "movedAt": "2026-06-29T16:11:06.799938",
+          "page": "Lenses",
+          "priority": "Medium",
+          "relationship_type": null,
+          "reopen_history": [
+            {
+              "previous_completed_at": "2026-06-25T13:00:00",
+              "reopened_at": "2026-06-27T14:11:25.921738",
+              "update": "You added the option to click on a image and lightbox appears, however, I need the iamge to appear in the pop up box when you click a listing to open. In this box, it should be visable."
+            }
+          ],
+          "started_at": "2026-06-25T12:53:43.729263",
+          "title": "in pop up window add listing image",
+          "updated": "2026-06-27T14:11:25.921738"
+        },
+        {
+          "category": "Scraper",
+          "column": "talking",
+          "created": "2026-06-25T13:50:35.561357",
+          "fix": "Updated src/scraper/ssd_parser.py to capture the full readable content of #msg_div_msg instead of only a one-line snippet. The new _extract_full_description() collects free-form text, all options-list tables (brand, model, capacity, condition) as \"Label: Value\" lines, and the price table. Nested tables are deduplicated and the original Latvian price text is preserved. Existing image_url extraction remains, so SSD listings now get both a complete description and a local image path via the scraper. Tested with the cgmebj sample HTML.",
+          "id": "T118",
+          "linked_task_id": null,
+          "movedAt": "2026-06-29T16:15:41.245156",
+          "page": "SSD",
+          "priority": "Medium",
+          "relationship_type": null,
+          "reopen_history": [
+            {
+              "previous_completed_at": "2026-06-26T04:12:00.000000",
+              "reopened_at": "2026-06-27T13:46:17.787375",
+              "update": "scrapped description should be clenaener. Now it includes all the html tags like <td>,<tr> etc."
+            }
+          ],
+          "started_at": "2026-06-26T04:04:52.000000",
+          "title": "or example SSD listing_id \"cgmebj\" description in datbase says \"Brand: Kioxia Model: Keg60Zns512G Condition: lietota\" . But it should get more info like <div id=\"msg_div_msg\"> <div style=\"float:right;margin:0px 0px 20px 20px;\" id=\"content_sys_div_msg\"></div>  Keg60Zns512G kioxia eg6 512gb nvme pcie gen4x4 m. 2 2230 ssd<br><br><table cellpadding=\"0\" cellspacing=\"0\" border=\"0\" width=\"100%\" class=\"options_list\"><tbody><tr><td width=\"50%\" valign=\"top\"><table border=\"0\" width=\"100%\" cellpadding=\"1\" cellspacing=\"0\"> \t\t\t\t<tbody><tr> \t\t\t\t\t<td height=\"20\" class=\"ads_opt_name\" width=\"30\" nowrap=\"\"> \t\t\t\t\t\tMarka: \t\t\t\t\t</td> \t\t\t\t\t<td class=\"ads_opt\" id=\"tdo_125\" nowrap=\"\"> \t\t\t\t\t\t<b>Kioxia</b> \t\t\t\t\t</td> \t\t\t\t</tr> \t\t\t\t<tr> \t\t\t\t\t<td height=\"20\" class=\"ads_opt_name\" width=\"30\" nowrap=\"\"> \t\t\t\t\t\tModelis: \t\t\t\t\t</td> \t\t\t\t\t<td class=\"ads_opt\" id=\"tdo_24\" nowrap=\"\"> \t\t\t\t\t\t<b>Keg60Zns512G</b> \t\t\t\t\t</td> \t\t\t\t</tr> \t\t\t\t<tr> \t\t\t\t\t<td height=\"20\" class=\"ads_opt_name\" width=\"30\" nowrap=\"\"> \t\t\t\t\t\tApjoms, Gb: \t\t\t\t\t</td> \t\t\t\t\t<td class=\"ads_opt\" id=\"tdo_42\" nowrap=\"\"> \t\t\t\t\t\t512 \t\t\t\t\t</td> \t\t\t\t</tr> \t\t\t\t<tr> \t\t\t\t\t<td id=\"pprice_td\" height=\"20\" class=\"ads_opt_name\" width=\"30\" nowrap=\"\"> \t\t\t\t\t\tStāvoklis: \t\t\t\t\t</td> \t\t\t\t\t<td class=\"ads_opt\" id=\"tdo_352\" nowrap=\"\"> \t\t\t\t\t\tlietota \t\t\t\t\t</td> \t\t\t\t</tr></tbody></table></td></tr></tbody></table><table style=\"border-top:1px #eee solid;padding-top:5px;margin-top:10px;\" cellpadding=\"1\" cellspacing=\"0\" border=\"0\" width=\"100%\"> \t\t\t\t<tbody><tr> \t\t\t\t\t<td valign=\"top\" height=\"20\" class=\"ads_opt_name_big\" width=\"30\" nowrap=\"\"> \t\t\t\t\t\tCena: \t\t\t\t\t</td> \t\t\t\t\t<td class=\"ads_price\" id=\"tdo_8\" valign=\"top\" nowrap=\"\"> \t\t\t\t\t\t75 € \t\t\t\t\t</td> \t\t\t\t</tr></tbody></table></div> be SSD scrapper doesnt seem to download images and attach image_url to listing database",
+          "updated": "2026-06-27T13:46:17.787375"
+        },
+        {
+          "category": "Scraper",
+          "code_snippet": "<td class=\"msg_footer\" align=\"right\">Datums: 17.06.2026 01:15</td>",
+          "column": "talking",
+          "created": "2026-06-27T13:48:59.522419",
+          "fix": "",
+          "id": "T136",
+          "linked_task_id": null,
+          "movedAt": "2026-06-29T16:20:31.857025",
+          "page": "SSD",
+          "priority": "Medium",
+          "relationship_type": null,
+          "title": "Why doesnt the scraper capture \"date_posted\"?",
+          "updated": "2026-06-27T13:48:59.522419"
+        },
+        {
+          "category": "Frontend",
+          "column": "talking",
+          "created": "2026-06-27T15:06:37.850801",
+          "fix": "Updated project_board.html to show the folder name as a tag label instead of the literal \"future\" column id.",
+          "id": "T143",
+          "linked_task_id": null,
+          "page": "Project Board",
+          "priority": "Medium",
+          "relationship_type": null,
+          "started_at": "2026-06-29T13:44:29.574555+00:00",
+          "title": "instead of future tag, it should say name of the folder on the tasks",
+          "updated": "2026-06-29T13:45:37.622851+00:00"
+        },
+        {
+          "category": "Frontend",
+          "column": "talking",
+          "created": "2026-06-27T23:35:08.989234",
+          "fix": "",
+          "id": "T156",
+          "linked_task_id": null,
+          "page": "PC Builder",
+          "priority": "Medium",
+          "relationship_type": null,
+          "title": "Add option to search GPU CPU Motherboard SSD PSU Case RAM by typing in the select box",
+          "updated": "2026-06-29T17:52:00"
+        },
+        {
+          "category": "Frontend",
+          "code_snippet": "<select id=\"ram-select\" class=\"component-select\" onchange=\"selectComponent('ram', this.value)\"><option value=\"\">Select RAM...</option><option value=\"72\" data-name=\"Corsair Vengeance RGB 192 GB\" data-capacity=\"192\" data-type=\"DDR5\" data-speed=\"DDR5-5200\">Corsair Vengeance RGB 192 GB (192GB DDR5 DDR5-5200MHz) - €1600</option><option value=\"23\" data-name=\"G.Skill Trident Z5 Neo RGB 64 GB\" data-capacity=\"64\" data-type=\"DDR5\" data-speed=\"DDR5-6000\">G.Skill Trident Z5 Neo RGB 64 GB (64GB DDR5 DDR5-6000MHz) - €1000</option><option value=\"1365\" data-name=\"ADATA XPG Lancer Blade 32 GB\" data-capacity=\"32\" data-type=\"DDR5\" data-speed=\"DDR5-6400\">ADATA XPG Lancer Blade 32 GB (32GB DDR5 DDR5-6400MHz) - €520</option><option value=\"20\" data-name=\"Crucial Pro 64 GB\" data-capacity=\"64\" data-type=\"DDR5\" data-speed=\"DDR5-6000\">Crucial Pro 64 GB (64GB DDR5 DDR5-6000MHz) - €520</option><option value=\"741\" data-name=\"Kingston FURY Beast RGB 64 GB\" data-capacity=\"64\" data-type=\"DDR4\" data-speed=\"DDR4-3600\">Kingston FURY Beast RGB 64 GB (64GB DDR4 DDR4-3600MHz) - €500</option><option value=\"36\" data-name=\"Patriot Viper Venom 32 GB\" data-capacity=\"32\" data-type=\"DDR5\" data-speed=\"DDR5-6000\">Patriot Viper Venom 32 GB (32GB DDR5 DDR5-6000MHz) - €395</option><option value=\"1895\" data-name=\"ADATA ADATA 32GB\" data-capacity=\"32\" data-type=\"DDR4\" data-speed=\"DDR4-3000\">ADATA ADATA 32GB (32GB DDR4 DDR4-3000MHz) - €380</option><option value=\"1\" data-name=\"Corsair Vengeance RGB 32 GB\" data-capacity=\"32\" data-type=\"DDR5\" data-speed=\"DDR5-6000\">Corsair Vengeance RGB 32 GB (32GB DDR5 DDR5-6000MHz) - €380</option><option value=\"303\" data-name=\"GOODRAM IRDM 32 GB\" data-capacity=\"32\" data-type=\"DDR5\" data-speed=\"DDR5-6000\">GOODRAM IRDM 32 GB (32GB DDR5 DDR5-6000MHz) - €380</option><option value=\"16\" data-name=\"Kingston FURY Beast 32 GB\" data-capacity=\"32\" data-type=\"DDR5\" data-speed=\"DDR5-6000\">Kingston FURY Beast 32 GB (32GB DDR5 DDR5-6000MHz) - €375</option><option value=\"3813\" data-name=\"Kingston T1 8 GB\" data-capacity=\"8\" data-type=\"DDR3\" data-speed=\"DDR3-1866\">Kingston T1 8 GB (8GB DDR3 DDR3-1866MHz) - €360</option><option value=\"177\" data-name=\"G.Skill Ripjaws S5 32 GB\" data-capacity=\"32\" data-type=\"DDR5\" data-speed=\"DDR5-6400\">G.Skill Ripjaws S5 32 GB (32GB DDR5 DDR5-6400MHz) - €350</option><option value=\"1007\" data-name=\"ADATA XPG Lancer Blade RGB 32 GB\" data-capacity=\"32\" data-type=\"DDR5\" data-speed=\"DDR5-6400\">ADATA XPG Lancer Blade RGB 32 GB (32GB DDR5 DDR5-6400MHz) - €300</option><option value=\"10\" data-name=\"Corsair Vengeance 32 GB\" data-capacity=\"32\" data-type=\"DDR5\" data-speed=\"DDR5-6000\">Corsair Vengeance 32 GB (32GB DDR5 DDR5-6000MHz) - €300</option><option value=\"107\" data-name=\"Kingston FURY Beast 32 GB\" data-capacity=\"32\" data-type=\"DDR5\" data-speed=\"DDR5-5600\">Kingston FURY Beast 32 GB (32GB DDR5 DDR5-5600MHz) - €265</option><option value=\"83\" data-name=\"G.Skill Trident Z RGB 32 GB\" data-capacity=\"32\" data-type=\"DDR4\" data-speed=\"DDR4-3600\">G.Skill Trident Z RGB 32 GB (32GB DDR4 DDR4-3600MHz) - €210</option><option value=\"896\" data-name=\"Kingston Fury Renegade RGB 16 GB\" data-capacity=\"16\" data-type=\"DDR5\" data-speed=\"DDR5-6400\">Kingston Fury Renegade RGB 16 GB (16GB DDR5 DDR5-6400MHz) - €200</option><option value=\"49\" data-name=\"G.Skill Ripjaws V 32 GB\" data-capacity=\"32\" data-type=\"DDR4\" data-speed=\"DDR4-3200\">G.Skill Ripjaws V 32 GB (32GB DDR4 DDR4-3200MHz) - €200</option><option value=\"526\" data-name=\"Crucial CT32G56C46U5 32 GB\" data-capacity=\"32\" data-type=\"DDR5\" data-speed=\"DDR5-5600\">Crucial CT32G56C46U5 32 GB (32GB DDR5 DDR5-5600MHz) - €180</option><option value=\"359\" data-name=\"G.Skill Aegis 5 16 GB\" data-capacity=\"16\" data-type=\"DDR5\" data-speed=\"DDR5-6000\">G.Skill Aegis 5 16 GB (16GB DDR5 DDR5-6000MHz) - €150</option><option value=\"60\" data-name=\"Kingston FURY Beast 16 GB\" data-capacity=\"16\" data-type=\"DDR5\" data-speed=\"DDR5-6000\">Kingston FURY Beast 16 GB (16GB DDR5 DDR5-6000MHz) - €145</option><option value=\"710\" data-name=\"Corsair Vengeance RGB RS 16 GB\" data-capacity=\"16\" data-type=\"DDR4\" data-speed=\"DDR4-3600\">Corsair Vengeance RGB RS 16 GB (16GB DDR4 DDR4-3600MHz) - €140</option><option value=\"5\" data-name=\"Corsair Vengeance LPX 16 GB\" data-capacity=\"16\" data-type=\"DDR4\" data-speed=\"DDR4-3200\">Corsair Vengeance LPX 16 GB (16GB DDR4 DDR4-3200MHz) - €115</option><option value=\"4034\" data-name=\"Kingston 1500 4 GB\" data-capacity=\"4\" data-type=\"DDR3\" data-speed=\"DDR3-1600\">Kingston 1500 4 GB (4GB DDR3 DDR3-1600MHz) - €96.67</option><option value=\"686\" data-name=\"Corsair CORSAIR Vengeance LPX 16GB\" data-capacity=\"16\" data-type=\"DDR4\" data-speed=\"DDR4-3000\">Corsair CORSAIR Vengeance LPX 16GB (16GB DDR4 DDR4-3000MHz) - €95</option><option value=\"435\" data-name=\"SK Hynix HMAA2GU6CJR8N-XN 16 GB\" data-capacity=\"16\" data-type=\"DDR4\" data-speed=\"DDR4-3200\">SK Hynix HMAA2GU6CJR8N-XN 16 GB (16GB DDR4 DDR4-3200MHz) - €85</option><option value=\"347\" data-name=\"Corsair Vengeance LPX 16 GB\" data-capacity=\"16\" data-type=\"DDR4\" data-speed=\"DDR4-2666\">Corsair Vengeance LPX 16 GB (16GB DDR4 DDR4-2666MHz) - €75</option><option value=\"401\" data-name=\"Corsair Vengeance LPX 32 GB\" data-capacity=\"32\" data-type=\"DDR4\" data-speed=\"DDR4-2133\">Corsair Vengeance LPX 32 GB (32GB DDR4 DDR4-2133MHz) - €70</option><option value=\"402\" data-name=\"Corsair Vengeance RGB RS 32 GB\" data-capacity=\"32\" data-type=\"DDR4\" data-speed=\"DDR4-3200\">Corsair Vengeance RGB RS 32 GB (32GB DDR4 DDR4-3200MHz) - €45</option><option value=\"1369\" data-name=\"Samsung M391A2K43BB1-CPB 16 GB\" data-capacity=\"16\" data-type=\"DDR4\" data-speed=\"DDR4-2133\">Samsung M391A2K43BB1-CPB 16 GB (16GB DDR4 DDR4-2133MHz) - €40</option><option value=\"163\" data-name=\"Samsung M378A1K43CB2-CRC 8 GB\" data-capacity=\"8\" data-type=\"DDR4\" data-speed=\"DDR4-2400\">Samsung M378A1K43CB2-CRC 8 GB (8GB DDR4 DDR4-2400MHz) - €37.5</option><option value=\"371\" data-name=\"Kingston ValueRAM 8 GB\" data-capacity=\"8\" data-type=\"DDR4\" data-speed=\"DDR4-3200\">Kingston ValueRAM 8 GB (8GB DDR4 DDR4-3200MHz) - €35</option><option value=\"4855\" data-name=\"Crucial CT3K8G3ERSLD8160B 24 GB\" data-capacity=\"24\" data-type=\"DDR3\" data-speed=\"DDR3-1600\">Crucial CT3K8G3ERSLD8160B 24 GB (24GB DDR3 DDR3-1600MHz) - €25</option><option value=\"365\" data-name=\"SK Hynix HMA81GU6MFR8N-UH 8 GB\" data-capacity=\"8\" data-type=\"DDR4\" data-speed=\"DDR4-2400\">SK Hynix HMA81GU6MFR8N-UH 8 GB (8GB DDR4 DDR4-2400MHz) - €25</option><option value=\"4359\" data-name=\"Crucial Ballistix 16 GB\" data-capacity=\"16\" data-type=\"DDR3\" data-speed=\"DDR3-1600\">Crucial Ballistix 16 GB (16GB DDR3 DDR3-1600MHz) - €19</option><option value=\"3570\" data-name=\"Crucial Ballistix Smart Tracer 4 GB\" data-capacity=\"4\" data-type=\"DDR3\" data-speed=\"DDR3-1600\">Crucial Ballistix Smart Tracer 4 GB (4GB DDR3 DDR3-1600MHz) - €15</option><option value=\"530\" data-name=\"Samsung Green 8 GB\" data-capacity=\"8\" data-type=\"DDR4\" data-speed=\"DDR4-2133\">Samsung Green 8 GB (8GB DDR4 DDR4-2133MHz) - €15</option><option value=\"3784\" data-name=\"Kingston Blu 8 GB\" data-capacity=\"8\" data-type=\"DDR3\" data-speed=\"DDR3-1600\">Kingston Blu 8 GB (8GB DDR3 DDR3-1600MHz) - €11</option><option value=\"457\" data-name=\"Corsair Vengeance LPX 128 GB\" data-capacity=\"128\" data-type=\"DDR4\" data-speed=\"DDR4-3200\">Corsair Vengeance LPX 128 GB (128GB DDR4 DDR4-3200MHz) - €10</option><option value=\"598\" data-name=\"Corsair Vengeance LPX 8 GB\" data-capacity=\"8\" data-type=\"DDR4\" data-speed=\"DDR4-2400\">Corsair Vengeance LPX 8 GB (8GB DDR4 DDR4-2400MHz) - €10</option><option value=\"4180\" data-name=\"Corsair Mac Memory 4 GB\" data-capacity=\"4\" data-type=\"DDR3\" data-speed=\"DDR3-1066\">Corsair Mac Memory 4 GB (4GB DDR3 DDR3-1066MHz) - €10</option><option value=\"79\" data-name=\"Corsair Vengeance LPX 8 GB\" data-capacity=\"8\" data-type=\"DDR4\" data-speed=\"DDR4-2400\">Corsair Vengeance LPX 8 GB (8GB DDR4 DDR4-2400MHz) - €9</option><option value=\"1013\" data-name=\"Corsair CORSAIR Vengeance LPX 64GB\" data-capacity=\"64\" data-type=\"DDR4\" data-speed=\"DDR4-3200\">Corsair CORSAIR Vengeance LPX 64GB (64GB DDR4 DDR4-3200MHz) - €5</option><option value=\"662\" data-name=\"SK Hynix HMT41GU6MFR8C-PB 8 GB\" data-capacity=\"8\" data-type=\"DDR3\" data-speed=\"DDR3-1600\">SK Hynix HMT41GU6MFR8C-PB 8 GB (8GB DDR3 DDR3-1600MHz) - €5</option><option value=\"140\" data-name=\"Kingston FURY Beast 32 GB\" data-capacity=\"32\" data-type=\"DDR4\" data-speed=\"DDR4-3600\">Kingston FURY Beast 32 GB (32GB DDR4 DDR4-3600MHz) - €0</option></select>",
+          "column": "talking",
+          "created": "2026-06-27T23:33:17.716258",
+          "fix": "",
+          "id": "T155",
+          "linked_task_id": null,
+          "page": "PC Builder",
+          "priority": "Medium",
+          "relationship_type": null,
+          "title": "why doesnt this dropbox fit in ram box?",
+          "updated": "2026-06-29T17:54:00"
+        },
+        {
+          "category": "Frontend",
+          "code_snippet": "<div class=\"component-details\" id=\"motherboard-details\"><div class=\"detail-row\"><span>brand:</span><span>ASUS</span></div><div class=\"detail-row\"><span>model:</span><span>ROG MAXIMUS Z690 EXTREME</span></div><div class=\"detail-row\"><span>socket:</span><span>LGA1700</span></div><div class=\"detail-row\"><span>chipset:</span><span>Z690</span></div><div class=\"detail-row\"><span>Avg Price:</span><span>€550</span></div></div>",
+          "column": "talking",
+          "created": "2026-06-27T23:31:07.868522",
+          "fix": "",
+          "id": "T153",
+          "linked_task_id": null,
+          "page": "PC Builder",
+          "priority": "Medium",
+          "relationship_type": null,
+          "title": "Make this readable in dark mode",
+          "updated": "2026-06-29T17:58:00"
+        },
+        {
+          "category": "Frontend",
+          "code_snippet": "<div class=\"ssd-filter-group\">\n                                <label>Size</label>\n                                <select id=\"ssd-size-filter\" onchange=\"filterSSD()\">\n                                    <option value=\"\">Any</option>\n                                    <option value=\"256\">256GB</option>\n                                    <option value=\"512\">512GB</option>\n                                    <option value=\"1000\">1TB</option>\n                                    <option value=\"2000\">2TB</option>\n                                    <option value=\"4000\">4TB</option>\n                                </select>\n                            </div>",
+          "column": "talking",
+          "created": "2026-06-27T23:32:18.031159",
+          "fix": "",
+          "id": "T154",
+          "linked_task_id": null,
+          "page": "PC Builder",
+          "priority": "Medium",
+          "relationship_type": null,
+          "title": "Make this box fit in visualy.",
+          "updated": "2026-06-29T18:00:00"
+        },
+        {
+          "category": "Frontend",
+          "column": "talking",
+          "created": "2026-06-19T15:05:50.694684",
+          "fix": "SSD capacity tag already implemented in computers.html: badge-ssd style exists, components.push shows SSD: GB when detected",
+          "id": "T072",
+          "linked_task_id": null,
+          "page": "Computers",
+          "priority": "Medium",
+          "relationship_type": null,
+          "reopen_history": [
+            {
+              "previous_completed_at": "2026-06-19T16:30:00",
+              "reopened_at": "2026-06-27T14:27:21.478027",
+              "update": "None of the listings in the list show SSD badge yet when I open pop up window it shows SSD was detected, even generic ones"
+            },
+            {
+              "previous_completed_at": "2026-06-29T15:06:10.237427",
+              "reopened_at": "2026-06-29T22:13:13.738047",
+              "update": "You did nothing. List in the page still does not SSD tag in Components row"
+            }
+          ],
+          "started_at": "2026-06-29T15:02:44.752668",
+          "status": "talking",
+          "title": "listings list should show also SSD capacity tag if it has been detected",
+          "updated": "2026-06-30T10:31:53.218092",
+          "updated_at": "2026-06-29T15:06:10.237427"
+        },
+        {
+          "category": "Frontend",
+          "column": "talking",
+          "created": "2026-06-27T23:57:00.702723",
+          "fix": "Use COALESCE(date_posted, first_seen_at, created_at) for RAM listings query and time filters",
+          "id": "T158",
+          "linked_task_id": null,
+          "linked_tasks": [],
+          "page": "Computers",
+          "priority": "Medium",
+          "relationship_type": null,
+          "reopen_history": [
+            {
+              "previous_completed_at": null,
+              "reopened_at": "2026-06-29T18:17:42.941950",
+              "update": "every computer shows \"Čustom\" tag. either the filters dont work or tag diesnt work"
+            },
+            {
+              "previous_completed_at": "2026-06-29T22:15:43.782070",
+              "reopened_at": "2026-06-29T22:16:06.507910",
+              "update": "I dont see any listings marked with prebuilt tag"
+            }
+          ],
+          "title": "Add prebuild tag to listings in list",
+          "updated": "2026-06-30T10:36:41.752611"
+        },
+        {
+          "category": "Backend",
+          "code_snippet": "contentscript.js:14083 MaxListenersExceededWarning: Possible EventEmitter memory leak detected. 11 close listeners added. Use emitter.setMaxListeners() to increase limit\nn @ contentscript.js:14083\nu @ contentscript.js:14083\na.addListener @ contentscript.js:14083\nZ.on @ contentscript.js:14082\na.once @ contentscript.js:14083\nj.pipe @ contentscript.js:14063\nq @ contentscript.js:14063\nD @ contentscript.js:14063\nP @ contentscript.js:14063\nM @ contentscript.js:14063\nI @ contentscript.js:14063\n(anonymous) @ contentscript.js:14083\ncall.__webpack_require__._LM_.__webpack_require__.__webpack_require__ @ contentscript.js:14083\n(anonymous) @ contentscript.js:14083\n(anonymous) @ contentscript.js:14083\ncontentscript.js:14083 MaxListenersExceededWarning: Possible EventEmitter memory leak detected. 11 end listeners added. Use emitter.setMaxListeners() to increase limit\nn @ contentscript.js:14083\nu @ contentscript.js:14083\na.addListener @ contentscript.js:14083\nZ.on @ contentscript.js:14082\nO @ contentscript.js:14083\nq @ contentscript.js:14063\nD @ contentscript.js:14063\nP @ contentscript.js:14063\nM @ contentscript.js:14063\nI @ contentscript.js:14063\n(anonymous) @ contentscript.js:14083\ncall.__webpack_require__._LM_.__webpack_require__.__webpack_require__ @ contentscript.js:14083\n(anonymous) @ contentscript.js:14083\n(anonymous) @ contentscript.js:14083\ncontentscript.js:14083 ObjectMultiplex - orphaned data for stream \"app-init-liveness\"\nwarn @ contentscript.js:14083\n_write @ contentscript.js:14082\nM @ contentscript.js:14063\nx @ contentscript.js:14063\nE.write @ contentscript.js:14063\nd @ contentscript.js:14082\na.emit @ contentscript.js:14083\nJ @ contentscript.js:14082\nK @ contentscript.js:14082\nZ.push @ contentscript.js:14082\n(anonymous) @ contentscript.js:14063\ncontentscript.js:14083 ObjectMultiplex - orphaned data for stream \"app-init-liveness\"\nwarn @ contentscript.js:14083\n_write @ contentscript.js:14082\nM @ contentscript.js:14063\nx @ contentscript.js:14063\nE.write @ contentscript.js:14063\nd @ contentscript.js:14082\na.emit @ contentscript.js:14083\nJ @ contentscript.js:14082\nK @ contentscript.js:14082\nZ.push @ contentscript.js:14082\n(anonymous) @ contentscript.js:14082\ntransform @ contentscript.js:14063\ns._write @ contentscript.js:14082\nI @ contentscript.js:14083\nL @ contentscript.js:14083\nO.write @ contentscript.js:14083\nd @ contentscript.js:14082\na.emit @ contentscript.js:14083\nJ @ contentscript.js:14082\nK @ contentscript.js:14082\nZ.push @ contentscript.js:14082\n(anonymous) @ contentscript.js:14063\ncontentscript.js:14083 ObjectMultiplex - orphaned data for stream \"background-liveness\"\nwarn @ contentscript.js:14083\n_write @ contentscript.js:14082\nM @ contentscript.js:14063\nx @ contentscript.js:14063\nE.write @ contentscript.js:14063\nd @ contentscript.js:14082\na.emit @ contentscript.js:14083\nJ @ contentscript.js:14082\nK @ contentscript.js:14082\nZ.push @ contentscript.js:14082\n(anonymous) @ contentscript.js:14063\ncontentscript.js:14083 ObjectMultiplex - orphaned data for stream \"background-liveness\"\nwarn @ contentscript.js:14083\n_write @ contentscript.js:14082\nM @ contentscript.js:14063\nx @ contentscript.js:14063\nE.write @ contentscript.js:14063\nd @ contentscript.js:14082\na.emit @ contentscript.js:14083\nJ @ contentscript.js:14082\nK @ contentscript.js:14082\nZ.push @ contentscript.js:14082\n(anonymous) @ contentscript.js:14082\ntransform @ contentscript.js:14063\ns._write @ contentscript.js:14082\nI @ contentscript.js:14083\nL @ contentscript.js:14083\nO.write @ contentscript.js:14083\nd @ contentscript.js:14082\na.emit @ contentscript.js:14083\nJ @ contentscript.js:14082\nK @ contentscript.js:14082\nZ.push @ contentscript.js:14082\n(anonymous) @ contentscript.js:14063\ncontentscript.js:14083 ObjectMultiplex - malformed chunk without name \"[object Object]\"\nwarn @ contentscript.js:14083\n_write @ contentscript.js:14082\nM @ contentscript.js:14063\nx @ contentscript.js:14063\nE.write @ contentscript.js:14063\nd @ contentscript.js:14082\na.emit @ contentscript.js:14083\nJ @ contentscript.js:14082\nK @ contentscript.js:14082\nZ.push @ contentscript.js:14082\n(anonymous) @ contentscript.js:14063\ncontentscript.js:14083 ObjectMultiplex - malformed chunk without name \"[object Object]\"\nwarn @ contentscript.js:14083\n_write @ contentscript.js:14082\nM @ contentscript.js:14063\nx @ contentscript.js:14063\nE.write @ contentscript.js:14063\nd @ contentscript.js:14082\na.emit @ contentscript.js:14083\nJ @ contentscript.js:14082\nK @ contentscript.js:14082\nZ.push @ contentscript.js:14082\n(anonymous) @ contentscript.js:14082\ntransform @ contentscript.js:14063\ns._write @ contentscript.js:14082\nI @ contentscript.js:14083\nL @ contentscript.js:14083\nO.write @ contentscript.js:14083\nd @ contentscript.js:14082\na.emit @ contentscript.js:14083\nJ @ contentscript.js:14082\nK @ contentscript.js:14082\nZ.push @ contentscript.js:14082\n(anonymous) @ contentscript.js:14063\ncomputers:1972 Loading computer stats...\ncomputers:1975 Stats response: {stats: {…}, success: true}\nchunk-mgcl-MAO3VRCL.js:16 @import rules are not allowed here. See https://github.com/WICG/construct-stylesheets/issues/119#issuecomment-588352418.\n(anonymous) @ chunk-mgcl-MAO3VRCL.js:16\nawait in (anonymous)\n(anonymous) @ chunk-mgcl-MAO3VRCL.js:16\n(anonymous) @ chunk-mgcl-UYK37KGI.js:1\n(anonymous) @ chunk-mgcl-UYK37KGI.js:1\nvl @ chunk-mgcl-DT437CWL.js:8\nqn @ chunk-mgcl-DT437CWL.js:8\nms @ chunk-mgcl-DT437CWL.js:8\nvn @ chunk-mgcl-DT437CWL.js:6\nTe @ chunk-mgcl-DT437CWL.js:8\nad @ chunk-mgcl-DT437CWL.js:6\nnext @ chunk-mgcl-X3BOXWJK.js:1\nr.next @ chunk-mgcl-52COTP23.js:3\ne._next @ chunk-mgcl-52COTP23.js:3\ne.next @ chunk-mgcl-52COTP23.js:3\n(anonymous) @ chunk-mgcl-52COTP23.js:3\np._next @ chunk-mgcl-52COTP23.js:3\ne.next @ chunk-mgcl-52COTP23.js:3\n(anonymous) @ chunk-mgcl-T7QKCVM3.js:1\n(anonymous) @ chunk-mgcl-T7QKCVM3.js:1\nPromise.then\nft @ chunk-mgcl-T7QKCVM3.js:1\n(anonymous) @ chunk-mgcl-T7QKCVM3.js:1\nr._trySubscribe @ chunk-mgcl-52COTP23.js:3\n(anonymous) @ chunk-mgcl-52COTP23.js:3\nK @ chunk-mgcl-52COTP23.js:3\nr.subscribe @ chunk-mgcl-52COTP23.js:3\n(anonymous) @ chunk-mgcl-52COTP23.js:3\n(anonymous) @ chunk-mgcl-52COTP23.js:3\n(anonymous) @ chunk-mgcl-52COTP23.js:3\nK @ chunk-mgcl-52COTP23.js:3\nr.subscribe @ chunk-mgcl-52COTP23.js:3\n(anonymous) @ chunk-mgcl-X3BOXWJK.js:1\nvl @ chunk-mgcl-DT437CWL.js:8\nqn @ chunk-mgcl-DT437CWL.js:8\nzn @ chunk-mgcl-DT437CWL.js:8\nId @ chunk-mgcl-DT437CWL.js:8\nkl @ chunk-mgcl-DT437CWL.js:8\nve.render @ chunk-mgcl-DT437CWL.js:8\nv3 @ chunk-mgcl-MAO3VRCL.js:16\nI3 @ chunk-mgcl-MAO3VRCL.js:16\nawait in I3\n(anonymous) @ chunk-mgcl-MAO3VRCL.js:16\ncomputers:2122 Opening computer detail for: hclok",
+          "column": "talking",
+          "created": "2026-06-29T22:23:35.639794",
+          "fix": "",
+          "id": "T160",
+          "linked_task_id": null,
+          "page": "Computers",
+          "priority": "Medium",
+          "relationship_type": null,
+          "title": "\"hclok\" listing show it has ram \"Kingston HyperX Fury 8 GB\" to cost around 50eur, we have that exact model in our database history and it shown to cost 25eur",
+          "updated": "2026-06-30T11:05:34.095293"
+        },
+        {
+          "category": "Scraper",
+          "column": "talking",
+          "created": "2026-06-27T22:54:10.376466",
+          "fix": "",
+          "id": "T145",
+          "linked_task_id": null,
+          "linked_tasks": [],
+          "page": "Computers",
+          "priority": "Medium",
+          "relationship_type": null,
+          "reopen_history": [
+            {
+              "previous_completed_at": null,
+              "reopened_at": "2026-06-29T22:17:34.706105",
+              "update": "was this resolved?"
+            }
+          ],
+          "title": "why scrapper only downloads the small image for ss.com? atleast in the pop up window I inly see the small image",
+          "updated": "2026-06-30T11:05:51.332259"
+        },
+        {
+          "category": "Frontend",
+          "column": "talking",
+          "created": "2026-06-18T15:58:10.951097",
+          "fix": "Fixed computers.html: Updated applyComponentFilters() function to remove the 'else { show = false }' clauses for ramCapacity and ramDdr filters. Previously, if a listing didn't have RAM info explicitly stated, it would be hidden. Now listings without RAM info are allowed to pass through (only filtered if they have info that doesn't match criteria). This prevents all listings from disappearing when DDR/Capacity filters are selected.",
+          "id": "T019",
+          "page": "Computers",
+          "priority": "Medium",
+          "reopen_history": [
+            {
+              "previous_completed_at": "2026-06-18T16:40:00",
+              "reopened_at": "2026-06-27T14:23:49.435098",
+              "update": "DDR type filter doesnt work. Capacity should offer to pick a certain size and not the \"min\""
+            },
+            {
+              "previous_completed_at": "2026-06-29T14:39:28.213652",
+              "reopened_at": "2026-06-29T22:14:37.103751",
+              "update": "DDR type filter still doesnt work."
+            }
+          ],
+          "started_at": "2026-06-29T14:36:59.193986",
+          "status": "talking",
+          "title": "When I pick DDR Type and Capacity in the filter, all listings disappear in computer listing page",
+          "updated": "2026-06-30T11:11:18.744252",
+          "updated_at": "2026-06-29T14:43:35.000958"
+        },
+        {
+          "category": "Frontend",
+          "code_snippet": "<div class=\"modal\">\n        <div class=\"modal-header\">\n            <h3 id=\"history-title\"> undefined Intel Core i5-9600k - Price History</h3>\n            <button class=\"modal-close\" onclick=\"closeModal()\">×</button>\n        </div>\n        <div id=\"history-content\">\n            <div class=\"history-chart\">\n                <canvas id=\"historyChart\" style=\"display: block; box-sizing: border-box; height: 300px; width: 734px;\" height=\"600\" width=\"1468\"></canvas>\n            </div>\n            <div id=\"history-listings\">\n            <div style=\"margin-bottom: 1.5rem;\">\n                <h4>Quick Statistics</h4>\n                <div style=\"display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; margin-top: 1rem;\">\n                    <div style=\"background: #f8f9fa; padding: 1rem; border-radius: 8px; text-align: center; border-left: 4px solid #667eea;\">\n                        <div style=\"font-size: 1.5rem; font-weight: bold; color: #667eea;\">€undefined</div>\n                        <div style=\"font-size: 0.875rem; color: #666;\">Average Price</div>\n                    </div>\n                    <div style=\"background: #f8f9fa; padding: 1rem; border-radius: 8px; text-align: center; border-left: 4px solid #27ae60;\">\n                        <div style=\"font-size: 1.5rem; font-weight: bold; color: #27ae60;\">€undefined</div>\n                        <div style=\"font-size: 0.875rem; color: #666;\">Min Price</div>\n                    </div>\n                    <div style=\"background: #f8f9fa; padding: 1rem; border-radius: 8px; text-align: center; border-left: 4px solid #e74c3c;\">\n                        <div style=\"font-size: 1.5rem; font-weight: bold; color: #e74c3c;\">€undefined</div>\n                        <div style=\"font-size: 0.875rem; color: #666;\">Max Price</div>\n                    </div>\n                    <div style=\"background: #f8f9fa; padding: 1rem; border-radius: 8px; text-align: center; border-left: 4px solid #764ba2;\">\n                        <div style=\"font-size: 1.5rem; font-weight: bold; color: #764ba2;\">undefined</div>\n                        <div style=\"font-size: 0.875rem; color: #666;\">Active (undefined total)</div>\n                    </div>\n                </div>\n            </div>\n\n            <h4>All Listings (1 unique)</h4>\n            <div style=\"overflow-x: auto;\">\n            <table>\n                <thead>\n                    <tr>\n                        <th>Title</th>\n                        <th>Price</th>\n                        <th>Location</th>\n                        <th>Date</th>\n                        <th>Status</th>\n                    </tr>\n                </thead>\n                <tbody>\n                    \n                        <tr>\n                            <td><a href=\"https://www.andelemandele.lv/perle/15695836/intel-i5-9600k-lga1151/\" target=\"_blank\">Intel i5-9600k (LGA1151)</a></td>\n                            <td class=\"price\">€70</td>\n                            <td>Intel i</td>\n                            <td>13/06/2026</td>\n                            <td><span class=\"badge badge-success\">Active</span></td>\n                        </tr>\n                    \n                </tbody>\n            </table>\n            </div>\n        </div>\n        </div>\n    </div>",
+          "column": "talking",
+          "created": "2026-06-24T22:45:51.377879",
+          "fix": "CPU popup image now displays. Root cause: local_image_path for CPU listings is stored as a bare filename (e.g. 'hdkkj_b41c0da5.jpg') with images physically located in SS-CRAWLER/images/cpu, while the popup/table code generated /images/<filename>. Flask's serve_image route only resolves folder-prefixed paths or via fallback search, so prefixed /images/cpu/<filename> is needed. Updated templates/cpu.html showListingHistory() and the table Image column renderer to prepend /images/cpu/ for bare filenames and preserve existing folder prefixes (e.g. facebook/). Backend /api/listing-details already returns local_image_path and image_url, and app.py serve_image route is unchanged.",
+          "id": "T108",
+          "linked_task_id": null,
+          "page": "CPU",
+          "priority": "Medium",
+          "relationship_type": null,
+          "reopen_history": [
+            {
+              "previous_completed_at": "2026-06-24T19:53:27.3337795Z",
+              "reopened_at": "2026-06-25T12:50:24.627396",
+              "update": "There is still no image in pop up window"
+            },
+            {
+              "previous_completed_at": "2026-06-25T13:00:00",
+              "reopened_at": "2026-06-25T16:15:00.637380",
+              "update": "CPU page still doesnt have an pop up image"
+            },
+            {
+              "previous_completed_at": "2026-06-26T05:10:00.000000",
+              "reopened_at": "2026-06-26T18:33:36.003922",
+              "update": "listings pop up window still doesnt show image"
+            },
+            {
+              "previous_completed_at": null,
+              "reopened_at": "2026-07-01T21:27:24.068413",
+              "update": "as you see, in the pop up window there is no image"
+            }
+          ],
+          "started_at": "2026-06-25T12:53:43.651057",
+          "title": "in pop up window add listing image",
+          "updated": "2026-07-03T09:33:33.443613"
+        }
+      ],
+      "title": "Review"
+    },
+    {
+      "color": "#27ae60",
+      "id": "solved",
+      "tasks": [
+        {
+          "category": "Frontend",
+          "column": "solved",
+          "completed_at": "2026-06-18T10:35:00",
+          "created": "2026-06-18T10:27:43.903286",
+          "fix": "Updated project_board.html: 1) renderTaskCard now shows '✓ Fix: [description]' in green directly on solved task cards, 2) showTaskDetail modal displays fix explanation in green highlighted box with timestamps for started/completed",
+          "id": "T006",
+          "page": "",
+          "priority": "Medium",
+          "started_at": "2026-06-18T10:33:00",
+          "title": "In project page when task is in solved section, it should show short explanation of the fix",
+          "updated": "2026-06-18T14:43:28.095424"
+        },
+        {
+          "category": "Frontend",
+          "column": "solved",
+          "completed_at": "2026-06-18T14:55:00",
+          "created": "2026-06-18T14:44:31.108230",
+          "fix": "Updated project_board.html showTaskDetail function: 1) Added logic to iterate through ALL reopen_history entries and display them in chronological order, 2) Each re-open entry shows: re-open number, date/time, previous completed date, and the update text, 3) Full re-open history now visible in a yellow-highlighted section with border styling",
+          "id": "T010",
+          "page": "",
+          "priority": "Medium",
+          "started_at": "2026-06-18T14:50:00",
+          "title": "Make the tasks not only show previous fix but also all other previous fixes in project page",
+          "updated": "2026-06-18T14:55:00"
+        },
+        {
+          "category": "DevOps",
+          "column": "solved",
+          "completed_at": "2026-06-18T15:15:00",
+          "created": "2026-06-18T15:04:02.286638",
+          "fix": "Documented and configured the automated workflow: Cron job 'check-assignments' (ID: 7f0c11ae-4035-459e-999b-02b77bb97b96) runs every 5 minutes to check for tasks in Assignment column. When found: 1) Task automatically moved to In Progress, 2) Agent works on task and announces progress, 3) Upon completion, task moved to Review for user approval, 4) User marks task as solved in UI to move to Solved column. Workflow: Assignment → In Progress → Review → Solved.",
+          "id": "T012",
+          "page": "",
+          "priority": "Medium",
+          "started_at": "2026-06-18T15:10:00",
+          "title": "if a task is put in \"Assigment\", it should move to \"In Progress\", once done to \"Review\" and once marked as solved, moved to \"Solved\" box.",
+          "updated": "2026-06-18T15:15:00"
+        },
+        {
+          "category": "",
+          "column": "solved",
+          "completed_at": "2026-06-19T11:05:30",
+          "created": "2026-06-18T22:01:04.112250",
+          "fix": "Added page-badge and category-badge CSS classes, updated renderTaskCard() to display Page (📄) and Category (🏷️) badges in task-meta section alongside priority badge",
+          "id": "T041",
+          "linked_task_id": null,
+          "page": "",
+          "priority": "Medium",
+          "title": "Why \"Pages\" dont have tag in the list like priority? in Project board",
+          "updated": "2026-06-19T11:18:03.141075"
+        },
+        {
+          "category": "",
+          "column": "solved",
+          "completed_at": "2026-06-19T14:52:00",
+          "created": "2026-06-19T14:28:53.865778",
+          "fix": "Removed LIMIT 100 from RAM listings API query in app.py get_ram() function. All 126+ RAM listings will now display instead of being capped at 100",
+          "id": "T069",
+          "linked_task_id": null,
+          "page": "RAM",
+          "priority": "Medium",
+          "relationship_type": null,
+          "started_at": "2026-06-19T14:49:00",
+          "title": "is the listing list limited to 100 entries? There seems to be 126 listings, but I only see 100",
+          "updated": "2026-06-19T14:54:38.420173"
+        },
+        {
+          "category": "Frontend",
+          "column": "solved",
+          "completed_at": "2026-06-19T11:55:00",
+          "created": "2026-06-18T21:50:38.334481",
+          "fix": "Fixed ball mode expand on drag release: Added dragStarted flag that gets set on mousemove, click handler checks this flag and skips expansion if drag just occurred",
+          "id": "T038",
+          "linked_task_id": null,
+          "page": "",
+          "priority": "High",
+          "reopen_history": [
+            {
+              "previous_completed_at": "2026-06-19T09:35:00",
+              "reopened_at": "2026-06-19T09:42:53.926099",
+              "update": "Add it to have an option to minimize in a small ball"
+            },
+            {
+              "previous_completed_at": "2026-06-19T09:52:00",
+              "reopened_at": "2026-06-19T09:56:06.975238",
+              "update": "when you minimize it to the ball, you cant expand it back. In the ball form its not pissible to drag it around."
+            },
+            {
+              "previous_completed_at": "2026-06-19T10:05:00",
+              "reopened_at": "2026-06-19T11:23:51.165402",
+              "update": "If click on the circle and move it around it doesnt stay closed. Make it also save it state and position in the window after refreash"
+            },
+            {
+              "previous_completed_at": "2026-06-19T11:33:00",
+              "reopened_at": "2026-06-19T11:37:47.682408",
+              "update": "fix was not successful. It still doesnt rember its positions after refresh and it still opens up after I drag it in ball mode"
+            },
+            {
+              "previous_completed_at": "2026-06-19T11:42:00",
+              "reopened_at": "2026-06-19T11:46:27.862094",
+              "update": "When drag a ball around, it still opens up on a release"
+            }
+          ],
+          "started_at": "2026-06-19T11:54:00",
+          "title": "remove \"In Progress\" box, replace it with status box on the side pop up hover boxed that is movable around in project board",
+          "updated": "2026-06-19T14:56:30.029854"
+        },
+        {
+          "category": "",
+          "column": "solved",
+          "completed_at": "2026-06-19T14:35:00",
+          "created": "2026-06-19T09:14:13.909247",
+          "fix": "Added task search functionality in link popup: Replaced dropdown with searchable input field that filters tasks by ID or title, shows matching results in dropdown, displays selected task, and maintains compatibility with existing link workflow",
+          "id": "T043",
+          "linked_task_id": null,
+          "page": "",
+          "priority": "Medium",
+          "relationship_type": null,
+          "started_at": "2026-06-19T14:33:00",
+          "title": "Add option to search tasks to link in task pop up windows",
+          "updated": "2026-06-19T14:57:00.421090"
+        },
+        {
+          "category": "UI/UX",
+          "column": "solved",
+          "completed_at": "2026-06-19T14:25:00",
+          "created": "2026-06-19T09:48:08.068631",
+          "fix": "Added choice modal when dragging from Review to Assignment/Problems: Option 1) Spawn new task with link to original and mark original as Solved, Option 2) Re-open task normally. Includes saveSpawnedTaskAndSolveOriginal() function to handle the workflow",
+          "id": "T045",
+          "linked_task_id": null,
+          "page": "Project Board",
+          "priority": "Medium",
+          "relationship_type": null,
+          "started_at": "2026-06-19T14:18:00",
+          "title": "When I drag a task from Review to (Assigment/Problem) give me an option To spawn a new task, link the one I dragged and set relationship in the meantime solving the task I dragged and putting it in solved box",
+          "updated": "2026-06-19T14:57:22.713609"
+        },
+        {
+          "category": "Backend",
+          "column": "solved",
+          "completed_at": "2026-06-19T15:00:00",
+          "created": "2026-06-19T14:15:00.000000",
+          "fix": "Added generic GPU selection to PC Builder: Implemented VRAM filter dropdown (2GB-24GB), filterGPU() function to calculate average price from matching GPU listings, display panel showing selected VRAM and calculated price, automatic GPU dropdown filtering based on VRAM selection",
+          "id": "T070",
+          "page": "PC Builder",
+          "priority": "High",
+          "started_at": "2026-06-19T14:45:00",
+          "title": "in PC Builder page, add option to select generic GPU by memory size (4GB, 6GB, 8GB, etc) and calculate avg price",
+          "updated": "2026-06-19T15:00:00.000000"
+        },
+        {
+          "category": "Frontend",
+          "column": "solved",
+          "completed_at": "2026-06-19T15:30:00",
+          "created": "2026-06-19T15:10:00.000000",
+          "fix": "Added generic CPU Cooler selection: Created cooler type dropdown with options (Air, AIO 120mm, AIO 240mm, AIO 280mm, AIO 360mm), implemented filterCooler() to calculate avg price by cooler type, added info panel display",
+          "id": "T073",
+          "page": "PC Builder",
+          "priority": "Medium",
+          "started_at": "2026-06-19T15:20:00",
+          "title": "CPU cooler section in PC Builder should have option to select generic cooler type (Air, AIO 120mm, AIO 240mm, etc)",
+          "updated": "2026-06-19T15:30:00.000000"
+        },
+        {
+          "category": "Frontend",
+          "column": "solved",
+          "completed_at": "2026-06-19T16:00:00",
+          "created": "2026-06-19T15:35:00.000000",
+          "fix": "Added manual price entry feature: Each component section now has 'Enter Custom Price' button that opens input field, validate and apply custom price to build total, displays custom price with 📝 indicator in component details",
+          "id": "T074",
+          "page": "PC Builder",
+          "priority": "Medium",
+          "started_at": "2026-06-19T15:50:00",
+          "title": "Add option in PC Builder to manually enter price for any component",
+          "updated": "2026-06-19T16:00:00.000000"
+        },
+        {
+          "category": "Backend",
+          "column": "solved",
+          "completed_at": "2026-06-19T16:35:00",
+          "created": "2026-06-19T16:05:00.000000",
+          "fix": "Added compatibility checking: Implemented checkCompatibility() function that validates CPU socket vs Motherboard socket, RAM type (DDR4/DDR5) compatibility, PSU wattage sufficiency. Shows warnings with 🔴 emoji and specific error messages",
+          "id": "T076",
+          "page": "PC Builder",
+          "priority": "High",
+          "started_at": "2026-06-19T16:20:00",
+          "title": "PC Builder should show warning when selected components are incompatible",
+          "updated": "2026-06-19T16:35:00.000000"
+        },
+        {
+          "category": "Frontend",
+          "column": "solved",
+          "completed_at": "2026-06-20T08:15:00",
+          "created": "2026-06-20T08:00:00.000000",
+          "fix": "Added build total display: Shows running total of all selected components, updates automatically when components change, shows price breakdown when hovering over total",
+          "id": "T087",
+          "page": "PC Builder",
+          "priority": "High",
+          "started_at": "2026-06-20T08:10:00",
+          "title": "Add total price calculation at the bottom of PC Builder",
+          "updated": "2026-06-20T08:15:00.000000"
+        },
+        {
+          "category": "",
+          "column": "solved",
+          "completed_at": "2026-06-21T14:11:07.821374",
+          "created": "2026-06-21T13:51:23.615729",
+          "fix": "Added sorting for Review (talking) column in createColumnElement() function to sort tasks by updated date in descending order (newest first). Tasks in Review column now appear with most recently updated at the top.",
+          "id": "T091",
+          "linked_task_id": "T080",
+          "linked_tasks": [
+            {
+              "relationship_type": "similar_to",
+              "task_id": "T080"
+            }
+          ],
+          "page": "",
+          "priority": "Medium",
+          "relationship_type": "similar_to",
+          "title": "reverse the order of \"Review\" box",
+          "updated": "2026-06-21T14:09:00.000000"
+        },
+        {
+          "category": "",
+          "column": "solved",
+          "completed_at": "2026-06-19T11:50:00",
+          "created": "2026-06-19T09:13:21.782920",
+          "fix": "Implemented multiple linked tasks in reopen modal: 1) Added addReopenLinkRow() function for dynamic link rows, 2) Added collectReopenLinks() to gather all links, 3) Updated confirmReopen() to send linked_tasks array, 4) Updated backend reopen endpoint to handle multiple links",
+          "id": "T042",
+          "linked_task_id": "T025",
+          "page": "",
+          "priority": "Medium",
+          "relationship_type": null,
+          "reopen_history": [
+            {
+              "previous_completed_at": "2026-06-19T11:35:00",
+              "reopened_at": "2026-06-19T11:39:55.872900",
+              "update": "This feature should also be implemented when you drag a task from \"Review\" to \"Problems\" and \"Assigment\""
+            }
+          ],
+          "started_at": "2026-06-19T11:34:00",
+          "title": "Add option to add multiple linked tasks and relationship in task windows",
+          "updated": "2026-06-21T19:19:06.249077"
+        },
+        {
+          "category": "Frontend",
+          "column": "solved",
+          "completed_at": "2026-06-18T15:05:00",
+          "created": "2026-06-18T14:57:03.182480",
+          "fix": "Updated project_board.html: 1) Modified handleDrop function to intercept Review→Assignment drag, 2) Added modal popup showing task details, current fix, and full fix history including all previous re-open attempts, 3) Updated modal title from 'Previous Fix' to 'Fix History' and changed from text to HTML content to support rich formatting",
+          "id": "T011",
+          "page": "",
+          "priority": "Medium",
+          "started_at": "2026-06-18T15:00:00",
+          "title": "When you move a task from \"Review\" to \"Assigment\" box, a window should pop up asking for an update and show history of fixes",
+          "updated": "2026-06-21T19:21:42.119524"
+        },
+        {
+          "category": "",
+          "column": "solved",
+          "completed_at": "2026-06-22T14:31:14.433682",
+          "created": "2026-06-21T16:12:11.604176",
+          "fix": "Resolved by T094: helper scripts now move completed Assignment tasks to Review (talking) instead of Solved.",
+          "id": "T098",
+          "linked_task_id": null,
+          "page": "Project Board",
+          "priority": "Medium",
+          "relationship_type": null,
+          "title": "Tasks from Assigment get moved to Solved box. It should be left in \"Review\" once completed for review",
+          "updated": "2026-06-22T14:31:14.433682"
+        },
+        {
+          "category": "",
+          "column": "solved",
+          "completed_at": "2026-06-22T15:04:17.021185",
+          "created": "2026-06-21T15:25:56.332990",
+          "fix": "Fixed showAddTaskModal() in project_board.html: it now calls populateDropdowns() before setting task form values, and populateDropdowns() preserves existing selections when rebuilding page/category dropdowns. This ensures active filter values for Page, Priority, and Category are correctly pre-filled when adding a new task.",
+          "id": "T097",
+          "linked_task_id": null,
+          "page": "Project Board",
+          "priority": "High",
+          "relationship_type": null,
+          "reopen_history": [
+            {
+              "previous_completed_at": "2026-06-21T15:32:00.000000",
+              "reopened_at": "2026-06-21T16:11:55.114497",
+              "update": "This doesnt work. Adding a new task didnt auto fill with active Page"
+            }
+          ],
+          "started_at": "2026-06-22T15:02:37.313173",
+          "title": "If I have selected filter for example \"Page\" - \"Project board\" active and add a new task. Auto fill the \"Page\" with \"Project board\". Do the same for other filters.",
+          "updated": "2026-06-24T15:41:54.072505"
+        },
+        {
+          "category": "",
+          "column": "solved",
+          "completed_at": "2026-06-22T14:51:33.357499",
+          "created": "2026-06-21T16:22:25.972025",
+          "fix": "Persisted Future folder expanded/collapsed state: Added folder.expanded to data model, backend toggle endpoint /api/project-board/folder/<id>/toggle, and frontend toggleFolder() now saves state on each open/minimize. Folders remember their state across page refreshes.",
+          "id": "T103",
+          "linked_task_id": null,
+          "page": "Project Board",
+          "priority": "Medium",
+          "relationship_type": null,
+          "started_at": "2026-06-22T14:48:30.005005",
+          "title": "Make the future box remember when a folder was opened and when minimized",
+          "updated": "2026-06-24T15:42:59.915547"
+        },
+        {
+          "category": "",
+          "column": "solved",
+          "completed_at": "2026-06-22T14:31:46.485063",
+          "created": "2026-06-21T15:08:15.817777",
+          "fix": "Updated move_t084.py, move_t086.py, and move_task.py helper scripts to move completed tasks from Assignment to Review (talking) instead of Solved. This fixes the workflow where tasks were automatically placed in Solved instead of Review.",
+          "id": "T094",
+          "linked_task_id": null,
+          "page": "Project Board",
+          "priority": "Medium",
+          "relationship_type": null,
+          "started_at": "2026-06-22T14:24:25.603308",
+          "title": "task tickets are automatically being pucked in \"Solved\" and are not left in \"Review\"",
+          "updated": "2026-06-24T15:43:53.923991"
+        },
+        {
+          "category": "UI/UX",
+          "column": "solved",
+          "completed_at": "2026-06-22T14:52:40.549357",
+          "created": "2026-06-19T16:24:21.787962",
+          "fix": "Fixed: Aligned the Mark as Special checkbox with its label using inline-flex styling, ensuring it behaves like a normal checkbox across all task states. Added a visible ⭐ SPECIAL badge to task cards so the special tag is visible from the general board lists.",
+          "id": "T081",
+          "linked_task_id": null,
+          "page": "Project Board",
+          "priority": "Medium",
+          "relationship_type": null,
+          "reopen_history": [
+            {
+              "previous_completed_at": "2026-06-19T16:45:00",
+              "reopened_at": "2026-06-21T13:46:57.719373",
+              "update": "i dont see an option to mark mark special"
+            },
+            {
+              "previous_completed_at": "2026-06-21T13:56:17.468580",
+              "reopened_at": "2026-06-21T16:18:35.052131",
+              "update": "It is there, but not in line with text and checkbox"
+            }
+          ],
+          "special": false,
+          "started_at": "2026-06-22T14:48:30.005005",
+          "title": "Add option to mark a task special in pop up window. This special tag should be visible from general box lists",
+          "updated": "2026-06-24T15:44:12.203385"
+        },
+        {
+          "category": "Frontend",
+          "column": "solved",
+          "completed_at": "2026-06-22T14:24:25.603308",
+          "created": "2026-06-21T19:16:10.822401",
+          "fix": "Preserved Solved search input value before folder drop refresh and re-applied filter after loadBoard() in handleDropToFolder() in project_board.html.",
+          "id": "T105",
+          "linked_task_id": null,
+          "page": "Project Board",
+          "priority": "Medium",
+          "relationship_type": null,
+          "title": "when I type seach in \"Solved\" filter, drag a task from solved to future folder. It should not refreash \"Solved\" list without entering the previously searched.",
+          "updated": "2026-06-24T15:58:47.305604"
+        },
+        {
+          "category": "",
+          "column": "solved",
+          "completed_at": "2026-06-22 14:51:56",
+          "created": "2026-06-21T16:16:54.766537",
+          "fix": "Added folder_class field to Future folders (Structure/Feature/Learning). Updated project_board.html to render class badge on folder header and added class dropdowns in folder create/edit modals. Updated app.py POST/PUT /api/project-board/folder to accept and persist folder_class. Backfilled existing Future folders with default class 'Feature'.",
+          "id": "T099",
+          "linked_task_id": null,
+          "page": "Project Board",
+          "priority": "Medium",
+          "relationship_type": null,
+          "started_at": "2026-06-22T14:48:30.005005",
+          "title": "Add option to clasify each folder in future box with class \"Structure/Feature/Learning\"",
+          "updated": "2026-06-24T15:58:53.869055"
+        },
+        {
+          "category": "Frontend",
+          "column": "solved",
+          "completed_at": "2026-06-24T13:22:13.895085Z",
+          "created": "2026-06-19T15:03:53.108462",
+          "fix": "Removed Price Distribution chart from templates/ram.html along with its canvas, variable, update function, and render call. Other charts remain intact.",
+          "id": "T071",
+          "linked_task_id": null,
+          "page": "RAM",
+          "priority": "Medium",
+          "relationship_type": null,
+          "started_at": "2026-06-24T13:02:59.533870Z",
+          "title": "Remove \" Price Distribution\" chart",
+          "updated": "2026-06-24T13:22:13.895085Z"
+        },
+        {
+          "category": "Frontend",
+          "column": "solved",
+          "completed_at": "2026-06-24T17:08:03.140985Z",
+          "created": "2026-06-18T15:48:00.179085",
+          "fix": "Fixed motherboards.html: All interactive functions (showListingDetail, showImageModal, showListingHistory, showFlagSection, toggleFlagSection, hideFlagSection, submitFlag, closeModal, handleCPUChange, handleVendorChange, renderListings, autoResizeTextarea, flagListing) and allListings were declared inside the page script IIFE, making them inaccessible to inline onclick/onchange handlers. Added explicit window.* exports for every function and global variable referenced inline. Listing rows now open the detail modal and images open the image modal.",
+          "id": "T016",
+          "page": "Motherboards",
+          "priority": "High",
+          "reopen_history": [
+            {
+              "previous_completed_at": "2026-06-18T16:25:00",
+              "reopened_at": "2026-06-18T17:42:40.976338",
+              "update": "Listings still dont open"
+            },
+            {
+              "previous_completed_at": "2026-06-18T17:58:00",
+              "reopened_at": "2026-06-24T20:04:57.541721",
+              "update": "still doesnt open contentscript.js:14083 MaxListenersExceededWarning: Possible EventEmitter memory leak detected. 11 close listeners added. Use emitter.setMaxListeners() to increase limit\nn @ contentscript.js:14083\nu @ contentscript.js:14083\na.addListener @ contentscript.js:14083\nZ.on @ contentscript.js:14082\na.once @ contentscript.js:14083\nE.pipe @ contentscript.js:14063\nq @ contentscript.js:14063\nD @ contentscript.js:14063\nP @ contentscript.js:14063\nM @ contentscript.js:14063\nI @ contentscript.js:14063\n(anonymous) @ contentscript.js:14083\ncall.__webpack_require__._LM_.__webpack_require__.__webpack_require__ @ contentscript.js:14083\n(anonymous) @ contentscript.js:14083\n(anonymous) @ contentscript.js:14083\ncontentscript.js:14083 MaxListenersExceededWarning: Possible EventEmitter memory leak detected. 11 end listeners added. Use emitter.setMaxListeners() to increase limit\nn @ contentscript.js:14083\nu @ contentscript.js:14083\na.addListener @ contentscript.js:14083\nZ.on @ contentscript.js:14082\nO @ contentscript.js:14083\nq @ contentscript.js:14063\nD @ contentscript.js:14063\nP @ contentscript.js:14063\nM @ contentscript.js:14063\nI @ contentscript.js:14063\n(anonymous) @ contentscript.js:14083\ncall.__webpack_require__._LM_.__webpack_require__.__webpack_require__ @ contentscript.js:14083\n(anonymous) @ contentscript.js:14083\n(anonymous) @ contentscript.js:14083\ncontentscript.js:14083 ObjectMultiplex - orphaned data for stream \"app-init-liveness\"\nwarn @ contentscript.js:14083\n_write @ contentscript.js:14082\nM @ contentscript.js:14063\nx @ contentscript.js:14063\nj.write @ contentscript.js:14063\nd @ contentscript.js:14082\na.emit @ contentscript.js:14083\nJ @ contentscript.js:14082\nK @ contentscript.js:14082\nZ.push @ contentscript.js:14082\n(anonymous) @ contentscript.js:14063\ncontentscript.js:14083 ObjectMultiplex - orphaned data for stream \"app-init-liveness\"\nwarn @ contentscript.js:14083\n_write @ contentscript.js:14082\nM @ contentscript.js:14063\nx @ contentscript.js:14063\nj.write @ contentscript.js:14063\nd @ contentscript.js:14082\na.emit @ contentscript.js:14083\nJ @ contentscript.js:14082\nK @ contentscript.js:14082\nZ.push @ contentscript.js:14082\n(anonymous) @ contentscript.js:14082\ntransform @ contentscript.js:14063\ns._write @ contentscript.js:14082\nI @ contentscript.js:14083\nL @ contentscript.js:14083\nO.write @ contentscript.js:14083\nd @ contentscript.js:14082\na.emit @ contentscript.js:14083\nJ @ contentscript.js:14082\nK @ contentscript.js:14082\nZ.push @ contentscript.js:14082\n(anonymous) @ contentscript.js:14063\ncontentscript.js:14083 ObjectMultiplex - orphaned data for stream \"background-liveness\"\nwarn @ contentscript.js:14083\n_write @ contentscript.js:14082\nM @ contentscript.js:14063\nx @ contentscript.js:14063\nj.write @ contentscript.js:14063\nd @ contentscript.js:14082\na.emit @ contentscript.js:14083\nJ @ contentscript.js:14082\nK @ contentscript.js:14082\nZ.push @ contentscript.js:14082\n(anonymous) @ contentscript.js:14063\ncontentscript.js:14083 ObjectMultiplex - orphaned data for stream \"background-liveness\"\nwarn @ contentscript.js:14083\n_write @ contentscript.js:14082\nM @ contentscript.js:14063\nx @ contentscript.js:14063\nj.write @ contentscript.js:14063\nd @ contentscript.js:14082\na.emit @ contentscript.js:14083\nJ @ contentscript.js:14082\nK @ contentscript.js:14082\nZ.push @ contentscript.js:14082\n(anonymous) @ contentscript.js:14082\ntransform @ contentscript.js:14063\ns._write @ contentscript.js:14082\nI @ contentscript.js:14083\nL @ contentscript.js:14083\nO.write @ contentscript.js:14083\nd @ contentscript.js:14082\na.emit @ contentscript.js:14083\nJ @ contentscript.js:14082\nK @ contentscript.js:14082\nZ.push @ contentscript.js:14082\n(anonymous) @ contentscript.js:14063\ncontentscript.js:14083 ObjectMultiplex - malformed chunk without name \"[object Object]\"\nwarn @ contentscript.js:14083\n_write @ contentscript.js:14082\nM @ contentscript.js:14063\nx @ contentscript.js:14063\nj.write @ contentscript.js:14063\nd @ contentscript.js:14082\na.emit @ contentscript.js:14083\nJ @ contentscript.js:14082\nK @ contentscript.js:14082\nZ.push @ contentscript.js:14082\n(anonymous) @ contentscript.js:14063\ncontentscript.js:14083 ObjectMultiplex - malformed chunk without name \"[object Object]\"\nwarn @ contentscript.js:14083\n_write @ contentscript.js:14082\nM @ contentscript.js:14063\nx @ contentscript.js:14063\nj.write @ contentscript.js:14063\nd @ contentscript.js:14082\na.emit @ contentscript.js:14083\nJ @ contentscript.js:14082\nK @ contentscript.js:14082\nZ.push @ contentscript.js:14082\n(anonymous) @ contentscript.js:14082\ntransform @ contentscript.js:14063\ns._write @ contentscript.js:14082\nI @ contentscript.js:14083\nL @ contentscript.js:14083\nO.write @ contentscript.js:14083\nd @ contentscript.js:14082\na.emit @ contentscript.js:14083\nJ @ contentscript.js:14082\nK @ contentscript.js:14082\nZ.push @ contentscript.js:14082\n(anonymous) @ contentscript.js:14063\nchunk-mgcl-MAO3VRCL.js:16 @import rules are not allowed here. See https://github.com/WICG/construct-stylesheets/issues/119#issuecomment-588352418.\n(anonymous) @ chunk-mgcl-MAO3VRCL.js:16\nawait in (anonymous)\n(anonymous) @ chunk-mgcl-MAO3VRCL.js:16\n(anonymous) @ chunk-mgcl-UYK37KGI.js:1\n(anonymous) @ chunk-mgcl-UYK37KGI.js:1\nvl @ chunk-mgcl-DT437CWL.js:8\nqn @ chunk-mgcl-DT437CWL.js:8\nms @ chunk-mgcl-DT437CWL.js:8\nvn @ chunk-mgcl-DT437CWL.js:6\nTe @ chunk-mgcl-DT437CWL.js:8\nad @ chunk-mgcl-DT437CWL.js:6\nnext @ chunk-mgcl-X3BOXWJK.js:1\nr.next @ chunk-mgcl-52COTP23.js:3\ne._next @ chunk-mgcl-52COTP23.js:3\ne.next @ chunk-mgcl-52COTP23.js:3\n(anonymous) @ chunk-mgcl-52COTP23.js:3\np._next @ chunk-mgcl-52COTP23.js:3\ne.next @ chunk-mgcl-52COTP23.js:3\n(anonymous) @ chunk-mgcl-T7QKCVM3.js:1\n(anonymous) @ chunk-mgcl-T7QKCVM3.js:1\nPromise.then\nft @ chunk-mgcl-T7QKCVM3.js:1\n(anonymous) @ chunk-mgcl-T7QKCVM3.js:1\nr._trySubscribe @ chunk-mgcl-52COTP23.js:3\n(anonymous) @ chunk-mgcl-52COTP23.js:3\nK @ chunk-mgcl-52COTP23.js:3\nr.subscribe @ chunk-mgcl-52COTP23.js:3\n(anonymous) @ chunk-mgcl-52COTP23.js:3\n(anonymous) @ chunk-mgcl-52COTP23.js:3\n(anonymous) @ chunk-mgcl-52COTP23.js:3\nK @ chunk-mgcl-52COTP23.js:3\nr.subscribe @ chunk-mgcl-52COTP23.js:3\n(anonymous) @ chunk-mgcl-X3BOXWJK.js:1\nvl @ chunk-mgcl-DT437CWL.js:8\nqn @ chunk-mgcl-DT437CWL.js:8\nzn @ chunk-mgcl-DT437CWL.js:8\nId @ chunk-mgcl-DT437CWL.js:8\nkl @ chunk-mgcl-DT437CWL.js:8\nve.render @ chunk-mgcl-DT437CWL.js:8\nv3 @ chunk-mgcl-MAO3VRCL.js:16\nI3 @ chunk-mgcl-MAO3VRCL.js:16\nawait in I3\n(anonymous) @ chunk-mgcl-MAO3VRCL.js:16\nmotherboards:1 Uncaught ReferenceError: showListingDetail is not defined\n    at HTMLTableRowElement.onclick (motherboards:1:1)\nonclick @ motherboards:1"
+            },
+            {
+              "previous_completed_at": null,
+              "reopened_at": "2026-06-24T20:06:24.598367",
+              "update": "it still doesnt open \ncontentscript.js:14083 MaxListenersExceededWarning: Possible EventEmitter memory leak detected. 11 close listeners added. Use emitter.setMaxListeners() to increase limit\nn @ contentscript.js:14083\nu @ contentscript.js:14083\na.addListener @ contentscript.js:14083\nZ.on @ contentscript.js:14082\na.once @ contentscript.js:14083\nE.pipe @ contentscript.js:14063\nq @ contentscript.js:14063\nD @ contentscript.js:14063\nP @ contentscript.js:14063\nM @ contentscript.js:14063\nI @ contentscript.js:14063\n(anonymous) @ contentscript.js:14083\ncall.__webpack_require__._LM_.__webpack_require__.__webpack_require__ @ contentscript.js:14083\n(anonymous) @ contentscript.js:14083\n(anonymous) @ contentscript.js:14083\ncontentscript.js:14083 MaxListenersExceededWarning: Possible EventEmitter memory leak detected. 11 end listeners added. Use emitter.setMaxListeners() to increase limit\nn @ contentscript.js:14083\nu @ contentscript.js:14083\na.addListener @ contentscript.js:14083\nZ.on @ contentscript.js:14082\nO @ contentscript.js:14083\nq @ contentscript.js:14063\nD @ contentscript.js:14063\nP @ contentscript.js:14063\nM @ contentscript.js:14063\nI @ contentscript.js:14063\n(anonymous) @ contentscript.js:14083\ncall.__webpack_require__._LM_.__webpack_require__.__webpack_require__ @ contentscript.js:14083\n(anonymous) @ contentscript.js:14083\n(anonymous) @ contentscript.js:14083\ncontentscript.js:14083 ObjectMultiplex - orphaned data for stream \"app-init-liveness\"\nwarn @ contentscript.js:14083\n_write @ contentscript.js:14082\nM @ contentscript.js:14063\nx @ contentscript.js:14063\nj.write @ contentscript.js:14063\nd @ contentscript.js:14082\na.emit @ contentscript.js:14083\nJ @ contentscript.js:14082\nK @ contentscript.js:14082\nZ.push @ contentscript.js:14082\n(anonymous) @ contentscript.js:14063\ncontentscript.js:14083 ObjectMultiplex - orphaned data for stream \"app-init-liveness\"\nwarn @ contentscript.js:14083\n_write @ contentscript.js:14082\nM @ contentscript.js:14063\nx @ contentscript.js:14063\nj.write @ contentscript.js:14063\nd @ contentscript.js:14082\na.emit @ contentscript.js:14083\nJ @ contentscript.js:14082\nK @ contentscript.js:14082\nZ.push @ contentscript.js:14082\n(anonymous) @ contentscript.js:14082\ntransform @ contentscript.js:14063\ns._write @ contentscript.js:14082\nI @ contentscript.js:14083\nL @ contentscript.js:14083\nO.write @ contentscript.js:14083\nd @ contentscript.js:14082\na.emit @ contentscript.js:14083\nJ @ contentscript.js:14082\nK @ contentscript.js:14082\nZ.push @ contentscript.js:14082\n(anonymous) @ contentscript.js:14063\ncontentscript.js:14083 ObjectMultiplex - orphaned data for stream \"background-liveness\"\nwarn @ contentscript.js:14083\n_write @ contentscript.js:14082\nM @ contentscript.js:14063\nx @ contentscript.js:14063\nj.write @ contentscript.js:14063\nd @ contentscript.js:14082\na.emit @ contentscript.js:14083\nJ @ contentscript.js:14082\nK @ contentscript.js:14082\nZ.push @ contentscript.js:14082\n(anonymous) @ contentscript.js:14063\ncontentscript.js:14083 ObjectMultiplex - orphaned data for stream \"background-liveness\"\nwarn @ contentscript.js:14083\n_write @ contentscript.js:14082\nM @ contentscript.js:14063\nx @ contentscript.js:14063\nj.write @ contentscript.js:14063\nd @ contentscript.js:14082\na.emit @ contentscript.js:14083\nJ @ contentscript.js:14082\nK @ contentscript.js:14082\nZ.push @ contentscript.js:14082\n(anonymous) @ contentscript.js:14082\ntransform @ contentscript.js:14063\ns._write @ contentscript.js:14082\nI @ contentscript.js:14083\nL @ contentscript.js:14083\nO.write @ contentscript.js:14083\nd @ contentscript.js:14082\na.emit @ contentscript.js:14083\nJ @ contentscript.js:14082\nK @ contentscript.js:14082\nZ.push @ contentscript.js:14082\n(anonymous) @ contentscript.js:14063\ncontentscript.js:14083 ObjectMultiplex - malformed chunk without name \"[object Object]\"\nwarn @ contentscript.js:14083\n_write @ contentscript.js:14082\nM @ contentscript.js:14063\nx @ contentscript.js:14063\nj.write @ contentscript.js:14063\nd @ contentscript.js:14082\na.emit @ contentscript.js:14083\nJ @ contentscript.js:14082\nK @ contentscript.js:14082\nZ.push @ contentscript.js:14082\n(anonymous) @ contentscript.js:14063\ncontentscript.js:14083 ObjectMultiplex - malformed chunk without name \"[object Object]\"\nwarn @ contentscript.js:14083\n_write @ contentscript.js:14082\nM @ contentscript.js:14063\nx @ contentscript.js:14063\nj.write @ contentscript.js:14063\nd @ contentscript.js:14082\na.emit @ contentscript.js:14083\nJ @ contentscript.js:14082\nK @ contentscript.js:14082\nZ.push @ contentscript.js:14082\n(anonymous) @ contentscript.js:14082\ntransform @ contentscript.js:14063\ns._write @ contentscript.js:14082\nI @ contentscript.js:14083\nL @ contentscript.js:14083\nO.write @ contentscript.js:14083\nd @ contentscript.js:14082\na.emit @ contentscript.js:14083\nJ @ contentscript.js:14082\nK @ contentscript.js:14082\nZ.push @ contentscript.js:14082\n(anonymous) @ contentscript.js:14063\nchunk-mgcl-MAO3VRCL.js:16 @import rules are not allowed here. See https://github.com/WICG/construct-stylesheets/issues/119#issuecomment-588352418.\n(anonymous) @ chunk-mgcl-MAO3VRCL.js:16\nawait in (anonymous)\n(anonymous) @ chunk-mgcl-MAO3VRCL.js:16\n(anonymous) @ chunk-mgcl-UYK37KGI.js:1\n(anonymous) @ chunk-mgcl-UYK37KGI.js:1\nvl @ chunk-mgcl-DT437CWL.js:8\nqn @ chunk-mgcl-DT437CWL.js:8\nms @ chunk-mgcl-DT437CWL.js:8\nvn @ chunk-mgcl-DT437CWL.js:6\nTe @ chunk-mgcl-DT437CWL.js:8\nad @ chunk-mgcl-DT437CWL.js:6\nnext @ chunk-mgcl-X3BOXWJK.js:1\nr.next @ chunk-mgcl-52COTP23.js:3\ne._next @ chunk-mgcl-52COTP23.js:3\ne.next @ chunk-mgcl-52COTP23.js:3\n(anonymous) @ chunk-mgcl-52COTP23.js:3\np._next @ chunk-mgcl-52COTP23.js:3\ne.next @ chunk-mgcl-52COTP23.js:3\n(anonymous) @ chunk-mgcl-T7QKCVM3.js:1\n(anonymous) @ chunk-mgcl-T7QKCVM3.js:1\nPromise.then\nft @ chunk-mgcl-T7QKCVM3.js:1\n(anonymous) @ chunk-mgcl-T7QKCVM3.js:1\nr._trySubscribe @ chunk-mgcl-52COTP23.js:3\n(anonymous) @ chunk-mgcl-52COTP23.js:3\nK @ chunk-mgcl-52COTP23.js:3\nr.subscribe @ chunk-mgcl-52COTP23.js:3\n(anonymous) @ chunk-mgcl-52COTP23.js:3\n(anonymous) @ chunk-mgcl-52COTP23.js:3\n(anonymous) @ chunk-mgcl-52COTP23.js:3\nK @ chunk-mgcl-52COTP23.js:3\nr.subscribe @ chunk-mgcl-52COTP23.js:3\n(anonymous) @ chunk-mgcl-X3BOXWJK.js:1\nvl @ chunk-mgcl-DT437CWL.js:8\nqn @ chunk-mgcl-DT437CWL.js:8\nzn @ chunk-mgcl-DT437CWL.js:8\nId @ chunk-mgcl-DT437CWL.js:8\nkl @ chunk-mgcl-DT437CWL.js:8\nve.render @ chunk-mgcl-DT437CWL.js:8\nv3 @ chunk-mgcl-MAO3VRCL.js:16\nI3 @ chunk-mgcl-MAO3VRCL.js:16\nawait in I3\n(anonymous) @ chunk-mgcl-MAO3VRCL.js:16\nmotherboards:1 Uncaught ReferenceError: showListingDetail is not defined\n    at HTMLTableRowElement.onclick (motherboards:1:1)\nonclick @ motherboards:1"
+            }
+          ],
+          "started_at": "2026-06-24T17:05:41.082466Z",
+          "title": "Listing windows dont pop up",
+          "updated": "2026-06-24T22:28:27.727343"
+        },
+        {
+          "category": "Frontend",
+          "column": "solved",
+          "completed_at": "2026-06-24T20:14:44.841676Z",
+          "created": "2026-06-24T23:03:56.868866",
+          "fix": "Added real-time search input above Future Box folders; filters folder names and task titles case-insensitively via filterFutureTasks().",
+          "id": "T111",
+          "linked_task_id": null,
+          "page": "Project Board",
+          "priority": "Medium",
+          "relationship_type": null,
+          "started_at": "2026-06-24T20:12:50.520539Z",
+          "title": "add a search bar in future box",
+          "updated": "2026-06-25T12:50:56.083016"
+        },
+        {
+          "category": "Frontend",
+          "column": "solved",
+          "completed_at": "2026-06-24T20:15:13Z",
+          "created": "2026-06-18T16:00:13.933914",
+          "fix": "Fixed /api/cpus SQL in app.py: benchmark columns do not exist on cpu_reference, so the query now left-joins cpu_complete_data on cpu_reference_id (falling back to the three cpu_benchmarks_* tables by cpu_name) to select cinebench_r23_multi, cinebench_r26_multi, and passmark_score. Post-processing still builds item.benchmarks and price_per_r23 / price_per_passmark. Updated cpu.html Best Value stats to read from item.benchmarks instead of the removed raw listing fields.",
+          "id": "T020",
+          "page": "CPU",
+          "priority": "Medium",
+          "reopen_history": [
+            {
+              "previous_completed_at": "2026-06-18T16:55:00",
+              "reopened_at": "2026-06-24T22:48:13.189924",
+              "update": "they still dont work"
+            },
+            {
+              "previous_completed_at": "2026-06-24T19:54:52Z",
+              "reopened_at": "2026-06-24T23:06:52.050671",
+              "update": "server error psycopg2.errors.UndefinedColumn: column c.cinebench_r23_multi does not exist"
+            }
+          ],
+          "started_at": "2026-06-24T20:15:13Z",
+          "title": "Why \"benchmarks\" and \"price/perf\" columns dont work?",
+          "updated": "2026-06-25T16:15:38.902565"
+        },
+        {
+          "category": "",
+          "column": "solved",
+          "completed_at": "2026-06-18T10:30:00",
+          "created": "2026-06-18T14:35:19.602958",
+          "fix": "Updated project_board.html: 1) Changed 'Talking' column title to 'Review' in JSON, 2) Swapped column positions: Review now comes before In Progress in the column order, 3) Moved all existing solved tasks (T004, T005, T006, T007, T008) to Review column for user approval",
+          "id": "T009",
+          "page": "",
+          "priority": "Medium",
+          "started_at": "2026-06-18T14:47:00",
+          "title": "change \"Talking\" box to \"Review\". Switch them in places with \"In Progress\". Put all the solved tasks when you are done here. If I mark them solved, only then move it to \"Solved\" box.",
+          "updated": "2026-06-18T10:30:00"
+        },
+        {
+          "category": "Frontend",
+          "column": "solved",
+          "completed_at": "2026-06-26T04:25:00.000000",
+          "created": "2026-06-25T16:13:49.756585",
+          "fix": "Fixed CPU sort in app.py get_cpus(). The backend was only handling sort_by=price/date, ignoring r23_score, passmark_score, price_per_r23, price_per_passmark. Added full sort mapping with NULLS LAST and COALESCE for aggregated/external benchmark tables. py_compile passes and live /api/cpus calls order correctly for all sort columns.",
+          "id": "T120",
+          "linked_task_id": null,
+          "page": "CPU",
+          "priority": "Medium",
+          "relationship_type": null,
+          "started_at": "2026-06-26T04:04:52.000000",
+          "title": "Sort does nothing to the list",
+          "updated": "2026-06-26T18:42:24.071046"
+        },
+        {
+          "category": "",
+          "column": "solved",
+          "completed_at": "2026-06-26T07:18:57.665480",
+          "created": "2026-06-25T15:46:40.531115",
+          "fix": "Added optional code_snippet and language fields to the project board task model. Updated app.py create/update/reopen endpoints and templates/project_board.html modal/reopen/detail views. Also mirrored the fields in the temporary tmp_pb.js prototype. Snippets render in task detail as monospace code blocks with language badge.",
+          "id": "T119",
+          "linked_task_id": null,
+          "page": "Project Board",
+          "priority": "Medium",
+          "relationship_type": null,
+          "started_at": "2026-06-26T04:04:52.000000",
+          "title": "Add option to add a code snippet to every new task or when a task is reopened.",
+          "updated": "2026-06-26T18:43:57.944170"
+        },
+        {
+          "category": "Frontend",
+          "column": "solved",
+          "completed_at": "2026-06-25T13:36:42",
+          "created": "2026-06-19T16:18:56.726159",
+          "fix": "Replaced the large Top Deals panel with the Price by Vendor chart in the GPU stats grid. Top Deals now sits in the smaller left column, while Price by Vendor takes the wider right panel (grid-row: span 2). Also updated the Price by Vendor rendering to a compact bar chart showing avg price and listing count per vendor.",
+          "id": "T079",
+          "linked_task_id": null,
+          "page": "GPU",
+          "priority": "Medium",
+          "relationship_type": null,
+          "started_at": "2026-06-25T13:28:29.416403",
+          "title": "Replace \"Top Deals\" with \"Price by vendor\" charts in places",
+          "updated": "2026-06-26T19:00:40.494676"
+        },
+        {
+          "category": "Frontend",
+          "column": "solved",
+          "completed_at": "2026-06-26T16:15:32.896993+00:00",
+          "created": "2026-06-26T18:55:49.698420",
+          "fix": "Added /api/cpus/platform-stats endpoint returning CPU Intel/AMD platform distribution and CPU socket distribution (with avg price). Added CPU Intel/AMD and CPU by Socket panels to templates/cpu.html stats section, matching Motherboard Market chart colors and styling. Updated loadCPUStatistics() to call loadCPUPlatformStats() so the charts refresh with the time filter.",
+          "id": "T126",
+          "linked_task_id": null,
+          "page": "CPU",
+          "priority": "Medium",
+          "relationship_type": null,
+          "started_at": "2026-06-26T16:10:17.251240+00:00",
+          "title": "add similiar chart like MB Intel/AMD, but \"CPU Intel/AMD\" and make \"CPU by socket\" chart like MB by socket",
+          "updated": "2026-06-26T19:44:32.126280"
+        },
+        {
+          "category": "Frontend",
+          "column": "solved",
+          "completed_at": "2026-06-26T04:30:00.000000",
+          "created": "2026-06-24T22:59:31.878984",
+          "fix": "Added /api/motherboards/platform-stats endpoint returning motherboard year, Intel/AMD platform, and socket distributions. Added a Motherboard Market panel to cpu.html stats section with year, platform, and socket bar charts.",
+          "id": "T109",
+          "linked_task_id": null,
+          "page": "CPU",
+          "priority": "Medium",
+          "relationship_type": null,
+          "started_at": "2026-06-26T04:04:52.000000",
+          "title": "add statistics of the motheboads about years years, intel/amd,sockets",
+          "updated": "2026-06-26T19:44:38.332991"
+        },
+        {
+          "category": "Frontend",
+          "column": "solved",
+          "completed_at": "2026-06-26T04:22:00.000000",
+          "created": "2026-06-25T16:27:02.549460",
+          "fix": "Reworked the CPU page table header in templates/cpu.html. Added a standalone column-settings dropdown (gear icon) that stays visible even when the Actions column label is hidden, so users can always restore columns. Added draggable column reordering, checkboxes for visibility, dark-mode styling, and preserved the gear button independent of the Actions column state.",
+          "id": "T122",
+          "linked_task_id": null,
+          "page": "CPU",
+          "priority": "Medium",
+          "relationship_type": null,
+          "started_at": "2026-06-26T04:04:52.000000",
+          "title": "With gear icon I removed the \"Actions\" - it removed the colmun title, left the buttos and slo removed the gear icon so now I cannot put the row back even.",
+          "updated": "2026-06-26T19:45:03.601628"
+        },
+        {
+          "category": "Frontend",
+          "code_snippet": "<tfoot id=\"summary-row\" style=\"display: table-row-group; background: linear-gradient(135deg, rgb(102, 126, 234) 0%, rgb(118, 75, 162) 100%); color: white; font-weight: bold;\">\n                    <tr>\n                        <td colspan=\"2\" style=\"text-align: right; padding: 0.75rem;\">Summary:</td>\n                        <td id=\"summary-total-price\" style=\"padding: 0.75rem;\">€23.00 total</td>\n                        <td id=\"summary-avg-price\" style=\"padding: 0.75rem; font-size: 0.85rem;\">avg: €23.00</td>\n                        <td id=\"summary-count\" style=\"padding: 0.75rem;\" colspan=\"5\">1 listings shown</td>\n                    </tr>\n                </tfoot>",
+          "column": "solved",
+          "completed_at": "2026-06-27T13:09:27.314677",
+          "created": "2026-06-26T18:49:10.619242",
+          "fix": "Updated templates/cpu.html summary row to dynamically calculate colSpan values based on the number of currently visible columns. Replaced hardcoded colspan totals with a helper updateSummaryRowColspans() that is called on initial render and inside renderFullTable() whenever columns are toggled/reordered via the gear icon. Also moved the 'Summary:' label into the first cell so the summary row always spans the full table width regardless of which columns are hidden.",
+          "folder_id": "F-20260626184910-ffd72a21",
+          "future_folder_id": "F-20260626184910-ffd72a21",
+          "id": "T125",
+          "language": "html",
+          "linked_task_id": null,
+          "page": "CPU",
+          "priority": "Medium",
+          "relationship_type": null,
+          "started_at": "2026-06-26T16:10:17.251240+00:00",
+          "title": "it isnt the full spand of the row. it should auto adjust acoording to box width as I can remove columns",
+          "updated": "2026-06-27T13:09:27.314677",
+          "updated_at": "2026-06-26T19:44:08.342866"
+        },
+        {
+          "category": "Frontend",
+          "column": "solved",
+          "completed_at": "2026-06-24T13:05:27Z",
+          "created": "2026-06-19T11:35:44.548253",
+          "fix": "Replaced the Average Price by Capacity Range bar chart in ssd.html with a responsive card list. Each card shows the capacity range label, average price, and number of listings, using existing styling and CSS variables for dark mode support.",
+          "id": "T062",
+          "linked_task_id": null,
+          "linked_tasks": null,
+          "page": "SSD",
+          "priority": "Medium",
+          "relationship_type": null,
+          "started_at": "2026-06-24T13:02:59.533870Z",
+          "title": "Make \"Average Price by Capacity Range\" just a list of each capacity chart range and how much it costs",
+          "updated": "2026-06-27T14:02:37.485018"
+        },
+        {
+          "category": "",
+          "column": "solved",
+          "completed_at": "2026-06-19T12:20:00",
+          "created": "2026-06-19T10:07:21.190277",
+          "fix": "Added generic SSD size option to PC Builder: Added size filter dropdown (256GB, 512GB, 1TB, 2TB, 4TB), generic selection button that calculates avg price from filtered SSDs, and display showing selected generic size",
+          "id": "T049",
+          "linked_task_id": null,
+          "page": "SSD",
+          "priority": "Medium",
+          "relationship_type": null,
+          "started_at": "2026-06-19T12:18:00",
+          "title": "SSD section should also offer an option to pick a generic SSD size that price calculated avg",
+          "updated": "2026-06-27T14:08:51.834075"
+        },
+        {
+          "category": "Frontend",
+          "column": "solved",
+          "completed_at": "2026-06-20T00:02:00",
+          "created": "2026-06-19T11:32:30.888511",
+          "fix": "Fixed ssd.html: Updated flag window label to use CSS variables for proper dark mode support - changed background to var(--table-row-alt-bg, #f0f0f0) and text color to var(--text-color, #333).",
+          "id": "T061",
+          "linked_task_id": null,
+          "page": "SSD",
+          "priority": "Medium",
+          "relationship_type": null,
+          "started_at": "2026-06-19T23:17:00",
+          "title": "in flag window make this text readable: <span>✓ Size comparison is correct (detected matches actual)</span>",
+          "updated": "2026-06-27T14:09:00.869993"
+        },
+        {
+          "category": "Frontend",
+          "column": "solved",
+          "completed_at": "2026-06-25T13:16:24.970808",
+          "created": "2026-06-24T23:02:34.084836",
+          "fix": "Added Future Folder selector to the new-task/create-task dialog. Users can now create a new Future folder or pick an existing one. The selected folder ID is stored on the task (future_folder_id) at creation/edit time. When the task is later marked Solved, it is automatically moved into that chosen Future folder via the existing task-folder API.",
+          "id": "T110",
+          "linked_task_id": null,
+          "page": "Project Board",
+          "priority": "Medium",
+          "relationship_type": null,
+          "started_at": "2026-06-25T13:03:09.772758",
+          "title": "in new task window add option to already assign future box to which it gets sent when solved",
+          "updated": "2026-06-27T15:04:37.147305"
+        },
+        {
+          "category": "",
+          "column": "solved",
+          "completed_at": "2026-06-25T13:11:02.504136",
+          "created": "2026-06-21T13:54:23.646281",
+          "fix": "Robust spawn+link+solve flow: when spawning a linked task with relationship 'Similar To', the UI now shows a dedicated Future Folder chooser where the user can create a new folder or pick an existing one. The chosen folder is persisted as future_folder_id/folder_id on both the original and spawned tasks with bidirectional similar_to links. Marking either task Solved immediately checks if both are solved and moves both into the shared Future folder. Also preselects an existing shared folder when re-spawning an already-linked task.",
+          "id": "T092",
+          "linked_task_id": null,
+          "page": "Project Board",
+          "priority": "High",
+          "relationship_type": null,
+          "reopen_history": [
+            {
+              "previous_completed_at": "2026-06-21T15:20:00.000000",
+              "reopened_at": "2026-06-21T16:21:34.626975",
+              "update": "This feature doesnt work yet"
+            },
+            {
+              "previous_completed_at": null,
+              "reopened_at": "2026-06-24T15:57:54.619515",
+              "update": "This feature does not work. it doesnt give me an option when i spawn a task"
+            },
+            {
+              "previous_completed_at": "2026-06-24T13:26:51.668044Z",
+              "reopened_at": "2026-06-25T13:00:28.698102",
+              "update": "When I drag a task from \"Solved\" to \"Assigment\" and spawn it as a new task with link to prvious and relationship \"Similar To\" I dont get the option to create a new \"future\" folder"
+            }
+          ],
+          "started_at": "2026-06-25T13:03:09.688501",
+          "title": "feature: \"Spawn next task, link it, and mark this one Solved\" is clicked. for relationships \"Similair to\" and linked to off to create or pick future box where both of these tickets get stored when both get solved",
+          "updated": "2026-06-27T15:04:58.981866",
+          "updated_at": "2026-06-25T13:11:02.504136"
+        },
+        {
+          "category": "UI/UX",
+          "column": "solved",
+          "completed_at": "2026-06-20T00:38:00",
+          "created": "2026-06-19T14:14:40.707695",
+          "fix": "Updated pc_builder.html: Modified applyRAMFilters() to calculate average price from filtered RAM listings and create a virtual RAM component. When clicking Apply Filters with capacity/type selected, it now uses the average price of matching RAMs. Only when selecting a specific RAM from the dropdown does it use that specific price. The virtual component is marked with (Avg of N listings) in the name.",
+          "id": "T066",
+          "linked_task_id": null,
+          "page": "PC Builder",
+          "priority": "Medium",
+          "relationship_type": null,
+          "started_at": "2026-06-20T00:32:00",
+          "title": "when I have selected RAM capacity and type and click on \"Apply filters\", it should calcute avg RAM price for that capacity and type. Only if I click on specific RAM, then use price from that",
+          "updated": "2026-06-27T15:11:39.663844"
+        },
+        {
+          "category": "",
+          "column": "solved",
+          "completed_at": "2026-06-19T19:25:00",
+          "created": "2026-06-19T19:07:58.020122",
+          "fix": "Fixed app.py: Updated the CPU filter query in /api/motherboards endpoint to also search by processor_number (e.g., i9-14900K) in addition to id and cpu_name. This allows the CPU Model filter on the Motherboards page to properly match when users select a CPU from the dropdown.",
+          "id": "T082",
+          "linked_task_id": "T017",
+          "linked_tasks": [
+            {
+              "relationship_type": "similar_to",
+              "task_id": "T017"
+            }
+          ],
+          "page": "Motherboards",
+          "priority": "High",
+          "relationship_type": "similar_to",
+          "started_at": "2026-06-19T19:18:00",
+          "title": "Related to: Vendo\"CPU Model\" filter doesnt filter outr filter doesnt work. List is not getting filtered",
+          "updated": "2026-06-27T15:11:54.620063"
+        },
+        {
+          "category": "Backend",
+          "column": "solved",
+          "completed_at": "2026-06-29T22:10:32.640330",
+          "created": "2026-06-19T15:42:14.372800",
+          "fix": "",
+          "id": "T075",
+          "linked_task_id": null,
+          "movedAt": "2026-06-29T15:34:20.236085",
+          "page": "Computers",
+          "priority": "Medium",
+          "relationship_type": null,
+          "started_at": "2026-06-29T15:06:10.237427",
+          "status": "in-progress",
+          "title": "listing list is showing \"N/A\" in DATE column",
+          "updated": "2026-06-29T22:10:32.640330",
+          "updated_at": "2026-06-29T15:06:10.237427"
+        },
+        {
+          "category": "Frontend",
+          "column": "solved",
+          "completed_at": "2026-06-29T22:28:00.113365",
+          "created": "2026-06-27T23:13:51.854907",
+          "fix": "Use COALESCE(date_posted, first_seen_at, created_at) for RAM listings query and time filters",
+          "id": "T149",
+          "linked_task_id": "T075",
+          "linked_tasks": [
+            {
+              "relationship_type": "linked",
+              "task_id": "T075"
+            }
+          ],
+          "page": "RAM",
+          "priority": "Medium",
+          "relationship_type": "linked",
+          "title": "why listing list shows in date column N/A",
+          "updated": "2026-06-29T22:28:00.113365"
+        },
+        {
+          "category": "Frontend",
+          "code_snippet": "contentscript.js:14083 MaxListenersExceededWarning: Possible EventEmitter memory leak detected. 11 close listeners added. Use emitter.setMaxListeners() to increase limit\nn @ contentscript.js:14083\ncontentscript.js:14083 MaxListenersExceededWarning: Possible EventEmitter memory leak detected. 11 end listeners added. Use emitter.setMaxListeners() to increase limit\nn @ contentscript.js:14083\ncontentscript.js:14083 ObjectMultiplex - orphaned data for stream \"app-init-liveness\"\nwarn @ contentscript.js:14083\ncontentscript.js:14083 ObjectMultiplex - orphaned data for stream \"app-init-liveness\"\nwarn @ contentscript.js:14083\ncontentscript.js:14083 ObjectMultiplex - orphaned data for stream \"background-liveness\"\nwarn @ contentscript.js:14083\ncontentscript.js:14083 ObjectMultiplex - orphaned data for stream \"background-liveness\"\nwarn @ contentscript.js:14083\ncontentscript.js:14083 ObjectMultiplex - malformed chunk without name \"[object Object]\"\nwarn @ contentscript.js:14083\ncontentscript.js:14083 ObjectMultiplex - malformed chunk without name \"[object Object]\"\nwarn @ contentscript.js:14083\nconsoles:1636 Console icons script loaded, getConsoleIcon available: true\nconsoles:1668 Loading models...\nchunk-mgcl-MAO3VRCL.js:16 @import rules are not allowed here. See https://github.com/WICG/construct-stylesheets/issues/119#issuecomment-588352418.\n(anonymous) @ chunk-mgcl-MAO3VRCL.js:16\nconsoles:1679 Models loaded: Array(36)\nconsoles:1711 getConsoleIcon available: true\nconsoles:1718 Icon for Meta Quest 2 : found\nconsoles:1718 Icon for Meta Quest 3 : found\nconsoles:1718 Icon for Meta Quest 3S : found\nconsoles:1718 Icon for Nintendo 2DS : found\nconsoles:1718 Icon for Nintendo 3DS : found\nconsoles:1718 Icon for Nintendo DS : found\nconsoles:1718 Icon for Nintendo GameCube : found\nconsoles:1718 Icon for Nintendo Switch : found\nconsoles:1718 Icon for Nintendo Switch 2 : found\nconsoles:1718 Icon for Nintendo Switch Lite : found\nconsoles:1718 Icon for PSP Go : found\nconsoles:1718 Icon for PlayStation : found\nconsoles:1718 Icon for PlayStation 2 : found\nconsoles:1718 Icon for PlayStation 3 : found\nconsoles:1718 Icon for PlayStation 3 Slim : found\nconsoles:1718 Icon for PlayStation 3 Super Slim : found\nconsoles:1718 Icon for PlayStation 4 : found\nconsoles:1718 Icon for PlayStation 4 Pro : found\nconsoles:1718 Icon for PlayStation 4 Slim : found\nconsoles:1718 Icon for PlayStation 5 : found\nconsoles:1718 Icon for PlayStation 5 Pro : found\nconsoles:1718 Icon for PlayStation 5 Slim : found\nconsoles:1718 Icon for PlayStation Portable 2000 : found\nconsoles:1718 Icon for PlayStation Portable Street : found\nconsoles:1718 Icon for PlayStation VR : found\nconsoles:1718 Icon for PlayStation VR2 : found\nconsoles:1718 Icon for Steam Deck : found\nconsoles:1718 Icon for Wii : found\nconsoles:1718 Icon for Xbox : found\nconsoles:1718 Icon for Xbox 360 : found\nconsoles:1718 Icon for Xbox One : found\nconsoles:1718 Icon for Xbox One S : found\nconsoles:1718 Icon for Xbox One X : found\nconsoles:1718 Icon for Xbox Series S : found\nconsoles:1718 Icon for Xbox Series X : found\nconsoles:1718 Icon for Unknown Console : found\nconsoles:1925 Error loading listings: TypeError: item.price_eur.toFixed is not a function\n    at consoles:1902:94\n    at Array.forEach (<anonymous>)\n    at loadListings (consoles:1835:18)\nloadListings @ consoles:1925\nconsoles:1925 Error loading listings: TypeError: item.price_eur.toFixed is not a function\n    at consoles:1902:94\n    at Array.forEach (<anonymous>)\n    at loadListings (consoles:1835:18)\nloadListings @ consoles:1925\nchunk-mgcl-HFZJ56IT.js:558 Received json-rpc sentryRequest error response for id e5d6490f-3d40-49ce-9955-ffd3e9a6837b Object\n(anonymous) @ chunk-mgcl-HFZJ56IT.js:558\nchunk-mgcl-HFZJ56IT.js:558 Received json-rpc sentryRequest error response for id 9c5ab08a-7e55-4469-a407-a7b8f1231736 Object\n(anonymous) @ chunk-mgcl-HFZJ56IT.js:558\nchunk-mgcl-HFZJ56IT.js:558 Received json-rpc sentryRequest error response for id 0991a180-4a29-4bd1-8dc9-5ad43c7243f9 Object\n(anonymous) @ chunk-mgcl-HFZJ56IT.js:558",
+          "column": "solved",
+          "completed_at": "2026-06-29T22:31:22.022335",
+          "created": "2026-06-27T23:20:23.869661",
+          "fix": "",
+          "id": "T152",
+          "linked_task_id": null,
+          "page": "Consoles",
+          "priority": "Medium",
+          "relationship_type": null,
+          "title": "Console Models grid shows up correctly, but not list loads in.",
+          "updated": "2026-06-29T22:31:22.022335"
+        },
+        {
+          "category": "Frontend",
+          "column": "solved",
+          "completed_at": "2026-06-29T22:33:12.105685",
+          "created": "2026-06-27T23:15:44.094397",
+          "fix": "",
+          "id": "T150",
+          "linked_task_id": null,
+          "page": "RAM",
+          "priority": "Medium",
+          "relationship_type": null,
+          "title": "dont show unknown ram in list",
+          "updated": "2026-06-29T22:33:12.105685"
+        },
+        {
+          "category": "Frontend",
+          "column": "solved",
+          "completed_at": "2026-06-30T11:10:44.474501",
+          "created": "2026-06-18T09:51:32.244263",
+          "fix": "Updated ssd.html: Fixed memory leak in theme change listener by storing reference to listener function (window.ssdThemeChangeListener) and removing previous listener before adding new one. This prevents MaxListenersExceededWarning from accumulating multiple event listeners.",
+          "id": "T005",
+          "page": "SSD",
+          "priority": "Medium",
+          "reopen_history": [
+            {
+              "previous_completed_at": "2026-06-18T10:30:00",
+              "reopened_at": "2026-06-18T12:02:47.820026",
+              "update": "In SSD page listing list, DATE row still shows \"N/A\" for all listings"
+            },
+            {
+              "previous_completed_at": "2026-06-18T12:10:00",
+              "reopened_at": "2026-06-18T15:37:28.878106",
+              "update": "contentscript.js:14083 MaxListenersExceededWarning: Possible EventEmitter memory leak detected. 11 close listeners added. Use emitter.setMaxListeners() to increase limit"
+            },
+            {
+              "previous_completed_at": "2026-06-18T16:20:00",
+              "reopened_at": "2026-06-27T13:52:01.757116",
+              "update": "It's still missing. Is it because we are missing date_posted in database for SSD listings? Is this related to T136?"
+            }
+          ],
+          "special": false,
+          "started_at": "2026-06-29T10:00:44.329843Z",
+          "title": "Data shows \"N/A\" on every listing.",
+          "updated": "2026-06-30T11:10:44.474501"
+        },
+        {
+          "category": "",
+          "column": "solved",
+          "completed_at": "2026-06-30T11:10:51.208651",
+          "created": "2026-06-26T19:33:19.185673",
+          "fix": "",
+          "id": "T129",
+          "linked_task_id": null,
+          "page": "GPU",
+          "priority": "Medium",
+          "relationship_type": null,
+          "started_at": "2026-06-26T17:50:08.006461+00:00",
+          "title": "andele source image dont have image, but database shows they have",
+          "updated": "2026-06-30T11:10:51.208651"
+        },
+        {
+          "category": "Frontend",
+          "column": "solved",
+          "completed_at": "2026-06-30T12:05:08.143512",
+          "created": "2026-06-27T23:37:36.407573",
+          "fix": "",
+          "id": "T157",
+          "linked_task_id": null,
+          "page": "PC Builder",
+          "priority": "Medium",
+          "relationship_type": null,
+          "title": "Motherboard dropdown list entries are mising brand in the fron",
+          "updated": "2026-06-30T12:05:08.143512"
+        },
+        {
+          "category": "Frontend",
+          "column": "solved",
+          "completed_at": "2026-07-01T21:44:29.910787",
+          "created": "2026-06-25T16:19:21.137557",
+          "fix": "Updated /api/cpus SQL cpu_class filter to include AMD Ryzen 5 in Mid-Range, Ryzen 7 in High-End, and kept Ryzen 9/Threadripper in Enthusiast. get_cpu_class() already classified them correctly, but the server-side family_tokens only matched Intel tokens, so AMD chips were dropped when filtering by class. Tested via /api/cpus?cpu_class=Mid-Range/High-End/Enthusiast: AMD Ryzen 5/7/9 now appear alongside Intel. CPU page By Class chart will reflect the corrected distribution.",
+          "id": "T121",
+          "linked_task_id": null,
+          "page": "CPU",
+          "priority": "Medium",
+          "relationship_type": null,
+          "reopen_history": [
+            {
+              "previous_completed_at": "2026-06-26T04:15:00.000000",
+              "reopened_at": "2026-06-26T18:51:07.079856",
+              "update": "it only show intel cpus in mid range, high end filter option. how about amd?"
+            }
+          ],
+          "started_at": "2026-06-26T04:04:52.000000",
+          "title": "Is \"CPU Class\" used anywhere even? Have the CPUs been market? By Class chart shows Unknown 100%",
+          "updated": "2026-07-01T21:44:29.910787"
+        },
+        {
+          "category": "Frontend",
+          "column": "solved",
+          "completed_at": "2026-07-01T21:47:17.602206",
+          "created": "2026-06-26T18:57:57.417301",
+          "fix": "Implemented draggable, saveable widgets on the CPU page. Wrapped each chart/stat box in a .widget-card with a pin/save button and drag handle. Added native HTML5 drag-and-drop support within the main/sub grid, persisted order (cpuWidgetOrder) and pinned widgets (cpuWidgetPinned) to localStorage, and added a reset button to restore defaults. Fixed the duplicate chart container IDs in the Motherboard Market Snapshot by using unique inner IDs (mb-market-year, mb-market-platform, mb-market-socket). Existing data loaders continue to work because they populate the inner divs inside each widget card.",
+          "id": "T127",
+          "linked_task_id": null,
+          "linked_tasks": null,
+          "page": "CPU",
+          "priority": "High",
+          "relationship_type": null,
+          "started_at": "2026-06-26T16:10:17.251240+00:00",
+          "title": "in cpu page make the chart box a widget button in which you can store each chart as a widget. make it so I can drag it to the box anywhere in the chart box",
+          "updated": "2026-07-01T21:47:17.602206"
+        },
+        {
+          "category": "Frontend",
+          "code_snippet": "<div>\n                    <h4 style=\"color: var(--text-color); margin-bottom: 1rem;\">💾 SSD Information</h4>\n                    <table style=\"width: 100%; color: var(--text-color);\">\n                        <tbody><tr><td><strong>Brand:</strong></td><td>WD</td></tr>\n                        <tr><td><strong>Model:</strong></td><td>SN850X</td></tr>\n                        <tr><td><strong>Capacity:</strong></td><td>2000GB</td></tr>\n                        <tr><td><strong>Interface:</strong></td><td>x4 PCIe 4.0/NVMe</td></tr>\n                        <tr><td><strong>Form Factor:</strong></td><td>M.2</td></tr>\n                        <tr><td><strong>Read Speed:</strong></td><td>7300 MB/s</td></tr>\n                        <tr><td><strong>Write Speed:</strong></td><td>N/A</td></tr>\n                        <tr><td><strong>NAND Type:</strong></td><td>TLC</td></tr>\n                        <tr><td><strong>Controller:</strong></td><td>WD Proprietary</td></tr>\n                    </tbody></table>\n                    \n                    <h4 style=\"color: var(--text-color); margin: 1.5rem 0 1rem 0;\">💰 Pricing</h4>\n                    <table style=\"width: 100%; color: var(--text-color);\">\n                        <tbody><tr><td><strong>Current Price:</strong></td><td>€240.00</td></tr>\n                        <tr><td><strong>Cost per GB:</strong></td><td>€0.120</td></tr>\n                        <tr><td><strong>Confidence Score:</strong></td><td>100%</td></tr>\n                    </tbody></table>\n                </div>",
+          "column": "solved",
+          "completed_at": "2026-07-01T22:43:04.233824",
+          "created": "2026-06-27T14:05:44.103933",
+          "fix": "",
+          "id": "T139",
+          "linked_task_id": null,
+          "movedAt": "2026-06-29T16:27:28.579976",
+          "page": "SSD",
+          "priority": "Medium",
+          "relationship_type": null,
+          "title": "In the pop up box you can make the spacing smaller between text boxes next to the image",
+          "updated": "2026-07-01T22:43:04.233824"
+        },
+        {
+          "category": "Scraper",
+          "code_snippet": "<div onmouseover=\"show_pic_menu(1);\" oncontextmenu=\"return false;\" onmouseout=\"show_pic_menu(0);\" ontouchstart=\"show_pic_menu(1);\" style=\"position: relative; display: block; width: 723px; max-width: 100%; overflow: hidden; border: 1px solid rgb(204, 204, 204); cursor: pointer; margin: -1px; height: 482px;\" align=\"center\" id=\"big_pic_div\"><div align=\"center\" id=\"img_div_scroll\" style=\"position: relative; display: block; z-index: 2; height: 482px; overflow: hidden scroll; width: 496px;\"><img onclick=\"this.blur();\" style=\"display: block; width: 482px; height: 643px; position: relative;\" onload=\"play_image();\" onfocus=\"this.blur();\" id=\"msg_img_img\" border=\"0\" src=\"https://i.ss.com/gallery/8/1514/378455/computers-completing-pc-ssd-75690967.800.jpg\"><div onclick=\"el('navi_prev').click();return false;\" ontouchstart=\"_tstart(event);\" ontouchmove=\"_tmove(event);\" ontouchend=\"if(_tend(event)) {this.click();}return false;\" id=\"navi_prev2\" style=\"position: absolute; top: 0px; left: 0px; width: 96px; height: 643px;\" title=\"Iepriekšējā\"><img src=\"https://i.ss.com/img/p.gif\" width=\"100%\" height=\"100%\"></div><div onclick=\"el('navi_next').click();return false;\" ontouchstart=\"_tstart(event);\" ontouchmove=\"_tmove(event);\" ontouchend=\"if(_tend(event)) {this.click();}return false;\" id=\"navi_next2\" style=\"position: absolute; top: 0px; left: 96px; width: 381px; height: 643px;\" title=\"Nākamā\"><img src=\"https://i.ss.com/img/p.gif\" width=\"100%\" height=\"100%\"></div></div><div onmouseout=\"show_pic_menu(0);\" onmouseover=\"show_pic_menu(1)\" id=\"pic_menu_prev\" onclick=\"mnu('foto', 3);return false;\" title=\"Iepriekšējā\" ontouchstart=\"_tstart(event);\" ontouchmove=\"_tmove(event);\" ontouchend=\"if(_tend(event)) {this.click();}return false;\" style=\"z-index:15;width: 36px; height: 43px; position: absolute; top:50%; left: 0px; background: url( 'https://i.ss.com/img/left.png' ) no-repeat;\"></div><div onmouseout=\"show_pic_menu(0);\" onmouseover=\"show_pic_menu(1)\" id=\"pic_menu_next\" onclick=\"mnu('foto', 2);return false;\" title=\"Nākamā\" ontouchstart=\"_tstart(event);\" ontouchmove=\"_tmove(event);\" ontouchend=\"if(_tend(event)) {this.click();}return false;\" style=\"z-index:15;width:36px;height:43px;position:absolute;top:50%;right:0px;background: url( 'https://i.ss.com/img/right.png' ) no-repeat;\"></div><div id=\"navi_prev\" ontouchstart=\"_tstart(event);\" ontouchmove=\"_tmove(event);\" ontouchend=\"if(_tend(event)) {this.click();}return false;\" style=\"width: 30%; height: 100%; top: 0px; left: 0px; position: absolute; z-index: 0;\" title=\"Iepriekšējā\"><img src=\"https://i.ss.com/img/p.gif\" width=\"100%\" height=\"100%\"></div><div id=\"navi_next\" ontouchstart=\"_tstart(event);\" ontouchmove=\"_tmove(event);\" ontouchend=\"if(_tend(event)) {this.click();}return false;\" style=\"width: 70%; height: 100%; top: 0px; left: 30%; position: absolute; z-index: 0;\" title=\"Nākamā\"><img src=\"https://i.ss.com/img/p.gif\" width=\"100%\" height=\"100%\"></div><div style=\"z-index:25;width:30%;height:70%;top:15%;left:35%;position:absolute;\" title=\"Parādīt HD kvalitātē\" onclick=\"event.stopPropagation();hd_image_open('hRstv1AOqkXYAduqeNTdDlJO%2B0IP1LpraZDQp8Tsaqty%2BDUSHkKWRUJP8l7vIyhg',1);return false;\" ontouchstart=\"_tstart(event);\" ontouchmove=\"_tmove(event);\" ontouchend=\"if(_tend(event)) {this.click();}return false;\"><img src=\"https://i.ss.com/img/p.gif\" width=\"100%\" height=\"100%\"></div><div onmouseout=\"show_pic_menu(0);\" onmouseover=\"show_pic_menu(1)\" title=\"Parādīt HD kvalitātē\" id=\"pic_menu_hd\" onclick=\"event.stopPropagation();hd_image_open('hRstv1AOqkXYAduqeNTdDlJO%2B0IP1LpraZDQp8Tsaqty%2BDUSHkKWRUJP8l7vIyhg',1);return false;\" ontouchstart=\"_tstart(event);\" ontouchmove=\"_tmove(event);\" ontouchend=\"if(_tend(event)) {this.click();}return false;\" style=\"z-index:25;width:43px;height:43px;cursor:pointer;position:absolute;top:0px;right:50px;background: url( 'https://i.ss.com/img/hd_v2.png' ) no-repeat;\"></div><div onmouseout=\"show_pic_menu(0);\" onmouseover=\"show_pic_menu(1)\" title=\"Aizvērt\" id=\"pic_menu_close\" onclick=\"event.stopPropagation();mnu('msg');return false;\" ontouchstart=\"_tstart(event);\" ontouchmove=\"_tmove(event);\" ontouchend=\"if(_tend(event)) {this.click();}return false;\" style=\"z-index:15;width:43px;height:43px;cursor:pointer;position:absolute;top:0px;right:0px;background: url( 'https://i.ss.com/img/close_v2.png' ) no-repeat;\"></div><img id=\"msg_img_load\" src=\"https://i.ss.com/img/wait_img.gif\" border=\"0\" style=\"display: none; position: absolute; top: 50%; left: 50%;\" width=\"32\" height=\"32\"></div>",
+          "column": "solved",
+          "completed_at": "2026-06-29T10:00:19.704184Z",
+          "created": "2026-06-25T13:13:19.619396",
+          "fix": "Verified end-to-end: 93 SSD listings, 49 with image_url and local_image_path, all active SSD listings with images have both fields. Sample files confirmed on disk in SS-CRAWLER/images/ssds/. Image serving route (/images/ssds/<file>) returns 200. No further changes needed.",
+          "id": "T117",
+          "linked_task_id": null,
+          "page": "SSD",
+          "priority": "Medium",
+          "relationship_type": null,
+          "reopen_history": [
+            {
+              "previous_completed_at": "2026-06-25T13:55:00.000000",
+              "reopened_at": "2026-06-27T13:59:49.313884",
+              "update": "It doesnt seem to download the right image for listing \"cgmejh\". In the snippet I added part where it is found"
+            }
+          ],
+          "started_at": "2026-06-25T13:28:29.581637",
+          "title": "SSD scrapper doesnt seem to download images and attach image_url to listing database",
+          "updated": "2026-07-01T22:43:32.989436"
+        },
+        {
+          "category": "Frontend",
+          "column": "solved",
+          "completed_at": "2026-07-01T22:44:59.678933",
+          "created": "2026-06-27T13:53:55.981230",
+          "fix": "",
+          "id": "T137",
+          "linked_task_id": null,
+          "movedAt": "2026-06-29T16:25:02.472118",
+          "page": "SSD",
+          "priority": "Medium",
+          "relationship_type": null,
+          "title": "To filter \"Capacity\" add 8TB ,16TB optons",
+          "updated": "2026-07-01T22:44:59.678933"
+        },
+        {
+          "category": "Frontend",
+          "column": "solved",
+          "completed_at": "2026-07-01T22:45:16.575739",
+          "created": "2026-06-27T14:02:22.540747",
+          "fix": "",
+          "id": "T138",
+          "linked_task_id": null,
+          "movedAt": "2026-06-29T16:27:28.579976",
+          "page": "SSD",
+          "priority": "Medium",
+          "relationship_type": null,
+          "title": "make the boxes in \"Average Price by Capacity Range\" smaller so all sizes fit in the same row",
+          "updated": "2026-07-01T22:45:16.575739"
+        },
+        {
+          "category": "Frontend",
+          "column": "solved",
+          "completed_at": "2026-06-29T15:02:44.752668",
+          "created": "2026-06-19T11:30:37.340195",
+          "fix": "Added image popup to PSU listings: Added thumbnail with onclick handler, implemented showImageModal() function",
+          "id": "T060",
+          "linked_task_id": null,
+          "page": "PSU",
+          "priority": "Medium",
+          "relationship_type": null,
+          "reopen_history": [
+            {
+              "previous_completed_at": "2026-06-19T16:20:00",
+              "reopened_at": "2026-06-27T14:51:48.173637",
+              "update": "Still doesnt work. I think you did not understand the task. Pop up window should show detailed information about the listings.\n\nSource, Description, image, location, data, price, historical listing price, prices of PSUs listings of other similiar wattage PSUs"
+            }
+          ],
+          "started_at": "2026-06-29T14:57:29.974438",
+          "status": "talking",
+          "title": "Lsting window doesnt pop up when you click on it",
+          "updated": "2026-07-01T22:50:16.376440",
+          "updated_at": "2026-06-29T15:02:44.752668"
+        },
+        {
+          "category": "Frontend",
+          "column": "solved",
+          "completed_at": "2026-07-01T22:54:35.787132",
+          "created": "2026-06-29T22:31:03.078577",
+          "fix": "",
+          "id": "T163",
+          "linked_task_id": null,
+          "page": "Consoles",
+          "priority": "Medium",
+          "relationship_type": null,
+          "title": "in listing list i see greyef out listings. if those are flagged consoles, dont make them show up",
+          "updated": "2026-07-01T22:54:35.787132"
+        },
+        {
+          "category": "Frontend",
+          "column": "solved",
+          "completed_at": "2026-07-01T22:56:23.802842",
+          "created": "2026-06-27T23:17:39.193253",
+          "fix": "",
+          "id": "T151",
+          "linked_task_id": null,
+          "page": "Cameras",
+          "priority": "Medium",
+          "relationship_type": null,
+          "title": "on some listings when you click it shows \"Error: 'NoneType' object has no attribute 'lower'\"",
+          "updated": "2026-07-01T22:56:23.802842"
+        },
+        {
+          "category": "Frontend",
+          "column": "solved",
+          "completed_at": "2026-06-19T16:25:00",
+          "created": "2026-06-19T14:17:35.284577",
+          "fix": "Fixed dark mode colors in cameras popup: Changed hardcoded #888 to var(--text-secondary), added border for visibility",
+          "id": "T067",
+          "linked_task_id": null,
+          "page": "Cameras",
+          "priority": "Medium",
+          "relationship_type": null,
+          "started_at": "2026-06-19T16:21:00",
+          "title": "change the color of this this so it fits dark mode in pop up window",
+          "updated": "2026-07-01T22:56:55.738219"
+        },
+        {
+          "category": "UI/UX",
+          "column": "solved",
+          "created": "2026-06-27T14:29:31.077057",
+          "fix": "VRAM filter now has a dynamic VRAM dropdown and an Exact / ≥ selected toggle checkbox with info tooltip. Frontend sends vram_mode=exact|min to /api/gpus; backend filters GPU listings by exact VRAM or minimum VRAM. Dropdown options are populated from available VRAMs for the selected vendor/model.",
+          "id": "T141",
+          "linked_task_id": null,
+          "page": "GPU",
+          "priority": "Medium",
+          "relationship_type": null,
+          "reopen_history": [
+            {
+              "previous_completed_at": null,
+              "reopened_at": "2026-07-01T21:21:54.054630",
+              "update": "make it a check box that changes VRAM list from 4GB to $GB+. Add Info mark that explains that."
+            }
+          ],
+          "started_at": "2026-06-29T13:37:14.290995+00:00",
+          "status": "completed",
+          "completed_at": "2026-07-07T12:14:28.511454+00:00",
+          "title": "VRAM filter deosnt work. IT should also offer an optio to pick certain size, however here I like the min approach. Make it a toggle between two",
+          "updated": "2026-07-07T12:14:28.511454+00:00"
+        },
+        {
+          "category": "",
+          "code_snippet": "cpu:2867 CPU Statistics - Total listings: 38\ncpu:2878 CPU Statistics - Models found: 31\ncpu:1 Uncaught (in promise) Error: A listener indicated an asynchronous response by returning true, but the message channel closed before a response was received\ncpu:1 Uncaught (in promise) Error: A listener indicated an asynchronous response by returning true, but the message channel closed before a response was received\ncpu:1 Uncaught (in promise) Error: A listener indicated an asynchronous response by returning true, but the message channel closed before a response was received",
+          "column": "solved",
+          "created": "2026-06-26T19:42:59.959953",
+          "fix": "Rewrote CPU widget drag-and-drop in templates/cpu.html: (1) Dragging is only enabled after clicking the '✋ Drag' button. (2) Each widget (except the sidebar 'Most Listed') has a visible ☰ drag handle that pulses in drag mode. (3) During drag the original widget is hidden and a lightweight ghost follows the cursor; a dashed 'Drop here' placeholder is inserted at the exact drop position inside the 3-column grid. (4) On drop the widget snaps into place and the new order is saved to localStorage. (5) Hidden widgets can still be managed via the '👁 Manage' widget manager, which lists all widgets with show/hide checkboxes. (6) Added a '↺ Reset' button to restore default layout.",
+          "id": "T130",
+          "linked_task_id": null,
+          "page": "CPU",
+          "priority": "High",
+          "relationship_type": null,
+          "reopen_history": [
+            {
+              "previous_completed_at": "2026-06-26T17:57:05.347643+00:00",
+              "reopened_at": "2026-06-27T12:58:54.395380",
+              "update": "Dragging around doesnt really work. I cant put chart next to specific other chart. It just goes somewhere at the end of charts when I release mouse."
+            },
+            {
+              "previous_completed_at": "2026-06-29T13:47:27.082663",
+              "reopened_at": "2026-07-01T21:47:13.489826",
+              "update": "Now nothing drags around"
+            }
+          ],
+          "started_at": "2026-06-29T13:40:03.536273",
+          "status": "completed",
+          "title": "about the CPU chart box: draging arround is glitchy. a dont see where I can drag them to hide?",
+          "updated": "2026-07-07T12:34:18.666523+00:00",
+          "updated_at": "2026-06-29T14:43:35.000958",
+          "completed_at": "2026-07-07T12:34:18.666523+00:00"
+        }
+      ],
+      "title": "Solved"
+    },
+    {
+      "color": "#2ecc71",
+      "folders": [
+        {
+          "created_at": "2026-06-21T13:44:36.561237",
+          "description": "",
+          "expanded": false,
+          "folder_class": "Feature",
+          "id": "F-20260621134436-a2fac031",
+          "name": "box",
+          "relationship_status": "planned",
+          "updated_at": "2026-06-27T12:59:09.705429"
+        },
+        {
+          "created_at": "2026-06-21T15:09:45.875995",
+          "description": "",
+          "expanded": false,
+          "folder_class": "Feature",
+          "id": "F-20260621150945-3e7eef9a",
+          "name": "Reopen system",
+          "relationship_status": "planned",
+          "updated_at": "2026-06-27T15:00:24.707695"
+        },
+        {
+          "created_at": "2026-06-21T16:09:57.191673",
+          "description": "",
+          "expanded": true,
+          "folder_class": "Feature",
+          "id": "F-20260621160957-36ce9488",
+          "name": "TASK UI",
+          "relationship_status": "planned",
+          "updated_at": "2026-06-27T13:00:03.279982"
+        },
+        {
+          "created_at": "2026-06-21T16:13:00.628376",
+          "description": "trash",
+          "expanded": false,
+          "folder_class": "Feature",
+          "id": "F-20260621161300-efb1773f",
+          "name": "misc",
+          "relationship_status": "planned",
+          "updated_at": "2026-06-27T12:59:58.321499"
+        },
+        {
+          "created_at": "2026-06-21T19:13:17.872700",
+          "description": "",
+          "expanded": true,
+          "folder_class": "Feature",
+          "id": "F-20260621191317-c326bdc2",
+          "name": "filters",
+          "relationship_status": "planned",
+          "updated_at": "2026-06-27T12:59:20.397302"
+        },
+        {
+          "created_at": "2026-06-25T12:59:26.823393",
+          "description": "Future folder for tasks similar to T077: \"Create a python code that checks how many listings...\"",
+          "expanded": true,
+          "folder_class": "Feature",
+          "id": "F-20260625125926-3cb29754",
+          "name": "Similar Tasks: T077",
+          "relationship_status": "planned",
+          "updated_at": "2026-06-27T15:00:15.246456"
+        },
+        {
+          "created_at": "2026-06-26T18:49:10.291690",
+          "description": "",
+          "expanded": true,
+          "folder_class": "Feature",
+          "id": "F-20260626184910-ffd72a21",
+          "name": "admin summary box",
+          "relationship_status": "planned",
+          "updated_at": "2026-06-27T12:59:16.310677"
+        },
+        {
+          "created_at": "2026-06-27T14:14:12.922511",
+          "description": "features that are controlable to be visable by admin. In future these could be subscription features.",
+          "expanded": true,
+          "folder_class": "Feature",
+          "id": "F-20260627141412-3d3ecd45",
+          "name": "ADMIN",
+          "relationship_status": "planned",
+          "updated_at": "2026-06-27T14:14:12.922511"
+        },
+        {
+          "created_at": "2026-06-27T23:11:32.109175",
+          "description": "",
+          "expanded": true,
+          "folder_class": "Structure",
+          "id": "F-20260627231132-7c98d254",
+          "name": "scrapper image download",
+          "relationship_status": "planned",
+          "updated_at": "2026-06-27T23:11:32.109175"
+        },
+        {
+          "created_at": "2026-07-01T22:43:04.019701",
+          "description": "",
+          "expanded": true,
+          "folder_class": "Structure",
+          "id": "F-20260701224304-4340322b",
+          "name": "SSD pop up window",
+          "relationship_status": "planned",
+          "updated_at": "2026-07-01T22:43:04.019701"
+        }
+      ],
+      "id": "future",
+      "tasks": [
+        {
+          "category": "",
+          "column": "future",
+          "completed_at": "2026-06-20T18:05:00",
+          "created": "2026-06-19T23:30:35.513312",
+          "fix": "Added ✅ Mark Solved button to Review/Talking column tasks: Updated project_board.html showTaskDetail function to display the Mark Solved button alongside the Re-open button for tasks in the Review (talking) column. Tasks in Review now have both options: 🔄 Re-open and ✅ Mark Solved.",
+          "folder_id": "F-20260621134436-a2fac031",
+          "id": "T088",
+          "linked_task_id": null,
+          "page": "Project Board",
+          "priority": "Medium",
+          "relationship_type": null,
+          "reopen_history": [
+            {
+              "previous_completed_at": "2026-06-20T00:19:00",
+              "reopened_at": "2026-06-20T20:39:49.771476",
+              "update": "there should alsso be a slove button in Review box task tickets"
+            }
+          ],
+          "started_at": "2026-06-20T18:02:00",
+          "title": "There is no solve button in task tickets",
+          "updated": "2026-06-20T18:05:00",
+          "updated_at": "2026-06-21T13:44:44.504346"
+        },
+        {
+          "category": "",
+          "column": "future",
+          "completed_at": "2026-06-21T14:17:53.372966",
+          "created": "2026-06-19T16:00:44.249426",
+          "fix": "Fixed drag-and-drop re-open flow: 1) Added missing collectReopenLinks() function to gather link data from reopen modal, 2) Fixed showReopenModal() to build dropdown options inline instead of using broken regex/setTimeout approach, 3) Updated showReviewToAssignmentChoiceModal() to show 'Solved' or 'in Review' based on source column, 4) Modal now properly populates linked task dropdown with all available tasks",
+          "folder_id": "F-20260621150945-3e7eef9a",
+          "future_folder_id": "F-20260621150945-3e7eef9a",
+          "id": "T078",
+          "linked_task_id": null,
+          "page": "Project Board",
+          "priority": "Medium",
+          "relationship_type": null,
+          "reopen_history": [
+            {
+              "previous_completed_at": "2026-06-19T16:36:00",
+              "reopened_at": "2026-06-21T13:49:44.580601",
+              "update": "re-open button works when you click on it from task window. But it does nothing when you drag a task to \"Assigment\" ticket and choice to reopen. fails at last step"
+            },
+            {
+              "previous_completed_at": "2026-06-21T14:13:07.807568",
+              "reopened_at": "2026-06-21T14:17:40.497467",
+              "update": "test"
+            }
+          ],
+          "started_at": "2026-06-19T16:33:00",
+          "title": "Re-open button doesnt work on solved or review tasks.",
+          "updated": "2026-06-21T14:17:53.372966",
+          "updated_at": "2026-06-21T15:09:52.085063"
+        },
+        {
+          "category": "",
+          "column": "future",
+          "completed_at": "2026-06-21T15:29:00.000000",
+          "created": "2026-06-21T15:23:19.724833",
+          "fix": "Modified showTaskDetail() function to display timestamps: Added formatDate helper to format dates nicely (Month Day, Year Hour:Minute), Added timestamps section with blue styling showing Created and Updated dates, positioned after Status for visibility, handles missing dates gracefully",
+          "folder_id": "F-20260621160957-36ce9488",
+          "future_folder_id": "F-20260621160957-36ce9488",
+          "id": "T096",
+          "linked_task_id": null,
+          "page": "Project Board",
+          "priority": "Medium",
+          "relationship_type": null,
+          "started_at": "2026-06-21T15:25:00.000000",
+          "title": "add timestamp when ticket was posted in pop up window",
+          "updated": "2026-06-21T15:29:00.000000",
+          "updated_at": "2026-06-21T16:10:09.157285"
+        },
+        {
+          "category": "",
+          "column": "future",
+          "completed_at": "2026-06-21T13:58:53.570337",
+          "created": "2026-06-19T23:23:20.268510",
+          "fix": "Enhanced task detail popup: Added \"📨 Linked From (Incoming)\" section showing all tasks that link TO this task. Task cards already show link count badge. Separated outgoing links (🔗 Linked Tasks) from incoming links (📨 Linked From).",
+          "folder_id": "F-20260621161300-efb1773f",
+          "future_folder_id": "F-20260621161300-efb1773f",
+          "id": "T086",
+          "linked_task_id": null,
+          "page": "Project Board",
+          "priority": "Medium",
+          "relationship_type": null,
+          "reopen_history": [
+            {
+              "previous_completed_at": "2026-06-20T00:17:00",
+              "reopened_at": "2026-06-20T22:37:37.266729",
+              "update": "task ticket T082 shouldnt show a link count because it linked as smiliar to T017. So only T017 should the count"
+            },
+            {
+              "previous_completed_at": "2026-06-20T21:30:00",
+              "reopened_at": "2026-06-21T13:48:58.253279",
+              "update": "none tas seem to show this"
+            }
+          ],
+          "started_at": "2026-06-20T21:17:00",
+          "title": "add to tickets also count of how many times they have been linked",
+          "updated": "2026-06-21T13:58:53.570337",
+          "updated_at": "2026-06-21T16:13:08.928996"
+        },
+        {
+          "category": "",
+          "column": "future",
+          "completed_at": "2026-06-20T00:05:00",
+          "created": "2026-06-19T19:10:49.159414",
+          "fix": "Fixed app.py: Updated /api/project-board/task-folder endpoint to properly move tasks to the future column when dragging to a folder. Previously it only set folder_id but left task in original column. Now it removes from current column and adds to future column.",
+          "folder_id": "F-20260621161300-efb1773f",
+          "future_folder_id": "F-20260621161300-efb1773f",
+          "id": "T083",
+          "linked_task_id": null,
+          "page": "Project Board",
+          "priority": "High",
+          "relationship_type": null,
+          "reopen_history": [
+            {
+              "previous_completed_at": "2026-06-19T19:32:00",
+              "reopened_at": "2026-06-19T23:28:12.465850",
+              "update": "still doesnt work"
+            }
+          ],
+          "started_at": "2026-06-20T00:02:30",
+          "title": "its not possible to drag into future boxes user created folder. nothing happens",
+          "updated": "2026-06-21T13:45:07.538200",
+          "updated_at": "2026-06-21T16:13:18.342914"
+        },
+        {
+          "category": "Frontend",
+          "column": "future",
+          "completed_at": "2026-06-19T16:40:00",
+          "created": "2026-06-19T16:22:58.075523",
+          "fix": "Added sorting for Solved column: tasks are now sorted by completed_at date in descending order (most recently solved first)",
+          "folder_id": "F-20260621161300-efb1773f",
+          "future_folder_id": "F-20260621161300-efb1773f",
+          "id": "T080",
+          "linked_task_id": null,
+          "page": "Project Board",
+          "priority": "Medium",
+          "relationship_type": null,
+          "started_at": "2026-06-19T16:37:00",
+          "title": "reverse the order of \"Solved\" box. Show recently solved tasks first",
+          "updated": "2026-06-21T13:51:23.885565",
+          "updated_at": "2026-06-21T16:13:25.951876"
+        },
+        {
+          "category": "UI/UX",
+          "column": "future",
+          "completed_at": "2026-06-20T00:10:00",
+          "created": "2026-06-19T19:15:26.682535",
+          "fix": "Added debug logging and error handling to addTask() function in project_board.html. Now logs the column value to browser console and shows alerts if the API request fails. Check browser console (F12 > Console) when clicking Add Task to see the actual column being sent.",
+          "folder_id": "F-20260621161300-efb1773f",
+          "future_folder_id": "F-20260621161300-efb1773f",
+          "id": "T085",
+          "linked_task_id": null,
+          "page": "Project Board",
+          "priority": "Medium",
+          "relationship_type": null,
+          "reopen_history": [
+            {
+              "previous_completed_at": "2026-06-19T19:30:00",
+              "reopened_at": "2026-06-19T23:26:37.820212",
+              "update": "I retried, still the same issue. If i click on add task in Review box, it add task to the Problem box"
+            }
+          ],
+          "started_at": "2026-06-20T00:08:30",
+          "title": "why when i click add task on \"Asssigment\", it saves tciket to \"Problems\"?",
+          "updated": "2026-06-21T13:42:43.149295",
+          "updated_at": "2026-06-21T16:13:46.791932"
+        },
+        {
+          "category": "Frontend",
+          "column": "future",
+          "completed_at": "2026-06-19T14:05:00",
+          "created": "2026-06-19T12:15:26.476274",
+          "fix": "Fixed Save Changes button in Edit Task modal: Updated saveEditedTask() to use collectLinks() instead of non-existent task-linked/relationship fields, updated editTask() to populate existing linked tasks when opening the modal",
+          "folder_id": "F-20260621161300-efb1773f",
+          "future_folder_id": "F-20260621161300-efb1773f",
+          "id": "T064",
+          "linked_task_id": null,
+          "page": "Project Board",
+          "priority": "Medium",
+          "relationship_type": null,
+          "reopen_history": [
+            {
+              "previous_completed_at": "2026-06-19T12:25:00",
+              "reopened_at": "2026-06-19T13:58:34.242576",
+              "update": "when I click \"Edit task\", make changes, button \"Save changes\" does not do anything"
+            }
+          ],
+          "started_at": "2026-06-19T12:23:00",
+          "title": "when I click \"Edit Task\" button, window just closes",
+          "updated": "2026-06-19T14:22:09.516779",
+          "updated_at": "2026-06-21T16:13:56.767682"
+        },
+        {
+          "category": "Frontend",
+          "column": "future",
+          "completed_at": "2026-06-19T14:05:00",
+          "created": "2026-06-19T14:02:00.000000",
+          "fix": "Removed all '+ Add task' buttons from column bottoms. Tasks can only be added via drag-and-drop or through other workflows now.",
+          "folder_id": "F-20260621161300-efb1773f",
+          "future_folder_id": "F-20260621161300-efb1773f",
+          "id": "T068",
+          "page": "Project Board",
+          "priority": "Medium",
+          "started_at": "2026-06-19T14:03:00",
+          "title": "Remove new task buttons from each column top",
+          "updated": "2026-06-19T14:05:00.000000",
+          "updated_at": "2026-06-21T16:14:04.960329"
+        },
+        {
+          "category": "UI/UX",
+          "column": "future",
+          "created": "2026-06-21T15:11:42.616429",
+          "fix": "Added 'Move to Future Folder' dropdown in task detail popup for Solved column tasks. Users can now select any Future folder and move the task directly without drag-and-drop. Includes folder selection dropdown, move button, and success feedback.",
+          "folder_id": "F-20260621161300-efb1773f",
+          "future_folder_id": "F-20260621161300-efb1773f",
+          "id": "T095",
+          "linked_task_id": null,
+          "page": "Project Board",
+          "priority": "Medium",
+          "relationship_type": null,
+          "started_at": "2026-06-21T15:30:00.000000",
+          "title": "add option to move any task ticket to future box folder from the ticket pop up on Solved box",
+          "updated": "2026-06-21T15:30:00.000000",
+          "updated_at": "2026-06-21T16:14:25.785803"
+        },
+        {
+          "category": "Frontend",
+          "column": "future",
+          "completed_at": "2026-06-19T09:52:36.130443",
+          "created": "2026-06-18T10:35:04.259473",
+          "fix": "Added dark mode CSS: form elements (input, select, textarea) now use dark background (#0f3460) and light text (#e0e0e0) when [data-theme='dark'] is active",
+          "folder_id": "F-20260621160957-36ce9488",
+          "future_folder_id": "F-20260621160957-36ce9488",
+          "id": "T007",
+          "page": "Project Board",
+          "priority": "Medium",
+          "started_at": "2026-06-18T10:38:00",
+          "title": "Fix text box color in dark mode in project page",
+          "updated": "2026-06-19T09:52:36.130443",
+          "updated_at": "2026-06-21T16:14:35.490803"
+        },
+        {
+          "category": "Frontend",
+          "column": "future",
+          "completed_at": "2026-06-19T11:48:00",
+          "created": "2026-06-19T09:53:29.043495",
+          "fix": "Fixed popup window colors for dark mode: 1) Changed hardcoded #e8f5e9 (light green) to rgba(39, 174, 96, 0.15) with border accent for fix box, 2) Added color: white to buttons, 3) Changed label colors to var(--text-primary), 4) Added border-left accents instead of solid backgrounds",
+          "folder_id": "F-20260621160957-36ce9488",
+          "future_folder_id": "F-20260621160957-36ce9488",
+          "id": "T046",
+          "linked_task_id": "T007",
+          "page": "Project Board",
+          "priority": "Medium",
+          "relationship_type": "linked",
+          "reopen_history": [
+            {
+              "previous_completed_at": "2026-06-19T11:37:00",
+              "reopened_at": "2026-06-19T11:38:25.278757",
+              "update": "I stil cant read things like \"Make \\\"Average Price by Capacity Range\\\" just a list of each capacity range and how much it costs\""
+            }
+          ],
+          "started_at": "2026-06-19T11:47:00",
+          "title": "Pop up window colors are completly off, what happened?",
+          "updated": "2026-06-19T11:49:41.079718",
+          "updated_at": "2026-06-21T16:14:41.902347"
+        },
+        {
+          "category": "UI/UX",
+          "column": "future",
+          "completed_at": "2026-06-19T11:57:00",
+          "created": "2026-06-19T11:51:06.141319",
+          "fix": "Added chronological history view in task popup: Shows timeline with green dots for completions/fixes and red dots for reopens, displays previous fixes alongside reopen reasons in chronological order with visual timeline",
+          "folder_id": "F-20260621160957-36ce9488",
+          "future_folder_id": "F-20260621160957-36ce9488",
+          "id": "T063",
+          "linked_task_id": null,
+          "page": "Project Board",
+          "priority": "Medium",
+          "relationship_type": null,
+          "started_at": "2026-06-19T11:56:00",
+          "title": "What happened to showing of chronological of solutions and reopen comments of task ticket in pop up?",
+          "updated": "2026-06-19T14:57:46.309113",
+          "updated_at": "2026-06-21T16:14:49.672570"
+        },
+        {
+          "category": "Frontend",
+          "column": "future",
+          "completed_at": "2026-06-19T12:03:00",
+          "created": "2026-06-19T11:21:43.731963",
+          "fix": "Removed the New Task button from board-header. The button was successfully removed from the template - if still visible, browser cache needs refresh (Ctrl+F5)",
+          "folder_id": "F-20260621161300-efb1773f",
+          "future_folder_id": "F-20260621161300-efb1773f",
+          "id": "T058",
+          "linked_task_id": null,
+          "page": "Project Board",
+          "priority": "Medium",
+          "relationship_type": null,
+          "reopen_history": [
+            {
+              "previous_completed_at": "2026-06-19T11:52:00",
+              "reopened_at": "2026-06-19T11:52:56.415567",
+              "update": "Its still there <button class=\"btn\" onclick=\"showAddTaskModal()\">➕ New Task</button>"
+            }
+          ],
+          "started_at": "2026-06-19T11:51:00",
+          "title": "Remove new task button on the top right corner",
+          "updated": "2026-06-19T13:58:50.664966",
+          "updated_at": "2026-06-21T16:14:58.156275"
+        },
+        {
+          "category": "",
+          "column": "future",
+          "completed_at": "2026-06-21T14:51:44.514737",
+          "created": "2026-06-19T19:14:08.759904",
+          "fix": "Fixed auto-note issue: Added autocomplete=\"off\" to textarea fields in project_board.html to prevent browser autofill. Added server-side validation in app.py add_task_note() to block \"disappered\"/\"disappeared\" phrases. Cleared project_notes.md of auto-generated content.",
+          "folder_id": "F-20260621161300-efb1773f",
+          "future_folder_id": "F-20260621161300-efb1773f",
+          "id": "T084",
+          "linked_task_id": null,
+          "page": "Project Board",
+          "priority": "High",
+          "relationship_type": null,
+          "reopen_history": [
+            {
+              "previous_completed_at": "2026-06-19T19:27:00",
+              "reopened_at": "2026-06-19T23:29:15.411592",
+              "update": "fix this bug"
+            },
+            {
+              "previous_completed_at": "2026-06-20T00:08:00",
+              "reopened_at": "2026-06-21T13:43:55.310330",
+              "update": "\"everything has disappered from the dropdown list\" is auto added to every task"
+            },
+            {
+              "previous_completed_at": "2026-06-21T13:57:08.581881",
+              "reopened_at": "2026-06-21T14:13:12.785433",
+              "update": "\"everything has disappered from the dropdown list\" note is being added automatically to every task, even new ones. remove that"
+            }
+          ],
+          "started_at": "2026-06-20T00:05:30",
+          "title": "why every task has note saying \"everything has disappered from the dropdown list\"?",
+          "updated": "2026-06-21T14:51:44.514737",
+          "updated_at": "2026-06-21T16:17:54.157477"
+        },
+        {
+          "category": "",
+          "column": "future",
+          "completed_at": "2026-06-19T14:45:00",
+          "created": "2026-06-19T09:29:10.737348",
+          "fix": "Added folder support to Future column: Frontend with folder rendering, drag-drop, create/edit/delete modals; Backend API endpoints (POST/PUT/DELETE /api/project-board/folder, POST /api/project-board/task-folder); Features include folder name/description/relationship status, task-to-folder assignment, unfiled tasks section",
+          "folder_id": "F-20260621161300-efb1773f",
+          "future_folder_id": "F-20260621161300-efb1773f",
+          "id": "T044",
+          "linked_task_id": null,
+          "page": "Project Board",
+          "priority": "High",
+          "relationship_type": null,
+          "started_at": "2026-06-19T14:36:00",
+          "title": "In future box add option to create folder where I can drag tasks in. When creating a new folder, you have the option create description, see tasks in it, set relationship status and comment on each task",
+          "updated": "2026-06-21T13:52:23.557646",
+          "updated_at": "2026-06-21T16:19:07.261557"
+        },
+        {
+          "category": "",
+          "column": "future",
+          "completed_at": "2026-06-21T16:19:54.851186",
+          "created": "2026-06-21T16:19:43.165725",
+          "fix": "",
+          "folder_id": "F-20260621161300-efb1773f",
+          "future_folder_id": "F-20260621161300-efb1773f",
+          "id": "T101",
+          "linked_task_id": null,
+          "page": "Project Board",
+          "priority": "Medium",
+          "relationship_type": null,
+          "title": "testt",
+          "updated": "2026-06-21T16:20:25.105993",
+          "updated_at": "2026-06-21T16:21:47.543680"
+        },
+        {
+          "category": "",
+          "column": "future",
+          "completed_at": "2026-06-19T12:22:00",
+          "created": "2026-06-19T10:13:54.354065",
+          "fix": "Removed Speed filter from RAM section in PC Builder. Users can now filter RAM by Capacity and Type only, simplifying the selection process",
+          "folder_id": "F-20260621161300-efb1773f",
+          "future_folder_id": "F-20260621161300-efb1773f",
+          "id": "T051",
+          "linked_task_id": null,
+          "page": "",
+          "priority": "Medium",
+          "relationship_type": null,
+          "started_at": "2026-06-19T12:21:00",
+          "title": "In PC Builder page you can remove \"Speed\" from RAM section.",
+          "updated": "2026-06-19T13:56:48.332793",
+          "updated_at": "2026-06-21T19:10:44.954257"
+        },
+        {
+          "category": "Frontend",
+          "column": "future",
+          "completed_at": "2026-06-19T09:57:02.480082",
+          "created": "2026-06-18T15:08:10.215644",
+          "fix": "Updated project_board.html: 1) Enhanced showTaskDetail function to display the fix that was applied at each re-open stage (shown in green box within each history entry), 2) Updated the Review→Assignment drag modal to show fix history with both the applied fix and the reported issue for each attempt, 3) Each re-open entry now shows: attempt number, date, fix applied (green), and issue reported (red)",
+          "folder_id": "F-20260621160957-36ce9488",
+          "future_folder_id": "F-20260621160957-36ce9488",
+          "id": "T013",
+          "page": "",
+          "priority": "Medium",
+          "started_at": "2026-06-18T15:25:00",
+          "title": "full reopen history should also show previously applied fixes in project board",
+          "updated": "2026-06-19T09:57:02.480082",
+          "updated_at": "2026-06-21T19:12:23.126004"
+        },
+        {
+          "category": "Frontend",
+          "column": "future",
+          "completed_at": "2026-06-19T09:30:00",
+          "created": "2026-06-18T21:35:55.861735",
+          "fix": "Extended search filter to all columns: 1) Modified createColumnElement() to add search input box to Problems, Assignment, Progress, and Solved columns, 2) Added generic filterTasks() function that works for any column, 3) Each column now has unique ID for its tasks container, 4) Search filters task cards by hiding non-matching ones via CSS display property",
+          "folder_id": "F-20260621191317-c326bdc2",
+          "future_folder_id": "F-20260621191317-c326bdc2",
+          "id": "T037",
+          "linked_task_id": null,
+          "page": "",
+          "priority": "High",
+          "reopen_history": [
+            {
+              "previous_completed_at": "2026-06-18T23:35:00",
+              "reopened_at": "2026-06-19T09:20:44.758468",
+              "update": "Add the same thing to \"Solved\" and \"Problems\" boxes"
+            }
+          ],
+          "started_at": "2026-06-19T09:25:00",
+          "title": "add search type filter in review box in project board",
+          "updated": "2026-06-19T10:22:24.461082",
+          "updated_at": "2026-06-21T19:13:44.137350"
+        },
+        {
+          "category": "Frontend",
+          "column": "future",
+          "completed_at": "2026-06-18T18:10:00",
+          "created": "2026-06-18T18:03:01.472178",
+          "fix": "Updated project_board.html: 1) Added 'Review' counter to the stats bar (between 'In Progress' and 'Solved'), 2) Added new stat-value element with ID 'stat-review', 3) Updated updateStats() function to calculate and display the count of tasks in the 'talking' (Review) column",
+          "folder_id": "F-20260621161300-efb1773f",
+          "future_folder_id": "F-20260621161300-efb1773f",
+          "id": "T026",
+          "page": "",
+          "priority": "Medium",
+          "started_at": "2026-06-18T18:05:00",
+          "title": "Add \"Review number at the top\" in Project board",
+          "updated": "2026-06-19T09:18:10.137541",
+          "updated_at": "2026-06-21T19:14:04.616293"
+        },
+        {
+          "category": "Frontend",
+          "column": "future",
+          "completed_at": "2026-06-18T23:37:00",
+          "created": "2026-06-18T21:54:04.574452",
+          "fix": "Task ID display implemented in project_board.html as part of T036: 1) Modified renderTaskCard() to show task ID (e.g., T036) at the top of each task card with gray background badge styling, 2) Task ID is now visible at a glance without opening task details",
+          "folder_id": "F-20260621161300-efb1773f",
+          "future_folder_id": "F-20260621161300-efb1773f",
+          "id": "T039",
+          "linked_task_id": null,
+          "page": "",
+          "priority": "Low",
+          "started_at": "2026-06-18T23:36:00",
+          "title": "add task number to task boxes in project board",
+          "updated": "2026-06-19T09:17:38.891258",
+          "updated_at": "2026-06-21T19:17:25.290641"
+        },
+        {
+          "category": "Frontend",
+          "column": "future",
+          "completed_at": "2026-06-18T19:55:00",
+          "created": "2026-06-18T19:10:58.939970",
+          "fix": "Added task linking feature: 1) Added 'Link to Task' dropdown in New Task modal with populateLinkedTaskDropdown() function, 2) Updated addTask() to send linked_task_id to backend, 3) Updated backend API to store linked_task_id in task data, 4) Added 🔗 icon to task cards when linked, 5) Added linked task display in task detail modal with clickable link",
+          "folder_id": "F-20260621134436-a2fac031",
+          "future_folder_id": "F-20260621134436-a2fac031",
+          "id": "T031",
+          "page": "",
+          "priority": "High",
+          "started_at": "2026-06-18T19:42:00",
+          "title": "add option to link a ticket to a different ticket in a task  everyhere in project board",
+          "updated": "2026-06-19T09:17:52.555433",
+          "updated_at": "2026-06-21T19:17:43.829959"
+        },
+        {
+          "category": "Frontend",
+          "column": "future",
+          "completed_at": "2026-06-18T17:00:00",
+          "created": "2026-06-18T16:03:17.633621",
+          "fix": "Updated project_board.html: 1) Added 'Assigned' counter to stats bar (as first item), 2) Added new stat-value ID 'stat-assigned' and stat-label 'Assigned' to HTML, 3) Updated updateStats() function to calculate assigned count from assignment column and update stat-assigned element",
+          "folder_id": "F-20260621161300-efb1773f",
+          "future_folder_id": "F-20260621161300-efb1773f",
+          "id": "T022",
+          "page": "",
+          "priority": "Medium",
+          "started_at": "2026-06-18T16:58:00",
+          "title": "on the top right cornecer of project board page you can add \"Assigned\" counter",
+          "updated": "2026-06-19T09:22:01.497736",
+          "updated_at": "2026-06-21T19:18:15.672695"
+        },
+        {
+          "category": "Frontend",
+          "column": "future",
+          "completed_at": "2026-06-18T12:35:00",
+          "created": "2026-06-18T09:11:09.290711",
+          "fix": "Updated CSS: 1) Changed board-column from fixed width to flex:1 1 0 with min-width:250px, 2) Reordered columns so Future Box appears last, 3) Removed max-width constraint",
+          "folder_id": "F-20260621161300-efb1773f",
+          "future_folder_id": "F-20260621161300-efb1773f",
+          "id": "T004",
+          "page": "",
+          "priority": "Medium",
+          "reopen_history": [
+            {
+              "previous_completed_at": "2026-06-18T12:10:00",
+              "reopened_at": "2026-06-18T12:27:00",
+              "update": "Project board still isnt 100% wide of the screen"
+            }
+          ],
+          "started_at": "2026-06-18T12:30:00",
+          "title": "Make the project board take up full screen",
+          "updated": "2026-06-18T14:43:09.736111",
+          "updated_at": "2026-06-21T19:19:21.159680"
+        },
+        {
+          "category": "Frontend",
+          "column": "future",
+          "completed_at": "2026-06-18T16:20:00",
+          "created": "2026-06-18T15:11:52.032211",
+          "fix": "Fixed project_board.html layout: 1) Created dedicated .bottom-row flex container that wraps both Future and Solved columns, 2) Updated CSS so .bottom-row .board-column.future-column and .bottom-row .board-column.solved-column both use flex: 1 1 50% with nowrap wrapping, 3) Modified JavaScript renderBoard() to create bottom-row wrapper and append Future/Solved columns to it instead of main container, ensuring they always appear side-by-side at bottom",
+          "folder_id": "F-20260621161300-efb1773f",
+          "future_folder_id": "F-20260621161300-efb1773f",
+          "id": "T014",
+          "page": "",
+          "priority": "Medium",
+          "reopen_history": [
+            {
+              "previous_completed_at": "2026-06-18T15:30:00",
+              "reopened_at": "2026-06-18T15:32:59.186456",
+              "update": "\"Solved\" box is aboe the \"future\" box now and is not to the right"
+            }
+          ],
+          "started_at": "2026-06-18T16:15:00",
+          "title": "Move the \"Solved\" box down to the right of \"future\" box in project board",
+          "updated": "2026-06-19T09:24:09.608790",
+          "updated_at": "2026-06-21T19:20:05.063835"
+        },
+        {
+          "category": "Frontend",
+          "column": "future",
+          "completed_at": "2026-06-18T16:20:00",
+          "created": "2026-06-18T14:12:35.009838",
+          "fix": "Fixed project_board.html layout: Same fix as T014 - Future and Solved boxes now share a dedicated .bottom-row container at the bottom of the page. Both columns use equal 50% width with flex: 1 1 50% and appear side-by-side.",
+          "folder_id": "F-20260621161300-efb1773f",
+          "future_folder_id": "F-20260621161300-efb1773f",
+          "id": "T008",
+          "page": "",
+          "priority": "Medium",
+          "reopen_history": [
+            {
+              "previous_completed_at": "2026-06-18T14:20:00",
+              "reopened_at": "2026-06-18T14:32:42.805833",
+              "update": "I dont see \"future\" box at all now in project page"
+            },
+            {
+              "previous_completed_at": "2026-06-18T14:56:00",
+              "reopened_at": "2026-06-18T15:05:00",
+              "update": "fix T008"
+            },
+            {
+              "previous_completed_at": "2026-06-18T15:10:00",
+              "reopened_at": "2026-06-18T15:54:45.097175",
+              "update": "future box is still above the solved box. Solved box should be on the right side next to future box."
+            }
+          ],
+          "started_at": "2026-06-18T16:15:00",
+          "title": "Move \"future box\" to the bottom in Project page",
+          "updated": "2026-06-19T09:18:35.445393",
+          "updated_at": "2026-06-21T19:20:09.802417"
+        },
+        {
+          "category": "Frontend",
+          "column": "future",
+          "completed_at": "2026-06-18T17:05:00",
+          "created": "2026-06-18T16:16:02.378722",
+          "fix": "Added 'Lenses' to pages array in project_board.json. This allows users to: 1) Select 'Lenses' as a page option when creating new tasks, 2) Filter tasks by the 'Lenses' page in the project board.",
+          "folder_id": "F-20260621161300-efb1773f",
+          "future_folder_id": "F-20260621161300-efb1773f",
+          "id": "T023",
+          "page": "",
+          "priority": "Medium",
+          "started_at": "2026-06-18T17:02:00",
+          "title": "Add page \"Lenses\" to refer to lense listing page",
+          "updated": "2026-06-19T09:51:34.695478",
+          "updated_at": "2026-06-21T19:20:17.816295"
+        },
+        {
+          "category": "Frontend",
+          "column": "future",
+          "completed_at": "2026-06-18T20:28:13.278802",
+          "created": "2026-06-18T18:56:45.531673",
+          "fix": "Added 'Consoles' to pages array in project_board.json. This allows users to: 1) Select 'Consoles' as a page option when creating new tasks, 2) Filter tasks by the 'Consoles' page in the project board.",
+          "folder_id": "F-20260621161300-efb1773f",
+          "future_folder_id": "F-20260621161300-efb1773f",
+          "id": "T029",
+          "page": "",
+          "priority": "Medium",
+          "started_at": "2026-06-18T20:26:00",
+          "title": "new test is missing page \"Consoles\" in project board",
+          "updated": "2026-06-18T20:28:13.278802",
+          "updated_at": "2026-06-21T19:20:31.955137"
+        },
+        {
+          "category": "Frontend",
+          "column": "future",
+          "completed_at": "2026-06-18T17:48:00",
+          "created": "2026-06-18T17:41:45.610975",
+          "fix": "Updated project_board.html: 1) Removed overflow-y: auto from .board-columns to eliminate scroll box, 2) Changed .bottom-row from flex: 0 0 100% to flex: 1 1 100% to allow bottom row to expand naturally, 3) Columns now fill available space without scrolling container, allowing Future/Solved boxes to expand to full width",
+          "folder_id": "F-20260621161300-efb1773f",
+          "future_folder_id": "F-20260621161300-efb1773f",
+          "id": "T025",
+          "page": "",
+          "priority": "Medium",
+          "started_at": "2026-06-18T17:45:00",
+          "title": "why project page there is a scroll box of container? It should just fill in the whole page. For example second line of boxes are squezed. They can exapnd further without a container in project board page",
+          "updated": "2026-06-19T09:18:24.525188",
+          "updated_at": "2026-06-21T19:20:40.924035"
+        },
+        {
+          "category": "Frontend",
+          "column": "future",
+          "completed_at": "2026-06-18T19:40:00",
+          "created": "2026-06-18T15:57:45.923412",
+          "fix": "Moved 'Computers' from categories array to pages array in project_board.json. Updated task category from 'Computers' to 'Frontend'. The pages dropdown now includes 'Computers' as a page option instead of a category option.",
+          "folder_id": "F-20260621161300-efb1773f",
+          "future_folder_id": "F-20260621161300-efb1773f",
+          "id": "T018",
+          "page": "",
+          "priority": "Medium",
+          "reopen_history": [
+            {
+              "previous_completed_at": "2026-06-18T16:25:00",
+              "reopened_at": "2026-06-18T19:09:01.404476",
+              "update": "remove it from category filter and add that to page filter"
+            }
+          ],
+          "started_at": "2026-06-18T19:38:00",
+          "title": "Add \"Computers\" in ticket window in dropdown list \"Category\". This way you would know to fix copmuter listing page",
+          "updated": "2026-06-19T09:18:04.808485",
+          "updated_at": "2026-06-21T19:20:46.490099"
+        },
+        {
+          "category": "Frontend",
+          "column": "future",
+          "completed_at": "2026-06-18T20:29:59.176084",
+          "created": "2026-06-18T15:34:19.375603",
+          "fix": "Updated project_board.html CSS: Significantly increased modal widths - changed default modal max-width from 700px to 1100px (57% wider), and re-open modal max-width from 800px to 1200px (50% wider). This should provide much more visible space for task details and fix history.",
+          "folder_id": "F-20260621161300-efb1773f",
+          "future_folder_id": "F-20260621161300-efb1773f",
+          "id": "T015",
+          "page": "",
+          "priority": "Medium",
+          "started_at": "2026-06-18T17:59:00",
+          "title": "You can make the pop up window wider in project page when clicking on tasks",
+          "updated": "2026-06-18T20:29:59.176084",
+          "updated_at": "2026-06-21T19:20:57.842926"
+        },
+        {
+          "category": "Frontend",
+          "column": "future",
+          "completed_at": "2026-06-19T09:30:00",
+          "created": "2026-06-18T21:34:30.769321",
+          "fix": "Implemented complete task relationship functionality:\n1) Backend: Added PUT /api/project-board/task/<task_id> endpoint to update existing tasks including relationship_type\n2) Frontend: Added editTask() function that pre-fills the Add Task modal with existing task data\n3) Frontend: Modified addTask() to call saveEditedTask() when editing (window.editingTaskId is set)\n4) Frontend: Added saveEditedTask() to send PUT request with updated fields\n5) Frontend: Modified populateLinkedTaskDropdown() to exclude self when editing\n6) Frontend: Added relationship_type dropdown to re-open modal\n7) Backend: Updated reopen endpoint to accept and save relationship_type\n8) Frontend: Modified confirmReopen() to send relationship_type with re-open\n9) Task Detail: Added ✏️ Edit Task button to task detail modal\n10) Task Cards: Relationship icons now display on task cards",
+          "folder_id": "F-20260621191317-c326bdc2",
+          "future_folder_id": "F-20260621191317-c326bdc2",
+          "id": "T036",
+          "linked_task_id": null,
+          "page": "",
+          "priority": "High",
+          "reopen_history": [
+            {
+              "previous_completed_at": "2026-06-18T22:38:00",
+              "previous_fix": "Added relationship dropdown in Add Task modal with options: linked, caused_by, similar_to, blocks, blocked_by, updated renderTaskCard() to show relationship icon, added getRelationshipIcon() and getRelationshipLabel() functions, updated showTaskDetail() to display relationship type with icon",
+              "reopened_at": "2026-06-18T22:55:33.438881",
+              "update": "1. task was not resolved. 2. why did it was placed in review without any comment?"
+            }
+          ],
+          "started_at": "2026-06-18T23:08:00",
+          "title": "add linked task relationship options, like.linked/caused/similiar in porject board",
+          "updated": "2026-06-19T09:30:00",
+          "updated_at": "2026-06-21T19:21:15.274904"
+        },
+        {
+          "category": "",
+          "column": "future",
+          "completed_at": "2026-06-22T15:17:24.747516",
+          "created": "2026-06-21T19:09:50.065302",
+          "fix": "Added filter-count-type dropdown (Problems/Review/Solved, default Review) next to filter-page in project_board.html. Added computePageCounts() to tally tasks per page by column type, and updated populateDropdowns() to display counts in both the All Pages option and each page option (e.g. 'Project Board (3 Review)'). Counts update when count type changes while preserving current page/priority/category selections.",
+          "folder_id": "F-20260621160957-36ce9488",
+          "future_folder_id": "F-20260621160957-36ce9488",
+          "id": "T104",
+          "linked_task_id": null,
+          "page": "Project Board",
+          "priority": "Medium",
+          "relationship_type": null,
+          "started_at": "2026-06-22T15:02:37.313173",
+          "title": "In \"All Pages\" filter show count of review tasks for that page and in dropdown list. Create a dropdown option picking between Problems / Review / Solved count that shouws in filter.",
+          "updated": "2026-06-24T15:41:14.147348",
+          "updated_at": "2026-06-24T15:58:35.140626"
+        },
+        {
+          "category": "",
+          "column": "future",
+          "completed_at": "2026-06-27T15:19:07.367564",
+          "created": "2026-06-26T19:24:04.918077",
+          "fix": "Replaced broken link-to-task autocomplete with a working searchable <select> dropdown in the task modal. collectLinks() now reads task ID and relationship type from each link row, and both addTask() (POST) and saveEditedTask() (PUT) send linked_tasks to app.py. Tested end-to-end: created T132 linked to T002, persisted in project_board.json.",
+          "folder_id": "F-20260621160957-36ce9488",
+          "future_folder_id": "F-20260621160957-36ce9488",
+          "id": "T128",
+          "linked_task_id": null,
+          "page": "Project Board",
+          "priority": "Medium",
+          "relationship_type": null,
+          "started_at": "2026-06-26T17:50:08.006461+00:00",
+          "title": "in creating new task box why link to tasks is not a dropdown list?Why link to task search box doesnt work?",
+          "updated": "2026-06-27T15:19:07.635017",
+          "updated_at": "2026-06-27T15:19:07.635017"
+        }
+      ],
+      "title": "Future"
+    }
+  ],
+  "next_id": 169,
+  "pages": [
+    "GPU",
+    "CPU",
+    "RAM",
+    "SSD",
+    "Motherboards",
+    "PSU",
+    "Cases",
+    "Coolers",
+    "HDD",
+    "Computers",
+    "Laptops",
+    "Monitors",
+    "Consoles",
+    "Cameras",
+    "Lenses",
+    "Project Board",
+    "PC Builder"
+  ],
+  "schema": "project-board-bridge.v2",
+  "schema_version": 2,
+  "task_schema": {
+    "category": "string (optional)",
+    "code_snippet": "string (optional) - code attached to the task",
+    "column": "string",
+    "completed_at": "ISO datetime (optional)",
+    "created": "ISO datetime",
+    "fix": "string (optional)",
+    "folder_id": "string (optional)",
+    "future_folder_id": "string (optional)",
+    "id": "string",
+    "language": "string (optional) - programming language for syntax highlighting",
+    "linked_task_id": "string | null",
+    "linked_tasks": "array (optional)",
+    "page": "string (optional)",
+    "priority": "High | Medium | Low",
+    "relationship_type": "string | null",
+    "reopen_history": "array (optional)",
+    "special": "boolean (optional)",
+    "started_at": "ISO datetime (optional)",
+    "title": "string",
+    "updated": "ISO datetime"
+  },
+  "updated": "2026-06-25T13:36:42"
+}

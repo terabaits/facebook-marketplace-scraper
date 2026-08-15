@@ -1,0 +1,181 @@
+    try {
+        console.log('Loading computer stats...');
+        const response = await fetch('/api/computers/stats');
+        const data = await response.json();
+        console.log('Stats response:', data);
+        
+        if (data.success) {
+            document.getElementById('stat-total').textContent = data.stats.total;
+            document.getElementById('stat-active').textContent = data.stats.active;
+            document.getElementById('stat-avg-price').textContent = '€' + (data.stats.avg_price || 0).toFixed(0);
+            document.getElementById('stat-with-cpu-gpu').textContent = (data.stats.with_cpu || 0) + ' / ' + (data.stats.with_gpu || 0);
+        } else {
+            console.error('Stats error:', data.error);
+            document.getElementById('stat-total').textContent = 'Error';
+            document.getElementById('stat-active').textContent = 'Error';
+        }
+    } catch (error) {
+        console.error('Error loading stats:', error);
+        document.getElementById('stat-total').textContent = 'Error';
+        document.getElementById('stat-active').textContent = 'Error';
+    }
+}
+
+// Compute NEW / STEAL / BUY deal badges for a computer listing (mirrors GPU/CPU pages)
+function computeComputerDealBadges(item) {
+    let badges = [];
+
+    const isNewListing = item.is_new === true;
+    if (isNewListing) {
+        badges.push(`<span class="badge" style="background: #3b82f6; color: white; font-weight: bold;" title="New listing from current import!">🆕 NEW</span>`);
+    }
+
+    if (!isNewListing && item.price_stats && item.price_stats.below_avg) {
+        const avgPrice = parseFloat(item.price_stats.avg);
+        const currentPrice = item.price_eur;
+        const savingsPct = ((avgPrice - currentPrice) / avgPrice * 100);
+        if (savingsPct >= 15) {
+            badges.push(`<span class="badge" style="background: #dc2626; color: white; font-weight: bold;" title="Price is ${savingsPct.toFixed(0)}% below peer average!">🔥 STEAL</span>`);
+        }
+    }
+
+    if (item.is_buy === true) {
+        badges.push(`<span class="badge" style="background: #16a34a; color: white; font-weight: bold;" title="All-time lowest recorded price for this listing!">✅ BUY</span>`);
+    }
+
+    if (badges.length === 0) return '';
+    return `<div style="position: absolute; top: 4px; right: 4px; display: flex; flex-direction: column; gap: 4px; z-index: 10;">${badges.join('')}</div>`;
+}
+
+async function loadComputers() {
+    const activeOnly = document.getElementById('active-only').checked;
+    const prebuiltOnly = document.getElementById('prebuilt-only').checked;
+    const hidePrebuilt = document.getElementById('hide-prebuilt').checked;
+    const sortBy = document.getElementById('sort-by').value;
+    const sortOrder = document.getElementById('sort-order').value;
+    
+    // Save toggle states to localStorage
+    localStorage.setItem('computersPrebuiltOnly', prebuiltOnly);
+    localStorage.setItem('computersHidePrebuilt', hidePrebuilt);
+    localStorage.setItem('computersSortBy', sortBy);
+    localStorage.setItem('computersSortOrder', sortOrder);
+    
+    const params = new URLSearchParams();
+    params.append('active', activeOnly);
+    if (prebuiltOnly) params.append('prebuilt', 'true');
+    if (hidePrebuilt) params.append('prebuilt', 'false');
+    params.append('sort', sortBy);
+    params.append('order', sortOrder);
+    
+    try {
+        const response = await fetch('/api/computers?' + params.toString());
+        const data = await response.json();
+        
+        const container = document.getElementById('listings-container');
+        
+        if (!data.success || data.listings.length === 0) {
+            container.innerHTML = '<div class="loading">No computer listings found</div>';
+            return;
+        }
+        
+        let html = `
+            <table>
+                <thead>
+                    <tr>
+                        <th>Image</th>
+                        <th>Title</th>
+                        <th>Type</th>
+                        <th>Price</th>
+                        <th>Components</th>
+                        <th>Location</th>
+                        <th>Date</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+        `;
+        
+        data.listings.forEach(item => {
+            // Use backend prebuilt flag early so components section can access it
+            const isPrebuilt = Boolean(item.is_prebuilt);
+
+            // Build components summary
+            let components = [];
+            if (item.cpu_name) {
+                const cpuProducer = item.cpu_producer || '';
+                const cpuName = cpuProducer && item.cpu_name.toLowerCase().startsWith(cpuProducer.toLowerCase()) ? item.cpu_name : `${cpuProducer} ${item.cpu_name}`.trim();
+                components.push(`<span class="badge badge-cpu">CPU: ${cpuName}</span>`);
+            }
+            if (item.gpu_model) {
+                components.push(`<span class="badge badge-gpu">GPU: ${item.gpu_vendor || ''} ${item.gpu_model}</span>`);
+            }
+            let ramCapacity = item.ram_capacity;
+            if (!ramCapacity && item.ram_match_method) {
+                const ramMatch = item.ram_match_method.match(/(\d+)\s*GB/i);
+                if (ramMatch) ramCapacity = parseInt(ramMatch[1]);
+            }
+            let ramType = item.ram_type;
+            if (!ramType && item.ram_match_method) {
+                const ddrMatch = item.ram_match_method.match(/ddr(\d)/i);
+                if (ddrMatch) ramType = `DDR${ddrMatch[1]}`;
+            }
+            if (ramCapacity) {
+                components.push(`<span class="badge badge-ram" data-ram-capacity="${ramCapacity}" data-ram-type="${ramType || ''}">RAM: ${ramCapacity}GB ${ramType || ''}</span>`);
+            }
+            let ssdCapacity = item.ssd_capacity;
+            if (!ssdCapacity && item.ssd_match_method) {
+                const ssdMatch = item.ssd_match_method.match(/(\d+)\s*GB/i);
+                if (ssdMatch) ssdCapacity = parseInt(ssdMatch[1]);
+            }
+            if (ssdCapacity) {
+                components.push(`<span class="badge badge-ssd">SSD: ${ssdCapacity}GB</span>`);
+            } else if (item.ssd_match_method && !['none', 'null', ''].includes(item.ssd_match_method.toLowerCase().trim())) {
+                components.push(`<span class="badge badge-ssd">SSD: detected</span>`);
+            }
+            if (item.prebuilt_badge) {
+                components.push(item.prebuilt_badge);
+            } else if (isPrebuilt) {
+                components.push(`<span class="badge" style="background: #e74c3c; color: white;">🏭 Prebuilt</span>`);
+            }
+            
+            const componentsHtml = components.length > 0 ? components.join('<br>') : '<em class="no-components">No components detected</em>';
+
+            const pcType = item.pc_type || (isPrebuilt ? 'prebuilt' : 'custom');
+            const typeBadge = isPrebuilt
+                ? `<span class="badge" style="background: #e74c3c; color: white;">🏭 Prebuilt</span>`
+                : `<span class="badge" style="background: #27ae60; color: white;">🛠️ Custom</span>`;
+            const prebuiltTitleBadge = isPrebuilt ? `<span class="badge" style="background: #e74c3c; color: white; margin-left: 0.5rem;">🏭 Prebuilt</span>` : '';
+            
+            // Image - escape special chars for onclick
+            const rawImageUrl = item.image_url ? item.image_url : '';
+            const fullImageUrl = rawImageUrl
+                .replace(/\.t\./, '.800.')
+                .replace(/\.th\./, '.')
+                .replace(/\.thumb\./, '.')
+                .replace(/\/thumb\//, '/');
+            const safeImageUrl = fullImageUrl.replace(/'/g, "\\'").replace(/"/g, '&quot;');
+            const safeTitle = (item.title || '').replace(/'/g, "\\'").replace(/"/g, '&quot;');
+            const safeListingId = item.listing_id ? item.listing_id.replace(/'/g, "\\'") : '';
+
+            const dealBadgesHtml = computeComputerDealBadges(item);
+            
+            const imageHtml = fullImageUrl 
+                ? `<div class="listing-image-wrapper" style="position: relative;">
+                    ${dealBadgesHtml}
+                    <img src="${fullImageUrl}" alt="Computer" class="listing-thumb" loading="lazy" onclick="event.stopPropagation(); showImageModal('${safeImageUrl}', '${safeTitle}')">
+                    ${item.prebuilt_badge ? `<div class="prebuilt-overlay">${item.prebuilt_badge}</div>` : ''}
+                   </div>`
+                : '<div class="listing-thumb-placeholder">💻</div>';
+            
+            // Debug info tooltip
+            const debugInfo = item.is_prebuilt ? `title="Prebuilt: ${item.is_prebuilt}, Boring: ${item.is_boring}"` : '';
+            
+            html += `
+                <tr class="clickable ${pcType}-row" data-pc-type="${pcType}" onclick="showComputerDetail('${safeListingId}')">
+                    <td class="listing-image-cell">${imageHtml}</td>
+                    <td>
+                        <strong>${item.title}</strong>${prebuiltTitleBadge}
+                        ${isAdminMode() && item.is_prebuilt ? `<button class="btn btn-tiny" onclick="event.stopPropagation(); unmarkPrebuilt('${safeListingId}')" title="Unmark as prebuilt">✕</button>` : ''}
+                    </td>
+                    <td>${typeBadge}</td>
+                    <td><span class="price">€${item.price_eur}</span></td>

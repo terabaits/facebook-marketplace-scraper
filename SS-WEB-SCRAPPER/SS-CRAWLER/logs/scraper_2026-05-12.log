@@ -1,0 +1,1037 @@
+2026-05-12 22:31:01 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Initializing Motherboard scraper...
+2026-05-12 22:31:01 | INFO     | ss_crawler | [database] [database] Database connected: localhost:5433/ss_market
+2026-05-12 22:31:01 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Database: postgresql+psycopg2://crawler:crawler_pass@localhost:5433/ss_market
+2026-05-12 22:31:01 | ERROR    | ss_crawler | [database] [database] Database transaction failed: (psycopg2.errors.UndefinedTable) relation "motherboard_models" does not exist
+LINE 3:                 FROM motherboard_models
+                             ^
+
+[SQL: 
+                SELECT id, brand, model, socket, chipset, ram_slots, form_factor
+                FROM motherboard_models
+                ORDER BY brand, model
+            ]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2026-05-12 22:35:27 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Initializing Motherboard scraper...
+2026-05-12 22:35:27 | INFO     | ss_crawler | [database] [database] Database connected: localhost:5433/ss_market
+2026-05-12 22:35:27 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Database: postgresql+psycopg2://crawler:crawler_pass@localhost:5433/ss_market
+2026-05-12 22:35:27 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] MotherboardMatcher initialized with 5729 motherboards
+2026-05-12 22:35:27 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Loaded 5729 motherboard references
+2026-05-12 22:37:03 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Initializing Motherboard scraper...
+2026-05-12 22:37:03 | INFO     | ss_crawler | [database] [database] Database connected: localhost:5433/ss_market
+2026-05-12 22:37:03 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Database: postgresql+psycopg2://crawler:crawler_pass@localhost:5433/ss_market
+2026-05-12 22:37:03 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] MotherboardMatcher initialized with 5729 motherboards
+2026-05-12 22:37:03 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Loaded 5729 motherboard references
+2026-05-12 22:37:03 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Initializing Motherboard scraper...
+2026-05-12 22:37:03 | INFO     | ss_crawler | [database] [database] Database connected: localhost:5433/ss_market
+2026-05-12 22:37:03 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Database: postgresql+psycopg2://crawler:crawler_pass@localhost:5433/ss_market
+2026-05-12 22:37:03 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] MotherboardMatcher initialized with 5729 motherboards
+2026-05-12 22:37:03 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Loaded 5729 motherboard references
+2026-05-12 22:37:03 | INFO     | ss_crawler | [crawler] [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/pkgpj.html
+2026-05-12 22:37:07 | ERROR    | ss_crawler | [motherboard_scraper] [motherboard_scraper] Error scraping listing pkgpj: "Listing" object has no field "motherboard_model_id"
+2026-05-12 22:38:01 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Initializing Motherboard scraper...
+2026-05-12 22:38:01 | INFO     | ss_crawler | [database] [database] Database connected: localhost:5433/ss_market
+2026-05-12 22:38:01 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Database: postgresql+psycopg2://crawler:crawler_pass@localhost:5433/ss_market
+2026-05-12 22:38:01 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] MotherboardMatcher initialized with 5729 motherboards
+2026-05-12 22:38:01 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Loaded 5729 motherboard references
+2026-05-12 22:38:01 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Initializing Motherboard scraper...
+2026-05-12 22:38:01 | INFO     | ss_crawler | [database] [database] Database connected: localhost:5433/ss_market
+2026-05-12 22:38:01 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Database: postgresql+psycopg2://crawler:crawler_pass@localhost:5433/ss_market
+2026-05-12 22:38:02 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] MotherboardMatcher initialized with 5729 motherboards
+2026-05-12 22:38:02 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Loaded 5729 motherboard references
+2026-05-12 22:38:02 | INFO     | ss_crawler | [crawler] [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/pkgpj.html
+2026-05-12 22:38:03 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Matched pkgpj: Gigabyte I (100% confidence)
+2026-05-12 22:38:42 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Initializing Motherboard scraper...
+2026-05-12 22:38:42 | INFO     | ss_crawler | [database] [database] Database connected: localhost:5433/ss_market
+2026-05-12 22:38:42 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Database: postgresql+psycopg2://crawler:crawler_pass@localhost:5433/ss_market
+2026-05-12 22:38:42 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] MotherboardMatcher initialized with 5729 motherboards
+2026-05-12 22:38:42 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Loaded 5729 motherboard references
+2026-05-12 22:38:42 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Initializing Motherboard scraper...
+2026-05-12 22:38:42 | INFO     | ss_crawler | [database] [database] Database connected: localhost:5433/ss_market
+2026-05-12 22:38:42 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Database: postgresql+psycopg2://crawler:crawler_pass@localhost:5433/ss_market
+2026-05-12 22:38:42 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] MotherboardMatcher initialized with 5729 motherboards
+2026-05-12 22:38:42 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Loaded 5729 motherboard references
+2026-05-12 22:38:42 | INFO     | ss_crawler | [crawler] [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/jpfeb.html
+2026-05-12 22:38:45 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Matched jpfeb: Gigabyte UD (90% confidence)
+2026-05-12 22:48:23 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Initializing Motherboard scraper...
+2026-05-12 22:48:23 | INFO     | ss_crawler | [database] [database] Database connected: localhost:5433/ss_market
+2026-05-12 22:48:23 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Database: postgresql+psycopg2://crawler:crawler_pass@localhost:5433/ss_market
+2026-05-12 22:48:23 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] MotherboardMatcher initialized with 5729 motherboards
+2026-05-12 22:48:23 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Loaded 5729 motherboard references
+2026-05-12 22:48:23 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Initializing Motherboard scraper...
+2026-05-12 22:48:23 | INFO     | ss_crawler | [database] [database] Database connected: localhost:5433/ss_market
+2026-05-12 22:48:23 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Database: postgresql+psycopg2://crawler:crawler_pass@localhost:5433/ss_market
+2026-05-12 22:48:24 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] MotherboardMatcher initialized with 5729 motherboards
+2026-05-12 22:48:24 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Loaded 5729 motherboard references
+2026-05-12 22:48:24 | INFO     | ss_crawler | [crawler] [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/jpfeb.html
+2026-05-12 22:48:27 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Matched jpfeb: Gigabyte X570 AORUS PRO (94% confidence)
+2026-05-12 22:49:31 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Initializing Motherboard scraper...
+2026-05-12 22:49:31 | INFO     | ss_crawler | [database] [database] Database connected: localhost:5433/ss_market
+2026-05-12 22:49:31 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Database: postgresql+psycopg2://crawler:crawler_pass@localhost:5433/ss_market
+2026-05-12 22:49:31 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] MotherboardMatcher initialized with 5729 motherboards
+2026-05-12 22:49:31 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Loaded 5729 motherboard references
+2026-05-12 22:49:31 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Initializing Motherboard scraper...
+2026-05-12 22:49:31 | INFO     | ss_crawler | [database] [database] Database connected: localhost:5433/ss_market
+2026-05-12 22:49:31 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Database: postgresql+psycopg2://crawler:crawler_pass@localhost:5433/ss_market
+2026-05-12 22:49:31 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] MotherboardMatcher initialized with 5729 motherboards
+2026-05-12 22:49:31 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Loaded 5729 motherboard references
+2026-05-12 22:49:31 | INFO     | ss_crawler | [crawler] [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/fgnld.html
+2026-05-12 22:49:34 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Matched fgnld: Gigabyte Z690 AORUS ULTRA (100% confidence)
+2026-05-12 22:50:11 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Initializing Motherboard scraper...
+2026-05-12 22:50:11 | INFO     | ss_crawler | [database] [database] Database connected: localhost:5433/ss_market
+2026-05-12 22:50:11 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Database: postgresql+psycopg2://crawler:crawler_pass@localhost:5433/ss_market
+2026-05-12 22:50:11 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] MotherboardMatcher initialized with 5729 motherboards
+2026-05-12 22:50:11 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Loaded 5729 motherboard references
+2026-05-12 22:50:11 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Initializing Motherboard scraper...
+2026-05-12 22:50:11 | INFO     | ss_crawler | [database] [database] Database connected: localhost:5433/ss_market
+2026-05-12 22:50:11 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Database: postgresql+psycopg2://crawler:crawler_pass@localhost:5433/ss_market
+2026-05-12 22:50:11 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] MotherboardMatcher initialized with 5729 motherboards
+2026-05-12 22:50:11 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Loaded 5729 motherboard references
+2026-05-12 22:50:11 | INFO     | ss_crawler | [crawler] [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/jnhmi.html
+2026-05-12 22:50:14 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Matched jnhmi: MSI B250M GAMING PRO (75% confidence)
+2026-05-12 22:52:36 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Initializing Motherboard scraper...
+2026-05-12 22:52:36 | INFO     | ss_crawler | [database] [database] Database connected: localhost:5433/ss_market
+2026-05-12 22:52:36 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Database: postgresql+psycopg2://crawler:crawler_pass@localhost:5433/ss_market
+2026-05-12 22:52:36 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] MotherboardMatcher initialized with 5729 motherboards
+2026-05-12 22:52:36 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Loaded 5729 motherboard references
+2026-05-12 22:52:36 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Initializing Motherboard scraper...
+2026-05-12 22:52:36 | INFO     | ss_crawler | [database] [database] Database connected: localhost:5433/ss_market
+2026-05-12 22:52:36 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Database: postgresql+psycopg2://crawler:crawler_pass@localhost:5433/ss_market
+2026-05-12 22:52:36 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] MotherboardMatcher initialized with 5729 motherboards
+2026-05-12 22:52:36 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Loaded 5729 motherboard references
+2026-05-12 22:52:36 | INFO     | ss_crawler | [crawler] [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/dnchn.html
+2026-05-12 22:52:38 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Matched dnchn: ASUS P8H61-M LX (71% confidence)
+2026-05-12 22:55:42 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Initializing Motherboard scraper...
+2026-05-12 22:55:42 | INFO     | ss_crawler | [database] [database] Database connected: localhost:5433/ss_market
+2026-05-12 22:55:42 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Database: postgresql+psycopg2://crawler:crawler_pass@localhost:5433/ss_market
+2026-05-12 22:55:42 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] MotherboardMatcher initialized with 5729 motherboards
+2026-05-12 22:55:42 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Loaded 5729 motherboard references
+2026-05-12 22:55:42 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Initializing Motherboard scraper...
+2026-05-12 22:55:42 | INFO     | ss_crawler | [database] [database] Database connected: localhost:5433/ss_market
+2026-05-12 22:55:42 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Database: postgresql+psycopg2://crawler:crawler_pass@localhost:5433/ss_market
+2026-05-12 22:55:42 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] MotherboardMatcher initialized with 5729 motherboards
+2026-05-12 22:55:42 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Loaded 5729 motherboard references
+2026-05-12 22:55:42 | INFO     | ss_crawler | [crawler] [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/pinmi.html
+2026-05-12 22:55:45 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Matched pinmi: ASRock H61M-S (78% confidence)
+2026-05-12 22:58:13 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Initializing Motherboard scraper...
+2026-05-12 22:58:13 | INFO     | ss_crawler | [database] [database] Database connected: localhost:5433/ss_market
+2026-05-12 22:58:13 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Database: postgresql+psycopg2://crawler:crawler_pass@localhost:5433/ss_market
+2026-05-12 22:58:14 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] MotherboardMatcher initialized with 5729 motherboards
+2026-05-12 22:58:14 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Loaded 5729 motherboard references
+2026-05-12 22:58:14 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Initializing Motherboard scraper...
+2026-05-12 22:58:14 | INFO     | ss_crawler | [database] [database] Database connected: localhost:5433/ss_market
+2026-05-12 22:58:14 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Database: postgresql+psycopg2://crawler:crawler_pass@localhost:5433/ss_market
+2026-05-12 22:58:14 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] MotherboardMatcher initialized with 5729 motherboards
+2026-05-12 22:58:14 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Loaded 5729 motherboard references
+2026-05-12 22:58:14 | INFO     | ss_crawler | [crawler] [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/hgegh.html
+2026-05-12 22:58:16 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Matched hgegh: ASRock H81M (69% confidence)
+2026-05-12 23:08:49 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Initializing Motherboard scraper...
+2026-05-12 23:08:49 | INFO     | ss_crawler | [database] [database] Database connected: localhost:5433/ss_market
+2026-05-12 23:08:49 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Database: postgresql+psycopg2://crawler:crawler_pass@localhost:5433/ss_market
+2026-05-12 23:08:49 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] MotherboardMatcher initialized with 5729 motherboards
+2026-05-12 23:08:49 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Loaded 5729 motherboard references
+2026-05-12 23:08:49 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Initializing Motherboard scraper...
+2026-05-12 23:08:49 | INFO     | ss_crawler | [database] [database] Database connected: localhost:5433/ss_market
+2026-05-12 23:08:49 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Database: postgresql+psycopg2://crawler:crawler_pass@localhost:5433/ss_market
+2026-05-12 23:08:49 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] MotherboardMatcher initialized with 5729 motherboards
+2026-05-12 23:08:49 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Loaded 5729 motherboard references
+2026-05-12 23:08:49 | INFO     | ss_crawler | [crawler] [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/hgegh.html
+2026-05-12 23:08:52 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Matched hgegh: ASRock H81M (69% confidence)
+2026-05-12 23:14:34 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Initializing Motherboard scraper...
+2026-05-12 23:14:34 | INFO     | ss_crawler | [database] [database] Database connected: localhost:5433/ss_market
+2026-05-12 23:14:34 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Database: postgresql+psycopg2://crawler:crawler_pass@localhost:5433/ss_market
+2026-05-12 23:14:34 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] MotherboardMatcher initialized with 5729 motherboards
+2026-05-12 23:14:34 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Loaded 5729 motherboard references
+2026-05-12 23:14:34 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Initializing Motherboard scraper...
+2026-05-12 23:14:34 | INFO     | ss_crawler | [database] [database] Database connected: localhost:5433/ss_market
+2026-05-12 23:14:34 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Database: postgresql+psycopg2://crawler:crawler_pass@localhost:5433/ss_market
+2026-05-12 23:14:34 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] MotherboardMatcher initialized with 5729 motherboards
+2026-05-12 23:14:34 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Loaded 5729 motherboard references
+2026-05-12 23:14:34 | INFO     | ss_crawler | [crawler] [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/hgegh.html
+2026-05-12 23:14:37 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Matched hgegh: ASRock H81M-VG4 R3.0 (74% confidence)
+2026-05-12 23:15:00 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Initializing Motherboard scraper...
+2026-05-12 23:15:00 | INFO     | ss_crawler | [database] [database] Database connected: localhost:5433/ss_market
+2026-05-12 23:15:00 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Database: postgresql+psycopg2://crawler:crawler_pass@localhost:5433/ss_market
+2026-05-12 23:15:00 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] MotherboardMatcher initialized with 5729 motherboards
+2026-05-12 23:15:00 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Loaded 5729 motherboard references
+2026-05-12 23:15:00 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Initializing Motherboard scraper...
+2026-05-12 23:15:00 | INFO     | ss_crawler | [database] [database] Database connected: localhost:5433/ss_market
+2026-05-12 23:15:00 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Database: postgresql+psycopg2://crawler:crawler_pass@localhost:5433/ss_market
+2026-05-12 23:15:00 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] MotherboardMatcher initialized with 5729 motherboards
+2026-05-12 23:15:00 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Loaded 5729 motherboard references
+2026-05-12 23:15:00 | INFO     | ss_crawler | [crawler] [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/fobec.html
+2026-05-12 23:15:02 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Matched fobec: ASUS H61M-K (83% confidence)
+2026-05-12 23:16:29 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Initializing Motherboard scraper...
+2026-05-12 23:16:29 | INFO     | ss_crawler | [database] [database] Database connected: localhost:5433/ss_market
+2026-05-12 23:16:29 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Database: postgresql+psycopg2://crawler:crawler_pass@localhost:5433/ss_market
+2026-05-12 23:16:29 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] MotherboardMatcher initialized with 5729 motherboards
+2026-05-12 23:16:29 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Loaded 5729 motherboard references
+2026-05-12 23:16:29 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Initializing Motherboard scraper...
+2026-05-12 23:16:29 | INFO     | ss_crawler | [database] [database] Database connected: localhost:5433/ss_market
+2026-05-12 23:16:29 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Database: postgresql+psycopg2://crawler:crawler_pass@localhost:5433/ss_market
+2026-05-12 23:16:30 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] MotherboardMatcher initialized with 5729 motherboards
+2026-05-12 23:16:30 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Loaded 5729 motherboard references
+2026-05-12 23:16:30 | INFO     | ss_crawler | [crawler] [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/binbbd.html
+2026-05-12 23:16:33 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Matched binbbd: ASUS MAXIMUS VIII RANGER (93% confidence)
+2026-05-12 23:16:57 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Initializing Motherboard scraper...
+2026-05-12 23:16:57 | INFO     | ss_crawler | [database] [database] Database connected: localhost:5433/ss_market
+2026-05-12 23:16:57 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Database: postgresql+psycopg2://crawler:crawler_pass@localhost:5433/ss_market
+2026-05-12 23:16:57 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] MotherboardMatcher initialized with 5729 motherboards
+2026-05-12 23:16:57 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Loaded 5729 motherboard references
+2026-05-12 23:16:57 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Initializing Motherboard scraper...
+2026-05-12 23:16:57 | INFO     | ss_crawler | [database] [database] Database connected: localhost:5433/ss_market
+2026-05-12 23:16:57 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Database: postgresql+psycopg2://crawler:crawler_pass@localhost:5433/ss_market
+2026-05-12 23:16:57 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] MotherboardMatcher initialized with 5729 motherboards
+2026-05-12 23:16:57 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Loaded 5729 motherboard references
+2026-05-12 23:16:57 | INFO     | ss_crawler | [crawler] [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/bjkjgi.html
+2026-05-12 23:17:00 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Matched bjkjgi: ASRock B760M Steel Legend WiFi (100% confidence)
+2026-05-12 23:17:24 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Initializing Motherboard scraper...
+2026-05-12 23:17:24 | INFO     | ss_crawler | [database] [database] Database connected: localhost:5433/ss_market
+2026-05-12 23:17:24 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Database: postgresql+psycopg2://crawler:crawler_pass@localhost:5433/ss_market
+2026-05-12 23:17:24 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] MotherboardMatcher initialized with 5729 motherboards
+2026-05-12 23:17:24 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Loaded 5729 motherboard references
+2026-05-12 23:17:24 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Initializing Motherboard scraper...
+2026-05-12 23:17:24 | INFO     | ss_crawler | [database] [database] Database connected: localhost:5433/ss_market
+2026-05-12 23:17:24 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Database: postgresql+psycopg2://crawler:crawler_pass@localhost:5433/ss_market
+2026-05-12 23:17:24 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] MotherboardMatcher initialized with 5729 motherboards
+2026-05-12 23:17:24 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Loaded 5729 motherboard references
+2026-05-12 23:17:24 | INFO     | ss_crawler | [crawler] [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/hbkcf.html
+2026-05-12 23:17:26 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Matched hbkcf: MSI MAG Z490 TOMAHAWK (95% confidence)
+2026-05-12 23:18:17 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Initializing Motherboard scraper...
+2026-05-12 23:18:17 | INFO     | ss_crawler | [database] [database] Database connected: localhost:5433/ss_market
+2026-05-12 23:18:17 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Database: postgresql+psycopg2://crawler:crawler_pass@localhost:5433/ss_market
+2026-05-12 23:18:17 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] MotherboardMatcher initialized with 5729 motherboards
+2026-05-12 23:18:17 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Loaded 5729 motherboard references
+2026-05-12 23:18:17 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Initializing Motherboard scraper...
+2026-05-12 23:18:17 | INFO     | ss_crawler | [database] [database] Database connected: localhost:5433/ss_market
+2026-05-12 23:18:17 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Database: postgresql+psycopg2://crawler:crawler_pass@localhost:5433/ss_market
+2026-05-12 23:18:17 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] MotherboardMatcher initialized with 5729 motherboards
+2026-05-12 23:18:17 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Loaded 5729 motherboard references
+2026-05-12 23:18:17 | INFO     | ss_crawler | [crawler] [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/enjmm.html
+2026-05-12 23:18:20 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Matched enjmm: ASUS H110-PLUS (81% confidence)
+2026-05-12 23:18:45 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Initializing Motherboard scraper...
+2026-05-12 23:18:45 | INFO     | ss_crawler | [database] [database] Database connected: localhost:5433/ss_market
+2026-05-12 23:18:45 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Database: postgresql+psycopg2://crawler:crawler_pass@localhost:5433/ss_market
+2026-05-12 23:18:45 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] MotherboardMatcher initialized with 5729 motherboards
+2026-05-12 23:18:45 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Loaded 5729 motherboard references
+2026-05-12 23:18:45 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Initializing Motherboard scraper...
+2026-05-12 23:18:45 | INFO     | ss_crawler | [database] [database] Database connected: localhost:5433/ss_market
+2026-05-12 23:18:45 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Database: postgresql+psycopg2://crawler:crawler_pass@localhost:5433/ss_market
+2026-05-12 23:18:45 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] MotherboardMatcher initialized with 5729 motherboards
+2026-05-12 23:18:45 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Loaded 5729 motherboard references
+2026-05-12 23:18:45 | INFO     | ss_crawler | [crawler] [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/bijmhn.html
+2026-05-12 23:18:48 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Matched bijmhn: MSI PRO B760M-A WIFI (99% confidence)
+2026-05-12 23:19:16 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Initializing Motherboard scraper...
+2026-05-12 23:19:16 | INFO     | ss_crawler | [database] [database] Database connected: localhost:5433/ss_market
+2026-05-12 23:19:16 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Database: postgresql+psycopg2://crawler:crawler_pass@localhost:5433/ss_market
+2026-05-12 23:19:16 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] MotherboardMatcher initialized with 5729 motherboards
+2026-05-12 23:19:16 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Loaded 5729 motherboard references
+2026-05-12 23:19:16 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Initializing Motherboard scraper...
+2026-05-12 23:19:16 | INFO     | ss_crawler | [database] [database] Database connected: localhost:5433/ss_market
+2026-05-12 23:19:16 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Database: postgresql+psycopg2://crawler:crawler_pass@localhost:5433/ss_market
+2026-05-12 23:19:16 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] MotherboardMatcher initialized with 5729 motherboards
+2026-05-12 23:19:16 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Loaded 5729 motherboard references
+2026-05-12 23:19:16 | INFO     | ss_crawler | [crawler] [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/pmklj.html
+2026-05-12 23:19:18 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Matched pmklj: Gigabyte A520M K V2 (89% confidence)
+2026-05-12 23:19:56 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Initializing Motherboard scraper...
+2026-05-12 23:19:56 | INFO     | ss_crawler | [database] [database] Database connected: localhost:5433/ss_market
+2026-05-12 23:19:56 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Database: postgresql+psycopg2://crawler:crawler_pass@localhost:5433/ss_market
+2026-05-12 23:19:56 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] MotherboardMatcher initialized with 5729 motherboards
+2026-05-12 23:19:56 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Loaded 5729 motherboard references
+2026-05-12 23:19:56 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Initializing Motherboard scraper...
+2026-05-12 23:19:56 | INFO     | ss_crawler | [database] [database] Database connected: localhost:5433/ss_market
+2026-05-12 23:19:56 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Database: postgresql+psycopg2://crawler:crawler_pass@localhost:5433/ss_market
+2026-05-12 23:19:56 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] MotherboardMatcher initialized with 5729 motherboards
+2026-05-12 23:19:56 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Loaded 5729 motherboard references
+2026-05-12 23:19:56 | INFO     | ss_crawler | [crawler] [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/jmcib.html
+2026-05-12 23:19:59 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Matched jmcib: MSI B150M BAZOOKA PLUS (95% confidence)
+2026-05-12 23:20:39 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Initializing Motherboard scraper...
+2026-05-12 23:20:39 | INFO     | ss_crawler | [database] [database] Database connected: localhost:5433/ss_market
+2026-05-12 23:20:39 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Database: postgresql+psycopg2://crawler:crawler_pass@localhost:5433/ss_market
+2026-05-12 23:20:39 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] MotherboardMatcher initialized with 5729 motherboards
+2026-05-12 23:20:39 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Loaded 5729 motherboard references
+2026-05-12 23:20:39 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Initializing Motherboard scraper...
+2026-05-12 23:20:39 | INFO     | ss_crawler | [database] [database] Database connected: localhost:5433/ss_market
+2026-05-12 23:20:39 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Database: postgresql+psycopg2://crawler:crawler_pass@localhost:5433/ss_market
+2026-05-12 23:20:39 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] MotherboardMatcher initialized with 5729 motherboards
+2026-05-12 23:20:39 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Loaded 5729 motherboard references
+2026-05-12 23:20:39 | INFO     | ss_crawler | [crawler] [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/bixleo.html
+2026-05-12 23:20:43 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Matched bixleo: Gigabyte H810M S2H (72% confidence)
+2026-05-12 23:21:26 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Initializing Motherboard scraper...
+2026-05-12 23:21:26 | INFO     | ss_crawler | [database] [database] Database connected: localhost:5433/ss_market
+2026-05-12 23:21:26 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Database: postgresql+psycopg2://crawler:crawler_pass@localhost:5433/ss_market
+2026-05-12 23:21:26 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] MotherboardMatcher initialized with 5729 motherboards
+2026-05-12 23:21:26 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Loaded 5729 motherboard references
+2026-05-12 23:21:26 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Initializing Motherboard scraper...
+2026-05-12 23:21:26 | INFO     | ss_crawler | [database] [database] Database connected: localhost:5433/ss_market
+2026-05-12 23:21:26 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Database: postgresql+psycopg2://crawler:crawler_pass@localhost:5433/ss_market
+2026-05-12 23:21:26 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] MotherboardMatcher initialized with 5729 motherboards
+2026-05-12 23:21:26 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Loaded 5729 motherboard references
+2026-05-12 23:21:26 | INFO     | ss_crawler | [crawler] [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/dnchn.html
+2026-05-12 23:21:29 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Matched dnchn: ASUS P8H61-M LX (79% confidence)
+2026-05-12 23:24:29 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Initializing Motherboard scraper...
+2026-05-12 23:24:29 | INFO     | ss_crawler | [database] [database] Database connected: localhost:5433/ss_market
+2026-05-12 23:24:29 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Database: postgresql+psycopg2://crawler:crawler_pass@localhost:5433/ss_market
+2026-05-12 23:24:29 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] MotherboardMatcher initialized with 5729 motherboards
+2026-05-12 23:24:29 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Loaded 5729 motherboard references
+2026-05-12 23:24:29 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Starting Motherboard scraper from https://www.ss.com/lv/electronics/computers/completing-pc/motherboards/
+2026-05-12 23:24:29 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Fetching page 1: https://www.ss.com/lv/electronics/computers/completing-pc/motherboards/
+2026-05-12 23:24:29 | INFO     | ss_crawler | [crawler] [crawler] Fetching : https://www.ss.com/lv/electronics/computers/completing-pc/motherboards/
+2026-05-12 23:24:32 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Found 60 listings on page 1, 60 new
+2026-05-12 23:24:32 | INFO     | ss_crawler | [crawler] [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/jmgjp.html
+2026-05-12 23:24:35 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Matched jmgjp: Gigabyte B550 GAMING X V2 (91% confidence)
+2026-05-12 23:24:35 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] ✨ jmgjp: New
+2026-05-12 23:24:35 | INFO     | ss_crawler | [crawler] [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/jmgjp.html
+2026-05-12 23:24:38 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Matched jmgjp: Gigabyte B550 GAMING X V2 (91% confidence)
+2026-05-12 23:24:38 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] ⏸️ jmgjp: Unchanged
+2026-05-12 23:24:38 | INFO     | ss_crawler | [crawler] [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/bixleo.html
+2026-05-12 23:24:40 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Matched bixleo: Gigabyte H810M S2H (72% confidence)
+2026-05-12 23:24:40 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] ✨ bixleo: New
+2026-05-12 23:24:40 | INFO     | ss_crawler | [crawler] [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/bixleo.html
+2026-05-12 23:24:43 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Matched bixleo: Gigabyte H810M S2H (72% confidence)
+2026-05-12 23:24:43 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] ⏸️ bixleo: Unchanged
+2026-05-12 23:24:43 | INFO     | ss_crawler | [crawler] [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/bmbhg.html
+2026-05-12 23:24:45 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Matched bmbhg: ASUS PRIME Z790-P WIFI (93% confidence)
+2026-05-12 23:24:45 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] ✨ bmbhg: New
+2026-05-12 23:24:45 | INFO     | ss_crawler | [crawler] [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/bmbhg.html
+2026-05-12 23:24:47 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Matched bmbhg: ASUS PRIME Z790-P WIFI (93% confidence)
+2026-05-12 23:24:47 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] ⏸️ bmbhg: Unchanged
+2026-05-12 23:24:47 | INFO     | ss_crawler | [crawler] [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/dnchn.html
+2026-05-12 23:24:49 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Matched dnchn: ASUS P8H61-M LX (79% confidence)
+2026-05-12 23:24:49 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] ✨ dnchn: New
+2026-05-12 23:24:49 | INFO     | ss_crawler | [crawler] [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/dnchn.html
+2026-05-12 23:24:53 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Matched dnchn: ASUS P8H61-M LX (79% confidence)
+2026-05-12 23:24:53 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] ⏸️ dnchn: Unchanged
+2026-05-12 23:24:53 | INFO     | ss_crawler | [crawler] [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/longh.html
+2026-05-12 23:24:55 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Matched longh: MSI Ace (61% confidence)
+2026-05-12 23:24:55 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] ✨ longh: New
+2026-05-12 23:24:55 | INFO     | ss_crawler | [crawler] [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/longh.html
+2026-05-12 23:24:58 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Matched longh: MSI Ace (61% confidence)
+2026-05-12 23:24:58 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] ⏸️ longh: Unchanged
+2026-05-12 23:24:58 | INFO     | ss_crawler | [crawler] [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/pkgpj.html
+2026-05-12 23:25:01 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Matched pkgpj: Gigabyte H610M S2H V2 (93% confidence)
+2026-05-12 23:25:01 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] ✨ pkgpj: New
+2026-05-12 23:25:01 | INFO     | ss_crawler | [crawler] [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/pkgpj.html
+2026-05-12 23:25:05 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Matched pkgpj: Gigabyte H610M S2H V2 (93% confidence)
+2026-05-12 23:25:05 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] ⏸️ pkgpj: Unchanged
+2026-05-12 23:25:05 | INFO     | ss_crawler | [crawler] [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/jmcib.html
+2026-05-12 23:25:08 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Matched jmcib: MSI B150M BAZOOKA PLUS (95% confidence)
+2026-05-12 23:25:08 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] ✨ jmcib: New
+2026-05-12 23:25:08 | INFO     | ss_crawler | [crawler] [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/jmcib.html
+2026-05-12 23:25:11 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Matched jmcib: MSI B150M BAZOOKA PLUS (95% confidence)
+2026-05-12 23:25:11 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] ⏸️ jmcib: Unchanged
+2026-05-12 23:25:11 | INFO     | ss_crawler | [crawler] [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/mbljp.html
+2026-05-12 23:25:13 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Matched mbljp: ASUS PRIME H410M-E (87% confidence)
+2026-05-12 23:25:13 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] ✨ mbljp: New
+2026-05-12 23:25:13 | INFO     | ss_crawler | [crawler] [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/mbljp.html
+2026-05-12 23:25:15 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Matched mbljp: ASUS PRIME H410M-E (87% confidence)
+2026-05-12 23:25:15 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] ⏸️ mbljp: Unchanged
+2026-05-12 23:25:15 | INFO     | ss_crawler | [crawler] [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/eeeed.html
+2026-05-12 23:25:17 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Matched eeeed: MSI Ace (61% confidence)
+2026-05-12 23:25:17 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] ✨ eeeed: New
+2026-05-12 23:25:17 | INFO     | ss_crawler | [crawler] [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/eeeed.html
+2026-05-12 23:25:20 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Matched eeeed: MSI Ace (61% confidence)
+2026-05-12 23:25:20 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] ⏸️ eeeed: Unchanged
+2026-05-12 23:25:20 | INFO     | ss_crawler | [crawler] [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/gdlgl.html
+2026-05-12 23:25:22 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Matched gdlgl: Biostar TB250-BTC (79% confidence)
+2026-05-12 23:25:22 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] ✨ gdlgl: New
+2026-05-12 23:25:22 | INFO     | ss_crawler | [crawler] [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/gdlgl.html
+2026-05-12 23:25:24 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Matched gdlgl: Biostar TB250-BTC (79% confidence)
+2026-05-12 23:25:24 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] ⏸️ gdlgl: Unchanged
+2026-05-12 23:25:24 | INFO     | ss_crawler | [crawler] [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/jnpmc.html
+2026-05-12 23:25:27 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Matched jnpmc: Asus PRO C (63% confidence)
+2026-05-12 23:25:27 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] ✨ jnpmc: New
+2026-05-12 23:25:27 | INFO     | ss_crawler | [crawler] [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/jnpmc.html
+2026-05-12 23:25:29 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Matched jnpmc: Asus PRO C (63% confidence)
+2026-05-12 23:25:29 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] ⏸️ jnpmc: Unchanged
+2026-05-12 23:25:29 | INFO     | ss_crawler | [crawler] [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/cgxbmk.html
+2026-05-12 23:25:32 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Matched cgxbmk: MSI H81M-P33 (79% confidence)
+2026-05-12 23:25:32 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] ✨ cgxbmk: New
+2026-05-12 23:25:32 | INFO     | ss_crawler | [crawler] [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/cgxbmk.html
+2026-05-12 23:25:34 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Matched cgxbmk: MSI H81M-P33 (79% confidence)
+2026-05-12 23:25:34 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] ⏸️ cgxbmk: Unchanged
+2026-05-12 23:25:34 | INFO     | ss_crawler | [crawler] [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/fkxdb.html
+2026-05-12 23:25:37 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Matched fkxdb: MSI Ace (61% confidence)
+2026-05-12 23:25:37 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] ✨ fkxdb: New
+2026-05-12 23:25:37 | INFO     | ss_crawler | [crawler] [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/fkxdb.html
+2026-05-12 23:25:39 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Matched fkxdb: MSI Ace (61% confidence)
+2026-05-12 23:25:39 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] ⏸️ fkxdb: Unchanged
+2026-05-12 23:25:39 | INFO     | ss_crawler | [crawler] [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/jmxbi.html
+2026-05-12 23:25:41 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Matched jmxbi: ASUS ROG STRIX B550-F GAMING WIFI II (95% confidence)
+2026-05-12 23:25:41 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] ✨ jmxbi: New
+2026-05-12 23:25:41 | INFO     | ss_crawler | [crawler] [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/jmxbi.html
+2026-05-12 23:25:43 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Matched jmxbi: ASUS ROG STRIX B550-F GAMING WIFI II (95% confidence)
+2026-05-12 23:25:43 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] ⏸️ jmxbi: Unchanged
+2026-05-12 23:25:43 | INFO     | ss_crawler | [crawler] [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/bkdcfx.html
+2026-05-12 23:25:46 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Matched bkdcfx: ASUS M2N (61% confidence)
+2026-05-12 23:25:46 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] ✨ bkdcfx: New
+2026-05-12 23:25:46 | INFO     | ss_crawler | [crawler] [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/bkdcfx.html
+2026-05-12 23:25:49 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Matched bkdcfx: ASUS M2N (61% confidence)
+2026-05-12 23:25:49 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] ⏸️ bkdcfx: Unchanged
+2026-05-12 23:25:49 | INFO     | ss_crawler | [crawler] [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/jpfeb.html
+2026-05-12 23:25:52 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Matched jpfeb: Gigabyte X570 AORUS PRO (89% confidence)
+2026-05-12 23:25:52 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] ✨ jpfeb: New
+2026-05-12 23:25:52 | INFO     | ss_crawler | [crawler] [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/jpfeb.html
+2026-05-12 23:25:55 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Matched jpfeb: Gigabyte X570 AORUS PRO (89% confidence)
+2026-05-12 23:25:55 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] ⏸️ jpfeb: Unchanged
+2026-05-12 23:25:55 | INFO     | ss_crawler | [crawler] [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/hgoel.html
+2026-05-12 23:25:58 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Matched hgoel: Gigabyte GA-A320M-S2H (93% confidence)
+2026-05-12 23:25:58 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] ✨ hgoel: New
+2026-05-12 23:25:58 | INFO     | ss_crawler | [crawler] [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/hgoel.html
+2026-05-12 23:26:01 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Matched hgoel: Gigabyte GA-A320M-S2H (93% confidence)
+2026-05-12 23:26:01 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] ⏸️ hgoel: Unchanged
+2026-05-12 23:26:01 | INFO     | ss_crawler | [crawler] [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/pmklj.html
+2026-05-12 23:26:04 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Matched pmklj: Gigabyte A520M K V2 (89% confidence)
+2026-05-12 23:26:04 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] ✨ pmklj: New
+2026-05-12 23:26:04 | INFO     | ss_crawler | [crawler] [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/pmklj.html
+2026-05-12 23:26:08 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Matched pmklj: Gigabyte A520M K V2 (89% confidence)
+2026-05-12 23:26:08 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] ⏸️ pmklj: Unchanged
+2026-05-12 23:26:08 | INFO     | ss_crawler | [crawler] [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/bijmhn.html
+2026-05-12 23:26:10 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Matched bijmhn: MSI PRO B760M-A WIFI (99% confidence)
+2026-05-12 23:26:10 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] ✨ bijmhn: New
+2026-05-12 23:26:10 | INFO     | ss_crawler | [crawler] [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/bijmhn.html
+2026-05-12 23:26:12 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Matched bijmhn: MSI PRO B760M-A WIFI (99% confidence)
+2026-05-12 23:26:12 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] ⏸️ bijmhn: Unchanged
+2026-05-12 23:26:12 | INFO     | ss_crawler | [crawler] [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/bjxlpg.html
+2026-05-12 23:26:14 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Matched bjxlpg: Gigabyte GA-Z77X-UP4 TH (95% confidence)
+2026-05-12 23:26:14 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] ✨ bjxlpg: New
+2026-05-12 23:26:14 | INFO     | ss_crawler | [crawler] [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/bjxlpg.html
+2026-05-12 23:26:17 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Matched bjxlpg: Gigabyte GA-Z77X-UP4 TH (95% confidence)
+2026-05-12 23:26:17 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] ⏸️ bjxlpg: Unchanged
+2026-05-12 23:26:17 | INFO     | ss_crawler | [crawler] [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/johhe.html
+2026-05-12 23:26:19 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Matched johhe: Gigabyte Aorus Pro (71% confidence)
+2026-05-12 23:26:19 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] ✨ johhe: New
+2026-05-12 23:26:19 | INFO     | ss_crawler | [crawler] [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/johhe.html
+2026-05-12 23:26:22 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Matched johhe: Gigabyte Aorus Pro (71% confidence)
+2026-05-12 23:26:22 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] ⏸️ johhe: Unchanged
+2026-05-12 23:26:22 | INFO     | ss_crawler | [crawler] [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/fljnj.html
+2026-05-12 23:26:24 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Matched fljnj: ASUS P8B75-M LX PLUS (79% confidence)
+2026-05-12 23:26:24 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] ✨ fljnj: New
+2026-05-12 23:26:24 | INFO     | ss_crawler | [crawler] [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/fljnj.html
+2026-05-12 23:26:27 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Matched fljnj: ASUS P8B75-M LX PLUS (79% confidence)
+2026-05-12 23:26:27 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] ⏸️ fljnj: Unchanged
+2026-05-12 23:26:27 | INFO     | ss_crawler | [crawler] [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/enjmm.html
+2026-05-12 23:26:30 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Matched enjmm: ASUS H110-PLUS (81% confidence)
+2026-05-12 23:26:30 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] ✨ enjmm: New
+2026-05-12 23:26:30 | INFO     | ss_crawler | [crawler] [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/enjmm.html
+2026-05-12 23:26:32 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Matched enjmm: ASUS H110-PLUS (81% confidence)
+2026-05-12 23:26:32 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] ⏸️ enjmm: Unchanged
+2026-05-12 23:26:32 | INFO     | ss_crawler | [crawler] [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/bjdlcd.html
+2026-05-12 23:26:35 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Matched bjdlcd: ASUS ROG MAXIMUS Z790 DARK HERO (100% confidence)
+2026-05-12 23:26:35 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] ✨ bjdlcd: New
+2026-05-12 23:26:35 | INFO     | ss_crawler | [crawler] [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/bjdlcd.html
+2026-05-12 23:26:38 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Matched bjdlcd: ASUS ROG MAXIMUS Z790 DARK HERO (100% confidence)
+2026-05-12 23:26:38 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] ⏸️ bjdlcd: Unchanged
+2026-05-12 23:26:38 | INFO     | ss_crawler | [crawler] [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/deegp.html
+2026-05-12 23:26:42 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Matched deegp: ASUS ROG MAXIMUS Z690 EXTREME (100% confidence)
+2026-05-12 23:26:42 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] ✨ deegp: New
+2026-05-12 23:26:42 | INFO     | ss_crawler | [crawler] [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/deegp.html
+2026-05-12 23:26:45 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Matched deegp: ASUS ROG MAXIMUS Z690 EXTREME (100% confidence)
+2026-05-12 23:26:45 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] ⏸️ deegp: Unchanged
+2026-05-12 23:26:45 | INFO     | ss_crawler | [crawler] [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/jnhmi.html
+2026-05-12 23:26:47 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Matched jnhmi: Asus PRO C (63% confidence)
+2026-05-12 23:26:47 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] ✨ jnhmi: New
+2026-05-12 23:26:47 | INFO     | ss_crawler | [crawler] [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/jnhmi.html
+2026-05-12 23:26:51 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Matched jnhmi: Asus PRO C (63% confidence)
+2026-05-12 23:26:51 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] ⏸️ jnhmi: Unchanged
+2026-05-12 23:26:51 | INFO     | ss_crawler | [crawler] [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/fgnld.html
+2026-05-12 23:26:53 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Matched fgnld: Gigabyte Z690 AORUS ULTRA (100% confidence)
+2026-05-12 23:26:53 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] ✨ fgnld: New
+2026-05-12 23:26:53 | INFO     | ss_crawler | [crawler] [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/fgnld.html
+2026-05-12 23:26:56 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Matched fgnld: Gigabyte Z690 AORUS ULTRA (100% confidence)
+2026-05-12 23:26:56 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] ⏸️ fgnld: Unchanged
+2026-05-12 23:26:56 | INFO     | ss_crawler | [crawler] [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/depod.html
+2026-05-12 23:26:59 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Matched depod: MSI FM2-A55M-E33 (82% confidence)
+2026-05-12 23:26:59 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] ✨ depod: New
+2026-05-12 23:26:59 | INFO     | ss_crawler | [crawler] [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/depod.html
+2026-05-12 23:27:02 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Matched depod: MSI FM2-A55M-E33 (82% confidence)
+2026-05-12 23:27:02 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] ⏸️ depod: Unchanged
+2026-05-12 23:27:02 | INFO     | ss_crawler | [crawler] [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/ajoog.html
+2026-05-12 23:27:06 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Matched ajoog: MSI Ace (61% confidence)
+2026-05-12 23:27:06 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] ✨ ajoog: New
+2026-05-12 23:27:06 | INFO     | ss_crawler | [crawler] [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/ajoog.html
+2026-05-12 23:27:08 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Matched ajoog: MSI Ace (61% confidence)
+2026-05-12 23:27:08 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] ⏸️ ajoog: Unchanged
+2026-05-12 23:27:08 | INFO     | ss_crawler | [crawler] [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/ahbhx.html
+2026-05-12 23:27:11 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Matched ahbhx: MSI B450M-A Pro Max (97% confidence)
+2026-05-12 23:27:11 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] ✨ ahbhx: New
+2026-05-12 23:27:11 | INFO     | ss_crawler | [crawler] [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/ahbhx.html
+2026-05-12 23:27:13 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Matched ahbhx: MSI B450M-A Pro Max (97% confidence)
+2026-05-12 23:27:13 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] ⏸️ ahbhx: Unchanged
+2026-05-12 23:27:13 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] No more pages
+2026-05-12 23:27:13 | INFO     | ss_crawler | [motherboard_scraper] [motherboard_scraper] Motherboard scraping complete. Stats: {'processed': 60, 'new': 30, 'updated': 0, 'unchanged': 30, 'failed': 0, 'matched': 60}
+2026-05-12 23:29:17 | INFO     | ss_crawler | [monitor_scraper] [monitor_scraper] Initializing Monitor scraper...
+2026-05-12 23:29:17 | INFO     | ss_crawler | [database] [database] Database connected: localhost:5433/ss_market
+2026-05-12 23:29:17 | INFO     | ss_crawler | [monitor_scraper] [monitor_scraper] Database: postgresql+psycopg2://crawler:crawler_pass@localhost:5433/ss_market
+2026-05-12 23:29:17 | INFO     | ss_crawler | [monitor_scraper] [monitor_scraper] MonitorMatcher initialized with 20272 monitors
+2026-05-12 23:29:17 | INFO     | ss_crawler | [monitor_scraper] [monitor_scraper] Loaded 20272 monitor references
+2026-05-12 23:29:17 | INFO     | ss_crawler | [monitor_scraper] [monitor_scraper] Initializing Monitor scraper...
+2026-05-12 23:29:17 | INFO     | ss_crawler | [database] [database] Database connected: localhost:5433/ss_market
+2026-05-12 23:29:17 | INFO     | ss_crawler | [monitor_scraper] [monitor_scraper] Database: postgresql+psycopg2://crawler:crawler_pass@localhost:5433/ss_market
+2026-05-12 23:29:17 | INFO     | ss_crawler | [monitor_scraper] [monitor_scraper] MonitorMatcher initialized with 20272 monitors
+2026-05-12 23:29:17 | INFO     | ss_crawler | [monitor_scraper] [monitor_scraper] Loaded 20272 monitor references
+2026-05-12 23:29:17 | INFO     | ss_crawler | [crawler] [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/monitors/lnhnj.html
+2026-05-12 23:29:21 | INFO     | ss_crawler | [monitor_scraper] [monitor_scraper] Matched lnhnj: 3M Micro Touch M1500SS (Serial) 2 (35% confidence)
+2026-05-12 23:31:06 | INFO     | ss_crawler | [monitor_scraper] Initializing Monitor scraper...
+2026-05-12 23:31:06 | INFO     | ss_crawler | [database] Database connected: localhost:5433/ss_market
+2026-05-12 23:31:06 | INFO     | ss_crawler | [monitor_scraper] Database: postgresql+psycopg2://crawler:crawler_pass@localhost:5433/ss_market
+2026-05-12 23:31:06 | INFO     | ss_crawler | [monitor_scraper] MonitorMatcher initialized with 20272 monitors
+2026-05-12 23:31:06 | INFO     | ss_crawler | [monitor_scraper] Loaded 20272 monitor references
+2026-05-12 23:31:06 | INFO     | ss_crawler | [monitor_scraper] Initializing Monitor scraper...
+2026-05-12 23:31:06 | INFO     | ss_crawler | [database] Database connected: localhost:5433/ss_market
+2026-05-12 23:31:06 | INFO     | ss_crawler | [monitor_scraper] Database: postgresql+psycopg2://crawler:crawler_pass@localhost:5433/ss_market
+2026-05-12 23:31:06 | INFO     | ss_crawler | [monitor_scraper] MonitorMatcher initialized with 20272 monitors
+2026-05-12 23:31:06 | INFO     | ss_crawler | [monitor_scraper] Loaded 20272 monitor references
+2026-05-12 23:31:06 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/monitors/nnifg.html
+2026-05-12 23:31:09 | INFO     | ss_crawler | [monitor_scraper] Matched nnifg: A.C.T. Kern Actera GPP2000F 7 (50% confidence)
+2026-05-12 23:34:42 | INFO     | ss_crawler | [monitor_scraper] Initializing Monitor scraper...
+2026-05-12 23:34:42 | INFO     | ss_crawler | [database] Database connected: localhost:5433/ss_market
+2026-05-12 23:34:42 | INFO     | ss_crawler | [monitor_scraper] Database: postgresql+psycopg2://crawler:crawler_pass@localhost:5433/ss_market
+2026-05-12 23:34:42 | INFO     | ss_crawler | [monitor_scraper] MonitorMatcher initialized with 20272 monitors
+2026-05-12 23:34:42 | INFO     | ss_crawler | [monitor_scraper] Loaded 20272 monitor references
+2026-05-12 23:34:42 | INFO     | ss_crawler | [monitor_scraper] Initializing Monitor scraper...
+2026-05-12 23:34:42 | INFO     | ss_crawler | [database] Database connected: localhost:5433/ss_market
+2026-05-12 23:34:42 | INFO     | ss_crawler | [monitor_scraper] Database: postgresql+psycopg2://crawler:crawler_pass@localhost:5433/ss_market
+2026-05-12 23:34:42 | INFO     | ss_crawler | [monitor_scraper] MonitorMatcher initialized with 20272 monitors
+2026-05-12 23:34:42 | INFO     | ss_crawler | [monitor_scraper] Loaded 20272 monitor references
+2026-05-12 23:34:42 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/monitors/nnifg.html
+2026-05-12 23:34:45 | INFO     | ss_crawler | [monitor_scraper] Low confidence for nnifg: A.C.T. Kern Actera GPP2000F 7 (50%) - below threshold
+2026-05-12 23:36:28 | INFO     | ss_crawler | [monitor_scraper] Initializing Monitor scraper...
+2026-05-12 23:36:28 | INFO     | ss_crawler | [database] Database connected: localhost:5433/ss_market
+2026-05-12 23:36:28 | INFO     | ss_crawler | [monitor_scraper] Database: postgresql+psycopg2://crawler:crawler_pass@localhost:5433/ss_market
+2026-05-12 23:36:28 | INFO     | ss_crawler | [monitor_scraper] MonitorMatcher initialized with 20272 monitors
+2026-05-12 23:36:28 | INFO     | ss_crawler | [monitor_scraper] Loaded 20272 monitor references
+2026-05-12 23:36:28 | INFO     | ss_crawler | [monitor_scraper] Initializing Monitor scraper...
+2026-05-12 23:36:28 | INFO     | ss_crawler | [database] Database connected: localhost:5433/ss_market
+2026-05-12 23:36:28 | INFO     | ss_crawler | [monitor_scraper] Database: postgresql+psycopg2://crawler:crawler_pass@localhost:5433/ss_market
+2026-05-12 23:36:29 | INFO     | ss_crawler | [monitor_scraper] MonitorMatcher initialized with 20272 monitors
+2026-05-12 23:36:29 | INFO     | ss_crawler | [monitor_scraper] Loaded 20272 monitor references
+2026-05-12 23:36:29 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/monitors/nnifg.html
+2026-05-12 23:36:32 | INFO     | ss_crawler | [monitor_scraper] Low confidence for nnifg: A.C.T. Kern Actera GPP2000F 7 (50%) - below threshold
+2026-05-12 23:39:30 | INFO     | ss_crawler | [monitor_scraper] Initializing Monitor scraper...
+2026-05-12 23:39:30 | INFO     | ss_crawler | [database] Database connected: localhost:5433/ss_market
+2026-05-12 23:39:30 | INFO     | ss_crawler | [monitor_scraper] Database: postgresql+psycopg2://crawler:crawler_pass@localhost:5433/ss_market
+2026-05-12 23:39:30 | INFO     | ss_crawler | [monitor_scraper] MonitorMatcher initialized with 20272 monitors
+2026-05-12 23:39:30 | INFO     | ss_crawler | [monitor_scraper] Loaded 20272 monitor references
+2026-05-12 23:39:30 | INFO     | ss_crawler | [monitor_scraper] Initializing Monitor scraper...
+2026-05-12 23:39:30 | INFO     | ss_crawler | [database] Database connected: localhost:5433/ss_market
+2026-05-12 23:39:30 | INFO     | ss_crawler | [monitor_scraper] Database: postgresql+psycopg2://crawler:crawler_pass@localhost:5433/ss_market
+2026-05-12 23:39:30 | INFO     | ss_crawler | [monitor_scraper] MonitorMatcher initialized with 20272 monitors
+2026-05-12 23:39:30 | INFO     | ss_crawler | [monitor_scraper] Loaded 20272 monitor references
+2026-05-12 23:39:30 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/monitors/nnifg.html
+2026-05-12 23:39:33 | INFO     | ss_crawler | [monitor_scraper] No match for nnifg: SS.COM Datori un orgtehnika - Monitori, Cena 10 €.
+2026-05-12 23:40:53 | INFO     | ss_crawler | [monitor_scraper] Initializing Monitor scraper...
+2026-05-12 23:40:53 | INFO     | ss_crawler | [database] Database connected: localhost:5433/ss_market
+2026-05-12 23:40:53 | INFO     | ss_crawler | [monitor_scraper] Database: postgresql+psycopg2://crawler:crawler_pass@localhost:5433/ss_market
+2026-05-12 23:40:53 | INFO     | ss_crawler | [monitor_scraper] MonitorMatcher initialized with 20272 monitors
+2026-05-12 23:40:53 | INFO     | ss_crawler | [monitor_scraper] Loaded 20272 monitor references
+2026-05-12 23:40:53 | INFO     | ss_crawler | [monitor_scraper] Initializing Monitor scraper...
+2026-05-12 23:40:53 | INFO     | ss_crawler | [database] Database connected: localhost:5433/ss_market
+2026-05-12 23:40:53 | INFO     | ss_crawler | [monitor_scraper] Database: postgresql+psycopg2://crawler:crawler_pass@localhost:5433/ss_market
+2026-05-12 23:40:53 | INFO     | ss_crawler | [monitor_scraper] MonitorMatcher initialized with 20272 monitors
+2026-05-12 23:40:53 | INFO     | ss_crawler | [monitor_scraper] Loaded 20272 monitor references
+2026-05-12 23:40:53 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/monitors/nnifg.html
+2026-05-12 23:40:59 | INFO     | ss_crawler | [monitor_scraper] No match for nnifg: SS.COM Datori un orgtehnika - Monitori, Cena 10 €.
+2026-05-12 23:41:25 | INFO     | ss_crawler | [monitor_scraper] MonitorMatcher initialized with 1 monitors
+2026-05-12 23:44:27 | INFO     | ss_crawler | [monitor_scraper] Initializing Monitor scraper...
+2026-05-12 23:44:27 | INFO     | ss_crawler | [database] Database connected: localhost:5433/ss_market
+2026-05-12 23:44:27 | INFO     | ss_crawler | [monitor_scraper] Database: postgresql+psycopg2://crawler:crawler_pass@localhost:5433/ss_market
+2026-05-12 23:44:27 | INFO     | ss_crawler | [monitor_scraper] MonitorMatcher initialized with 20272 monitors
+2026-05-12 23:44:27 | INFO     | ss_crawler | [monitor_scraper] Loaded 20272 monitor references
+2026-05-12 23:44:27 | INFO     | ss_crawler | [monitor_scraper] Initializing Monitor scraper...
+2026-05-12 23:44:27 | INFO     | ss_crawler | [database] Database connected: localhost:5433/ss_market
+2026-05-12 23:44:27 | INFO     | ss_crawler | [monitor_scraper] Database: postgresql+psycopg2://crawler:crawler_pass@localhost:5433/ss_market
+2026-05-12 23:44:27 | INFO     | ss_crawler | [monitor_scraper] MonitorMatcher initialized with 20272 monitors
+2026-05-12 23:44:27 | INFO     | ss_crawler | [monitor_scraper] Loaded 20272 monitor references
+2026-05-12 23:44:27 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/monitors/nnifg.html
+2026-05-12 23:44:30 | INFO     | ss_crawler | [monitor_scraper] No match for nnifg: SS.COM Datori un orgtehnika - Monitori, Cena 10 €.
+2026-05-12 23:45:09 | INFO     | ss_crawler | [monitor_scraper] MonitorMatcher initialized with 20272 monitors
+2026-05-12 23:50:28 | INFO     | ss_crawler | [monitor_scraper] Initializing Monitor scraper...
+2026-05-12 23:50:28 | INFO     | ss_crawler | [database] Database connected: localhost:5433/ss_market
+2026-05-12 23:50:28 | INFO     | ss_crawler | [monitor_scraper] Database: postgresql+psycopg2://crawler:crawler_pass@localhost:5433/ss_market
+2026-05-12 23:50:28 | INFO     | ss_crawler | [monitor_scraper] MonitorMatcher initialized with 20272 monitors
+2026-05-12 23:50:28 | INFO     | ss_crawler | [monitor_scraper] Loaded 20272 monitor references
+2026-05-12 23:50:28 | INFO     | ss_crawler | [monitor_scraper] Initializing Monitor scraper...
+2026-05-12 23:50:28 | INFO     | ss_crawler | [database] Database connected: localhost:5433/ss_market
+2026-05-12 23:50:28 | INFO     | ss_crawler | [monitor_scraper] Database: postgresql+psycopg2://crawler:crawler_pass@localhost:5433/ss_market
+2026-05-12 23:50:28 | INFO     | ss_crawler | [monitor_scraper] MonitorMatcher initialized with 20272 monitors
+2026-05-12 23:50:28 | INFO     | ss_crawler | [monitor_scraper] Loaded 20272 monitor references
+2026-05-12 23:50:28 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/monitors/nnifg.html
+2026-05-12 23:50:31 | INFO     | ss_crawler | [monitor_scraper] No match for nnifg: SS.COM Datori un orgtehnika - Monitori, Cena 10 €.
+2026-05-12 23:54:00 | INFO     | ss_crawler | [monitor_scraper] Initializing Monitor scraper...
+2026-05-12 23:54:00 | INFO     | ss_crawler | [database] Database connected: localhost:5433/ss_market
+2026-05-12 23:54:00 | INFO     | ss_crawler | [monitor_scraper] Database: postgresql+psycopg2://crawler:crawler_pass@localhost:5433/ss_market
+2026-05-12 23:54:00 | INFO     | ss_crawler | [monitor_scraper] MonitorMatcher initialized with 20272 monitors
+2026-05-12 23:54:00 | INFO     | ss_crawler | [monitor_scraper] Loaded 20272 monitor references
+2026-05-12 23:54:00 | INFO     | ss_crawler | [monitor_scraper] Initializing Monitor scraper...
+2026-05-12 23:54:00 | INFO     | ss_crawler | [database] Database connected: localhost:5433/ss_market
+2026-05-12 23:54:00 | INFO     | ss_crawler | [monitor_scraper] Database: postgresql+psycopg2://crawler:crawler_pass@localhost:5433/ss_market
+2026-05-12 23:54:00 | INFO     | ss_crawler | [monitor_scraper] MonitorMatcher initialized with 20272 monitors
+2026-05-12 23:54:00 | INFO     | ss_crawler | [monitor_scraper] Loaded 20272 monitor references
+2026-05-12 23:54:00 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/monitors/nnifg.html
+2026-05-12 23:54:02 | INFO     | ss_crawler | [monitor_scraper] Low confidence for nnifg: HP Pavilion w20 (65%) - below threshold
+2026-05-12 23:55:29 | INFO     | ss_crawler | [monitor_scraper] Initializing Monitor scraper...
+2026-05-12 23:55:29 | INFO     | ss_crawler | [database] Database connected: localhost:5433/ss_market
+2026-05-12 23:55:29 | INFO     | ss_crawler | [monitor_scraper] Database: postgresql+psycopg2://crawler:crawler_pass@localhost:5433/ss_market
+2026-05-12 23:55:29 | INFO     | ss_crawler | [monitor_scraper] MonitorMatcher initialized with 20272 monitors
+2026-05-12 23:55:29 | INFO     | ss_crawler | [monitor_scraper] Loaded 20272 monitor references
+2026-05-12 23:55:29 | INFO     | ss_crawler | [monitor_scraper] Initializing Monitor scraper...
+2026-05-12 23:55:29 | INFO     | ss_crawler | [database] Database connected: localhost:5433/ss_market
+2026-05-12 23:55:29 | INFO     | ss_crawler | [monitor_scraper] Database: postgresql+psycopg2://crawler:crawler_pass@localhost:5433/ss_market
+2026-05-12 23:55:30 | INFO     | ss_crawler | [monitor_scraper] MonitorMatcher initialized with 20272 monitors
+2026-05-12 23:55:30 | INFO     | ss_crawler | [monitor_scraper] Loaded 20272 monitor references
+2026-05-12 23:55:30 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/monitors/nnifg.html
+2026-05-12 23:55:32 | INFO     | ss_crawler | [monitor_scraper] Low confidence for nnifg: HP Pavilion w2007v (65%) - below threshold
+2026-05-12 23:57:40 | INFO     | ss_crawler | [monitor_scraper] Initializing Monitor scraper...
+2026-05-12 23:57:40 | INFO     | ss_crawler | [database] Database connected: localhost:5433/ss_market
+2026-05-12 23:57:40 | INFO     | ss_crawler | [monitor_scraper] Database: postgresql+psycopg2://crawler:crawler_pass@localhost:5433/ss_market
+2026-05-12 23:57:41 | INFO     | ss_crawler | [monitor_scraper] MonitorMatcher initialized with 20272 monitors
+2026-05-12 23:57:41 | INFO     | ss_crawler | [monitor_scraper] Loaded 20272 monitor references
+2026-05-12 23:57:41 | INFO     | ss_crawler | [monitor_scraper] Initializing Monitor scraper...
+2026-05-12 23:57:41 | INFO     | ss_crawler | [database] Database connected: localhost:5433/ss_market
+2026-05-12 23:57:41 | INFO     | ss_crawler | [monitor_scraper] Database: postgresql+psycopg2://crawler:crawler_pass@localhost:5433/ss_market
+2026-05-12 23:57:41 | INFO     | ss_crawler | [monitor_scraper] MonitorMatcher initialized with 20272 monitors
+2026-05-12 23:57:41 | INFO     | ss_crawler | [monitor_scraper] Loaded 20272 monitor references
+2026-05-12 23:57:41 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/monitors/nnifg.html
+2026-05-12 23:57:43 | INFO     | ss_crawler | [monitor_scraper] Matched nnifg: HP Pavilion w2007v (80% confidence)
+2026-05-12 23:58:11 | INFO     | ss_crawler | [scraper] 🚀 Initializing scraper...
+2026-05-12 23:58:11 | INFO     | ss_crawler | [database] Database connected: localhost:5433/ss_market
+2026-05-12 23:58:11 | INFO     | ss_crawler | [scraper] 📦 Database: postgresql+psycopg2://crawler:crawler_pass@localhost:5433/ss_market
+2026-05-12 23:58:11 | INFO     | ss_crawler | [matcher] GPUMatcher initialized with 631 GPUs
+2026-05-12 23:58:11 | INFO     | ss_crawler | [scraper] 🎮 Loaded 631 GPU references
+2026-05-12 23:58:11 | INFO     | ss_crawler | [scraper] 📊 Scrape run started: ID 19
+2026-05-12 23:58:11 | INFO     | ss_crawler | [scraper] 📄 Fetching category: https://www.ss.com/lv/electronics/computers/completing-pc/video/
+2026-05-12 23:58:11 | INFO     | ss_crawler | [crawler] Fetching category page: https://www.ss.com/lv/electronics/computers/completing-pc/video/
+2026-05-12 23:58:14 | INFO     | ss_crawler | [parser] Found 30 listings on page
+2026-05-12 23:58:14 | INFO     | ss_crawler | [scraper] 🔍 Found 30 listings to process
+2026-05-12 23:58:14 | INFO     | ss_crawler | [crawler] Fetching listing 1/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/goxxp.html
+2026-05-12 23:58:16 | INFO     | ss_crawler | [repository] ✨ goxxp: New
+2026-05-12 23:58:16 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: AMD Radeon RX 5700 XT 50th Anniv. (95% confidence) | Rx5700xt
+2026-05-12 23:58:16 | INFO     | ss_crawler | [crawler] Fetching listing 2/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/bkfocj.html
+2026-05-12 23:58:19 | INFO     | ss_crawler | [repository] ✨ bkfocj: New
+2026-05-12 23:58:19 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: NVIDIA GeForce RTX 3060 (86% confidence) | MSI Rtx 3060
+2026-05-12 23:58:19 | INFO     | ss_crawler | [crawler] Fetching listing 3/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/elmnc.html
+2026-05-12 23:58:21 | INFO     | ss_crawler | [repository] ✨ elmnc: New
+2026-05-12 23:58:21 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: NVIDIA GeForce RTX 4070 (90% confidence) | Gigabyte 4070
+2026-05-12 23:58:21 | INFO     | ss_crawler | [crawler] Fetching listing 4/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/echkl.html
+2026-05-12 23:58:24 | INFO     | ss_crawler | [repository] ✨ echkl: New
+2026-05-12 23:58:24 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: AMD Radeon RX 6700 XT (90% confidence) | Asus Rx 6700xt
+2026-05-12 23:58:24 | INFO     | ss_crawler | [crawler] Fetching listing 5/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/dcoeo.html
+2026-05-12 23:58:26 | INFO     | ss_crawler | [repository] ✨ dcoeo: New
+2026-05-12 23:58:26 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: NVIDIA GeForce GTX 1060 6GB (75% confidence) | MSI 1060 aero itx
+2026-05-12 23:58:26 | INFO     | ss_crawler | [crawler] Fetching listing 6/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/moxxl.html
+2026-05-12 23:58:29 | INFO     | ss_crawler | [repository] ✨ moxxl: New
+2026-05-12 23:58:29 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: AMD Radeon RX 470 (75% confidence) | MSI Rx470
+2026-05-12 23:58:29 | INFO     | ss_crawler | [crawler] Fetching listing 7/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/ddkff.html
+2026-05-12 23:58:32 | INFO     | ss_crawler | [repository] ✨ ddkff: New
+2026-05-12 23:58:32 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: INTEL Intel Arc A750 (75% confidence) | Arc 750
+2026-05-12 23:58:32 | INFO     | ss_crawler | [crawler] Fetching listing 8/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/pdgbh.html
+2026-05-12 23:58:36 | INFO     | ss_crawler | [repository] ✨ pdgbh: New
+2026-05-12 23:58:36 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: NVIDIA GeForce RTX 3070 (90% confidence) | Asus Geforce rtx
+2026-05-12 23:58:36 | INFO     | ss_crawler | [crawler] Fetching listing 9/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/dkfio.html
+2026-05-12 23:58:37 | INFO     | ss_crawler | [repository] ✨ dkfio: New
+2026-05-12 23:58:37 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: NVIDIA GeForce RTX 3070 (90% confidence) | EVGA Geforce rtx
+2026-05-12 23:58:37 | INFO     | ss_crawler | [crawler] Fetching listing 10/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/pbgln.html
+2026-05-12 23:58:39 | INFO     | ss_crawler | [repository] ✨ pbgln: New
+2026-05-12 23:58:39 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: AMD Radeon RX 6700 XT (90% confidence) | 6700Xt c pro
+2026-05-12 23:58:39 | INFO     | ss_crawler | [crawler] Fetching listing 11/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/fdfml.html
+2026-05-12 23:58:41 | INFO     | ss_crawler | [repository] ✨ fdfml: New
+2026-05-12 23:58:41 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: NVIDIA GeForce RTX 5070 Ti (90% confidence) | Asus Rtx5070Ti
+2026-05-12 23:58:41 | INFO     | ss_crawler | [crawler] Fetching listing 12/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/gkopp.html
+2026-05-12 23:58:43 | INFO     | ss_crawler | [repository] ✨ gkopp: New
+2026-05-12 23:58:43 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: NVIDIA GeForce RTX 3070 (90% confidence) | Gigabyte Geforce3070
+2026-05-12 23:58:43 | INFO     | ss_crawler | [crawler] Fetching listing 13/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/hdglp.html
+2026-05-12 23:58:45 | INFO     | ss_crawler | [repository] ✨ hdglp: New
+2026-05-12 23:58:45 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: NVIDIA GeForce RTX 5080 (90% confidence) | nVidia 5080
+2026-05-12 23:58:45 | INFO     | ss_crawler | [crawler] Fetching listing 14/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/fdeig.html
+2026-05-12 23:58:48 | INFO     | ss_crawler | [repository] ✨ fdeig: New
+2026-05-12 23:58:48 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: NVIDIA GeForce RTX 5070 Ti (90% confidence) | Zotac 5070 ti
+2026-05-12 23:58:48 | INFO     | ss_crawler | [crawler] Fetching listing 15/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/afbjl.html
+2026-05-12 23:58:51 | INFO     | ss_crawler | [repository] ✨ afbjl: New
+2026-05-12 23:58:51 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: NVIDIA GeForce RTX 5070 Ti (90% confidence) | Asus Rtx 5070 ti
+2026-05-12 23:58:51 | INFO     | ss_crawler | [crawler] Fetching listing 16/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/fdjpc.html
+2026-05-12 23:58:54 | INFO     | ss_crawler | [repository] Detected re-list: fdjpc (was afbjl)
+2026-05-12 23:58:54 | INFO     | ss_crawler | [repository] ✨ fdjpc: New
+2026-05-12 23:58:54 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: NVIDIA GeForce RTX 5070 Ti (90% confidence) | Asus Rtx 5070 ti
+2026-05-12 23:58:54 | INFO     | ss_crawler | [crawler] Fetching listing 17/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/bjdxmb.html
+2026-05-12 23:58:56 | INFO     | ss_crawler | [repository] ✨ bjdxmb: New
+2026-05-12 23:58:56 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: AMD Radeon RX 5600 XT (86% confidence) | Asus Rx 5600xt
+2026-05-12 23:58:56 | INFO     | ss_crawler | [crawler] Fetching listing 18/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/fjdej.html
+2026-05-12 23:58:59 | INFO     | ss_crawler | [repository] ✨ fjdej: New
+2026-05-12 23:58:59 | INFO     | ss_crawler | [scraper] ⚠️ LOW_CONFIDENCE: Matched: NVIDIA GeForce RTX 3080 (63% confidence) - BELOW THRESHOLD | Gigabyte Rtx 3080
+2026-05-12 23:58:59 | INFO     | ss_crawler | [crawler] Fetching listing 19/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/bkmnlc.html
+2026-05-12 23:59:02 | INFO     | ss_crawler | [repository] ✨ bkmnlc: New
+2026-05-12 23:59:02 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: AMD Radeon RX 6600 (90% confidence) | Gigabyte Eagle rx6600
+2026-05-12 23:59:02 | INFO     | ss_crawler | [crawler] Fetching listing 20/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/fjhhd.html
+2026-05-12 23:59:05 | INFO     | ss_crawler | [repository] ✨ fjhhd: New
+2026-05-12 23:59:05 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: NVIDIA GeForce RTX 4070 Ti (86% confidence) | Palit Rtx 4070 ti
+2026-05-12 23:59:05 | INFO     | ss_crawler | [crawler] Fetching listing 21/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/mpxnk.html
+2026-05-12 23:59:07 | INFO     | ss_crawler | [repository] ✨ mpxnk: New
+2026-05-12 23:59:07 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: AMD Radeon RX 580 (75% confidence) | Sapphire Rx580
+2026-05-12 23:59:07 | INFO     | ss_crawler | [crawler] Fetching listing 22/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/bjbcfk.html
+2026-05-12 23:59:09 | INFO     | ss_crawler | [repository] ✨ bjbcfk: New
+2026-05-12 23:59:09 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: NVIDIA GeForce RTX 5080 (90% confidence) | MSI Rtx 5080 16gb
+2026-05-12 23:59:09 | INFO     | ss_crawler | [crawler] Fetching listing 23/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/ddgll.html
+2026-05-12 23:59:11 | INFO     | ss_crawler | [repository] ✨ ddgll: New
+2026-05-12 23:59:11 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: NVIDIA GeForce RTX 5070 (90% confidence) | Gigabyte Windforce 5070
+2026-05-12 23:59:11 | INFO     | ss_crawler | [crawler] Fetching listing 24/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/bkbied.html
+2026-05-12 23:59:13 | INFO     | ss_crawler | [repository] ✨ bkbied: New
+2026-05-12 23:59:13 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: AMD Radeon RX 570 (100% confidence) | Gigabyte Rx570
+2026-05-12 23:59:13 | INFO     | ss_crawler | [crawler] Fetching listing 25/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/bkfomx.html
+2026-05-12 23:59:16 | INFO     | ss_crawler | [repository] ✨ bkfomx: New
+2026-05-12 23:59:16 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: AMD Radeon RX 470 (100% confidence) | Sapphire Rx470
+2026-05-12 23:59:16 | INFO     | ss_crawler | [crawler] Fetching listing 26/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/kmgpc.html
+2026-05-12 23:59:19 | INFO     | ss_crawler | [repository] ✨ kmgpc: New
+2026-05-12 23:59:19 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: NVIDIA GeForce RTX 2080 Ti (90% confidence) | Rtx 2080 ti
+2026-05-12 23:59:19 | INFO     | ss_crawler | [crawler] Fetching listing 27/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/lpijx.html
+2026-05-12 23:59:22 | INFO     | ss_crawler | [repository] ✨ lpijx: New
+2026-05-12 23:59:22 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: NVIDIA GeForce RTX 4090 (86% confidence) | Asus Rog strix
+2026-05-12 23:59:22 | INFO     | ss_crawler | [crawler] Fetching listing 28/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/lpjic.html
+2026-05-12 23:59:25 | INFO     | ss_crawler | [repository] ✨ lpjic: New
+2026-05-12 23:59:25 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: AMD Radeon RX 7900 XT (76% confidence) | Sapphire 7900 xtx
+2026-05-12 23:59:25 | INFO     | ss_crawler | [crawler] Fetching listing 29/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/ppmpx.html
+2026-05-12 23:59:29 | INFO     | ss_crawler | [repository] ✨ ppmpx: New
+2026-05-12 23:59:29 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: NVIDIA GeForce RTX 3080 (86% confidence) | Gigabyte 3080
+2026-05-12 23:59:29 | INFO     | ss_crawler | [crawler] Fetching listing 30/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/gckih.html
+2026-05-12 23:59:31 | INFO     | ss_crawler | [repository] ✨ gckih: New
+2026-05-12 23:59:31 | INFO     | ss_crawler | [scraper] ⚠️ LOW_CONFIDENCE: Matched: NVIDIA GeForce2 MX 200 (42% confidence) - BELOW THRESHOLD | Asus Rtx5050
+2026-05-12 23:59:31 | INFO     | ss_crawler | [scraper] 📄 Fetching category: https://www.ss.com/lv/electronics/computers/completing-pc/video/page2.html
+2026-05-12 23:59:31 | INFO     | ss_crawler | [crawler] Fetching category page: https://www.ss.com/lv/electronics/computers/completing-pc/video/page2.html
+2026-05-12 23:59:35 | INFO     | ss_crawler | [parser] Found 30 listings on page
+2026-05-12 23:59:35 | INFO     | ss_crawler | [scraper] 🔍 Found 30 listings to process
+2026-05-12 23:59:35 | INFO     | ss_crawler | [crawler] Fetching listing 1/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/biohcc.html
+2026-05-12 23:59:38 | INFO     | ss_crawler | [repository] ✨ biohcc: New
+2026-05-12 23:59:38 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: NVIDIA GeForce RTX 3050 8GB (75% confidence) | Gigabyte Rtx3050 oc 8gb
+2026-05-12 23:59:38 | INFO     | ss_crawler | [crawler] Fetching listing 2/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/bjlxfx.html
+2026-05-12 23:59:41 | INFO     | ss_crawler | [repository] ✨ bjlxfx: New
+2026-05-12 23:59:41 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: NVIDIA GeForce RTX 4060 Ti (86% confidence) | MSI Rtx 4060 ti
+2026-05-12 23:59:41 | INFO     | ss_crawler | [crawler] Fetching listing 3/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/bjckoi.html
+2026-05-12 23:59:44 | INFO     | ss_crawler | [repository] ✨ bjckoi: New
+2026-05-12 23:59:44 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: AMD Radeon RX 580 (75% confidence) | STB Rx580
+2026-05-12 23:59:44 | INFO     | ss_crawler | [crawler] Fetching listing 4/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/boploi.html
+2026-05-12 23:59:46 | INFO     | ss_crawler | [repository] ✨ boploi: New
+2026-05-12 23:59:46 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: NVIDIA GeForce RTX 3070 Ti (90% confidence) | Palit 3070 ti
+2026-05-12 23:59:46 | INFO     | ss_crawler | [crawler] Fetching listing 5/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/fklme.html
+2026-05-12 23:59:49 | INFO     | ss_crawler | [repository] ✨ fklme: New
+2026-05-12 23:59:49 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: NVIDIA GeForce GTX 1070 (75% confidence) | Gigabyte Rtx 1070 8gb
+2026-05-12 23:59:49 | INFO     | ss_crawler | [crawler] Fetching listing 6/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/pcdpf.html
+2026-05-12 23:59:51 | INFO     | ss_crawler | [repository] ✨ pcdpf: New
+2026-05-12 23:59:51 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: NVIDIA GeForce GTX 1060 3GB (75% confidence) | MSI Gtx1060 armor
+2026-05-12 23:59:51 | INFO     | ss_crawler | [crawler] Fetching listing 7/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/plodn.html
+2026-05-13 00:00:39 | INFO     | ss_crawler | [repository] ✨ plodn: New
+2026-05-13 00:00:39 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: NVIDIA GeForce RTX 4070 Ti (86% confidence) | Zotac 4070 Ti
+2026-05-13 00:00:39 | INFO     | ss_crawler | [crawler] Fetching listing 8/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/bjbmfp.html
+2026-05-13 00:00:41 | INFO     | ss_crawler | [repository] ✨ bjbmfp: New
+2026-05-13 00:00:41 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: NVIDIA GeForce RTX 3080 Ti (90% confidence) | Rtx 3080 ti
+2026-05-13 00:00:41 | INFO     | ss_crawler | [crawler] Fetching listing 9/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/pcoep.html
+2026-05-13 00:00:44 | INFO     | ss_crawler | [repository] ✨ pcoep: New
+2026-05-13 00:00:44 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: NVIDIA GeForce RTX 2070 (90% confidence) | MSI Geforce rtx 20
+2026-05-13 00:00:44 | INFO     | ss_crawler | [crawler] Fetching listing 10/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/bilnng.html
+2026-05-13 00:00:46 | INFO     | ss_crawler | [repository] ✨ bilnng: New
+2026-05-13 00:00:46 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: NVIDIA GeForce RTX 4080 (90% confidence) | Asus Rtx4080
+2026-05-13 00:00:46 | INFO     | ss_crawler | [crawler] Fetching listing 11/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/pcegi.html
+2026-05-13 00:00:48 | INFO     | ss_crawler | [repository] ✨ pcegi: New
+2026-05-13 00:00:48 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: NVIDIA GeForce GTX 1080 Ti (75% confidence) | Gigabyte 1080Ti
+2026-05-13 00:00:48 | INFO     | ss_crawler | [crawler] Fetching listing 12/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/bkpjie.html
+2026-05-13 00:00:49 | INFO     | ss_crawler | [repository] ✨ bkpjie: New
+2026-05-13 00:00:49 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: NVIDIA GeForce RTX 5080 (90% confidence) | Gigabyte Rtx5080 oc
+2026-05-13 00:00:49 | INFO     | ss_crawler | [crawler] Fetching listing 13/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/dbfih.html
+2026-05-13 00:00:53 | INFO     | ss_crawler | [repository] ✨ dbfih: New
+2026-05-13 00:00:53 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: NVIDIA GeForce GTX 1050 Ti (90% confidence) | MSI Msi gamingx
+2026-05-13 00:00:53 | INFO     | ss_crawler | [crawler] Fetching listing 14/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/bkppnk.html
+2026-05-13 00:00:56 | INFO     | ss_crawler | [repository] ✨ bkppnk: New
+2026-05-13 00:00:56 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: AMD Radeon R7 370 (100% confidence) | Gigabyte Gv-R737Wf20C-2
+2026-05-13 00:00:56 | INFO     | ss_crawler | [crawler] Fetching listing 15/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/fogex.html
+2026-05-13 00:00:58 | INFO     | ss_crawler | [repository] ✨ fogex: New
+2026-05-13 00:00:58 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: NVIDIA GeForce RTX 2070 (90% confidence) | Gigabyte 2070
+2026-05-13 00:00:58 | INFO     | ss_crawler | [crawler] Fetching listing 16/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/pchlg.html
+2026-05-13 00:01:02 | INFO     | ss_crawler | [repository] ✨ pchlg: New
+2026-05-13 00:01:02 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: NVIDIA GeForce GTX 1080 (90% confidence) | nVidia Gtx1080 fe
+2026-05-13 00:01:02 | INFO     | ss_crawler | [crawler] Fetching listing 17/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/fmpen.html
+2026-05-13 00:01:04 | INFO     | ss_crawler | [repository] ✨ fmpen: New
+2026-05-13 00:01:04 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: AMD Radeon RX 6700 XT (90% confidence) | MSI 6700Xt oc
+2026-05-13 00:01:04 | INFO     | ss_crawler | [crawler] Fetching listing 18/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/ekfkl.html
+2026-05-13 00:01:07 | INFO     | ss_crawler | [repository] ✨ ekfkl: New
+2026-05-13 00:01:07 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: AMD Radeon R9 290 (75% confidence) | R9 290 4gbd5-p
+2026-05-13 00:01:07 | INFO     | ss_crawler | [crawler] Fetching listing 19/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/eodxl.html
+2026-05-13 00:01:09 | INFO     | ss_crawler | [repository] ✨ eodxl: New
+2026-05-13 00:01:09 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: NVIDIA GeForce GTX 1050 (86% confidence) | Asus Gtx 1050 2gb
+2026-05-13 00:01:09 | INFO     | ss_crawler | [crawler] Fetching listing 20/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/dfgnd.html
+2026-05-13 00:01:12 | INFO     | ss_crawler | [repository] ✨ dfgnd: New
+2026-05-13 00:01:12 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: NVIDIA GeForce GTX 1660 Ti (90% confidence) | Colorful
+2026-05-13 00:01:12 | INFO     | ss_crawler | [crawler] Fetching listing 21/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/lokjg.html
+2026-05-13 00:01:14 | INFO     | ss_crawler | [repository] ✨ lokjg: New
+2026-05-13 00:01:14 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: NVIDIA GeForce RTX 3070 (90% confidence) | Rtx 3070
+2026-05-13 00:01:14 | INFO     | ss_crawler | [crawler] Fetching listing 22/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/mbigf.html
+2026-05-13 00:01:16 | INFO     | ss_crawler | [repository] ✨ mbigf: New
+2026-05-13 00:01:16 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: AMD Radeon RX 6700 XT (90% confidence) | Rx6700Xt
+2026-05-13 00:01:16 | INFO     | ss_crawler | [crawler] Fetching listing 23/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/fmemd.html
+2026-05-13 00:01:19 | INFO     | ss_crawler | [repository] ✨ fmemd: New
+2026-05-13 00:01:19 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: NVIDIA GeForce GTX 1650 (90% confidence) | Gigabyte Gtx 1650 4gb
+2026-05-13 00:01:19 | INFO     | ss_crawler | [crawler] Fetching listing 24/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/elkkd.html
+2026-05-13 00:01:22 | INFO     | ss_crawler | [repository] ✨ elkkd: New
+2026-05-13 00:01:22 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: NVIDIA GeForce RTX 3060 (86% confidence) | Inno3D Rtx 3060 12gb
+2026-05-13 00:01:22 | INFO     | ss_crawler | [crawler] Fetching listing 25/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/fcbbx.html
+2026-05-13 00:01:26 | WARNING  | ss_crawler | [parser] No price found for https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/fcbbx.html
+2026-05-13 00:01:26 | INFO     | ss_crawler | [repository] ✨ fcbbx: New
+2026-05-13 00:01:26 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: NVIDIA GeForce RTX 5090 (90% confidence) | Rtx 5090/4090
+2026-05-13 00:01:26 | INFO     | ss_crawler | [crawler] Fetching listing 26/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/mollj.html
+2026-05-13 00:01:29 | INFO     | ss_crawler | [repository] ✨ mollj: New
+2026-05-13 00:01:29 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: NVIDIA GeForce RTX 5060 (90% confidence) | Gigabyte Rtx 5060
+2026-05-13 00:01:29 | INFO     | ss_crawler | [crawler] Fetching listing 27/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/blgmmj.html
+2026-05-13 00:01:31 | INFO     | ss_crawler | [repository] ✨ blgmmj: New
+2026-05-13 00:01:31 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: AMD Radeon RX 9060 XT (90% confidence) | Asus Rx 9060 xt
+2026-05-13 00:01:31 | INFO     | ss_crawler | [crawler] Fetching listing 28/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/bpxffj.html
+2026-05-13 00:01:33 | INFO     | ss_crawler | [repository] ✨ bpxffj: New
+2026-05-13 00:01:33 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: AMD Radeon RX 9060 XT (90% confidence) | Asus 9060 xt
+2026-05-13 00:01:33 | INFO     | ss_crawler | [crawler] Fetching listing 29/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/bpxcli.html
+2026-05-13 00:01:35 | INFO     | ss_crawler | [repository] ✨ bpxcli: New
+2026-05-13 00:01:35 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: AMD Radeon RX 9060 XT (90% confidence) | Asus 9060 xt
+2026-05-13 00:01:35 | INFO     | ss_crawler | [crawler] Fetching listing 30/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/bjnehj.html
+2026-05-13 00:01:39 | INFO     | ss_crawler | [repository] ✨ bjnehj: New
+2026-05-13 00:01:39 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: AMD Radeon RX 9070 XT (86% confidence) | Asus Rx 9070 xt
+2026-05-13 00:01:39 | INFO     | ss_crawler | [scraper] 📄 Fetching category: https://www.ss.com/lv/electronics/computers/completing-pc/video/page3.html
+2026-05-13 00:01:39 | INFO     | ss_crawler | [crawler] Fetching category page: https://www.ss.com/lv/electronics/computers/completing-pc/video/page3.html
+2026-05-13 00:01:41 | INFO     | ss_crawler | [parser] Found 30 listings on page
+2026-05-13 00:01:41 | INFO     | ss_crawler | [scraper] 🔍 Found 30 listings to process
+2026-05-13 00:01:41 | INFO     | ss_crawler | [crawler] Fetching listing 1/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/demjh.html
+2026-05-13 00:01:43 | INFO     | ss_crawler | [repository] ✨ demjh: New
+2026-05-13 00:01:43 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: AMD Radeon RX 9070 XT (86% confidence) | Asustek 9070Xt
+2026-05-13 00:01:43 | INFO     | ss_crawler | [crawler] Fetching listing 2/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/fjhjd.html
+2026-05-13 00:01:46 | INFO     | ss_crawler | [repository] ✨ fjhjd: New
+2026-05-13 00:01:46 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: AMD Radeon RX 9060 XT (90% confidence) | PowerColor 9060Xt
+2026-05-13 00:01:46 | INFO     | ss_crawler | [crawler] Fetching listing 3/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/nhcjo.html
+2026-05-13 00:01:50 | INFO     | ss_crawler | [repository] ✨ nhcjo: New
+2026-05-13 00:01:50 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: AMD Radeon RX 9060 XT (90% confidence) | Sapphire 9060 xt
+2026-05-13 00:01:50 | INFO     | ss_crawler | [crawler] Fetching listing 4/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/bjpec.html
+2026-05-13 00:01:51 | INFO     | ss_crawler | [repository] ✨ bjpec: New
+2026-05-13 00:01:51 | INFO     | ss_crawler | [scraper] ❓ UNMATCHED: No GPU match found | Gigabyte P106
+2026-05-13 00:01:51 | INFO     | ss_crawler | [crawler] Fetching listing 5/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/bpbecm.html
+2026-05-13 00:01:54 | INFO     | ss_crawler | [repository] ✨ bpbecm: New
+2026-05-13 00:01:54 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: AMD Radeon RX 580 (100% confidence) | Gigabyte Rx 580
+2026-05-13 00:01:54 | INFO     | ss_crawler | [crawler] Fetching listing 6/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/bpbbfg.html
+2026-05-13 00:01:57 | INFO     | ss_crawler | [repository] ✨ bpbbfg: New
+2026-05-13 00:01:57 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: NVIDIA GeForce GTX 1070 (90% confidence) | MSI Gtx 1070
+2026-05-13 00:01:57 | INFO     | ss_crawler | [crawler] Fetching listing 7/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/dmipf.html
+2026-05-13 00:02:00 | INFO     | ss_crawler | [repository] ✨ dmipf: New
+2026-05-13 00:02:00 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: NVIDIA GeForce RTX 5060 Ti (86% confidence) | Gigabyte 5060 Ti
+2026-05-13 00:02:00 | INFO     | ss_crawler | [crawler] Fetching listing 8/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/lipjd.html
+2026-05-13 00:02:03 | INFO     | ss_crawler | [repository] ✨ lipjd: New
+2026-05-13 00:02:03 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: NVIDIA GeForce RTX 3070 (90% confidence) | MSI 3070 non lhr
+2026-05-13 00:02:03 | INFO     | ss_crawler | [crawler] Fetching listing 9/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/blcjcj.html
+2026-05-13 00:02:06 | INFO     | ss_crawler | [repository] ✨ blcjcj: New
+2026-05-13 00:02:06 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: NVIDIA GeForce GTX 1050 (86% confidence) | Gigabyte Gtx 1050
+2026-05-13 00:02:06 | INFO     | ss_crawler | [crawler] Fetching listing 10/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/moxnk.html
+2026-05-13 00:02:08 | INFO     | ss_crawler | [repository] ✨ moxnk: New
+2026-05-13 00:02:08 | INFO     | ss_crawler | [scraper] ❓ UNMATCHED: No GPU match found | Hd8490
+2026-05-13 00:02:08 | INFO     | ss_crawler | [crawler] Fetching listing 11/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/fhloi.html
+2026-05-13 00:02:11 | INFO     | ss_crawler | [repository] ✨ fhloi: New
+2026-05-13 00:02:11 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: NVIDIA GeForce RTX 4070 Ti (86% confidence) | Gigabyte 4070 ti
+2026-05-13 00:02:11 | INFO     | ss_crawler | [crawler] Fetching listing 12/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/mbfxe.html
+2026-05-13 00:02:14 | INFO     | ss_crawler | [repository] ✨ mbfxe: New
+2026-05-13 00:02:14 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: AMD Radeon RX 6700 XT (90% confidence) | Sapphire 6700Xt nitro+
+2026-05-13 00:02:14 | INFO     | ss_crawler | [crawler] Fetching listing 13/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/dhmmk.html
+2026-05-13 00:02:17 | INFO     | ss_crawler | [repository] ✨ dhmmk: New
+2026-05-13 00:02:17 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: NVIDIA GeForce RTX 4060 (90% confidence) | Gigabyte Rtx 4060
+2026-05-13 00:02:17 | INFO     | ss_crawler | [crawler] Fetching listing 14/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/gdchp.html
+2026-05-13 00:02:19 | INFO     | ss_crawler | [repository] ✨ gdchp: New
+2026-05-13 00:02:19 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: NVIDIA GeForce 8800GTS 512 (75% confidence) | nVidia Quadro fx 580
+2026-05-13 00:02:19 | INFO     | ss_crawler | [crawler] Fetching listing 15/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/hiexp.html
+2026-05-13 00:02:22 | INFO     | ss_crawler | [repository] ✨ hiexp: New
+2026-05-13 00:02:22 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: NVIDIA GeForce GTX 960 (75% confidence) | nVidia Gtx960
+2026-05-13 00:02:22 | INFO     | ss_crawler | [crawler] Fetching listing 16/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/bimopo.html
+2026-05-13 00:02:24 | INFO     | ss_crawler | [repository] ✨ bimopo: New
+2026-05-13 00:02:24 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: NVIDIA GeForce RTX 5070 (90% confidence) | MSI Rtx 5070
+2026-05-13 00:02:24 | INFO     | ss_crawler | [crawler] Fetching listing 17/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/blxile.html
+2026-05-13 00:02:26 | INFO     | ss_crawler | [repository] ✨ blxile: New
+2026-05-13 00:02:26 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: AMD Radeon RX 9060 XT (90% confidence) | Gigabyte Rx 9060 xt
+2026-05-13 00:02:26 | INFO     | ss_crawler | [crawler] Fetching listing 18/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/blxmnd.html
+2026-05-13 00:02:29 | INFO     | ss_crawler | [repository] ✨ blxmnd: New
+2026-05-13 00:02:29 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: AMD Radeon RX 9060 XT (90% confidence) | PowerColor Rx 9060 xt
+2026-05-13 00:02:29 | INFO     | ss_crawler | [crawler] Fetching listing 19/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/bipien.html
+2026-05-13 00:02:32 | INFO     | ss_crawler | [repository] ✨ bipien: New
+2026-05-13 00:02:32 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: NVIDIA GeForce RTX 5060 (75% confidence) | Zotac Rtx 5060 solo
+2026-05-13 00:02:32 | INFO     | ss_crawler | [crawler] Fetching listing 20/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/blfhkx.html
+2026-05-13 00:02:35 | INFO     | ss_crawler | [repository] ✨ blfhkx: New
+2026-05-13 00:02:35 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: NVIDIA GeForce RTX 5070 (90% confidence) | PNY Rtx5070 triple
+2026-05-13 00:02:35 | INFO     | ss_crawler | [crawler] Fetching listing 21/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/ppmge.html
+2026-05-13 00:02:37 | INFO     | ss_crawler | [repository] ✨ ppmge: New
+2026-05-13 00:02:37 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: NVIDIA GeForce RTX 5070 (90% confidence) | Gigabyte Rtx 5070
+2026-05-13 00:02:37 | INFO     | ss_crawler | [crawler] Fetching listing 22/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/blbhin.html
+2026-05-13 00:02:41 | INFO     | ss_crawler | [repository] ✨ blbhin: New
+2026-05-13 00:02:41 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: NVIDIA GeForce RTX 5060 Ti (86% confidence) | Gigabyte Rtx 5060 ti
+2026-05-13 00:02:41 | INFO     | ss_crawler | [crawler] Fetching listing 23/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/bkjjkm.html
+2026-05-13 00:02:44 | INFO     | ss_crawler | [repository] ✨ bkjjkm: New
+2026-05-13 00:02:44 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: NVIDIA GeForce RTX 5060 Ti (86% confidence) | Inno3D Rtx 5060 ti
+2026-05-13 00:02:44 | INFO     | ss_crawler | [crawler] Fetching listing 24/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/bxxgck.html
+2026-05-13 00:02:46 | INFO     | ss_crawler | [repository] ✨ bxxgck: New
+2026-05-13 00:02:46 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: AMD Radeon RX 9070 (100% confidence) | Rx 9070
+2026-05-13 00:02:46 | INFO     | ss_crawler | [crawler] Fetching listing 25/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/bkhnbj.html
+2026-05-13 00:02:50 | INFO     | ss_crawler | [repository] ✨ bkhnbj: New
+2026-05-13 00:02:50 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: NVIDIA GeForce RTX 5060 Ti (86% confidence) | Gigabyte Rtx 5060 ti
+2026-05-13 00:02:50 | INFO     | ss_crawler | [crawler] Fetching listing 26/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/blckfl.html
+2026-05-13 00:02:52 | INFO     | ss_crawler | [repository] ✨ blckfl: New
+2026-05-13 00:02:52 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: AMD Radeon RX 9070 XT (86% confidence) | Rx 9070 xt
+2026-05-13 00:02:52 | INFO     | ss_crawler | [crawler] Fetching listing 27/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/bkkpfx.html
+2026-05-13 00:02:54 | INFO     | ss_crawler | [repository] ✨ bkkpfx: New
+2026-05-13 00:02:54 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: AMD Radeon RX 9070 XT (86% confidence) | Sapphire Rx 9070 xt
+2026-05-13 00:02:54 | INFO     | ss_crawler | [crawler] Fetching listing 28/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/blffdg.html
+2026-05-13 00:02:56 | INFO     | ss_crawler | [repository] ✨ blffdg: New
+2026-05-13 00:02:56 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: NVIDIA GeForce RTX 5070 Ti (90% confidence) | Gigabyte Rtx 5070 ti
+2026-05-13 00:02:56 | INFO     | ss_crawler | [crawler] Fetching listing 29/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/bknnpf.html
+2026-05-13 00:02:59 | INFO     | ss_crawler | [repository] ✨ bknnpf: New
+2026-05-13 00:02:59 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: NVIDIA GeForce RTX 5070 Ti (90% confidence) | MSI Rtx 5070 ti
+2026-05-13 00:02:59 | INFO     | ss_crawler | [crawler] Fetching listing 30/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/blxxog.html
+2026-05-13 00:03:03 | INFO     | ss_crawler | [repository] ✨ blxxog: New
+2026-05-13 00:03:03 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: AMD Radeon RX 9070 XT (86% confidence) | Gigabyte Rx 9070 xt
+2026-05-13 00:03:03 | INFO     | ss_crawler | [scraper] 📄 Fetching category: https://www.ss.com/lv/electronics/computers/completing-pc/video/page4.html
+2026-05-13 00:03:03 | INFO     | ss_crawler | [crawler] Fetching category page: https://www.ss.com/lv/electronics/computers/completing-pc/video/page4.html
+2026-05-13 00:03:05 | INFO     | ss_crawler | [parser] Found 30 listings on page
+2026-05-13 00:03:05 | INFO     | ss_crawler | [scraper] 🔍 Found 30 listings to process
+2026-05-13 00:03:05 | INFO     | ss_crawler | [crawler] Fetching listing 1/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/eeblb.html
+2026-05-13 00:03:08 | INFO     | ss_crawler | [repository] ✨ eeblb: New
+2026-05-13 00:03:08 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: AMD Radeon RX 7900 XT (86% confidence) | PowerColor Rx 7900 xtx
+2026-05-13 00:03:08 | INFO     | ss_crawler | [crawler] Fetching listing 2/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/bjgmjh.html
+2026-05-13 00:03:09 | INFO     | ss_crawler | [repository] ✨ bjgmjh: New
+2026-05-13 00:03:09 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: NVIDIA GeForce RTX 5080 (90% confidence) | MSI Rtx5080 ventus
+2026-05-13 00:03:09 | INFO     | ss_crawler | [crawler] Fetching listing 3/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/bkiiod.html
+2026-05-13 00:03:12 | INFO     | ss_crawler | [repository] ✨ bkiiod: New
+2026-05-13 00:03:12 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: NVIDIA GeForce RTX 5080 (90% confidence) | Gigabyte Rtx 5080 aero
+2026-05-13 00:03:12 | INFO     | ss_crawler | [crawler] Fetching listing 4/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/mnjij.html
+2026-05-13 00:03:15 | INFO     | ss_crawler | [repository] ✨ mnjij: New
+2026-05-13 00:03:15 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: NVIDIA GeForce GTX 1050 Ti (90% confidence) | Palit 1050ti
+2026-05-13 00:03:15 | INFO     | ss_crawler | [crawler] Fetching listing 5/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/bxxkfh.html
+2026-05-13 00:03:17 | INFO     | ss_crawler | [repository] ✨ bxxkfh: New
+2026-05-13 00:03:17 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: NVIDIA GeForce RTX 5070 (90% confidence) | Asus Rtx 5070
+2026-05-13 00:03:17 | INFO     | ss_crawler | [crawler] Fetching listing 6/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/bkejlk.html
+2026-05-13 00:03:20 | INFO     | ss_crawler | [repository] ✨ bkejlk: New
+2026-05-13 00:03:20 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: AMD Radeon RX 9060 XT (90% confidence) | Sapphire Rx 9060 xt
+2026-05-13 00:03:20 | INFO     | ss_crawler | [crawler] Fetching listing 7/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/nexei.html
+2026-05-13 00:03:23 | INFO     | ss_crawler | [repository] ✨ nexei: New
+2026-05-13 00:03:23 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: AMD Radeon RX 9070 XT (86% confidence) | Asus Rx 9070 xt
+2026-05-13 00:03:23 | INFO     | ss_crawler | [crawler] Fetching listing 8/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/moghh.html
+2026-05-13 00:03:26 | INFO     | ss_crawler | [repository] ✨ moghh: New
+2026-05-13 00:03:26 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: NVIDIA GeForce RTX 5070 (90% confidence) | MSI Rtx 5070
+2026-05-13 00:03:26 | INFO     | ss_crawler | [crawler] Fetching listing 9/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/bigcpo.html
+2026-05-13 00:03:27 | INFO     | ss_crawler | [repository] ✨ bigcpo: New
+2026-05-13 00:03:27 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: AMD Radeon RX 9070 (100% confidence) | Gigabyte Rx 9070
+2026-05-13 00:03:27 | INFO     | ss_crawler | [crawler] Fetching listing 10/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/ndokf.html
+2026-05-13 00:03:30 | INFO     | ss_crawler | [repository] ✨ ndokf: New
+2026-05-13 00:03:30 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: NVIDIA GeForce RTX 5070 Ti (90% confidence) | Gigabyte Rtx 5070 ti
+2026-05-13 00:03:30 | INFO     | ss_crawler | [crawler] Fetching listing 11/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/adggp.html
+2026-05-13 00:03:33 | INFO     | ss_crawler | [repository] ✨ adggp: New
+2026-05-13 00:03:33 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: NVIDIA GeForce RTX 5070 Ti (90% confidence) | MSI 5070ti
+2026-05-13 00:03:33 | INFO     | ss_crawler | [crawler] Fetching listing 12/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/bpxffk.html
+2026-05-13 00:03:35 | INFO     | ss_crawler | [repository] ✨ bpxffk: New
+2026-05-13 00:03:35 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: AMD Radeon RX 9070 XT (86% confidence) | Asus Rx 9070 xt
+2026-05-13 00:03:35 | INFO     | ss_crawler | [crawler] Fetching listing 13/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/moonp.html
+2026-05-13 00:03:38 | INFO     | ss_crawler | [repository] ✨ moonp: New
+2026-05-13 00:03:38 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: NVIDIA GeForce RTX 2060 Super (90% confidence) | nVidia Rtx 2060 super
+2026-05-13 00:03:38 | INFO     | ss_crawler | [crawler] Fetching listing 14/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/pchod.html
+2026-05-13 00:03:42 | INFO     | ss_crawler | [repository] ✨ pchod: New
+2026-05-13 00:03:42 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: AMD Radeon RX 470 (100% confidence) | Asus Mining-Rx470-4
+2026-05-13 00:03:42 | INFO     | ss_crawler | [crawler] Fetching listing 15/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/bpxcop.html
+2026-05-13 00:03:44 | INFO     | ss_crawler | [repository] ✨ bpxcop: New
+2026-05-13 00:03:44 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: NVIDIA GeForce GT 710 (75% confidence) | Asus Gt710-Sl-1Gd5
+2026-05-13 00:03:44 | INFO     | ss_crawler | [crawler] Fetching listing 16/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/niijo.html
+2026-05-13 00:03:48 | INFO     | ss_crawler | [repository] ✨ niijo: New
+2026-05-13 00:03:48 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: NVIDIA GeForce GTX 1660 (90% confidence) | Gigabyte Gtx 1660 super
+2026-05-13 00:03:48 | INFO     | ss_crawler | [crawler] Fetching listing 17/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/nhfbh.html
+2026-05-13 00:03:51 | INFO     | ss_crawler | [repository] ✨ nhfbh: New
+2026-05-13 00:03:51 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: NVIDIA GeForce GTX 1660 (90% confidence) | Gigabyte Gtx 1660
+2026-05-13 00:03:51 | INFO     | ss_crawler | [crawler] Fetching listing 18/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/momol.html
+2026-05-13 00:03:54 | INFO     | ss_crawler | [repository] ✨ momol: New
+2026-05-13 00:03:54 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: NVIDIA GeForce GTX 1060 6GB (75% confidence) | MSI Gtx 1060 6g
+2026-05-13 00:03:54 | INFO     | ss_crawler | [crawler] Fetching listing 19/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/bkbjpm.html
+2026-05-13 00:03:56 | INFO     | ss_crawler | [repository] ✨ bkbjpm: New
+2026-05-13 00:03:56 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: NVIDIA GeForce GTX 970 (75% confidence) | MSI Gtx 970 gaming
+2026-05-13 00:03:56 | INFO     | ss_crawler | [crawler] Fetching listing 20/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/biddmf.html
+2026-05-13 00:03:59 | INFO     | ss_crawler | [repository] ✨ biddmf: New
+2026-05-13 00:03:59 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: AMD Radeon RX 6800 XT (90% confidence) | Asus Rx 6800 xt
+2026-05-13 00:03:59 | INFO     | ss_crawler | [crawler] Fetching listing 21/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/fmflm.html
+2026-05-13 00:04:02 | WARNING  | ss_crawler | [parser] No price found for https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/fmflm.html
+2026-05-13 00:04:02 | INFO     | ss_crawler | [repository] ✨ fmflm: New
+2026-05-13 00:04:02 | INFO     | ss_crawler | [scraper] ❓ UNMATCHED: No GPU match found | Покупаю видеокарты от 4 гб разных моделей по одной...
+2026-05-13 00:04:02 | INFO     | ss_crawler | [crawler] Fetching listing 22/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/pplej.html
+2026-05-13 00:04:04 | INFO     | ss_crawler | [repository] ✨ pplej: New
+2026-05-13 00:04:04 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: NVIDIA GeForce GTX 1080 (90% confidence) | Asus Asus rog strix
+2026-05-13 00:04:04 | INFO     | ss_crawler | [crawler] Fetching listing 23/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/biedkx.html
+2026-05-13 00:04:07 | INFO     | ss_crawler | [repository] ✨ biedkx: New
+2026-05-13 00:04:07 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: NVIDIA GeForce GTX 1080 Ti (90% confidence) | Gigabyte Gtx 1080 ti
+2026-05-13 00:04:07 | INFO     | ss_crawler | [crawler] Fetching listing 24/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/nhdnf.html
+2026-05-13 00:04:09 | INFO     | ss_crawler | [repository] ✨ nhdnf: New
+2026-05-13 00:04:09 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: AMD Radeon RX 9070 XT (86% confidence) | Asus Prime Radeon
+2026-05-13 00:04:09 | INFO     | ss_crawler | [crawler] Fetching listing 25/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/fbjhf.html
+2026-05-13 00:04:12 | INFO     | ss_crawler | [repository] ✨ fbjhf: New
+2026-05-13 00:04:12 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: AMD Radeon RX 580 (75% confidence) | MSI Rx 580
+2026-05-13 00:04:12 | INFO     | ss_crawler | [crawler] Fetching listing 26/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/bjxcgx.html
+2026-05-13 00:04:14 | INFO     | ss_crawler | [repository] ✨ bjxcgx: New
+2026-05-13 00:04:14 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: NVIDIA GeForce GTX 1660 (90% confidence) | nVidia Gtx 1660 oc
+2026-05-13 00:04:14 | INFO     | ss_crawler | [crawler] Fetching listing 27/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/bjpiid.html
+2026-05-13 00:04:18 | INFO     | ss_crawler | [repository] ✨ bjpiid: New
+2026-05-13 00:04:18 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: NVIDIA GeForce GTX 1070 (90% confidence) | Palit Gtx1070
+2026-05-13 00:04:18 | INFO     | ss_crawler | [crawler] Fetching listing 28/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/bxxinp.html
+2026-05-13 00:04:21 | INFO     | ss_crawler | [repository] ✨ bxxinp: New
+2026-05-13 00:04:21 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: NVIDIA GeForce RTX 3070 (90% confidence) | 3070
+2026-05-13 00:04:21 | INFO     | ss_crawler | [crawler] Fetching listing 29/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/bolnip.html
+2026-05-13 00:04:24 | INFO     | ss_crawler | [repository] ✨ bolnip: New
+2026-05-13 00:04:24 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: AMD Radeon RX 9060 XT (90% confidence) | Sapphire Rx 9060 xt
+2026-05-13 00:04:24 | INFO     | ss_crawler | [crawler] Fetching listing 30/30: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/mxdbo.html
+2026-05-13 00:04:27 | INFO     | ss_crawler | [repository] ✨ mxdbo: New
+2026-05-13 00:04:27 | INFO     | ss_crawler | [scraper] ❓ UNMATCHED: No GPU match found | Asustek Gtx p106
+2026-05-13 00:04:27 | INFO     | ss_crawler | [scraper] 📄 Fetching category: https://www.ss.com/lv/electronics/computers/completing-pc/video/page5.html
+2026-05-13 00:04:27 | INFO     | ss_crawler | [crawler] Fetching category page: https://www.ss.com/lv/electronics/computers/completing-pc/video/page5.html
+2026-05-13 00:04:29 | INFO     | ss_crawler | [parser] Found 17 listings on page
+2026-05-13 00:04:29 | INFO     | ss_crawler | [scraper] 🔍 Found 17 listings to process
+2026-05-13 00:04:29 | INFO     | ss_crawler | [crawler] Fetching listing 1/17: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/ppfoj.html
+2026-05-13 00:04:31 | INFO     | ss_crawler | [repository] ✨ ppfoj: New
+2026-05-13 00:04:31 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: NVIDIA GeForce RTX 3070 Ti (90% confidence) | EVGA Rtx3070Ti
+2026-05-13 00:04:31 | INFO     | ss_crawler | [crawler] Fetching listing 2/17: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/plcfb.html
+2026-05-13 00:04:33 | INFO     | ss_crawler | [repository] ✨ plcfb: New
+2026-05-13 00:04:33 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: AMD Radeon RX 9070 XT (86% confidence) | Asus Rx 9070 xt oc
+2026-05-13 00:04:33 | INFO     | ss_crawler | [crawler] Fetching listing 3/17: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/lphik.html
+2026-05-13 00:04:37 | INFO     | ss_crawler | [repository] ✨ lphik: New
+2026-05-13 00:04:37 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: NVIDIA GeForce GTX 660 Ti (86% confidence) | Asus Radeon hd7850
+2026-05-13 00:04:37 | INFO     | ss_crawler | [crawler] Fetching listing 4/17: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/ppmjm.html
+2026-05-13 00:04:39 | INFO     | ss_crawler | [repository] ✨ ppmjm: New
+2026-05-13 00:04:39 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: NVIDIA GeForce GTX 1080 Ti (90% confidence) | MSI Gtx1080 ti
+2026-05-13 00:04:39 | INFO     | ss_crawler | [crawler] Fetching listing 5/17: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/bkmdoe.html
+2026-05-13 00:04:42 | INFO     | ss_crawler | [repository] ✨ bkmdoe: New
+2026-05-13 00:04:42 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: NVIDIA GeForce RTX 5070 Ti (90% confidence) | PNY 5070Ti
+2026-05-13 00:04:42 | INFO     | ss_crawler | [crawler] Fetching listing 6/17: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/nfhdf.html
+2026-05-13 00:04:44 | INFO     | ss_crawler | [repository] ✨ nfhdf: New
+2026-05-13 00:04:44 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: AMD Radeon RX 6600 XT (86% confidence) | PowerColor Rx6600 xt 8gb
+2026-05-13 00:04:44 | INFO     | ss_crawler | [crawler] Fetching listing 7/17: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/pdnbi.html
+2026-05-13 00:04:47 | INFO     | ss_crawler | [repository] ✨ pdnbi: New
+2026-05-13 00:04:47 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: AMD Radeon RX 6700 XT (90% confidence) | Rx6700 xt
+2026-05-13 00:04:47 | INFO     | ss_crawler | [crawler] Fetching listing 8/17: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/fmeph.html
+2026-05-13 00:04:49 | INFO     | ss_crawler | [repository] ✨ fmeph: New
+2026-05-13 00:04:49 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: NVIDIA GeForce GTX 1060 6GB (75% confidence) | Zotac Gtx 1060
+2026-05-13 00:04:49 | INFO     | ss_crawler | [crawler] Fetching listing 9/17: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/cbxhnp.html
+2026-05-13 00:04:51 | INFO     | ss_crawler | [repository] ✨ cbxhnp: New
+2026-05-13 00:04:51 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: NVIDIA GeForce GTX 1060 3GB (75% confidence) | Asus White dual
+2026-05-13 00:04:51 | INFO     | ss_crawler | [crawler] Fetching listing 10/17: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/fpxll.html
+2026-05-13 00:04:55 | INFO     | ss_crawler | [repository] ✨ fpxll: New
+2026-05-13 00:04:55 | INFO     | ss_crawler | [scraper] ⚠️ LOW_CONFIDENCE: Matched: NVIDIA GeForce G 100 (60% confidence) - BELOW THRESHOLD | PNY P2000
+2026-05-13 00:04:55 | INFO     | ss_crawler | [crawler] Fetching listing 11/17: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/ehnlp.html
+2026-05-13 00:04:58 | INFO     | ss_crawler | [repository] ✨ ehnlp: New
+2026-05-13 00:04:58 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: NVIDIA GeForce RTX 5070 Ti (90% confidence) | Zotac Zotac Solid Sf
+2026-05-13 00:04:58 | INFO     | ss_crawler | [crawler] Fetching listing 12/17: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/bkfokg.html
+2026-05-13 00:05:01 | INFO     | ss_crawler | [repository] ✨ bkfokg: New
+2026-05-13 00:05:01 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: NVIDIA GeForce RTX 2060 Super (86% confidence) | Palit Rtx2060 super
+2026-05-13 00:05:01 | INFO     | ss_crawler | [crawler] Fetching listing 13/17: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/pcodp.html
+2026-05-13 00:05:03 | INFO     | ss_crawler | [repository] ✨ pcodp: New
+2026-05-13 00:05:03 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: NVIDIA GeForce RTX 3080 (86% confidence) | Gigabyte Rtx-3080
+2026-05-13 00:05:03 | INFO     | ss_crawler | [crawler] Fetching listing 14/17: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/biloio.html
+2026-05-13 00:05:06 | INFO     | ss_crawler | [repository] ✨ biloio: New
+2026-05-13 00:05:06 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: AMD Radeon RX 470 (86% confidence) | MSI Rx vega 56
+2026-05-13 00:05:06 | INFO     | ss_crawler | [crawler] Fetching listing 15/17: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/bkghek.html
+2026-05-13 00:05:10 | INFO     | ss_crawler | [repository] ✨ bkghek: New
+2026-05-13 00:05:10 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: NVIDIA GeForce RTX 3070 (90% confidence) | Gigabyte Rtx 3070
+2026-05-13 00:05:10 | INFO     | ss_crawler | [crawler] Fetching listing 16/17: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/bopnkk.html
+2026-05-13 00:05:13 | INFO     | ss_crawler | [repository] ✨ bopnkk: New
+2026-05-13 00:05:13 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: AMD Radeon RX 570 (100% confidence) | Sapphire Rx 570
+2026-05-13 00:05:13 | INFO     | ss_crawler | [crawler] Fetching listing 17/17: https://www.ss.com/msg/lv/electronics/computers/completing-pc/video/bpxpie.html
+2026-05-13 00:05:14 | INFO     | ss_crawler | [repository] ✨ bpxpie: New
+2026-05-13 00:05:14 | INFO     | ss_crawler | [scraper] ✨ NEW: Matched: AMD Radeon RX 7900 XT (75% confidence) | Asus 7900Xtx
+2026-05-13 00:05:14 | INFO     | ss_crawler | [scraper] 📄 Page limit reached (5), stopping
+2026-05-13 00:05:15 | INFO     | ss_crawler | [scraper] ✅ Scraping completed successfully

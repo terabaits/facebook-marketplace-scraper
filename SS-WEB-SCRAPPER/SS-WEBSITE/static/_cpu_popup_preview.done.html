@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>CPU Filter Popup Preview</title>
+<link rel="stylesheet" href="/static/style.css">
+<link rel="stylesheet" href="_cpu_popup_styles.css">
+<style>
+body { padding: 0; background: var(--bg-color); }
+.preview-wrap { padding: 1.5rem; max-width: 1500px; margin: 0 auto; }
+.preview-wrap h2 { margin-top: 0; }
+</style>
+</head>
+<body>
+<div class="preview-wrap">
+    <h2>CPU Filter Popup Preview</h2>
+    <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">Click the "CPU: Any" trigger below to open the popup. State is preserved between opens.</p>
+
+    <!-- INLINE: copy of the laptops.html filter panel + the new popup -->
+    <div class="laptop-filter-panel">
+        <div class="laptop-filters-inner">
+            <div class="laptop-filter-group">
+                <span class="lfg-label">Brand</span>
+                <select><option>All</option><option>Apple</option><option>Dell</option></select>
+            </div>
+            <div class="laptop-filter-divider"></div>
+            <div id="cpu-filter-group" class="open-static">
+                <label class="lfg-flat" onclick="document.getElementById('cpu-options').classList.toggle('open')">
+                    <span class="lfg-label">CPU</span>
+                    <span id="cpu-selected-label">Any</span>
+                </label>
+                <div id="cpu-options" class="filter-dropdown open">
+                    <div class="cpu-popup-header">
+                        <div class="cpu-popup-title">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/><line x1="20" y1="9" x2="23" y2="9"/><line x1="20" y1="14" x2="23" y2="14"/><line x1="1" y1="9" x2="4" y2="9"/><line x1="1" y1="14" x2="4" y2="14"/></svg>
+                            Filter by CPU
+                            <span class="cpu-popup-count">0 selected</span>
+                        </div>
+                        <div class="cpu-popup-search">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                            <input type="text" placeholder="Search CPU model (e.g. i7-1165, Ryzen 7)..." />
+                            <kbd>/</kbd>
+                        </div>
+                    </div>
+                    <div class="cpu-popup-toolbar">
+                        <div class="cpu-toolbar-group">
+                            <span class="cpu-toolbar-label">Sort</span>
+                            <select class="cpu-toolbar-select">
+                                <option>Newest</option>
+                                <option>Name</option>
+                                <option>Most listings</option>
+                                <option>Least listings</option>
+                            </select>
+                        </div>
+                        <div class="cpu-toolbar-divider"></div>
+                        <div class="cpu-toolbar-group">
+                            <span class="cpu-toolbar-label">Group</span>
+                            <select class="cpu-toolbar-select">
+                                <option>Class</option>
+                                <option>Generation</option>
+                            </select>
+                        </div>
+                        <div class="cpu-toolbar-spacer"></div>
+                        <button class="cpu-toolbar-btn" type="button" onclick="document.querySelectorAll('#cpu-options input:checked').forEach(cb=>cb.checked=false);document.querySelectorAll('.cpu-option-label.checked').forEach(c=>c.classList.remove('checked'))">Clear all</button>
+                    </div>
+                    <div class="cpu-popup-body">
+                        <!-- VENDOR: Intel -->
+                        <div class="cpu-vendor-section" data-vendor="Intel">
+                            <div class="cpu-vendor-header">
+                                <span class="cpu-vendor-dot" style="background: #0071c5;"></span>
+                                <span class="cpu-vendor-name">Intel</span>
+                                <span class="cpu-vendor-meta">4 classes · 18 CPUs · 287 listings</span>
+                            </div>
+                            <!-- CLASS: i9 -->
+                            <div class="cpu-class-block">
+                                <div class="cpu-class-header" onclick="this.parentElement.classList.toggle('expanded')">
+                                    <div class="cpu-class-left">
+                                        <svg class="cpu-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 6 15 12 9 18"/></svg>
+                                        <span class="cpu-class-label">i9</span>
+                                        <span class="cpu-class-tier">Enthusiast</span>
+                                    </div>
+                                    <div class="cpu-class-actions" onclick="event.stopPropagation()">
+                                        <span class="cpu-class-count">4 CPUs</span>
+                                        <label class="cpu-class-toggle" onclick="event.stopPropagation()">
+                                            <input type="checkbox" />
+                                            <span>Select all</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="cpu-options-grid">
+                                    <label class="cpu-option">
+                                        <input type="checkbox" />
+                                        <span class="cpu-option-name">i9-13900H</span>
+                                        <span class="cpu-option-count">12</span>
+                                    </label>
+                                    <label class="cpu-option">
+                                        <input type="checkbox" />
+                                        <span class="cpu-option-name">i9-12900H</span>
+                                        <span class="cpu-option-count">9</span>
+                                    </label>
+                                    <label class="cpu-option">
+                                        <input type="checkbox" />
+                                        <span class="cpu-option-name">i9-11900H</span>
+                                        <span class="cpu-option-count">4</span>
+                                    </label>
+                                    <label class="cpu-option">
+                                        <input type="checkbox" />
+                                        <span class="cpu-option-name">i9-10885H</span>
+                                        <span class="cpu-option-count">2</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <!-- CLASS: i7 -->
+                            <div class="cpu-class-block expanded">
+                                <div class="cpu-class-header" onclick="this.parentElement.classList.toggle('expanded')">
+                                    <div class="cpu-class-left">
+                                        <svg class="cpu-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 6 15 12 9 18"/></svg>
+                                        <span class="cpu-class-label">i7</span>
+                                        <span class="cpu-class-tier">High-End</span>
+                                    </div>
+                                    <div class="cpu-class-actions" onclick="event.stopPropagation()">
+                                        <span class="cpu-class-count">6 CPUs</span>
+                                        <label class="cpu-class-toggle" onclick="event.stopPropagation()">
+                                            <input type="checkbox" />
+                                            <span>Select all</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="cpu-options-grid">
+                                    <label class="cpu-option checked">
+                                        <input type="checkbox" checked />
+                                        <svg class="cpu-option-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                                        <span class="cpu-option-name">i7-1265U</span>
+                                        <span class="cpu-option-count">22</span>
+                                    </label>
+                                    <label class="cpu-option checked">
+                                        <input type="checkbox" checked />
+                                        <svg class="cpu-option-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                                        <span class="cpu-option-name">i7-1165G7</span>
+                                        <span class="cpu-option-count">31</span>
+                                    </label>
+                                    <label class="cpu-option">
+                                        <input type="checkbox" />
+                                        <svg class="cpu-option-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                                        <span class="cpu-option-name">i7-10710U</span>
+                                        <span class="cpu-option-count">8</span>
+                                    </label>
+                                    <label class="cpu-option">
+                                        <input type="checkbox" />
+                                        <svg class="cpu-option-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                                        <span class="cpu-option-name">i7-10510U</span>
+                                        <span class="cpu-option-count">5</span>
+                                    </label>
+                                    <label class="cpu-option">
+                                        <input type="checkbox" />
+                                        <svg class="cpu-option-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                                        <span class="cpu-option-name">i7-1065G7</span>
+                                        <span class="cpu-option-count">4</span>
+                                    </label>
+                                    <label class="cpu-option">
+                                        <input type="checkbox" />
+                                        <svg class="cpu-option-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                                        <span class="cpu-option-name">i7-8665U</span>
+                                        <span class="cpu-option-count">3</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <!-- CLASS: i5 -->
+                            <div class="cpu-class-block">
+                                <div class="cpu-class-header" onclick="this.parentElement.classList.toggle('expanded')">
+                                    <div class="cpu-class-left">
+                                        <svg class="cpu-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 6 15 12 9 18"/></svg>
+                                        <span class="cpu-class-label">i5</span>
+                                        <span class="cpu-class-tier">Mid-Range</span>
+                                    </div>
+                                    <div class="cpu-class-actions" onclick="event.stopPropagation()">
+                                        <span class="cpu-class-count">5 CPUs</span>
+                                        <label class="cpu-class-toggle" onclick="event.stopPropagation()">
+                                            <input type="checkbox" />
+                                            <span>Select all</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="cpu-options-grid">
+                                    <label class="cpu-option">
+                                        <input type="checkbox" />
+                                        <svg class="cpu-option-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                                        <span class="cpu-option-name">i5-1235U</span>
+                                        <span class="cpu-option-count">18</span>
+                                    </label>
+                                    <label class="cpu-option">
+                                        <input type="checkbox" />
+                                        <svg class="cpu-option-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                                        <span class="cpu-option-name">i5-1135G7</span>
+                                        <span class="cpu-option-count">42</span>
+                                    </label>
+                                    <label class="cpu-option">
+                                        <input type="checkbox" />
+                                        <svg class="cpu-option-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                                        <span class="cpu-option-name">i5-1035G1</span>
+                                        <span class="cpu-option-count">9</span>
+                                    </label>
+                                    <label class="cpu-option">
+                                        <input type="checkbox" />
+                                        <svg class="cpu-option-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                                        <span class="cpu-option-name">i5-10210U</span>
+                                        <span class="cpu-option-count">6</span>
+                                    </label>
+                                    <label class="cpu-option">
+                                        <input type="checkbox" />
+                                        <svg class="cpu-option-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                                        <span class="cpu-option-name">i5-8265U</span>
+                                        <span class="cpu-option-count">2</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <!-- CLASS: i3 -->
+                            <div class="cpu-class-block">
+                                <div class="cpu-class-header" onclick="this.parentElement.classList.toggle('expanded')">
+                                    <div class="cpu-class-left">
+                                        <svg class="cpu-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 6 15 12 9 18"/></svg>
+                                        <span class="cpu-class-label">i3</span>
+                                        <span class="cpu-class-tier">Budget</span>
+                                    </div>
+                                    <div class="cpu-class-actions" onclick="event.stopPropagation()">
+                                        <span class="cpu-class-count">3 CPUs</span>
+                                        <label class="cpu-class-toggle" onclick="event.stopPropagation()">
+                                            <input type="checkbox" />
+                                            <span>Select all</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="cpu-options-grid">
+                                    <label class="cpu-option">
+                                        <input type="checkbox" />
+                                        <svg class="cpu-option-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                                        <span class="cpu-option-name">i3-1115G4</span>
+                                        <span class="cpu-option-count">3</span>
+                                    </label>
+                                    <label class="cpu-option">
+                                        <input type="checkbox" />
+                                        <svg class="cpu-option-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                                        <span class="cpu-option-name">i3-1005G1</span>
+                                        <span class="cpu-option-count">2</span>
+                                    </label>
+                                    <label class="cpu-option">
+                                        <input type="checkbox" />
+                                        <svg class="cpu-option-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                                        <span class="cpu-option-name">i3-8145U</span>
+                                        <span class="cpu-option-count">1</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- VENDOR: AMD -->
+                        <div class="cpu-vendor-section" data-vendor="AMD">
+                            <div class="cpu-vendor-header">
+                                <span class="cpu-vendor-dot" style="background: #ed1c24;"></span>
+                                <span class="cpu-vendor-name">AMD</span>
+                                <span class="cpu-vendor-meta">3 classes · 8 CPUs · 114 listings</span>
+                            </div>
+                            <div class="cpu-class-block">
+                                <div class="cpu-class-header" onclick="this.parentElement.classList.toggle('expanded')">
+                                    <div class="cpu-class-left">
+                                        <svg class="cpu-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 6 15 12 9 18"/></svg>
+                                        <span class="cpu-class-label">Ryzen 7</span>
+                                        <span class="cpu-class-tier">High-End</span>
+                                    </div>
+                                    <div class="cpu-class-actions" onclick="event.stopPropagation()">
+                                        <span class="cpu-class-count">3 CPUs</span>
+                                        <label class="cpu-class-toggle" onclick="event.stopPropagation()">
+                                            <input type="checkbox" />
+                                            <span>Select all</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="cpu-options-grid">
+                                    <label class="cpu-option">
+                                        <input type="checkbox" />
+                                        <svg class="cpu-option-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                                        <span class="cpu-option-name">Ryzen 7 5800H</span>
+                                        <span class="cpu-option-count">21</span>
+                                    </label>
+                                    <label class="cpu-option">
+                                        <input type="checkbox" />
+                                        <svg class="cpu-option-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                                        <span class="cpu-option-name">Ryzen 7 5700U</span>
+                                        <span class="cpu-option-count">15</span>
+                                    </label>
+                                    <label class="cpu-option">
+                                        <input type="checkbox" />
+                                        <svg class="cpu-option-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                                        <span class="cpu-option-name">Ryzen 7 4700U</span>
+                                        <span class="cpu-option-count">5</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- VENDOR: Apple -->
+                        <div class="cpu-vendor-section" data-vendor="Apple">
+                            <div class="cpu-vendor-header">
+                                <span class="cpu-vendor-dot" style="background: #6e6e73;"></span>
+                                <span class="cpu-vendor-name">Apple</span>
+                                <span class="cpu-vendor-meta">2 classes · 5 CPUs · 47 listings</span>
+                            </div>
+                            <div class="cpu-class-block expanded">
+                                <div class="cpu-class-header" onclick="this.parentElement.classList.toggle('expanded')">
+                                    <div class="cpu-class-left">
+                                        <svg class="cpu-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 6 15 12 9 18"/></svg>
+                                        <span class="cpu-class-label">M2</span>
+                                        <span class="cpu-class-tier">Apple Silicon</span>
+                                    </div>
+                                    <div class="cpu-class-actions" onclick="event.stopPropagation()">
+                                        <span class="cpu-class-count">2 CPUs</span>
+                                        <label class="cpu-class-toggle" onclick="event.stopPropagation()">
+                                            <input type="checkbox" />
+                                            <span>Select all</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="cpu-options-grid">
+                                    <label class="cpu-option">
+                                        <input type="checkbox" />
+                                        <svg class="cpu-option-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                                        <span class="cpu-option-name">Apple M2</span>
+                                        <span class="cpu-option-count">9</span>
+                                    </label>
+                                    <label class="cpu-option">
+                                        <input type="checkbox" />
+                                        <svg class="cpu-option-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                                        <span class="cpu-option-name">Apple M2 Pro</span>
+                                        <span class="cpu-option-count">4</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="cpu-popup-footer">
+                        <span class="cpu-popup-footer-info">2 selected · 53 listings</span>
+                        <div class="cpu-popup-footer-actions">
+                            <button class="cpu-popup-btn cpu-popup-btn-ghost" type="button" onclick="document.getElementById('cpu-options').classList.remove('open')">Close</button>
+                            <button class="cpu-popup-btn cpu-popup-btn-primary" type="button" onclick="document.getElementById('cpu-options').classList.remove('open')">Apply (2)</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="laptop-filter-divider"></div>
+            <div class="laptop-filter-group">
+                <span class="lfg-label">GPU</span>
+                <input type="text" placeholder="e.g. GTX">
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
+
+

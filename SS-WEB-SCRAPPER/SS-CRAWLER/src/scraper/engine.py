@@ -12,6 +12,7 @@ from src.scraper.matcher import GPUMatcher
 from src.utils.config import AppConfig, ScraperConfig
 from src.utils.logger import get_logger
 from src.utils.text import normalize_text
+from src.utils.image_downloader import ImageDownloader
 
 logger = get_logger("scraper")
 
@@ -23,6 +24,7 @@ class Scraper:
         self.config = config
         self.crawler = Crawler(config.scraper)
         self.matcher: Optional[GPUMatcher] = None
+        self.image_downloader: Optional[ImageDownloader] = None
         
         # Stats tracking
         self.stats = {
@@ -33,6 +35,7 @@ class Scraper:
             'failed': 0,
             'unmatched': 0,
             'low_confidence': 0,
+            'images_downloaded': 0,
         }
     
     def initialize(self):
@@ -49,6 +52,9 @@ class Scraper:
             self.matcher = GPUMatcher(gpus)
         
         logger.info(f"🎮 Loaded {len(gpus)} GPU references")
+        
+        # Initialize image downloader
+        self.image_downloader = ImageDownloader(base_dir="images/gpus")
         
         # Ensure HTML samples directory
         if self.config.scraper.save_html_samples:
@@ -73,8 +79,7 @@ class Scraper:
             return None, 'failed', 'Parse error: Could not extract listing data'
         
         # Match GPU
-        action = 'new'
-        message = 'Processed: new'
+        match_message = None
         
         if self.matcher:
             match_result = self.matcher.match(listing.title, listing.description or "", listing.vram_mb)
@@ -84,20 +89,46 @@ class Scraper:
                 listing.confidence_score = match_result.confidence
                 listing.match_method = match_result.method
                 
+                gpu_name = match_result.gpu.name
+                
                 # Check confidence threshold
                 if match_result.confidence < self.config.scraper.min_confidence_threshold:
-                    action = 'low_confidence'
-                    message = f"Match confidence {match_result.confidence:.2f} below threshold"
+                    match_message = f"Matched: {gpu_name} ({match_result.confidence:.0%} confidence) - BELOW THRESHOLD"
+                else:
+                    match_message = f"Matched: {gpu_name} ({match_result.confidence:.0%} confidence)"
             else:
-                action = 'unmatched'
-                message = 'No GPU match found'
+                match_message = f"No GPU match found"
         
         # Save to database (ALL listings, including unmatched)
+        local_image_path = None
         with get_session() as session:
             _, db_action = ListingRepository.create_or_update(session, listing, run_id=0)
-            if action == 'new':
-                action = db_action
-                message = f"Processed: {db_action}"
+            
+            # Download image if available
+            if listing.image_url and self.image_downloader:
+                local_image_path = self.image_downloader.download_image(
+                    listing.image_url,
+                    listing.listing_id
+                )
+                if local_image_path:
+                    self.stats['images_downloaded'] += 1
+                    logger.info(f"Image saved locally: {local_image_path}")
+                    
+                    # Update the listing with local image path
+                    ListingRepository.update_local_image_path(session, listing.listing_id, local_image_path)
+        
+        # Determine action and build final message
+        if match_message:
+            if match_message.endswith("- BELOW THRESHOLD"):
+                action = 'low_confidence'
+            elif "No GPU match" in match_message:
+                action = 'unmatched'
+            else:
+                action = db_action  # 'new', 'updated', or 'unchanged'
+            message = match_message
+        else:
+            action = db_action
+            message = f"Processed: {db_action}"
         
         return listing, action, message
     
@@ -146,7 +177,11 @@ class Scraper:
             listing, action, message = self._process_listing(listing_result.html, link)
             
             self.stats[action] += 1
-            yield link, action, message
+            
+            # Include listing title in the log output
+            title_preview = listing.title[:50] + "..." if listing and len(listing.title) > 50 else (listing.title if listing else "N/A")
+            full_message = f"{message} | {title_preview}"
+            yield link, action, full_message
     
     def run(self) -> dict:
         """

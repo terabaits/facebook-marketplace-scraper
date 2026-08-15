@@ -1,0 +1,81 @@
+﻿1: """SS-Crawler Web Dashboard - View scraped GPU/CPU data with statistics."""
+2: import os
+3: import re
+4: from datetime import datetime, timedelta
+5: from typing import Optional
+6: from flask import Flask, render_template, jsonify, request
+7: try:
+8:     import markdown as _markdown
+9: except ImportError:
+10:     _markdown = None
+11: import psycopg2
+12: from psycopg2.extras import RealDictCursor
+13: from board_logger import (
+14:     log_task_created, log_task_moved, log_task_deleted,
+15:     log_task_reopened, log_task_marked_solved, log_board_loaded,
+16:     log_board_saved, log_error
+17: )
+18: 
+19: app = Flask(__name__)
+20: 
+21: # Database configuration
+22: DB_CONFIG = {
+23:     'host': os.environ.get('DATABASE_HOST', 'localhost'),
+24:     'port': int(os.environ.get('DATABASE_PORT', 5433)),
+25:     'database': os.environ.get('DATABASE_NAME', 'ss_market'),
+26:     'user': os.environ.get('DATABASE_USER', 'crawler'),
+27:     'password': os.environ.get('DATABASE_PASSWORD', 'crawler_pass')
+28: }
+29: 
+30: 
+31: # Monkey-patch RealDictCursor.execute to work around a psycopg2 bug where
+32: # some multiline formatted SQL strings cause "tuple index out of range".
+33: # This normalizes the query text only when the original execute raises IndexError.
+34: _orig_real_dict_cursor_execute = RealDictCursor.execute
+35: def _safe_execute(self, query, vars=None):
+36:     try:
+37:         return _orig_real_dict_cursor_execute(self, query, vars)
+38:     except IndexError:
+39:         normalized = query.replace('\r\n', '\n').replace('\n', ' ').replace('  ', ' ')
+40:         return _orig_real_dict_cursor_execute(self, normalized, vars)
+41: RealDictCursor.execute = _safe_execute
+42: 
+43: 
+44: def get_db_connection():
+45:     """Create database connection."""
+46:     return psycopg2.connect(**DB_CONFIG)
+47: 
+48: 
+49: # CPU Socket to Chipset Mapping for Generic Motherboard Pricing
+50: SOCKET_CHIPSETS = {
+...
+8247: @app.route('/api/project-board/task-special', methods=['POST'])
+8248: def toggle_task_special():
+8249:     """Toggle special status on a task."""
+8250:     BOARD_FILE = r'G:\\Github\\SS-WEB-SCRAPPER\\SS-WEBSITE\\data\\project_board.json'
+8251: 
+8252:     with open(BOARD_FILE, 'r') as f:
+8253:         board = json.load(f)
+8254: 
+8255:     data = request.get_json()
+8256:     task_id = data.get('task_id')
+8257:     special = data.get('special', False)
+8258: 
+8259:     for col in board['columns']:
+8260:         for task in col.get('tasks', []):
+8261:             if task['id'] == task_id:
+8262:                 task['special'] = special
+8263:                 task['updated'] = datetime.now().isoformat()
+8264: 
+8265:                 with open(BOARD_FILE, 'w') as f:
+8266:                     json.dump(board, f, indent=2)
+8267: 
+8268:                 return jsonify({'success': True, 'task': task}), 200
+8269: 
+8270:     return jsonify({'error': 'Task not found'}), 404
+8271: 
+8272: 
+8273: if __name__ == '__main__':
+8274:     app.run(debug=True, host='0.0.0.0', port=5000)
+8275: 
+8276: 

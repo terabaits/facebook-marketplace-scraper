@@ -1,0 +1,5 @@
+2026-06-29 17:41:47 | INFO     | ss_crawler | [crawler] Fetching test: https://www.ss.com/msg/lv/electronics/computers/pc/ryzen-5600x-rtx3060.html
+2026-06-29 17:41:47 | WARNING  | ss_crawler | [crawler] ✗ 404 Not Found: https://www.ss.com/msg/lv/electronics/computers/pc/ryzen-5600x-rtx3060.html
+2026-06-29 17:41:54 | INFO     | ss_crawler | [crawler] Fetching category: https://www.ss.com/lv/electronics/computers/pc/sell/
+2026-06-29 17:41:57 | INFO     | ss_crawler | [computer_parser] Found 30 listings on page
+2026-06-29 17:42:04 | INFO     | ss_crawler | [crawler] Fetching test: https://www.ss.com/msg/lv/electronics/computers/pc/kkcio.html

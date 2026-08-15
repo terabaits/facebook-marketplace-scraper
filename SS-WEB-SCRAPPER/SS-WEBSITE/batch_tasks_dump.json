@@ -1,0 +1,176 @@
+[
+  {
+    "id": "T258",
+    "title": "Add new chart: Avg price of gpu model by month. When I filter cards, show only the filterd ones in this chart.",
+    "page": "GPU",
+    "category": "Frontend",
+    "priority": "Medium",
+    "status": null,
+    "column": "assignment",
+    "fix": "2026-07-30 13:33 - Added new \"Average GPU Price by Month\" line chart below performance charts; updates automatically when filters change.",
+    "reopen_history": [
+      {
+        "reopened_at": "2026-07-30T14:04:14.834562",
+        "update": "It should show each card indiviualy not unified.",
+        "previous_completed_at": null
+      }
+    ],
+    "notes": null
+  },
+  {
+    "id": "T242",
+    "title": "Add \"Top Performers\" list chart where you show top listings with perfomance/price top",
+    "page": "GPU",
+    "category": "Frontend",
+    "priority": "Medium",
+    "status": null,
+    "column": "assignment",
+    "fix": "2026-07-30 11:45 — (Top Performers chart): Added a \"🏆 Top Performers (G3D/€)\" bar chart to the GPU stats section using `/api/gpu-performance-stats` scatter data.",
+    "reopen_history": [
+      {
+        "reopened_at": "2026-07-30T14:05:19.267581",
+        "update": "Top Performers (G3D/€), is really 5070 the most effiecient g3d/eur perfomance?",
+        "previous_completed_at": null
+      }
+    ],
+    "notes": null
+  },
+  {
+    "id": "T256",
+    "title": "move the source badge so its under AMD/NVIDIA badge in same column.",
+    "page": "GPU",
+    "category": "Frontend",
+    "priority": "Medium",
+    "status": null,
+    "column": "assignment",
+    "fix": "2026-07-30 13:33 - Moved source badge (SS/Andele/FB) from GPU name column under the vendor badge in the Brand column.",
+    "reopen_history": [
+      {
+        "reopened_at": "2026-07-30T14:06:41.766414",
+        "update": "remove the little circle before the badge",
+        "previous_completed_at": null
+      }
+    ],
+    "notes": null
+  },
+  {
+    "id": "T259",
+    "title": "\"By source\" chart shows 100% ss.com which is incorrect",
+    "page": "GPU",
+    "category": "Frontend",
+    "priority": "Medium",
+    "status": null,
+    "column": "assignment",
+    "fix": "",
+    "reopen_history": null,
+    "notes": null
+  },
+  {
+    "id": "T260",
+    "title": "In GPU page make the marking of listings thick boxes for compare more cool looking.",
+    "page": "GPU",
+    "category": "Frontend",
+    "priority": "Medium",
+    "status": null,
+    "column": "assignment",
+    "fix": "",
+    "reopen_history": null,
+    "notes": null
+  },
+  {
+    "id": "T261",
+    "title": "when GPUs are compared show alse the price of the selected listing",
+    "page": "GPU",
+    "category": "Frontend",
+    "priority": "Medium",
+    "status": null,
+    "column": "assignment",
+    "fix": "",
+    "reopen_history": null,
+    "notes": null
+  },
+  {
+    "id": "T262",
+    "title": "move the price drop badge over the price in price column and make it smaller",
+    "page": "GPU",
+    "category": "Frontend",
+    "priority": "Medium",
+    "status": null,
+    "column": "assignment",
+    "fix": "",
+    "reopen_history": null,
+    "notes": null
+  },
+  {
+    "id": "T263",
+    "title": "in source badge remove the name and leave the dot. move the dot to left of the image thumnbnail when viewing listing lsit",
+    "page": "GPU",
+    "category": "Frontend",
+    "priority": "Medium",
+    "status": null,
+    "column": "assignment",
+    "fix": "",
+    "reopen_history": null,
+    "notes": null
+  },
+  {
+    "id": "T264",
+    "title": "add option to filter out by rank rage",
+    "page": "GPU",
+    "category": "Frontend",
+    "priority": "Medium",
+    "status": null,
+    "column": "assignment",
+    "fix": "",
+    "reopen_history": null,
+    "notes": null
+  },
+  {
+    "id": "T246",
+    "title": "Active-only averages dont update the market position column or Price column",
+    "page": "GPU",
+    "category": "Frontend",
+    "priority": "Medium",
+    "status": null,
+    "column": "assignment",
+    "fix": "2026-07-30 11:35 — (GPU active-only averages): Fixed `/api/gpus` so model price stats are computed only over active listings when `active=true`, so toggling \"Active only\" refreshes Market Position and average-price columns.\n\n2026-07-30 13:30 - Reopened: verified active-only averages still exclude flagged listings after T251 fix; kept existing logic.",
+    "reopen_history": [
+      {
+        "reopened_at": "2026-07-30T13:27:36.335239",
+        "update": "Active-only averages function still does not work.  It does not update market position column",
+        "previous_completed_at": null,
+        "fix": "2026-07-30 13:30 - Reopened: verified active-only averages still exclude flagged listings after T251 fix; kept existing logic."
+      },
+      {
+        "reopened_at": "2026-08-09T00:09:44.313392",
+        "update": "what does check mark Active-only averages work?",
+        "previous_completed_at": null
+      }
+    ],
+    "notes": null
+  },
+  {
+    "id": "T244",
+    "title": "Center the Brand,VRAM, YEAR,RANK, LOCATION,DATE,  column so the the badges/text are in the midle so as the column header name.",
+    "page": "GPU",
+    "category": "Frontend",
+    "priority": "Medium",
+    "status": null,
+    "column": "assignment",
+    "fix": "2026-07-30 11:15 — (GPU center columns): Added `text-align: center` to Location (col 13) and Date (col 14) CSS in `templates/gpu.html`.\n\n2026-07-30 13:30 - Reopened: Location was centered but VRAM, Year, and Market Position still looked off-center. Fix: added `.text-center` class + `vertical-align: middle` to Brand/VRAM/Year/Rank/Location/Date/Market Position cells, wrapped Market Position content in an inline-block centered container, and moved source badge under vendor badge.",
+    "reopen_history": [
+      {
+        "reopened_at": "2026-07-30T13:29:17.200375",
+        "update": "location seemt to have the fix applied, but VRAM, YEAR and Market position still doesnt look like in the center",
+        "previous_completed_at": null,
+        "fix": "2026-07-30 13:30 - Reopened: Location was centered but VRAM, Year, and Market Position still looked off-center. Fix: added `.text-center` class + `vertical-align: middle` to Brand/VRAM/Year/Rank/Location/Date/Market Position cells, wrapped Market Position content in an inline-block centered container, and moved source badge under vendor badge."
+      },
+      {
+        "reopened_at": "2026-08-09T00:12:19.946565",
+        "update": "Do that for \"image\" as well",
+        "previous_completed_at": null
+      }
+    ],
+    "notes": null
+  }
+]

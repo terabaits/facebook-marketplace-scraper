@@ -1,0 +1,4790 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CPU Listings - SS-Crawler</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="/static/css/dark-mode.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --bg-color: #f5f7fa;
+            --text-color: #333;
+            --card-bg: white;
+            --card-border: transparent;
+            --section-bg: white;
+            --table-header-bg: #f8f9fa;
+            --table-border: #eee;
+            --modal-bg: white;
+            --input-bg: white;
+            --input-border: #ddd;
+            --hover-bg: #f5f5f5;
+            --badge-bg: #eee;
+            --shadow: rgba(0,0,0,0.08);
+            --shadow-hover: rgba(0,0,0,0.12);
+            --desc-box-bg: #f8f9fa;
+            --desc-warn-bg: #fff3cd;
+            --desc-warn-border: #f39c12;
+            --desc-success-bg: #e8f5e9;
+            --desc-success-border: #27ae60;
+        }
+        
+        [data-theme="dark"] {
+            --bg-color: #1a1a2e;
+            --text-color: #e0e0e0;
+            --card-bg: #16213e;
+            --card-border: #0f3460;
+            --section-bg: #16213e;
+            --table-header-bg: #0f3460;
+            --table-border: #1a1a2e;
+            --modal-bg: #16213e;
+            --input-bg: #1a1a2e;
+            --input-border: #0f3460;
+            --hover-bg: #0f3460;
+            --badge-bg: #0f3460;
+            --shadow: rgba(0,0,0,0.3);
+            --shadow-hover: rgba(0,0,0,0.4);
+            --desc-box-bg: #1a1a2e;
+            --desc-warn-bg: #3d3d1a;
+            --desc-warn-border: #f39c12;
+            --desc-success-bg: #1a3d1a;
+            --desc-success-border: #27ae60;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: var(--bg-color);
+            color: var(--text-color);
+            transition: background 0.3s, color 0.3s;
+        }
+        
+        .navbar {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .navbar h1 {
+            color: white;
+            font-size: 1.5rem;
+            display: inline-block;
+        }
+        
+        .nav-links {
+            float: right;
+            margin-top: 0.2rem;
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+        
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            opacity: 0.9;
+            transition: opacity 0.3s;
+        }
+        
+        .nav-links a:hover {
+            opacity: 1;
+            text-decoration: underline;
+        }
+        
+        .nav-links a.active {
+            font-weight: bold;
+            opacity: 1;
+        }
+        
+        .dark-mode-toggle {
+            background: rgba(255,255,255,0.2);
+            border: 1px solid rgba(255,255,255,0.3);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.875rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s;
+        }
+        
+        .dark-mode-toggle:hover {
+            background: rgba(255,255,255,0.3);
+        }
+        
+        [data-theme="dark"] .dark-mode-toggle {
+            background: rgba(255,255,255,0.2);
+        }
+        
+        /* UNICORN Rainbow Animation - Extra Ballin */
+        @keyframes rainbow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        @keyframes unicorn-glow {
+            0%, 100% { 
+                box-shadow: 0 0 5px #ff0000, 0 0 10px #ff7f00, 0 0 15px #ffff00;
+                transform: scale(1);
+            }
+            25% { 
+                box-shadow: 0 0 10px #00ff00, 0 0 20px #0000ff, 0 0 30px #9400d3;
+                transform: scale(1.05);
+            }
+            50% { 
+                box-shadow: 0 0 20px #ff00ff, 0 0 30px #ff1493, 0 0 40px #ff69b4;
+                transform: scale(1.1);
+            }
+            75% { 
+                box-shadow: 0 0 10px #00ffff, 0 0 20px #00ced1, 0 0 30px #ff0000;
+                transform: scale(1.05);
+            }
+        }
+        
+        @keyframes unicorn-shine {
+            0% { filter: brightness(1) saturate(1); }
+            50% { filter: brightness(1.3) saturate(1.2); }
+            100% { filter: brightness(1) saturate(1); }
+        }
+        
+        @keyframes float-up {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            25% { transform: translateY(-3px) rotate(1deg); }
+            50% { transform: translateY(-5px) rotate(0deg); }
+            75% { transform: translateY(-3px) rotate(-1deg); }
+        }
+        
+        .unicorn-badge {
+            background: linear-gradient(90deg, 
+                #ff0000 0%, #ff4500 10%, #ffa500 20%, #ffff00 30%, 
+                #7fff00 40%, #00ff00 50%, #00ced1 60%, #0000ff 70%, 
+                #8b00ff 80%, #ff00ff 90%, #ff1493 100%, #ff0000 100%);
+            background-size: 300% 100%;
+            color: white;
+            font-weight: bold;
+            padding: 0.35rem 0.75rem;
+            border-radius: 20px;
+            animation: 
+                rainbow 2s linear infinite,
+                unicorn-glow 1.5s ease-in-out infinite,
+                unicorn-shine 0.8s ease-in-out infinite,
+                float-up 2s ease-in-out infinite;
+            text-shadow: 
+                2px 2px 0 #000, 
+                -1px -1px 0 #000, 
+                1px -1px 0 #000, 
+                -1px 1px 0 #000,
+                0 0 10px rgba(255,255,255,0.8);
+            display: inline-block;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+            border: 2px solid rgba(255,255,255,0.3);
+            position: relative;
+            overflow: hidden;
+            text-align: center;
+            margin: 0 auto;
+        }
+        
+        .unicorn-badge::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                45deg,
+                transparent 30%,
+                rgba(255,255,255,0.3) 50%,
+                transparent 70%
+            );
+            animation: shine-sweep 2s ease-in-out infinite;
+        }
+        
+        @keyframes shine-sweep {
+            0% { transform: translateX(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) rotate(45deg); }
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .stat-card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 8px var(--shadow);
+            transition: transform 0.2s, box-shadow 0.2s;
+            border: 1px solid var(--card-border);
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px var(--shadow-hover);
+        }
+        
+        .stat-card h3 {
+            font-size: 0.875rem;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.5rem;
+        }
+        
+        [data-theme="dark"] .stat-card h3 {
+            color: #aaa;
+        }
+        
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text-color);
+        }
+        
+        .stat-card.gpu { border-left: 4px solid #667eea; }
+        .stat-card.cpu { border-left: 4px solid #764ba2; }
+        
+        .stat-card.earnings-card {
+            border-left: 4px solid;
+        }
+        
+        .stat-card.earnings-card .earnings {
+            color: #27ae60;
+            font-size: 1.8rem;
+        }
+        
+        .stat-card.earnings-card small {
+            display: block;
+            margin-top: 0.5rem;
+            color: #666;
+        }
+        
+        [data-theme="dark"] .stat-card.earnings-card small {
+            color: #aaa;
+        }
+        
+        .earnings-details {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 0.5rem;
+            font-size: 0.75rem;
+            color: #999;
+            padding-top: 0.5rem;
+            border-top: 1px solid var(--table-border);
+        }
+        
+        .section-description {
+            color: #666;
+            font-size: 0.875rem;
+            margin-bottom: 1rem;
+            margin-top: -0.5rem;
+        }
+        
+        [data-theme="dark"] .section-description {
+            color: #aaa;
+        }
+        
+        .section {
+            background: var(--section-bg);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 8px var(--shadow);
+            border: 1px solid var(--card-border);
+        }
+        
+        .section h2 {
+            margin-bottom: 1.5rem;
+            color: var(--text-color);
+            font-size: 1.25rem;
+        }
+        
+        .filters {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        
+        .filters label {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            color: var(--text-color);
+        }
+        
+        .filters input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+        }
+        
+        .filters select {
+            padding: 0.5rem;
+            border: 1px solid var(--input-border);
+            border-radius: 6px;
+            font-size: 0.875rem;
+            background: var(--input-bg);
+            color: var(--text-color);
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        th, td {
+            text-align: left;
+            padding: 1rem;
+            border-bottom: 1px solid var(--table-border);
+            color: var(--text-color);
+        }
+        
+        th {
+            font-weight: 600;
+            color: #666;
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            background: var(--table-header-bg);
+        }
+        
+        [data-theme="dark"] th {
+            color: #aaa;
+        }
+        
+        tr:hover {
+            background: var(--hover-bg);
+        }
+        
+        tr.clickable {
+            cursor: pointer;
+        }
+        
+        tr.clickable:hover {
+            background: var(--hover-bg);
+        }
+        
+        .price {
+            font-weight: 600;
+            color: #27ae60;
+        }
+        
+        .price-below-avg {
+            color: #e74c3c;
+            font-weight: 600;
+        }
+        
+        .price-above-avg {
+            color: #27ae60;
+        }
+        
+        .badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            background: var(--badge-bg);
+            color: var(--text-color);
+        }
+        
+        .badge-success { background: #27ae60; color: white; }
+        .badge-warning { background: #f39c12; color: white; }
+        .badge-danger { background: #e74c3c; color: white; }
+        
+        [data-theme="dark"] .badge-success { background: #219a52; }
+        [data-theme="dark"] .badge-warning { background: #d68910; }
+        [data-theme="dark"] .badge-danger { background: #c0392b; }
+        
+        .confidence-high { color: #27ae60; }
+        .confidence-medium { color: #f39c12; }
+        .confidence-low { color: #e74c3c; }
+        
+        [data-theme="dark"] .confidence-high { color: #2ecc71; }
+        [data-theme="dark"] .confidence-medium { color: #f1c40f; }
+        [data-theme="dark"] .confidence-low { color: #e74c3c; }
+        
+        /* Console icon styles */
+        .console-icon {
+            width: 100%;
+            height: 100%;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+        }
+        
+        .chart-container {
+            position: relative;
+            height: 300px;
+            margin: 1rem 0;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            background: #667eea;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            font-size: 0.875rem;
+            transition: background 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .btn:hover {
+            background: #5a6fd6;
+        }
+        
+        .btn-small {
+            padding: 0.375rem 0.75rem;
+            font-size: 0.75rem;
+        }
+        
+        .btn-success {
+            background: #27ae60;
+        }
+        
+        .btn-success:hover {
+            background: #219a52;
+        }
+        
+        .btn-danger {
+            background: #e74c3c;
+        }
+        
+        .btn-danger:hover {
+            background: #c0392b;
+        }
+        
+        .btn-secondary {
+            background: #95a5a6;
+        }
+        
+        .btn-secondary:hover {
+            background: #7f8c8d;
+        }
+        
+        .model-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .model-card {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 1.5rem;
+            border: 1px solid #e9ecef;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        [data-theme="dark"] .model-card {
+            background: var(--card-bg);
+            border-color: var(--card-border);
+        }
+        
+        .model-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        
+        .model-card h4 {
+            margin-bottom: 0.5rem;
+            color: #333;
+        }
+        
+        [data-theme="dark"] .model-card h4 {
+            color: var(--text-color);
+        }
+        
+        /* Model card specs text (DDR type, speed, etc.) */
+        .model-card .specs-text {
+            color: #666;
+            font-size: 0.875rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        [data-theme="dark"] .model-card .specs-text {
+            color: #aaa;
+        }
+        
+        .model-stats {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 1rem;
+            font-size: 0.875rem;
+        }
+        
+        .model-stat {
+            text-align: center;
+        }
+        
+        .model-stat-value {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #667eea;
+        }
+        
+        .model-stat-label {
+            color: #666;
+            font-size: 0.75rem;
+        }
+        
+        [data-theme="dark"] .model-stat-label {
+            color: #aaa;
+        }
+        
+        .price-bar {
+            height: 8px;
+            background: #e9ecef;
+            border-radius: 4px;
+            margin-top: 0.5rem;
+            position: relative;
+        }
+        
+        .price-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            border-radius: 4px;
+            transition: width 0.3s;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 3rem;
+            color: #666;
+        }
+        
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+        
+        /* Modal styles */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        [data-theme="dark"] .modal-overlay {
+            background: rgba(0,0,0,0.7);
+        }
+        
+        [data-theme="dark"] #shared-listing-modal {
+            --modal-highlight-bg: #0f3460;
+            --modal-warn-bg: #3d3d1a;
+            --modal-muted-bg: #1a1a2e;
+            --modal-box-bg: #16213e;
+            --modal-border: #0f3460;
+        }
+        
+        .modal-overlay.active {
+            display: flex;
+        }
+        
+        .modal {
+            background: var(--modal-bg);
+            border-radius: 12px;
+            width: 90%;
+            max-width: 800px;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 2rem;
+            position: relative;
+            border: 1px solid var(--card-border);
+            color: var(--text-color);
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--table-border);
+        }
+        
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-color);
+        }
+        
+        .modal-close:hover {
+            color: #667eea;
+        }
+        
+        .form-group {
+            margin-bottom: 1rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+        
+        .form-group select,
+        .form-group input {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 1rem;
+        }
+        
+        .history-chart {
+            height: 300px;
+            margin: 1rem 0;
+        }
+        
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+        
+        .comparison-box {
+            padding: 1rem;
+            border-radius: 8px;
+        }
+        
+        .comparison-box.current {
+            background: #e8f5e9;
+            border-left: 4px solid #27ae60;
+        }
+        
+        .comparison-box.previous {
+            background: #fff3e0;
+            border-left: 4px solid #f39c12;
+        }
+        
+        .price-change-positive {
+            color: #27ae60;
+            font-weight: 600;
+        }
+        
+        .price-change-negative {
+            color: #e74c3c;
+            font-weight: 600;
+        }
+        
+        /* Listing image styles */
+        .listing-thumb {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 8px;
+            border: 1px solid #eee;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        .listing-thumb:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        
+        .listing-thumb-placeholder {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e7eb 100%);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #999;
+            font-size: 1.5rem;
+        }
+        
+        .listing-detail-image {
+            max-width: 100%;
+            max-height: 400px;
+            object-fit: contain;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        }
+        
+        .listing-image-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .listing-image-grid img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        
+        .listing-image-grid img:hover {
+            transform: scale(1.02);
+        }
+        
+        /* Table cell with image */
+        td.listing-image-cell {
+            padding: 0.5rem !important;
+            width: 100px;
+        }
+        
+        /* Modal content dark mode */
+        [data-theme="dark"] #shared-listing-content .price-box-current {
+            background: #0f3460 !important;
+            color: #e0e0e0;
+        }
+        
+        [data-theme="dark"] #shared-listing-content .price-box-previous {
+            background: #1a1a2e !important;
+            color: #e0e0e0;
+        }
+        
+        [data-theme="dark"] #shared-listing-content .description-box {
+            background: #16213e !important;
+            color: #e0e0e0;
+            border: 1px solid #0f3460;
+        }
+        
+        [data-theme="dark"] #shared-listing-content strong {
+            color: #e0e0e0;
+        }
+        
+        [data-theme="dark"] #shared-listing-content table th {
+            background: #0f3460;
+            color: #e0e0e0;
+        }
+        
+        [data-theme="dark"] #shared-listing-content table td {
+            border-bottom-color: #0f3460;
+            color: #e0e0e0;
+        }
+        
+        [data-theme="dark"] #shared-listing-content em {
+            color: #aaa;
+        }
+        
+        /* Trends section */
+        .trends-section {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background: var(--card-bg);
+            border-radius: 8px;
+            border: 1px solid var(--card-border);
+        }
+
+        .trends-controls {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .trend-value {
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .trend-up { color: #27ae60; }
+        .trend-down { color: #e74c3c; }
+        
+        
+<style>
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Column Settings Button in Header */
+.column-settings-btn {
+    background: rgba(255,255,255,0.2);
+    color: white;
+    border: 1px solid rgba(255,255,255,0.3);
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    min-width: 32px;
+    min-height: 28px;
+    line-height: 1;
+}
+
+.column-settings-btn::-moz-focus-inner {
+    border: 0;
+    padding: 0;
+}
+
+.column-settings-btn:hover {
+    background: rgba(255,255,255,0.3);
+}
+
+/* Gear icon rendered in the Actions column body when Actions is hidden */
+td[data-col="col-actions"] .column-settings-btn {
+    border-color: rgba(255,255,255,0.5);
+}
+
+/* Center gear icon in collapsed action cells */
+td[data-col="col-actions"].actions-collapsed {
+    padding: 0.5rem;
+    text-align: center;
+    vertical-align: middle;
+}
+
+th[data-col="col-actions"].actions-collapsed .header-content {
+    justify-content: center;
+}
+
+.column-settings-dropdown {
+    position: fixed;
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    padding: 0.75rem;
+    min-width: 220px;
+    z-index: 10000;
+    display: none;
+}
+
+.column-settings-dropdown.active {
+    display: block;
+}
+
+.column-settings-dropdown h4 {
+    margin: 0 0 0.75rem 0;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid #eee;
+    font-size: 0.9rem;
+    color: #333;
+}
+
+/* Draggable column items */
+.column-option {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 0.25rem;
+    cursor: move;
+    font-size: 0.875rem;
+    border-radius: 4px;
+    transition: background 0.2s;
+}
+
+.column-option:hover {
+    background: #f5f5f5;
+}
+
+.column-option.dragging {
+    opacity: 0.5;
+    background: #e3e3e3;
+}
+
+.column-option .drag-handle {
+    cursor: grab;
+    color: #999;
+    font-size: 1rem;
+    user-select: none;
+}
+
+.column-option .drag-handle:active {
+    cursor: grabbing;
+}
+
+.column-option input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+}
+
+.column-option label {
+    cursor: pointer;
+    flex: 1;
+    margin: 0;
+    font-weight: 500;
+}
+
+.column-option input[type="checkbox"]:disabled + label {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.column-settings-footer {
+    margin-top: 0.75rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid #eee;
+    display: flex;
+    gap: 0.5rem;
+}
+
+.column-settings-footer button {
+    flex: 1;
+    padding: 0.4rem 0.5rem;
+    font-size: 0.8rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background: white;
+    cursor: pointer;
+}
+
+.column-settings-footer button:hover {
+    background: #f5f5f5;
+}
+
+.column-settings-footer button.btn-primary {
+    background: #667eea;
+    color: white;
+    border-color: #667eea;
+}
+
+.column-settings-footer button.btn-primary:hover {
+    background: #5a6fd6;
+}
+
+/* Description box styling for dark mode */
+[data-theme="dark"] .description-box {
+    background: var(--card-bg) !important;
+    color: var(--text-color) !important;
+    border-color: #667eea !important;
+}
+
+/* Header cell with settings button */
+th.column-header {
+    position: relative;
+    color: white !important;
+}
+
+th.column-header .header-content {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+}
+
+th.column-header .header-text {
+    color: white !important;
+    font-weight: 600;
+}
+
+/* Hidden column indicator */
+th.hidden-column,
+td.hidden-column {
+    display: none !important;
+}
+
+/* Ensure the Actions gear button stays visible even when the Actions column text is hidden */
+th[data-col="col-actions"] {
+    position: relative;
+    overflow: visible;
+    min-width: 48px;
+    text-align: center;
+}
+
+th[data-col="col-actions"] .column-settings-btn {
+    position: relative;
+    z-index: 100;
+    flex-shrink: 0;
+    display: inline-flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+th[data-col="col-actions"]:has(.header-text[style*="display: none"]) .column-settings-btn,
+th[data-col="col-actions"]:has(.header-text[style*="display:none"]) .column-settings-btn {
+    margin: 0 auto !important;
+}
+
+/* When the Actions column label is hidden, keep both header and body cells narrow and centered */
+th[data-col="col-actions"].actions-collapsed,
+td[data-col="col-actions"].actions-collapsed,
+th[data-col="col-actions"]:has(.header-text[style*="display: none"]),
+th[data-col="col-actions"]:has(.header-text[style*="display:none"]) {
+    width: 48px;
+    max-width: 48px;
+    min-width: 48px;
+    text-align: center;
+    padding: 0.5rem;
+    vertical-align: middle;
+}
+
+/* Ensure the gear button inside the collapsed actions header is fully visible */
+th[data-col="col-actions"].actions-collapsed .column-settings-btn,
+td[data-col="col-actions"].actions-collapsed .column-settings-btn {
+    display: inline-flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    margin: 0 auto !important;
+    flex-shrink: 0;
+    width: 32px;
+    height: 28px;
+    min-width: 32px;
+    min-height: 28px;
+}
+
+td[data-col="col-actions"] {
+    text-align: center;
+}
+
+/* Table header gradient */
+table thead tr {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+table thead th {
+    color: white !important;
+    font-weight: 600;
+}
+
+/* Table header controls - positioned relative for dropdown */
+.table-header-controls {
+    position: relative;
+    display: inline-block;
+}
+
+
+/* Dark mode styles for column settings dropdown */
+[data-theme="dark"] .column-settings-dropdown {
+    background: #2d2d3a;
+    border-color: #444;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+}
+
+[data-theme="dark"] .column-settings-dropdown h4 {
+    color: #e0e0e0;
+    border-bottom-color: #444;
+}
+
+[data-theme="dark"] .column-option {
+    color: #e0e0e0;
+}
+
+[data-theme="dark"] .column-option:hover {
+    background: #3a3a4a;
+}
+
+[data-theme="dark"] .column-option.dragging {
+    background: #4a4a5a;
+}
+
+[data-theme="dark"] .column-option .drag-handle {
+    color: #888;
+}
+
+[data-theme="dark"] .column-option label {
+    color: #e0e0e0;
+}
+
+[data-theme="dark"] .column-option input[type="checkbox"]:disabled + label {
+    color: #888;
+}
+
+[data-theme="dark"] .column-settings-footer {
+    border-top-color: #444;
+}
+
+[data-theme="dark"] .column-settings-footer button {
+    background: #3a3a4a;
+    border-color: #555;
+    color: #e0e0e0;
+}
+
+[data-theme="dark"] .column-settings-footer button:hover {
+    background: #4a4a5a;
+}
+
+[data-theme="dark"] .column-settings-footer button.btn-primary {
+    background: #667eea;
+    border-color: #667eea;
+}
+
+[data-theme="dark"] .column-settings-footer button.btn-primary:hover {
+    background: #5a6fd6;
+}
+</style>
+
+<!-- Widget System Styles -->
+<style>
+.widget-card {
+    background: var(--card-bg);
+    border-radius: 8px;
+    padding: 1rem;
+    border: 1px solid var(--card-border);
+    transition: box-shadow 0.2s, transform 0.15s, border-color 0.2s, opacity 0.2s;
+    position: relative;
+}
+
+/* Inactive drag mode: show a subtle draggable-area indicator */
+.widget-card::before {
+    content: '';
+    position: absolute;
+    top: 0.25rem;
+    right: 0.25rem;
+    width: 24px;
+    height: 24px;
+    border-radius: 4px;
+    background: rgba(102,126,234,0.06);
+    border: 1px dashed rgba(102,126,234,0.2);
+    opacity: 0;
+    transition: opacity 0.2s;
+    pointer-events: none;
+}
+
+.widget-card:hover::before {
+    opacity: 1;
+}
+
+.widget-card.wide {
+    grid-column: 1 / -1;
+}
+
+/* The real card is hidden while dragging; the visual is a .drag-clone */
+.widget-card.dragging {
+    opacity: 0.25;
+    border-style: dashed;
+    border-color: #667eea;
+    background: rgba(102,126,234,0.04);
+    filter: grayscale(0.4);
+    box-shadow: none;
+    pointer-events: none;
+}
+
+.widget-card.ghost {
+    opacity: 0.25;
+    border-style: dashed;
+    border-color: #667eea;
+    background: rgba(102,126,234,0.04);
+    filter: grayscale(0.4);
+    box-shadow: none;
+}
+
+/* Floating clone that follows the pointer */
+.drag-clone {
+    position: fixed;
+    z-index: 10001;
+    pointer-events: none;
+    opacity: 0.92;
+    background: var(--card-bg, white);
+    border: 2px solid #667eea;
+    border-radius: 8px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+    transform: rotate(1deg);
+    transition: none;
+}
+
+.widget-card.drag-over {
+    border-style: dashed;
+    border-color: #667eea;
+    background: rgba(102,126,234,0.05);
+    transform: translateY(2px);
+}
+
+/* Drop-zone outline visible while a card is being dragged */
+#cpu-widget-grid.drag-active,
+#cpu-widget-subgrid.drag-active {
+    outline: 2px dashed rgba(102,126,234,0.35);
+    outline-offset: 4px;
+    border-radius: 10px;
+}
+
+.widget-card.pinned {
+    border-color: #f59e0b;
+    box-shadow: 0 0 0 1px rgba(245,158,11,0.3);
+}
+
+.widget-card.hidden {
+    display: none !important;
+}
+
+.widget-card.minimized {
+    opacity: 0.6;
+}
+
+.widget-card.minimized .widget-body {
+    display: none;
+}
+
+.widget-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.75rem;
+    gap: 0.5rem;
+    position: relative;
+}
+
+.widget-card.minimized .widget-header {
+    margin-bottom: 0;
+}
+
+.widget-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+}
+
+.widget-btn,
+.widget-pin-btn,
+.widget-toggle-btn {
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+    color: inherit;
+    border-radius: 4px;
+    padding: 0.25rem 0.4rem;
+    cursor: pointer;
+    font-size: 0.8rem;
+    line-height: 1;
+    transition: all 0.2s;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.widget-btn:hover,
+.widget-pin-btn:hover,
+.widget-toggle-btn:hover {
+    background: rgba(255,255,255,0.2);
+}
+
+.widget-pin-btn.active {
+    background: rgba(245,158,11,0.2);
+    border-color: #f59e0b;
+}
+
+.widget-drag-handle {
+    cursor: grab;
+    user-select: none;
+    color: #667eea;
+    font-weight: bold;
+    padding: 0.25rem 0.35rem;
+    border-radius: 4px;
+    transition: background 0.2s, color 0.2s, opacity 0.2s, transform 0.15s;
+    font-size: 1.1rem;
+    line-height: 1;
+    opacity: 0.75;
+    background: rgba(102,126,234,0.08);
+    border: 1px solid rgba(102,126,234,0.15);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.widget-card:hover .widget-drag-handle,
+.widget-drag-handle:hover {
+    opacity: 1;
+    background: rgba(102,126,234,0.18);
+    transform: scale(1.05);
+}
+
+.widget-card.drag-mode-preview .widget-drag-handle,
+body.drag-mode-active .widget-card .widget-drag-handle {
+    opacity: 1;
+    background: rgba(102,126,234,0.25);
+    color: #4f5bd5;
+    border-color: rgba(102,126,234,0.4);
+    box-shadow: 0 0 0 2px rgba(102,126,234,0.2);
+    animation: drag-pulse 1.5s ease-in-out infinite;
+}
+
+body.drag-mode-active .widget-card::before {
+    opacity: 1;
+    background: rgba(102,126,234,0.1);
+    border-style: solid;
+    border-color: rgba(102,126,234,0.3);
+}
+
+@keyframes drag-pulse {
+    0%, 100% { box-shadow: 0 0 0 2px rgba(102,126,234,0.2); transform: scale(1); }
+    50% { box-shadow: 0 0 0 5px rgba(102,126,234,0.15); transform: scale(1.05); }
+}
+
+body.drag-mode-active .widget-card {
+    border-color: rgba(102,126,234,0.35);
+}
+
+body.drag-mode-active .widget-card .widget-header {
+    cursor: grab;
+}
+
+body.drag-mode-active .widget-card .widget-header::after {
+    display: none;
+}
+
+body.drag-mode-active .widget-card .widget-header:hover .widget-drag-handle {
+    background: rgba(102,126,234,0.35);
+}
+
+body.drag-mode-active .widget-card .widget-header:active,
+.widget-drag-handle:active {
+    cursor: grabbing;
+}
+
+/* Floating drag tooltip */
+#drag-tooltip {
+    position: fixed;
+    pointer-events: none;
+    z-index: 9999;
+    background: rgba(102,126,234,0.95);
+    color: white;
+    padding: 0.25rem 0.6rem;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    opacity: 0;
+    transition: opacity 0.15s;
+    white-space: nowrap;
+}
+
+/* Visual placeholder shown during drag */
+.widget-placeholder {
+    background: rgba(102,126,234,0.12);
+    border: 2px dashed #667eea;
+    border-radius: 8px;
+    min-height: 80px;
+    pointer-events: none;
+    position: relative;
+    margin: 0;
+    animation: placeholder-pulse 1.2s ease-in-out infinite;
+}
+
+.widget-placeholder::after {
+    content: 'Drop here';
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #667eea;
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+@keyframes placeholder-pulse {
+    0%, 100% { background: rgba(102,126,234,0.08); }
+    50% { background: rgba(102,126,234,0.18); }
+}
+
+.drag-mode-hint {
+    font-size: 0.8rem;
+    color: #667eea;
+    background: rgba(102,126,234,0.1);
+    border: 1px solid rgba(102,126,234,0.25);
+    border-radius: 4px;
+    padding: 0.25rem 0.6rem;
+    display: none;
+}
+
+body.drag-mode-active .drag-mode-hint {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    animation: hint-pulse 2s ease-in-out infinite;
+}
+
+@keyframes hint-pulse {
+    0%, 100% { background: rgba(102,126,234,0.1); }
+    50% { background: rgba(102,126,234,0.25); }
+}
+
+[data-theme="dark"] .widget-card {
+    background: #2d2d3a;
+    border-color: #444;
+}
+
+[data-theme="dark"] .widget-card.drag-over {
+    background: rgba(102,126,234,0.08);
+}
+
+[data-theme="dark"] .widget-drag-handle:hover {
+    background: rgba(102,126,234,0.25);
+}
+</style>
+
+    </style>
+</head>
+<body>
+    <!-- Shared Listing Detail Modal -->
+    <div id="shared-listing-modal" class="modal-overlay">
+        <div class="modal" style="max-width: 1000px;">
+            <div class="modal-header">
+                <h3 id="shared-listing-title">Listing Details</h3>
+                <button class="modal-close" onclick="closeSharedListingModal()">&times;</button>
+            </div>
+            <div id="shared-listing-content"></div>
+        </div>
+    </div>
+    <nav class="navbar">
+        <h1>🔍 SS-Crawler Dashboard</h1>
+        <div class="nav-links">
+            <a href="/">Dashboard</a>
+            <a href="/gpu">GPUs</a>
+            <a href="/cpu">CPUs</a>
+            <a href="/computers">Computers</a>
+            <a href="/motherboards">Motherboards</a>
+            <a href="/monitors">Monitors</a>
+            <a href="/ram">RAM</a>
+            <a href="/cameras">Cameras</a>
+            <a href="/lenses">Lenses</a>
+            <a href="/ssd">SSDs</a>
+            <a href="/psu">PSUs</a>
+            <a href="/cases">Cases</a>
+            <a href="/consoles">Consoles</a>
+            <a href="/pc-builder">PC Builder</a>
+            <a href="/models">Models</a>
+            <a href="/admin">Admin</a>
+            <button class="dark-mode-toggle" onclick="toggleDarkMode()" title="Toggle Dark Mode">
+                <span id="dark-mode-icon">🌙</span>
+                <span id="dark-mode-text">Dark</span>
+            </button>
+        </div>
+    </nav>
+    
+    <div class="container">
+        
+<!-- Widget Settings Bar -->
+<div style="display: flex; justify-content: flex-end; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem; padding: 0 0.25rem; flex-wrap: wrap;">
+    <span class="drag-mode-hint">☰ Drag widgets by the handle to reorder</span>
+    <button id="widget-manager-btn" class="widget-btn" style="font-size: 0.75rem; padding: 0.2rem 0.5rem;" onclick="openWidgetManager()" title="Show/hide widgets">👁 Manage</button>
+    <button id="toggle-drag-mode-btn" class="widget-btn" style="font-size: 0.75rem; padding: 0.2rem 0.5rem;" onclick="toggleDragMode()" title="Toggle drag mode">✋ Drag</button>
+    <button id="reset-widgets-btn" class="widget-btn" style="font-size: 0.75rem; padding: 0.2rem 0.5rem;" onclick="resetWidgets()" title="Reset widget layout">↺ Reset</button>
+</div>
+
+<!-- Statistics Dashboard Grid -->
+<div class="section" id="stats-section" style="margin-bottom: 2rem;">
+    <div id="cpu-widget-grid" style="display: grid; grid-template-columns: 1fr 3fr; gap: 1.5rem;" data-widget-default-cols="1fr 3fr">
+        <!-- Most Listed CPU Models (1/4) -->
+        <div class="widget-card" data-widget-id="most-listed">
+            <div class="widget-header">
+                <h3 style="display: flex; align-items: center; gap: 0.5rem; margin: 0;">
+                    <span>📊</span> Most Listed
+                </h3>
+                <div class="widget-actions">
+                    <button class="widget-toggle-btn" onclick="toggleWidgetVisibility('most-listed')" title="Hide widget">🙈</button>
+                    <button class="widget-pin-btn" onclick="toggleWidgetPin('most-listed')" title="Save / un-save as widget">📌</button>
+                    <span class="widget-drag-handle" title="Drag to move">☰</span>
+                </div>
+            </div>
+            <div id="most-sold-models" class="widget-body">
+                <div class="loading">Loading statistics...</div>
+            </div>
+        </div>
+
+        <!-- Other Statistics (3/4) -->
+        <div id="cpu-widget-subgrid" class="widget-subgrid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem;" data-widget-default-cols="repeat(3, 1fr)">
+            <!-- Motherboard Year Distribution -->
+            <div class="widget-card" data-widget-id="mb-year">
+                <div class="widget-header">
+                    <h4 style="display: flex; align-items: center; gap: 0.5rem; margin: 0;">
+                        <span>📅</span> MB by Year
+                    </h4>
+                    <div class="widget-actions">
+                        <button class="widget-toggle-btn" onclick="toggleWidgetVisibility('mb-year')" title="Hide widget">🙈</button>
+                        <button class="widget-pin-btn" onclick="toggleWidgetPin('mb-year')" title="Save / un-save as widget">📌</button>
+                        <span class="widget-drag-handle" title="Drag to move">☰</span>
+                    </div>
+                </div>
+                <div id="mb-year-distribution" class="widget-body">
+                    <div class="loading">Loading...</div>
+                </div>
+            </div>
+
+            <!-- CPU Platform Distribution (Intel/AMD) -->
+            <div class="widget-card" data-widget-id="cpu-platform">
+                <div class="widget-header">
+                    <h4 style="display: flex; align-items: center; gap: 0.5rem; margin: 0;">
+                        <span>🧩</span> CPU Intel/AMD
+                    </h4>
+                    <div class="widget-actions">
+                        <button class="widget-toggle-btn" onclick="toggleWidgetVisibility('cpu-platform')" title="Hide widget">🙈</button>
+                        <button class="widget-pin-btn" onclick="toggleWidgetPin('cpu-platform')" title="Save / un-save as widget">📌</button>
+                        <span class="widget-drag-handle" title="Drag to move">☰</span>
+                    </div>
+                </div>
+                <div id="cpu-platform-distribution" class="widget-body">
+                    <div class="loading">Loading...</div>
+                </div>
+            </div>
+
+            <!-- CPU Socket Distribution -->
+            <div class="widget-card" data-widget-id="cpu-socket">
+                <div class="widget-header">
+                    <h4 style="display: flex; align-items: center; gap: 0.5rem; margin: 0;">
+                        <span>🔌</span> CPU by Socket
+                    </h4>
+                    <div class="widget-actions">
+                        <button class="widget-toggle-btn" onclick="toggleWidgetVisibility('cpu-socket')" title="Hide widget">🙈</button>
+                        <button class="widget-pin-btn" onclick="toggleWidgetPin('cpu-socket')" title="Save / un-save as widget">📌</button>
+                        <span class="widget-drag-handle" title="Drag to move">☰</span>
+                    </div>
+                </div>
+                <div id="cpu-socket-distribution" class="widget-body" style="max-height: 260px; overflow-y: auto;">
+                    <div class="loading">Loading...</div>
+                </div>
+            </div>
+
+            <!-- Price Stats by Vendor -->
+            <div class="widget-card" data-widget-id="price-vendor">
+                <div class="widget-header">
+                    <h4 style="display: flex; align-items: center; gap: 0.5rem; margin: 0;">
+                        <span>💰</span> Price by Vendor
+                    </h4>
+                    <div class="widget-actions">
+                        <button class="widget-toggle-btn" onclick="toggleWidgetVisibility('price-vendor')" title="Hide widget">🙈</button>
+                        <button class="widget-pin-btn" onclick="toggleWidgetPin('price-vendor')" title="Save / un-save as widget">📌</button>
+                        <span class="widget-drag-handle" title="Drag to move">☰</span>
+                    </div>
+                </div>
+                <div id="vendor-price-stats" class="widget-body">
+                    <div class="loading">Loading...</div>
+                </div>
+            </div>
+
+            <!-- Source Distribution -->
+            <div class="widget-card" data-widget-id="source">
+                <div class="widget-header">
+                    <h4 style="display: flex; align-items: center; gap: 0.5rem; margin: 0;">
+                        <span>🌐</span> By Source
+                    </h4>
+                    <div class="widget-actions">
+                        <button class="widget-toggle-btn" onclick="toggleWidgetVisibility('source')" title="Hide widget">🙈</button>
+                        <button class="widget-pin-btn" onclick="toggleWidgetPin('source')" title="Save / un-save as widget">📌</button>
+                        <span class="widget-drag-handle" title="Drag to move">☰</span>
+                    </div>
+                </div>
+                <div id="source-distribution" class="widget-body">
+                    <div class="loading">Loading...</div>
+                </div>
+            </div>
+
+            <!-- Class Distribution -->
+            <div class="widget-card" data-widget-id="class">
+                <div class="widget-header">
+                    <h4 style="display: flex; align-items: center; gap: 0.5rem; margin: 0;">
+                        <span>📝</span> By Class
+                    </h4>
+                    <div class="widget-actions">
+                        <button class="widget-toggle-btn" onclick="toggleWidgetVisibility('class')" title="Hide widget">🙈</button>
+                        <button class="widget-pin-btn" onclick="toggleWidgetPin('class')" title="Save / un-save as widget">📌</button>
+                        <span class="widget-drag-handle" title="Drag to move">☰</span>
+                    </div>
+                </div>
+                <div id="class-distribution" class="widget-body">
+                    <div class="loading">Loading...</div>
+                </div>
+            </div>
+
+            <!-- Top Deals -->
+            <div class="widget-card" data-widget-id="top-deals">
+                <div class="widget-header">
+                    <h4 style="display: flex; align-items: center; gap: 0.5rem; margin: 0;">
+                        <span>🔥</span> Top Deals
+                    </h4>
+                    <div class="widget-actions">
+                        <button class="widget-toggle-btn" onclick="toggleWidgetVisibility('top-deals')" title="Hide widget">🙈</button>
+                        <button class="widget-pin-btn" onclick="toggleWidgetPin('top-deals')" title="Save / un-save as widget">📌</button>
+                        <span class="widget-drag-handle" title="Drag to move">☰</span>
+                    </div>
+                </div>
+                <div id="new-listings-trend" class="widget-body">
+                    <div class="loading">Loading...</div>
+                </div>
+            </div>
+
+            <!-- Performance vs Price -->
+            <div class="widget-card" data-widget-id="best-value">
+                <div class="widget-header">
+                    <h4 style="display: flex; align-items: center; gap: 0.5rem; margin: 0;">
+                        <span>⚡</span> Best Value
+                    </h4>
+                    <div class="widget-actions">
+                        <button class="widget-toggle-btn" onclick="toggleWidgetVisibility('best-value')" title="Hide widget">🙈</button>
+                        <button class="widget-pin-btn" onclick="toggleWidgetPin('best-value')" title="Save / un-save as widget">📌</button>
+                        <span class="widget-drag-handle" title="Drag to move">☰</span>
+                    </div>
+                </div>
+                <div id="best-value-cpus" class="widget-body">
+                    <div class="loading">Loading...</div>
+                </div>
+            </div>
+
+            <!-- Motherboard Market Snapshot -->
+            <div class="widget-card wide" data-widget-id="mb-market">
+                <div class="widget-header">
+                    <h4 style="display: flex; align-items: center; gap: 0.5rem; justify-content: space-between; margin: 0; flex: 1;">
+                        <span>🖥️ Motherboard Market</span>
+                        <span id="mb-market-time" style="font-size: 0.75rem; color: #888;">All time</span>
+                    </h4>
+                    <div class="widget-actions">
+                        <button class="widget-toggle-btn" onclick="toggleWidgetVisibility('mb-market')" title="Hide widget">🙈</button>
+                        <button class="widget-pin-btn" onclick="toggleWidgetPin('mb-market')" title="Save / un-save as widget">📌</button>
+                        <span class="widget-drag-handle" title="Drag to move">☰</span>
+                    </div>
+                </div>
+                <div class="widget-body" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem;" id="motherboard-market-stats">
+                    <div>
+                        <h5 style="margin: 0 0 0.5rem 0; font-size: 0.8rem; color: #888;">By Year</h5>
+                        <div id="mb-market-year" class="loading">Loading...</div>
+                    </div>
+                    <div>
+                        <h5 style="margin: 0 0 0.5rem 0; font-size: 0.8rem; color: #888;">Intel / AMD</h5>
+                        <div id="mb-market-platform" class="loading">Loading...</div>
+                    </div>
+                    <div>
+                        <h5 style="margin: 0 0 0.5rem 0; font-size: 0.8rem; color: #888;">By Socket</h5>
+                        <div id="mb-market-socket" class="loading">Loading...</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="section">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
+        <h2>CPU Listings</h2>
+        <div class="filters" style="margin: 0;">
+            <span style="font-weight: 600; margin-right: 0.5rem;">Filters:</span>
+            <label>
+                <input type="checkbox" id="active-only" checked onchange="loadListings()">
+                Active only
+            </label>
+            <label>
+                <input type="checkbox" id="high-confidence" checked onchange="loadListings()">
+                High confidence (≥70%)
+            </label>
+            <label>
+                <input type="checkbox" id="show-avg-price" onchange="loadListings()">
+                Show avg price
+            </label>
+            <label>
+                Vendor:
+                <select id="vendor-filter" onchange="updateModelFilter(); loadListings()">
+                    <option value="">All Vendors</option>
+                    <option value="Intel">Intel</option>
+                    <option value="AMD">AMD</option>
+                </select>
+            </label>
+            <label>
+                Series:
+                <select id="series-filter" onchange="updateModelFilter(); loadListings()">
+                    <option value="">All Series</option>
+                    <option value="i3">Intel Core i3</option>
+                    <option value="i5">Intel Core i5</option>
+                    <option value="i7">Intel Core i7</option>
+                    <option value="i9">Intel Core i9</option>
+                    <option value="Ryzen 3">AMD Ryzen 3</option>
+                    <option value="Ryzen 5">AMD Ryzen 5</option>
+                    <option value="Ryzen 7">AMD Ryzen 7</option>
+                    <option value="Ryzen 9">AMD Ryzen 9</option>
+                </select>
+            </label>
+            <label>
+                Model:
+                <select id="model-filter" onchange="loadListings()">
+                    <option value="">All Models</option>
+                </select>
+            </label>
+            <label>
+                CPU Class:
+                <select id="cpu-class-filter" onchange="loadListings()">
+                    <option value="">All Classes</option>
+                    <option value="Budget">Budget</option>
+                    <option value="Mid-Range">Mid-Range</option>
+                    <option value="High-End">High-End</option>
+                    <option value="Enthusiast">Enthusiast</option>
+                </select>
+            </label>
+            <label>
+                Sort:
+                <select id="sort-by" onchange="loadListings()">
+                    <option value="date_posted">Date Posted</option>
+                    <option value="price">Price</option>
+                    <option value="price_per_r23">Price/Perf (€/R23k)</option>
+                    <option value="price_per_passmark">Price/Perf (€/PMk)</option>
+                    <option value="r23_score">R23 Multi Score</option>
+                    <option value="passmark_score">PassMark Score</option>
+                </select>
+            </label>
+            <label>
+                Order:
+                <select id="sort-order" onchange="loadListings()">
+                    <option value="desc">Descending</option>
+                    <option value="asc">Ascending</option>
+                </select>
+            </label>
+            <label>
+                Time:
+                <select id="time-filter" onchange="loadListings()">
+                    <option value="all_time">All Time</option>
+                    <option value="month">Last Month</option>
+                    <option value="week">Last Week</option>
+                </select>
+            </label>
+            <label>
+                Source:
+                <select id="source-filter" onchange="loadListings()">
+                    <option value="all">All Sources</option>
+                    <option value="ss.com">SS.com</option>
+                    <option value="andelemandele">Andele Mandele</option>
+                    <option value="facebook_extension">Facebook</option>
+                </select>
+            </label>
+            <span id="sort-spinner" style="display: none; margin-left: 0.5rem;"><span class="loading-spinner" style="display: inline-block; width: 16px; height: 16px; border: 2px solid #f3f3f3; border-top: 2px solid #667eea; border-radius: 50%; animation: spin 1s linear infinite;"></span> Sorting...</span>
+        </div>
+    </div>
+
+    <div id="listings-container">
+        <div class="loading">Loading CPU listings...</div>
+    </div>
+</div>
+
+<!-- Listing Detail Modal -->
+<div id="listing-modal" class="modal-overlay">
+    <div class="modal" style="max-width: 900px;">
+        <div class="modal-header">
+            <h3 id="listing-title">Listing Details</h3>
+            <button class="modal-close" onclick="closeListingModal()">&times;</button>
+        </div>
+        <div id="listing-content" style="padding: 1.5rem;">
+            <div class="loading">Loading listing details...</div>
+        </div>
+    </div>
+</div>
+
+<!-- Model History Modal -->
+<div id="history-modal" class="modal-overlay">
+    <div class="modal">
+        <div class="modal-header">
+            <h3 id="history-title">CPU Model Price History</h3>
+            <button class="modal-close" onclick="closeModal()">&times;</button>
+        </div>
+        <div id="history-content">
+            <div class="history-chart">
+                <canvas id="historyChart"></canvas>
+            </div>
+            <div id="history-listings"></div>
+        </div>
+    </div>
+</div>
+
+<!-- Column Settings Dropdown (template) -->
+<div id="column-settings-dropdown" class="column-settings-dropdown">
+    <h4>Arrange Columns (Drag to reorder)</h4>
+    <div id="column-options-list"></div>
+    <div class="column-settings-footer">
+        <button onclick="showAllColumns()">Show All</button>
+        <button onclick="resetColumns()">Reset</button>
+    </div>
+</div>
+
+    </div>
+    
+    
+    
+    <!-- Shared Listing Detail Functions -->
+    <script>
+    // Monitor Tier Calculator (client-side version matching Python logic)
+    function calculateMonitorTier(size, resolution, refreshRate, panelType) {
+        if (!size && !resolution && !refreshRate) {
+            return null;
+        }
+        
+        // Parse values
+        const sizeVal = parseFloat(size) || 0;
+        const refresh = parseInt(refreshRate) || 0;
+        
+        // Parse resolution
+        let width = 0, height = 0;
+        if (resolution) {
+            const resStr = String(resolution).toUpperCase().trim();
+            const resolutions = {
+                '4K': [3840, 2160], 'UHD': [3840, 2160],
+                '2K': [2560, 1440], '1440P': [2560, 1440], 'QHD': [2560, 1440], 'WQHD': [3440, 1440],
+                '1080P': [1920, 1080], 'FHD': [1920, 1080], 'FULL HD': [1920, 1080],
+                '720P': [1280, 720], 'HD': [1280, 720],
+                '8K': [7680, 4320]
+            };
+            
+            for (const [key, val] of Object.entries(resolutions)) {
+                if (resStr.includes(key)) {
+                    [width, height] = val;
+                    break;
+                }
+            }
+            
+            if (!width) {
+                const match = resStr.match(/(\d+)\s*x\s*(\d+)/);
+                if (match) {
+                    width = parseInt(match[1]);
+                    height = parseInt(match[2]);
+                }
+            }
+        }
+        
+        // Calculate scores
+        let sizeScore = 0, resScore = 0, refreshScore = 0, panelScore = 0;
+        
+        if (sizeVal >= 32) sizeScore = 5;
+        else if (sizeVal >= 27) sizeScore = 4;
+        else if (sizeVal >= 24) sizeScore = 3;
+        else if (sizeVal >= 22) sizeScore = 2;
+        else if (sizeVal > 0) sizeScore = 1;
+        
+        const pixels = width * height;
+        if (pixels >= 3840 * 2160) resScore = 5;
+        else if (pixels >= 2560 * 1440) resScore = 4;
+        else if (pixels >= 1920 * 1080) resScore = 2;
+        else if (pixels > 0) resScore = 1;
+        
+        if (refresh >= 360) refreshScore = 6;
+        else if (refresh >= 240) refreshScore = 5;
+        else if (refresh >= 165) refreshScore = 4;
+        else if (refresh >= 144) refreshScore = 3;
+        else if (refresh >= 75) refreshScore = 2;
+        else if (refresh > 0) refreshScore = 1;
+        
+        const panelStr = String(panelType || '').toUpperCase();
+        if (panelStr.includes('OLED')) panelScore = 5;
+        else if (panelStr.includes('MINI LED')) panelScore = 4;
+        else if (panelStr.includes('IPS')) panelScore = 3;
+        else if (panelStr.includes('VA')) panelScore = 2;
+        else if (panelStr.includes('TN')) panelScore = 1;
+        
+        const total = sizeScore + resScore + refreshScore + panelScore;
+        
+        // Determine tier
+        let tier = 'UNKNOWN', color = '#7f8c8d', bg = '#f5f5f5', icon = '❓', desc = 'Unknown';
+        
+        if (total >= 16 || (refresh >= 240 && resScore >= 4)) {
+            tier = 'BEAST'; color = '#ff0000'; bg = '#ffcccc'; icon = '👑'; desc = 'Ultimate Gaming/Pro';
+        } else if (total >= 12 || (refresh >= 144 && resScore >= 3)) {
+            tier = 'GAMING'; color = '#ff6b00'; bg = '#ffe4cc'; icon = '🎮'; desc = 'Competitive Gaming';
+        } else if (resScore >= 4 && refresh >= 60) {
+            tier = 'EDITORS'; color = '#9b59b6'; bg = '#e8d5f2'; icon = '🎨'; desc = 'Content Creation';
+        } else if (total >= 6) {
+            tier = 'MID'; color = '#3498db'; bg = '#d6eaf8'; icon = '⚡'; desc = 'Mainstream';
+        } else if (total > 0) {
+            tier = 'LOW'; color = '#95a5a6'; bg = '#ecf0f1'; icon = '💻'; desc = 'Basic';
+        }
+        
+        return { tier, score: total, max_score: 20, icon, color, bg_color: bg, description: desc };
+    }
+    
+    // Shared cache for listing details
+    const sharedListingCache = new Map();
+    
+    async function getSharedListingDetails(listingId) {
+        if (sharedListingCache.has(listingId)) {
+            return sharedListingCache.get(listingId);
+        }
+        
+        try {
+            const response = await fetch(`/api/listing-details/${listingId}`);
+            const data = await response.json();
+            sharedListingCache.set(listingId, data);
+            return data;
+        } catch (error) {
+            console.error('Error fetching listing details:', error);
+            return null;
+        }
+    }
+    
+    async function showSharedListingDetail(listingId, hasHistory = true) {
+        if (!hasHistory) {
+            // Greyed out - no changes
+            return;
+        }
+        
+        try {
+            const data = await getSharedListingDetails(listingId);
+            
+            if (!data || data.error) {
+                console.error('Error:', data?.error || 'No data');
+                return;
+            }
+            
+            const current = data.current;
+            const history = data.history || [];
+            const hasChanges = history.length > 0;
+            
+            document.getElementById('shared-listing-title').textContent = current.title || 'Listing Details';
+            
+            let comparisonHtml = '';
+            
+            // Admin: optional Listing ID badge
+            const showListingId = localStorage.getItem('showListingId') !== 'false';
+            if (showListingId) {
+                comparisonHtml += `<div style="margin-bottom: 0.75rem;"><span class="badge" style="font-size: 0.75rem; background: var(--badge-bg); color: var(--text-color); border: 1px solid var(--table-border);">Listing ID: ${current.listing_id}</span></div>`;
+            }
+            
+            // Admin: optional GPU/CPU matched ID badge
+            const showGPUId = localStorage.getItem('showGPUId') !== 'false';
+            if (showGPUId && current.matched_gpu_id) {
+                comparisonHtml += `<div style="margin-bottom: 0.75rem;"><span class="badge" style="font-size: 0.75rem; background: #667eea; color: white;">GPU ID: ${current.matched_gpu_id}</span></div>`;
+            }
+            if (showGPUId && current.matched_cpu_id) {
+                comparisonHtml += `<div style="margin-bottom: 0.75rem;"><span class="badge" style="font-size: 0.75rem; background: #764ba2; color: white;">CPU ID: ${current.matched_cpu_id}</span></div>`;
+            }
+            
+            // Add image if available - use local_image_path with fallback to image_url
+            const detailImgPath = current.local_image_path ? current.local_image_path.replace(/\\/g, '/') : null;
+            const detailImgUrl = detailImgPath ? `/images/${detailImgPath}` : current.image_url;
+            if (detailImgUrl) {
+                comparisonHtml += `
+                    <div style="margin-bottom: 1.5rem; text-align: center;">
+                        <img src="${detailImgUrl}" alt="${current.title}" style="max-width: 100%; max-height: 300px; border-radius: 8px; object-fit: contain; cursor: pointer;" onclick="showImageModal('${detailImgUrl.replace(/'/g, "\\'")}', '${(current.title || '').replace(/'/g, "\\'")}')">
+                    </div>
+                `;
+            }
+            
+            comparisonHtml += `
+                <div style="margin-bottom: 1.5rem;">
+                    <div style="display: flex; gap: 1rem; margin-bottom: 1rem;">
+                        <div class="price-box-current" style="flex: 1; padding: 1rem; background: var(--modal-highlight-bg, #e8f5e9); color: var(--modal-text-color, var(--text-color)); border-radius: 8px; border-left: 4px solid #27ae60;">
+                            <strong style="color: var(--text-color);">Current Price:</strong> <span class="price" style="font-size: 1.25rem;">€${current.price_eur}</span>
+                        </div>
+                        <div class="price-box-previous" style="flex: 1; padding: 1rem; background: ${hasChanges ? 'var(--modal-warn-bg, #fff3e0)' : 'var(--modal-muted-bg, #f5f5f5)'}; color: var(--modal-text-color, var(--text-color)); border-radius: 8px; border-left: 4px solid ${hasChanges ? '#f39c12' : '#95a5a6'};">
+                            ${hasChanges ? `
+                                <strong style="color: var(--text-color);">Previous Price:</strong> €${history[0].price_eur}
+                                <span style="color: ${current.price_eur < history[0].price_eur ? '#27ae60' : '#e74c3c'};">
+                                    ${current.price_eur < history[0].price_eur ? '↓' : '↑'} 
+                                    €${Math.abs(current.price_eur - history[0].price_eur).toFixed(2)}
+                                </span>
+                            ` : '<em style="color: #95a5a6;">No previous price data</em>'}
+                        </div>
+                    </div>
+                </div>
+                
+                <div style="margin-bottom: 1rem;">
+                    <strong style="color: var(--text-color);">Current Description:</strong>
+                    <div class="description-box" style="background: var(--modal-box-bg, #f8f9fa); border: 1px solid var(--modal-border, #eee); padding: 1rem; border-radius: 8px; margin-top: 0.5rem; max-height: 150px; overflow-y: auto; color: var(--text-color);">
+                        ${current.description || '<em style="color: #95a5a6;">No description</em>'}
+                    </div>
+                </div>
+            `;
+            
+            if (hasChanges && history[0].description) {
+                const diff = highlightDifferences(current.description || '', history[0].description || '');
+                comparisonHtml += `
+                    <div style="margin-bottom: 1.5rem;">
+                        <div style="display: flex; gap: 1rem;">
+                            <div style="flex: 1;">
+                                <strong>Previous Description:</strong>
+                                <div style="background: var(--desc-warn-bg); padding: 1rem; border-radius: 8px; margin-top: 0.5rem; border-left: 4px solid var(--desc-warn-border); max-height: 150px; overflow-y: auto;">
+                                    ${diff.previous}
+                                </div>
+                                <small style="color: var(--desc-warn-border);">🟧 Orange = Changed/Removed</small>
+                            </div>
+                            <div style="flex: 1;">
+                                <strong>Current Description:</strong>
+                                <div style="background: var(--desc-success-bg); padding: 1rem; border-radius: 8px; margin-top: 0.5rem; border-left: 4px solid var(--desc-success-border); max-height: 150px; overflow-y: auto;">
+                                    ${diff.current}
+                                </div>
+                                <small style="color: var(--desc-success-border);">🟩 Green = Changed/Added</small>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+            
+                // Add Monitor Tier Badge if it's a monitor listing
+            if (current.category === 'monitor' || current.monitor_size || current.tier) {
+                // Use pre-calculated tier if available, otherwise calculate on the fly
+                let monitorTier = current.tier;
+                
+                // If no tier data but we have monitor specs, calculate it
+                if (!monitorTier && (current.monitor_size || current.size)) {
+                    monitorTier = calculateMonitorTier({
+                        size: current.monitor_size || current.size,
+                        resolution: current.monitor_resolution || current.resolution,
+                        refresh_rate: current.monitor_refresh_rate || current.refresh_rate,
+                        panel_type: current.monitor_panel_type || current.panel_type
+                    });
+                }
+                
+                if (monitorTier) {
+                    const size = current.monitor_size || current.size || 'N/A';
+                    const resolution = current.monitor_resolution || current.resolution || 'N/A';
+                    const refreshRate = current.monitor_refresh_rate || current.refresh_rate || 'N/A';
+                    const panelType = current.monitor_panel_type || current.panel_type || 'Unknown Panel';
+                    
+                    comparisonHtml += `
+                        <div style="margin-bottom: 1.5rem; padding: 1rem; background: ${monitorTier.bg_color}; border-radius: 8px; border: 2px solid ${monitorTier.color};">
+                            <div style="display: flex; align-items: center; gap: 0.75rem;">
+                                <span style="font-size: 1.5rem;">${monitorTier.icon}</span>
+                                <div>
+                                    <div style="font-weight: bold; color: ${monitorTier.color}; font-size: 1.1rem;">
+                                        <span class="monitor-tier-badge" title="${monitorTier.description} | Score: ${monitorTier.score}/${monitorTier.max_score}">${monitorTier.icon} ${monitorTier.tier}</span> Tier Monitor
+                                    </div>
+                                    <div style="font-size: 0.875rem; color: var(--text-secondary, #666); margin-top: 0.25rem;">
+                                        ${size}" ${resolution} @ ${refreshRate}Hz • ${panelType}
+                                    </div>
+                                    <div style="font-size: 0.8rem; color: var(--text-secondary, #888); margin-top: 0.25rem;">
+                                        Score: ${monitorTier.score}/${monitorTier.max_score} • ${monitorTier.description}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }
+            }
+            
+            // Price history table
+            comparisonHtml += `
+                <h4 style="margin-top: 1.5rem;">Price History</h4>
+                <div style="overflow-x: auto;">
+                <table class="analytics-table" style="width: 100%;">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Price</th>
+                            <th>Change</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>${new Date().toLocaleDateString()}</td>
+                            <td class="price">€${current.price_eur}</td>
+                            <td>-</td>
+                        </tr>
+                        ${history.map((h, i) => {
+                            const prevPrice = history[i + 1]?.price_eur;
+                            const change = prevPrice ? h.price_eur - prevPrice : 0;
+                            const changeClass = change < 0 ? 'price-change-positive' : change > 0 ? 'price-change-negative' : '';
+                            return `
+                                <tr>
+                                    <td>${h.recorded_at ? new Date(h.recorded_at).toLocaleDateString() : 'N/A'}</td>
+                                    <td>€${h.price_eur}</td>
+                                    <td class="${changeClass}">
+                                        ${change !== 0 ? `${change < 0 ? '↓' : '↑'} €${Math.abs(change).toFixed(2)}` : '-'}
+                                    </td>
+                                </tr>
+                            `;
+                        }).join('')}
+                    </tbody>
+                </table>
+                </div>
+                
+                <div style="margin-top: 1.5rem; display: flex; gap: 1rem; flex-wrap: wrap;">
+                    <a href="${current.listing_url}" target="_blank" class="btn">View on ss.com →</a>
+                    <div style="display: flex; gap: 0.5rem; align-items: center;">
+                        <input type="text" id="modal-flag-comment" placeholder="Comment (optional)" 
+                            style="padding: 0.5rem; border: 1px solid var(--modal-border, #ddd); background: var(--input-bg); color: var(--text-color); border-radius: 6px; font-size: 0.875rem; width: 200px;">
+                        <button class="btn btn-warning" onclick="flagFromModal('${current.listing_id}')" style="background: #f39c12;">🚩 Flag</button>
+                    </div>
+                </div>
+            `;
+            
+            document.getElementById('shared-listing-content').innerHTML = comparisonHtml;
+            document.getElementById('shared-listing-modal').classList.add('active');
+            
+        } catch (error) {
+            console.error('Error loading listing details:', error);
+        }
+    }
+    
+    function closeSharedListingModal() {
+        document.getElementById('shared-listing-modal').classList.remove('active');
+    }
+    
+    // Flag a listing from the modal
+    function removeListingRow(listingId) {
+    const rows = document.querySelectorAll('#listings-container tbody tr, table tbody tr');
+    rows.forEach(row => {
+        const onclick = row.getAttribute('onclick') || '';
+        const html = row.innerHTML;
+        if (onclick.includes("'" + listingId + "'") || html.includes("'" + listingId + "'") || html.includes(listingId)) {
+            row.style.transition = 'opacity 0.3s ease';
+            row.style.opacity = '0';
+            setTimeout(() => row.remove(), 300);
+        }
+    });
+}
+
+    async function flagFromModal(listingId) {
+        const commentInput = document.getElementById('modal-flag-comment');
+        const comment = commentInput ? commentInput.value : '';
+        
+        if (!comment && !confirm('Flag this listing without a comment?')) {
+            return;
+        }
+        
+        try {
+            const response = await fetch('/api/flag-listing', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    listing_id: listingId,
+                    comment: comment
+                })
+            });
+            
+            const result = await response.json();
+            
+            if (result.success) {
+                alert('✅ Listing flagged successfully!');
+                // Clear the comment input
+                if (commentInput) commentInput.value = '';
+                // Close the modal
+                closeSharedListingModal();
+                // Remove the row immediately for instant feedback
+                removeListingRow(listingId);
+                // Reload listings to refresh stats and ensure consistency
+                if (typeof loadListings === 'function') {
+                    loadListings();
+                }
+            } else {
+                alert('Error: ' + result.error);
+            }
+        } catch (error) {
+            alert('Error: ' + error.message);
+        }
+    }
+    
+    // Close modal on outside click
+    document.addEventListener('DOMContentLoaded', function() {
+        const modal = document.getElementById('shared-listing-modal');
+        if (modal) {
+            modal.addEventListener('click', function(e) {
+                if (e.target === this) {
+                    closeSharedListingModal();
+                }
+            });
+        }
+    });
+    
+    // Helper to check if listing has history
+    async function checkListingHistory(listingId) {
+        try {
+            const response = await fetch(`/api/price-history/${listingId}`);
+            const data = await response.json();
+            return data.history && data.history.length > 0;
+        } catch (e) {
+            return false;
+        }
+    }
+    
+    // Helper to render History button (completely disabled when no history)
+    function renderHistoryButton(listingId, hasHistory) {
+        if (!hasHistory) {
+            return `<button class="btn btn-small" style="opacity: 0.5; cursor: not-allowed; background: #bdc3c7;" disabled title="No changes recorded">History</button>`;
+        }
+        return `<button class="btn btn-small btn-secondary" onclick="event.stopPropagation(); showSharedListingDetail('${listingId}', true)" title="View price history">History</button>`;
+    }
+    
+    // Helper to highlight differences between two texts
+    function highlightDifferences(currentText, previousText) {
+        if (!currentText || !previousText) return { current: currentText || '', previous: previousText || '' };
+        
+        // Simple word-based diff highlighting
+        const currentWords = currentText.split(/(\s+)/);
+        const previousWords = previousText.split(/(\s+)/);
+        
+        let currentHtml = '';
+        let previousHtml = '';
+        
+        const maxLen = Math.max(currentWords.length, previousWords.length);
+        
+        for (let i = 0; i < maxLen; i++) {
+            const curr = currentWords[i] || '';
+            const prev = previousWords[i] || '';
+            
+            if (curr !== prev) {
+                if (curr) currentHtml += `<mark style="background: #c8e6c9; padding: 2px;">${curr}</mark>`;
+                if (prev) previousHtml += `<mark style="background: #ffcc80; padding: 2px;">${prev}</mark>`;
+            } else {
+                currentHtml += curr;
+                previousHtml += prev;
+            }
+        }
+        
+        return { current: currentHtml, previous: previousHtml };
+    }
+    
+    // Helper to render price decrease badge
+    function renderPriceDecreaseBadge(item) {
+        if (item.has_price_decreased) {
+            const lastChange = item.price_changes?.[0];
+            if (lastChange && lastChange.change < 0) {
+                return `<span class="badge badge-success" title="Price dropped by €${Math.abs(lastChange.change).toFixed(2)}">↓ Price Drop</span><br>`;
+            }
+        }
+        return '';
+    }
+    
+    // Helper to fetch price history for multiple listings
+    async function fetchPriceHistoryForListings(listings) {
+        return await Promise.all(
+            listings.map(async item => {
+                try {
+                    const historyRes = await fetch(`/api/price-history/${item.listing_id}`);
+                    const historyData = await historyRes.json();
+                    return {...item, ...historyData};
+                } catch (e) {
+                    return item;
+                }
+            })
+        );
+    }
+    
+    // Dark mode functionality
+    function initDarkMode() {
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        document.documentElement.setAttribute('data-theme', savedTheme);
+        updateDarkModeUI(savedTheme);
+    }
+    
+    function toggleDarkMode() {
+        const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
+        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+        document.documentElement.setAttribute('data-theme', newTheme);
+        localStorage.setItem('theme', newTheme);
+        updateDarkModeUI(newTheme);
+    }
+    
+    function updateDarkModeUI(theme) {
+        const icon = document.getElementById('dark-mode-icon');
+        const text = document.getElementById('dark-mode-text');
+        if (icon && text) {
+            icon.textContent = theme === 'dark' ? '☀️' : '🌙';
+            text.textContent = theme === 'dark' ? 'Light' : 'Dark';
+        }
+    }
+    
+    // Monitor Tier Calculator
+    function calculateMonitorTier(monitor) {
+        if (!monitor || !monitor.size) return null;
+        
+        const size = parseFloat(monitor.size) || 0;
+        const refresh = parseInt(monitor.refresh_rate) || 60;
+        const resolution = monitor.resolution || '';
+        const panel = (monitor.panel_type || '').toUpperCase();
+        
+        // Resolution scoring
+        const resolutionScores = {
+            '1920x1080': 10, '1080p': 10,
+            '2560x1440': 20, '1440p': 20, '2K': 20,
+            '3840x2160': 30, '2160p': 30, '4K': 30,
+            '5120x2880': 35, '5K': 35,
+            '7680x4320': 40, '8K': 40
+        };
+        
+        // Find best matching resolution score
+        let resScore = 5; // Base score
+        for (const [res, score] of Object.entries(resolutionScores)) {
+            if (resolution.includes(res)) {
+                resScore = score;
+                break;
+            }
+        }
+        
+        // Size scoring (15-49")
+        const sizeScore = Math.min(Math.max((size - 15) * 1.5, 5), 25);
+        
+        // Refresh rate scoring
+        let refreshScore = 5;
+        if (refresh >= 240) refreshScore = 25;
+        else if (refresh >= 144) refreshScore = 20;
+        else if (refresh >= 120) refreshScore = 15;
+        else if (refresh >= 75) refreshScore = 10;
+        
+        // Panel type scoring
+        const panelScores = { 'OLED': 15, 'QD-OLED': 15, 'MINILED': 12, 'IPS': 10, 'VA': 8, 'TN': 5 };
+        const panelScore = panelScores[panel] || 5;
+        
+        // Calculate total score
+        const totalScore = resScore + sizeScore + refreshScore + panelScore;
+        const maxScore = 40 + 25 + 25 + 15; // 105
+        
+        // Determine tier
+        let tier, icon, color, bgColor, description;
+        
+        if (totalScore >= 80) {
+            tier = 'S-Tier';
+            icon = '🔥';
+            color = '#ffd700';
+            bgColor = 'rgba(255, 215, 0, 0.15)';
+            description = 'Premium Gaming/Pro Display';
+        } else if (totalScore >= 65) {
+            tier = 'A-Tier';
+            icon = '⭐';
+            color = '#9b59b6';
+            bgColor = 'rgba(155, 89, 182, 0.15)';
+            description = 'High-End Display';
+        } else if (totalScore >= 50) {
+            tier = 'B-Tier';
+            icon = '👍';
+            color = '#3498db';
+            bgColor = 'rgba(52, 152, 219, 0.15)';
+            description = 'Great Balance';
+        } else if (totalScore >= 35) {
+            tier = 'C-Tier';
+            icon = '✓';
+            color = '#27ae60';
+            bgColor = 'rgba(39, 174, 96, 0.15)';
+            description = 'Solid Choice';
+        } else {
+            tier = 'Entry';
+            icon = '📺';
+            color = '#95a5a6';
+            bgColor = 'rgba(149, 165, 166, 0.15)';
+            description = 'Basic Display';
+        }
+        
+        return {
+            tier,
+            icon,
+            color,
+            bg_color: bgColor,
+            score: totalScore,
+            max_score: maxScore,
+            description
+        };
+    }
+    
+    // Initialize dark mode on page load
+    document.addEventListener('DOMContentLoaded', initDarkMode);
+    
+    // Chart.js Dark Mode Configuration
+    function updateChartTheme() {
+        const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+        const textColor = isDark ? '#e0e0e0' : '#333';
+        const gridColor = isDark ? '#444' : '#eee';
+        
+        // Set global defaults
+        Chart.defaults.color = textColor;
+        Chart.defaults.borderColor = gridColor;
+        
+        // Scale defaults
+        Chart.defaults.scale.grid.color = gridColor;
+        Chart.defaults.scale.ticks.color = textColor;
+        Chart.defaults.scale.title.color = textColor;
+        
+        // Legend defaults
+        Chart.defaults.plugins.legend.labels.color = textColor;
+        
+        // Tooltip defaults
+        Chart.defaults.plugins.tooltip.backgroundColor = isDark ? 'rgba(26, 26, 46, 0.95)' : 'rgba(0, 0, 0, 0.8)';
+        Chart.defaults.plugins.tooltip.titleColor = isDark ? '#e0e0e0' : '#fff';
+        Chart.defaults.plugins.tooltip.bodyColor = isDark ? '#e0e0e0' : '#fff';
+        Chart.defaults.plugins.tooltip.borderColor = isDark ? '#0f3460' : 'transparent';
+        Chart.defaults.plugins.tooltip.borderWidth = isDark ? 1 : 0;
+    }
+    
+    // Watch for theme changes
+    const themeObserver = new MutationObserver(function(mutations) {
+        mutations.forEach(function(mutation) {
+            if (mutation.attributeName === 'data-theme') {
+                updateChartTheme();
+                // Update all existing charts
+                Chart.instances.forEach(chart => chart.update());
+            }
+        });
+    });
+    
+    // Start observing
+    document.addEventListener('DOMContentLoaded', function() {
+        updateChartTheme();
+        themeObserver.observe(document.documentElement, { attributes: true });
+    });
+    
+    </script>
+    
+    
+<script>
+let historyChart = null;
+// Cache for current listings data
+let currentListingsData = [];
+let showAvgPriceGlobal = false;  // Global variable for show average price toggle
+
+// Default column order and config
+const defaultColumnOrder = [
+    { id: 'col-image', label: 'Image' },
+    { id: 'col-cpu', label: 'CPU', required: true },
+    { id: 'col-cores', label: 'Cores/Threads' },
+    { id: 'col-price', label: 'Price' },
+    { id: 'col-price-perf', label: 'Price/Perf' },
+    { id: 'col-benchmarks', label: 'Benchmarks' },
+    { id: 'col-market', label: 'Market Position' },
+    { id: 'col-location', label: 'Location' },
+    { id: 'col-date', label: 'Date' },
+    { id: 'col-actions', label: 'Actions' }
+];
+
+// Current column order and visibility
+let columnOrder = [];
+let columnVisibility = {};
+
+// Load column settings from localStorage
+function loadColumnSettings() {
+    const savedOrder = localStorage.getItem('cpuColumnOrder');
+    const savedVisibility = localStorage.getItem('cpuColumnVisibility');
+
+    if (savedOrder) {
+        try {
+            columnOrder = JSON.parse(savedOrder);
+        } catch (e) {
+            columnOrder = [...defaultColumnOrder];
+        }
+    } else {
+        columnOrder = [...defaultColumnOrder];
+    }
+
+    if (savedVisibility) {
+        try {
+            columnVisibility = JSON.parse(savedVisibility);
+        } catch (e) {
+            columnVisibility = {};
+            defaultColumnOrder.forEach(col => {
+                columnVisibility[col.id] = true;
+            });
+        }
+    } else {
+        columnVisibility = {};
+        defaultColumnOrder.forEach(col => {
+            columnVisibility[col.id] = true;
+        });
+    }
+}
+
+// Save column settings to localStorage
+function saveColumnSettings() {
+    localStorage.setItem('cpuColumnOrder', JSON.stringify(columnOrder));
+    localStorage.setItem('cpuColumnVisibility', JSON.stringify(columnVisibility));
+}
+
+// Toggle column visibility
+function toggleColumn(columnId, visible) {
+    columnVisibility[columnId] = visible;
+    saveColumnSettings();
+    renderFullTable();
+
+    // Keep the dropdown open and repositioned after toggling so the user can toggle more columns
+    const dropdown = document.getElementById('column-settings-dropdown');
+    if (dropdown && dropdown.classList.contains('active')) {
+        updateColumnOptions();
+        requestAnimationFrame(updateDropdownPosition);
+    }
+}
+
+// Move column in order
+function moveColumn(fromIndex, toIndex) {
+    if (fromIndex === toIndex) return;
+    const col = columnOrder.splice(fromIndex, 1)[0];
+    columnOrder.splice(toIndex, 0, col);
+    saveColumnSettings();
+    renderFullTable();
+}
+
+// Show all columns
+function showAllColumns() {
+    columnOrder.forEach(col => {
+        columnVisibility[col.id] = true;
+    });
+    updateColumnOptions();
+    saveColumnSettings();
+    renderFullTable();
+}
+
+// Reset to defaults
+function resetColumns() {
+    columnOrder = [...defaultColumnOrder];
+    columnVisibility = {};
+    defaultColumnOrder.forEach(col => {
+        columnVisibility[col.id] = true;
+    });
+    updateColumnOptions();
+    saveColumnSettings();
+    renderFullTable();
+}
+
+// Render full table (header + body)
+function renderFullTable() {
+    const table = document.querySelector('#listings-container table');
+    if (!table || !currentListingsData.length) return;
+
+    // Update header
+    const thead = table.querySelector('thead');
+    if (thead) {
+        thead.innerHTML = renderTableHeader();
+    }
+
+    // Update body - re-render all rows with new column order
+    const tbody = table.querySelector('tbody');
+    if (tbody) {
+        tbody.innerHTML = currentListingsData.map(item => renderTableRow(item)).join('');
+    }
+
+    // Enforce CSS hidden state for every non-actions column based on current visibility
+    applyHiddenColumnClasses();
+
+    // If Actions is hidden, ensure its header/body cells are collapsed but the gear remains clickable
+    if (!columnVisibility['col-actions']) {
+        const actionsHeader = table.querySelector('th[data-col=\"col-actions\"]');
+        if (actionsHeader) actionsHeader.classList.add('actions-collapsed');
+        table.querySelectorAll('td[data-col=\"col-actions\"]').forEach(cell => {
+            cell.classList.add('actions-collapsed');
+            cell.style.display = 'table-cell';
+            cell.style.textAlign = 'center';
+            cell.style.padding = '0.5rem';
+        });
+    } else {
+        const actionsHeader = table.querySelector('th[data-col=\"col-actions\"]');
+        if (actionsHeader) actionsHeader.classList.remove('actions-collapsed');
+        table.querySelectorAll('td[data-col=\"col-actions\"]').forEach(cell => {
+            cell.classList.remove('actions-collapsed');
+            cell.style.display = '';
+            cell.style.textAlign = '';
+            cell.style.padding = '';
+        });
+    }
+
+    updateSelectAllState();
+    updateVisibleCount();
+    updateSummaryRowColspans();
+}
+
+function updateSummaryRowColspans() {
+    const table = document.querySelector('#listings-container table');
+    const summaryRow = document.getElementById('summary-row');
+    if (!table || !summaryRow) return;
+
+    const visibleCount = columnOrder.filter(col => columnVisibility[col.id]).length;
+    if (visibleCount === 0) return;
+
+    const totalCell = document.getElementById('summary-total-price');
+    const avgCell = document.getElementById('summary-avg-price');
+    const countCell = document.getElementById('summary-count');
+
+    let totalSpan = visibleCount - 3;
+    if (totalSpan < 1) totalSpan = 1;
+
+    let avgSpan = 2;
+    let remaining = visibleCount - totalSpan;
+    if (remaining < 1) {
+        avgSpan = 1;
+        remaining = visibleCount - totalSpan;
+    }
+
+    let countSpan = remaining;
+    if (countSpan < 1) countSpan = 1;
+
+    // If too few visible columns, collapse to minimal spans
+    if (visibleCount <= 3) {
+        totalSpan = Math.max(1, visibleCount - 2);
+        avgSpan = Math.max(1, Math.min(1, visibleCount - totalSpan));
+        countSpan = Math.max(1, visibleCount - totalSpan - avgSpan);
+    }
+
+    totalCell.colSpan = totalSpan;
+    avgCell.colSpan = avgSpan;
+    countCell.colSpan = countSpan;
+}
+
+// Render column options in dropdown
+function updateColumnOptions() {
+    const container = document.getElementById('column-options-list');
+    if (!container) return;
+
+    container.innerHTML = columnOrder.map((col, index) => {
+        const isVisible = columnVisibility[col.id];
+        const checkboxState = isVisible ? 'checked' : '';
+        const disabledState = col.required ? 'disabled' : '';
+        return `
+        <div class="column-option" draggable="true" data-index="${index}" data-col-id="${col.id}">
+            <span class="drag-handle">⋮⋮</span>
+            <input type="checkbox" id="checkbox-${col.id}"
+                ${checkboxState}
+                ${disabledState}
+                onchange="toggleColumn('${col.id}', this.checked)">
+            <label for="checkbox-${col.id}">${col.label}</label>
+        </div>`;
+    }).join('');
+
+    // Add drag and drop handlers
+    setupDragAndDrop(container);
+}
+
+// Apply hidden-column CSS class to every non-actions column whose visibility is false
+function applyHiddenColumnClasses() {
+    const table = document.querySelector('#listings-container table');
+    if (!table) return;
+    columnOrder.forEach(col => {
+        if (col.id === 'col-actions') return;
+        const cells = table.querySelectorAll(`[data-col="${col.id}"]`);
+        const hidden = !columnVisibility[col.id];
+        cells.forEach(cell => {
+            cell.classList.toggle('hidden-column', hidden);
+            if (hidden) {
+                cell.style.display = 'none';
+            } else {
+                cell.style.display = '';
+            }
+        });
+    });
+}
+
+// Setup drag and drop
+function setupDragAndDrop(container) {
+    let draggedElement = null;
+    let draggedIndex = null;
+
+    container.querySelectorAll('.column-option').forEach(item => {
+        item.addEventListener('dragstart', (e) => {
+            draggedElement = item;
+            draggedIndex = parseInt(item.dataset.index);
+            item.classList.add('dragging');
+            e.dataTransfer.effectAllowed = 'move';
+        });
+
+        item.addEventListener('dragend', () => {
+            item.classList.remove('dragging');
+            draggedElement = null;
+            draggedIndex = null;
+        });
+
+        item.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            if (!draggedElement) return;
+
+            const afterElement = getDragAfterElement(container, e.clientY);
+            if (afterElement) {
+                container.insertBefore(draggedElement, afterElement);
+            } else {
+                container.appendChild(draggedElement);
+            }
+        });
+
+        item.addEventListener('drop', (e) => {
+            e.preventDefault();
+            if (!draggedElement) return;
+
+            // Get new index
+            const newIndex = Array.from(container.children).indexOf(draggedElement);
+            if (draggedIndex !== null && newIndex !== draggedIndex) {
+                moveColumn(draggedIndex, newIndex);
+            }
+        });
+    });
+}
+
+function getDragAfterElement(container, y) {
+    const draggableElements = [...container.querySelectorAll('.column-option:not(.dragging)')];
+
+    return draggableElements.reduce((closest, child) => {
+        const box = child.getBoundingClientRect();
+        const offset = y - box.top - box.height / 2;
+
+        if (offset < 0 && offset > closest.offset) {
+            return { offset: offset, element: child };
+        } else {
+            return closest;
+        }
+    }, { offset: Number.NEGATIVE_INFINITY }).element;
+}
+
+// Show/hide column settings dropdown
+function toggleColumnSettings(event) {
+    if (event) {
+        event.stopPropagation();
+        event.preventDefault();
+    }
+
+    const dropdown = document.getElementById('column-settings-dropdown');
+    let btn = event && event.target && event.target.closest('.column-settings-btn');
+    if (!btn) {
+        btn = document.getElementById('column-settings-btn');
+    }
+
+    if (!dropdown) {
+        console.log('Dropdown not found');
+        return;
+    }
+    if (!btn) {
+        console.log('Button not found');
+        return;
+    }
+
+    // Check if already active
+    const isActive = dropdown.classList.contains('active');
+
+    if (!isActive) {
+        // First make it active (visible) so we can position it
+        updateColumnOptions();
+        dropdown.classList.add('active');
+
+        // Then update position relative to the clicked gear
+        updateDropdownPosition(btn);
+
+        // Add scroll listener to update position
+        window.addEventListener('scroll', () => updateDropdownPosition(btn), { passive: true });
+        window.addEventListener('resize', () => updateDropdownPosition(btn), { passive: true });
+    } else {
+        dropdown.classList.remove('active');
+        // Remove scroll listener
+        window.removeEventListener('scroll', () => updateDropdownPosition(btn));
+        window.removeEventListener('resize', () => updateDropdownPosition(btn));
+    }
+}
+
+// Update dropdown position to follow the clicked gear icon (or the header gear as fallback)
+function updateDropdownPosition(preferredBtn) {
+    const dropdown = document.getElementById('column-settings-dropdown');
+    const headerBtn = document.getElementById('column-settings-btn');
+    let btn = preferredBtn || headerBtn;
+
+    if (!btn) {
+        // Fallback: any gear button in the collapsed actions cells
+        const fallbackBtn = document.querySelector('td[data-col="col-actions"] .column-settings-btn, th[data-col="col-actions"] .column-settings-btn');
+        btn = fallbackBtn;
+    }
+
+    if (!dropdown || !btn) return;
+    if (!dropdown.classList.contains('active')) return;
+
+    const btnRect = btn.getBoundingClientRect();
+    if (btnRect.width === 0 || btnRect.height === 0) {
+        // Button not visible, close dropdown
+        dropdown.classList.remove('active');
+        return;
+    }
+
+    dropdown.style.position = 'fixed';
+    dropdown.style.top = (btnRect.bottom + 5) + 'px';
+    dropdown.style.left = 'auto';
+    dropdown.style.right = (window.innerWidth - btnRect.right) + 'px';
+}
+
+// Close dropdown when clicking outside
+function closeColumnSettings(e) {
+    const dropdown = document.getElementById('column-settings-dropdown');
+    if (!dropdown) return;
+    // Close dropdown when clicking outside of it and outside any gear button.
+    const clickedGear = e.target && (e.target.classList.contains('column-settings-btn') || e.target.closest('.column-settings-btn'));
+    if (!dropdown.contains(e.target) && !clickedGear) {
+        dropdown.classList.remove('active');
+        // Remove scroll listener
+        window.removeEventListener('scroll', updateDropdownPosition);
+        window.removeEventListener('resize', updateDropdownPosition);
+    }
+}
+
+// Render table header
+function renderTableHeader() {
+    const headerCells = columnOrder.map(col => {
+        const isHidden = !columnVisibility[col.id];
+        // For non-actions columns, apply the CSS hidden-column class so the cell is fully hidden.
+        // For the Actions column, keep the cell in the DOM and just collapse its label so the gear icon remains.
+        const thStyle = 'padding: 0.75rem; ';
+        const hiddenClass = isHidden ? ' hidden-column' : '';
+
+        switch (col.id) {
+            case 'col-actions': {
+                // The gear button is always rendered. When Actions is hidden, we collapse the label text
+                // but keep a tiny clickable target with the gear icon visible so users can restore columns.
+                const labelStyle = isHidden ? 'display: none;' : '';
+                const minWidthStyle = isHidden ? 'width: 48px; min-width: 48px; max-width: 48px; overflow: visible; white-space: nowrap;' : 'position: relative;';
+                const collapseClass = isHidden ? ' actions-collapsed' : '';
+                return `<th data-col="col-actions" class="column-header${collapseClass}" style="${thStyle}${minWidthStyle}" title="Column Settings">
+                    <div class="header-content" style="justify-content: center; align-items: center;">
+                        <span class="header-text" style="${labelStyle}">${col.label}</span>
+                        <button id="column-settings-btn" class="column-settings-btn" onclick="toggleColumnSettings(event)" title="Column Settings" style="flex-shrink:0; margin:0;">⚙️</button>
+                    </div>
+                </th>`;
+            }
+            default: {
+                const minWidth = col.id === 'col-price' ? 'min-width: 140px;' : '';
+                return `<th data-col="${col.id}" class="column-header${hiddenClass}" style="${thStyle}${minWidth}">
+                    <span class="header-text">${col.label}</span>
+                </th>`;
+            }
+        }
+    }).join('');
+
+    return `<tr style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">${headerCells}</tr>`;
+}
+
+// Render table row
+function renderTableRow(item) {
+    // Fix: Don't duplicate producer name if already in cpu_name
+    let cpuName;
+    if (item.cpu_name) {
+        const producer = item.producer || item.vendor || '';
+        if (producer && item.cpu_name.toLowerCase().startsWith(producer.toLowerCase())) {
+            cpuName = item.cpu_name;
+        } else if (producer) {
+            cpuName = `${producer} ${item.cpu_name}`;
+        } else {
+            cpuName = item.cpu_name;
+        }
+    } else {
+        cpuName = item.title || 'Unknown CPU';
+    }
+    const cores = item.cores ? `${item.cores}c/${item.threads || '?'}t` : 'N/A';
+    const modelId = item.matched_cpu_id;
+
+    let priceClass = 'price';
+    let priceIndicator = '';
+
+    if (item.price_stats) {
+        if (item.price_stats.below_avg) {
+            priceClass = 'price-below-avg';
+            const savingsPct = Math.round(((item.price_stats.avg - item.price_eur) / item.price_stats.avg) * 100);
+            priceIndicator = `<span style="font-size: 0.75rem; color: #27ae60; margin-left: 0.25rem; white-space: nowrap;">↓ -${savingsPct}%</span>`;
+        } else {
+            priceClass = 'price-above-avg';
+            const abovePct = Math.round(((item.price_eur - item.price_stats.avg) / item.price_stats.avg) * 100);
+            priceIndicator = `<span style="font-size: 0.75rem; color: #e74c3c; margin-left: 0.25rem; white-space: nowrap;">↑ +${abovePct}%</span>`;
+        }
+    }
+
+    const confidence = item.confidence_score || 0;
+    let confidenceClass = 'confidence-high';
+    if (confidence < 0.70) confidenceClass = 'confidence-medium';
+    if (confidence < 0.50) confidenceClass = 'confidence-low';
+
+    const rowClass = modelId ? 'clickable' : '';
+    const clickHandler = modelId ? `onclick="showModelHistory(${modelId}, '${item.producer} ${item.cpu_name}')"` : '';
+
+    const hasHistory = item.history && item.history.length > 0;
+
+    const cells = columnOrder.map(col => {
+        const isColHidden = !columnVisibility[col.id];
+        const style = isColHidden ? 'display: none;' : '';
+        const hiddenClass = isColHidden ? ' hidden-column' : '';
+
+        switch (col.id) {
+            case 'col-image': {
+                const rowLocalImage = item.local_image_path ? String(item.local_image_path).replace(/\\/g, '/') : null;
+                // CPU images are stored under SS-CRAWLER/images/cpu (ss.com) or images/facebook (facebook).
+                // If the stored path already contains a folder prefix, use it; otherwise default to cpu/.
+                const rowImageUrl = rowLocalImage
+                    ? (rowLocalImage.includes('/') ? `/images/${rowLocalImage}` : `/images/cpu/${rowLocalImage}`)
+                    : (item.image_url || null);
+                return `<td data-col="col-image" class="${hiddenClass}" style="padding: 0.75rem; text-align: center; ${style}">
+                    ${rowImageUrl ? `<img src="${rowImageUrl}" alt="${cpuName}" class="listing-thumb" onclick="event.stopPropagation(); showImageModal('${rowImageUrl}', '${cpuName}')" style="max-width: 80px; max-height: 60px; border-radius: 4px; cursor: pointer;">` : '<div class="listing-thumb-placeholder" style="width: 80px; height: 60px; background: #f0f0f0; border-radius: 4px; display: flex; align-items: center; justify-content: center; color: #999;">📷</div>'}
+                </td>`;
+            }
+            case 'col-cpu':
+                // Source dot indicator (small colored dot) - check if enabled in settings
+                const showSourceDotsCPU = localStorage.getItem('showSourceDots') !== 'false';
+                const sourceDotCPU = showSourceDotsCPU ? (item.source === 'andelemandele'
+                    ? `<span class="source-dot" title="Andele Mandele" style="display: inline-block; width: 10px; height: 10px; background: #ff6b6b; border-radius: 50%; margin-left: 8px; cursor: pointer;"></span>`
+                    : `<span class="source-dot" title="SS.com" style="display: inline-block; width: 10px; height: 10px; background: #90EE90; border-radius: 50%; margin-left: 8px; cursor: pointer;"></span>`)
+                    : '';
+                return `<td data-col="col-cpu" class="${hiddenClass}" style="padding: 0.75rem; ${style}">
+                    <div style="font-weight: bold;">${cpuName}${sourceDotCPU}</div>
+                    ${item.match_method ? `<div style="font-size: 0.85rem; margin-top: 0.25rem;"><span class="${confidenceClass}">${(confidence*100).toFixed(0)}% confidence</span></div>` : ''}
+                </td>`;
+            case 'col-cores':
+                return `<td data-col="col-cores" class="${hiddenClass}" style="padding: 0.75rem; text-align: center; ${style}">${cores}</td>`;
+            case 'col-price':
+                const hasPriceChange = item.history && item.history.length >= 2 && item.price_eur !== item.history[0].price_eur;
+                return `<td data-col="col-price" class="${hiddenClass}" style="text-align: center; ${style}">
+                    ${renderPriceDecreaseBadge(item)}
+                    <div style="display: flex; align-items: center; justify-content: center; flex-wrap: nowrap;">
+                        <span class="${priceClass}">€${item.price_eur}</span>
+                        ${priceIndicator}
+                    </div>
+                    ${showAvgPriceGlobal && item.price_stats ? `<div style="font-size: 0.75rem; color: #888; margin-top: 2px;">avg: €${item.price_stats.avg} · ${item.price_stats.listing_count || 0} listings</div>` : ''}
+                    ${hasPriceChange ? `<br><small style="color: ${item.price_eur < item.history[0].price_eur ? '#e74c3c' : '#27ae60'};">Was: €${item.history[0].price_eur} ${item.price_eur < item.history[0].price_eur ? '↓' : '↑'}</small>` : ''}
+                </td>`;
+            case 'col-price-perf':
+                return `<td data-col="col-price-perf" class="${hiddenClass}" style="font-size: 0.85rem; ${style}">
+                    ${item.price_per_r23 ? `€${item.price_per_r23}/R23k<br>` : ''}
+                    ${item.price_per_passmark ? `€${item.price_per_passmark}/PMk` : '-'}
+                </td>`;
+            case 'col-benchmarks':
+                return `<td data-col="col-benchmarks" class="${hiddenClass}" style="font-size: 0.85rem; ${style}">
+                    ${item.benchmarks ? `
+                        ${item.benchmarks.r23_multi ? `R23: ${item.benchmarks.r23_multi.toLocaleString()}<br>` : ''}
+                        ${item.benchmarks.r26_multi ? `R26: ${item.benchmarks.r26_multi.toLocaleString()}<br>` : ''}
+                        ${item.benchmarks.passmark ? `PM: ${item.benchmarks.passmark.toLocaleString()}` : ''}
+                    ` : '-'}
+                </td>`;
+            case 'col-market':
+                return `<td data-col="col-market" class="${hiddenClass}" ${style}>
+                    ${item.is_unicorn ? `
+                        <span style="background: linear-gradient(135deg, #9333ea, #c084fc); color: white; font-size: 0.75rem; padding: 4px 8px; border-radius: 12px; font-weight: bold; display: inline-block;" title="Only one listing of this model in all history!">🦄 UNICORN</span>
+                    ` : (item.price_stats ? `
+                        <div style="font-size: 0.875rem;">
+                            Avg: €${item.price_stats.avg}<br>
+                            Range: €${item.price_stats.min} - €${item.price_stats.max}
+                        </div>
+                        <div class="price-bar" title="Price percentile: ${item.price_stats.percentile}%">
+                            <div class="price-bar-fill" style="width: ${item.price_stats.percentile}%"></div>
+                        </div>
+                    ` : '<small>No price data</small>')}
+                </td>`;
+            case 'col-location':
+                return `<td data-col="col-location" class="${hiddenClass}" ${style}>${item.seller_location || 'N/A'}</td>`;
+            case 'col-date':
+                return `<td data-col="col-date" class="${hiddenClass}" ${style}>${item.date_posted ? new Date(item.date_posted).toLocaleDateString() : 'N/A'}</td>`;
+            case 'col-actions': {
+                // Keep a minimal gear placeholder in every Actions body cell so the column remains
+                // reachable when the Actions header is collapsed, but hide the action buttons.
+                const isActionsHidden = !columnVisibility['col-actions'];
+                const cellPaddingStyle = isActionsHidden ? 'padding: 0.5rem; text-align: center;' : '';
+                const actionCellClass = isActionsHidden ? ' actions-collapsed' : '';
+                const displayStyle = isActionsHidden ? 'display: table-cell;' : '';
+                return `<td data-col="col-actions" class="${actionCellClass}" style="${style}${cellPaddingStyle}${displayStyle}">
+                    ${isActionsHidden
+                        ? `<button class="column-settings-btn" onclick="event.stopPropagation(); toggleColumnSettings(event)" title="Column Settings" style="margin:0 auto; display:inline-flex;">⚙️</button>`
+                        : `<div style="display: flex; gap: 0.5rem; flex-wrap: wrap; justify-content: center;">
+                            <button class="btn btn-small" onclick="event.stopPropagation(); showListingHistory('${item.listing_id}')">Details</button>
+                            ${renderHistoryButton(item.listing_id, item.history)}
+                            <button class="btn btn-small" style="background: #dc3545; color: white; border: none;" onclick="event.stopPropagation(); showFlagModalWithCategories('${item.listing_id ? item.listing_id.replace(/'/g, "\\'").replace(/"/g, '&quot;') : ''}', '${escapeHtml(item.title || '').replace(/'/g, "\\'").replace(/"/g, '&quot;')}')">🚩 Flag</button>
+                            <a href="${item.listing_url}" target="_blank" class="btn btn-small" onclick="event.stopPropagation()">View →</a>
+                        </div>`}
+                </td>`;
+            }
+            default:
+                return '';
+        }
+    }).join('');
+
+    return `<tr id="listing-row-${item.listing_id}" class="${rowClass}" ${clickHandler} title="${modelId ? 'Click to view model history' : ''}" style="border-bottom: 1px solid #eee;">${cells}</tr>`;
+}
+
+// Load CPU statistics for dashboard
+async function loadCPUStatistics() {
+    try {
+        const response = await fetch('/api/cpus?active=true&time=all_time');
+        const listings = await response.json();
+
+        // 1. Most Listed CPU Models
+        const modelStats = {};
+        console.log('CPU Statistics - Total listings:', listings.length);
+        listings.forEach(item => {
+            const model = item.cpu_name || item.processor_number || 'Unknown';
+            if (model && model !== 'Unknown') {
+                if (!modelStats[model]) {
+                    modelStats[model] = { count: 0, vendor: item.vendor || item.producer || 'Unknown' };
+                }
+                modelStats[model].count++;
+            }
+        });
+
+        console.log('CPU Statistics - Models found:', Object.keys(modelStats).length);
+
+        const topModels = Object.entries(modelStats)
+            .sort((a, b) => b[1].count - a[1].count)
+            .slice(0, 2);
+
+        if (topModels.length === 0) {
+            document.getElementById('most-sold-models').innerHTML = '<div style="color: #888; text-align: center; padding: 1rem;">No model data</div>';
+            return;
+        }
+
+        const maxCount = Math.max(...topModels.map(([, data]) => data.count));
+
+        let modelsHtml = '<div style="display: flex; flex-direction: column; gap: 0.75rem;">';
+        topModels.forEach(([model, data], index) => {
+            const barWidth = (data.count / maxCount) * 100;
+            const rankColor = index < 3 ? ['#ffd700', '#c0c0c0', '#cd7f32'][index] : '#667eea';
+            const medal = index < 3 ? ['🥇', '🥈', '🥉'][index] : `<span style="color: #888; font-size: 0.9rem;">#${index + 1}</span>`;
+
+            const vendorColors = { 'Intel': '#0071c5', 'AMD': '#ed1c24' };
+            const vendorColor = vendorColors[data.vendor] || '#888';
+
+            const cleanModel = model.replace(/\b(Intel|AMD|Core|Ryzen)\s*/gi, '').trim();
+
+            modelsHtml += `
+                <div style="display: flex; align-items: center; gap: 0.75rem;">
+                    <span style="font-size: 1.2rem;">${medal}</span>
+                    <div style="flex: 1;">
+                        <div style="display: flex; justify-content: space-between; font-size: 0.875rem; margin-bottom: 2px;">
+                            <span style="color: ${vendorColor}; font-weight: 600;">${cleanModel}</span>
+                            <span style="font-weight: bold;">${data.count}</span>
+                        </div>
+                        <div style="background: rgba(255,255,255,0.1); border-radius: 4px; height: 6px;">
+                            <div style="background: ${rankColor}; height: 100%; width: ${barWidth}%; border-radius: 4px;"></div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        });
+        modelsHtml += '</div>';
+        document.getElementById('most-sold-models').innerHTML = modelsHtml;
+
+        // 2. Price by Vendor
+        const vendorStats = {};
+        listings.forEach(item => {
+            const vendor = item.vendor || item.producer || 'Unknown';
+            if (!vendorStats[vendor]) {
+                vendorStats[vendor] = { count: 0, total: 0, min: Infinity, max: 0 };
+            }
+            const price = parseFloat(item.price_eur) || 0;
+            if (price > 0) {
+                vendorStats[vendor].count++;
+                vendorStats[vendor].total += price;
+                vendorStats[vendor].min = Math.min(vendorStats[vendor].min, price);
+                vendorStats[vendor].max = Math.max(vendorStats[vendor].max, price);
+            }
+        });
+
+        let vendorHtml = '<div style="display: flex; flex-direction: column; gap: 0.5rem;">';
+        Object.entries(vendorStats).forEach(([vendor, stats]) => {
+            const avg = stats.count > 0 ? (stats.total / stats.count).toFixed(0) : '0';
+            const colors = { 'Intel': '#0071c5', 'AMD': '#ed1c24' };
+            const color = colors[vendor] || '#888';
+            vendorHtml += `
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.5rem; background: rgba(255,255,255,0.05); border-radius: 4px;">
+                    <span style="font-weight: 600; color: ${color};">${vendor}</span>
+                    <span style="font-size: 0.875rem;">€${avg} avg · ${stats.count} listings</span>
+                </div>
+            `;
+        });
+        vendorHtml += '</div>';
+        document.getElementById('vendor-price-stats').innerHTML = vendorHtml;
+
+        // 3. Source Distribution
+        const sourceStats = {};
+        listings.forEach(item => {
+            const source = item.source || 'Unknown';
+            sourceStats[source] = (sourceStats[source] || 0) + 1;
+        });
+
+        const sourceEntries = Object.entries(sourceStats)
+            .sort((a, b) => b[1] - a[1])
+            .slice(0, 5);
+
+        const sourceIcons = { 'ss.com': '📰', 'andelemandele': '📱', 'facebook_extension': '👥', 'facebook': '👥' };
+        const sourceNames = { 'ss.com': 'SS.com', 'andelemandele': 'Andele', 'facebook_extension': 'Facebook', 'facebook': 'Facebook' };
+
+        let sourceHtml = '<div style="display: flex; flex-direction: column; gap: 0.4rem;">';
+        const totalSource = sourceEntries.reduce((sum, [, count]) => sum + count, 0) || 1;
+        sourceEntries.forEach(([source, count]) => {
+            const pct = (count / totalSource * 100).toFixed(0);
+            const icon = sourceIcons[source] || '📦';
+            const name = sourceNames[source] || source;
+            sourceHtml += `
+                <div style="display: flex; align-items: center; gap: 0.5rem;">
+                    <span style="font-size: 1.1rem;">${icon}</span>
+                    <div style="flex: 1;">
+                        <div style="display: flex; justify-content: space-between; font-size: 0.8rem;">
+                            <span>${name}</span>
+                            <span style="font-weight: bold;">${pct}%</span>
+                        </div>
+                        <div style="background: rgba(255,255,255,0.1); border-radius: 4px; height: 8px;">
+                            <div style="background: linear-gradient(90deg, #667eea, #764ba2); height: 100%; width: ${pct}%; border-radius: 4px;"></div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        });
+        sourceHtml += '</div>';
+        document.getElementById('source-distribution').innerHTML = sourceHtml;
+
+        // 4. Class Distribution
+        const classStats = {};
+        listings.forEach(item => {
+            const cpuClass = item.cpu_class || 'Unknown';
+            classStats[cpuClass] = (classStats[cpuClass] || 0) + 1;
+        });
+
+        const classEntries = Object.entries(classStats)
+            .sort((a, b) => b[1] - a[1]);
+
+        const classColors = { 'Budget': '#22c55e', 'Mid-Range': '#3b82f6', 'High-End': '#f59e0b', 'Enthusiast': '#ef4444' };
+        const totalClass = classEntries.reduce((sum, [, count]) => sum + count, 0) || 1;
+
+        let classHtml = '<div style="display: flex; flex-direction: column; gap: 0.4rem;">';
+        classEntries.forEach(([cpuClass, count]) => {
+            const pct = (count / totalClass * 100).toFixed(0);
+            const color = classColors[cpuClass] || '#888';
+            classHtml += `
+                <div style="display: flex; align-items: center; gap: 0.5rem;">
+                    <div style="width: 12px; height: 12px; background: ${color}; border-radius: 50%;"></div>
+                    <div style="flex: 1;">
+                        <div style="display: flex; justify-content: space-between; font-size: 0.8rem;">
+                            <span>${cpuClass}</span>
+                            <span style="font-weight: bold;">${pct}%</span>
+                        </div>
+                        <div style="background: rgba(255,255,255,0.1); border-radius: 4px; height: 6px;">
+                            <div style="background: ${color}; height: 100%; width: ${pct}%; border-radius: 4px;"></div>
+                        </div>
+                    </div>
+                    <span style="font-size: 0.75rem; color: #888;">${count}</span>
+                </div>
+            `;
+        });
+        classHtml += '</div>';
+        document.getElementById('class-distribution').innerHTML = classHtml;
+
+        // 5. Top Deals - CPUs below average per model
+        const modelGroups = {};
+        listings.forEach(item => {
+            if (item.cpu_name || item.processor_number) {
+                const key = item.cpu_name || item.processor_number;
+                if (!modelGroups[key]) {
+                    modelGroups[key] = {
+                        model: item.cpu_name || item.processor_number,
+                        vendor: item.vendor || item.producer,
+                        listings: [],
+                        totalPrice: 0
+                    };
+                }
+                modelGroups[key].listings.push(item);
+                modelGroups[key].totalPrice += parseFloat(item.price_eur);
+            }
+        });
+
+        const deals = [];
+        Object.values(modelGroups).forEach(group => {
+            if (group.listings.length >= 2) {
+                const avgPrice = group.totalPrice / group.listings.length;
+                const cheapest = group.listings.reduce((min, item) =>
+                    parseFloat(item.price_eur) < parseFloat(min.price_eur) ? item : min, group.listings[0]);
+                const savingsPct = ((avgPrice - parseFloat(cheapest.price_eur)) / avgPrice * 100);
+
+                if (savingsPct >= 5) {
+                    deals.push({
+                        ...cheapest,
+                        savingsPct,
+                        groupAvg: avgPrice.toFixed(0),
+                        groupCount: group.listings.length
+                    });
+                }
+            }
+        });
+
+        deals.sort((a, b) => b.savingsPct - a.savingsPct);
+        const topDeals = deals.slice(0, 5);
+
+        let dealsHtml = '<div style="display: flex; flex-direction: column; gap: 0.5rem;">';
+        if (topDeals.length === 0) {
+            dealsHtml += '<div style="text-align: center; padding: 1rem; color: #888; font-size: 0.875rem;">No deals found<br><small>Need 2+ listings of same model</small></div>';
+        } else {
+            topDeals.forEach(item => {
+                const cpuName = (item.cpu_name || item.processor_number) ?
+                    (item.cpu_name || item.processor_number).replace(/\b(Intel|AMD|Core|Ryzen)\s*/gi, '') : 'Unknown CPU';
+                dealsHtml += `
+                    <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.5rem; background: rgba(22, 163, 74, 0.1); border-radius: 4px; border-left: 3px solid #16a34a;">
+                        <div style="flex: 1;">
+                            <div style="font-weight: 600; font-size: 0.875rem;">${cpuName}</div>
+                            <div style="font-size: 0.75rem; color: #888;">€${item.price_eur} vs €${item.groupAvg} avg (${item.groupCount} listings)</div>
+                        </div>
+                        <div style="color: #16a34a; font-weight: bold; font-size: 1rem;">-${item.savingsPct.toFixed(0)}%</div>
+                    </div>
+                `;
+            });
+        }
+        dealsHtml += '</div>';
+        document.getElementById('new-listings-trend').innerHTML = dealsHtml;
+
+        // 6. Best Value - Calculate price per performance from benchmark scores
+        const valueCpus = listings
+            .filter(item => item.price_eur && (item.benchmarks?.r23_multi || item.benchmarks?.passmark))
+            .map(item => {
+                let valueScore = null;
+                let metric = '';
+
+                if (item.benchmarks?.r23_multi) {
+                    // Price per Cinebench R23 Multi point (in thousands)
+                    valueScore = item.price_eur / (item.benchmarks.r23_multi / 1000);
+                    metric = 'R23k';
+                } else if (item.benchmarks?.passmark) {
+                    // Price per PassMark point (in thousands)
+                    valueScore = item.price_eur / (item.benchmarks.passmark / 1000);
+                    metric = 'PMk';
+                }
+
+                return { ...item, valueScore, metric };
+            })
+            .filter(item => item.valueScore !== null)
+            .sort((a, b) => a.valueScore - b.valueScore)
+            .slice(0, 5);
+
+        let valueHtml = '<div style="display: flex; flex-direction: column; gap: 0.5rem;">';
+        if (valueCpus.length === 0) {
+            valueHtml += '<div style="text-align: center; padding: 1rem; color: #888;">No benchmark data</div>';
+        } else {
+            valueCpus.forEach(item => {
+                const cpuName = item.cpu_name ? item.cpu_name.replace(/\b(Intel|AMD|Core|Ryzen)\s*/gi, '') : (item.processor_number || 'Unknown CPU');
+                valueHtml += `
+                    <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.5rem; background: rgba(102, 126, 234, 0.1); border-radius: 4px; border-left: 3px solid #667eea;">
+                        <div style="flex: 1;">
+                            <div style="font-weight: 600; font-size: 0.875rem;">${cpuName}</div>
+                            <div style="font-size: 0.75rem; color: #888;">€${item.price_eur}</div>
+                        </div>
+                        <div style="color: #667eea; font-weight: bold; font-size: 0.85rem;">€${item.valueScore.toFixed(2)}/${item.metric}</div>
+                    </div>
+                `;
+            });
+        }
+        valueHtml += '</div>';
+        document.getElementById('best-value-cpus').innerHTML = valueHtml;
+        
+        // CPU Chart: add a subtle drag-handle / draggable hint around the chart card header
+        const chartCardHeader = document.querySelector('#cpu-chart-card .widget-header');
+        if (chartCardHeader) {
+            chartCardHeader.style.cursor = 'grab';
+            chartCardHeader.title = 'Drag mode: grab here to reorder the chart widget';
+            const handle = chartCardHeader.querySelector('.widget-drag-handle');
+            if (handle) handle.title = 'Drag to move the CPU chart widget';
+        }
+        
+        await loadCPUPlatformStats();
+
+        // 8. Motherboard Market Snapshot
+        await loadMotherboardMarketStats();
+
+    } catch (error) {
+        console.error('Error loading CPU statistics:', error);
+    }
+}
+
+async function loadCPUPlatformStats() {
+    try {
+        const timeFilter = document.getElementById('time-filter')?.value || 'all_time';
+        const response = await fetch(`/api/cpus/platform-stats?time=${timeFilter}`);
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        const data = await response.json();
+
+        const { platform_stats = [], socket_stats = [] } = data;
+
+        // CPU Platform distribution (Intel vs AMD vs Other)
+        const platformColors = { 'Intel': '#0071c5', 'AMD': '#ed1c24', 'Other': '#888' };
+        const totalPlatform = platform_stats.reduce((sum, s) => sum + (s.count || 0), 0) || 1;
+        let platformHtml = '<div style="display: flex; flex-direction: column; gap: 0.4rem;">';
+        if (platform_stats.length === 0 || totalPlatform === 0) {
+            platformHtml += '<div style="text-align: center; color: #888; font-size: 0.8rem;">No data</div>';
+        } else {
+            platform_stats.forEach(s => {
+                const pct = ((s.count || 0) / totalPlatform * 100).toFixed(0);
+                const color = platformColors[s.platform] || '#888';
+                platformHtml += `
+                    <div style="display: flex; align-items: center; gap: 0.5rem;">
+                        <div style="width: 12px; height: 12px; background: ${color}; border-radius: 50%;"></div>
+                        <div style="flex: 1;">
+                            <div style="display: flex; justify-content: space-between; font-size: 0.8rem;">
+                                <span>${s.platform}</span>
+                                <span style="font-weight: bold;">${pct}%</span>
+                            </div>
+                            <div style="background: rgba(255,255,255,0.1); border-radius: 4px; height: 6px;">
+                                <div style="background: ${color}; height: 100%; width: ${pct}%; border-radius: 4px;"></div>
+                            </div>
+                        </div>
+                        <span style="font-size: 0.75rem; color: #888;">${s.count}</span>
+                    </div>
+                `;
+            });
+        }
+        platformHtml += '</div>';
+        document.getElementById('cpu-platform-distribution').innerHTML = platformHtml;
+
+        // CPU Socket distribution (top 5)
+        const topSockets = socket_stats.slice(0, 5);
+        const maxSocketCount = Math.max(...topSockets.map(s => s.count || 0), 1);
+        let socketHtml = '<div style="display: flex; flex-direction: column; gap: 0.4rem;">';
+        if (topSockets.length === 0) {
+            socketHtml += '<div style="text-align: center; color: #888; font-size: 0.8rem;">No data</div>';
+        } else {
+            topSockets.forEach(s => {
+                const pct = ((s.count || 0) / maxSocketCount * 100).toFixed(0);
+                socketHtml += `
+                    <div style="display: flex; align-items: center; gap: 0.5rem;">
+                        <div style="flex: 1;">
+                            <div style="display: flex; justify-content: space-between; font-size: 0.8rem;">
+                                <span>${s.socket}</span>
+                                <span style="font-weight: bold;">${s.count}</span>
+                            </div>
+                            <div style="background: rgba(255,255,255,0.1); border-radius: 4px; height: 6px;">
+                                <div style="background: #22c55e; height: 100%; width: ${pct}%; border-radius: 4px;"></div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+        socketHtml += '</div>';
+        document.getElementById('cpu-socket-distribution').innerHTML = socketHtml;
+    } catch (error) {
+        console.error('Error loading CPU platform stats:', error);
+        document.getElementById('cpu-platform-distribution').innerHTML = '<div style="text-align: center; color: #888; font-size: 0.8rem;">Unavailable</div>';
+        document.getElementById('cpu-socket-distribution').innerHTML = '<div style="text-align: center; color: #888; font-size: 0.8rem;">Unavailable</div>';
+    }
+}
+
+async function loadMotherboardMarketStats() {
+    try {
+        const timeFilter = document.getElementById('time-filter')?.value || 'all_time';
+        const labelMap = { all_time: 'All time', week: 'Last 7 days', month: 'Last 30 days', year: 'Last year' };
+        const labelEl = document.getElementById('mb-market-time');
+        if (labelEl) labelEl.textContent = labelMap[timeFilter] || timeFilter;
+
+        const response = await fetch(`/api/motherboards/platform-stats?time=${timeFilter}`);
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        const data = await response.json();
+
+        const { year_stats = [], platform_stats = [], socket_stats = [] } = data;
+
+        // Year distribution (top 5 recent)
+        const topYears = year_stats.slice(0, 5);
+        const maxYearCount = Math.max(...topYears.map(s => s.count || 0), 1);
+        let yearHtml = '<div style="display: flex; flex-direction: column; gap: 0.4rem;">';
+        if (topYears.length === 0) {
+            yearHtml += '<div style="text-align: center; color: #888; font-size: 0.8rem;">No data</div>';
+        } else {
+            topYears.forEach(s => {
+                const pct = ((s.count || 0) / maxYearCount * 100).toFixed(0);
+                yearHtml += `
+                    <div style="display: flex; align-items: center; gap: 0.5rem;">
+                        <div style="flex: 1;">
+                            <div style="display: flex; justify-content: space-between; font-size: 0.8rem;">
+                                <span>${s.year}</span>
+                                <span style="font-weight: bold;">${s.count}</span>
+                            </div>
+                            <div style="background: rgba(255,255,255,0.1); border-radius: 4px; height: 6px;">
+                                <div style="background: #667eea; height: 100%; width: ${pct}%; border-radius: 4px;"></div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+        yearHtml += '</div>';
+        document.getElementById('mb-market-year').innerHTML = yearHtml;
+
+        // Platform distribution (Intel vs AMD vs Other)
+        const platformColors = { 'Intel': '#0071c5', 'AMD': '#ed1c24', 'Other': '#888' };
+        const totalPlatform = platform_stats.reduce((sum, s) => sum + (s.count || 0), 0) || 1;
+        let platformHtml = '<div style="display: flex; flex-direction: column; gap: 0.4rem;">';
+        if (platform_stats.length === 0 || totalPlatform === 0) {
+            platformHtml += '<div style="text-align: center; color: #888; font-size: 0.8rem;">No data</div>';
+        } else {
+            platform_stats.forEach(s => {
+                const pct = ((s.count || 0) / totalPlatform * 100).toFixed(0);
+                const color = platformColors[s.platform] || '#888';
+                platformHtml += `
+                    <div style="display: flex; align-items: center; gap: 0.5rem;">
+                        <div style="width: 12px; height: 12px; background: ${color}; border-radius: 50%;"></div>
+                        <div style="flex: 1;">
+                            <div style="display: flex; justify-content: space-between; font-size: 0.8rem;">
+                                <span>${s.platform}</span>
+                                <span style="font-weight: bold;">${pct}%</span>
+                            </div>
+                            <div style="background: rgba(255,255,255,0.1); border-radius: 4px; height: 6px;">
+                                <div style="background: ${color}; height: 100%; width: ${pct}%; border-radius: 4px;"></div>
+                            </div>
+                        </div>
+                        <span style="font-size: 0.75rem; color: #888;">${s.count}</span>
+                    </div>
+                `;
+            });
+        }
+        platformHtml += '</div>';
+        document.getElementById('mb-market-platform').innerHTML = platformHtml;
+
+        // Socket distribution (top 5)
+        const topSockets = socket_stats.slice(0, 5);
+        const maxSocketCount = Math.max(...topSockets.map(s => s.count || 0), 1);
+        let socketHtml = '<div style="display: flex; flex-direction: column; gap: 0.4rem;">';
+        if (topSockets.length === 0) {
+            socketHtml += '<div style="text-align: center; color: #888; font-size: 0.8rem;">No data</div>';
+        } else {
+            topSockets.forEach(s => {
+                const pct = ((s.count || 0) / maxSocketCount * 100).toFixed(0);
+                socketHtml += `
+                    <div style="display: flex; align-items: center; gap: 0.5rem;">
+                        <div style="flex: 1;">
+                            <div style="display: flex; justify-content: space-between; font-size: 0.8rem;">
+                                <span>${s.socket}</span>
+                                <span style="font-weight: bold;">${s.count}</span>
+                            </div>
+                            <div style="background: rgba(255,255,255,0.1); border-radius: 4px; height: 6px;">
+                                <div style="background: #22c55e; height: 100%; width: ${pct}%; border-radius: 4px;"></div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+        socketHtml += '</div>';
+        document.getElementById('mb-market-socket').innerHTML = socketHtml;
+    } catch (error) {
+        console.error('Error loading motherboard market stats:', error);
+        document.getElementById('mb-market-year').innerHTML = '<div style="text-align: center; color: #888; font-size: 0.8rem;">Unavailable</div>';
+        document.getElementById('mb-market-platform').innerHTML = '<div style="text-align: center; color: #888; font-size: 0.8rem;">Unavailable</div>';
+        document.getElementById('mb-market-socket').innerHTML = '<div style="text-align: center; color: #888; font-size: 0.8rem;">Unavailable</div>';
+    }
+}
+
+
+async function loadMotherboardStatistics() {
+    try {
+        const response = await fetch('/api/motherboards/stats');
+        const data = await response.json();
+
+        if (!data.success) {
+            console.error('Error loading motherboard statistics:', data.error);
+            return;
+        }
+
+        const stats = data.stats || {};
+
+        // 1. Year distribution
+        const yearData = stats.year_distribution || [];
+        const yearContainer = document.getElementById('mb-market-year');
+        if (yearContainer) {
+            if (yearData.length === 0) {
+                yearContainer.innerHTML = '<div style="color: #888; text-align: center; padding: 1rem;">No year data</div>';
+            } else {
+                const maxCount = Math.max(...yearData.map(d => d.count));
+                let html = '<div style="display: flex; flex-direction: column; gap: 0.5rem;">';
+                yearData.forEach(d => {
+                    const pct = maxCount ? (d.count / maxCount) * 100 : 0;
+                    html += `
+                        <div style="display: flex; align-items: center; gap: 0.5rem;">
+                            <span style="width: 45px; font-size: 0.85rem; font-weight: 600;">${d.year}</span>
+                            <div style="flex: 1; background: rgba(255,255,255,0.1); border-radius: 4px; height: 8px;">
+                                <div style="background: linear-gradient(90deg, #667eea, #764ba2); height: 100%; width: ${pct}%; border-radius: 4px;"></div>
+                            </div>
+                            <span style="font-size: 0.8rem; width: 30px; text-align: right; font-weight: 600;">${d.count}</span>
+                        </div>
+                    `;
+                });
+                html += '</div>';
+                yearContainer.innerHTML = html;
+            }
+        }
+
+        // 2. Platform distribution (Intel/AMD/Other)
+        const platformData = stats.platform_distribution || [];
+        const platformContainer = document.getElementById('mb-market-platform');
+        if (platformContainer) {
+            if (platformData.length === 0) {
+                platformContainer.innerHTML = '<div style="color: #888; text-align: center; padding: 1rem;">No platform data</div>';
+            } else {
+                const total = platformData.reduce((sum, p) => sum + p.count, 0) || 1;
+                const platformColors = { 'Intel': '#0071c5', 'AMD': '#ed1c24', 'Other': '#888' };
+                let html = '<div style="display: flex; flex-direction: column; gap: 0.5rem;">';
+                platformData.forEach(p => {
+                    const pct = (p.count / total) * 100;
+                    const color = platformColors[p.platform] || '#888';
+                    html += `
+                        <div style="display: flex; align-items: center; gap: 0.5rem;">
+                            <div style="width: 12px; height: 12px; background: ${color}; border-radius: 50%;"></div>
+                            <div style="flex: 1;">
+                                <div style="display: flex; justify-content: space-between; font-size: 0.85rem;">
+                                    <span style="font-weight: 600;">${p.platform}</span>
+                                    <span style="font-weight: bold;">${pct.toFixed(0)}%</span>
+                                </div>
+                                <div style="background: rgba(255,255,255,0.1); border-radius: 4px; height: 8px;">
+                                    <div style="background: ${color}; height: 100%; width: ${pct}%; border-radius: 4px;"></div>
+                                </div>
+                            </div>
+                            <span style="font-size: 0.75rem; color: #888;">${p.count}</span>
+                        </div>
+                    `;
+                });
+                html += '</div>';
+                platformContainer.innerHTML = html;
+            }
+        }
+
+        // 3. Socket distribution (top 10)
+        const socketData = (stats.socket_distribution || []).slice(0, 10);
+        const socketContainer = document.getElementById('mb-market-socket');
+        if (socketContainer) {
+            if (socketData.length === 0) {
+                socketContainer.innerHTML = '<div style="color: #888; text-align: center; padding: 1rem;">No socket data</div>';
+            } else {
+                const maxCount = Math.max(...socketData.map(s => s.count));
+                const socketColors = { 'Intel': '#0071c5', 'AMD': '#ed1c24' };
+                let html = '<div style="display: flex; flex-direction: column; gap: 0.45rem;">';
+                socketData.forEach(s => {
+                    const platform = (s.socket || '').toUpperCase().startsWith('LGA') ? 'Intel' :
+                                    (/^AM|^FM|^STR/.test((s.socket || '').toUpperCase()) ? 'AMD' : 'Other');
+                    const color = socketColors[platform] || '#888';
+                    const barWidth = maxCount ? (s.count / maxCount) * 100 : 0;
+                    html += `
+                        <div style="display: flex; align-items: center; gap: 0.5rem;">
+                            <span style="width: 70px; font-size: 0.8rem; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${s.socket}</span>
+                            <div style="flex: 1;">
+                                <div style="background: rgba(255,255,255,0.1); border-radius: 4px; height: 7px;">
+                                    <div style="background: ${color}; height: 100%; width: ${barWidth}%; border-radius: 4px;"></div>
+                                </div>
+                            </div>
+                            <span style="font-size: 0.75rem; font-weight: 600;">${s.count}</span>
+                        </div>
+                    `;
+                });
+                html += '</div>';
+                socketContainer.innerHTML = html;
+            }
+        }
+    } catch (error) {
+        console.error('Error loading motherboard statistics:', error);
+    }
+}
+
+async function loadListings() {
+    // Load column settings on first run
+    loadColumnSettings();
+
+    const activeOnly = document.getElementById('active-only').checked;
+    const highConfidence = document.getElementById('high-confidence').checked;
+    showAvgPriceGlobal = document.getElementById('show-avg-price').checked;  // Update global variable
+    const sortBy = document.getElementById('sort-by').value;
+    const sortOrder = document.getElementById('sort-order').value;
+    const timeFilter = document.getElementById('time-filter').value;
+    const cpuClassFilter = document.getElementById('cpu-class-filter').value;
+    const vendorFilter = document.getElementById('vendor-filter')?.value || '';
+    const seriesFilter = document.getElementById('series-filter')?.value || '';
+
+    const spinner = document.getElementById('sort-spinner');
+    if (spinner) spinner.style.display = 'inline';
+
+    const params = new URLSearchParams();
+    params.append('active', activeOnly);
+    params.append('sort', sortBy);
+    params.append('order', sortOrder);
+    params.append('time', timeFilter);
+    if (highConfidence) params.append('min_confidence', '0.70');
+    if (showAvgPriceGlobal) params.append('show_avg_price', 'true');
+    if (cpuClassFilter) params.append('cpu_class', cpuClassFilter);
+    if (vendorFilter) params.append('vendor', vendorFilter);
+    if (seriesFilter) params.append('series', seriesFilter);
+
+    // Add model filter
+    const modelFilter = document.getElementById('model-filter')?.value || '';
+    if (modelFilter) params.append('model', modelFilter);
+    const sourceFilter = document.getElementById('source-filter')?.value || 'all';
+    if (sourceFilter !== 'all') params.append('source', sourceFilter);
+
+    try {
+        const response = await fetch('/api/cpus?' + params.toString());
+        const listings = await response.json();
+
+        const container = document.getElementById('listings-container');
+
+        if (listings.length === 0) {
+            container.innerHTML = '<div class="loading">No listings found</div>';
+            return;
+        }
+
+        // DEDUPLICATE: Keep only the latest entry for each unique listing_id
+        const listingsById = {};
+        listings.forEach(item => {
+            const existing = listingsById[item.listing_id];
+            if (!existing || new Date(item.date_posted) > new Date(existing.date_posted)) {
+                listingsById[item.listing_id] = item;
+            }
+        });
+        const uniqueListings = Object.values(listingsById);
+
+        let listingsWithHistory = await fetchPriceHistoryForListings(uniqueListings);
+
+        // Defensive client-side sort: ensure the displayed order always matches
+        // the user's selected sort and order, even if the backend ORDER BY is
+        // not applied or if post-fetch filtering changes the sequence.
+        const sortFieldMap = {
+            'date_posted': 'date_posted',
+            'price': 'price_eur',
+            'r23_score': 'cinebench_r23_multi',
+            'passmark_score': 'passmark_cpu_mark',
+            'price_per_r23': 'price_per_r23',
+            'price_per_passmark': 'price_per_passmark'
+        };
+        const sortField = sortFieldMap[sortBy] || 'date_posted';
+        const sortMultiplier = sortOrder === 'asc' ? 1 : -1;
+
+        listingsWithHistory.sort((a, b) => {
+            let aVal = a[sortField];
+            let bVal = b[sortField];
+            const aNull = aVal === null || aVal === undefined || aVal === '';
+            const bNull = bVal === null || bVal === undefined || bVal === '';
+            if (aNull && bNull) return 0;
+            if (aNull) return 1;   // nulls last
+            if (bNull) return -1;  // nulls last
+
+            let comparison;
+            if (sortField === 'date_posted') {
+                comparison = new Date(aVal) - new Date(bVal);
+            } else {
+                const aNum = parseFloat(aVal);
+                const bNum = parseFloat(bVal);
+                if (!isNaN(aNum) && !isNaN(bNum)) {
+                    comparison = aNum - bNum;
+                } else {
+                    comparison = String(aVal).localeCompare(String(bVal));
+                }
+            }
+            return comparison * sortMultiplier;
+        });
+
+        // Store data for re-rendering
+        currentListingsData = listingsWithHistory;
+
+        // Populate model filter based on filtered results
+        populateModelFilter(listingsWithHistory);
+
+        // Check if notification tips are enabled (for future notification feature)
+        const showNotificationTips = localStorage.getItem('showNotificationTips') === 'true';
+
+        let notificationHtml = '';
+        if (showNotificationTips) {
+            notificationHtml = `
+            <div id="notification-tips" style="margin-bottom: 1rem; padding: 1rem; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border-radius: 8px; border: 1px solid #667eea; display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                    <strong>🔔 Notification:</strong> Updates enabled
+                </div>
+                <button onclick="localStorage.setItem('showNotificationTips', 'false'); document.getElementById('notification-tips').style.display='none';" style="background: rgba(255,255,255,0.2); border: none; color: white; padding: 0.25rem 0.5rem; border-radius: 4px; cursor: pointer;">Dismiss</button>
+            </div>`;
+        }
+
+        let html = notificationHtml + `
+            <div style="overflow-x: auto;">
+            <table id="cpu-listings-table" style="width: 100%; border-collapse: collapse;">
+                <thead>
+                    ${renderTableHeader()}
+                </thead>
+                <tbody>
+                    ${listingsWithHistory.map(item => renderTableRow(item)).join('')}
+                </tbody>
+                <tfoot id="summary-row" style="display: none; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; font-weight: bold;">
+                    <tr id="summary-tr">
+                        <td id="summary-total-price" colspan="2" style="text-align: right; padding: 0.75rem;">-</td>
+                        <td id="summary-avg-price" colspan="2" style="padding: 0.75rem; font-size: 0.85rem;">-</td>
+                        <td id="summary-count" style="padding: 0.75rem;">- listings</td>
+                    </tr>
+                </tfoot>
+            </table>
+            </div>
+        `;
+
+        container.innerHTML = html;
+
+        // Show summary row if enabled in settings
+        const showSummary = localStorage.getItem('showSummaryFields') === 'true';
+        const summaryRow = document.getElementById('summary-row');
+        if (showSummary && summaryRow) {
+            summaryRow.style.display = 'table-row-group';
+            // Calculate totals
+            const totalPrice = listingsWithHistory.reduce((sum, item) => sum + parseFloat(item.price_eur || 0), 0);
+            const avgPrice = listingsWithHistory.length > 0 ? totalPrice / listingsWithHistory.length : 0;
+            const count = listingsWithHistory.length;
+            document.getElementById('summary-total-price').textContent = `Summary: €${totalPrice.toFixed(2)} total`;
+            document.getElementById('summary-avg-price').textContent = `avg: €${avgPrice.toFixed(2)}`;
+            document.getElementById('summary-count').textContent = `${count} listings shown`;
+            updateSummaryRowColspans();
+        }
+
+        // Add click listener to close dropdown
+        document.addEventListener('click', closeColumnSettings);
+
+        // Apply current visibility classes to header/body cells for columns hidden before initial load
+        applyHiddenColumnClasses();
+
+    } catch (error) {
+        document.getElementById('listings-container').innerHTML =
+            `<div class="error">Failed to load listings: ${error.message}</div>`;
+    } finally {
+        const spinner = document.getElementById('sort-spinner');
+        if (spinner) spinner.style.display = 'none';
+    }
+}
+
+async function fetchPriceHistoryForListings(listings) {
+    const historyPromises = listings.map(async item => {
+        try {
+            const res = await fetch(`/api/price-history/${item.listing_id}`);
+            const data = await res.json();
+            return { ...item, history: data };
+        } catch (e) {
+            return { ...item, history: [] };
+        }
+    });
+
+    return await Promise.all(historyPromises);
+}
+
+function renderPriceDecreaseBadge(item) {
+    if (item.has_price_decreased && item.price_changes && item.price_changes.length > 0) {
+        const change = item.price_changes[0];
+        if (change.change < 0) {
+            return `<span class="badge badge-success" title="Price dropped by €${Math.abs(change.change).toFixed(2)}">↓ Price Drop</span><br>`;
+        }
+    }
+    return '';
+}
+
+function renderHistoryButton(listingId, history) {
+    if (history && history.length > 1) {
+        return `<button class="btn btn-small" style="background: #667eea; color: white; border: none;" onclick="event.stopPropagation(); showListingHistory('${listingId}')" title="View price history for this listing">History</button>`;
+    }
+    return '';
+}
+
+async function showListingHistory(listingId) {
+    try {
+        // Fetch price history
+        const historyResponse = await fetch(`/api/price-history/${listingId}`);
+        const history = await historyResponse.json();
+
+        // Fetch listing details including description
+        const listingResponse = await fetch(`/api/listing-details/${listingId}`);
+        const listingData = await listingResponse.json();
+        const current = listingData.current || {};
+
+        document.getElementById('listing-title').textContent = current.title || 'Listing Details';
+
+        // Resolve image URL: prefer local download, fall back to original remote URL.
+        // Normalize Windows backslashes from the DB so Flask's /images/<path:filename> route works.
+        // CPU images are stored under SS-CRAWLER/images/cpu (ss.com) or images/facebook (facebook).
+        // If the stored path already contains a folder prefix, use it; otherwise default to cpu/.
+        const localImagePath = current.local_image_path ? String(current.local_image_path).replace(/\\/g, '/') : null;
+        const remoteImageUrl = current.image_url ? String(current.image_url) : null;
+        let imageUrl = localImagePath
+            ? (localImagePath.includes('/') ? `/images/${localImagePath}` : `/images/cpu/${localImagePath}`)
+            : remoteImageUrl;
+        const fallbackImageUrl = remoteImageUrl || '';
+
+        let html = '';
+
+        // Image display (like motherboards.html detail popup)
+        if (imageUrl) {
+            const safeImageUrl = imageUrl.replace(/'/g, "\\'");
+            const safeFallbackImageUrl = fallbackImageUrl.replace(/'/g, "\\'");
+            html += `
+                <div style="margin-bottom: 1rem; text-align: center;">
+                    <img src="${imageUrl}" alt="${current.title || 'CPU listing'}"
+                         style="max-width: 100%; max-height: 70vh; border-radius: 8px; cursor: zoom-in; box-shadow: 0 2px 8px rgba(0,0,0,0.1);"
+                         onerror="this.onerror=null; this.src='${safeFallbackImageUrl}';"
+                         onclick="showImageModal('${safeImageUrl}', '${(current.title || '').replace(/'/g, "\\'")}')">
+                </div>
+            `;
+        }
+
+        // CPU-specific info
+        if (current.vendor || current.cpu_name || current.cores || current.threads || current.socket || current.processor_number) {
+            html += `
+                <div style="margin-bottom: 1.5rem; padding: 1rem; background: #f8f9fa; border-radius: 8px; border-left: 4px solid #667eea;">
+                    <h4 style="margin-bottom: 0.75rem; color: #667eea;">CPU Details</h4>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem;">
+                        ${current.vendor ? `<div><strong>Brand:</strong> ${current.vendor}</div>` : ''}
+                        ${current.cpu_name ? `<div><strong>Model:</strong> ${current.cpu_name}</div>` : ''}
+                        ${current.processor_number ? `<div><strong>Processor Number:</strong> ${current.processor_number}</div>` : ''}
+                        ${current.cores ? `<div><strong>Cores / Threads:</strong> ${current.cores}${current.threads ? ` / ${current.threads}` : ''}</div>` : ''}
+                        ${current.socket ? `<div><strong>Socket:</strong> ${current.socket}</div>` : ''}
+                    </div>
+                </div>
+            `;
+        }
+
+        // Price info grid
+        html += `
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem;">
+                <div style="background: #f8f9fa; padding: 1rem; border-radius: 8px;">
+                    <strong>Current Price:</strong> <span class="price" style="font-size: 1.25rem;">€${current.price_eur || 'N/A'}</span>
+                </div>
+                <div style="background: #f8f9fa; padding: 1rem; border-radius: 8px;">
+                    <strong>Location:</strong> ${current.seller_location || 'N/A'}
+                </div>
+                <div style="background: #f8f9fa; padding: 1rem; border-radius: 8px;">
+                    <strong>Date:</strong> ${current.date_posted ? new Date(current.date_posted).toLocaleDateString() : 'N/A'}
+                </div>
+                <div style="background: #f8f9fa; padding: 1rem; border-radius: 8px;">
+                    <strong>Status:</strong> ${current.is_active ? '<span style="color: #27ae60;">Active</span>' : '<span style="color: #e74c3c;">Inactive</span>'}
+                </div>
+            </div>
+        `;
+
+        // CPU-specific info
+        if (current.cpu_name) {
+            html += `
+                <div style="background: #e8f0ff; padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
+                    <strong>CPU:</strong> ${current.producer || ''} ${current.cpu_name}<br>
+                    ${current.cores ? `<strong>Cores/Threads:</strong> ${current.cores}/${current.threads || '?'}<br>` : ''}
+                    ${current.match_method ? `<strong>Match Confidence:</strong> <span class="${(current.confidence_score || 0) >= 0.70 ? 'confidence-high' : ((current.confidence_score || 0) >= 0.50 ? 'confidence-medium' : 'confidence-low')}">${((current.confidence_score || 0) * 100).toFixed(0)}%</span>` : ''}
+                </div>
+            `;
+        }
+
+        // Description box (styled like GPU/Console)
+        html += `
+            <div style="margin-bottom: 1.5rem;">
+                <strong>Description:</strong>
+                <div class="description-box" style="margin-top: 0.5rem; max-height: 300px; overflow-y: auto; background: #f8f9fa; padding: 1rem; border-radius: 8px; border-left: 4px solid #667eea;">
+                    ${current.description ? escapeHtml(current.description).replace(/\n/g, '<br>') : '<em>No description available</em>'}
+                </div>
+            </div>
+        `;
+
+        // Add price history if available
+        if (history.length > 0) {
+            html += `
+                <h4 style="margin-top: 1.5rem; margin-bottom: 0.5rem;">Price History</h4>
+                <table style="width: 100%; margin-bottom: 1.5rem;">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Price</th>
+                            <th>Change</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+
+            let prevPrice = null;
+            history.forEach((h, index) => {
+                let changeHtml = '-';
+                if (prevPrice !== null) {
+                    const change = h.price_eur - prevPrice;
+                    const changePct = ((change / prevPrice) * 100).toFixed(1);
+                    if (change !== 0) {
+                        const color = change < 0 ? '#27ae60' : '#e74c3c';
+                        const arrow = change < 0 ? '↓' : '↑';
+                        changeHtml = `<span style="color: ${color};">${arrow} €${Math.abs(change).toFixed(2)} (${changePct}%)</span>`;
+                    }
+                }
+
+                html += `
+                    <tr>
+                        <td>${h.recorded_at ? new Date(h.recorded_at).toLocaleDateString() : 'N/A'}</td>
+                        <td class="price">€${h.price_eur}</td>
+                        <td>${changeHtml}</td>
+                    </tr>
+                `;
+
+                prevPrice = h.price_eur;
+            });
+
+            html += `</tbody></table>`;
+        }
+
+        // Add link to original listing
+        html += `
+            <div style="margin-top: 1.5rem; display: flex; gap: 1rem; justify-content: flex-end; align-items: center;">
+                ${current.source ? `<span class="badge" style="background: ${current.source === 'andelemandele' ? '#ff6b6b' : current.source === 'facebook_extension' ? '#4267B2' : '#90EE90'}; color: ${current.source === 'ss.com' ? '#333' : 'white'}; padding: 0.35rem 0.7rem; border-radius: 12px; font-size: 0.8rem; margin-right: auto;">${current.source === 'facebook_extension' ? 'Facebook' : current.source === 'andelemandele' ? 'Andele Mandele' : 'SS.com'}</span>` : ''}
+                <a href="${current.listing_url || '#'}" target="_blank" class="btn">
+                    View on ss.com →
+                </a>
+            </div>
+        `;
+
+        document.getElementById('listing-content').innerHTML = html;
+        document.getElementById('listing-modal').classList.add('active');
+
+    } catch (error) {
+        console.error('Error loading listing details:', error);
+        alert('Failed to load listing details');
+    }
+}
+
+function closeListingModal() {
+    document.getElementById('listing-modal').classList.remove('active');
+}
+
+async function showModelHistory(modelId, modelName) {
+    if (!modelId) return;
+
+    try {
+        const response = await fetch(`/api/model-history/cpu/${modelId}`);
+        const data = await response.json();
+
+        const listingsById = {};
+        (data.listings || []).forEach(item => {
+            const existing = listingsById[item.listing_id];
+            if (!existing || new Date(item.date_posted) > new Date(existing.date_posted)) {
+                listingsById[item.listing_id] = item;
+            }
+        });
+        const uniqueListings = Object.values(listingsById);
+
+        const stats = data.stats || {};
+        const modelInfo = data.model_info || {};
+
+        document.getElementById('history-title').textContent = `${modelInfo.producer || ''} ${modelInfo.cpu_name || modelName} - Price History`;
+
+        const sorted = [...uniqueListings].sort((a, b) => new Date(a.date_posted) - new Date(b.date_posted));
+        const dates = sorted.map(l => new Date(l.date_posted).toLocaleDateString());
+        const prices = sorted.map(l => l.price_eur);
+
+        if (historyChart) {
+            historyChart.destroy();
+        }
+
+        const ctx = document.getElementById('historyChart').getContext('2d');
+        historyChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: dates,
+                datasets: [{
+                    label: 'Price (€)',
+                    data: prices,
+                    borderColor: '#667eea',
+                    backgroundColor: 'rgba(102, 126, 234, 0.1)',
+                    fill: true,
+                    tension: 0.4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            callback: function(value) {
+                                return '€' + value;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // Normalize listing image URLs like the main listing table/popup does.
+        function getListingImageUrl(item) {
+            const localPath = item.local_image_path ? String(item.local_image_path).replace(/\\/g, '/') : null;
+            const remoteUrl = item.image_url ? String(item.image_url) : null;
+            if (localPath) {
+                return localPath.includes('/') ? `/images/${localPath}` : `/images/cpu/${localPath}`;
+            }
+            return remoteUrl || null;
+        }
+
+        let html = `
+            <div style="margin-bottom: 1.5rem;">
+                <h4>Quick Statistics</h4>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; margin-top: 1rem;">
+                    <div style="background: #f8f9fa; padding: 1rem; border-radius: 8px; text-align: center; border-left: 4px solid #667eea;">
+                        <div style="font-size: 1.5rem; font-weight: bold; color: #667eea;">€${stats.avg || 'N/A'}</div>
+                        <div style="font-size: 0.875rem; color: #666;">Average Price</div>
+                    </div>
+                    <div style="background: #f8f9fa; padding: 1rem; border-radius: 8px; text-align: center; border-left: 4px solid #27ae60;">
+                        <div style="font-size: 1.5rem; font-weight: bold; color: #27ae60;">€${stats.min || 'N/A'}</div>
+                        <div style="font-size: 0.875rem; color: #666;">Min Price</div>
+                    </div>
+                    <div style="background: #f8f9fa; padding: 1rem; border-radius: 8px; text-align: center; border-left: 4px solid #e74c3c;">
+                        <div style="font-size: 1.5rem; font-weight: bold; color: #e74c3c;">€${stats.max || 'N/A'}</div>
+                        <div style="font-size: 0.875rem; color: #666;">Max Price</div>
+                    </div>
+                    <div style="background: #f8f9fa; padding: 1rem; border-radius: 8px; text-align: center; border-left: 4px solid #764ba2;">
+                        <div style="font-size: 1.5rem; font-weight: bold; color: #764ba2;">${stats.count || 0}</div>
+                        <div style="font-size: 0.875rem; color: #666;">Listings (${uniqueListings.length} unique)</div>
+                    </div>
+                </div>
+            </div>
+
+            <h4>All Listings (${uniqueListings.length} unique)</h4>
+            <div style="overflow-x: auto;">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Image</th>
+                        <th>Title</th>
+                        <th>Price</th>
+                        <th>Location</th>
+                        <th>Date</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${uniqueListings.map(item => {
+                        const imgUrl = getListingImageUrl(item);
+                        const imgHtml = imgUrl
+                            ? `<img src="${imgUrl}" alt="${item.title || ''}" class="listing-thumb" style="width:60px;height:60px;object-fit:cover;border-radius:6px;cursor:pointer;" onerror="this.style.display='none'" onclick="event.stopPropagation(); showImageModal('${imgUrl.replace(/'/g, "\\'")}', '${(item.title || '').replace(/'/g, "\\'")}')">`
+                            : `<div class="listing-thumb-placeholder" style="width:60px;height:60px;">🖼️</div>`;
+                        return `
+                        <tr>
+                            <td style="text-align:center;">${imgHtml}</td>
+                            <td><a href="${item.listing_url}" target="_blank">${item.title}</a></td>
+                            <td class="price">€${item.price_eur}</td>
+                            <td>${item.seller_location || 'N/A'}</td>
+                            <td>${item.date_posted ? new Date(item.date_posted).toLocaleDateString() : 'N/A'}</td>
+                            <td>${item.is_active ? '<span class="badge badge-success">Active</span>' : '<span class="badge badge-danger">Inactive</span>'}</td>
+                        </tr>
+                    `}).join('')}
+                </tbody>
+            </table>
+            </div>
+        `;
+
+        document.getElementById('history-listings').innerHTML = html;
+        document.getElementById('history-modal').classList.add('active');
+
+    } catch (error) {
+        console.error('Error loading history:', error);
+    }
+}
+
+function closeModal() {
+    document.getElementById('history-modal').classList.remove('active');
+}
+
+document.getElementById('history-modal').addEventListener('click', function(e) {
+    if (e.target === this) {
+        closeModal();
+    }
+});
+
+function showImageModal(imageUrl, title) {
+    let modal = document.getElementById('image-preview-modal');
+    if (!modal) {
+        modal = document.createElement('div');
+        modal.id = 'image-preview-modal';
+        modal.className = 'modal-overlay';
+        modal.innerHTML = `
+            <div class="modal" style="max-width: 90%; max-height: 90%; padding: 0; overflow: hidden;">
+                <div style="position: relative; background: #000;">
+                    <button onclick="closeImageModal()" style="position: absolute; top: 10px; right: 10px; background: rgba(0,0,0,0.7); color: white; border: none; border-radius: 50%; width: 40px; height: 40px; font-size: 20px; cursor: pointer; z-index: 10;">&times;</button>
+                    <img id="preview-image" src="" alt="" style="max-width: 100%; max-height: 85vh; display: block; margin: 0 auto;" onload="fitPreviewImage(this)">
+                </div>
+                <div style="padding: 1rem; background: white; text-align: center;">
+                    <p id="preview-title" style="margin: 0; font-weight: 600;"></p>
+                </div>
+            </div>
+        `;
+        document.body.appendChild(modal);
+
+        modal.addEventListener('click', function(e) {
+            if (e.target === modal) {
+                closeImageModal();
+            }
+        });
+    }
+
+    document.getElementById('preview-image').src = imageUrl;
+    document.getElementById('preview-image').alt = title;
+    document.getElementById('preview-title').textContent = title;
+
+    modal.classList.add('active');
+}
+
+function closeImageModal() {
+    const modal = document.getElementById('image-preview-modal');
+    if (modal) {
+        modal.classList.remove('active');
+    }
+}
+
+function fitPreviewImage(img) {
+    if (!img || !img.naturalWidth || !img.naturalHeight) return;
+    const isPortrait = img.naturalHeight > img.naturalWidth;
+    if (isPortrait) {
+        img.style.maxWidth = '70%';
+        img.style.margin = '0 auto';
+    } else {
+        img.style.maxWidth = '100%';
+        img.style.margin = '0 auto';
+    }
+}
+
+// Escape HTML to prevent XSS
+function escapeHtml(text) {
+    if (!text) return '';
+    return text
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+}
+
+// Flag CPU listing function
+async function flagCPUListing(listingId, title) {
+    const reason = prompt(`Enter reason for flagging:\n\n${title}`, 'Suspicious');
+    if (!reason) return;
+
+    try {
+        const response = await fetch('/api/flag-listing', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                listing_id: listingId,
+                reason: reason,
+                console_name: 'CPU'
+            })
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+            alert('Listing flagged successfully!');
+            // Refresh listings to remove flagged item
+            loadListings();
+        } else {
+            alert('Error: ' + (data.error || 'Failed to flag listing'));
+        }
+    } catch (error) {
+        console.error('Error flagging listing:', error);
+        alert('Failed to flag listing. See console for details.');
+    }
+}
+
+// Flag modal with categories function
+function showFlagModalWithCategories(listingId, title) {
+    const existingModal = document.getElementById('flag-modal');
+    if (existingModal) existingModal.remove();
+
+    const modalHtml = `
+        <div id="flag-modal" class="modal-overlay active" style="z-index: 2000;">
+            <div class="modal" style="max-width: 500px;">
+                <div class="modal-header">
+                    <h3>🚩 Flag Listing</h3>
+                    <button class="modal-close" onclick="closeFlagModal()">×</button>
+                </div>
+                <div style="padding: 1.5rem;">
+                    <p style="margin-bottom: 1rem;"><strong>Listing:</strong> ${title || listingId}</p>
+
+                    <div class="form-group" style="margin-bottom: 1rem;">
+                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Flag Category:</label>
+                        <select id="flag-category" style="width: 100%; padding: 0.5rem; border: 1px solid #ddd; border-radius: 6px;">
+                            <option value="IGNORE">IGNORE - Hide from listings</option>
+                            <option value="SKIP">SKIP - Skip in future scrapes</option>
+                            <option value="SCRAPPER">SCRAPPER - Scraper issue</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group" style="margin-bottom: 1rem;">
+                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Reason:</label>
+                        <textarea id="flag-reason" placeholder="Enter reason (e.g., Scam, Wrong specs, Sold)"
+                            style="width: 100%; padding: 0.75rem; border: 2px solid #e74c3c; border-radius: 8px; font-family: inherit; resize: vertical;"
+                            rows="3"></textarea>
+                    </div>
+
+                    <div style="display: flex; gap: 0.5rem; justify-content: flex-end;">
+                        <button class="btn btn-small btn-secondary" onclick="closeFlagModal()">Cancel</button>
+                        <button class="btn btn-small" style="background: #e74c3c;" onclick="submitFlagFromModal('${listingId}')">Submit Flag</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+
+    document.body.insertAdjacentHTML('beforeend', modalHtml);
+
+    document.getElementById('flag-modal').addEventListener('click', function(e) {
+        if (e.target === this) closeFlagModal();
+    });
+}
+
+function closeFlagModal() {
+    const modal = document.getElementById('flag-modal');
+    if (modal) modal.remove();
+}
+
+function removeListingRow(listingId) {
+    const rows = document.querySelectorAll('#listings-container tbody tr, table tbody tr');
+    rows.forEach(row => {
+        const onclick = row.getAttribute('onclick') || '';
+        const html = row.innerHTML;
+        if (onclick.includes("'" + listingId + "'") || html.includes("'" + listingId + "'") || html.includes(listingId)) {
+            row.style.transition = 'opacity 0.3s ease';
+            row.style.opacity = '0';
+            setTimeout(() => row.remove(), 300);
+        }
+    });
+}
+
+async function submitFlagFromModal(listingId) {
+    const categorySelect = document.getElementById('flag-category');
+    const reasonInput = document.getElementById('flag-reason');
+
+    const category = categorySelect ? categorySelect.value : 'IGNORE';
+    const reason = reasonInput ? reasonInput.value.trim() : '';
+
+    if (!reason) {
+        alert('Please enter a reason for flagging');
+        return;
+    }
+
+    try {
+        const response = await fetch('/api/flag-listing', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                listing_id: listingId,
+                comment: reason,
+                category: 'cpu',
+                flag_category: category
+            })
+        });
+
+        const data = await response.json();
+        if (data.success) {
+            alert('✅ Listing flagged successfully!');
+            closeFlagModal();
+            removeListingRow(listingId);
+            loadListings();
+        } else {
+            alert('Error: ' + (data.error || 'Failed to flag listing'));
+        }
+    } catch (error) {
+        console.error('Error flagging listing:', error);
+        alert('Failed to flag listing. Please try again.');
+    }
+}
+
+// Update model filter based on vendor/series selection
+function updateModelFilter() {
+    const vendorFilter = document.getElementById('vendor-filter')?.value || '';
+    const seriesFilter = document.getElementById('series-filter')?.value || '';
+    const modelSelect = document.getElementById('model-filter');
+
+    if (!modelSelect) return;
+
+    // Save current selection
+    const currentModel = modelSelect.value;
+
+    // Filter current listings data
+    let filteredModels = currentListingsData || [];
+
+    if (vendorFilter) {
+        filteredModels = filteredModels.filter(item =>
+            (item.vendor || item.producer || '').toLowerCase() === vendorFilter.toLowerCase()
+        );
+    }
+
+    if (seriesFilter) {
+        filteredModels = filteredModels.filter(item => {
+            const cpuName = (item.cpu_name || item.processor_number || '').toLowerCase();
+            return cpuName.includes(seriesFilter.toLowerCase());
+        });
+    }
+
+    // Get unique models
+    const uniqueModels = [...new Set(filteredModels
+        .map(item => item.cpu_name || item.processor_number)
+        .filter(Boolean)
+    )].sort();
+
+    // Rebuild options
+    modelSelect.innerHTML = '<option value="">All Models</option>';
+    uniqueModels.forEach(model => {
+        const option = document.createElement('option');
+        option.value = model;
+        option.textContent = model;
+        modelSelect.appendChild(option);
+    });
+
+    // Restore selection if still valid
+    if (currentModel && uniqueModels.includes(currentModel)) {
+        modelSelect.value = currentModel;
+    }
+}
+
+// Populate model filter from current listings
+function populateModelFilter(listings) {
+    const modelSelect = document.getElementById('model-filter');
+    if (!modelSelect) return;
+
+    const currentModel = modelSelect.value;
+
+    // Get unique models from current listings
+    const uniqueModels = [...new Set(listings
+        .map(item => item.cpu_name || item.processor_number)
+        .filter(Boolean)
+    )].sort();
+
+    // Rebuild options
+    modelSelect.innerHTML = '<option value="">All Models</option>';
+    uniqueModels.forEach(model => {
+        const option = document.createElement('option');
+        option.value = model;
+        option.textContent = model;
+        modelSelect.appendChild(option);
+    });
+
+    // Restore selection if still valid
+    if (currentModel && uniqueModels.includes(currentModel)) {
+        modelSelect.value = currentModel;
+    }
+}
+
+
+
+// =================== CPU Widget System ===================
+(function() {
+    
+const WIDGET_ORDER_KEY = 'cpuWidgetOrder';
+const WIDGET_PINNED_KEY = 'cpuWidgetPinned';
+const WIDGET_HIDDEN_KEY = 'cpuWidgetHidden';
+const WIDGET_MINIMIZED_KEY = 'cpuWidgetMinimized';
+const WIDGET_DRAG_MODE_KEY = 'cpuWidgetDragMode';
+const GRID_COLS_KEY = 'cpuGridCols';
+
+function getDefaultOrder() {
+    return ['most-listed', 'mb-year', 'cpu-platform', 'cpu-socket', 'price-vendor', 'source', 'class', 'top-deals', 'best-value', 'mb-market'];
+}
+
+function getDefaultSubgridOrder() {
+    return ['mb-year', 'cpu-platform', 'cpu-socket', 'price-vendor', 'source', 'class', 'top-deals', 'best-value', 'mb-market'];
+}
+
+function loadWidgetOrder() {
+    try {
+        const raw = localStorage.getItem(WIDGET_ORDER_KEY);
+        if (raw) return JSON.parse(raw);
+    } catch (e) { console.error('Error loading widget order:', e); }
+    return getDefaultOrder();
+}
+
+function saveWidgetOrder(order) {
+    try {
+        localStorage.setItem(WIDGET_ORDER_KEY, JSON.stringify(order || getDefaultOrder()));
+    } catch (e) { console.error('Error saving widget order:', e); }
+}
+
+function loadWidgetHidden() {
+    try {
+        const raw = localStorage.getItem(WIDGET_HIDDEN_KEY);
+        if (raw) return JSON.parse(raw);
+    } catch (e) { console.error('Error loading hidden widgets:', e); }
+    return {};
+}
+
+function saveWidgetHidden(hidden) {
+    try {
+        localStorage.setItem(WIDGET_HIDDEN_KEY, JSON.stringify(hidden || {}));
+    } catch (e) { console.error('Error saving hidden widgets:', e); }
+}
+
+function loadWidgetMinimized() {
+    try {
+        const raw = localStorage.getItem(WIDGET_MINIMIZED_KEY);
+        if (raw) return JSON.parse(raw);
+    } catch (e) { console.error('Error loading minimized widgets:', e); }
+    return {};
+}
+
+function saveWidgetMinimized(minimized) {
+    try {
+        localStorage.setItem(WIDGET_MINIMIZED_KEY, JSON.stringify(minimized || {}));
+    } catch (e) { console.error('Error saving minimized widgets:', e); }
+}
+
+function loadDragMode() {
+    try {
+        return localStorage.getItem(WIDGET_DRAG_MODE_KEY) === 'true';
+    } catch (e) { console.error('Error loading drag mode:', e); }
+    return false;
+}
+
+function saveDragMode(active) {
+    try {
+        localStorage.setItem(WIDGET_DRAG_MODE_KEY, active ? 'true' : 'false');
+    } catch (e) { console.error('Error saving drag mode:', e); }
+}
+
+function loadWidgetPinned() {
+    try {
+        const raw = localStorage.getItem(WIDGET_PINNED_KEY);
+        if (raw) return JSON.parse(raw);
+    } catch (e) { console.error('Error loading pinned widgets:', e); }
+    return {};
+}
+
+function saveWidgetPinned(pinned) {
+    try {
+        localStorage.setItem(WIDGET_PINNED_KEY, JSON.stringify(pinned || {}));
+    } catch (e) { console.error('Error saving pinned widgets:', e); }
+}
+
+function getWidgetById(id) {
+    return document.querySelector(`.widget-card[data-widget-id="${id}"]`);
+}
+
+function updatePinVisual(card, isPinned) {
+    if (!card) return;
+    const btn = card.querySelector('.widget-pin-btn');
+    if (btn) btn.classList.toggle('active', isPinned);
+    card.classList.toggle('pinned', isPinned);
+}
+
+function applyWidgetState() {
+    const hidden = loadWidgetHidden();
+    const minimized = loadWidgetMinimized();
+    document.querySelectorAll('.widget-card').forEach(card => {
+        const id = card.dataset.widgetId;
+        card.classList.toggle('hidden', !!hidden[id]);
+        card.classList.toggle('minimized', !!minimized[id]);
+        const toggleBtn = card.querySelector('.widget-toggle-btn');
+        if (toggleBtn) {
+            toggleBtn.textContent = hidden[id] ? '👁' : '🙈';
+            toggleBtn.title = hidden[id] ? 'Show widget' : 'Hide widget';
+        }
+    });
+}
+
+function applyWidgetLayout() {
+    const order = loadWidgetOrder();
+    const pinned = loadWidgetPinned();
+    const mainGrid = document.getElementById('cpu-widget-grid');
+    const subGrid = document.getElementById('cpu-widget-subgrid');
+    if (!mainGrid || !subGrid) return;
+
+    const defaults = getDefaultOrder();
+    const validOrder = [];
+    order.forEach(id => { if (defaults.includes(id) && !validOrder.includes(id)) validOrder.push(id); });
+    defaults.forEach(id => { if (!validOrder.includes(id)) validOrder.push(id); });
+
+    const mainDefault = 'most-listed';
+    validOrder.forEach(id => {
+        const card = getWidgetById(id);
+        if (!card) return;
+        if (id === mainDefault) {
+            mainGrid.insertBefore(card, subGrid);
+        } else {
+            subGrid.appendChild(card);
+        }
+        updatePinVisual(card, !!pinned[id]);
+    });
+
+    applyWidgetState();
+    updateDragModeUI();
+}
+
+window.toggleWidgetVisibility = function(id) {
+    const card = getWidgetById(id);
+    if (!card) return;
+    const hidden = loadWidgetHidden();
+    hidden[id] = !hidden[id];
+    saveWidgetHidden(hidden);
+    applyWidgetState();
+};
+
+window.toggleWidgetMinimize = function(id) {
+    const card = getWidgetById(id);
+    if (!card) return;
+    const minimized = loadWidgetMinimized();
+    minimized[id] = !minimized[id];
+    saveWidgetMinimized(minimized);
+    applyWidgetState();
+};
+
+window.openWidgetManager = function() {
+    const hidden = loadWidgetHidden();
+    const defaults = getDefaultOrder();
+    let html = '<div style="display: flex; flex-direction: column; gap: 0.4rem; max-height: 60vh; overflow-y: auto;">';
+    defaults.forEach(id => {
+        const card = getWidgetById(id);
+        const title = card ? (card.querySelector('h3, h4')?.textContent?.trim() || id) : id;
+        const isHidden = !!hidden[id];
+        html += `
+            <label style="display: flex; align-items: center; gap: 0.5rem; padding: 0.4rem; cursor: pointer; border-radius: 4px; ${isHidden ? 'opacity: 0.6;' : ''}">
+                <input type="checkbox" ${isHidden ? '' : 'checked'} onchange="toggleWidgetVisibility('${id}')">
+                <span>${title}</span>
+            </label>
+        `;
+    });
+    html += '</div><div style="margin-top: 0.75rem; font-size: 0.75rem; color: #888;">Uncheck to hide. Hidden widgets stay hidden after reload.</div>';
+
+    let modal = document.getElementById('widget-manager-modal');
+    if (!modal) {
+        modal = document.createElement('div');
+        modal.id = 'widget-manager-modal';
+        modal.className = 'modal-overlay';
+        modal.innerHTML = `
+            <div class="modal" style="max-width: 360px; padding: 1.5rem;">
+                <div class="modal-header">
+                    <h3>👁 Manage Widgets</h3>
+                    <button class="modal-close" onclick="closeWidgetManager()">×</button>
+                </div>
+                <div id="widget-manager-content"></div>
+            </div>
+        `;
+        modal.addEventListener('click', e => { if (e.target === modal) closeWidgetManager(); });
+        document.body.appendChild(modal);
+    }
+    document.getElementById('widget-manager-content').innerHTML = html;
+    modal.classList.add('active');
+};
+
+window.closeWidgetManager = function() {
+    const modal = document.getElementById('widget-manager-modal');
+    if (modal) modal.classList.remove('active');
+};
+
+window.toggleDragMode = function() {
+    dragModeActive = !dragModeActive;
+    saveDragMode(dragModeActive);
+    updateDragModeUI();
+};
+
+window.toggleWidgetPin = function(id) {
+    const card = getWidgetById(id);
+    if (!card) return;
+    const pinned = loadWidgetPinned();
+    pinned[id] = !pinned[id];
+    saveWidgetPinned(pinned);
+    updatePinVisual(card, pinned[id]);
+};
+
+window.resetWidgets = function() {
+    if (!confirm('Reset widget layout to default?')) return;
+    localStorage.removeItem(WIDGET_ORDER_KEY);
+    localStorage.removeItem(WIDGET_PINNED_KEY);
+    localStorage.removeItem(WIDGET_HIDDEN_KEY);
+    localStorage.removeItem(WIDGET_MINIMIZED_KEY);
+    localStorage.removeItem(WIDGET_DRAG_MODE_KEY);
+    localStorage.removeItem(GRID_COLS_KEY);
+    location.reload();
+};
+
+function updateDragModeUI() {
+    const btn = document.getElementById('toggle-drag-mode-btn');
+    const cards = document.querySelectorAll('.widget-card');
+    document.body.classList.toggle('drag-mode-active', dragModeActive);
+    if (btn) {
+        btn.textContent = dragModeActive ? '✋ Dragging ON' : '✋ Drag';
+        btn.style.background = dragModeActive ? 'rgba(102,126,234,0.2)' : '';
+        btn.style.borderColor = dragModeActive ? '#667eea' : '';
+        btn.title = dragModeActive ? 'Drag mode is on - grab the ☰ handle to reorder' : 'Toggle drag mode';
+    }
+    cards.forEach(card => {
+        const handle = card.querySelector('.widget-drag-handle');
+        if (handle) {
+            handle.style.opacity = dragModeActive ? '1' : '0.75';
+            handle.title = dragModeActive ? 'Drag to move this widget' : 'Enable Drag mode to reorder widgets';
+            handle.textContent = dragModeActive ? '≡' : '☰';
+        }
+    });
+}
+
+function ensureDragTooltip() {
+    let tip = document.getElementById('drag-tooltip');
+    if (!tip) {
+        tip = document.createElement('div');
+        tip.id = 'drag-tooltip';
+        document.body.appendChild(tip);
+    }
+    return tip;
+}
+
+function showDragTooltip(text, x, y) {
+    const tip = ensureDragTooltip();
+    tip.textContent = text;
+    tip.style.left = (x + 14) + 'px';
+    tip.style.top = (y + 14) + 'px';
+    tip.style.opacity = '1';
+}
+
+function hideDragTooltip() {
+    const tip = document.getElementById('drag-tooltip');
+    if (tip) tip.style.opacity = '0';
+}
+
+let dragModeActive = false;
+let draggedCard = null;
+let placeholder = null;
+let dragGhost = null;
+
+function createPlaceholder(referenceCard) {
+    if (placeholder) placeholder.remove();
+    placeholder = document.createElement('div');
+    placeholder.className = 'widget-placeholder';
+    placeholder.style.gridColumn = referenceCard.style.gridColumn || getComputedStyle(referenceCard).gridColumn;
+    const rect = referenceCard.getBoundingClientRect();
+    placeholder.style.width = rect.width + 'px';
+    placeholder.style.height = rect.height + 'px';
+    return placeholder;
+}
+
+function removePlaceholder() {
+    if (placeholder) {
+        placeholder.remove();
+        placeholder = null;
+    }
+}
+
+function getDropTarget(x, y, zone) {
+    const cards = [...zone.querySelectorAll('.widget-card:not(.dragging):not(.hidden)')];
+    if (!cards.length) return null;
+    return cards.reduce((closest, child) => {
+        const box = child.getBoundingClientRect();
+        const cx = box.left + box.width / 2;
+        const cy = box.top + box.height / 2;
+        const dist = Math.hypot(x - cx, y - cy);
+        if (dist < closest.dist) return { dist, element: child };
+        return closest;
+    }, { dist: Infinity }).element;
+}
+
+function movePlaceholder(clientX, clientY) {
+    if (!draggedCard) return;
+    const subGrid = document.getElementById('cpu-widget-subgrid');
+    if (!subGrid) return;
+    const rect = subGrid.getBoundingClientRect();
+    const inside = clientX >= rect.left && clientX <= rect.right && clientY >= rect.top && clientY <= rect.bottom;
+    if (!inside) {
+        removePlaceholder();
+        showDragTooltip('Drop inside the grid', clientX, clientY);
+        return;
+    }
+    subGrid.classList.add('drag-active');
+    const target = getDropTarget(clientX, clientY, subGrid);
+    const ph = createPlaceholder(draggedCard);
+    if (!target || target === draggedCard) {
+        subGrid.appendChild(ph);
+    } else {
+        subGrid.insertBefore(ph, target);
+    }
+    showDragTooltip('Drop to reorder widget', clientX, clientY);
+}
+
+function onPointerMove(e) {
+    if (!draggedCard) return;
+    if (dragGhost) {
+        dragGhost.style.left = (e.clientX - dragGhost.offsetX) + 'px';
+        dragGhost.style.top = (e.clientY - dragGhost.offsetY) + 'px';
+    }
+    movePlaceholder(e.clientX, e.clientY);
+}
+
+function onPointerUp(e) {
+    if (!draggedCard) return;
+    const subGrid = document.getElementById('cpu-widget-subgrid');
+    const mainGrid = document.getElementById('cpu-widget-grid');
+    if (placeholder && placeholder.parentElement && placeholder.parentElement === subGrid) {
+        subGrid.insertBefore(draggedCard, placeholder);
+        const order = ['most-listed'];
+        subGrid.querySelectorAll('.widget-card').forEach(c => order.push(c.dataset.widgetId));
+        saveWidgetOrder(order);
+    } else if (placeholder && placeholder.parentElement) {
+        placeholder.parentElement.insertBefore(draggedCard, placeholder);
+        const order = Array.from(document.querySelectorAll('.widget-card')).map(c => c.dataset.widgetId).filter(Boolean);
+        saveWidgetOrder(order);
+    }
+    cleanupDrag();
+}
+
+function cleanupDrag() {
+    if (dragGhost) {
+        dragGhost.remove();
+        dragGhost = null;
+    }
+    if (draggedCard) {
+        draggedCard.classList.remove('dragging');
+        draggedCard.style.display = '';
+        draggedCard = null;
+    }
+    removePlaceholder();
+    document.querySelectorAll('#cpu-widget-grid, #cpu-widget-subgrid').forEach(z => z.classList.remove('drag-active'));
+    hideDragTooltip();
+    document.removeEventListener('pointermove', onPointerMove);
+    document.removeEventListener('pointerup', onPointerUp);
+    document.removeEventListener('pointercancel', onPointerUp);
+}
+
+function createDragGhost(card, x, y) {
+    const rect = card.getBoundingClientRect();
+    const ghost = document.createElement('div');
+    ghost.className = 'drag-clone';
+    ghost.textContent = card.querySelector('h3, h4')?.textContent?.trim() || 'Widget';
+    ghost.style.width = Math.min(rect.width, 220) + 'px';
+    ghost.style.height = 'auto';
+    ghost.style.padding = '0.75rem';
+    ghost.style.display = 'flex';
+    ghost.style.alignItems = 'center';
+    ghost.style.justifyContent = 'center';
+    ghost.style.fontWeight = '600';
+    ghost.style.boxShadow = '0 8px 24px rgba(0,0,0,0.25)';
+    ghost.offsetX = x - rect.left;
+    ghost.offsetY = y - rect.top;
+    document.body.appendChild(ghost);
+    return ghost;
+}
+
+function initDragAndDrop() {
+    document.querySelectorAll('.widget-card').forEach(card => {
+        // The sidebar widget is managed (hidden/shown) but stays in the sidebar
+        if (card.dataset.widgetId === 'most-listed') return;
+        const handle = card.querySelector('.widget-drag-handle');
+        if (!handle) return;
+        handle.addEventListener('pointerdown', e => {
+            if (!dragModeActive) return;
+            e.preventDefault();
+            e.stopPropagation();
+            draggedCard = card;
+            card.classList.add('dragging');
+            card.style.display = 'none';
+            dragGhost = createDragGhost(card, e.clientX, e.clientY);
+            movePlaceholder(e.clientX, e.clientY);
+            document.addEventListener('pointermove', onPointerMove);
+            document.addEventListener('pointerup', onPointerUp);
+            document.addEventListener('pointercancel', onPointerUp);
+        });
+    });
+}
+
+window.initWidgetSystem = function() {
+    dragModeActive = loadDragMode();
+    applyWidgetLayout();
+    initDragAndDrop();
+};
+})();
+
+// ==========================================================
+document.addEventListener('DOMContentLoaded', function() {
+    loadListings();
+    loadCPUStatistics();
+    loadMotherboardStatistics();
+    initWidgetSystem();
+});
+
+// Close modal on outside click
+document.getElementById('listing-modal').addEventListener('click', function(e) {
+    if (e.target === this) closeListingModal();
+});
+
+// Close history modal on outside click
+document.getElementById('history-modal').addEventListener('click', function(e) {
+    if (e.target === this) closeModal();
+});
+</script>
+
+</body>
+</html>

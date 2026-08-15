@@ -1,0 +1,5 @@
+<!-- Facebook Scraper Extension Icon - 128x128 SVG -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128">
+  <rect width="128" height="128" rx="16" fill="linear-gradient(135deg, #667eea 0%, #764ba2 100%)"/>
+  <text x="64" y="80" font-size="64" text-anchor="middle" fill="white">🔍</text>
+</svg>

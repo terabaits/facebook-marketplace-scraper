@@ -1,0 +1,2452 @@
+{% extends "base.html" %}
+
+{% block title %}RAM Listings - SS-Crawler{% endblock %}
+
+{% block extra_css %}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Column Settings Button - inline with table headers */
+.column-settings-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+    padding: 0.5rem;
+    opacity: 0.6;
+    transition: opacity 0.2s;
+}
+
+.column-settings-btn:hover {
+    opacity: 1;
+}
+
+.column-settings-dropdown {
+    position: fixed;
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    padding: 0.75rem;
+    min-width: 220px;
+    z-index: 10000;
+    display: none;
+}
+
+.column-settings-dropdown.active {
+    display: block;
+}
+
+.column-settings-dropdown h4 {
+    margin: 0 0 0.75rem 0;
+    font-size: 0.9rem;
+    color: #333;
+}
+
+.column-option {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem;
+    border-radius: 4px;
+    cursor: move;
+    transition: background 0.2s;
+}
+
+.column-option:hover {
+    background: #f5f5f5;
+}
+
+.column-option.dragging {
+    opacity: 0.5;
+    background: #e3f2fd;
+}
+
+.drag-handle {
+    color: #999;
+    cursor: move;
+    font-size: 1.2rem;
+}
+
+.column-option input[type="checkbox"] {
+    cursor: pointer;
+}
+
+.column-option label {
+    flex: 1;
+    cursor: pointer;
+    font-size: 0.875rem;
+    margin: 0;
+}
+
+.column-option input:disabled + label {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.column-settings-footer {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 0.75rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid #eee;
+}
+
+.column-settings-footer button {
+    flex: 1;
+    padding: 0.4rem;
+    font-size: 0.8rem;
+    border: 1px solid #ddd;
+    background: #f5f5f5;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.column-settings-footer button:hover {
+    background: #e0e0e0;
+}
+
+/* Chart containers */
+.chart-container {
+    position: relative;
+    height: 300px;
+    width: 100%;
+    margin: 1rem 0;
+}
+
+.trends-section {
+    margin-top: 2rem;
+    padding: 1.5rem;
+    background: var(--card-bg);
+    border-radius: 8px;
+    border: 1px solid var(--card-border);
+}
+
+.trends-controls {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.trend-value {
+    font-weight: bold;
+    color: #667eea;
+}
+
+.trend-up { color: #27ae60; }
+.trend-down { color: #e74c3c; }
+
+/* Stats bar */
+.stats-bar {
+    display: flex;
+    gap: 2rem;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.stat {
+    text-align: center;
+}
+
+.stat-value {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: #667eea;
+}
+
+.stat-label {
+    font-size: 0.875rem;
+    color: #888;
+}
+
+/* Price below/above average */
+.price-below-avg { color: #27ae60; font-weight: 600; }
+.price-above-avg { color: #e74c3c; font-weight: 600; }
+
+/* Loading animation */
+.loading {
+    text-align: center;
+    padding: 2rem;
+    color: #666;
+}
+
+.loading::after {
+    content: '';
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 2px solid #667eea;
+    border-top-color: transparent;
+    border-radius: 50%;
+    margin-left: 0.5rem;
+    animation: spin 1s linear infinite;
+}
+
+/* DDR type badges */
+.badge-ddr3 { background: #e74c3c; }
+.badge-ddr4 { background: #3498db; }
+.badge-ddr5 { background: #9b59b6; }
+
+/* Price stats */
+.price-bar {
+    height: 6px;
+    background: #e0e0e0;
+    border-radius: 3px;
+    margin: 0.5rem 0;
+    overflow: hidden;
+}
+
+.price-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #667eea, #764ba2);
+    border-radius: 3px;
+    transition: width 0.3s ease;
+}
+
+/* Filter buttons */
+.filter-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin: 1rem 0;
+}
+
+.filter-btn {
+    padding: 0.4rem 0.8rem;
+    border: 1px solid #ddd;
+    background: #f5f5f5;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-size: 0.875rem;
+}
+
+.filter-btn:hover {
+    background: #e0e0e0;
+}
+
+.filter-btn.active {
+    background: #667eea;
+    color: white;
+    border-color: #667eea;
+}
+
+/* Dark mode compatibility */
+[data-theme="dark"] .column-settings-dropdown {
+    background: #2d2d2d;
+    border-color: #444;
+}
+
+[data-theme="dark"] .column-settings-dropdown h4 {
+    color: #e0e0e0;
+}
+
+[data-theme="dark"] .column-option:hover {
+    background: #3a3a3a;
+}
+
+[data-theme="dark"] .column-settings-footer button {
+    background: #3a3a3a;
+    border-color: #444;
+    color: #e0e0e0;
+}
+
+[data-theme="dark"] .column-settings-footer button:hover {
+    background: #4a4a4a;
+}
+
+[data-theme="dark"] .filter-btn {
+    background: #3a3a3a;
+    border-color: #444;
+    color: #e0e0e0;
+}
+
+[data-theme="dark"] .filter-btn:hover {
+    background: #4a4a4a;
+}
+
+[data-theme="dark"] .price-bar {
+    background: #444;
+}
+
+/* Model history popup styles */
+.model-history-popup {
+    position: absolute;
+    background: var(--card-bg);
+    border: 2px solid #667eea;
+    border-radius: 8px;
+    padding: 1rem;
+    z-index: 1000;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    min-width: 280px;
+    max-width: 350px;
+}
+
+.model-history-popup h4 {
+    margin: 0 0 0.5rem 0;
+    font-size: 0.9rem;
+    color: var(--text-color);
+    border-bottom: 1px solid var(--card-border);
+    padding-bottom: 0.5rem;
+}
+
+.model-history-popup .seen-badge {
+    display: inline-block;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.model-history-popup .seen-badge.seen {
+    background: #27ae60;
+    color: white;
+}
+
+.model-history-popup .seen-badge.new {
+    background: #f39c12;
+    color: white;
+}
+
+.model-history-popup .price-comparison {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.model-history-popup .price-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.875rem;
+}
+
+.model-history-popup .price-row .label {
+    color: #888;
+}
+
+.model-history-popup .price-row .value {
+    font-weight: 600;
+}
+
+.model-history-popup .price-row .value.better {
+    color: #27ae60;
+}
+
+.model-history-popup .price-row .value.worse {
+    color: #e74c3c;
+}
+
+{% endblock %}
+
+{% block content %}
+<div class="section">
+    <h2>{{ t('RAM Listings') }}</h2>
+    
+    <div class="stats-bar">
+        <div class="stat">
+            <span class="stat-value" id="stat-total">-</span>
+            <span class="stat-label">{{ t('Total Listings') }}</span>
+        </div>
+        <div class="stat">
+            <span class="stat-value" id="stat-active">-</span>
+            <span class="stat-label">Active</span>
+        </div>
+        <div class="stat">
+            <span class="stat-value" id="stat-avg-price">-</span>
+            <span class="stat-label">{{ t('Avg Price') }}</span>
+        </div>
+    </div>
+    
+    <!-- DDR Type Stats Cards -->
+    <div class="ddr-stats-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin: 1.5rem 0;">
+        <div class="ddr-card ddr3-card">
+            <div class="ddr-icon">🟥</div>
+            <div class="ddr-info">
+                <div class="ddr-type">DDR3</div>
+                <div class="ddr-stat" id="ddr3-count">-</div>
+                <div class="ddr-label">listings</div>
+                <div class="ddr-prices" id="ddr3-prices">-</div>
+            </div>
+        </div>
+        
+        <div class="ddr-card ddr4-card">
+            <div class="ddr-icon">🟦</div>
+            <div class="ddr-info">
+                <div class="ddr-type">DDR4</div>
+                <div class="ddr-stat" id="ddr4-count">-</div>
+                <div class="ddr-label">listings</div>
+                <div class="ddr-prices" id="ddr4-prices">-</div>
+            </div>
+        </div>
+        
+        <div class="ddr-card ddr5-card">
+            <div class="ddr-icon">🟪</div>
+            <div class="ddr-info">
+                <div class="ddr-type">DDR5</div>
+                <div class="ddr-stat" id="ddr5-count">-</div>
+                <div class="ddr-label">listings</div>
+                <div class="ddr-prices" id="ddr5-prices">-</div>
+            </div>
+        </div>
+        
+    </div>
+    
+    <style>
+    .ddr-card {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border-radius: 12px;
+        padding: 1.25rem;
+        color: white;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+    
+    .ddr-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+    }
+    
+    .ddr3-card {
+        background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+        box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);
+    }
+    
+    .ddr3-card:hover {
+        box-shadow: 0 8px 25px rgba(231, 76, 60, 0.4);
+    }
+    
+    .ddr4-card {
+        background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+        box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
+    }
+    
+    .ddr4-card:hover {
+        box-shadow: 0 8px 25px rgba(52, 152, 219, 0.4);
+    }
+    
+    .ddr5-card {
+        background: linear-gradient(135deg, #9b59b6 0%, #8e44ad 100%);
+        box-shadow: 0 4px 15px rgba(155, 89, 182, 0.3);
+    }
+    
+    .ddr5-card:hover {
+        box-shadow: 0 8px 25px rgba(155, 89, 182, 0.4);
+    }
+    
+    .ddr-icon {
+        font-size: 2.5rem;
+        filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+    }
+    
+    .ddr-info {
+        flex: 1;
+    }
+    
+    .ddr-type {
+        font-size: 1.1rem;
+        font-weight: 700;
+        margin-bottom: 0.25rem;
+        letter-spacing: 0.5px;
+    }
+    
+    .ddr-stat {
+        font-size: 1.75rem;
+        font-weight: 800;
+        line-height: 1;
+    }
+    
+    .ddr-label {
+        font-size: 0.75rem;
+        opacity: 0.9;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 0.5rem;
+    }
+    
+    .ddr-prices {
+        font-size: 0.85rem;
+        opacity: 0.95;
+        line-height: 1.4;
+    }
+    
+    @media (max-width: 768px) {
+        .ddr-stats-grid {
+            grid-template-columns: 1fr !important;
+        }
+    }
+    </style>
+    
+    <!-- Capacity-based Price Cards -->
+    <div class="capacity-stats-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; margin: 1.5rem 0;">
+        <div class="capacity-card capacity-4gb">
+            <div class="capacity-icon">🟡</div>
+            <div class="capacity-info">
+                <div class="capacity-size">4GB</div>
+                <div class="ddr3-price" id="ddr3-4gb-price">-</div>
+                <div class="ddr4-price" id="ddr4-4gb-price">-</div>
+                <div class="ddr5-price" id="ddr5-4gb-price">-</div>
+            </div>
+        </div>
+        
+        <div class="capacity-card capacity-8gb">
+            <div class="capacity-icon">🟢</div>
+            <div class="capacity-info">
+                <div class="capacity-size">8GB</div>
+                <div class="ddr3-price" id="ddr3-8gb-price">-</div>
+                <div class="ddr4-price" id="ddr4-8gb-price">-</div>
+                <div class="ddr5-price" id="ddr5-8gb-price">-</div>
+            </div>
+        </div>
+        
+        <div class="capacity-card capacity-16gb">
+            <div class="capacity-icon">🔵</div>
+            <div class="capacity-info">
+                <div class="capacity-size">16GB</div>
+                <div class="ddr3-price" id="ddr3-16gb-price">-</div>
+                <div class="ddr4-price" id="ddr4-16gb-price">-</div>
+                <div class="ddr5-price" id="ddr5-16gb-price">-</div>
+            </div>
+        </div>
+        
+        <div class="capacity-card capacity-32gb">
+            <div class="capacity-icon">🟣</div>
+            <div class="capacity-info">
+                <div class="capacity-size">32GB</div>
+                <div class="ddr3-price" id="ddr3-32gb-price">-</div>
+                <div class="ddr4-price" id="ddr4-32gb-price">-</div>
+                <div class="ddr5-price" id="ddr5-32gb-price">-</div>
+            </div>
+        </div>
+        
+        <div class="capacity-card capacity-64gb">
+            <div class="capacity-icon">⚫</div>
+            <div class="capacity-info">
+                <div class="capacity-size">64GB</div>
+                <div class="ddr3-price" id="ddr3-64gb-price">-</div>
+                <div class="ddr4-price" id="ddr4-64gb-price">-</div>
+                <div class="ddr5-price" id="ddr5-64gb-price">-</div>
+            </div>
+        </div>
+    </div>
+    
+    <style>
+    .capacity-stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 1rem;
+        margin: 1.5rem 0;
+    }
+    
+    .capacity-card {
+        border-radius: 12px;
+        padding: 1rem;
+        color: white;
+        text-align: center;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+    
+    .capacity-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+    }
+    
+    .capacity-4gb { background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%); }
+    .capacity-8gb { background: linear-gradient(135deg, #27ae60 0%, #229954 100%); }
+    .capacity-16gb { background: linear-gradient(135deg, #3498db 0%, #2980b9 100%); }
+    .capacity-32gb { background: linear-gradient(135deg, #9b59b6 0%, #8e44ad 100%); }
+    .capacity-64gb { background: linear-gradient(135deg, #34495e 0%, #2c3e50 100%); }
+    
+    .capacity-icon {
+        font-size: 28px;
+        margin-bottom: 8px;
+        filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+    }
+    
+    .capacity-size {
+        font-size: 20px;
+        font-weight: 800;
+        margin-bottom: 10px;
+        text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        letter-spacing: 1px;
+    }
+    
+    .ddr3-price, .ddr4-price, .ddr5-price {
+        font-size: 14px;
+        font-weight: 700;
+        padding: 6px 12px;
+        margin: 5px 0;
+        border-radius: 8px;
+        background: rgba(255, 255, 255, 0.25);
+        border: 2px solid rgba(255, 255, 255, 0.4);
+        box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+        text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+    
+    .ddr3-price:hover, .ddr4-price:hover, .ddr5-price:hover {
+        transform: scale(1.02);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    }
+    
+    .ddr3-price {
+        background: linear-gradient(135deg, rgba(231, 76, 60, 0.3) 0%, rgba(192, 57, 43, 0.3) 100%);
+        border-color: rgba(231, 76, 60, 0.6);
+    }
+    
+    .ddr4-price {
+        background: linear-gradient(135deg, rgba(52, 152, 219, 0.3) 0%, rgba(41, 128, 185, 0.3) 100%);
+        border-color: rgba(52, 152, 219, 0.6);
+    }
+    
+    .ddr5-price {
+        background: linear-gradient(135deg, rgba(155, 89, 182, 0.3) 0%, rgba(142, 68, 173, 0.3) 100%);
+        border-color: rgba(155, 89, 182, 0.6);
+    }
+    
+    .ddr3-price::before { 
+        content: "🟥 DDR3"; 
+        margin-right: 8px;
+        font-size: 11px;
+    }
+    .ddr4-price::before { 
+        content: "🟦 DDR4"; 
+        margin-right: 8px;
+        font-size: 11px;
+    }
+    .ddr5-price::before { 
+        content: "🟪 DDR5"; 
+        margin-right: 8px;
+        font-size: 11px;
+    }
+    
+    @media (max-width: 768px) {
+        .capacity-stats-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+    </style>
+    
+    <!-- Top Deals Section -->
+    <div class="section" id="top-deals-section" style="margin-top: 1.5rem; display: none;">
+        <h3>🔥 Top Deals</h3>
+        <p style="color: #666; font-size: 0.875rem; margin-bottom: 1rem;">
+            Listings priced significantly below their model average (active, unflagged).
+        </p>
+        <div id="top-deals-container" style="display: flex; flex-direction: column; gap: 0.75rem;"></div>
+    </div>
+
+    <!-- Charts Section - At the top (moved above filters) -->
+    <div class="section" style="margin-top: 1.5rem;">    
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 1.5rem;">
+            <!-- Average Price by DDR Type - Changed to line chart -->
+            <div class="chart-wrapper">
+                <h3 style="margin-bottom: 0.5rem;">📊 Avg Price by DDR Type</h3>
+                <div class="chart-container" style="height: 250px;">
+                    <canvas id="avgPriceByDDRChart"></canvas>
+                </div>
+            </div>
+            
+            <!-- Capacity Distribution -->
+            <div class="chart-wrapper">
+                <h3 style="margin-bottom: 0.5rem;">📊 Capacity Distribution</h3>
+                <div class="chart-container" style="height: 250px;">
+                    <canvas id="capacityDistChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Average RAM Price by Capacity & Type Over Time -->
+    <div class="section" style="margin-top: 1.5rem;">
+        <div class="chart-wrapper">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; flex-wrap: wrap; gap: 0.5rem;">
+                <h3 style="margin: 0;">📊 Avg RAM Price by Capacity & Type Over Time</h3>
+                <div style="display: flex; gap: 0.5rem;">
+                    <button id="ram-avg-week" class="btn btn-small" style="background: var(--accent-color); color: white;" onclick="setRAMAvgPeriod('week')">Week</button>
+                    <button id="ram-avg-month" class="btn btn-small" onclick="setRAMAvgPeriod('month')">Month</button>
+                </div>
+            </div>
+            <div class="chart-container" style="height: 320px;">
+                <canvas id="ramAvgPriceChart"></canvas>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Filters - Moved below charts -->
+    <div class="filters">
+        <label>
+            <input type="checkbox" id="active-only" checked onchange="loadListings()">
+            Active only
+        </label>
+        <label class="{% if not is_staff %}staff-only{% endif %}">
+            <input type="checkbox" id="high-confidence" onchange="loadListings()">
+            High confidence (≥70%)
+        </label>
+        <label>
+            DDR:
+            <select id="ddr-filter" onchange="filterByDDR(this.value)">
+                <option value="all">All Types</option>
+                <option value="DDR3">DDR3</option>
+                <option value="DDR4">DDR4</option>
+                <option value="DDR5">DDR5</option>
+            </select>
+        </label>
+        <label>
+            Capacity:
+            <select id="capacity-filter" onchange="loadListings()">
+                <option value="all">{{ t('All') }}</option>
+                <option value="4">4GB</option>
+                <option value="8">8GB</option>
+                <option value="16">16GB</option>
+                <option value="32">32GB</option>
+                <option value="64">64GB+</option>
+            </select>
+        </label>
+        <label>
+            Sort:
+            <select id="sort-by" onchange="loadListings()">
+                <option value="date_posted">{{ t('Date Posted') }}</option>
+                <option value="price">{{ t('Price') }}</option>
+            </select>
+        </label>
+        <label style="display:flex;align-items:center;gap:0.35rem;">
+            <span title="RAM reference ID from the model table">🔍 RAM ID:</span>
+            <input type="text" id="ram-id-filter" placeholder="e.g. 189" style="width: 80px; padding: 0.25rem;" onchange="loadListings()" onkeyup="if(event.key==='Enter') loadListings()">
+            <button class="btn btn-small" onclick="clearRAMIdFilter()" title="Clear RAM ID filter">✕</button>
+        </label>
+        <label>
+            Order:
+            <select id="sort-order" onchange="loadListings()">
+                <option value="desc">{{ t('Descending') }}</option>
+                <option value="asc">{{ t('Ascending') }}</option>
+            </select>
+        </label>
+        <label title="Calculate average prices from all RAM model listings instead of only the filtered ones">
+            <input type="checkbox" id="all-ram-avg" onchange="toggleAllRAMAvg()">
+            Use all RAM models for averages
+        </label>
+        <button class="btn btn-small" onclick="exportToCSV()">📥 Export CSV</button>
+    </div>
+    
+    <div id="listings-container">
+        <div class="loading">Loading RAM listings...</div>
+    </div>
+</div>
+
+<!-- Price Trends Section -->
+<div class="section trends-section">
+    <h3>📊 Price Trends</h3>
+    <div class="trends-controls">
+        <label>
+            Capacity:
+            <select id="trend-capacity" onchange="updatePriceTrends()">
+                <option value="8">8GB</option>
+                <option value="16" selected>16GB</option>
+                <option value="32">32GB</option>
+            </select>
+        </label>
+        <label>
+            DDR:
+            <select id="trend-ddr" onchange="updatePriceTrends()">
+                <option value="all">All Types</option>
+                <option value="DDR4" selected>DDR4</option>
+                <option value="DDR5">DDR5</option>
+            </select>
+        </label>
+    </div>
+    <div class="chart-container" style="height: 300px;">
+        <canvas id="priceTrendChart"></canvas>
+    </div>
+</div>
+
+<!-- Model History Popup Container -->
+<div id="model-history-popup" class="model-history-popup" style="display: none;"></div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+let allRAMs = [];
+let allRAMsForStats = [];
+let useAllRAMsForStats = false;
+let currentDDRFilter = 'all';
+let priceTrendChart = null;
+let avgPriceByDDRChart = null;
+let capacityDistChart = null;
+let ramAvgPriceChart = null;
+let ramAvgPeriod = 'week'; // 'week' or 'month'
+
+// Helpers for deal badges (NEW, STEAL)
+function buildRamDealBadges(item) {
+    let badges = '';
+
+    // STEAL: price >= 15% below model avg (highest priority)
+    if (item.price_stats && item.price_stats.below_avg) {
+        const avgPrice = parseFloat(item.price_stats.avg);
+        const currentPrice = item.price_eur;
+        if (avgPrice > 0) {
+            const savingsPct = ((avgPrice - currentPrice) / avgPrice * 100);
+            if (savingsPct >= 15) {
+                badges += `<span class="badge" style="background: #dc2626; color: white; font-weight: bold; font-size: 0.85rem; padding: 0.35rem 0.75rem; box-shadow: 0 0 10px rgba(220,38,38,0.6);" title="Price is ${savingsPct.toFixed(0)}% below average!">🔥 STEAL</span><br>`;
+            }
+        }
+    }
+
+    // NEW: first seen in latest import (shown only if not a STEAL)
+    if (!badges.includes('STEAL') && item.is_new === true) {
+        badges += `<span class="badge" style="background: #22c55e; color: white; font-weight: normal; font-size: 0.75rem; opacity: 0.9;" title="New listing from current import!">🆕 NEW</span><br>`;
+    }
+
+    return badges;
+}
+
+// Calculate top deals from a listings array
+function calculateTopDeals(listings, minSavingsPct = 15, maxDeals = 10) {
+    const deals = [];
+
+    listings.forEach(item => {
+        if (!item.is_active || item.is_unicorn || !item.price_stats) return;
+        const avgPrice = parseFloat(item.price_stats.avg);
+        const currentPrice = parseFloat(item.price_eur);
+        if (avgPrice <= 0 || currentPrice <= 0) return;
+        const savingsPct = ((avgPrice - currentPrice) / avgPrice) * 100;
+        if (savingsPct >= minSavingsPct) {
+            deals.push({ ...item, savingsPct });
+        }
+    });
+
+    // Sort by savings % descending, then by absolute savings
+    deals.sort((a, b) => {
+        if (b.savingsPct !== a.savingsPct) return b.savingsPct - a.savingsPct;
+        const absA = (parseFloat(a.price_stats.avg) - parseFloat(a.price_eur));
+        const absB = (parseFloat(b.price_stats.avg) - parseFloat(b.price_eur));
+        return absB - absA;
+    });
+
+    return deals.slice(0, maxDeals);
+}
+
+// Render top deals into the top-deals section
+function renderTopDeals() {
+    const container = document.getElementById('top-deals-container');
+    const section = document.getElementById('top-deals-section');
+    if (!container || !section) return;
+
+    const deals = calculateTopDeals(allRAMs, 15, 10);
+
+    if (deals.length === 0) {
+        section.style.display = 'none';
+        container.innerHTML = '';
+        return;
+    }
+
+    section.style.display = 'block';
+
+    const html = deals.map(item => {
+        const imageUrl = item.local_image_path ? `/images/${item.local_image_path}` : item.image_url;
+        const savingsAbs = (parseFloat(item.price_stats.avg) - parseFloat(item.price_eur)).toFixed(0);
+        const pricePerGB = item.capacity_gb ? (item.price_eur / item.capacity_gb).toFixed(2) : '0.00';
+        return `
+            <div style="display: flex; gap: 1rem; align-items: center; padding: 0.75rem; background: rgba(220,38,38,0.05); border: 1px solid rgba(220,38,38,0.2); border-radius: 10px; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 12px rgba(0,0,0,0.1)';" onmouseout="this.style.transform=''; this.style.boxShadow='';" onclick="showSharedListingDetail('${item.listing_id}', true)">
+                <div style="flex-shrink: 0;">
+                    ${imageUrl ? `<img src="${imageUrl}" alt="RAM" style="width: 70px; height: 70px; object-fit: cover; border-radius: 8px; border: 1px solid #eee;">` : '<div style="width: 70px; height: 70px; border-radius: 8px; background: #f0f0f0; display: flex; align-items: center; justify-content: center; color: #999; font-size: 1.5rem;">📷</div>'}
+                </div>
+                <div style="flex: 1; min-width: 0;">
+                    <div style="font-weight: 700; font-size: 1rem; color: var(--text-color); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${item.ram_name || 'Unknown RAM'}</div>
+                    <div style="font-size: 0.875rem; color: #666; margin-top: 0.25rem;">
+                        ${item.ddr_type || item.ram_type || 'Unknown'} · ${item.capacity_gb || '?'}GB · ${item.speed || ''}
+                    </div>
+                    <div style="font-size: 0.8rem; color: #888; margin-top: 0.25rem;">
+                        ${item.seller_location || 'N/A'} · ${item.date_posted ? new Date(item.date_posted).toLocaleDateString() : 'N/A'}
+                    </div>
+                </div>
+                <div style="text-align: right; flex-shrink: 0;">
+                    <div style="font-size: 1.25rem; font-weight: 800; color: #dc2626;">€${Number(item.price_eur).toFixed(2)}</div>
+                    <div style="font-size: 0.875rem; color: #666; text-decoration: line-through;">avg €${item.price_stats.avg}</div>
+                    <div style="font-size: 0.8rem; color: #16a34a; font-weight: 700;">▼ €${savingsAbs} (${item.savingsPct.toFixed(0)}%)</div>
+                    <div style="font-size: 0.75rem; color: #888;">€${pricePerGB}/GB</div>
+                </div>
+            </div>
+        `;
+    }).join('');
+
+    container.innerHTML = html;
+}
+
+// Column customization - now enabled by default
+let columnOrder = [
+    { id: 'col-image', label: 'Image', required: true },
+    { id: 'col-ram', label: 'RAM', required: true },
+    { id: 'col-price', label: 'Price', required: true },
+    { id: 'col-latency', label: 'Latency' },
+    { id: 'col-model', label: 'Model Position' },
+    { id: 'col-market', label: 'Market Position' },
+    { id: 'col-location', label: 'Location' },
+    { id: 'col-date', label: 'Date' },
+    { id: 'col-actions', label: 'Actions', required: true }
+];
+let defaultColumnOrder = JSON.parse(JSON.stringify(columnOrder));
+
+// Initialize columnVisibility with defaults
+let columnVisibility = {
+    'col-image': true,
+    'col-ram': true,
+    'col-price': true,
+    'col-latency': true,
+    'col-model': true,
+    'col-market': true,
+    'col-location': true,
+    'col-date': true,
+    'col-actions': true
+};
+let modelHistoryCache = new Map();
+
+// Initialize column customization - enabled by default now
+function initColumnCustomization() {
+    // Check if user has explicitly disabled it, otherwise enable
+    const enabled = localStorage.getItem('ramColumnCustomization');
+    if (enabled === null) {
+        // First time - enable by default
+        localStorage.setItem('ramColumnCustomization', 'true');
+    }
+}
+
+// Load column settings
+function loadColumnSettings() {
+    try {
+        const savedOrder = localStorage.getItem('ramColumnOrder');
+        const savedVisibility = localStorage.getItem('ramColumnVisibility');
+        
+        if (savedOrder) {
+            columnOrder = JSON.parse(savedOrder);
+        }
+        
+        if (savedVisibility) {
+            const parsed = JSON.parse(savedVisibility);
+            // Merge with defaults, don't overwrite
+            Object.assign(columnVisibility, parsed);
+        }
+        // If no saved visibility, keep the defaults already set
+        
+        console.log('[RAM Debug] columnOrder loaded:', columnOrder.length, 'columns');
+        console.log('[RAM Debug] columnVisibility:', Object.keys(columnVisibility).length, 'visible');
+    } catch (e) {
+        console.error('Error loading column settings:', e);
+    }
+}
+
+// Save column settings
+function saveColumnSettings() {
+    localStorage.setItem('ramColumnOrder', JSON.stringify(columnOrder));
+    localStorage.setItem('ramColumnVisibility', JSON.stringify(columnVisibility));
+}
+
+// Check if column customization is enabled
+function isColumnCustomizationEnabled() {
+    return localStorage.getItem('ramColumnCustomization') === 'true';
+}
+
+async function loadStats() {
+    try {
+        const response = await fetch('/api/rams/stats');
+        const data = await response.json();
+        
+        // Handle both formats: {success: true, stats: {...}} and direct stats object
+        const stats = data.success ? data.stats : (data.total_listings !== undefined ? data : null);
+        
+        if (stats) {
+            document.getElementById('stat-total').textContent = stats.total_listings || 0;
+            document.getElementById('stat-active').textContent = stats.active_listings || 0;
+            document.getElementById('stat-avg-price').textContent = '€' + (parseFloat(stats.avg_price) || 0).toFixed(2);
+        } else {
+            console.error('Stats response format:', data);
+        }
+    } catch (error) {
+        console.error('Error loading stats:', error);
+    }
+}
+
+function filterByDDR(ddrType) {
+    currentDDRFilter = ddrType;
+    loadListings();
+}
+
+function clearRAMIdFilter() {
+    const input = document.getElementById('ram-id-filter');
+    if (input) {
+        input.value = '';
+        loadListings();
+    }
+}
+
+// Calculate market averages for popup
+function calculateMarketAverages(listings) {
+    const byTypeAndCapacity = {};
+    
+    listings.forEach(item => {
+        const key = `${item.ddr_type || 'Unknown'}-${item.capacity_gb || 0}`;
+        if (!byTypeAndCapacity[key]) {
+            byTypeAndCapacity[key] = { prices: [], count: 0 };
+        }
+        byTypeAndCapacity[key].prices.push(item.price_eur || 0);
+        byTypeAndCapacity[key].count++;
+    });
+    
+    const averages = {};
+    for (const [key, data] of Object.entries(byTypeAndCapacity)) {
+        if (data.prices.length > 0) {
+            averages[key] = data.prices.reduce((a, b) => a + b, 0) / data.prices.length;
+        }
+    }
+    
+    return averages;
+}
+
+// Fetch model history for popup
+async function fetchModelHistory(listingId) {
+    if (modelHistoryCache.has(listingId)) {
+        return modelHistoryCache.get(listingId);
+    }
+    
+    try {
+        const response = await fetch(`/api/rams/model-history/${listingId}`);
+        const data = await response.json();
+        modelHistoryCache.set(listingId, data);
+        return data;
+    } catch (error) {
+        console.error('Error fetching model history:', error);
+        return null;
+    }
+}
+
+// Show model history popup
+async function showModelHistoryPopup(event, listingId) {
+    event.stopPropagation();
+    
+    const popup = document.getElementById('model-history-popup');
+    const historyData = await fetchModelHistory(listingId);
+    
+    if (!historyData) {
+        popup.style.display = 'none';
+        return;
+    }
+    
+    const marketAverages = calculateMarketAverages(allRAMs);
+    const item = allRAMs.find(r => r.listing_id === listingId);
+    
+    if (!item) {
+        popup.style.display = 'none';
+        return;
+    }
+    
+    const key = `${item.ddr_type || 'Unknown'}-${item.capacity_gb || 0}`;
+    const marketAvg = marketAverages[key];
+    const wasSeen = historyData.previous_listings && historyData.previous_listings.length > 0;
+    const prevPrice = wasSeen ? historyData.previous_listings[0].price_eur : null;
+    
+    let html = `
+        <h4>📋 Model History</h4>
+        <div class="seen-badge ${wasSeen ? 'seen' : 'new'}">
+            ${wasSeen ? `✓ Seen ${historyData.previous_listings.length} time(s) before` : '✨ New Model'}
+        </div>
+        <div class="price-comparison">
+            <div class="price-row">
+                <span class="label">Current Price:</span>
+                <span class="value">€${item.price_eur?.toFixed(2) || 'N/A'}</span>
+            </div>
+    `;
+    
+    if (wasSeen && prevPrice) {
+        const diff = item.price_eur - prevPrice;
+        const diffClass = diff < 0 ? 'better' : diff > 0 ? 'worse' : '';
+        html += `
+            <div class="price-row">
+                <span class="label">Previously:</span>
+                <span class="value ${diffClass}">
+                    €${prevPrice.toFixed(2)} (${diff < 0 ? '↓' : '↑'} €${Math.abs(diff).toFixed(2)})
+                </span>
+            </div>
+        `;
+    }
+    
+    if (marketAvg) {
+        const vsMarket = item.price_eur - marketAvg;
+        const pct = marketAvg > 0 ? (vsMarket / marketAvg) * 100 : 0;
+        const marketClass = vsMarket < 0 ? 'better' : 'worse';
+        const cheaperOrHigher = vsMarket < 0 ? 'cheaper' : 'more expensive';
+        html += `
+            <div class="price-row">
+                <span class="label">Market Avg (${item.ddr_type} ${item.capacity_gb}GB):</span>
+                <span class="value ${marketClass}">
+                    €${marketAvg.toFixed(2)} (${vsMarket < 0 ? '↓' : '↑'} €${Math.abs(vsMarket).toFixed(2)} / ${Math.abs(pct).toFixed(0)}% ${cheaperOrHigher})
+                </span>
+            </div>
+        `;
+    }
+    
+    html += `</div>`;
+    
+    popup.innerHTML = html;
+    popup.style.display = 'block';
+    
+    // Position popup near the click
+    const rect = event.target.getBoundingClientRect();
+    popup.style.left = rect.left + 'px';
+    popup.style.top = (rect.bottom + 5) + 'px';
+}
+
+// Hide model history popup
+function hideModelHistoryPopup() {
+    const popup = document.getElementById('model-history-popup');
+    popup.style.display = 'none';
+}
+
+// Render table header with gear icon inside Actions column
+function renderTableHeader() {
+    // Build header cells
+    const cells = columnOrder.map(col => {
+        const isVisible = columnVisibility[col.id];
+        const style = isVisible ? '' : 'style="display: none;"';
+        if (col.id === 'col-actions') {
+            return `<th data-col="${col.id}" ${style}>
+                <div style="display: flex; align-items: center; justify-content: space-between; gap: 0.5rem;">
+                    <span>${col.label}</span>
+                    <button id="column-settings-btn" class="column-settings-btn" onclick="toggleColumnSettings(event)" title="Column Settings">⚙️</button>
+                </div>
+            </th>`;
+        }
+        return `<th data-col="${col.id}" ${style}>${col.label}</th>`;
+    }).join('');
+    
+    return `
+        <thead>
+            <tr>${cells}</tr>
+        </thead>
+    `;
+}
+
+// Render table row
+function renderTableRow(item) {
+    try {
+        const confidence = item.confidence_score || 0;
+        let confidenceClass = 'confidence-high';
+        if (confidence < 0.70) confidenceClass = 'confidence-medium';
+        if (confidence < 0.50) confidenceClass = 'confidence-low';
+        
+        // DDR badge - handle null/undefined safely
+        let ddrType = item.ddr_type || item.ram_type || 'DDR4';
+        if (!ddrType && item.speed) {
+            const speedStr = String(item.speed);
+            if (speedStr.includes('DDR3')) ddrType = 'DDR3';
+            else if (speedStr.includes('DDR5')) ddrType = 'DDR5';
+            else ddrType = 'DDR4';
+        }
+        ddrType = ddrType || 'DDR4';
+        const ddrColors = { 'DDR2': '#95a5a6', 'DDR3': '#e74c3c', 'DDR4': '#3498db', 'DDR5': '#9b59b6' };
+        const ddrBadge = `<span class="badge" style="background: ${ddrColors[ddrType] || '#667eea'}; color: white;">${ddrType}</span>`;
+        
+        // Price per GB
+        const pricePerGB = item.capacity_gb && item.price_eur ? (item.price_eur / item.capacity_gb).toFixed(2) : '?';
+        
+        // Format date
+        let dateStr = 'N/A';
+        if (item.date_posted) {
+            try {
+                const date = new Date(item.date_posted);
+                if (!isNaN(date.getTime()) && date.getFullYear() > 2000) {
+                    dateStr = date.toLocaleDateString('en-GB', {'day': '2-digit', 'month': '2-digit', 'year': 'numeric'});
+                }
+            } catch (e) {}
+        }
+        
+        let priceClass = 'price';
+        let priceIndicator = '';
+        
+        if (item.price_stats) {
+            if (item.price_stats.below_avg) {
+                priceClass = 'price-below-avg';
+                priceIndicator = '↓ Below avg';
+            } else {
+                priceClass = 'price-above-avg';
+                priceIndicator = '↑ Above avg';
+            }
+        }
+        
+        // local_image_path format: "facebook/filename.png" or "ss.com/filename.png"
+        const imageUrl = item.local_image_path ? `/images/${item.local_image_path}` : item.image_url;
+        const imageClickUrl = item.local_image_path ? `/images/${item.local_image_path}` : item.image_url;
+        
+        const cells = columnOrder.map(col => {
+            const isHidden = !columnVisibility[col.id];
+            const style = isHidden ? 'style="display: none;"' : '';
+            
+            switch (col.id) {
+            case 'col-image':
+                const ramDealBadges = buildRamDealBadges(item);
+                const ramImageOverlay = ramDealBadges
+                    ? `<div style="position: absolute; top: 35px; left: 4px; display: flex; flex-direction: column; gap: 4px; z-index: 10; align-items: flex-start;">${ramDealBadges}</div>`
+                    : '';
+                return `<td data-col="col-image" ${style} style="position: relative;">${ramImageOverlay}${imageUrl ? `<img src="${imageUrl}" alt="RAM" class="listing-thumb" loading="lazy" onclick="event.stopPropagation(); showImageModal('${imageClickUrl}', 'RAM')">` : '<div class="listing-thumb-placeholder">📷</div>'}</td>`;
+            case 'col-ram':
+                return `<td data-col="col-ram" ${style}><strong>${item.ram_name || 'Unknown RAM'}</strong><br>${ddrBadge} ${item.capacity_gb}GB ${item.speed ? `<br><small>${item.speed}</small>` : ''}<br><small class="${confidenceClass}">${(confidence*100).toFixed(0)}% confidence</small></td>`;
+            case 'col-price':
+                return `<td data-col="col-price" ${style}><span class="${priceClass}">€${Number(item.price_eur).toFixed(2)}</span><br><small>€${pricePerGB}/GB</small>${priceIndicator ? `<br><small>${priceIndicator}</small>` : ''}</td>`;
+            case 'col-latency':
+                return `<td data-col="col-latency" ${style}>${item.cas_latency || 'N/A'}</td>`;
+            case 'col-model':
+                return `<td data-col="col-model" ${style}>${item.is_unicorn ? `<span class="unicorn-badge" title="Only one listing of this RAM model in all history!">🦄 UNICORN</span>` : (item.price_stats ? `<div style="font-size: 0.875rem;">Avg: €${item.price_stats.avg}<br>Range: €${item.price_stats.min} - €${item.price_stats.max}</div><div class="price-bar"><div class="price-bar-fill" style="width: ${item.price_stats.percentile}%"></div></div><small>${item.price_stats.percentile}% percentile</small>` : 'N/A')}</td>`;
+            case 'col-market':
+                return `<td data-col="col-market" ${style}>${item.ddr_stats ? `<div style="font-size: 0.875rem;">${item.ddr_stats.ddr_type} ${item.ddr_stats.capacity_gb}GB<br>Avg: €${item.ddr_stats.avg}<br>Range: €${item.ddr_stats.min} - €${item.ddr_stats.max}</div><div class="price-bar"><div class="price-bar-fill" style="width: ${item.ddr_stats.percentile}%"></div></div><small>${item.ddr_stats.percentile}% percentile</small>` : 'N/A'}</td>`;
+            case 'col-location':
+                return `<td data-col="col-location" ${style}>${item.seller_location || 'N/A'}</td>`;
+            case 'col-date':
+                return `<td data-col="col-date" ${style}>${dateStr}</td>`;
+            case 'col-actions':
+                return `<td data-col="col-actions" ${style}><button class="btn btn-small btn-secondary" onclick="event.stopPropagation(); showSharedListingDetail('${item.listing_id}', true)">History</button><button class="btn btn-small" style="background: #9b59b6; margin-left: 0.25rem;" onmouseover="showModelHistoryPopup(event, '${item.listing_id}')" onmouseout="hideModelHistoryPopup()" onclick="event.stopPropagation(); showSharedListingDetail('${item.listing_id}', true)">ℹ️ Info</button><button class="btn btn-small" style="background: #dc3545; color: white; margin-left: 0.25rem;" onclick="event.stopPropagation(); showFlagModalWithCategories('${item.listing_id.replace(/'/g, "\\'").replace(/"/g, '&quot;')}', '${(item.ram_name || item.name || 'Unknown RAM').replace(/'/g, "\\'").replace(/"/g, '&quot;')}')">🚩 Flag</button><a href="${item.listing_url}" target="_blank" class="btn btn-small" onclick="event.stopPropagation()" style="margin-left: 0.25rem;">View →</a></td>`;
+            default:
+                return `<td ${style}></td>`;
+        }
+    }).join('');
+    
+    return `<tr class="clickable" onclick="showSharedListingDetail('${item.listing_id}', true)" title="Click to view listing details">${cells}</tr>`;
+    } catch (e) {
+        console.error('[RAM Debug] Error in renderTableRow:', e);
+        return `<tr><td colspan="9" style="color: red;">Error: ${e.message}</td></tr>`;
+    }
+}
+
+// Image modal function
+function showImageModal(imageUrl, title) {
+    let modal = document.getElementById('image-preview-modal');
+    if (!modal) {
+        modal = document.createElement('div');
+        modal.id = 'image-preview-modal';
+        modal.className = 'modal-overlay';
+        modal.innerHTML = `
+            <div class="modal" style="max-width: 90%; max-height: 90%; padding: 0; overflow: hidden;">
+                <div style="position: relative; background: #000;">
+                    <button onclick="closeImageModal()" style="position: absolute; top: 10px; right: 10px; background: rgba(0,0,0,0.7); color: white; border: none; border-radius: 50%; width: 40px; height: 40px; font-size: 20px; cursor: pointer; z-index: 10;">×</button>
+                    <img id="preview-image" src="" alt="" style="max-width: 100%; max-height: 85vh; display: block; margin: 0 auto;">
+                </div>
+                <div style="padding: 1rem; background: white; text-align: center;">
+                    <p id="preview-title" style="margin: 0; font-weight: 600;"></p>
+                </div>
+            </div>
+        `;
+        document.body.appendChild(modal);
+        modal.addEventListener('click', function(e) {
+            if (e.target === modal) closeImageModal();
+        });
+    }
+    document.getElementById('preview-image').src = imageUrl;
+    document.getElementById('preview-image').alt = title;
+    document.getElementById('preview-title').textContent = title;
+    modal.classList.add('active');
+}
+
+function closeImageModal() {
+    const modal = document.getElementById('image-preview-modal');
+    if (modal) modal.classList.remove('active');
+}
+
+async function loadListings() {
+    console.log('[RAM Debug] loadListings called');
+    const activeOnly = document.getElementById('active-only').checked;
+    const highConfidence = document.getElementById('high-confidence').checked;
+    const capacityFilter = document.getElementById('capacity-filter').value;
+    const sortBy = document.getElementById('sort-by').value;
+    const sortOrder = document.getElementById('sort-order').value;
+    
+    const ramIdFilter = document.getElementById('ram-id-filter')?.value.trim() || '';
+    
+    const params = new URLSearchParams();
+    params.append('active', activeOnly);
+    params.append('sort', sortBy);
+    params.append('order', sortOrder);
+    if (highConfidence) params.append('min_confidence', '0.70');
+    if (currentDDRFilter !== 'all') params.append('ddr_type', currentDDRFilter);
+    if (capacityFilter !== 'all') params.append('capacity', capacityFilter);
+    if (ramIdFilter) params.append('ram_id', ramIdFilter);
+    
+    console.log('[RAM Debug] Fetching with params:', params.toString());
+    
+    try {
+        const response = await fetch('/api/rams?' + params.toString());
+        const listings = await response.json();
+        
+        console.log('[RAM Debug] Got response:', listings.length, 'items');
+        console.log('[RAM Debug] First item sample:', listings[0]);
+        
+        if (listings.error) {
+            console.error('API Error:', listings.error, listings.traceback);
+            throw new Error(listings.error);
+        }
+        
+        if (!Array.isArray(listings)) {
+            console.error('Expected array, got:', typeof listings, listings);
+            throw new Error('Invalid response format from API');
+        }
+        
+        allRAMs = listings;
+        
+        // Fetch unfiltered data for averages if the toggle is enabled
+        if (useAllRAMsForStats && allRAMsForStats.length === 0) {
+            await loadAllRAMsForStats();
+        }
+        
+        const container = document.getElementById('listings-container');
+        
+        if (listings.length === 0) {
+            container.innerHTML = '<div class="loading">No RAM listings found</div>';
+            return;
+        }
+        
+        console.log('[RAM Debug] Rendering table...');
+        console.log('[RAM Debug] columnOrder:', columnOrder);
+        console.log('[RAM Debug] columnVisibility:', columnVisibility);
+        
+        let html = '<table>';
+        html += renderTableHeader();
+        html += '<tbody>';
+        
+        // Render rows with error catching
+        const rows = listings.map((item, index) => {
+            try {
+                return renderTableRow(item);
+            } catch (e) {
+                console.error(`[RAM Debug] Error rendering row ${index}:`, e, item);
+                return `<tr><td colspan="9">Error rendering row ${index}: ${e.message}</td></tr>`;
+            }
+        }).join('');
+        
+        html += rows;
+        html += '</tbody>';
+        
+        // Calculate summary
+        const totalPrice = listings.reduce((sum, item) => sum + (item.price_eur || 0), 0);
+        const avgPrice = totalPrice / listings.length;
+        
+        // Calculate visible column count for summary row
+        const visibleCols = columnOrder.filter(col => columnVisibility[col.id]).length;
+        const summaryColspan = Math.floor(visibleCols / 2);
+        
+        html += `
+            <tfoot id="summary-row" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; font-weight: bold;">
+                <tr>
+                    <td colspan="${summaryColspan}" style="text-align: right; padding: 0.75rem;">Summary:</td>
+                    <td style="padding: 0.75rem;">€${totalPrice.toFixed(2)} total</td>
+                    <td style="padding: 0.75rem; font-size: 0.85rem;">avg: €${avgPrice.toFixed(2)}</td>
+                    <td style="padding: 0.75rem;" colspan="${visibleCols - summaryColspan - 2}">${listings.length} listings shown</td>
+                </tr>
+            </tfoot>`;
+        
+        html += '</table>';
+        
+        container.innerHTML = html;
+
+        // Update charts and DDR stats
+        const statsSource = (useAllRAMsForStats && allRAMsForStats.length > 0) ? allRAMsForStats : listings;
+        updateAvgPriceByDDR(statsSource);
+        updateCapacityDistribution(statsSource);
+        updateRAMAvgPriceChart(statsSource);
+        updateDDRStats(statsSource);
+
+        // Update top deals (based on currently visible listings)
+        renderTopDeals();
+        
+    } catch (error) {
+        console.error('Error loading listings:', error);
+        document.getElementById('listings-container').innerHTML = 
+            '<div class="error">Error loading RAM listings: ' + error.message + '</div>';
+    }
+}
+
+async function loadAllRAMsForStats() {
+    try {
+        const response = await fetch('/api/rams?active=true');
+        const listings = await response.json();
+        if (Array.isArray(listings)) {
+            allRAMsForStats = listings;
+            console.log('[RAM Debug] Loaded', listings.length, 'RAM listings for stats');
+        }
+    } catch (error) {
+        console.error('Error loading all RAM listings for stats:', error);
+    }
+}
+
+function toggleAllRAMAvg() {
+    const checkbox = document.getElementById('all-ram-avg');
+    useAllRAMsForStats = checkbox?.checked || false;
+    if (useAllRAMsForStats) {
+        loadAllRAMsForStats().then(() => loadListings());
+    } else {
+        loadListings();
+    }
+}
+
+// Update DDR type stats cards
+function updateDDRStats(listings) {
+    // Group by DDR type
+    const ddrData = {
+        'DDR3': { count: 0, prices: [], sizes: {} },
+        'DDR4': { count: 0, prices: [], sizes: {} },
+        'DDR5': { count: 0, prices: [], sizes: {} }
+    };
+    
+    listings.forEach(item => {
+        const ddrType = item.ddr_type || item.ram_type || 'DDR4';
+        if (!ddrData[ddrType]) return;
+        
+        ddrData[ddrType].count++;
+        ddrData[ddrType].prices.push(item.price_eur || 0);
+        
+        // Track sizes
+        const capacity = item.capacity_gb || 0;
+        if (capacity > 0) {
+            if (!ddrData[ddrType].sizes[capacity]) {
+                ddrData[ddrType].sizes[capacity] = [];
+            }
+            ddrData[ddrType].sizes[capacity].push(item.price_eur || 0);
+        }
+    });
+    
+    // Update each card
+    ['DDR3', 'DDR4', 'DDR5'].forEach(type => {
+        const data = ddrData[type];
+        const countEl = document.getElementById(type.toLowerCase() + '-count');
+        const pricesEl = document.getElementById(type.toLowerCase() + '-prices');
+        
+        if (countEl) {
+            countEl.textContent = data.count;
+        }
+        
+        if (pricesEl) {
+            if (data.count === 0) {
+                pricesEl.innerHTML = '<div style="opacity: 0.7;">No data</div>';
+            } else {
+                // Calculate avg price per size (e.g., "32GB - €90")
+                const sizePrices = Object.entries(data.sizes).map(([size, prices]) => {
+                    const sizeAvg = prices.reduce((a, b) => a + b, 0) / prices.length;
+                    return { size: parseInt(size), avgPrice: sizeAvg, count: prices.length };
+                }).sort((a, b) => a.size - b.size);
+                
+                // Format: "4GB - €45, 8GB - €60, 16GB - €85, 32GB - €150"
+                const priceList = sizePrices.map(s => 
+                    `${s.size}GB - €${s.avgPrice.toFixed(0)}`
+                ).join('<br>');
+                
+                pricesEl.innerHTML = priceList || 'No size data';
+            }
+        }
+    });
+    
+    // Update capacity cards (DDR type x size breakdown)
+    updateCapacityCards(listings);
+}
+
+// Update capacity cards with DDR type x size breakdown
+function updateCapacityCards(listings) {
+    // Structure: { size: { DDR3: avgPrice, DDR4: avgPrice, DDR5: avgPrice } }
+    const capacityData = {
+        4: {}, 8: {}, 16: {}, 32: {}, 64: {}
+    };
+    
+    listings.forEach(item => {
+        const capacity = item.capacity_gb || 0;
+        const ddrType = item.ddr_type || item.ram_type || 'DDR4';
+        
+        if (capacityData[capacity] && item.price_eur > 0) {
+            if (!capacityData[capacity][ddrType]) {
+                capacityData[capacity][ddrType] = [];
+            }
+            capacityData[capacity][ddrType].push(item.price_eur);
+        }
+    });
+    
+    // Update each capacity card
+    [4, 8, 16, 32, 64].forEach(size => {
+        ['DDR3', 'DDR4', 'DDR5'].forEach(ddrType => {
+            const el = document.getElementById(`${ddrType.toLowerCase()}-${size}gb-price`);
+            if (el) {
+                const prices = capacityData[size][ddrType];
+                if (prices && prices.length > 0) {
+                    const avg = prices.reduce((a, b) => a + b, 0) / prices.length;
+                    el.innerHTML = `€${avg.toFixed(0)} (${prices.length})`;
+                } else {
+                    el.innerHTML = '-';
+                    el.style.opacity = '0.5';
+                }
+            }
+        });
+    });
+}
+
+// Update capacity distribution chart
+function updateCapacityDistribution(listings) {
+    const ctx = document.getElementById('capacityDistChart');
+    if (!ctx) return;
+    
+    if (capacityDistChart) {
+        capacityDistChart.destroy();
+    }
+    
+    // Check dark mode
+    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+    const textColor = isDark ? '#e0e0e0' : '#333';
+    const gridColor = isDark ? '#444' : '#eee';
+    
+    // Group by capacity
+    const capacityData = {};
+    listings.forEach(item => {
+        const capacity = item.capacity_gb || 'Unknown';
+        if (!capacityData[capacity]) {
+            capacityData[capacity] = 0;
+        }
+        capacityData[capacity]++;
+    });
+    
+    // Sort capacities numerically
+    const sortedCapacities = Object.keys(capacityData).sort((a, b) => {
+        const numA = parseInt(a) || 0;
+        const numB = parseInt(b) || 0;
+        return numA - numB;
+    });
+    
+    const labels = sortedCapacities.map(c => c === 'Unknown' ? 'Unknown' : c + 'GB');
+    const data = sortedCapacities.map(c => capacityData[c]);
+    
+    const colors = [
+        '#e74c3c',  // 4GB - red
+        '#27ae60',  // 8GB - green
+        '#3498db',  // 16GB - blue
+        '#9b59b6',  // 32GB - purple
+        '#f39c12',  // 64GB+ - orange
+        '#95a5a6',  // Unknown - gray
+    ];
+    
+    capacityDistChart = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            labels: labels,
+            datasets: [{
+                data: data,
+                backgroundColor: colors.slice(0, labels.length),
+                borderWidth: 2,
+                borderColor: isDark ? '#2d2d2d' : '#ffffff'
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { 
+                    position: 'right',
+                    labels: { 
+                        color: textColor,
+                        boxWidth: 15,
+                        padding: 10
+                    }
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                            const percentage = ((context.raw / total) * 100).toFixed(1);
+                            return `${context.label}: ${context.raw} (${percentage}%)`;
+                        }
+                    },
+                    backgroundColor: isDark ? 'rgba(26, 26, 46, 0.95)' : 'rgba(0, 0, 0, 0.8)',
+                    titleColor: isDark ? '#e0e0e0' : '#fff',
+                    bodyColor: isDark ? '#e0e0e0' : '#fff',
+                    borderColor: isDark ? '#0f3460' : 'transparent',
+                    borderWidth: isDark ? 1 : 0
+                }
+            },
+            cutout: '50%'
+        }
+    });
+}
+
+// Update average price by DDR type chart - Changed to LINE chart
+function updateAvgPriceByDDR(listings) {
+    const ctx = document.getElementById('avgPriceByDDRChart');
+    if (!ctx) return;
+    
+    if (avgPriceByDDRChart) {
+        avgPriceByDDRChart.destroy();
+    }
+    
+    // Check dark mode
+    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+    const textColor = isDark ? '#e0e0e0' : '#333';
+    const gridColor = isDark ? '#444' : '#eee';
+    
+    // Group by DDR type
+    const ddrData = {};
+    listings.forEach(item => {
+        const ddr = item.ddr_type || 'Unknown';
+        if (!ddrData[ddr]) {
+            ddrData[ddr] = { prices: [], count: 0 };
+        }
+        ddrData[ddr].prices.push(item.price_eur || 0);
+        ddrData[ddr].count++;
+    });
+    
+    const labels = Object.keys(ddrData).sort();
+    const avgPrices = labels.map(ddr => {
+        const prices = ddrData[ddr].prices;
+        return prices.reduce((a, b) => a + b, 0) / prices.length;
+    });
+    const counts = labels.map(ddr => ddrData[ddr].count);
+    
+    const colors = { 'DDR3': '#e74c3c', 'DDR4': '#3498db', 'DDR5': '#9b59b6', 'Unknown': '#95a5a6' };
+    const pointColors = labels.map(l => colors[l] || '#667eea');
+    
+    avgPriceByDDRChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Average Price (€)',
+                data: avgPrices,
+                borderColor: '#667eea',
+                backgroundColor: isDark ? 'rgba(102, 126, 234, 0.2)' : 'rgba(102, 126, 234, 0.1)',
+                pointBackgroundColor: pointColors,
+                pointBorderColor: pointColors,
+                pointRadius: 8,
+                pointHoverRadius: 10,
+                fill: true,
+                tension: 0.4
+            }, {
+                label: 'Count',
+                data: counts,
+                borderColor: '#764ba2',
+                backgroundColor: isDark ? 'rgba(118, 75, 162, 0.2)' : 'rgba(118, 75, 162, 0.1)',
+                pointBackgroundColor: '#764ba2',
+                pointRadius: 5,
+                yAxisID: 'y1',
+                tension: 0.3,
+                fill: false
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { 
+                    display: true,
+                    position: 'top',
+                    labels: { color: textColor }
+                },
+                tooltip: {
+                    backgroundColor: isDark ? 'rgba(26, 26, 46, 0.95)' : 'rgba(0, 0, 0, 0.8)',
+                    titleColor: isDark ? '#e0e0e0' : '#fff',
+                    bodyColor: isDark ? '#e0e0e0' : '#fff',
+                    borderColor: isDark ? '#0f3460' : 'transparent',
+                    borderWidth: isDark ? 1 : 0
+                }
+            },
+            scales: {
+                x: {
+                    ticks: { color: textColor },
+                    grid: { color: gridColor }
+                },
+                y: {
+                    beginAtZero: true,
+                    position: 'left',
+                    title: { display: true, text: 'Average Price (€)', color: textColor },
+                    ticks: { color: textColor },
+                    grid: { color: gridColor }
+                },
+                y1: {
+                    beginAtZero: true,
+                    position: 'right',
+                    grid: { drawOnChartArea: false },
+                    title: { display: true, text: 'Count', color: textColor },
+                    ticks: { color: textColor }
+                }
+            }
+        }
+    });
+}
+
+// Set period for average RAM price chart and refresh
+function setRAMAvgPeriod(period) {
+    ramAvgPeriod = period;
+    document.getElementById('ram-avg-week').style.background = period === 'week' ? 'var(--accent-color)' : '';
+    document.getElementById('ram-avg-week').style.color = period === 'week' ? 'white' : '';
+    document.getElementById('ram-avg-month').style.background = period === 'month' ? 'var(--accent-color)' : '';
+    document.getElementById('ram-avg-month').style.color = period === 'month' ? 'white' : '';
+    updateRAMAvgPriceChart(allRAMsForStats);
+}
+
+// Update average RAM price by capacity (8/16/32 GB) and DDR type over time
+function updateRAMAvgPriceChart(listings) {
+    const ctx = document.getElementById('ramAvgPriceChart');
+    if (!ctx) return;
+
+    const period = ramAvgPeriod; // 'week' or 'month'
+    const keyFn = dateStr => {
+        const d = new Date(dateStr);
+        if (period === 'week') {
+            const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
+            const weekNo = Math.ceil((((d - yearStart) / 86400000) + yearStart.getUTCDay() + 1) / 7);
+            return `${d.getUTCFullYear()}-W${String(weekNo).padStart(2, '0')}`;
+        }
+        return `${d.getUTCFullYear()}-${String(d.getUTCMonth() + 1).padStart(2, '0')}`;
+    };
+
+    const targetCaps = [8, 16, 32];
+    const palette = { '8': '#667eea', '16': '#10b981', '32': '#f59e0b' };
+
+    // Group by period, capacity, and DDR type
+    const buckets = {};
+    listings.forEach(item => {
+        const d = item.date_posted || item.first_seen_at;
+        if (!d) return;
+        const cap = parseInt(item.capacity_gb || item.ram_capacity);
+        if (!targetCaps.includes(cap)) return;
+        const ddr = (item.ddr_type || item.ram_type || 'DDR4').toUpperCase();
+        const key = keyFn(d);
+        if (!buckets[key]) buckets[key] = {};
+        const seriesKey = `${cap}GB ${ddr}`;
+        if (!buckets[key][seriesKey]) buckets[key][seriesKey] = { prices: [], count: 0 };
+        buckets[key][seriesKey].prices.push(parseFloat(item.price_eur) || 0);
+        buckets[key][seriesKey].count++;
+    });
+
+    const periods = Object.keys(buckets).sort();
+    const periodIndex = Object.fromEntries(periods.map((p, i) => [p, i]));
+
+    // Build one dataset per series
+    const seriesData = {};
+    periods.forEach(p => {
+        Object.entries(buckets[p]).forEach(([seriesKey, vals]) => {
+            if (!seriesData[seriesKey]) seriesData[seriesKey] = [];
+            const avg = vals.prices.reduce((a, b) => a + b, 0) / vals.prices.length;
+            seriesData[seriesKey].push({ x: periodIndex[p], y: avg, count: vals.count, period: p });
+        });
+    });
+
+    const colorList = ['#667eea', '#10b981', '#f59e0b', '#ef4444', '#8B5CF6', '#06b6d4', '#ec4899', '#84cc16', '#f97316', '#6366f1', '#14b8a6', '#f43f5e'];
+    const datasets = Object.keys(seriesData).map((seriesKey, idx) => ({
+        label: seriesKey,
+        data: seriesData[seriesKey],
+        borderColor: colorList[idx % colorList.length],
+        backgroundColor: colorList[idx % colorList.length],
+        borderWidth: 2,
+        tension: 0.3,
+        pointRadius: 4,
+        pointHoverRadius: 6,
+        spanGaps: true
+    }));
+
+    const labels = periods;
+
+    if (ramAvgPriceChart) ramAvgPriceChart.destroy();
+    const gridColor = getComputedStyle(document.body).getPropertyValue('--table-border').trim() || '#e5e7eb';
+    const textColor = getComputedStyle(document.body).getPropertyValue('--text-color').trim() || '#374151';
+    ramAvgPriceChart = new Chart(ctx, {
+        type: 'line',
+        data: { labels, datasets },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            animation: false,
+            plugins: {
+                legend: { display: true, position: 'bottom', labels: { boxWidth: 12, font: { size: 10 }, color: textColor } },
+                tooltip: {
+                    callbacks: {
+                        title: (items) => period === 'week' ? `Week ${items[0].label}` : `Month ${items[0].label}`,
+                        label: (ctx) => {
+                            const pt = ctx.raw;
+                            return `${ctx.dataset.label}: €${Number(pt.y).toFixed(2)} (${pt.count} listings)`;
+                        }
+                    }
+                }
+            },
+            scales: {
+                x: {
+                    type: 'category',
+                    title: { display: true, text: period === 'week' ? 'Week' : 'Month', color: textColor },
+                    ticks: { color: textColor },
+                    grid: { color: gridColor }
+                },
+                y: {
+                    beginAtZero: true,
+                    title: { display: true, text: 'Average Price (€)', color: textColor },
+                    ticks: { color: textColor },
+                    grid: { color: gridColor }
+                }
+            }
+        }
+    });
+}
+
+// Update price trends chart using real data from allRAMs
+function updatePriceTrends() {
+    const ctx = document.getElementById('priceTrendChart');
+    if (!ctx) return;
+    
+    // Check dark mode
+    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+    const textColor = isDark ? '#e0e0e0' : '#333';
+    const gridColor = isDark ? '#444' : '#eee';
+    
+    const capacity = document.getElementById('trend-capacity').value;
+    const ddr = document.getElementById('trend-ddr').value;
+    
+    // Filter listings by capacity and DDR type
+    const filteredListings = allRAMs.filter(item => {
+        const itemCapacity = String(item.capacity_gb || '');
+        const itemDDR = item.ddr_type || item.ram_type || '';
+        
+        const capacityMatch = itemCapacity === capacity;
+        const ddrMatch = ddr === 'all' || (itemDDR && itemDDR.toLowerCase() === ddr.toLowerCase());
+        
+        return capacityMatch && ddrMatch;
+    });
+    
+    // Group by month and calculate average prices
+    const monthlyData = {};
+    
+    filteredListings.forEach(item => {
+        if (!item.date_posted) return;
+        
+        const date = new Date(item.date_posted);
+        if (isNaN(date.getTime())) return;
+        
+        const monthKey = date.toLocaleDateString('en-GB', { month: 'short', year: 'numeric' });
+        
+        if (!monthlyData[monthKey]) {
+            monthlyData[monthKey] = { prices: [], count: 0 };
+        }
+        monthlyData[monthKey].prices.push(item.price_eur || 0);
+        monthlyData[monthKey].count++;
+    });
+    
+    // Sort months chronologically
+    const sortedMonths = Object.keys(monthlyData).sort((a, b) => {
+        const dateA = new Date(a);
+        const dateB = new Date(b);
+        return dateA - dateB;
+    });
+    
+    // Calculate averages and counts
+    const labels = sortedMonths;
+    const prices = sortedMonths.map(month => {
+        const data = monthlyData[month];
+        return data.prices.reduce((sum, p) => sum + p, 0) / data.prices.length;
+    });
+    const counts = sortedMonths.map(month => monthlyData[month].count);
+    
+    if (priceTrendChart) {
+        priceTrendChart.destroy();
+    }
+    
+    // If no data, show a message
+    if (labels.length === 0) {
+        // Still create chart but with empty data
+        labels.push('No data');
+        prices.push(0);
+        counts.push(0);
+    }
+    
+    priceTrendChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Average Price (€)',
+                data: prices,
+                borderColor: '#667eea',
+                backgroundColor: isDark ? 'rgba(102, 126, 234, 0.2)' : 'rgba(102, 126, 234, 0.1)',
+                pointBackgroundColor: '#667eea',
+                pointRadius: 6,
+                fill: true,
+                tension: 0.3,
+                yAxisID: 'y'
+            }, {
+                label: 'Listings',
+                data: counts,
+                borderColor: '#764ba2',
+                backgroundColor: isDark ? 'rgba(118, 75, 162, 0.2)' : 'rgba(118, 75, 162, 0.1)',
+                pointBackgroundColor: '#764ba2',
+                pointRadius: 4,
+                fill: false,
+                tension: 0.2,
+                yAxisID: 'y1'
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                title: { 
+                    display: true, 
+                    text: `Price Trends - ${capacity}GB ${ddr !== 'all' ? ddr : 'All DDR'} (${filteredListings.length} listings)`,
+                    color: textColor
+                },
+                legend: {
+                    labels: { color: textColor }
+                }
+            },
+            scales: {
+                x: {
+                    ticks: { color: textColor },
+                    grid: { color: gridColor }
+                },
+                y: {
+                    beginAtZero: true,
+                    position: 'left',
+                    title: { display: true, text: 'Average Price (€)', color: textColor },
+                    ticks: { color: textColor },
+                    grid: { color: gridColor }
+                },
+                y1: {
+                    beginAtZero: true,
+                    position: 'right',
+                    grid: { drawOnChartArea: false },
+                    title: { display: true, text: 'Listings', color: textColor },
+                    ticks: { color: textColor }
+                }
+            }
+        }
+    });
+}
+
+// Toggle column settings dropdown
+function toggleColumnSettings(event) {
+    if (event) {
+        event.stopPropagation();
+        event.preventDefault();
+    }
+    
+    // Create dropdown if doesn't exist
+    let dropdown = document.getElementById('column-settings-dropdown');
+    if (!dropdown) {
+        dropdown = document.createElement('div');
+        dropdown.id = 'column-settings-dropdown';
+        dropdown.className = 'column-settings-dropdown';
+        dropdown.innerHTML = `
+            <h4>Arrange Columns (Drag to reorder)</h4>
+            <div id="column-options-list"></div>
+            <div class="column-settings-footer">
+                <button onclick="showAllColumns()">Show All</button>
+                <button onclick="resetColumns()">Reset</button>
+            </div>
+        `;
+        document.body.appendChild(dropdown);
+    }
+    
+    const isActive = dropdown.classList.contains('active');
+    
+    if (!isActive) {
+        updateColumnOptions();
+        dropdown.classList.add('active');
+        
+        // Position dropdown near the button
+        const btn = document.getElementById('column-settings-btn');
+        if (btn) {
+            const rect = btn.getBoundingClientRect();
+            dropdown.style.top = (rect.bottom + 5) + 'px';
+            dropdown.style.left = rect.left + 'px';
+        }
+    } else {
+        dropdown.classList.remove('active');
+    }
+}
+
+// Update column options in dropdown
+function updateColumnOptions() {
+    const container = document.getElementById('column-options-list');
+    if (!container) return;
+    
+    container.innerHTML = columnOrder.map((col, index) => {
+        const isVisible = columnVisibility[col.id];
+        const isRequired = col.required;
+        const handle = isRequired ? '<span style="width: 20px; display: inline-block;"></span>' : `<span class="drag-handle" draggable="true" data-index="${index}">☰</span>`;
+        
+        return `
+            <div class="column-option ${isRequired ? 'required' : ''}" data-index="${index}">
+                ${handle}
+                <input type="checkbox" id="col-${col.id}" ${isVisible ? 'checked' : ''} ${isRequired ? 'disabled' : ''} 
+                       onchange="toggleColumn('${col.id}', this.checked)">
+                <label for="col-${col.id}">${col.label}</label>
+            </div>
+        `;
+    }).join('');
+    
+    // Add drag and drop handlers to drag handles AND column options
+    const handles = container.querySelectorAll('.drag-handle');
+    handles.forEach(handle => {
+        handle.addEventListener('dragstart', handleDragStart);
+        handle.addEventListener('dragend', handleDragEnd);
+    });
+    
+    // Add dragover and drop handlers to all column options
+    const options = container.querySelectorAll('.column-option');
+    options.forEach(option => {
+        option.setAttribute('draggable', 'true');
+        option.addEventListener('dragstart', handleDragStart);
+        option.addEventListener('dragend', handleDragEnd);
+        option.addEventListener('dragover', handleDragOver);
+        option.addEventListener('drop', handleDrop);
+        option.addEventListener('dragenter', (e) => { 
+            e.preventDefault(); 
+            if (!e.currentTarget.classList.contains('dragging')) {
+                e.currentTarget.style.background = '#e3f2fd';
+            }
+        });
+        option.addEventListener('dragleave', (e) => {
+            e.currentTarget.style.background = '';
+        });
+    });
+}
+
+function handleDragStart(e) {
+    this.closest('.column-option').classList.add('dragging');
+    e.dataTransfer.setData('text/plain', this.closest('.column-option').dataset.index);
+    e.dataTransfer.effectAllowed = 'move';
+}
+
+function handleDragEnd(e) {
+    document.querySelectorAll('.column-option.dragging').forEach(el => el.classList.remove('dragging'));
+}
+
+function handleDragOver(e) {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'move';
+}
+
+function handleDrop(e) {
+    e.preventDefault();
+    const fromIndex = parseInt(e.dataTransfer.getData('text/plain'));
+    const toIndex = parseInt(this.dataset.index);
+    
+    if (fromIndex !== toIndex) {
+        moveColumn(fromIndex, toIndex);
+    }
+}
+
+// Toggle column visibility
+function toggleColumn(columnId, visible) {
+    columnVisibility[columnId] = visible;
+    saveColumnSettings();
+    loadListings();
+}
+
+// Move column in order
+function moveColumn(fromIndex, toIndex) {
+    if (fromIndex === toIndex) return;
+    const col = columnOrder.splice(fromIndex, 1)[0];
+    columnOrder.splice(toIndex, 0, col);
+    saveColumnSettings();
+    updateColumnOptions();
+    loadListings();
+}
+
+// Show all columns
+function showAllColumns() {
+    columnOrder.forEach(col => {
+        columnVisibility[col.id] = true;
+    });
+    updateColumnOptions();
+    saveColumnSettings();
+    loadListings();
+}
+
+// Reset to default
+function resetColumns() {
+    columnOrder = JSON.parse(JSON.stringify(defaultColumnOrder));
+    columnOrder.forEach(col => {
+        columnVisibility[col.id] = true;
+    });
+    updateColumnOptions();
+    saveColumnSettings();
+    loadListings();
+}
+
+// Export to CSV
+function exportToCSV() {
+    if (!allRAMs || allRAMs.length === 0) {
+        alert('No data to export');
+        return;
+    }
+    
+    const headers = ['Listing ID', 'Title', 'Brand', 'Model', 'Capacity', 'Speed', 'DDR Type', 'CAS Latency', 'Price', 'Location', 'Date', 'Confidence', 'Match Method', 'Is Active', 'URL'];
+    const rows = allRAMs.map(item => {
+        return [
+            item.listing_id || '',
+            item.title || '',
+            (item.ram_name || '').split(' ')[0] || '',
+            item.ram_name || '',
+            item.capacity_gb || '',
+            item.speed || '',
+            item.ddr_type || '',
+            item.cas_latency || '',
+            item.price_eur || '',
+            item.seller_location || '',
+            item.date_posted || '',
+            item.confidence_score || '',
+            item.match_method || '',
+            item.is_active ? 'Yes' : 'No',
+            item.listing_url || ''
+        ].map(cell => {
+            const cellStr = String(cell || '');
+            if (cellStr.includes(',') || cellStr.includes('"') || cellStr.includes('\n')) {
+                return '"' + cellStr.replace(/"/g, '""') + '"';
+            }
+            return cellStr;
+        }).join(',');
+    });
+    
+    const csvContent = [headers.join(','), ...rows].join('\n');
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = `ram_listings_${new Date().toISOString().split('T')[0]}.csv`;
+    link.style.display = 'none';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+}
+
+// Close dropdown when clicking outside
+document.addEventListener('click', function(e) {
+    const dropdown = document.getElementById('column-settings-dropdown');
+    const btn = document.getElementById('column-settings-btn');
+    if (dropdown && !dropdown.contains(e.target) && e.target !== btn && !(btn && btn.contains(e.target))) {
+        dropdown.classList.remove('active');
+    }
+    
+    // Also close model history popup
+    const popup = document.getElementById('model-history-popup');
+    if (popup && !popup.contains(e.target)) {
+        popup.style.display = 'none';
+    }
+});
+
+// Flag functionality variables
+let currentRAMListingId = null;
+let currentRAMListing = null;
+
+// Toggle RAM flag fields visibility
+function toggleRAMFlagFields() {
+    const selectedReason = document.querySelector('#flag-modal input[name="flag-reason"]:checked');
+    const sizeContainer = document.getElementById('flag-ram-size-container');
+    const idContainer = document.getElementById('flag-ram-id-container');
+    
+    const isMismatch = selectedReason && selectedReason.value === 'ram_mismatch';
+    
+    if (sizeContainer) {
+        sizeContainer.style.display = isMismatch ? 'block' : 'none';
+    }
+    if (idContainer) {
+        idContainer.style.display = isMismatch ? 'block' : 'none';
+    }
+}
+
+// Show flag modal for RAM - SSD style
+function showFlagModalWithCategories(listingId, title) {
+    const existingModal = document.getElementById('flag-modal');
+    if (existingModal) existingModal.remove();
+    
+    // Find listing data
+    const listing = allRAMs ? allRAMs.find(r => r.listing_id === listingId) : null;
+    currentRAMListingId = listingId;
+    currentRAMListing = listing;
+    
+    const detectedSize = listing ? (listing.capacity_gb ? listing.capacity_gb + 'GB' : '') : '';
+    const ramName = listing ? (listing.ram_name || title || listingId) : (title || listingId);
+    const safeName = String(ramName).replace(/'/g, "\\'").replace(/"/g, '&quot;');
+    
+    const modalHtml = `
+        <div id="flag-modal" class="modal-overlay active" style="z-index: 2000;">
+            <div class="modal" style="max-width: 500px;">
+                <div class="modal-header">
+                    <h3>🚩 Flag RAM Listing</h3>
+                    <button class="modal-close" onclick="closeFlagModal()">×</button>
+                </div>
+                <div style="padding: 1.5rem;">
+                    <p style="margin-bottom: 1rem;"><strong>Listing:</strong> ${safeName}</p>
+                    
+                    <p style="margin-bottom: 1rem; color: var(--text-color);">Select a reason for flagging this listing:</p>
+                    <div style="display: flex; flex-direction: column; gap: 0.75rem; margin-bottom: 1.5rem;">
+                        <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                            <input type="radio" name="flag-reason" value="ram_mismatch" checked onchange="toggleRAMFlagFields()">
+                            <span>RAM model mismatch</span>
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                            <input type="radio" name="flag-reason" value="wrong_price" onchange="toggleRAMFlagFields()">
+                            <span>Wrong price</span>
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                            <input type="radio" name="flag-reason" value="sold" onchange="toggleRAMFlagFields()">
+                            <span>Already sold</span>
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                            <input type="radio" name="flag-reason" value="spam" onchange="toggleRAMFlagFields()">
+                            <span>Spam/Scam</span>
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                            <input type="radio" name="flag-reason" value="other" onchange="toggleRAMFlagFields()">
+                            <span>Other</span>
+                        </label>
+                    </div>
+                    
+                    <!-- RAM Size Fields -->
+                    <div id="flag-ram-size-container" style="margin-bottom: 1rem;">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 0.75rem;">
+                            <div>
+                                <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Detected Size:</label>
+                                <input type="text" id="flag-ram-detected-size" class="flag-text-input" placeholder="e.g., 16GB" value="${detectedSize}" readonly style="background: #f5f5f5; width: 100%; padding: 0.5rem; border: 1px solid #ddd; border-radius: 4px;">
+                            </div>
+                            <div>
+                                <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Correct Size:</label>
+                                <input type="text" id="flag-ram-correct-size" class="flag-text-input" placeholder="Enter RAM ID to auto-fill" readonly style="background: #f5f5f5; width: 100%; padding: 0.5rem; border: 1px solid #ddd; border-radius: 4px;">
+                            </div>
+                        </div>
+                        
+                        <!-- Comparison Checkbox -->
+                        <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer; margin-bottom: 1rem; padding: 0.5rem; background: #f0f0f0; border-radius: 4px;">
+                            <input type="checkbox" id="flag-ram-size-correct" onchange="toggleRAMSizeCorrect()">
+                            <span>✓ Size comparison is correct (detected matches actual)</span>
+                        </label>
+                    </div>
+                    
+                    <div id="flag-ram-id-container" style="margin-bottom: 1rem; display: none;">
+                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Correct RAM ID:</label>
+                        <input type="text" id="flag-ram-correct-id" class="flag-text-input" placeholder="Enter RAM reference ID (e.g., 123)" onblur="fetchRAMSizeById()" style="width: 100%; padding: 0.5rem; border: 1px solid #ddd; border-radius: 4px;">
+                        <small style="display: block; margin-top: 0.25rem; color: #666;">Enter ID and press Tab to auto-fill size</small>
+                    </div>
+                    
+                    <div id="flag-comment-container" style="margin-bottom: 1rem;">
+                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Comment (optional):</label>
+                        <textarea id="flag-comment" style="width: 100%; padding: 0.5rem; border-radius: 4px; border: 1px solid #ddd; min-height: 60px;"></textarea>
+                    </div>
+                    
+                    <div style="display: flex; gap: 1rem; justify-content: flex-end;">
+                        <button class="btn btn-secondary" onclick="closeFlagModal()">{{ t('Cancel') }}</button>
+                        <button id="flag-submit-btn" class="btn" style="background: #dc3545; color: white;" onclick="submitFlagFromModal('${listingId}')">Submit Flag</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    document.body.insertAdjacentHTML('beforeend', modalHtml);
+    
+    document.getElementById('flag-modal').addEventListener('click', function(e) {
+        if (e.target === this) closeFlagModal();
+    });
+    
+    // Initialize field visibility
+    toggleRAMFlagFields();
+}
+
+// Fetch RAM size by ID
+async function fetchRAMSizeById() {
+    const idInput = document.getElementById('flag-ram-correct-id');
+    const correctSizeInput = document.getElementById('flag-ram-correct-size');
+    const checkbox = document.getElementById('flag-ram-size-correct');
+    
+    if (!idInput || !correctSizeInput) return;
+    
+    const ramId = idInput.value.trim();
+    if (!ramId) {
+        correctSizeInput.value = '';
+        return;
+    }
+    
+    try {
+        const response = await fetch(`/api/ram-details/${ramId}`);
+        if (response.ok) {
+            const data = await response.json();
+            if (data.success && data.ram) {
+                const capacity = data.ram.capacity_gb;
+                if (capacity) {
+                    correctSizeInput.value = capacity + 'GB';
+                    const detectedSize = document.getElementById('flag-ram-detected-size')?.value;
+                    if (detectedSize && checkbox) {
+                        checkbox.checked = (detectedSize === capacity + 'GB');
+                    }
+                }
+            } else {
+                correctSizeInput.readOnly = false;
+                correctSizeInput.style.background = 'white';
+                correctSizeInput.placeholder = 'Enter size manually (RAM ID not found)';
+            }
+        } else {
+            correctSizeInput.readOnly = false;
+            correctSizeInput.style.background = 'white';
+            correctSizeInput.placeholder = 'Enter size manually';
+        }
+    } catch (error) {
+        console.error('Error fetching RAM size:', error);
+        correctSizeInput.readOnly = false;
+        correctSizeInput.style.background = 'white';
+    }
+}
+
+// Toggle correct size when checkbox is checked
+function toggleRAMSizeCorrect() {
+    const checkbox = document.getElementById('flag-ram-size-correct');
+    const detectedSizeInput = document.getElementById('flag-ram-detected-size');
+    const correctSizeInput = document.getElementById('flag-ram-correct-size');
+    
+    if (!checkbox || !detectedSizeInput || !correctSizeInput) return;
+    
+    if (checkbox.checked) {
+        correctSizeInput.value = detectedSizeInput.value;
+        correctSizeInput.readOnly = true;
+        correctSizeInput.style.background = '#e8f5e9';
+    } else {
+        correctSizeInput.value = '';
+        correctSizeInput.readOnly = false;
+        correctSizeInput.style.background = 'white';
+    }
+}
+
+function closeFlagModal() {
+    const modal = document.getElementById('flag-modal');
+    if (modal) modal.remove();
+    currentRAMListingId = null;
+    currentRAMListing = null;
+}
+
+function removeListingRow(listingId) {
+    const rows = document.querySelectorAll('#listings-container tbody tr, table tbody tr');
+    rows.forEach(row => {
+        const onclick = row.getAttribute('onclick') || '';
+        const html = row.innerHTML;
+        if (onclick.includes("'" + listingId + "'") || html.includes("'" + listingId + "'") || html.includes(listingId)) {
+            row.style.transition = 'opacity 0.3s ease';
+            row.style.opacity = '0';
+            setTimeout(() => row.remove(), 300);
+        }
+    });
+}
+
+async function submitFlagFromModal(listingId) {
+    const selectedReason = document.querySelector('#flag-modal input[name="flag-reason"]:checked');
+    const reason = selectedReason ? selectedReason.value : 'other';
+    const commentEl = document.getElementById('flag-comment');
+    const comment = commentEl ? commentEl.value.trim() : '';
+    const correctIdEl = document.getElementById('flag-ram-correct-id');
+    const correctId = correctIdEl ? correctIdEl.value.trim() : '';
+    const detectedSizeEl = document.getElementById('flag-ram-detected-size');
+    const detectedSize = detectedSizeEl ? detectedSizeEl.value.trim() : '';
+    const correctSizeEl = document.getElementById('flag-ram-correct-size');
+    const correctSize = correctSizeEl ? correctSizeEl.value.trim() : '';
+
+    let finalComment = '';
+    
+    if (reason === 'ram_mismatch') {
+        const parts = [];
+        if (detectedSize && correctSize) {
+            parts.push(`Scrapper scrapped ${detectedSize}, should have been ${correctSize}`);
+        }
+        if (correctId) {
+            parts.push(`Should have matched with ID: ${correctId}`);
+        }
+        if (comment) {
+            parts.push(comment);
+        }
+        finalComment = parts.join('. ');
+    } else if (reason === 'spam') {
+        if (!comment) {
+            alert('Please enter a comment describing why this is spam/scam');
+            return;
+        }
+        finalComment = `SPAM/SCAM: ${comment}`;
+    } else {
+        finalComment = comment;
+    }
+    
+    try {
+        const response = await fetch('/api/flag-listing', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ 
+                listing_id: listingId, 
+                comment: finalComment,
+                category: 'ram',
+                flag_category: reason.toUpperCase(),
+                reason: reason
+            })
+        });
+        
+        const data = await response.json();
+        if (data.success) {
+            const submitBtn = document.getElementById('flag-submit-btn');
+            if (submitBtn) {
+                submitBtn.innerHTML = '✓ Flagged';
+                submitBtn.style.background = '#28a745';
+                submitBtn.disabled = true;
+            }
+            setTimeout(() => {
+                closeFlagModal();
+                loadListings();
+            }, 1500);
+        } else {
+            alert('Error: ' + (data.error || 'Failed to flag listing'));
+        }
+    } catch (error) {
+        console.error('Error flagging listing:', error);
+        alert('Failed to flag listing. Please try again.');
+    }
+}
+
+// Parse URL query parameters for direct filtering (e.g. /ram?ram_id=123)
+function applyUrlFilters() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const ramId = urlParams.get('ram_id');
+    const capacity = urlParams.get('capacity');
+    const ddrType = urlParams.get('ddr_type') || urlParams.get('type');
+
+    if (ramId) {
+        const ramIdInput = document.getElementById('ram-id-filter');
+        if (ramIdInput) ramIdInput.value = ramId;
+    }
+    if (capacity) {
+        const capacitySelect = document.getElementById('capacity-filter');
+        if (capacitySelect) capacitySelect.value = capacity;
+    }
+    if (ddrType) {
+        currentDDRFilter = ddrType;
+        const ddrSelect = document.getElementById('ddr-filter');
+        if (ddrSelect) ddrSelect.value = ddrType;
+    }
+}
+
+// Load on page load
+document.addEventListener('DOMContentLoaded', () => {
+    try {
+        initColumnCustomization();
+        loadColumnSettings();
+        loadStats();
+        applyUrlFilters();
+        loadListings();
+        updatePriceTrends();
+    } catch (e) {
+        console.error('[RAM Debug] Error during init:', e);
+        document.getElementById('listings-container').innerHTML = 
+            '<div class="error">Initialization error: ' + e.message + '</div>';
+    }
+});
+</script>
+{% endblock %}

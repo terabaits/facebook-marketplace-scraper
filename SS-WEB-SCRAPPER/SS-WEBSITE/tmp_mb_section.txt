@@ -1,0 +1,100 @@
+// Motherboard (matched from database)
+    if (breakdown.motherboard) {
+        const mb = breakdown.motherboard;
+        const isMatched = mb.motherboard_id || mb.id;
+        const mbName = (mb.brand && mb.model) ? `${mb.brand} ${mb.model}` : (mb.name || 'Motherboard');
+        const chipsetList = mb.supported_chipsets ? mb.supported_chipsets.slice(0, 4).join(', ') + (mb.supported_chipsets.length > 4 ? '...' : '') : '';
+        html += `
+            <div class="component-row detailed">
+                <div class="component-header">
+                    <div class="component-icon-large" style="background: #8e44ad;">🔌</div>
+                    <div class="component-info">
+                        <div class="component-name">${mbName}</div>
+                        <div class="component-specs">
+                            ${mb.socket ? `<span class="spec-tag">${mb.socket}</span>` : ''}
+                            ${mb.chipset ? `<span class="spec-tag">${mb.chipset}</span>` : ''}
+                            ${chipsetList ? `<span class="spec-tag" title="${mb.supported_chipsets?.join(', ') || ''}">Chipsets: ${chipsetList}</span>` : ''}
+                            ${mb.form_factor ? `<span class="spec-tag">${mb.form_factor}</span>` : ''}
+                            ${mb.is_generic ? '<span class="spec-tag" style="background: #f39c12; color: #000;">📋 Generic</span>' : ''}
+                            ${isMatched ? '<span class="spec-tag" style="background: #27ae60; color: white;">✓ Matched</span>' : ''}
+                        </div>
+                    </div>
+                    <div class="component-value">
+                        <div class="price-tag">~€${breakdown.motherboard_avg_price?.toFixed(0) || '?'}</div>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+    
+    // Storage drives
+    ['ssd', 'ssd2', 'ssd3'].forEach((key, idx) => {
+        if (breakdown[key]) {
+            const drive = breakdown[key];
+            const label = idx === 0 ? 'SSD' : idx === 1 ? 'SSD (2nd)' : 'SSD (3rd)';
+            html += `
+                <div class="component-row detailed">
+                    <div class="component-header">
+                        <div class="component-icon-large ssd-icon">💽</div>
+                        <div class="component-info">
+                            <div class="component-name">${label}: ${drive.brand || ''} ${drive.model || drive.name || 'Drive'}</div>
+                            <div class="component-specs">
+                                ${drive.capacity_gb ? `<span class="spec-tag">${drive.capacity_gb}GB</span>` : ''}
+                                ${drive.interface ? `<span class="spec-tag">${drive.interface}</span>` : ''}
+                                ${drive.form_factor ? `<span class="spec-tag">${drive.form_factor}</span>` : ''}
+                                ${drive.nand_type ? `<span class="spec-tag">${drive.nand_type}</span>` : ''}
+                            </div>
+                        </div>
+                        <div class="component-value">
+                            <div class="price-tag">~€${breakdown[key + '_avg_price']?.toFixed(0) || '?'}</div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+    });
+    
+    // PSU
+    if (breakdown.psu) {
+        html += `
+            <div class="component-row detailed">
+                <div class="component-header">
+                    <div class="component-icon-large psu-icon">🔌</div>
+                    <div class="component-info">
+                        <div class="component-name">PSU: ${breakdown.psu.name || 'Power Supply'}</div>
+                        <div class="component-specs">
+                            ${breakdown.psu.wattage ? `<span class="spec-tag">${breakdown.psu.wattage}W</span>` : ''}
+                            ${breakdown.psu.modular ? `<span class="spec-tag">${breakdown.psu.modular}</span>` : ''}
+                            ${breakdown.psu.efficiency ? `<span class="spec-tag">${breakdown.psu.efficiency}</span>` : ''}
+                        </div>
+                    </div>
+                    <div class="component-value">
+                        <div class="price-tag">~€${breakdown.psu_avg_price?.toFixed(0) || '?'}</div>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+    
+    // Case
+    if (breakdown.case) {
+        html += `
+            <div class="component-row detailed">
+                <div class="component-header">
+                    <div class="component-icon-large case-icon">🖥️</div>
+                    <div class="component-info">
+                        <div class="component-name">Case: ${breakdown.case.name || 'PC Case'}</div>
+                        <div class="component-specs">
+                            ${breakdown.case.type ? `<span class="spec-tag">${breakdown.case.type}</span>` : ''}
+                            ${breakdown.case.form_factor ? `<span class="spec-tag">${breakdown.case.form_factor}</span>` : ''}
+                        </div>
+                    </div>
+                    <div class="component-value">
+                        <div class="price-tag">~€${breakdown.case_avg_price?.toFixed(0) || '?'}</div>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+    
+    // Monitor

@@ -1,0 +1,67 @@
+﻿}
+
+// Save column settings to localStorage
+function saveColumnSettings() {
+    localStorage.setItem('cpuColumnOrder', JSON.stringify(columnOrder));
+    localStorage.setItem('cpuColumnVisibility', JSON.stringify(columnVisibility));
+}
+
+// Discover-model tracking for FIRST badge (mirrors GPU page)
+const discoveredCpuModelsKey = 'discovered_cpu_models';
+let discoveredCpuModels = new Set();
+
+function loadDiscoveredCpuModels() {
+    try {
+        const stored = localStorage.getItem(discoveredCpuModelsKey);
+        if (stored) {
+            discoveredCpuModels = new Set(JSON.parse(stored));
+        }
+    } catch (e) {
+        console.error('Error loading discovered CPU models:', e);
+        discoveredCpuModels = new Set();
+    }
+}
+
+function saveDiscoveredCpuModels() {
+    try {
+        localStorage.setItem(discoveredCpuModelsKey, JSON.stringify([...discoveredCpuModels]));
+    } catch (e) {
+        console.error('Error saving discovered CPU models:', e);
+    }
+}
+
+function computeCpuDealBadges(item) {
+    let dealBadge = '';
+
+    const isNewListing = item.is_new === true;
+    if (isNewListing) {
+        dealBadge += `<span class="badge" style="background: #3b82f6; color: white; font-weight: bold;" title="New listing from current import!">🆕 NEW</span><br>`;
+    }
+    if (!isNewListing && item.price_stats && item.price_stats.below_avg) {
+        const avgPrice = parseFloat(item.price_stats.avg);
+        const currentPrice = item.price_eur;
+        const savingsPct = ((avgPrice - currentPrice) / avgPrice * 100);
+        if (savingsPct >= 15) {
+            dealBadge += `<span class="badge" style="background: #dc2626; color: white; font-weight: bold;" title="Price is ${savingsPct.toFixed(0)}% below average!">🔥 STEAL</span><br>`;
+        }
+    }
+    return dealBadge;
+}
+
+// Toggle column visibility
+function toggleColumn(columnId, visible) {
+    columnVisibility[columnId] = visible;
+    saveColumnSettings();
+    renderFullTable();
+
+    // Keep the dropdown open and repositioned after toggling so the user can toggle more columns
+    const dropdown = document.getElementById('column-settings-dropdown');
+    if (dropdown && dropdown.classList.contains('active')) {
+        updateColumnOptions();
+        requestAnimationFrame(updateDropdownPosition);
+    }
+}
+
+// Move column in order
+function moveColumn(fromIndex, toIndex) {
+

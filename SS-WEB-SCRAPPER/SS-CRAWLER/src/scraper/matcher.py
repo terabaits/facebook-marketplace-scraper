@@ -131,13 +131,71 @@ class GPUMatcher:
         
         normalized = normalize_text(full_text)
         
+        # Remove CPU model patterns to avoid false GPU matches
+        # e.g., "i5-13600" should not match GTX "760" or "RTX 3060"
+        cpu_patterns = [
+            r'i[3579]\s*-?\s*\d{4,5}',  # Intel Core i3/i5/i7/i9
+            r'ryzen\s*\d?\s*\d{3,4}',     # AMD Ryzen
+            r'r[3579]\s*\d{3,4}',          # Ryzen shorthand R5/R7/R9
+            r'xeon\s*[ew]?\d*-?\d{4}',     # Intel Xeon
+        ]
+        text_for_gpu = normalized
+        for pattern in cpu_patterns:
+            text_for_gpu = re.sub(pattern, '', text_for_gpu, flags=re.IGNORECASE)
+        
+        # Also remove motherboard chipset patterns (B760, B550, etc.) to avoid matching GPU numbers
+        # Must come before SSD/PSU patterns since they may contain numbers
+        mb_chipset_patterns = [
+            r'\b[bxzab]\d{3,4}[mh]?\b',  # B760, B550, X570, Z790, B760M, etc.
+            r'\bh\d{3}[mh]?\b',           # H610, H510, etc.
+        ]
+        for pattern in mb_chipset_patterns:
+            text_for_gpu = re.sub(pattern, '', text_for_gpu, flags=re.IGNORECASE)
+        
+        # Remove SSD model patterns that might match GPU numbers
+        # e.g., "MX500" should not match GTX 500
+        ssd_patterns = [
+            r'\bmx\d{3,4}\b',             # MX500, MX300, etc.
+            r'\bsn\d{3,4}\b',             # SN770, SN850, etc.
+            r'\bcs\d{3,4}\b',             # CS1030, etc.
+            r'\bwd\s*\d{3,4}\b',         # WD Blue/Black numbers
+        ]
+        for pattern in ssd_patterns:
+            text_for_gpu = re.sub(pattern, '', text_for_gpu, flags=re.IGNORECASE)
+        
+        # Remove PSU wattage patterns
+        psu_patterns = [
+            r'\b\d{3,4}\s*w\b',          # 500W, 650W, etc.
+            r'\b\d{3,4}\s*ватт\b',        # Russian watt
+        ]
+        for pattern in psu_patterns:
+            text_for_gpu = re.sub(pattern, '', text_for_gpu, flags=re.IGNORECASE)
+        
+        text_for_gpu = re.sub(r'\s+', ' ', text_for_gpu).strip()
+        
+        # Check for Intel integrated graphics - these should NOT match discrete GPUs
+        # Intel HD/UHD/Iris graphics are integrated, not discrete GPUs
+        intel_integrated_patterns = [
+            r'\bhd\s*graphics?\s*\d{4}\b',  # HD Graphics 4400, 4600, 5500, etc.
+            r'\buhd\s*graphics?\s*\d*\b',     # UHD Graphics 630, etc.
+            r'\biris\s*graphics?\b',          # Iris Graphics
+            r'\bintel\s*hd\s*\d{4}\b',        # Intel HD 4400, 4600
+            r'\bintel\s*uhd\s*\d{3,4}\b',     # Intel UHD 630, 770
+            r'\bintel\s*graphics\b',          # Plain "Intel Graphics" (integrated, not Arc)
+        ]
+        for pattern in intel_integrated_patterns:
+            if re.search(pattern, full_text.lower()):
+                # This is Intel integrated graphics - don't try to match discrete GPU
+                logger.debug(f"Intel integrated graphics detected, skipping discrete GPU matching")
+                return MatchResult(confidence=0.0, method="none")
+        
         # Remove price patterns to avoid false matches (e.g., "650" in "EUR 650.00" matching GTX 650)
         # Match patterns like: 650.00, 650,00, eur 650, $650, etc.
-        normalized = re.sub(r'\b\d+[.,]\d{2}\b', '', normalized)  # Remove decimal prices
-        normalized = re.sub(r'\s+', ' ', normalized).strip()
+        normalized_clean = re.sub(r'\b\d+[.,]\d{2}\b', '', text_for_gpu)  # Remove decimal prices
+        normalized_clean = re.sub(r'\s+', ' ', normalized_clean).strip()
         
-        # Get candidates based on name matching
-        candidates = self._get_candidates_by_name(normalized, full_text)
+        # Get candidates based on name matching (use cleaned text)
+        candidates = self._get_candidates_by_name(normalized_clean, full_text)
         
         if not candidates:
             return MatchResult(confidence=0.0, method="none")
@@ -233,8 +291,26 @@ class GPUMatcher:
                 if token_norm in gpu.normalized_name:
                     # Score based on how much of the name matches
                     match_ratio = len(token_norm) / len(gpu.normalized_name)
-                    if match_ratio >= 0.5:  # At least half the name matches
+                    if match_ratio >= 0.4:  # Lowered from 0.5 for partial matches like "gtx980" in "geforcegtx980"
                         candidates.append((gpu, 0.90))
+                        seen.add(gpu.id)
+                        continue
+                
+                # Check if token_norm is at the end of normalized_name (e.g., "gtx980" at end of "geforcegtx980")
+                if gpu.normalized_name.endswith(token_norm):
+                    candidates.append((gpu, 0.85))
+                    seen.add(gpu.id)
+            
+            # Special handling for AMD RX 6000 series patterns like RX6800XT
+            if 'rx' in token_norm and '6800' in token_norm:
+                # Direct match for RX 6800 XT patterns
+                for gpu in self.gpus:
+                    if gpu.id in seen:
+                        continue
+                    gpu_norm_lower = gpu.normalized_name.lower()
+                    if '6800' in gpu_norm_lower and 'xt' in gpu_norm_lower and 'xtx' not in gpu_norm_lower:
+                        # RX 6800 XT match
+                        candidates.append((gpu, 0.98))
                         seen.add(gpu.id)
             
             # Check suffix matches

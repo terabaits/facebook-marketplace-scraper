@@ -1,0 +1,182 @@
+Version,Model,Type,Board,Flash,HDD,"HDMI
+CEC","Other
+OS","PS2
+mode","SA-
+CD","WiFi
+802.11
+b/g",CELL BE,RSX,W/Max/Cum,"USB
+Ports","Flash
+Readers","SKU
+Release
+date","FW @
+Release
+date","downgradeable
+Min.
+praxis"
+Fat,CECHAxx,0x01,COK-001,2x 128MB NAND,60GB,No,Yes,HW,Yes,Yes,90nm,90nm,200/380/399,4,Yes,8/2006,1,1
+Fat,CECHAxx,0x01,COK-001,2x 128MB NAND,60GB,No,Yes,HW,Yes,Yes,90nm,90nm,200/380/399,4,Yes,8/2007,1.9,-
+Fat,CECHBxx,0x02,COK-001,2x 128MB NAND,20GB,No,Yes,HW,Yes,No,90nm,90nm,200/380/399,4,No,8/2006,1,1
+Fat,CECHBxx,0x02,COK-001,2x 128MB NAND,20GB,No,Yes,HW,Yes,No,90nm,90nm,200/380/399,4,No,4/2007,1.7,-
+Fat,CECHCxx,0x03,COK-002,2x 128MB NAND,60GB,No,Yes,SW,Yes,Yes,90nm,90nm,200/380/387,4,Yes,3/2007,1.5,1
+Fat,CECHCxx,0x03,COK-002,2x 128MB NAND,60GB,No,Yes,SW,Yes,Yes,90nm,90nm,200/380/387,4,Yes,8/2007,1.9,?? or 2.30
+Fat,CECHExx,0x04,"COK-002
+ or
+COK-002W",2x 128MB NAND,80GB,No,Yes,SW,Yes,Yes,90nm,90nm,200/380/387,4,Yes,8/2007,1.9,1
+Fat,CECHGxx,0x05,SEM-001,2x 128MB NAND,40GB,No,Yes,No,No,Yes,65nm,90nm,160/280/285,2,No,10/2007,1.94,1.90 or 1.97 or 2.30
+Fat,CECHHxx,0x06,DIA-001,1x 16MB NOR,40GB,No,Yes,No,No,Yes,65nm,90nm,160/280/285,2,No,10/2007,1.94,1.97 or 2.30
+Fat,CECHJxx,0x07,DIA-002,1x 16MB NOR,"40GB
+ or
+40GB",No,Yes,No,No,Yes,65nm,65nm,140/258/261,2,No,8/2008,2.42,2.3
+Fat,CECHKxx,0x07,DIA-002,1x 16MB NOR,80GB,No,Yes,No,No,Yes,65nm,65nm,140/256/261,2,No,8/2008,2.42,2.16 or 2.30
+Fat,CECHLxx,0x08,VER-001,1x 16MB NOR,"80GB
+ or
+80GB
+ or
+80GB",No,Yes,No,No,Yes,65nm,65nm,140/252/256,2,No,10/2008,2.5,2.30 or 2.45
+Fat,CECHMxx,0x08,DIA-001,1x 16MB NOR,80GB,No,Yes,No,No,Yes,65nm,90nm,140/252/256,2,No,10/2008,2.5,-
+Fat,CECHPxx,0x08,VER-001,1x 16MB NOR,"160GB
+ or
+160GB",No,Yes,No,No,Yes,65nm,65nm,140/252/256,2,No,10/2008,2.5,2.45
+Fat,CECHQxx,0x08,DIA-001,1x 16MB NOR,160GB,No,Yes,No,No,Yes,65nm,90nm,160/280/285,2,No,4/2009,2.7,1.97
+Slim (2000 series),CECH-20xxA,0x09,DYN-001,1x 16MB NOR,"120GB
+ or
+120GB",Yes,No,No,No,Yes,45nm,65nm,100/215/220,2,No,9/2009,3,2.7
+Slim (2000 series),CECH-20xxB,0x09,DYN-001,1x 16MB NOR,250GB,Yes,No,No,No,Yes,45nm,65nm,100/215/220,2,No,9/2009,3,2.7
+Slim (2000 series),CECH-21xxA,0x0A,SUR-001,1x 16MB NOR,"120GB
+ or
+120GB",Yes,No,No,No,Yes,45nm,40nm,80/190/196,2,No,3/2010,3.21,3.20 or 3.40
+Slim (2000 series),CECH-21xxB,0x0A,SUR-001,1x 16MB NOR,250GB,Yes,No,No,No,Yes,45nm,40nm,80/190/196,2,No,3/2010,3.21,3.20 or 3.40
+Slim (2000 series),CECH-25xxA,0x0B,"JTP-001
+ or
+JSD-001[1]",1x 16MB NOR,"120GB
+ or
+120GB
+ or
+160GB",Yes,No,No,No,Yes,45nm,40nm,80/190/196,2,No,7/2010,3.4,3.4
+Slim (2000 series),CECH-25xxB,0x0B,"JTP-001
+ or
+JSD-001[1]",1x 16MB NOR,"250GB
+ or
+320GB",Yes,No,No,No,Yes,45nm,40nm,80/190/196,2,No,7/2010,3.4,3.4
+Slim (2000 series),CECH-25xxA,0x0B,"JTP-001
+ or
+JSD-001[1]",1x 16MB NOR,"120GB
+ or
+120GB
+ or
+160GB",Yes,No,No,No,Yes,45nm,40nm,80/190/196,2,No,9/2010,3.4,3.40 or 3.50
+Slim (2000 series),CECH-25xxB,0x0B,"JTP-001
+ or
+JSD-001[1]",1x 16MB NOR,"250GB
+ or
+320GB",Yes,No,No,No,Yes,45nm,40nm,80/190/196,2,No,9/2010,3.5,3.40 or 3.50
+Slim (2000 series),CECH-25xxA,0x0B,"JTP-001
+ or
+JSD-001[1]",1x 16MB NOR,160GB,Yes,No,No,No,Yes,45nm,40nm,80/190/196,2,No,1/2011,3.56,3.50[2]
+Slim (2000 series),CECH-25xxB,0x0B,"JTP-001
+ or
+JSD-001[1]",1x 16MB NOR,320GB,Yes,No,No,No,Yes,45nm,40nm,80/190/196,2,No,1/2011,3.56,3.50[2]
+Slim (2000 series),CECH-25xxA,0x0B,"JTP-001
+ or
+JSD-001[1]",1x 16MB NOR,160GB,Yes,No,No,No,Yes,45nm,40nm,80/190/196,2,No,1/2011,3.56,3.56[2]
+Slim (2000 series),CECH-25xxB,0x0B,"JTP-001
+ or
+JSD-001[1]",1x 16MB NOR,320GB,Yes,No,No,No,Yes,45nm,40nm,80/190/196,2,No,1/2011,3.56,3.56[2]
+Slim (2000 series),CECH-25xxA,0x0B,"JTP-001
+ or
+JSD-001[1]",1x 16MB NOR,160GB,Yes,No,No,No,Yes,45nm,40nm,80/190/196,2,No,4/2011,3.56,3.56[3]
+Slim (2000 series),CECH-25xxB,0x0B,"JTP-001
+ or
+JSD-001[1]",1x 16MB NOR,320GB,Yes,No,No,No,Yes,45nm,40nm,80/190/196,2,No,4/2011,3.56,3.56[3]
+Slim (2000 series),CECH-25xxA,0x0B,"JTP-001
+ or
+JSD-001[1]",1x 16MB NOR,160GB,Yes,No,No,No,Yes,45nm,40nm,80/190/196,2,No,4/2011,3.6,3.60[3]
+Slim (2000 series),CECH-25xxB,0x0B,"JTP-001
+ or
+JSD-001[1]",1x 16MB NOR,320GB,Yes,No,No,No,Yes,45nm,40nm,80/190/196,2,No,4/2011,3.6,3.60[3]
+Slim (3000 series),CECH-30xxA,0x0C,KTE-001,1x 16MB NOR,160GB,Yes,No,No,No,Yes,45nm,40nm,80/210/220,2,No,6/2011,3.65,3.65
+Slim (3000 series),CECH-30xxB,0x0C,KTE-001,1x 16MB NOR,320GB,Yes,No,No,No,Yes,45nm,40nm,80/210/220,2,No,6/2011,3.65,3.65
+Slim (3000 series),CECH-30xxA,0x0C,KTE-001,1x 16MB NOR,160GB,Yes,No,No,No,Yes,45nm,40nm,80/210/220,2,No,7/2011,3.66,3.66
+Slim (3000 series),CECH-30xxB,0x0C,KTE-001,1x 16MB NOR,320GB,Yes,No,No,No,Yes,45nm,40nm,80/210/220,2,No,7/2011,3.66,3.66
+Slim (3000 series),CECH-30xxA,0x0C,KTE-001,1x 16MB NOR,160GB,Yes,No,No,No,Yes,45nm,40nm,80/210/220,2,No,10/2011,3.72,3.72
+Slim (3000 series),CECH-30xxB,0x0C,KTE-001,1x 16MB NOR,320GB,Yes,No,No,No,Yes,45nm,40nm,80/210/220,2,No,10/2011,3.72,3.72
+Slim (3000 series),CECH-30xxA,0x0C,KTE-001,1x 16MB NOR,160GB,Yes,No,No,No,Yes,45nm,40nm,80/210/220,2,No,2/2012,4.1,4.1
+Slim (3000 series),CECH-30xxB,0x0C,KTE-001,1x 16MB NOR,320GB,Yes,No,No,No,Yes,45nm,40nm,80/210/220,2,No,2/2012,4.1,4.1
+SuperSlim (4000 series),CECH-40xxA,0x0D,"MPX-001
+ or
+MSX-001
+ or
+NPX-001",16GB eMMC,"8.9GB usable
+12GB total
+option.exp.",Yes,No,No,No,Yes,45nm,"40nm (MSX-001 and MPX-001)
+28nm (NPX-001)",75/155/160,2,No,09/2012,4.31,4.25
+SuperSlim (4000 series),CECH-40xxB,0x0D,"MPX-001
+ or
+MSX-001
+ or
+NPX-001",1x 16MB NOR,"250GB
+ or
+500GB",Yes,No,No,No,Yes,45nm,"40nm (MSX-001 and MPX-001)
+28nm (NPX-001)",75/155/160,2,No,09/2012,4.11,?4.10?
+SuperSlim (4000 series),CECH-40xxC,0x0D,"MPX-001
+ or
+MSX-001
+ or
+NPX-001",1x 16MB NOR,"250GB
+ or
+500GB",Yes,No,No,No,Yes,45nm,"40nm (MSX-001 and MPX-001)
+28nm (NPX-001)",75/155/160,2,No,09/2012,4.11,?4.10?
+SuperSlim (4000 series),CECH-42xxA,?0x0E?,"?MPX-001?
+ or
+?MSX-001?
+ or
+?NPX-001?",16GB eMMC,"8.9GB usable
+12GB total
+option.exp.",Yes,No,No,No,Yes,45nm,"40nm (MSX-001 and MPX-001)
+28nm (NPX-001)",?75/155/160?,2,No,06/2013,4.45,?4.45?
+SuperSlim (4000 series),CECH-42xxB,?0x0E?,"?MPX-001?
+ or
+?MSX-001?
+ or
+?NPX-001?",1x 16MB NOR,"?250GB?
+ or
+?500GB?",Yes,No,No,No,Yes,45nm,"40nm (MSX-001 and MPX-001)
+28nm (NPX-001)",?75/155/160?,2,No,06/2013,4.45,?4.45?
+SuperSlim (4000 series),CECH-42xxC,0x10,"?MPX-001?
+ or
+?MSX-001?
+ or
+?NPX-001?",1x 16MB NOR,"?250GB?
+ or
+?500GB?",Yes,No,No,No,Yes,45nm,"40nm (MSX-001 and MPX-001)
+28nm (NPX-001)",?75/155/160?,2,No,06/2013,4.45,4.4
+SuperSlim (4000 series),CECH-42xxA,?0x0E?,"PPX-001
+PQX-001",16GB eMMC,"8.9GB usable
+12GB total
+option.exp.",Yes,No,No,No,Yes,"45nm
+(small BGA case)",28nm,?75/155/160?,2,No,09/2013,4.46,?4.45?
+SuperSlim (4000 series),CECH-42xxB,?0x0E?,"PPX-001
+PQX-001",1x 16MB NOR,"?250GB?
+ or
+?500GB?",Yes,No,No,No,Yes,"45nm
+(small BGA case)",28nm,?75/155/160?,2,No,09/2013,4.46,?4.45?
+SuperSlim (4000 series),CECH-42xxC,0x10,"PPX-001
+PQX-001",1x 16MB NOR,"?250GB?
+ or
+?500GB?",Yes,No,No,No,Yes,"45nm
+(small BGA case)",28nm,?75/155/160?,2,No,09/2013,4.46,4.4
+SuperSlim (4000 series),CECH-43xxA,?0x0F?,"RTX-001
+REX-001",16GB eMMC,"8.9GB usable
+12GB total
+option.exp.",Yes,No,No,No,Yes,"45nm
+(small BGA case)",28nm,?75/155/160?,2,No,05/2014,4.55,?4.45?
+SuperSlim (4000 series),CECH-43xxB,?0x0F?,"RTX-001
+REX-001",1x 16MB NOR,"?250GB?
+ or
+?500GB?",Yes,No,No,No,Yes,"45nm
+(small BGA case)",28nm,?75/155/160?,2,No,05/2014,4.55,?4.45?
+SuperSlim (4000 series),CECH-43xxC,0x13,"RTX-001
+REX-001",1x 16MB NOR,"?250GB?
+ or
+?500GB?",Yes,No,No,No,Yes,"45nm
+(small BGA case)",28nm,?75/155/160?,2,No,05/2014,4.55,?4.45?

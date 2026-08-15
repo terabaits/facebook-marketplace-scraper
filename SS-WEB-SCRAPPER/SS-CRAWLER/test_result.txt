@@ -1,0 +1,83 @@
+STDOUT:
+Testing Computer URL: https://www.ss.com/msg/lv/electronics/computers/pc/fpokc.html
+==================================================
+2026-05-24 20:44:39 | INFO     | ss_crawler | [computer_scraper] Initializing computer scraper...
+2026-05-24 20:44:39 | INFO     | ss_crawler | [database] Database connected: localhost:5433/ss_market
+2026-05-24 20:44:39 | INFO     | ss_crawler | [computer_scraper] Database: postgresql+psycopg2://crawler:crawler_pass@localhost:5433/ss_market
+2026-05-24 20:44:39 | INFO     | ss_crawler | [cpu_matcher] CPUMatcher initialized with 5320 CPUs
+2026-05-24 20:44:39 | INFO     | ss_crawler | [matcher] GPUMatcher initialized with 631 GPUs
+2026-05-24 20:44:40 | INFO     | ss_crawler | [ram_matcher] RAMMatcher initialized with 5284 RAM references
+2026-05-24 20:44:40 | INFO     | ss_crawler | [ssd_matcher] SSDMatcher initialized with 2451 SSDs
+2026-05-24 20:44:40 | INFO     | ss_crawler | [psu_matcher] PSUMatcher initialized with 2895 PSU references
+2026-05-24 20:44:40 | INFO     | ss_crawler | [case_matcher] CaseMatcher initialized with 5742 case references
+2026-05-24 20:44:42 | INFO     | ss_crawler | [motherboard_matcher] MotherboardMatcher initialized with 5732 motherboards
+2026-05-24 20:44:42 | INFO     | ss_crawler | [computer_monitor_matcher] ComputerMonitorMatcher initialized with 20272 monitors
+2026-05-24 20:44:42 | INFO     | ss_crawler | [computer_matcher] ComputerMatcher initialized: 5320 CPUs, 631 GPUs, 5284 RAMs, 2451 SSDs, 2895 PSUs, 5742 Cases, 5732 Motherboards, 20272 Monitors
+2026-05-24 20:44:42 | INFO     | ss_crawler | [computer_scraper] Loaded references: 5320 CPUs, 631 GPUs, 5284 RAMs, 2451 SSDs, 2895 PSUs, 5742 Cases, 5732 Motherboards, 20272 Monitors
+2026-05-24 20:44:42 | INFO     | ss_crawler | [computer_scraper] Initializing computer scraper...
+2026-05-24 20:44:42 | INFO     | ss_crawler | [database] Database connected: localhost:5433/ss_market
+2026-05-24 20:44:42 | INFO     | ss_crawler | [computer_scraper] Database: postgresql+psycopg2://crawler:crawler_pass@localhost:5433/ss_market
+2026-05-24 20:44:43 | INFO     | ss_crawler | [cpu_matcher] CPUMatcher initialized with 5320 CPUs
+2026-05-24 20:44:43 | INFO     | ss_crawler | [matcher] GPUMatcher initialized with 631 GPUs
+2026-05-24 20:44:44 | INFO     | ss_crawler | [ram_matcher] RAMMatcher initialized with 5284 RAM references
+2026-05-24 20:44:44 | INFO     | ss_crawler | [ssd_matcher] SSDMatcher initialized with 2451 SSDs
+2026-05-24 20:44:44 | INFO     | ss_crawler | [psu_matcher] PSUMatcher initialized with 2895 PSU references
+2026-05-24 20:44:44 | INFO     | ss_crawler | [case_matcher] CaseMatcher initialized with 5742 case references
+2026-05-24 20:44:46 | INFO     | ss_crawler | [motherboard_matcher] MotherboardMatcher initialized with 5732 motherboards
+2026-05-24 20:44:46 | INFO     | ss_crawler | [computer_monitor_matcher] ComputerMonitorMatcher initialized with 20272 monitors
+2026-05-24 20:44:46 | INFO     | ss_crawler | [computer_matcher] ComputerMatcher initialized: 5320 CPUs, 631 GPUs, 5284 RAMs, 2451 SSDs, 2895 PSUs, 5742 Cases, 5732 Motherboards, 20272 Monitors
+2026-05-24 20:44:46 | INFO     | ss_crawler | [computer_scraper] Loaded references: 5320 CPUs, 631 GPUs, 5284 RAMs, 2451 SSDs, 2895 PSUs, 5742 Cases, 5732 Motherboards, 20272 Monitors
+2026-05-24 20:44:46 | INFO     | ss_crawler | [crawler] Fetching single computer listing: https://www.ss.com/msg/lv/electronics/computers/pc/fpokc.html
+2026-05-24 20:44:50 | INFO     | ss_crawler | [ssd_matcher] SSDMatcher initialized with 95 SSDs
+2026-05-24 20:44:50 | INFO     | ss_crawler | [computer_scraper] Single scrape result: unchanged - Unchanged: Datori un orgtehnika/Datori/ Pārdod...
+2026-05-24 20:44:50 | INFO     | ss_crawler | [ssd_matcher] SSDMatcher initialized with 95 SSDs
+
+LISTING DATA:
+--------------------------------------------------
+ID:          fpokc
+Title:       Datori un orgtehnika/Datori/ Pārdod
+Price:       EUR 500.00
+Location:    Rīga
+
+==================================================
+MATCHED COMPONENTS:
+==================================================
+
+🖥️  CPU: i5-13600 (100.0% confidence)
+    ID: 31
+    Match Method: name_match
+    Brand: N/A
+    Socket: LGA1700
+    Cores/Threads: 14/20
+    Avg Price: EUR 150.00
+
+🎮 GPU: Not detected
+
+💾 RAM: Kingston HyperX Fury RGB 32 GB (100.0% confidence)
+    ID: 1389
+    Match Method: fuzzy+model_part+freq_exact+capacity_exact+modules_exact
+    Capacity: 32 GB
+    Speed: N/A
+    Price: EUR 50.00
+
+
+STDERR:
+C:\Users\goldm\AppData\Local\Programs\Python\Python310\lib\site-packages\pydantic\_internal\_fields.py:149: UserWarning: Field "model_name" has conflict with protected namespace "model_".
+
+You may be able to resolve this warning by setting `model_config['protected_namespaces'] = ()`.
+  warnings.warn(
+C:\Users\goldm\AppData\Local\Programs\Python\Python310\lib\site-packages\pydantic\_internal\_fields.py:149: UserWarning: Field "model_original" has conflict with protected namespace "model_".
+
+You may be able to resolve this warning by setting `model_config['protected_namespaces'] = ()`.
+  warnings.warn(
+C:\Users\goldm\AppData\Local\Programs\Python\Python310\lib\site-packages\requests\__init__.py:109: RequestsDependencyWarning: urllib3 (2.6.3) or chardet (7.4.3)/charset_normalizer (2.1.1) doesn't match a supported version!
+  warnings.warn(
+
+Error: 'NoneType' object has no attribute 'get'
+Traceback (most recent call last):
+  File "G:\Github\SS-WEB-SCRAPPER\SS-CRAWLER\src\cli.py", line 2534, in _test_url_computers
+    ssd_name = ssd_data.get('model') or ssd_data.get('name', 'Unknown')
+AttributeError: 'NoneType' object has no attribute 'get'
+
+
+Return code: 1

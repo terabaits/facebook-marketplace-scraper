@@ -1,0 +1,7 @@
+Error: 'tuple' object has no attribute 'lower'
+Traceback (most recent call last):
+  File "G:\Github\SS-WEB-SCRAPPER\SS-CRAWLER\debug_full2.py", line 88, in <module>
+    match_result = matcher.match_listing(
+  File "G:\Github\SS-WEB-SCRAPPER\SS-CRAWLER\src\scraper\ram_matcher.py", line 308, in match_listing
+    if token.lower() in ['corsair', 'kingston', 'gskill', 'g.skill', 'crucial',
+AttributeError: 'tuple' object has no attribute 'lower'

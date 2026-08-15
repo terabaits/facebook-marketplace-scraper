@@ -8,7 +8,17 @@
         <h2>🔧 PC Builder</h2>
         <p class="section-description">Select components to build your custom PC and estimate the total cost.</p>
     </div>
-    
+
+    <!-- Active vs All-Time Averages Toggle -->
+    <div class="avg-mode-banner" style="margin-bottom: 1rem; padding: 0.75rem 1rem; background: var(--badge-bg); border: 1px solid var(--card-border); border-radius: 8px; display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap;">
+        <label for="use-active-avg" style="font-weight: 600; color: var(--text-color); cursor: pointer;">Average prices:</label>
+        <label class="switch" style="display: inline-flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+            <input type="checkbox" id="use-active-avg" onchange="toggleActiveAvgMode()" style="width: 18px; height: 18px; cursor: pointer;">
+            <span style="font-size: 0.9rem; color: var(--text-secondary);">Use only active listings</span>
+        </label>
+        <span class="info-hint" style="font-size: 0.8rem; color: var(--text-secondary);" id="avg-mode-hint">Off = all-time averages (excluding flagged listings)</span>
+    </div>
+
     <!-- PC Builder Layout -->
     <div class="pc-builder-layout">
         <!-- Component Selection Grid -->
@@ -17,32 +27,45 @@
             <div class="component-card" data-component="cpu">
                 <div class="component-header">
                     <span class="component-icon">⚙️</span>
-                    <h3>CPU</h3>
+                    <h3>{{ t('CPU') }}</h3>
                     <span class="component-status" id="cpu-status">Not selected</span>
                 </div>
                 <div class="component-body">
                     <div class="select-container">
-                        <input type="text" class="select-search" id="cpu-select-search" placeholder="🔍 Search CPU..." oninput="filterComponentSelect('cpu-select', this.value)">
+                        <div class="select-input-row">
+                            <input type="text" class="select-search" id="cpu-select-search" placeholder="🔍 Search CPU..." oninput="filterComponentSelect('cpu-select', this.value)" onfocus="showSearchDropdown('cpu')">
+                            <div class="search-dropdown" id="cpu-search-dropdown"></div>
+                            <button class="view-listings-btn" id="cpu-view-btn" onclick="viewListings('cpu')" title="View all listings for this CPU" disabled>📋</button>
+                        </div>
                         <select id="cpu-select" class="component-select" onchange="selectComponent('cpu', this.value)">
                             <option value="">Select CPU...</option>
                         </select>
-                        <button class="view-listings-btn" id="cpu-view-btn" onclick="viewListings('cpu')" title="View all listings for this CPU" disabled>
-                            📋
-                        </button>
                     </div>
                     <div class="socket-info" id="cpu-socket-info"></div>
                     <div class="component-details" id="cpu-details"></div>
                 </div>
             </div>
-            
+
             <!-- Motherboard -->
             <div class="component-card" data-component="motherboard">
                 <div class="component-header">
                     <span class="component-icon">🔧</span>
-                    <h3>Motherboard</h3>
+                    <h3>{{ t('Motherboard') }}</h3>
                     <span class="component-status" id="motherboard-status">Not selected</span>
                 </div>
                 <div class="component-body">
+                    <div class="avg-motherboard-row" style="margin-bottom: 0.75rem; display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap;">
+                        <label style="font-size: 0.85rem; color: var(--text-secondary);">Avg by:</label>
+                        <select id="mb-avg-mode" class="component-select" onchange="updateMotherboardAvgMode()" style="flex: 1; min-width: 120px;">
+                            <option value="">Model (selected)</option>
+                            <option value="socket">{{ t('Socket') }}</option>
+                            <option value="chipset">Chipset</option>
+                            <option value="form_factor">Form Factor</option>
+                        </select>
+                        <select id="mb-avg-value" class="component-select" onchange="updateMotherboardAvgValue()" style="flex: 1; min-width: 140px;" disabled>
+                            <option value="">Select first...</option>
+                        </select>
+                    </div>
                     <div class="match-chipset-row">
                         <button class="btn btn-small match-chipset-btn" id="match-chipset-btn" onclick="matchChipset()" disabled>
                             🔗 Match Chipset
@@ -50,44 +73,47 @@
                         <span class="compatibility-indicator" id="compatibility-indicator"></span>
                     </div>
                     <div class="select-container">
-                        <input type="text" class="select-search" id="motherboard-select-search" placeholder="🔍 Search Motherboard..." oninput="filterComponentSelect('motherboard-select', this.value)">
+                        <div class="select-input-row">
+                            <input type="text" class="select-search" id="motherboard-select-search" placeholder="🔍 Search Motherboard..."
+                            oninput="filterComponentSelect('motherboard-select', this.value)" onfocus="showSearchDropdown('motherboard')">
+                            <div class="search-dropdown" id="motherboard-search-dropdown"></div>
+                            <button class="view-listings-btn" id="motherboard-view-btn" onclick="viewListings('motherboard')" title="View all listings for this motherboard" disabled>📋</button>
+                        </div>
                         <select id="motherboard-select" class="component-select" onchange="selectComponent('motherboard', this.value)">
                             <option value="">Select Motherboard...</option>
                         </select>
-                        <button class="view-listings-btn" id="motherboard-view-btn" onclick="viewListings('motherboard')" title="View all listings for this motherboard" disabled>
-                            📋
-                        </button>
                     </div>
                     <div class="component-details" id="motherboard-details"></div>
                 </div>
             </div>
-            
+
             <!-- GPU -->
             <div class="component-card" data-component="gpu">
                 <div class="component-header">
                     <span class="component-icon">🎮</span>
-                    <h3>GPU</h3>
+                    <h3>{{ t('GPU') }}</h3>
                     <span class="component-status" id="gpu-status">Not selected</span>
                 </div>
                 <div class="component-body">
                     <div class="select-container">
-                        <input type="text" class="select-search" id="gpu-select-search" placeholder="🔍 Search GPU..." oninput="filterComponentSelect('gpu-select', this.value)">
+                        <div class="select-input-row">
+                            <input type="text" class="select-search" id="gpu-select-search" placeholder="🔍 Search GPU..." oninput="filterComponentSelect('gpu-select', this.value)" onfocus="showSearchDropdown('gpu')">
+                            <div class="search-dropdown" id="gpu-search-dropdown"></div>
+                            <button class="view-listings-btn" id="gpu-view-btn" onclick="viewListings('gpu')" title="View all listings for this GPU" disabled>📋</button>
+                        </div>
                         <select id="gpu-select" class="component-select" onchange="selectComponent('gpu', this.value)">
                             <option value="">Select GPU...</option>
                         </select>
-                        <button class="view-listings-btn" id="gpu-view-btn" onclick="viewListings('gpu')" title="View all listings for this GPU" disabled>
-                            📋
-                        </button>
                     </div>
                     <div class="component-details" id="gpu-details"></div>
                 </div>
             </div>
-            
+
             <!-- RAM -->
             <div class="component-card" data-component="ram">
                 <div class="component-header">
                     <span class="component-icon">💾</span>
-                    <h3>RAM</h3>
+                    <h3>{{ t('RAM') }}</h3>
                     <span class="component-status" id="ram-status">Not selected</span>
                 </div>
                 <div class="component-body">
@@ -95,9 +121,9 @@
                     <div class="ram-filter-container" id="ram-filter-container">
                         <div class="ram-filters">
                             <div class="ram-filter-group">
-                                <label>Capacity</label>
+                                <label>{{ t('Capacity') }}</label>
                                 <select id="ram-capacity-filter" onchange="filterRAM()">
-                                    <option value="">Any</option>
+                                    <option value="">{{ t('Any') }}</option>
                                     <option value="8">8GB</option>
                                     <option value="16">16GB</option>
                                     <option value="32">32GB</option>
@@ -105,34 +131,37 @@
                                 </select>
                             </div>
                             <div class="ram-filter-group">
-                                <label>Type</label>
+                                <label>{{ t('Type') }}</label>
                                 <select id="ram-type-filter" onchange="filterRAM()">
-                                    <option value="">Any</option>
+                                    <option value="">{{ t('Any') }}</option>
                                     <option value="DDR4">DDR4</option>
                                     <option value="DDR5">DDR5</option>
                                 </select>
                             </div>
+                            <div class="ram-filter-group" style="align-self: flex-end;">
+                                <button class="btn btn-small" onclick="applyRAMFilters()">🔄 Apply Filters</button>
+                            </div>
                         </div>
-                        <button class="btn btn-small" onclick="applyRAMFilters()">🔄 Apply Filters</button>
                     </div>
                     <div class="select-container">
-                        <input type="text" class="select-search" id="ram-select-search" placeholder="🔍 Search RAM..." oninput="filterComponentSelect('ram-select', this.value)">
+                        <div class="select-input-row">
+                            <input type="text" class="select-search" id="ram-select-search" placeholder="🔍 Search RAM..." oninput="filterComponentSelect('ram-select', this.value)" onfocus="showSearchDropdown('ram')">
+                            <div class="search-dropdown" id="ram-search-dropdown"></div>
+                            <button class="view-listings-btn" id="ram-view-btn" onclick="viewListings('ram')" title="View all listings for this RAM" disabled>📋</button>
+                        </div>
                         <select id="ram-select" class="component-select" onchange="selectComponent('ram', this.value)">
                             <option value="">Select RAM...</option>
                         </select>
-                        <button class="view-listings-btn" id="ram-view-btn" onclick="viewListings('ram')" title="View all listings for this RAM" disabled>
-                            📋
-                        </button>
                     </div>
                     <div class="component-details" id="ram-details"></div>
                 </div>
             </div>
-            
+
             <!-- SSD -->
             <div class="component-card" data-component="ssd">
                 <div class="component-header">
                     <span class="component-icon">💽</span>
-                    <h3>SSD</h3>
+                    <h3>{{ t('SSD') }}</h3>
                     <span class="component-status" id="ssd-status">Not selected</span>
                 </div>
                 <div class="component-body">
@@ -142,7 +171,7 @@
                             <div class="ssd-filter-group">
                                 <label>Size</label>
                                 <select id="ssd-size-filter" onchange="filterSSD()">
-                                    <option value="">Any</option>
+                                    <option value="">{{ t('Any') }}</option>
                                     <option value="256">256GB</option>
                                     <option value="512">512GB</option>
                                     <option value="1000">1TB</option>
@@ -163,23 +192,24 @@
                         </div>
                     </div>
                     <div class="select-container">
-                        <input type="text" class="select-search" id="ssd-select-search" placeholder="🔍 Search SSD..." oninput="filterComponentSelect('ssd-select', this.value)">
+                        <div class="select-input-row">
+                            <input type="text" class="select-search" id="ssd-select-search" placeholder="🔍 Search SSD..." oninput="filterComponentSelect('ssd-select', this.value)" onfocus="showSearchDropdown('ssd')">
+                            <div class="search-dropdown" id="ssd-search-dropdown"></div>
+                            <button class="view-listings-btn" id="ssd-view-btn" onclick="viewListings('ssd')" title="View all listings for this SSD" disabled>📋</button>
+                        </div>
                         <select id="ssd-select" class="component-select" onchange="selectComponent('ssd', this.value)">
                             <option value="">Select SSD...</option>
                         </select>
-                        <button class="view-listings-btn" id="ssd-view-btn" onclick="viewListings('ssd')" title="View all listings for this SSD" disabled>
-                            📋
-                        </button>
                     </div>
                     <div class="component-details" id="ssd-details"></div>
                 </div>
             </div>
-            
+
             <!-- PSU -->
             <div class="component-card" data-component="psu">
                 <div class="component-header">
                     <span class="component-icon">🔌</span>
-                    <h3>PSU</h3>
+                    <h3>{{ t('PSU') }}</h3>
                     <span class="component-status" id="psu-status">Not selected</span>
                 </div>
                 <div class="component-body">
@@ -188,35 +218,47 @@
                         <div style="display: flex; gap: 0.5rem; align-items: center; margin-bottom: 0.5rem;">
                             <label style="font-size: 0.9rem; color: var(--text-secondary);">Wattage:</label>
                             <select id="psu-wattage-filter" onchange="filterPSU()" style="flex: 1; padding: 0.4rem; border: 1px solid var(--border-color); border-radius: 4px; background: var(--card-bg); color: var(--text-primary);">
-                                <option value="">Any</option>
+                                <option value="">{{ t('Any') }}</option>
                                 <option value="400">400W</option>
                                 <option value="500">500W</option>
                                 <option value="550">550W</option>
                                 <option value="600">600W</option>
                                 <option value="650">650W</option>
+                                <option value="700">700W</option>
                                 <option value="750">750W</option>
+                                <option value="800">800W</option>
                                 <option value="850">850W</option>
+                                <option value="900">900W</option>
                                 <option value="1000">1000W</option>
                                 <option value="1200">1200W+</option>
                             </select>
                         </div>
-                        <div class="psu-wattage-info" id="psu-wattage-info" style="display: none; font-size: 0.85rem; color: var(--text-secondary); padding: 0.5rem; background: rgba(52, 152, 219, 0.1); border-radius: 4px;">
+                        <div class="psu-wattage-info" id="psu-wattage-info" style="display: none; font-size: 0.85rem; color: var(--text-secondary); padding: 0.5rem; background: rgba(52, 152, 219, 0.1); border-radius: 4px; margin-bottom: 0.5rem;">
                             <span id="psu-wattage-display"></span>
+                        </div>
+                        <div class="psu-filter-actions" style="display: flex; gap: 0.5rem;">
+                            <button class="btn btn-small" id="psu-apply-generic-btn" onclick="applyPSUAverage()" disabled>
+                                ➕ Use Avg Price
+                            </button>
+                            <button class="btn btn-small btn-secondary" onclick="clearPSUFilter()">
+                                Clear
+                            </button>
                         </div>
                     </div>
                     <div class="select-container">
-                        <input type="text" class="select-search" id="psu-select-search" placeholder="🔍 Search PSU..." oninput="filterComponentSelect('psu-select', this.value)">
+                        <div class="select-input-row">
+                            <input type="text" class="select-search" id="psu-select-search" placeholder="🔍 Search PSU..." oninput="filterComponentSelect('psu-select', this.value)" onfocus="showSearchDropdown('psu')">
+                            <div class="search-dropdown" id="psu-search-dropdown"></div>
+                            <button class="view-listings-btn" id="psu-view-btn" onclick="viewListings('psu')" title="View all listings for this PSU" disabled>📋</button>
+                        </div>
                         <select id="psu-select" class="component-select" onchange="selectComponent('psu', this.value)">
                             <option value="">Select PSU...</option>
                         </select>
-                        <button class="view-listings-btn" id="psu-view-btn" onclick="viewListings('psu')" title="View all listings for this PSU" disabled>
-                            📋
-                        </button>
                     </div>
                     <div class="component-details" id="psu-details"></div>
                 </div>
             </div>
-            
+
             <!-- Case -->
             <div class="component-card" data-component="case">
                 <div class="component-header">
@@ -226,19 +268,21 @@
                 </div>
                 <div class="component-body">
                     <div class="select-container">
-                        <input type="text" class="select-search" id="case-select-search" placeholder="🔍 Search Case..." oninput="filterComponentSelect('case-select', this.value)">
+                        <div class="select-input-row">
+                            <input type="text" class="select-search" id="case-select-search" placeholder="🔍 Search Case..."
+                            oninput="filterComponentSelect('case-select', this.value)" onfocus="showSearchDropdown('case')">
+                            <div class="search-dropdown" id="case-search-dropdown"></div>
+                            <button class="view-listings-btn" id="case-view-btn" onclick="viewListings('case')" title="View all listings for this Case" disabled>📋</button>
+                        </div>
                         <select id="case-select" class="component-select" onchange="selectComponent('case', this.value)">
                             <option value="">Select Case...</option>
                         </select>
-                        <button class="view-listings-btn" id="case-view-btn" onclick="viewListings('case')" title="View all listings for this Case" disabled>
-                            📋
-                        </button>
                     </div>
                     <div class="component-details" id="case-details"></div>
                 </div>
             </div>
         </div>
-        
+
         <!-- Sticky Price Summary -->
         <div class="price-summary-container">
             <div class="price-summary" id="price-summary">
@@ -246,31 +290,31 @@
                 <div class="price-breakdown">
                     <div class="summary-row" id="cpu-summary-row">
                         <span class="summary-label">⚙️ CPU</span>
-                        <span class="summary-value" id="cpu-summary-price">—</span>
+                        <span class="summary-value" id="cpu-summary-price">-</span>
                     </div>
                     <div class="summary-row" id="motherboard-summary-row">
                         <span class="summary-label">🔧 Motherboard</span>
-                        <span class="summary-value" id="motherboard-summary-price">—</span>
+                        <span class="summary-value" id="motherboard-summary-price">-</span>
                     </div>
                     <div class="summary-row" id="gpu-summary-row">
                         <span class="summary-label">🎮 GPU</span>
-                        <span class="summary-value" id="gpu-summary-price">—</span>
+                        <span class="summary-value" id="gpu-summary-price">-</span>
                     </div>
                     <div class="summary-row" id="ram-summary-row">
                         <span class="summary-label">💾 RAM</span>
-                        <span class="summary-value" id="ram-summary-price">—</span>
+                        <span class="summary-value" id="ram-summary-price">-</span>
                     </div>
                     <div class="summary-row" id="ssd-summary-row">
                         <span class="summary-label">💽 SSD</span>
-                        <span class="summary-value" id="ssd-summary-price">—</span>
+                        <span class="summary-value" id="ssd-summary-price">-</span>
                     </div>
                     <div class="summary-row" id="psu-summary-row">
                         <span class="summary-label">🔌 PSU</span>
-                        <span class="summary-value" id="psu-summary-price">—</span>
+                        <span class="summary-value" id="psu-summary-price">-</span>
                     </div>
                     <div class="summary-row" id="case-summary-row">
                         <span class="summary-label">🖥️ Case</span>
-                        <span class="summary-value" id="case-summary-price">—</span>
+                        <span class="summary-value" id="case-summary-price">-</span>
                     </div>
                     <div class="summary-row total" id="total-summary-row">
                         <span class="summary-label">💰 Total</span>
@@ -284,7 +328,7 @@
             </div>
         </div>
     </div>
-    
+
     <!-- Matching Listings -->
     <div class="matching-listings" id="matching-listings" style="display: none;">
         <h3>📋 Matching Computer Listings</h3>
@@ -381,6 +425,14 @@
     align-items: stretch;
 }
 
+.select-input-row {
+    flex: 1 1 100%;
+    min-width: 0;
+    position: relative;
+    display: flex;
+    gap: 0.5rem;
+}
+
 .component-select {
     flex: 1 1 100%;
     min-width: 0;
@@ -400,7 +452,7 @@
 }
 
 .select-search {
-    flex: 1 1 100%;
+    flex: 1 1 auto;
     min-width: 0;
     padding: 0.6rem 0.75rem;
     border: 1px solid var(--input-border);
@@ -845,21 +897,21 @@
     .pc-builder-layout {
         grid-template-columns: 1fr;
     }
-    
+
     .price-summary-container {
         position: relative;
         top: 0;
         order: -1;
     }
-    
+
     .price-summary {
         margin-bottom: 1rem;
     }
-    
+
     .component-selection {
         grid-template-columns: 1fr;
     }
-    
+
     .ram-filters {
         grid-template-columns: 1fr;
     }
@@ -869,28 +921,155 @@
     .select-container {
         flex-wrap: wrap;
     }
-    
+
+    .select-input-row,
+    .component-select {
+        flex: 1 1 100%;
+    }
+
     .view-listings-btn {
         min-width: 44px;
         min-height: 44px;
     }
-    
+
     .match-chipset-row {
         flex-wrap: wrap;
     }
-    
+
     .modal-content {
         margin: 0.5rem;
         max-height: 90vh;
     }
-    
+
     .modal-body {
         padding: 0.75rem;
     }
 }
+
+/* Custom search dropdown for component selects */
+.search-dropdown {
+    display: none;
+    position: absolute;
+    top: calc(100% - 4px);
+    left: 0;
+    right: 0;
+    max-height: 250px;
+    overflow-y: auto;
+    background: var(--card-bg);
+    border: 1px solid var(--input-border);
+    border-top: none;
+    border-radius: 0 0 8px 8px;
+    z-index: 200;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    padding-top: 4px;
+}
+.search-dropdown.active {
+    display: block;
+}
+.search-dropdown-item {
+    padding: 0.6rem 0.75rem;
+    cursor: pointer;
+    font-size: 0.85rem;
+    color: var(--text-color);
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.5rem;
+}
+.search-dropdown-item:last-child {
+    border-bottom: none;
+}
+.search-dropdown-item:hover,
+.search-dropdown-item.highlighted {
+    background: var(--badge-bg);
+}
+.search-dropdown-item.no-results {
+    cursor: default;
+    color: var(--text-secondary);
+    font-style: italic;
+    justify-content: flex-start;
+}
+.search-dropdown-item .item-price {
+    color: #667eea;
+    font-weight: 600;
+    white-space: nowrap;
+}
 </style>
 
 <script>
+// Toggle active-listing averages vs all-time averages
+let useActiveAvg = false;
+
+function toggleActiveAvgMode() {
+    const checkbox = document.getElementById('use-active-avg');
+    useActiveAvg = checkbox && checkbox.checked;
+    const hint = document.getElementById('avg-mode-hint');
+    if (hint) {
+        hint.textContent = useActiveAvg
+            ? 'Active only = only currently active listings'
+            : 'Off = all-time averages (excluding flagged listings)';
+    }
+    reloadAllComponents();
+}
+
+async function reloadAllComponents() {
+    await Promise.all([
+        loadCPUs(),
+        loadMotherboards(),
+        loadGPUs(),
+        loadRAMs(),
+        loadSSDs(),
+        loadPSUs(),
+        loadCases()
+    ]);
+    // Refresh selected components with new price data where possible
+    refreshSelectedComponents();
+    updateTotal();
+}
+
+function refreshSelectedComponents() {
+    Object.entries(selectedComponents).forEach(([type, component]) => {
+        if (!component) return;
+        if (component.is_filtered_avg || component.is_generic) {
+            // Recalculate generic/filtered averages based on current data
+            recalculateVirtualComponent(type);
+        } else {
+            const fresh = componentData[type].find(c => c.id == component.id);
+            if (fresh) {
+                selectedComponents[type] = fresh;
+                updateComponentCard(type, fresh);
+            }
+        }
+    });
+}
+
+function recalculateVirtualComponent(type) {
+    if (type === 'psu') {
+        const wattage = currentPSUWattage;
+        if (wattage) {
+            filterPSU();
+            applyPSUAverage();
+        }
+    } else if (type === 'ssd') {
+        const sizeEl = document.getElementById('ssd-size-filter');
+        if (sizeEl && sizeEl.value) {
+            selectGenericSSD();
+        }
+    } else if (type === 'ram') {
+        applyRAMFilters();
+    } else if (type === 'motherboard') {
+        if (mbAvgMode && mbAvgValue) {
+            applyMotherboardAverage();
+        }
+    }
+}
+
+function buildApiUrl(base) {
+    const sep = base.includes('?') ? '&' : '?';
+    return `${base}${sep}use_active_avg=${useActiveAvg ? 'true' : 'false'}`;
+}
+
 // Component data cache
 const componentData = {
     cpu: [],
@@ -916,6 +1095,12 @@ const selectedComponents = {
     case: null
 };
 
+// Motherboard average-by state
+let mbAvgMode = ''; // '', 'socket', 'chipset'
+let mbAvgValue = '';
+let mbAvgData = [];
+let currentMBAverage = 0;
+
 // Field mappings for different component types
 const componentFields = {
     cpu: 'cpu_name',
@@ -938,36 +1123,145 @@ document.addEventListener('DOMContentLoaded', async () => {
         loadPSUs(),
         loadCases()
     ]);
+
+    // Recalculate any active generic/filtered components after initial load
+    refreshSelectedComponents();
+    updateTotal();
 });
 
 // Load CPUs
 async function loadCPUs() {
     try {
-        const response = await fetch('/api/cpu-models');
+        const response = await fetch(buildApiUrl('/api/cpu-models'));
         const data = await response.json();
         componentData.cpu = data;
-        populateSelect('cpu-select', data, 'cpu_name');
+        populateSelect('cpu-select', data, 'cpu_name', true);
     } catch (error) {
         console.error('Error loading CPUs:', error);
     }
 }
 
-// Load Motherboards
 async function loadMotherboards() {
     try {
-        const response = await fetch('/api/motherboard-models');
+        const response = await fetch(buildApiUrl('/api/motherboard-models'));
         const data = await response.json();
         componentData.motherboard = data;
         populateSelect('motherboard-select', data, 'model');
+        populateMotherboardAvgOptions();
     } catch (error) {
         console.error('Error loading motherboards:', error);
     }
 }
 
+// Populate Motherboard average-by options
+function populateMotherboardAvgOptions() {
+    const modeSelect = document.getElementById('mb-avg-mode');
+    const valueSelect = document.getElementById('mb-avg-value');
+    if (!modeSelect || !valueSelect) return;
+
+    let data = componentData.motherboard || [];
+    const mode = modeSelect.value;
+    mbAvgMode = mode;
+
+    // When a CPU is selected, restrict chipset/form-factor options to that socket
+    const cpuSocket = selectedComponents.cpu && selectedComponents.cpu.socket;
+    if (cpuSocket && (mode === 'chipset' || mode === 'form_factor')) {
+        data = data.filter(m => m.socket === cpuSocket);
+    }
+
+    valueSelect.innerHTML = '<option value="">Select...</option>';
+    valueSelect.disabled = !mode;
+    mbAvgValue = '';
+    currentMBAverage = 0;
+
+    if (!mode) return;
+
+    const groups = {};
+    data.forEach(m => {
+        const key = mode === 'socket' ? (m.socket || 'Unknown') : (mode === 'chipset' ? (m.chipset || 'Unknown') : (m.form_factor || 'Unknown'));
+        if (!key || key === 'Unknown') return;
+        if (!groups[key]) groups[key] = { key, count: 0, total: 0, socket: m.socket, chipset: m.chipset, form_factor: m.form_factor };
+        groups[key].count += parseInt(m.active_listings || 0);
+        groups[key].total += (parseFloat(m.avg_price || 0) * parseInt(m.active_listings || 0));
+    });
+
+    mbAvgData = Object.values(groups).sort((a, b) => b.count - a.count);
+
+    mbAvgData.forEach(g => {
+        const avg = g.count > 0 ? g.total / g.count : 0;
+        const opt = document.createElement('option');
+        opt.value = g.key;
+        let label = g.key;
+        if (mode === 'chipset' && g.socket) label += ` (${g.socket})`;
+        if (mode === 'form_factor' && g.socket) label += ` (${g.socket})`;
+        opt.textContent = `${label} - ${g.count} listings, avg €${avg.toFixed(2)}`;
+        valueSelect.appendChild(opt);
+    });
+}
+
+function updateMotherboardAvgMode() {
+    populateMotherboardAvgOptions();
+    const modeSelect = document.getElementById('mb-avg-mode');
+    mbAvgMode = modeSelect.value;
+    // If a CPU is selected, pre-select its socket when switching to socket mode
+    if (mbAvgMode === 'socket' && selectedComponents.cpu && selectedComponents.cpu.socket) {
+        const valueSelect = document.getElementById('mb-avg-value');
+        const cpuSocket = selectedComponents.cpu.socket;
+        if (Array.from(valueSelect.options).some(o => o.value === cpuSocket)) {
+            valueSelect.value = cpuSocket;
+            updateMotherboardAvgValue();
+        }
+    }
+}
+
+function updateMotherboardAvgValue() {
+    const valueSelect = document.getElementById('mb-avg-value');
+    mbAvgValue = valueSelect.value;
+
+    const group = mbAvgData.find(g => g.key === mbAvgValue);
+    if (group) {
+        currentMBAverage = group.count > 0 ? group.total / group.count : 0;
+    } else {
+        currentMBAverage = 0;
+    }
+    
+    // Auto-apply the selected average so the build updates immediately
+    applyMotherboardAverage();
+}
+
+function applyMotherboardAverage() {
+    if (!mbAvgValue || !mbAvgMode) return;
+
+    const group = mbAvgData.find(g => g.key === mbAvgValue);
+    if (!group || group.count === 0) return;
+
+    const avg = group.count > 0 ? group.total / group.count : 0;
+    currentMBAverage = avg;
+
+    const virtualMB = {
+        id: `avg_mb_${mbAvgMode}_${mbAvgValue}`,
+        model: `Generic ${mbAvgMode === 'socket' ? 'Socket' : 'Chipset'} ${mbAvgValue} (Avg of ${group.count} listings)`,
+        brand: 'Generic',
+        socket: mbAvgMode === 'socket' ? mbAvgValue : (group.socket || ''),
+        chipset: mbAvgMode === 'chipset' ? mbAvgValue : (group.chipset || ''),
+        avg_price: avg,
+        is_filtered_avg: true
+    };
+
+    selectedComponents.motherboard = virtualMB;
+    updateComponentCard('motherboard', virtualMB);
+    document.getElementById('motherboard-view-btn').disabled = true;
+    document.getElementById('motherboard-select').value = '';
+    updateTotal();
+    checkCompatibility();
+}
+
+// Original loadMotherboards replaced above
+
 // Load GPUs
 async function loadGPUs() {
     try {
-        const response = await fetch('/api/gpu-models');
+        const response = await fetch(buildApiUrl('/api/gpu-models'));
         const data = await response.json();
         componentData.gpu = data;
         populateSelect('gpu-select', data, 'model');
@@ -979,7 +1273,7 @@ async function loadGPUs() {
 // Load RAMs
 async function loadRAMs() {
     try {
-        const response = await fetch('/api/ram-models');
+        const response = await fetch(buildApiUrl('/api/ram-models'));
         const data = await response.json();
         componentData.ram = data;
         allRAMData = data;
@@ -992,7 +1286,7 @@ async function loadRAMs() {
 // Load SSDs
 async function loadSSDs() {
     try {
-        const response = await fetch('/api/ssd-models');
+        const response = await fetch(buildApiUrl('/api/ssd-models'));
         const data = await response.json();
         componentData.ssd = data;
         populateSelect('ssd-select', data, 'model');
@@ -1005,7 +1299,7 @@ async function loadSSDs() {
 function filterSSD() {
     const sizeFilter = document.getElementById('ssd-size-filter').value;
     const genericBtn = document.getElementById('ssd-generic-btn');
-    
+
     if (sizeFilter) {
         genericBtn.disabled = false;
         genericBtn.textContent = `🔍 Use Generic ${sizeFilter}GB SSD`;
@@ -1019,11 +1313,11 @@ function filterSSD() {
 function selectGenericSSD() {
     const sizeFilter = document.getElementById('ssd-size-filter').value;
     if (!sizeFilter) return;
-    
+
     // Create a generic SSD entry
     const sizeGB = parseInt(sizeFilter);
     const sizeLabel = sizeGB >= 1000 ? `${sizeGB/1000}TB` : `${sizeGB}GB`;
-    
+
     // Calculate average price from filtered SSDs
     const filteredSSDs = componentData.ssd.filter(ssd => {
         const ssdSize = parseInt(ssd.capacity_gb) || 0;
@@ -1034,13 +1328,13 @@ function selectGenericSSD() {
         if (sizeGB === 4000) return ssdSize >= 3800 && ssdSize <= 4200;
         return false;
     });
-    
+
     let avgPrice = 0;
     if (filteredSSDs.length > 0) {
         const totalPrice = filteredSSDs.reduce((sum, ssd) => sum + (parseFloat(ssd.avg_price) || 0), 0);
         avgPrice = totalPrice / filteredSSDs.length;
     }
-    
+
     // Create generic SSD object
     const genericSSD = {
         model: `Generic ${sizeLabel} SSD`,
@@ -1048,16 +1342,16 @@ function selectGenericSSD() {
         avg_price: avgPrice,
         is_generic: true
     };
-    
+
     // Update component selection
     selectedComponents.ssd = genericSSD;
     updateComponentUI('ssd', genericSSD);
     updatePriceSummary();
-    
+
     // Show generic selection
     document.getElementById('generic-ssd-info').style.display = 'block';
     document.getElementById('generic-ssd-size').textContent = sizeLabel;
-    
+
     // Clear the select
     document.getElementById('ssd-select').value = '';
 }
@@ -1068,7 +1362,7 @@ function clearSSDFilter() {
     document.getElementById('ssd-generic-btn').disabled = true;
     document.getElementById('ssd-generic-btn').textContent = '🔍 Use Generic';
     document.getElementById('generic-ssd-info').style.display = 'none';
-    
+
     // Reset SSD selection
     selectedComponents.ssd = null;
     updateComponentUI('ssd', null);
@@ -1076,46 +1370,103 @@ function clearSSDFilter() {
 }
 
 // Filter PSU by wattage
+let currentPSUAverage = 0;
+let currentPSUWattage = '';
+let currentPSUFilteredCount = 0;
+
 function filterPSU() {
     const wattageFilter = document.getElementById('psu-wattage-filter').value;
-    
+    const applyBtn = document.getElementById('psu-apply-generic-btn');
+
     if (!wattageFilter) {
-        // Show all PSUs
+        // Show all PSUs, but keep currently selected virtual PSU if exists
         populateSelect('psu-select', componentData.psu, 'name');
         document.getElementById('psu-wattage-info').style.display = 'none';
+        currentPSUAverage = 0;
+        currentPSUWattage = '';
+        currentPSUFilteredCount = 0;
+        if (applyBtn) applyBtn.disabled = true;
         return;
     }
-    
+
     const targetWattage = parseInt(wattageFilter);
-    
-    // Calculate average price for this wattage range
+
+    // Calculate average price for this exact wattage (or >=1200 for 1200W+)
     const filteredPSUs = componentData.psu.filter(psu => {
         const psuWattage = parseInt(psu.wattage) || 0;
-        // Match within +/- 50W range
-        return Math.abs(psuWattage - targetWattage) <= 50;
+        if (targetWattage === 1200) {
+            return psuWattage >= 1200;
+        }
+        return psuWattage === targetWattage;
     });
-    
+
     // Calculate average price
     let avgPrice = 0;
     if (filteredPSUs.length > 0) {
         const totalPrice = filteredPSUs.reduce((sum, psu) => sum + (parseFloat(psu.avg_price) || 0), 0);
         avgPrice = totalPrice / filteredPSUs.length;
     }
-    
+
+    currentPSUAverage = avgPrice;
+    currentPSUWattage = targetWattage;
+    currentPSUFilteredCount = filteredPSUs.length;
+
     // Show info
     const infoDiv = document.getElementById('psu-wattage-info');
     const displaySpan = document.getElementById('psu-wattage-display');
     infoDiv.style.display = 'block';
     displaySpan.innerHTML = `💡 ${targetWattage}W PSUs: ${filteredPSUs.length} found, avg €${avgPrice.toFixed(2)}`;
-    
+
     // Populate select with filtered PSUs
     populateSelect('psu-select', filteredPSUs, 'name');
+
+    // Enable the apply-average button when we have data
+    if (applyBtn) applyBtn.disabled = filteredPSUs.length === 0;
+}
+
+function applyPSUAverage() {
+    if (!currentPSUWattage || currentPSUFilteredCount === 0) return;
+
+    const virtualPSU = {
+        id: `avg_${currentPSUWattage}w`,
+        name: `Generic ${currentPSUWattage}W PSU (Avg of ${currentPSUFilteredCount} listings)`,
+        wattage: currentPSUWattage,
+        avg_price: currentPSUAverage,
+        is_filtered_avg: true
+    };
+
+    selectedComponents.psu = virtualPSU;
+    updateComponentCard('psu', virtualPSU);
+    document.getElementById('psu-view-btn').disabled = true;
+    document.getElementById('psu-select').value = '';
+    updateTotal();
+    checkCompatibility();
+}
+
+function clearPSUFilter() {
+    document.getElementById('psu-wattage-filter').value = '';
+    document.getElementById('psu-wattage-info').style.display = 'none';
+    currentPSUAverage = 0;
+    currentPSUWattage = '';
+    currentPSUFilteredCount = 0;
+    const applyBtn = document.getElementById('psu-apply-generic-btn');
+    if (applyBtn) applyBtn.disabled = true;
+
+    populateSelect('psu-select', componentData.psu, 'name');
+
+    // If the selected PSU was the filtered average, clear it from the build
+    if (selectedComponents.psu && selectedComponents.psu.is_filtered_avg) {
+        selectedComponents.psu = null;
+        updateComponentCard('psu', null);
+        document.getElementById('psu-view-btn').disabled = true;
+        updateTotal();
+    }
 }
 
 // Load PSUs
 async function loadPSUs() {
     try {
-        const response = await fetch('/api/psu-models');
+        const response = await fetch(buildApiUrl('/api/psu-models'));
         const data = await response.json();
         componentData.psu = data;
         populateSelect('psu-select', data, 'name');
@@ -1127,7 +1478,7 @@ async function loadPSUs() {
 // Load Cases
 async function loadCases() {
     try {
-        const response = await fetch('/api/case-models');
+        const response = await fetch(buildApiUrl('/api/case-models'));
         const data = await response.json();
         componentData.case = data;
         populateSelect('case-select', data, 'name');
@@ -1136,27 +1487,39 @@ async function loadCases() {
     }
 }
 
-// Filter select dropdown based on search text
+// Filter select dropdown based on search text and render a searchable dropdown
 function filterComponentSelect(selectId, query) {
     const select = document.getElementById(selectId);
-    if (!select) return;
+    const input = document.getElementById(selectId.replace('-select', '-select-search'));
+    if (!select || !input) return;
 
-    const term = query.toLowerCase().trim();
-
-    // Determine component type and data source
     const type = selectId.replace('-select', '');
     const nameField = componentFields[type];
     const allItems = type === 'ram' ? allRAMData : componentData[type];
-
     if (!allItems || !nameField) return;
 
-    const filtered = term === '' ? allItems : allItems.filter(item => {
-        const name = (item[nameField] || '').toLowerCase();
-        return name.includes(term);
-    });
+    const term = query.toLowerCase().trim();
 
-    // Preserve current selection if possible
+    // Preserve current selection if it exists
     const currentValue = select.value;
+
+    const filtered = term === '' ? allItems : allItems.filter(item => {
+        const searchable = [
+            item[nameField],
+            item.brand,
+            item.vendor,
+            item.socket,
+            item.chipset,
+            item.type,
+            item.model,
+            item.name,
+            item.cpu_name,
+            item.wattage != null ? item.wattage + 'W' : null,
+            item.capacity_gb != null ? item.capacity_gb + 'GB' : null,
+            item.vram_gb != null ? item.vram_gb + 'GB' : null
+        ].filter(Boolean).join(' ').toLowerCase();
+        return searchable.includes(term);
+    });
 
     if (type === 'ram') {
         populateRAMSelect(filtered);
@@ -1164,54 +1527,147 @@ function filterComponentSelect(selectId, query) {
         populateSelect(selectId, filtered, nameField);
     }
 
-    // Restore selection if it still exists
+    // Restore selection if still available
     if (currentValue && Array.from(select.options).some(o => o.value === currentValue)) {
         select.value = currentValue;
     }
+
+    renderSearchDropdown(type, filtered, nameField);
+    if (term !== '') {
+        showSearchDropdown(type);
+    }
+}
+
+// Render the searchable dropdown list for a component type
+function renderSearchDropdown(type, items, nameField) {
+    const dropdown = document.getElementById(`${type}-search-dropdown`);
+    if (!dropdown) return;
+
+    dropdown.innerHTML = '';
+    if (items.length === 0) {
+        dropdown.innerHTML = '<div class="search-dropdown-item no-results">No matching results</div>';
+        return;
+    }
+
+    items.forEach(item => {
+        const id = item.id;
+        let displayName = item[nameField] || item.name || item.model || '';
+        if (type === 'motherboard' && item.brand) {
+            displayName = `${item.brand} ${displayName}`;
+        }
+        const price = parseFloat(item.avg_price) || parseFloat(item.price) || 0;
+        const extra = type === 'ram'
+            ? `${item.capacity_gb || ''}GB ${item.type || ''} ${item.speed_mhz || item.speed || ''}MHz`
+            : (item.brand || item.vendor || '');
+
+        const div = document.createElement('div');
+        div.className = 'search-dropdown-item';
+        div.innerHTML = `<span>${escapeHtml(displayName)} ${extra ? '<span style="font-size:0.75rem;color:var(--text-secondary)">(' + escapeHtml(String(extra)) + ')</span>' : ''}</span><span class="item-price">€${price.toFixed(2)}</span>`;
+        div.onmousedown = (e) => {
+            e.preventDefault();
+            selectSearchOption(type, id, displayName);
+        };
+        dropdown.appendChild(div);
+    });
+}
+
+function selectSearchOption(type, id, displayName) {
+    const select = document.getElementById(`${type}-select`);
+    const input = document.getElementById(`${type}-select-search`);
+    if (select) {
+        if (!Array.from(select.options).some(o => o.value === String(id))) {
+            const option = document.createElement('option');
+            option.value = id;
+            option.textContent = displayName;
+            option.dataset.name = displayName;
+            select.appendChild(option);
+        }
+        select.value = id;
+    }
+    if (input) input.value = displayName;
+    hideSearchDropdown(type);
+    selectComponent(type, id);
+}
+
+function showSearchDropdown(type) {
+    const dropdown = document.getElementById(`${type}-search-dropdown`);
+    if (dropdown) dropdown.classList.add('active');
+}
+
+function hideSearchDropdown(type) {
+    const dropdown = document.getElementById(`${type}-search-dropdown`);
+    if (dropdown) dropdown.classList.remove('active');
+}
+
+// Close search dropdowns when clicking outside any search input or dropdown
+document.addEventListener('click', function(e) {
+    document.querySelectorAll('.search-dropdown.active').forEach(dd => {
+        if (!dd.contains(e.target) && !dd.previousElementSibling.contains(e.target)) {
+            dd.classList.remove('active');
+        }
+    });
+});
+
+function escapeHtml(text) {
+    if (text == null) return '';
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
 }
 
 // Populate select dropdown
-function populateSelect(selectId, items, nameField) {
+function populateSelect(selectId, items, nameField, showListingsCount = false) {
     const select = document.getElementById(selectId);
     if (!select) return;
-    
+
     // Keep the first option
     const firstOption = select.options[0];
     select.innerHTML = '';
     select.appendChild(firstOption);
-    
+
     items.forEach(item => {
         const option = document.createElement('option');
         option.value = item.id;
-        const price = item.avg_price || item.price || 0;
-        option.textContent = `${item[nameField]} - €${price}`;
+        const price = parseFloat(item.avg_price) || parseFloat(item.price) || 0;
+        let displayName = item[nameField];
+        if (selectId === 'motherboard-select' && item.brand) {
+            displayName = `${item.brand} ${displayName}`;
+        }
+        const countPart = showListingsCount ? ` · ${item.active_listings || 0} listings` : '';
+        option.textContent = `${displayName} - €${price.toFixed(2)}${countPart}`;
+        option.dataset.count = item.active_listings || 0;
         option.dataset.name = item[nameField];
         select.appendChild(option);
     });
+
+    // Render searchable dropdown below the input
+    const type = selectId.replace('-select', '');
+    renderSearchDropdown(type, items, nameField);
 }
 
 // Populate RAM select with filtered data
 function populateRAMSelect(items) {
     const select = document.getElementById('ram-select');
     if (!select) return;
-    
-    // Keep the first option
+
     const firstOption = select.options[0];
     select.innerHTML = '';
     select.appendChild(firstOption);
-    
+
     items.forEach(item => {
         const option = document.createElement('option');
         option.value = item.id;
-        const price = item.avg_price || item.price || 0;
+        const price = parseFloat(item.avg_price) || parseFloat(item.price) || 0;
         const speed = item.speed_mhz || item.speed || 0;
-        option.textContent = `${item.name} (${item.capacity_gb}GB ${item.type} ${speed}MHz) - €${price}`;
+        option.textContent = `${item.name} (${item.capacity_gb}GB ${item.type} ${speed}MHz) - €${price.toFixed(2)}`;
         option.dataset.name = item.name;
         option.dataset.capacity = item.capacity_gb;
         option.dataset.type = item.type;
         option.dataset.speed = speed;
         select.appendChild(option);
     });
+
+    renderSearchDropdown('ram', items, 'name');
 }
 
 // Filter RAM based on selected criteria
@@ -1224,25 +1680,25 @@ function filterRAM() {
 function applyRAMFilters() {
     const capacityFilter = document.getElementById('ram-capacity-filter').value;
     const typeFilter = document.getElementById('ram-type-filter').value;
-    
+
     let filtered = allRAMData;
-    
+
     if (capacityFilter) {
         filtered = filtered.filter(r => r.capacity_gb == capacityFilter);
     }
-    
+
     if (typeFilter) {
         filtered = filtered.filter(r => r.type && r.type.toUpperCase() === typeFilter.toUpperCase());
     }
-    
+
     populateRAMSelect(filtered);
-    
+
     // Calculate average price from filtered results and use as the component
     if (filtered.length > 0) {
         const avgPrice = filtered.reduce((sum, r) => sum + (r.avg_price || r.price || 0), 0) / filtered.length;
         const capacity = capacityFilter || filtered[0].capacity_gb;
         const ramType = typeFilter || filtered[0].type || 'DDR4';
-        
+
         // Create a virtual RAM component with average price
         const virtualRAM = {
             id: 'filtered_avg',
@@ -1252,16 +1708,16 @@ function applyRAMFilters() {
             avg_price: avgPrice,
             is_filtered_avg: true
         };
-        
+
         selectedComponents.ram = virtualRAM;
         updateComponentCard('ram', virtualRAM);
         document.getElementById('ram-view-btn').disabled = true; // Disable view since it's an average
         updateTotal();
-        
+
         // Clear the select to indicate we're using filtered average
         document.getElementById('ram-select').value = '';
     }
-    
+
     // Clear selection if current selection is no longer valid
     if (selectedComponents.ram && !selectedComponents.ram.is_filtered_avg) {
         const stillExists = filtered.find(r => r.id === selectedComponents.ram.id);
@@ -1274,32 +1730,78 @@ function applyRAMFilters() {
 // Select a component
 function selectComponent(type, id) {
     const viewBtn = document.getElementById(`${type}-view-btn`);
-    
+    const searchInput = document.getElementById(`${type}-select-search`);
+    const nameField = componentFields[type];
+    const select = document.getElementById(`${type}-select`);
+
     if (!id) {
         selectedComponents[type] = null;
         updateComponentCard(type, null);
         if (viewBtn) viewBtn.disabled = true;
+        if (searchInput) searchInput.value = '';
+        if (select) select.value = '';
+        if (type === 'motherboard') {
+            // Re-enable avg-by controls to a neutral state after clearing a real selection,
+            // but keep any currently-applied filtered average.
+            const modeEl = document.getElementById('mb-avg-mode');
+            if (modeEl) {
+                modeEl.value = '';
+                populateMotherboardAvgOptions();
+            }
+        }
     } else {
         const component = componentData[type].find(c => c.id == id);
+        if (!component) return; // safety: don't select missing option
         selectedComponents[type] = component;
         updateComponentCard(type, component);
         if (viewBtn) viewBtn.disabled = false;
-        
+
+        // Sync search input to selected item name
+        if (searchInput && component) {
+            let displayName = component[nameField] || component.name || component.model || '';
+            if (type === 'motherboard' && component.brand) {
+                displayName = `${component.brand} ${displayName}`;
+            }
+            searchInput.value = displayName;
+        }
+
+        // If selecting a real motherboard, clear the avg-by mode/value UI
+        if (type === 'motherboard' && component && !component.is_filtered_avg) {
+            const modeEl = document.getElementById('mb-avg-mode');
+            if (modeEl) {
+                modeEl.value = '';
+                populateMotherboardAvgOptions();
+            }
+        }
+
         // Update socket info display for CPU
         if (type === 'cpu' && component && component.socket) {
-            document.getElementById('cpu-socket-info').textContent = `Socket: ${component.socket}`;
-            document.getElementById('match-chipset-btn').disabled = false;
+            const socketInfo = document.getElementById('cpu-socket-info');
+            const matchBtn = document.getElementById('match-chipset-btn');
+            if (socketInfo) socketInfo.textContent = `Socket: ${component.socket}`;
+            if (matchBtn) matchBtn.disabled = false;
+            // Pre-select socket avg mode if it exists
+            const mbAvgModeSel = document.getElementById('mb-avg-mode');
+            if (mbAvgModeSel && mbAvgModeSel.value === 'socket') {
+                const mbValueSel = document.getElementById('mb-avg-value');
+                if (mbValueSel && Array.from(mbValueSel.options).some(o => o.value === component.socket)) {
+                    mbValueSel.value = component.socket;
+                    updateMotherboardAvgValue();
+                }
+            }
         } else if (type === 'cpu') {
-            document.getElementById('cpu-socket-info').textContent = '';
-            document.getElementById('match-chipset-btn').disabled = true;
+            const socketInfo = document.getElementById('cpu-socket-info');
+            const matchBtn = document.getElementById('match-chipset-btn');
+            if (socketInfo) socketInfo.textContent = '';
+            if (matchBtn) matchBtn.disabled = true;
         }
     }
-    
+
     // Check compatibility when CPU or motherboard changes
     if (type === 'cpu' || type === 'motherboard') {
         checkCompatibility();
     }
-    
+
     updateTotal();
 }
 
@@ -1308,73 +1810,131 @@ function checkCompatibility() {
     const cpu = selectedComponents.cpu;
     const motherboard = selectedComponents.motherboard;
     const indicator = document.getElementById('compatibility-indicator');
-    
+    if (!indicator) return;
+
     if (!cpu && !motherboard) {
         indicator.textContent = '';
         indicator.className = 'compatibility-indicator';
         return;
     }
-    
+
     if (cpu && !motherboard) {
-        indicator.textContent = `CPU socket: ${cpu.socket}`;
+        indicator.textContent = cpu.socket ? `CPU socket: ${cpu.socket}` : 'CPU socket: Unknown';
         indicator.className = 'compatibility-indicator';
         return;
     }
-    
+
     if (!cpu && motherboard) {
         indicator.textContent = `MB socket: ${motherboard.socket || 'Unknown'}`;
         indicator.className = 'compatibility-indicator';
         return;
     }
-    
+
     // Both selected - check compatibility
-    if (cpu.socket === motherboard.socket) {
+    const cpuSocket = cpu.socket || '';
+    const mbSocket = motherboard.socket || '';
+    if (cpuSocket && mbSocket && cpuSocket === mbSocket) {
         indicator.textContent = '✓ Compatible';
         indicator.className = 'compatibility-indicator compatible';
     } else {
-        indicator.textContent = `✗ Socket mismatch: CPU ${cpu.socket} vs MB ${motherboard.socket}`;
+        indicator.textContent = `✗ Socket mismatch: CPU ${cpu.socket || 'Unknown'} vs MB ${motherboard.socket || 'Unknown'}`;
         indicator.className = 'compatibility-indicator incompatible';
     }
 }
 
-// Match Chipset - Filter motherboards by CPU socket
+// Match Chipset - Filter motherboards by CPU socket and add avg price to total
 function matchChipset() {
     const cpu = selectedComponents.cpu;
     if (!cpu || !cpu.socket) {
         alert('Please select a CPU first');
         return;
     }
-    
+
     const socket = cpu.socket;
     const allMotherboards = componentData.motherboard;
-    
-    // Filter motherboards by socket
-    const compatible = allMotherboards.filter(m => m.socket === socket);
-    
+
+    // Determine if a form factor is selected in the avg-by UI
+    const modeSelect = document.getElementById('mb-avg-mode');
+    const valueSelect = document.getElementById('mb-avg-value');
+    const selectedFormFactor = (modeSelect && modeSelect.value === 'form_factor' && valueSelect) ? valueSelect.value : '';
+
+    // Filter motherboards by socket (and form factor if selected)
+    let compatible = allMotherboards.filter(m => m.socket === socket);
+    if (selectedFormFactor) {
+        compatible = compatible.filter(m => m.form_factor === selectedFormFactor);
+    }
+
     if (compatible.length === 0) {
-        alert(`No motherboards found for socket: ${socket}`);
+        const msg = selectedFormFactor
+            ? `No motherboards found for socket: ${socket} and form factor: ${selectedFormFactor}`
+            : `No motherboards found for socket: ${socket}`;
+        alert(msg);
         return;
     }
-    
+
+    // Calculate weighted average price of compatible boards
+    let totalPrice = 0;
+    let totalCount = 0;
+    compatible.forEach(m => {
+        const count = parseInt(m.active_listings || 1);
+        totalPrice += (parseFloat(m.avg_price || m.price || 0) * count);
+        totalCount += count;
+    });
+    const avg = totalCount > 0 ? totalPrice / totalCount : 0;
+
     // Repopulate motherboard select with only compatible boards
     const select = document.getElementById('motherboard-select');
     const firstOption = select.options[0];
     select.innerHTML = '';
     select.appendChild(firstOption);
-    
+
     compatible.forEach(item => {
         const option = document.createElement('option');
         option.value = item.id;
         const price = item.avg_price || item.price || 0;
-        option.textContent = `${item.model} (${item.socket}) - €${price}`;
+        const brandPrefix = item.brand ? `${item.brand} ` : '';
+        option.textContent = `${brandPrefix}${item.model} (${item.socket}${item.form_factor ? ', ' + item.form_factor : ''}) - €${price}`;
         option.dataset.name = item.model;
         select.appendChild(option);
     });
-    
+
     // Show warning that list is filtered
     const indicator = document.getElementById('compatibility-indicator');
-    indicator.textContent = `Showing ${compatible.length} boards for ${socket}`;
+    indicator.textContent = selectedFormFactor
+        ? `Showing ${compatible.length} ${socket} ${selectedFormFactor} boards`
+        : `Showing ${compatible.length} boards for ${socket}`;
     indicator.className = 'compatibility-indicator warning';
+
+    // Create virtual motherboard with socket average and all supported chipsets
+    const chipsetSet = new Set(compatible.map(m => m.chipset).filter(Boolean));
+    const chipsetList = Array.from(chipsetSet).sort().join(', ') || 'N/A';
+    const virtualMB = {
+        id: `avg_mb_socket_${socket}${selectedFormFactor ? '_' + selectedFormFactor : ''}`,
+        model: selectedFormFactor
+            ? `Avg ${socket} ${selectedFormFactor} Motherboard (${compatible.length} models, ${chipsetSet.size} chipsets)`
+            : `Avg ${socket} Motherboard (${compatible.length} models, ${chipsetSet.size} chipsets)`,
+        brand: 'Generic',
+        socket: socket,
+        chipset: chipsetList,
+        form_factor: selectedFormFactor || '',
+        avg_price: avg,
+        is_filtered_avg: true
+    };
+
+    selectedComponents.motherboard = virtualMB;
+    updateComponentCard('motherboard', virtualMB);
+
+    // Populate Avg-by chipset dropdown with only chipsets supported by this socket
+    // (modeSelect/valueSelect already declared in this function scope)
+    if (modeSelect && valueSelect) {
+        modeSelect.value = 'chipset';
+        populateMotherboardAvgOptions();
+    }
+
+    document.getElementById('motherboard-view-btn').disabled = true;
+    document.getElementById('motherboard-select').value = '';
+    updateTotal();
+    checkCompatibility();
 }
 
 // Update component card UI
@@ -1382,40 +1942,42 @@ function updateComponentCard(type, component) {
     const card = document.querySelector(`[data-component="${type}"]`);
     const status = document.getElementById(`${type}-status`);
     const details = document.getElementById(`${type}-details`);
-    
+
+    if (!card || !status || !details) return;
+
     if (component) {
         card.classList.add('selected');
         status.textContent = 'Selected';
-        
+
         // Show component details
         let detailsHtml = '';
         const importantFields = ['vendor', 'brand', 'model', 'cpu_name', 'processor_number', 'cores', 'threads', 'socket', 'chipset', 'capacity_gb', 'type', 'wattage', 'efficiency_rating', 'vram_gb', 'year_released'];
-        
+
         importantFields.forEach(key => {
             if (component[key] && component[key] !== '' && component[key] !== null) {
                 let value = component[key];
                 if (key === 'vram_gb' && value >= 1024) {
                     value = (value / 1024).toFixed(0) + 'GB';
                 }
-                detailsHtml += `<div class="detail-row"><span>${key.replace('_', ' ').replace('_', ' ')}:</span><span>${value}</span></div>`;
+                detailsHtml += `<div class="detail-row"><span>${key.replace(/_/g, ' ')}:</span><span>${value}</span></div>`;
             }
         });
-        
+
         // Add price info
-        const price = component.avg_price || component.price || 0;
+        const price = parseFloat(component.avg_price) || parseFloat(component.price) || 0;
         if (price > 0) {
-            detailsHtml += `<div class="detail-row"><span>Avg Price:</span><span>€${price}</span></div>`;
+            detailsHtml += `<div class="detail-row"><span>Avg Price:</span><span>€${price.toFixed(2)}</span></div>`;
         }
-        
+
         details.innerHTML = detailsHtml;
-        
+
         // Update summary row
         updateSummaryRow(type, component);
     } else {
         card.classList.remove('selected');
         status.textContent = 'Not selected';
         details.innerHTML = '';
-        
+
         // Clear summary row
         clearSummaryRow(type);
     }
@@ -1423,13 +1985,13 @@ function updateComponentCard(type, component) {
 
 // Update summary row for a component
 function updateSummaryRow(type, component) {
-    const price = component.avg_price || component.price || 0;
+    const price = parseFloat(component.avg_price) || parseFloat(component.price) || 0;
     const priceEl = document.getElementById(`${type}-summary-price`);
     const rowEl = document.getElementById(`${type}-summary-row`);
-    
+
     if (priceEl) {
-        priceEl.textContent = `€${price}`;
-        rowEl.classList.add('active');
+        priceEl.textContent = price > 0 ? `€${price.toFixed(2)}` : '-';
+        if (rowEl) rowEl.classList.add('active');
     }
 }
 
@@ -1437,10 +1999,10 @@ function updateSummaryRow(type, component) {
 function clearSummaryRow(type) {
     const priceEl = document.getElementById(`${type}-summary-price`);
     const rowEl = document.getElementById(`${type}-summary-row`);
-    
+
     if (priceEl) {
-        priceEl.textContent = '—';
-        rowEl.classList.remove('active');
+        priceEl.textContent = '-';
+        if (rowEl) rowEl.classList.remove('active');
     }
 }
 
@@ -1449,7 +2011,7 @@ function updateTotal() {
     let total = 0;
     Object.entries(selectedComponents).forEach(([type, component]) => {
         if (component) {
-            total += component.avg_price || component.price || 0;
+            total += parseFloat(component.avg_price) || parseFloat(component.price) || 0;
         }
     });
     document.getElementById('total-summary-price').textContent = `€${total.toFixed(2)}`;
@@ -1461,33 +2023,58 @@ function clearBuild() {
         selectedComponents[type] = null;
         document.getElementById(`${type}-select`).value = '';
         updateComponentCard(type, null);
-        
+
         // Disable view buttons
         const viewBtn = document.getElementById(`${type}-view-btn`);
         if (viewBtn) viewBtn.disabled = true;
     });
-    
+
     // Reset socket info
     document.getElementById('cpu-socket-info').textContent = '';
     document.getElementById('match-chipset-btn').disabled = true;
     document.getElementById('compatibility-indicator').textContent = '';
     document.getElementById('compatibility-indicator').className = 'compatibility-indicator';
-    
+
     // Reset RAM filters
     document.getElementById('ram-capacity-filter').value = '';
     document.getElementById('ram-type-filter').value = '';
     populateRAMSelect(allRAMData);
-    
+
+    // Clear all search inputs
+    ['cpu', 'motherboard', 'gpu', 'ram', 'ssd', 'psu', 'case'].forEach(type => {
+        const input = document.getElementById(`${type}-select-search`);
+        if (input) input.value = '';
+    });
+
+    // Reset active-avg toggle
+    useActiveAvg = false;
+    const avgToggle = document.getElementById('use-active-avg');
+    if (avgToggle) {
+        avgToggle.checked = false;
+        const hint = document.getElementById('avg-mode-hint');
+        if (hint) hint.textContent = 'Off = all-time averages (excluding flagged listings)';
+    }
+
     // Reset SSD filters
     clearSSDFilter();
-    
+
     // Reset PSU wattage filter
     document.getElementById('psu-wattage-filter').value = '';
     document.getElementById('psu-wattage-info').style.display = 'none';
-    
+    currentPSUAverage = 0;
+    currentPSUWattage = '';
+    currentPSUFilteredCount = 0;
+    const psuApplyBtn = document.getElementById('psu-apply-generic-btn');
+    if (psuApplyBtn) psuApplyBtn.disabled = true;
+    if (typeof populateSelect === 'function') populateSelect('psu-select', componentData.psu, 'name');
+
+    // Reset motherboard avg-by UI
+    document.getElementById('mb-avg-mode').value = '';
+    populateMotherboardAvgOptions();
+
     // Reset motherboard select
     populateSelect('motherboard-select', componentData.motherboard, 'model');
-    
+
     updateTotal();
     document.getElementById('matching-listings').style.display = 'none';
 }
@@ -1496,23 +2083,23 @@ function clearBuild() {
 async function viewListings(type) {
     const component = selectedComponents[type];
     if (!component) return;
-    
+
     const modal = document.getElementById('listings-modal');
     const modalTitle = document.getElementById('modal-title');
     const modalBody = document.getElementById('modal-body');
-    
+
     const nameField = componentFields[type];
     const componentName = component[nameField] || component.model || component.name || 'Unknown';
-    
+
     modalTitle.textContent = `Listings for ${componentName}`;
     modalBody.innerHTML = '<div class="loading">Loading listings...</div>';
     modal.classList.add('active');
-    
+
     try {
         // Determine API endpoint
         let endpoint = '';
         let idParam = '';
-        
+
         switch(type) {
             case 'cpu':
                 endpoint = '/api/cpus';
@@ -1537,11 +2124,11 @@ async function viewListings(type) {
                 endpoint = '/api/cases';
                 break;
         }
-        
+
         // Fetch listings
         const response = await fetch(endpoint);
         const data = await response.json();
-        
+
         // Filter to only show listings for this specific model
         let listings = [];
         if (Array.isArray(data)) {
@@ -1559,12 +2146,12 @@ async function viewListings(type) {
                 return false;
             });
         }
-        
+
         if (listings.length === 0) {
             modalBody.innerHTML = '<div class="loading">No active listings found for this model.</div>';
             return;
         }
-        
+
         // Render listings table
         let html = `
             <p>Found ${listings.length} listing(s)</p>
@@ -1572,7 +2159,7 @@ async function viewListings(type) {
                 <thead>
                     <tr>
                         <th>Title</th>
-                        <th>Price</th>
+                        <th>{{ t('Price') }}</th>
                         <th>Location</th>
                         <th>Date</th>
                         <th>Action</th>
@@ -1580,7 +2167,7 @@ async function viewListings(type) {
                 </thead>
                 <tbody>
         `;
-        
+
         listings.slice(0, 50).forEach(listing => {
             const date = listing.date_posted ? new Date(listing.date_posted).toLocaleDateString() : 'Unknown';
             html += `
@@ -1595,10 +2182,10 @@ async function viewListings(type) {
                 </tr>
             `;
         });
-        
+
         html += '</tbody></table>';
         modalBody.innerHTML = html;
-        
+
     } catch (error) {
         console.error('Error loading listings:', error);
         modalBody.innerHTML = `<div class="loading">Error loading listings: ${error.message}</div>`;
@@ -1615,34 +2202,34 @@ function closeModal(event) {
 async function findMatchingListings() {
     const container = document.getElementById('matching-listings');
     const content = document.getElementById('matching-listings-content');
-    
+
     container.style.display = 'block';
     content.innerHTML = '<div class="loading">Searching for matching listings...</div>';
-    
+
     try {
         // Get selected component IDs
         const params = new URLSearchParams();
         if (selectedComponents.cpu) params.append('cpu_id', selectedComponents.cpu.id);
         if (selectedComponents.gpu) params.append('gpu_id', selectedComponents.gpu.id);
         if (selectedComponents.ram) params.append('ram_id', selectedComponents.ram.id);
-        
+
         const response = await fetch(`/api/computers?${params.toString()}`);
         const data = await response.json();
-        
+
         if (!data.success || data.listings.length === 0) {
             content.innerHTML = '<div class="loading">No matching listings found.</div>';
             return;
         }
-        
+
         // Render listings
-        let html = '<table><thead><tr><th>Title</th><th>Price</th><th>Components</th><th>Actions</th></tr></thead><tbody>';
-        
+        let html = '<table><thead><tr><th>Title</th><th>{{ t('Price') }}</th><th>Components</th><th>Actions</th></tr></thead><tbody>';
+
         data.listings.forEach(listing => {
             const components = [];
             if (listing.cpu_name) components.push(`CPU: ${listing.cpu_producer} ${listing.cpu_name}`);
             if (listing.gpu_model) components.push(`GPU: ${listing.gpu_vendor} ${listing.gpu_model}`);
             if (listing.ram_capacity) components.push(`RAM: ${listing.ram_capacity}GB`);
-            
+
             html += `
                 <tr>
                     <td>${listing.title}</td>
@@ -1654,10 +2241,10 @@ async function findMatchingListings() {
                 </tr>
             `;
         });
-        
+
         html += '</tbody></table>';
         content.innerHTML = html;
-        
+
     } catch (error) {
         content.innerHTML = '<div class="loading">Error loading matching listings.</div>';
         console.error('Error finding matching listings:', error);

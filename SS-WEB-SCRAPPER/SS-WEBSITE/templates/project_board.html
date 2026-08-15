@@ -3,7 +3,6 @@
 {% block title %}Project Board - SS-Crawler{% endblock %}
 
 {% block extra_css %}
-<style>
 :root {
     --board-bg: #f5f6fa;
     --column-bg: #ebecf0;
@@ -446,7 +445,6 @@
     font-size: 0.8rem;
     color: var(--text-secondary);
 }
-</style>
 {% endblock %}
 
 {% block content %}
@@ -476,7 +474,12 @@
                     <span class="stat-label">Solved</span>
                 </div>
             </div>
-            <div class="filter-bar" style="display: flex; gap: 0.5rem; align-items: center; margin-right: 1rem;">
+            <div class="filter-bar" style="display: flex; gap: 0.5rem; align-items: center; margin-right: 1rem; flex-wrap: wrap;">
+                <div style="position: relative; display: flex; align-items: center;">
+                    <input type="text" id="global-search" placeholder="🔍 Search all tickets..." oninput="handleGlobalSearch(this.value)" onfocus="handleGlobalSearch(this.value)" onblur="setTimeout(hideGlobalSearchDropdown, 200)" style="padding: 0.5rem; border-radius: 4px; border: 1px solid var(--border-color); background: var(--card-bg); color: var(--text-primary); min-width: 220px;">
+                    <div id="global-search-dropdown" style="display: none; position: absolute; top: 100%; left: 0; margin-top: 4px; min-width: 320px; max-width: 90vw; max-height: 300px; overflow-y: auto; background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 6px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); z-index: 1000;"></div>
+                </div>
+                <span id="search-results-count" style="font-size: 0.85rem; color: var(--text-secondary);"></span>
                 <select id="filter-page" onchange="applyFilters()" style="padding: 0.5rem; border-radius: 4px; border: 1px solid var(--border-color); background: var(--card-bg); color: var(--text-primary);">
                     <option value="">All Pages</option>
                 </select>
@@ -498,11 +501,10 @@
                     <input type="checkbox" id="filter-include-future" onchange="applyFilters()" style="cursor: pointer; width: auto; height: auto;">
                     <span>Include future folders</span>
                 </label>
-                <button class="btn btn-secondary" onclick="clearFilters()" style="padding: 0.5rem 1rem;">Clear</button>
+                <button class="btn btn-secondary" onclick="clearFilters()" style="padding: 0.5rem 1rem;">{{ t('Clear') }}</button>
             </div>
-            <div class="global-search-bar" style="display: flex; gap: 0.5rem; align-items: center; margin-top: 0.5rem;">
-                <input type="text" id="global-search" placeholder="🔍 Search across all tickets..." oninput="applyFilters()" style="padding: 0.5rem; border-radius: 4px; border: 1px solid var(--border-color); background: var(--card-bg); color: var(--text-primary); min-width: 300px;">
-                <span id="search-results-count" style="font-size: 0.85rem; color: var(--text-secondary);"></span>
+            <div class="global-search-bar" style="display: none;">
+                <!-- legacy placeholder; search moved into filter-bar -->
             </div>
         </div>
     </div>
@@ -591,7 +593,7 @@
             </div>
         </div>
         <div class="form-actions">
-            <button class="btn btn-secondary" onclick="closeAddTaskModal()">Cancel</button>
+            <button class="btn btn-secondary" onclick="closeAddTaskModal()">{{ t('Cancel') }}</button>
             <button class="btn" onclick="addTask()">Add Task</button>
         </div>
     </div>
@@ -658,10 +660,10 @@ let columnSortState = {
 function sortTasks(tasks, columnId) {
     const sortState = columnSortState[columnId] || { field: 'updated', direction: 'desc' };
     const { field, direction } = sortState;
-    
+
     return tasks.sort((a, b) => {
         let valA, valB;
-        
+
         switch(field) {
             case 'link_count':
                 // Count incoming links
@@ -699,7 +701,7 @@ function sortTasks(tasks, columnId) {
                 valA = a.updated ? new Date(a.updated) : new Date(0);
                 valB = b.updated ? new Date(b.updated) : new Date(0);
         }
-        
+
         if (direction === 'asc') {
             return valA > valB ? 1 : valA < valB ? -1 : 0;
         } else {
@@ -712,7 +714,7 @@ function sortTasks(tasks, columnId) {
 function updateColumnSort(columnId) {
     const select = document.getElementById(`sort-field-${columnId}`);
     if (!select) return;
-    
+
     columnSortState[columnId] = {
         ...columnSortState[columnId],
         field: select.value
@@ -807,7 +809,7 @@ function createColumnElement(column) {
                     <option value="reopen_count" ${currentSort.field === 'reopen_count' ? 'selected' : ''}>🔄 Reopens</option>
                     <option value="priority" ${currentSort.field === 'priority' ? 'selected' : ''}>🔥 Priority</option>
                 </select>
-                <button onclick="toggleSortDirection('${column.id}')" 
+                <button onclick="toggleSortDirection('${column.id}')"
                     style="padding: 0.2rem 0.4rem; border: 1px solid var(--border-color); border-radius: 4px; background: var(--card-bg); cursor: pointer; font-size: 0.75rem; color: var(--text-primary);">
                     ${currentSort.direction === 'asc' ? '↑' : '↓'}
                 </button>
@@ -1054,6 +1056,44 @@ function filterFutureFolderByName(folderName) {
         searchInput.value = folderName;
         filterFutureTasks(folderName);
     }
+
+    // Expand and scroll to the matching folder
+    const futureContent = document.getElementById('future-content');
+    if (!futureContent || !folderName) return;
+    const searchLower = folderName.toLowerCase().trim();
+    const folderContainers = futureContent.querySelectorAll('.folder-container');
+    folderContainers.forEach(container => {
+        const nameSpan = container.querySelector('.folder-header span:nth-of-type(2)');
+        if (nameSpan && nameSpan.textContent.toLowerCase().trim() === searchLower) {
+            const folderId = container.querySelector('.folder-icon')?.id?.replace('folder-icon-', '');
+            if (folderId) {
+                expandFolder(folderId);
+            }
+            container.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            container.style.boxShadow = '0 0 0 3px rgba(52, 152, 219, 0.5)';
+            setTimeout(() => { container.style.boxShadow = ''; }, 2000);
+        }
+    });
+}
+
+function expandFolder(folderId) {
+    // Find the folder in boardData and expand it
+    const futureCol = boardData.columns.find(c => c.id === 'future');
+    if (futureCol && futureCol.folders) {
+        const folder = futureCol.folders.find(f => f.id === folderId);
+        if (folder && folder.expanded === false) {
+            folder.expanded = true;
+            renderBoard();
+        }
+    }
+    const content = document.getElementById(`folder-content-${folderId}`);
+    const icon = document.getElementById(`folder-icon-${folderId}`);
+    if (content) {
+        content.style.display = 'block';
+    }
+    if (icon) {
+        icon.textContent = '📂';
+    }
 }
 
 function renderFolder(folder, allTasks) {
@@ -1158,7 +1198,7 @@ function showCreateFolderModal() {
             <input type="text" id="folder-name" placeholder="e.g., UI Improvements">
         </div>
         <div class="form-group">
-            <label>Description</label>
+            <label>{{ t('Description') }}</label>
             <textarea id="folder-description" placeholder="Optional description..."></textarea>
         </div>
         <div class="form-group">
@@ -1181,14 +1221,14 @@ function showCreateFolderModal() {
         <div class="form-group">
             <label>Folder Class</label>
             <select id="folder-class">
-                <option value="">— Select —</option>
+                <option value="">- Select -</option>
                 <option value="Structure" selected>🏗️ Structure</option>
                 <option value="Feature">⚡ Feature</option>
                 <option value="Learning">📚 Learning</option>
             </select>
         </div>
         <div class="form-actions">
-            <button class="btn btn-secondary" onclick="closeFolderModal()">Cancel</button>
+            <button class="btn btn-secondary" onclick="closeFolderModal()">{{ t('Cancel') }}</button>
             <button class="btn" onclick="createFolder()">Create Folder</button>
         </div>
     `;
@@ -1245,7 +1285,7 @@ function showFolderDetails(folderId) {
             <input type="text" id="folder-edit-name" value="${folder.name}">
         </div>
         <div class="form-group">
-            <label>Description</label>
+            <label>{{ t('Description') }}</label>
             <textarea id="folder-edit-description">${folder.description || ''}</textarea>
         </div>
         <div class="form-group">
@@ -1266,7 +1306,7 @@ function showFolderDetails(folderId) {
             </select>
         </div>
         <div class="form-actions">
-            <button class="btn btn-secondary" onclick="closeFolderModal()">Cancel</button>
+            <button class="btn btn-secondary" onclick="closeFolderModal()">{{ t('Cancel') }}</button>
             <button class="btn" onclick="updateFolder('${folderId}')">Save Changes</button>
         </div>
     `;
@@ -1552,14 +1592,19 @@ function renderTaskCard(task) {
 
     // Handle both single link (backward compat) and multiple links
     let linkIcons = '';
+    let isBlocked = false;
     if (task.linked_tasks && task.linked_tasks.length > 0) {
         linkIcons = task.linked_tasks.map(l => getRelationshipIcon(l.relationship_type)).join('');
+        isBlocked = task.linked_tasks.some(l => l.relationship_type === 'blocked_by');
     } else if (task.linked_task_id) {
         linkIcons = getRelationshipIcon(task.relationship_type);
+        isBlocked = task.relationship_type === 'blocked_by';
     }
+    const blockedIcon = isBlocked ? `<span style="font-size: 0.7rem; background: rgba(231, 76, 60, 0.2); color: #e74c3c; padding: 0.1rem 0.3rem; border-radius: 3px; margin-right: 0.5rem;">🚫 Blocked</span>` : '';
 
     // Show link count - count how many OTHER tasks link TO this task (incoming links)
     let linkCount = 0;
+    let blockedByCount = 0;
     if (boardData) {
         boardData.columns.forEach(col => {
             col.tasks.forEach(t => {
@@ -1569,16 +1614,24 @@ function renderTaskCard(task) {
                         t.linked_tasks.forEach(link => {
                             if (link.task_id === task.id) {
                                 linkCount++;
+                                if (link.relationship_type === 'blocked_by') {
+                                    blockedByCount++;
+                                }
                             }
                         });
                     } else if (t.linked_task_id === task.id) {
                         linkCount++;
+                        if (t.relationship_type === 'blocked_by') {
+                            blockedByCount++;
+                        }
                     }
                 }
             });
         });
     }
     const linkCountBadge = linkCount > 0 ? `<span style="font-size: 0.7rem; background: rgba(52, 152, 219, 0.2); color: #3498db; padding: 0.1rem 0.3rem; border-radius: 3px; margin-right: 0.5rem;">🔗 ${linkCount}</span>` : '';
+    // Incoming blocked_by means this task is the SOURCE blocker for those tickets
+    const blocksBadge = blockedByCount > 0 ? `<span style="font-size: 0.7rem; background: rgba(231, 76, 60, 0.2); color: #e74c3c; padding: 0.1rem 0.3rem; border-radius: 3px; margin-right: 0.5rem;">🚧 Blocks ${blockedByCount}</span>` : '';
 
     // Show reopen count if task has been reopened
     const reopenCount = task.reopen_history ? task.reopen_history.length : 0;
@@ -1599,6 +1652,8 @@ function renderTaskCard(task) {
             <div style="display: flex; align-items: center; margin-bottom: 0.3rem; flex-wrap: wrap; gap: 0.25rem;">
                 ${taskIdBadge}
                 ${linkCountBadge}
+                ${blocksBadge}
+                ${blockedIcon}
                 ${specialBadge}
                 ${reopenBadge}
             </div>
@@ -1642,7 +1697,10 @@ function updateStats() {
     document.getElementById('stat-open').textContent = cols.find(c => c.id === 'problems')?.tasks.length || 0;
     document.getElementById('stat-inprogress').textContent = cols.find(c => c.id === 'progress')?.tasks.length || 0;
     document.getElementById('stat-review').textContent = cols.find(c => c.id === 'talking')?.tasks.length || 0;
-    document.getElementById('stat-solved').textContent = cols.find(c => c.id === 'solved')?.tasks.length || 0;
+    const solvedCol = cols.find(c => c.id === 'solved');
+    const futureCol = cols.find(c => c.id === 'future');
+    const solvedCount = (solvedCol?.tasks.length || 0) + (futureCol?.tasks.length || 0);
+    document.getElementById('stat-solved').textContent = solvedCount;
 }
 
 // Global filters object
@@ -1666,6 +1724,20 @@ function computePageCounts() {
     counts[''] = { problems: 0, review: 0, solved: 0 }; // empty page
 
     boardData.columns.forEach(col => {
+        if (col.id === 'future' && col.folders) {
+            // Tasks stored in Future folders count as solved
+            const type = 'solved';
+            col.tasks.forEach(task => {
+                const page = task.page || '';
+                if (!counts[page]) counts[page] = { problems: 0, review: 0, solved: 0 };
+                counts[page][type]++;
+                if (page !== '') {
+                    if (!counts['']) counts[''] = { problems: 0, review: 0, solved: 0 };
+                    counts[''][type]++;
+                }
+            });
+            return;
+        }
         const type = col.id === 'problems' ? 'problems' : col.id === 'talking' ? 'review' : col.id === 'solved' ? 'solved' : null;
         if (!type) return;
         col.tasks.forEach(task => {
@@ -1754,6 +1826,91 @@ function restoreFilterControls() {
     }
 }
 
+// Handle global search input: update dropdown and apply board filters
+function handleGlobalSearch(searchText) {
+    renderGlobalSearchDropdown(searchText);
+    applyFilters();
+}
+
+function hideGlobalSearchDropdown() {
+    const dropdown = document.getElementById('global-search-dropdown');
+    if (dropdown) dropdown.style.display = 'none';
+}
+
+function getTaskSearchHaystack(task) {
+    return [
+        task.title,
+        task.id,
+        task.page,
+        task.category,
+        task.priority,
+        task.fix,
+        task.code_snippet
+    ].filter(Boolean).join(' ').toLowerCase();
+}
+
+function renderGlobalSearchDropdown(searchText) {
+    const dropdown = document.getElementById('global-search-dropdown');
+    if (!dropdown) return;
+
+    const searchLower = (searchText || '').toLowerCase().trim();
+    if (!searchLower || !boardData) {
+        dropdown.style.display = 'none';
+        dropdown.innerHTML = '';
+        return;
+    }
+
+    const matches = [];
+    boardData.columns.forEach(col => {
+        col.tasks.forEach(task => {
+            if (getTaskSearchHaystack(task).includes(searchLower)) {
+                matches.push({ task, column: col });
+            }
+        });
+    });
+
+    // Also search future folder tasks (they live in the future column with a folder_id)
+    const futureCol = boardData.columns.find(c => c.id === 'future');
+    if (futureCol) {
+        futureCol.folders?.forEach(folder => {
+            futureCol.tasks.forEach(task => {
+                if (task.folder_id !== folder.id) return;
+                if (getTaskSearchHaystack(task).includes(searchLower)) {
+                    matches.push({ task, column: futureCol, folder });
+                }
+            });
+        });
+    }
+
+    if (matches.length === 0) {
+        dropdown.innerHTML = `<div style="padding: 0.75rem; color: var(--text-secondary); font-size: 0.85rem;">No tickets found</div>`;
+        dropdown.style.display = 'block';
+        return;
+    }
+
+    // Limit to top 20 results
+    const topMatches = matches.slice(0, 20);
+    dropdown.innerHTML = topMatches.map(({ task, column, folder }) => {
+        const folderLabel = folder ? ` 📁 ${escapeHtml(folder.name)}` : '';
+        const columnLabel = column.title || column.id;
+        return `
+            <div onclick="openGlobalSearchResult('${task.id}')" style="padding: 0.6rem 0.75rem; cursor: pointer; border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center;"
+                 onmouseover="this.style.background='var(--column-bg)'" onmouseout="this.style.background=''">
+                <div style="min-width: 0;">
+                    <div style="font-weight: 600; color: var(--text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${task.id}: ${escapeHtml(task.title)}</div>
+                    <div style="font-size: 0.75rem; color: var(--text-secondary);">${escapeHtml(columnLabel)}${folderLabel} · ${escapeHtml(task.page || '')} · ${escapeHtml(task.category || '')}</div>
+                </div>
+            </div>
+        `;
+    }).join('');
+    dropdown.style.display = 'block';
+}
+
+function openGlobalSearchResult(taskId) {
+    hideGlobalSearchDropdown();
+    showTaskDetail(taskId);
+}
+
 // Apply filters to all columns
 function applyFilters() {
     const pageValue = document.getElementById('filter-page').value;
@@ -1807,24 +1964,13 @@ function taskMatchesFilters(task) {
     if (currentFilters.priority && task.priority !== currentFilters.priority) return false;
     if (currentFilters.category && task.category !== currentFilters.category) return false;
     if (currentFilters.search) {
-        const haystack = [
-            task.title,
-            task.id,
-            task.page,
-            task.category,
-            task.priority,
-            task.fix,
-            task.code_snippet
-        ].filter(Boolean).join(' ').toLowerCase();
-        if (!haystack.includes(currentFilters.search)) return false;
+        if (!getTaskSearchHaystack(task).includes(currentFilters.search)) return false;
     }
     // Hide tasks that are physically in the Future column from regular column views
     // unless the user explicitly wants to include future-folder tasks everywhere.
     if (!currentFilters.includeFuture && task.column === 'future') return false;
-    // Also hide tasks that are assigned to a Future folder but currently displayed
-    // in another working column (e.g., dragged out or duplicated) unless future
-    // tasks are being included.
-    if (!currentFilters.includeFuture && taskIsInFutureFolder(task)) return false;
+    // Tasks assigned to a Future folder but moved to another column
+    // (problems/assignment/talking) should remain visible there.
     return true;
 }
 
@@ -1834,22 +1980,17 @@ function futureTaskMatchesFilters(task) {
     if (currentFilters.priority && task.priority !== currentFilters.priority) return false;
     if (currentFilters.category && task.category !== currentFilters.category) return false;
     if (currentFilters.search) {
-        const haystack = [
-            task.title,
-            task.id,
-            task.page,
-            task.category,
-            task.priority,
-            task.fix,
-            task.code_snippet
-        ].filter(Boolean).join(' ').toLowerCase();
-        if (!haystack.includes(currentFilters.search)) return false;
+        if (!getTaskSearchHaystack(task).includes(currentFilters.search)) return false;
     }
     return true;
 }
 
 // Check if a task is inside a future folder
 function taskIsInFutureFolder(task) {
+    // Only hide tasks that are PHYSICALLY in the Future column.
+    // Tasks that have a folder_id but were moved to problems/assignment/talking
+    // should remain visible in their current column.
+    if (!task.column || task.column !== 'future') return false;
     const futureColumn = boardData && boardData.columns.find(c => c.id === 'future');
     if (!futureColumn || !futureColumn.folders) return false;
     const folderId = task.future_folder_id || task.folder_id;
@@ -1973,7 +2114,7 @@ function populateFutureFolderSelector() {
     select.innerHTML = '<option value="">Select a folder...</option>';
     if (!boardData) return;
     const futureColumn = boardData.columns.find(c => c.id === 'future');
-    const folders = futureColumn ? (futureColumn.folders || []) : [];
+    const folders = futureColumn ? (futureColumn.folders || []).slice().sort((a, b) => (a.name || '').localeCompare(b.name || '')) : [];
     folders.forEach(folder => {
         select.innerHTML += `<option value="${folder.id}">${folder.name} ${folder.folder_class ? '(' + folder.folder_class + ')' : ''}</option>`;
     });
@@ -2045,14 +2186,14 @@ function addLinkRow(existingLink = null) {
             return numB - numA; // descending TXXX
         });
     const taskOptions = allTasks.map(t =>
-        `<option value="${t.id}">${t.id}: ${t.title.substring(0, 40)}</option>`
+        `<option value="${t.id}">${t.id}: ${(t.title || '').substring(0, 40)}</option>`
     ).join('');
 
     row.innerHTML = `
         <div class="task-search-container" style="flex: 2; display: flex; flex-direction: column; gap: 0.25rem;">
             <select class="link-task-select" style="width: 100%; padding: 0.4rem; border: 1px solid var(--border-color); border-radius: 4px; background: var(--card-bg); color: var(--text-primary);"
                 onchange="this.nextElementSibling.textContent = this.value ? 'Selected: ' + this.value : 'No task selected'">
-                <option value="">— Select a task —</option>
+                <option value="">- Select a task -</option>
                 ${taskOptions}
             </select>
             <div class="selected-task-display" style="font-size: 0.85rem; color: var(--text-secondary);">
@@ -2120,7 +2261,7 @@ function closeAddTaskModal() {
     document.querySelector('#add-task-modal .modal-title').textContent = 'Add New Task';
     const formActions = document.querySelector('#add-task-modal .form-actions');
     formActions.innerHTML = `
-        <button class="btn btn-secondary" onclick="closeAddTaskModal()">Cancel</button>
+        <button class="btn btn-secondary" onclick="closeAddTaskModal()">{{ t('Cancel') }}</button>
         <button class="btn" onclick="addTask()">Add Task</button>
     `;
 }
@@ -2161,14 +2302,14 @@ async function addTask() {
                 column: column
             })
         });
-        
+
         if (!response.ok) {
             const errorData = await response.json();
             console.error('[addTask] Error:', errorData);
             alert('Error creating task: ' + (errorData.error || 'Unknown error'));
             return;
         }
-        
+
         const result = await response.json();
         console.log('[addTask] Task created:', result);
         closeAddTaskModal();
@@ -2188,11 +2329,67 @@ async function addTask() {
     }
 }
 
+function renderFutureFolderOnSolveSection(task, relatedOriginalTask = null) {
+    const futureColumn = boardData.columns.find(c => c.id === 'future');
+    const folders = futureColumn ? (futureColumn.folders || []).slice().sort((a, b) => (a.name || '').localeCompare(b.name || '')) : [];
+    const folderOptions = folders.map(f => `<option value="${f.id}">${f.name}</option>`).join('');
+
+    // Prefill from the related original task if the current task has no folder of its own.
+    let prefillFolderId = task.future_folder_id || task.folder_id || null;
+    let prefillSourceText = '';
+    if (!prefillFolderId && relatedOriginalTask) {
+        prefillFolderId = relatedOriginalTask.future_folder_id || relatedOriginalTask.folder_id || null;
+        if (prefillFolderId) {
+            prefillSourceText = `<p style="font-size: 0.85rem; color: var(--text-secondary); margin: 0.25rem 0 0.5rem 0;">📋 Prefilled from ${relatedOriginalTask.id}${relatedOriginalTask.column ? ` (${relatedOriginalTask.column})` : ''}. Choose where this task will be stored after it is marked solved.</p>`;
+        }
+    }
+    if (!prefillSourceText) {
+        prefillSourceText = `<p style="font-size: 0.85rem; color: var(--text-secondary); margin: 0.25rem 0 0.5rem 0;">Choose where this task will be stored after it is marked solved.</p>`;
+    }
+
+    const hasFolder = !!(prefillFolderId);
+    return `
+        <div class="form-group" style="margin-top: 1rem; padding: 1rem; background: rgba(46, 204, 113, 0.1); border-radius: 8px; border-left: 3px solid #2ecc71;">
+            <label style="color: var(--text-primary);">📁 Future Folder (when solved)</label>
+            ${prefillSourceText}
+            <select id="solve-future-folder-action-${task.id}" onchange="toggleSolveFutureFolderFields('${task.id}')" style="width: 100%; padding: 0.5rem; border: 1px solid var(--border-color); border-radius: 4px; background: var(--card-bg); color: var(--text-primary); margin-bottom: 0.5rem;">
+                <option value="none">None (leave in Solved column)</option>
+                <option value="existing">Select existing Future folder</option>
+                <option value="create">➕ Create new Future folder</option>
+            </select>
+            <div id="solve-future-folder-existing-group-${task.id}" style="display: ${hasFolder ? 'block' : 'none'}; margin-bottom: 0.5rem;">
+                <select id="solve-future-folder-existing-${task.id}" style="width: 100%; padding: 0.5rem; border: 1px solid var(--border-color); border-radius: 4px; background: var(--card-bg); color: var(--text-primary);">
+                    <option value="">Select a folder...</option>
+                    ${folderOptions}
+                </select>
+            </div>
+            <div id="solve-future-folder-create-group-${task.id}" style="display: none;">
+                <input type="text" id="solve-future-folder-name-${task.id}" placeholder="New folder name" style="width: 100%; padding: 0.5rem; border: 1px solid var(--border-color); border-radius: 4px; background: var(--card-bg); color: var(--text-primary); margin-bottom: 0.5rem;">
+                <input type="text" id="solve-future-folder-description-${task.id}" placeholder="Folder description (optional)" style="width: 100%; padding: 0.5rem; border: 1px solid var(--border-color); border-radius: 4px; background: var(--card-bg); color: var(--text-primary); margin-bottom: 0.5rem;">
+                <select id="solve-future-folder-class-${task.id}" style="width: 100%; padding: 0.5rem; border: 1px solid var(--border-color); border-radius: 4px; background: var(--card-bg); color: var(--text-primary);">
+                    <option value="Structure">🏗️ Structure</option>
+                    <option value="Feature" selected>⚡ Feature</option>
+                    <option value="Learning">📚 Learning</option>
+                </select>
+            </div>
+        </div>
+    `;
+}
+
+function setFutureFolderSolvePrefill(taskId, prefillFolderId) {
+    const action = document.getElementById(`solve-future-folder-action-${taskId}`);
+    const existingGroup = document.getElementById(`solve-future-folder-existing-group-${taskId}`);
+    const select = document.getElementById(`solve-future-folder-existing-${taskId}`);
+    if (action) action.value = prefillFolderId ? 'existing' : 'none';
+    if (existingGroup) existingGroup.style.display = prefillFolderId ? 'block' : 'none';
+    if (select) select.value = prefillFolderId;
+}
+
 async function showTaskDetail(taskId) {
     const task = findTask(taskId);
     if (!task) return;
 
-    document.getElementById('detail-title').textContent = task.title;
+    document.getElementById('detail-title').textContent = task.title || '';
 
     // Format dates nicely
     const formatDate = (dateStr) => {
@@ -2231,6 +2428,15 @@ async function showTaskDetail(taskId) {
             <label>Priority</label>
             <p><span class="priority-badge priority-${(task.priority || 'medium').toLowerCase()}">${task.priority || 'Medium'}</span></p>
         </div>
+        ${task.code_snippet ? `
+        <div class="form-group" style="padding: 0;">
+            <label style="display: flex; justify-content: space-between; align-items: center;">
+                <span>🧑‍💻 Code Snippet</span>
+                <span style="font-size: 0.8rem; color: var(--text-secondary); text-transform: uppercase;">${task.language || 'text'}</span>
+            </label>
+            <pre style="background: #1e1e2e; color: #e0e0e0; padding: 1rem; border-radius: 8px; overflow-x: auto; font-family: monospace, monospace; font-size: 0.85rem; margin: 0;"><code>${escapeHtml(task.code_snippet)}</code></pre>
+        </div>
+        ` : ''}
     `;
 
     // Handle both single link (backward compat) and multiple links
@@ -2249,10 +2455,15 @@ async function showTaskDetail(taskId) {
             const relType = link.relationship_type;
             const relIcon = getRelationshipIcon(relType);
             const relLabel = getRelationshipLabel(relType);
+            const linkedFolderName = getTaskFutureFolderName(link.task_id);
+            const folderButton = linkedFolderName
+                ? `<button class="btn btn-small" onclick="openLinkedTaskFutureFolder('${link.task_id}')" style="margin-left: 0.5rem; font-size: 0.75rem;">📂 Load folder: ${escapeHtml(linkedFolderName)}</button>`
+                : '';
             content += `
                 <div style="background: rgba(52, 152, 219, 0.15); padding: 0.75rem; border-radius: 8px; margin-bottom: 0.5rem; border-left: 3px solid #3498db;">
                     <span style="font-weight: 600;">${relIcon} ${relLabel}</span> &rarr;
                     <a href="#" onclick="showTaskDetail('${link.task_id}'); return false;" style="color: #3498db;">${link.task_id}</a>
+                    ${folderButton}
                 </div>
             `;
         });
@@ -2283,12 +2494,22 @@ async function showTaskDetail(taskId) {
         content += `<div class="form-group"><label>📨 Linked From (Incoming) - ${incomingLinks.length} task(s)</label>`;
         incomingLinks.forEach(link => {
             const relType = link.relationship_type;
-            const relIcon = getRelationshipIcon(relType);
-            const relLabel = getRelationshipLabel(relType);
+            // Flip the relationship label for incoming links so it reads from the current task's perspective
+            const displayRelType = relType === 'blocked_by' ? 'blocks' : (relType === 'blocks' ? 'blocked_by' : relType);
+            const relIcon = getRelationshipIcon(displayRelType);
+            const relLabel = getRelationshipLabel(displayRelType);
+            const isBlockedBy = displayRelType === 'blocked_by';
+            const blockedLabel = isBlockedBy ? `<span style="font-size: 0.7rem; background: rgba(231, 76, 60, 0.2); color: #e74c3c; padding: 0.15rem 0.4rem; border-radius: 3px; margin-left: 0.5rem; font-weight: 600;">🚫 BLOCKED</span>` : '';
+            const boxStyle = isBlockedBy ? 'background: rgba(231, 76, 60, 0.12); border-left: 3px solid #e74c3c;' : 'background: rgba(155, 89, 182, 0.15); border-left: 3px solid #9b59b6;';
+            const linkedFolderName = getTaskFutureFolderName(link.task_id);
+            const folderButton = linkedFolderName
+                ? `<button class="btn btn-small" onclick="openLinkedTaskFutureFolder('${link.task_id}')" style="margin-left: 0.5rem; font-size: 0.75rem;">📂 Load folder: ${escapeHtml(linkedFolderName)}</button>`
+                : '';
             content += `
-                <div style="background: rgba(155, 89, 182, 0.15); padding: 0.75rem; border-radius: 8px; margin-bottom: 0.5rem; border-left: 3px solid #9b59b6;">
-                    <span style="font-weight: 600;">${relIcon} ${relLabel}</span> &larr;
-                    <a href="#" onclick="showTaskDetail('${link.task_id}'); return false;" style="color: #9b59b6;">${link.task_id}</a>
+                <div style="${boxStyle} padding: 0.75rem; border-radius: 8px; margin-bottom: 0.5rem;">
+                    <span style="font-weight: 600;">${relIcon} ${relLabel}</span>${blockedLabel} &larr;
+                    <a href="#" onclick="showTaskDetail('${link.task_id}'); return false;" style="color: ${isBlockedBy ? '#e74c3c' : '#9b59b6'};">${link.task_id}</a>
+                    ${folderButton}
                 </div>
             `;
         });
@@ -2299,6 +2520,19 @@ async function showTaskDetail(taskId) {
     if (task.reopen_history && task.reopen_history.length > 0) {
         content += `<div class="form-group"><label>🔄 History (Chronological)</label><div style="border-left: 2px solid var(--border-color); padding-left: 1rem;">`;
 
+        // Show the current/overall fix at the top if available
+        if (task.fix) {
+            content += `
+                <div style="position: relative; margin-bottom: 1rem;">
+                    <div style="position: absolute; left: -1.35rem; top: 0; width: 10px; height: 10px; border-radius: 50%; background: #27ae60;"></div>
+                    <div style="background: rgba(39, 174, 96, 0.15); padding: 0.75rem; border-radius: 4px; border-left: 3px solid #27ae60;">
+                        <strong>✓ Current Fix</strong><br>
+                        <span style="color: var(--text-primary);">${task.fix}</span>
+                    </div>
+                </div>
+            `;
+        }
+
         // Show initial completion if any
         if (task.reopen_history[0].previous_completed_at) {
             content += `
@@ -2306,7 +2540,7 @@ async function showTaskDetail(taskId) {
                     <div style="position: absolute; left: -1.35rem; top: 0; width: 10px; height: 10px; border-radius: 50%; background: #27ae60;"></div>
                     <div style="background: rgba(39, 174, 96, 0.15); padding: 0.75rem; border-radius: 4px; border-left: 3px solid #27ae60;">
                         <strong>✓ Completed</strong> - ${new Date(task.reopen_history[0].previous_completed_at).toLocaleString()}<br>
-                        <span style="color: var(--text-primary);">${task.fix || 'No fix recorded'}</span>
+                        <span style="color: var(--text-primary);">No detailed fix recorded</span>
                     </div>
                 </div>
             `;
@@ -2330,21 +2564,18 @@ async function showTaskDetail(taskId) {
                 </div>
             `;
 
-            // Show fix that was applied after this reopen (from next entry or current fix)
-            const nextFix = (idx < task.reopen_history.length - 1)
-                ? task.reopen_history[idx + 1].previous_completed_at
-                : task.completed_at;
-            if (nextFix && task.fix) {
-                content += `
-                    <div style="position: relative; margin-bottom: 1rem;">
-                        <div style="position: absolute; left: -1.35rem; top: 0; width: 10px; height: 10px; border-radius: 50%; background: #27ae60;"></div>
-                        <div style="background: rgba(39, 174, 96, 0.15); padding: 0.75rem; border-radius: 4px; border-left: 3px solid #27ae60;">
-                            <strong>✓ Fix Applied</strong><br>
-                            <span style="color: var(--text-primary);">${task.fix}</span>
-                        </div>
+            // Show the fix that resolved this reopen cycle (stored per-reopen)
+            const reopenFix = entry.fix || 'No fix recorded';
+            content += `
+                <div style="position: relative; margin-bottom: 1rem;">
+                    <div style="position: absolute; left: -1.35rem; top: 0; width: 10px; height: 10px; border-radius: 50%; background: #27ae60;"></div>
+                    <div style="background: rgba(39, 174, 96, 0.15); padding: 0.75rem; border-radius: 4px; border-left: 3px solid #27ae60;">
+                        <strong>✓ Fix Applied</strong><br>
+                        <span style="color: var(--text-primary);">${reopenFix}</span>
                     </div>
-                `;
-            }
+                </div>
+            `;
+
         });
 
         content += `</div></div>`;
@@ -2365,7 +2596,7 @@ async function showTaskDetail(taskId) {
         </div>
     `;
 
-    if (task.fix) {
+    if (task.fix && (!task.reopen_history || task.reopen_history.length === 0)) {
         content += `
             <div class="form-group" style="background: rgba(39, 174, 96, 0.15); padding: 1rem; border-radius: 8px; border-left: 3px solid #27ae60;">
                 <label style="color: var(--text-primary);">✓ Fix</label>
@@ -2390,16 +2621,61 @@ async function showTaskDetail(taskId) {
     if (task.column === 'solved' || task.column === 'talking') {
         // Get Future folders for the dropdown
         const futureColumn = boardData.columns.find(c => c.id === 'future');
-        const folders = futureColumn ? (futureColumn.folders || []) : [];
+        const folders = futureColumn ? (futureColumn.folders || []).slice().sort((a, b) => (a.name || '').localeCompare(b.name || '')) : [];
         const folderOptions = folders.map(f => `<option value="${f.id}">${f.name}</option>`).join('');
-        
+
+        // Build linked task options for the reopen flow
+        let linkedOptions = '<option value="">None</option>';
+        if (boardData) {
+            boardData.columns.forEach(col => {
+                col.tasks.forEach(t => {
+                    if (t.id !== task.id) {
+                        linkedOptions += `<option value="${t.id}">${t.id}: ${(t.title || '').substring(0, 30)}</option>`;
+                    }
+                });
+            });
+        }
+
         content += `
             <div class="form-group" style="margin-top: 1rem;">
                 <label style="color: var(--text-primary);">Re-open Reason</label>
                 <textarea id="reopen-update-${task.id}" placeholder="Why is this task being re-opened?" autocomplete="off" style="width: 100%; min-height: 80px;"></textarea>
             </div>
+            <div class="form-group" style="margin-top: 1rem;">
+                <label>🧑‍💻 Code Snippet (optional)</label>
+                <textarea id="reopen-code-snippet-${task.id}" placeholder="Paste code related to the regression..." autocomplete="off" style="width: 100%; min-height: 120px; font-family: monospace, monospace;"></textarea>
+            </div>
+            <div class="form-group">
+                <label>Language (optional)</label>
+                <select id="reopen-language-${task.id}" style="width: 100%; padding: 0.4rem; border: 1px solid var(--border-color); border-radius: 4px; background: var(--card-bg); color: var(--text-primary);">
+                    <option value="">Plain text</option>
+                    <option value="python">Python</option>
+                    <option value="javascript">JavaScript</option>
+                    <option value="html">HTML</option>
+                    <option value="css">CSS</option>
+                    <option value="sql">SQL</option>
+                    <option value="java">Java</option>
+                    <option value="cpp">C++</option>
+                    <option value="json">JSON</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>🔗 Link to Existing Task (optional)</label>
+                <select id="reopen-linked-task-${task.id}">${linkedOptions}</select>
+            </div>
+            <div class="form-group">
+                <label>Relationship Type (optional)</label>
+                <select id="reopen-relationship-${task.id}">
+                    <option value="">Select relationship...</option>
+                    <option value="linked">🔗 Linked</option>
+                    <option value="caused_by">❌ Caused By</option>
+                    <option value="similar_to">🔄 Similar To</option>
+                    <option value="blocks">🚫 Blocks</option>
+                    <option value="blocked_by">⛔ Blocked By</option>
+                </select>
+            </div>
         `;
-        
+
         // Add Move to Future Folder section for Solved column tasks
         if (task.column === 'solved' && folderOptions) {
             content += `
@@ -2416,7 +2692,30 @@ async function showTaskDetail(taskId) {
                 </div>
             `;
         }
-        
+
+        // For solved/talking tasks, use any linked original task as the prefill source.
+        let relatedOriginalTask = null;
+        if (task.column === 'talking' || task.column === 'solved') {
+            const allLinks = [];
+            if (task.linked_tasks && task.linked_tasks.length > 0) {
+                task.linked_tasks.forEach(l => allLinks.push(l));
+            } else if (task.linked_task_id) {
+                allLinks.push({ task_id: task.linked_task_id, relationship_type: task.relationship_type });
+            }
+            for (const link of allLinks) {
+                if (!['linked', 'similar_to'].includes(link.relationship_type || 'linked')) continue;
+                const linkedTask = findTask(link.task_id);
+                if (linkedTask && (linkedTask.future_folder_id || linkedTask.folder_id)) {
+                    relatedOriginalTask = linkedTask;
+                    break;
+                }
+            }
+        }
+
+        if (task.column === 'talking') {
+            content += renderFutureFolderOnSolveSection(task, relatedOriginalTask);
+        }
+
         content += `
             <div class="form-group" style="margin-top: 1rem;">
                 <label class="special-checkbox-label">
@@ -2426,10 +2725,12 @@ async function showTaskDetail(taskId) {
             </div>
             <div class="form-actions">
                 <button class="btn" onclick="reopenTask('${task.id}')" style="background: #e74c3c; color: white;">🔄 Re-open</button>
-                <button class="btn" onclick="markSolved('${task.id}')" style="background: #27ae60; color: white; margin-left: 0.5rem;">✅ Mark Solved</button>
+                <button class="btn" onclick="markSolvedWithFolder('${task.id}')" style="background: #27ae60; color: white; margin-left: 0.5rem;">✅ Mark Solved</button>
             </div>
         `;
     } else {
+        content += renderFutureFolderOnSolveSection(task);
+
         content += `
             <div class="form-group">
                 <label class="special-checkbox-label">
@@ -2440,13 +2741,19 @@ async function showTaskDetail(taskId) {
             <div class="form-actions">
                 <button class="btn btn-secondary" onclick="deleteTask('${task.id}')">🗑️ Delete</button>
                 <button class="btn" onclick="editTask('${task.id}')" style="background: #3498db; color: white;">✏️ Edit Task</button>
-                <button class="btn" onclick="markSolved('${task.id}')" style="background: #27ae60; color: white;">✅ Mark Solved</button>
+                <button class="btn" onclick="markSolvedWithFolder('${task.id}')" style="background: #27ae60; color: white;">✅ Mark Solved</button>
             </div>
         `;
     }
 
     document.getElementById('detail-content').innerHTML = content;
     document.getElementById('task-detail-modal').classList.add('active');
+
+    // Prefill the future-folder controls for linked/similar tasks after the modal DOM is inserted.
+    const prefillTargetId = task.future_folder_id || task.folder_id || null;
+    if (prefillTargetId) {
+        setFutureFolderSolvePrefill(task.id, prefillTargetId);
+    }
 
     // Clear the note input field to prevent accidental submissions (autofill/extension issue)
     const noteInput = document.getElementById(`task-note-input-${task.id}`);
@@ -2489,32 +2796,32 @@ async function loadTaskNotes(taskId) {
 async function addTaskNote(taskId) {
     const input = document.getElementById(`task-note-input-${taskId}`);
     const text = input.value.trim();
-    
+
     // Validation: require confirmation for certain patterns that might be accidental
     if (!text) return;
-    
+
     // Block notes containing the problematic phrase (user reports this is auto-appearing)
     if (text.toLowerCase().includes('everything has disappered from the dropdown list')) {
         alert('This note text appears to be auto-generated or accidental. Please type a meaningful note or cancel.');
         input.value = '';
         return;
     }
-    
+
     // Confirmation dialog before adding note
     if (!confirm('Are you sure you want to add this note?')) {
         return;
     }
-    
+
     // Clear input immediately to prevent double-submission
     input.value = '';
-    
+
     try {
         const response = await fetch('/api/project-notes', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ task_id: taskId, text })
         });
-        
+
         if (!response.ok) {
             const errorData = await response.json();
             console.error('Error adding note:', errorData);
@@ -2523,7 +2830,7 @@ async function addTaskNote(taskId) {
             input.value = text;
             return;
         }
-        
+
         loadTaskNotes(taskId);
     } catch (error) {
         console.error('Error adding note:', error);
@@ -2541,39 +2848,115 @@ function findTask(taskId) {
     return null;
 }
 
+function getTaskFutureFolderName(taskId) {
+    const task = findTask(taskId);
+    if (!task) return null;
+    const folderId = task.future_folder_id || task.folder_id;
+    if (!folderId) return null;
+    const futureCol = boardData.columns.find(c => c.id === 'future');
+    if (!futureCol || !futureCol.folders) return null;
+    const folder = futureCol.folders.find(f => f.id === folderId);
+    return folder ? folder.name : null;
+}
+
+function openLinkedTaskFutureFolder(taskId) {
+    const folderName = getTaskFutureFolderName(taskId);
+    if (!folderName) {
+        alert('Linked task is not assigned to a Future folder.');
+        return;
+    }
+    filterFutureFolderByName(folderName);
+    // Optionally close the detail modal so the board is visible
+    closeTaskDetailModal();
+}
+
 async function markSolved(taskId) {
+    await markSolvedWithFolder(taskId);
+}
+
+async function markSolvedWithFolder(taskId) {
     try {
         const task = findTask(taskId);
-        const similarToIds = getAllSimilarToTaskIds(task);
-        const hasSimilarToRelationship = similarToIds.length > 0;
+        const actionSelect = document.getElementById(`solve-future-folder-action-${taskId}`);
+        const existingSelect = document.getElementById(`solve-future-folder-existing-${taskId}`);
+        const nameInput = document.getElementById(`solve-future-folder-name-${taskId}`);
+        const descInput = document.getElementById(`solve-future-folder-description-${taskId}`);
+        const classSelect = document.getElementById(`solve-future-folder-class-${taskId}`);
 
+        let folderId = null;
+
+        if (actionSelect) {
+            const action = actionSelect.value;
+            if (action === 'existing') {
+                folderId = existingSelect ? existingSelect.value : null;
+                if (!folderId) {
+                    alert('Please select a Future folder, or choose "None".');
+                    return;
+                }
+            } else if (action === 'create') {
+                const name = nameInput ? nameInput.value.trim() : '';
+                if (!name) {
+                    alert('Please enter a name for the new Future folder.');
+                    return;
+                }
+                const response = await fetch('/api/project-board/folder', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        name,
+                        description: descInput ? descInput.value.trim() : '',
+                        folder_class: classSelect ? classSelect.value : 'Feature',
+                        relationship_status: 'planned'
+                    })
+                });
+                const result = await response.json();
+                if (!response.ok) throw new Error(result.error || 'Failed to create folder');
+                folderId = result.folder.id;
+                await loadBoard();
+            }
+        }
+
+        // Capture the fix text entered in the detail modal so we can store it per-reopen
+        const fixInput = document.getElementById('task-fix');
+        const moveFix = fixInput ? fixInput.value.trim() : (task.fix || '');
+
+        // Move to solved
         await fetch('/api/project-board/move', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ task_id: taskId, to_column: 'solved' })
+            body: JSON.stringify({ task_id: taskId, to_column: 'solved', fix: moveFix })
         });
 
-        // Move to pre-selected future folder if one exists and not already in future column.
-        const targetFolderId = task.future_folder_id || task.folder_id;
-        if (targetFolderId && task.column !== 'future') {
+        // If a folder was selected/created, move the solved task into the Future box
+        if (folderId) {
             await fetch('/api/project-board/task-folder', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ task_id: taskId, folder_id: targetFolderId, mark_as_future: true })
+                body: JSON.stringify({ task_id: taskId, folder_id: folderId, mark_as_future: true })
             });
         }
 
-        // For similar_to relationships, immediately try to move both solved tasks
-        // into the shared Future folder.
-        if (hasSimilarToRelationship) {
+        // For similar_to relationships, keep the existing auto-move behavior for the pair.
+        const similarToIds = getAllSimilarToTaskIds(task);
+        if (similarToIds.length > 0) {
             await checkAndMoveSimilarTasksToFuture(taskId);
         }
 
         closeTaskDetailModal();
         await loadBoard();
+        alert(folderId ? `✅ Task ${taskId} marked solved and stored in the Future folder.` : `✅ Task ${taskId} marked solved.`);
     } catch (error) {
         console.error('Error marking solved:', error);
+        alert('Error marking solved: ' + error.message);
     }
+}
+
+function toggleSolveFutureFolderFields(taskId) {
+    const action = document.getElementById(`solve-future-folder-action-${taskId}`)?.value || 'none';
+    const existingGroup = document.getElementById(`solve-future-folder-existing-group-${taskId}`);
+    const createGroup = document.getElementById(`solve-future-folder-create-group-${taskId}`);
+    if (existingGroup) existingGroup.style.display = action === 'existing' ? 'block' : 'none';
+    if (createGroup) createGroup.style.display = action === 'create' ? 'block' : 'none';
 }
 
 // Collect all task IDs connected to this task by a similar_to relationship
@@ -2681,31 +3064,31 @@ async function moveTaskToFutureFolder(taskId) {
         alert('Error: Folder select not found');
         return;
     }
-    
+
     const folderId = folderSelect.value;
     if (!folderId) {
         alert('Please select a Future folder');
         return;
     }
-    
+
     try {
         // Find the folder name for the success message
         const futureColumn = boardData.columns.find(c => c.id === 'future');
         const folder = futureColumn ? futureColumn.folders.find(f => f.id === folderId) : null;
         const folderName = folder ? folder.name : 'selected folder';
-        
+
         // Move task to Future folder
         const response = await fetch('/api/project-board/task-folder', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ task_id: taskId, folder_id: folderId })
         });
-        
+
         if (!response.ok) {
             const errorData = await response.json();
             throw new Error(errorData.error || 'Failed to move task');
         }
-        
+
         closeTaskDetailModal();
         await loadBoard();
         alert(`✅ Task ${taskId} moved to Future folder "${folderName}"`);
@@ -2719,9 +3102,9 @@ async function moveTaskToFutureFolder(taskId) {
 async function toggleTaskSpecial(taskId) {
     const checkbox = document.getElementById(`task-special-${taskId}`);
     if (!checkbox) return;
-    
+
     const isSpecial = checkbox.checked;
-    
+
     try {
         await fetch('/api/project-board/task-special', {
             method: 'POST',
@@ -2750,13 +3133,37 @@ async function reopenTask(taskId) {
         return;
     }
 
+    const links = [];
+    const linkedSelect = document.getElementById(`reopen-linked-task-${taskId}`);
+    const relSelect = document.getElementById(`reopen-relationship-${taskId}`);
+    if (linkedSelect && linkedSelect.value && relSelect && relSelect.value) {
+        links.push({ task_id: linkedSelect.value, relationship_type: relSelect.value });
+    }
+
+    const codeSnippet = document.getElementById(`reopen-code-snippet-${taskId}`)?.value.trim() || '';
+    const language = document.getElementById(`reopen-language-${taskId}`)?.value || '';
+
     console.log('[Reopen] Sending request with update:', updateText);
 
     try {
+        const body = {
+            task_id: taskId,
+            to_column: 'assignment',
+            update: updateText,
+            code_snippet: codeSnippet,
+            language: language
+        };
+        if (links.length === 1) {
+            body.linked_task_id = links[0].task_id;
+            body.relationship_type = links[0].relationship_type;
+        } else if (links.length > 1) {
+            body.linked_tasks = links;
+        }
+
         const response = await fetch('/api/project-board/reopen', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ task_id: taskId, to_column: 'assignment', update: updateText })
+            body: JSON.stringify(body)
         });
 
         if (!response.ok) {
@@ -2849,7 +3256,7 @@ function editTask(taskId) {
     // Change buttons for edit mode
     const formActions = document.querySelector('#add-task-modal .form-actions');
     formActions.innerHTML = `
-        <button class="btn btn-secondary" onclick="closeAddTaskModal()">Cancel</button>
+        <button class="btn btn-secondary" onclick="closeAddTaskModal()">{{ t('Cancel') }}</button>
         <button class="btn btn-danger" onclick="deleteTask('${taskId}')" style="background: #e74c3c;">🗑️ Delete</button>
         <button class="btn" onclick="saveEditedTask()" style="background: #3498db;">💾 Save Changes</button>
     `;
@@ -2918,7 +3325,7 @@ function showReopenModal(taskId, toColumn) {
         boardData.columns.forEach(col => {
             col.tasks.forEach(t => {
                 if (t.id !== taskId) {
-                    linkedOptions += `<option value="${t.id}">${t.id}: ${t.title.substring(0, 30)}</option>`;
+                    linkedOptions += `<option value="${t.id}">${t.id}: ${(t.title || '').substring(0, 30)}</option>`;
                 }
             });
         });
@@ -2968,7 +3375,7 @@ function showReopenModal(taskId, toColumn) {
             </select>
         </div>
         <div class="form-actions">
-            <button class="btn btn-secondary" onclick="closeReopenModal()">Cancel</button>
+            <button class="btn btn-secondary" onclick="closeReopenModal()">{{ t('Cancel') }}</button>
             <button class="btn" onclick="confirmReopen()" style="background: #e74c3c; color: white;">🔄 Re-open Task</button>
         </div>
     `;
@@ -3093,6 +3500,20 @@ function closeReviewChoiceModal() {
     window.reviewChoiceData = null;
 }
 
+// Pre-fill the add-task modal's Future Folder selector based on a source task's folder.
+function prefillFutureFolderFromTask(sourceTask) {
+    if (!sourceTask) return;
+    const sourceFolderId = sourceTask.future_folder_id || sourceTask.folder_id || null;
+    if (!sourceFolderId) return;
+
+    populateFutureFolderSelector();
+    const actionSelect = document.getElementById('task-future-folder-action');
+    const existingSelect = document.getElementById('task-future-folder-existing');
+    if (actionSelect) actionSelect.value = 'existing';
+    if (existingSelect) existingSelect.value = sourceFolderId;
+    toggleFutureFolderFields();
+}
+
 async function spawnTaskFromFuture(futureTaskId, toColumn) {
     const futureTask = findTask(futureTaskId);
     if (!futureTask) {
@@ -3113,11 +3534,14 @@ async function spawnTaskFromFuture(futureTaskId, toColumn) {
     linksContainer.innerHTML = '';
     addLinkRow({ task_id: futureTaskId, relationship_type: 'linked' });
 
+    // Pre-fill Future Folder from the source future task
+    prefillFutureFolderFromTask(futureTask);
+
     // Switch modal into spawn mode.
     document.querySelector('#add-task-modal .modal-title').textContent = '📝 Spawn Task from Future';
     const formActions = document.querySelector('#add-task-modal .form-actions');
     formActions.innerHTML = `
-        <button class="btn btn-secondary" onclick="closeAddTaskModal()">Cancel</button>
+        <button class="btn btn-secondary" onclick="closeAddTaskModal()">{{ t('Cancel') }}</button>
         <button class="btn" onclick="saveSpawnedTaskFromFuture('${futureTaskId}')" style="background: #3498db;">💾 Create Linked Task</button>
     `;
 
@@ -3192,7 +3616,7 @@ async function spawnNewTaskAndSolveCurrent() {
 
     // Open the add task modal with pre-filled data
     showAddTaskModal(toColumn);
-    document.getElementById('task-title').value = `Related to: ${originalTask.title}`;
+    document.getElementById('task-title').value = `Related to: ${originalTask.title || ''}`;
     document.getElementById('task-fix').value = '';
 
     document.getElementById('task-page').value = originalTask.page || '';
@@ -3203,16 +3627,8 @@ async function spawnNewTaskAndSolveCurrent() {
     const hasSimilarToRelationship = getAllSimilarToTaskIds(originalTask).length > 0;
     const defaultRel = hasSimilarToRelationship ? 'similar_to' : 'linked';
 
-    // Pre-select the original task's future folder if it already has one
-    populateFutureFolderSelector();
-    const preselectedFolderId = originalTask.future_folder_id || originalTask.folder_id || null;
-    if (preselectedFolderId) {
-        const actionSelect = document.getElementById('task-future-folder-action');
-        const existingSelect = document.getElementById('task-future-folder-existing');
-        if (actionSelect) actionSelect.value = 'existing';
-        if (existingSelect) existingSelect.value = preselectedFolderId;
-        toggleFutureFolderFields();
-    }
+    // Pre-fill Future Folder from the source task if it has one
+    prefillFutureFolderFromTask(originalTask);
 
     // Clear links container and add default link
     const linksContainer = document.getElementById('task-links-container');
@@ -3223,7 +3639,7 @@ async function spawnNewTaskAndSolveCurrent() {
     document.querySelector('#add-task-modal .modal-title').textContent = '📝 Spawn New Task (Linked)';
     const formActions = document.querySelector('#add-task-modal .form-actions');
     formActions.innerHTML = `
-        <button class="btn btn-secondary" onclick="closeAddTaskModal();">Cancel</button>
+        <button class="btn btn-secondary" onclick="closeAddTaskModal();">{{ t('Cancel') }}</button>
         <button class="btn" onclick="promptForSimilarToFolder('${taskId}')" style="background: #3498db;">💾 Create Task & Mark Original Solved</button>
     `;
 
@@ -3360,7 +3776,7 @@ async function promptForSimilarToFolder(originalTaskId) {
 
     const content = `
         <div class="form-group">
-            <label>🔄 Similar To — Future Folder</label>
+            <label>🔄 Similar To - Future Folder</label>
             <p style="margin: 0 0 0.5rem 0; font-size: 0.9rem; color: var(--text-secondary);">
                 Choose a Future folder where both solved tasks will be stored.
             </p>
@@ -3386,7 +3802,7 @@ async function promptForSimilarToFolder(originalTaskId) {
             </select>
         </div>
         <div class="form-actions">
-            <button class="btn btn-secondary" onclick="closeSimilarToFolderModal()">Cancel</button>
+            <button class="btn btn-secondary" onclick="closeSimilarToFolderModal()">{{ t('Cancel') }}</button>
             <button class="btn" onclick="confirmSimilarToFolder('${originalTaskId}')" style="background: #27ae60;">✅ Save Folder & Continue</button>
         </div>
     `;
@@ -3510,8 +3926,8 @@ function enableEditLastReopen(taskId, idx) {
         <div style="display: flex; flex-direction: column; gap: 0.5rem;">
             <textarea id="reopen-edit-${taskId}-${idx}" style="width: 100%; min-height: 80px; padding: 0.5rem; border: 1px solid var(--border-color); border-radius: 4px; background: var(--card-bg); color: var(--text-primary);">${escapedUpdate}</textarea>
             <div style="display: flex; gap: 0.5rem; justify-content: flex-end;">
-                <button class="btn btn-small" onclick="cancelEditLastReopen('${taskId}', ${idx})" style="font-size: 0.75rem; padding: 0.3rem 0.6rem;">Cancel</button>
-                <button class="btn btn-small" onclick="saveEditLastReopen('${taskId}', ${idx})" style="font-size: 0.75rem; padding: 0.3rem 0.6rem; background: #27ae60; color: white; border: none;">Save</button>
+                <button class="btn btn-small" onclick="cancelEditLastReopen('${taskId}', ${idx})" style="font-size: 0.75rem; padding: 0.3rem 0.6rem;">{{ t('Cancel') }}</button>
+                <button class="btn btn-small" onclick="saveEditLastReopen('${taskId}', ${idx})" style="font-size: 0.75rem; padding: 0.3rem 0.6rem; background: #27ae60; color: white; border: none;">{{ t('Save') }}</button>
             </div>
         </div>
     `;
@@ -3588,7 +4004,7 @@ async function getOrCreateSimilarToFolder(originalTask) {
     }
 
     const folderName = `Similar Tasks: ${originalTask.id}`;
-    const folderDesc = `Future folder for tasks similar to ${originalTask.id}: "${originalTask.title.substring(0, 50)}..."`;
+    const folderDesc = `Future folder for tasks similar to ${originalTask.id}: "${(originalTask.title || '').substring(0, 50)}..."`;
 
     const response = await fetch('/api/project-board/folder', {
         method: 'POST',

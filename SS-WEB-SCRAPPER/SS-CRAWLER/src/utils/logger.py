@@ -17,9 +17,12 @@ class StructuredFormatter(logging.Formatter):
         )
     
     def format(self, record: logging.LogRecord) -> str:
-        # Add extra context if present
-        if hasattr(record, 'context'):
-            record.msg = f"[{record.context}] {record.msg}"
+        # Add extra context if present, but only once
+        if hasattr(record, 'context') and record.context:
+            # Check if context is already at the start of the message
+            context_prefix = f"[{record.context}]"
+            if not str(record.msg).startswith(context_prefix):
+                record.msg = f"{context_prefix} {record.msg}"
         return super().format(record)
 
 
@@ -67,6 +70,11 @@ def setup_logging(
     
     # Console handler
     if console:
+        # Use utf-8 for console output when possible
+        try:
+            sys.stdout.reconfigure(encoding='utf-8')
+        except Exception:
+            pass
         console_handler = logging.StreamHandler(sys.stdout)
         console_handler.setFormatter(formatter)
         logger.addHandler(console_handler)

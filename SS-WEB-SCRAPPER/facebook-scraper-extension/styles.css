@@ -1,0 +1,322 @@
+/**
+ * Facebook Marketplace PC Scraper - Styles
+ * Phase 1: Foundation
+ */
+
+/* Overlay Container */
+#fb-pc-scraper-overlay {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 350px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+  z-index: 10000;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  overflow: hidden;
+}
+
+/* Header */
+#fb-pc-scraper-overlay .scraper-header {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 12px 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: move;
+}
+
+#fb-pc-scraper-overlay .scraper-header button {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 20px;
+  cursor: pointer;
+  line-height: 1;
+  padding: 0;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  transition: background 0.2s;
+}
+
+#fb-pc-scraper-overlay .scraper-header button:hover {
+  background: rgba(255,255,255,0.2);
+}
+
+/* Content */
+#fb-pc-scraper-overlay .scraper-content {
+  padding: 16px;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+/* Loading State */
+#fb-pc-scraper-overlay .loading-state {
+  text-align: center;
+  padding: 20px;
+}
+
+#fb-pc-scraper-overlay .spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid #f3f3f3;
+  border-top: 3px solid #667eea;
+  border-radius: 50%;
+  animation: fb-scraper-spin 1s linear infinite;
+  margin: 0 auto 16px;
+}
+
+@keyframes fb-scraper-spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+#fb-pc-scraper-overlay .loading-state p {
+  color: #666;
+  margin: 0;
+}
+
+/* Error State */
+#fb-pc-scraper-overlay .error-state {
+  text-align: center;
+  padding: 20px;
+}
+
+#fb-pc-scraper-overlay .error-icon {
+  font-size: 48px;
+  margin-bottom: 12px;
+}
+
+#fb-pc-scraper-overlay .error-message {
+  color: #e74c3c;
+  margin-bottom: 16px;
+  font-size: 14px;
+}
+
+#fb-pc-scraper-overlay .retry-btn {
+  background: #667eea;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background 0.2s;
+}
+
+#fb-pc-scraper-overlay .retry-btn:hover {
+  background: #5a6fd6;
+}
+
+/* Results */
+#fb-pc-scraper-overlay .results-container {
+  padding: 8px 0;
+}
+
+/* Component List */
+#fb-pc-scraper-overlay .component-list {
+  margin-bottom: 16px;
+}
+
+#fb-pc-scraper-overlay .component-item {
+  display: flex;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid #eee;
+  gap: 8px;
+}
+
+#fb-pc-scraper-overlay .component-item:last-child {
+  border-bottom: none;
+}
+
+#fb-pc-scraper-overlay .component-name {
+  font-weight: 600;
+  color: #333;
+  min-width: 80px;
+  flex-shrink: 0;
+}
+
+#fb-pc-scraper-overlay .component-detected {
+  color: #666;
+  font-size: 13px;
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+#fb-pc-scraper-overlay .component-price {
+  color: #27ae60;
+  font-weight: 600;
+  min-width: 60px;
+  text-align: right;
+}
+
+#fb-pc-scraper-overlay .confidence {
+  color: #888;
+  font-size: 11px;
+  min-width: 35px;
+  text-align: right;
+}
+
+/* Price Summary */
+#fb-pc-scraper-overlay .price-summary {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 2px solid #667eea;
+}
+
+#fb-pc-scraper-overlay .summary-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  font-size: 14px;
+}
+
+#fb-pc-scraper-overlay .summary-row strong {
+  color: #333;
+}
+
+#fb-pc-scraper-overlay .deal-rating {
+  text-align: center;
+  padding: 10px;
+  border-radius: 6px;
+  margin-top: 12px;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+#fb-pc-scraper-overlay .deal-rating.excellent {
+  background: #d4edda;
+  color: #155724;
+}
+
+#fb-pc-scraper-overlay .deal-rating.good {
+  background: #d4edda;
+  color: #155724;
+}
+
+#fb-pc-scraper-overlay .deal-rating.fair {
+  background: #fff3cd;
+  color: #856404;
+}
+
+#fb-pc-scraper-overlay .deal-rating.high {
+  background: #ffe0b2;
+  color: #e65100;
+}
+
+#fb-pc-scraper-overlay .deal-rating.overpriced {
+  background: #f8d7da;
+  color: #721c24;
+}
+
+#fb-pc-scraper-overlay .deal-rating.unknown {
+  background: #e2e3e5;
+  color: #383d41;
+}
+
+/* Idle State */
+#fb-pc-scraper-overlay .idle-state {
+  text-align: center;
+  padding: 20px;
+  color: #888;
+}
+
+#fb-pc-scraper-overlay .idle-state p {
+  margin: 0;
+  font-size: 14px;
+}
+
+/* Analyze Button on Listings */
+.scraper-analyze-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: #667eea;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 12px;
+  z-index: 100;
+  opacity: 0;
+  transition: opacity 0.2s, background 0.2s;
+}
+
+.scraper-analyze-btn:hover {
+  background: #5a6fd6;
+}
+
+/* Dark Mode Support */
+@media (prefers-color-scheme: dark) {
+  #fb-pc-scraper-overlay {
+    background: #1a1a1a;
+    color: #e0e0e0;
+  }
+  
+  #fb-pc-scraper-overlay .component-name {
+    color: #e0e0e0;
+  }
+  
+  #fb-pc-scraper-overlay .component-detected {
+    color: #b0b0b0;
+  }
+  
+  #fb-pc-scraper-overlay .component-item {
+    border-color: #333;
+  }
+  
+  #fb-pc-scraper-overlay .price-summary {
+    border-color: #667eea;
+  }
+  
+  #fb-pc-scraper-overlay .loading-state p {
+    color: #b0b0b0;
+  }
+  
+  #fb-pc-scraper-overlay .idle-state {
+    color: #888;
+  }
+  
+  #fb-pc-scraper-overlay .spinner {
+    border-color: #333;
+    border-top-color: #667eea;
+  }
+}
+
+/* Scrollbar Styling */
+#fb-pc-scraper-overlay .scraper-content::-webkit-scrollbar {
+  width: 8px;
+}
+
+#fb-pc-scraper-overlay .scraper-content::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+#fb-pc-scraper-overlay .scraper-content::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 4px;
+}
+
+#fb-pc-scraper-overlay .scraper-content::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+/* Responsive */
+@media (max-width: 400px) {
+  #fb-pc-scraper-overlay {
+    width: calc(100% - 40px);
+    left: 20px;
+    right: 20px;
+  }
+}

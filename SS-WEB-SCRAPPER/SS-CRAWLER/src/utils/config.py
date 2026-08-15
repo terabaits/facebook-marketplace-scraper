@@ -41,7 +41,7 @@ class ScraperConfig:
 class DatabaseConfig:
     """Database connection settings."""
     host: str = "localhost"
-    port: int = 5432
+    port: int = 5433
     name: str = "ss_market"
     user: str = "crawler"
     password: str = "crawler_pass"

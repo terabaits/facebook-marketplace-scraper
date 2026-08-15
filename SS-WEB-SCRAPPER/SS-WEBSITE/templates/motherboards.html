@@ -1,0 +1,1069 @@
+{% extends "base.html" %}
+
+{% block title %}Motherboards - SS-Crawler Dashboard{% endblock %}
+
+{% block extra_css %}
+:root {
+    --listing-bg: #f8f9fa;
+    --listing-text: #212529;
+}
+@media (prefers-color-scheme: dark) {
+    :root {
+        --listing-bg: #2d2d2d;
+        --listing-text: #e0e0e0;
+    }
+}
+.listing-description {
+    background: var(--listing-bg);
+    color: var(--listing-text);
+    padding: 1rem;
+    border-radius: 8px;
+    margin-top: 0.5rem;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+/* Floating Flag Section */
+.floating-flag-section {
+    background: linear-gradient(135deg, #fff5f5 0%, #ffe0e0 100%);
+    border: 2px solid #e74c3c;
+    border-radius: 8px;
+    padding: 1rem;
+}
+
+.floating-flag-section.collapsed .flag-section-content {
+    display: none;
+}
+
+.flag-section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    font-weight: 600;
+    color: #c0392b;
+}
+
+.flag-toggle-icon {
+    transition: transform 0.3s ease;
+}
+
+.floating-flag-section.collapsed .flag-toggle-icon {
+    transform: rotate(-90deg);
+}
+
+[data-theme="dark"] .floating-flag-section {
+    background: linear-gradient(135deg, #2d1f1f 0%, #3d2a2a 100%);
+}
+
+[data-theme="dark"] .flag-section-content textarea {
+    background: #1a1a2e;
+    color: #e0e0e0;
+}
+
+[data-theme="dark"] tfoot {
+    background: #2d2d2d !important;
+}
+
+[data-theme="dark"] tfoot td {
+    color: #e0e0e0;
+}
+
+.listing-image-cell {
+    position: relative;
+    text-align: center;
+}
+
+.listing-image-cell img {
+    display: block;
+    margin: 0 auto;
+}
+{% endblock %}
+
+{% block content %}
+<div class="section">
+    <h2>🔧 Motherboard Listings</h2>
+    
+    <div class="filters">
+        <span style="font-weight: 600; margin-right: 0.5rem;">Filters:</span>
+        <label>
+            <input type="checkbox" id="active-only" checked>
+            Active only
+        </label>
+        <label>
+            Chipset:
+            <select id="chipset-filter">
+                <option value="">All Chipsets</option>
+            </select>
+        </label>
+        <label>
+            Socket:
+            <select id="socket-filter">
+                <option value="">All Sockets</option>
+            </select>
+        </label>
+
+        <label>
+            Vendor:
+            <select id="vendor-filter" onchange="handleVendorChange()">
+                <option value="">All Vendors</option>
+                <option value="Intel">Intel</option>
+                <option value="AMD">AMD</option>
+            </select>
+        </label>
+        <label class="{% if not is_staff %}staff-only{% endif %}">
+            Min confidence:
+            <select id="min-confidence">
+                <option value="0">{{ t('All') }}</option>
+                <option value="0.5">50%+</option>
+                <option value="0.7" selected>70%+</option>
+                <option value="0.9">90%+</option>
+            </select>
+        </label>
+        <label>
+            Time:
+            <select id="time-filter">
+                <option value="all_time">All time</option>
+                <option value="week">Last 7 days</option>
+                <option value="month">Last 30 days</option>
+                <option value="year">Last year</option>
+            </select>
+        </label>
+        <label>
+            <input type="checkbox" id="show-summary" onchange="renderListings(window.allListings)">
+            Show Summary
+        </label>
+        <label>
+            <input type="checkbox" id="show-listing-id" onchange="localStorage.setItem('motherboardShowListingId', this.checked ? 'true' : 'false')">
+            Show Listing ID in Popup
+        </label>
+        <label>
+            <span style="font-weight: 600;">Sort:</span>
+            <select id="sort-by">
+                <option value="date_posted">Date</option>
+                <option value="price">{{ t('Price') }}</option>
+            </select>
+        </label>
+        <label>
+            Order:
+            <select id="sort-order">
+                <option value="desc">{{ t('Descending') }}</option>
+                <option value="asc">{{ t('Ascending') }}</option>
+            </select>
+        </label>
+    </div>
+    
+    <div id="listings-table">
+        <div class="loading">Loading listings...</div>
+    </div>
+</div>
+
+<div class="section">
+    <h2>📊 Chipset Popularity</h2>
+    <div class="chart-container">
+        <canvas id="chipset-chart"></canvas>
+    </div>
+</div>
+
+<div class="section">
+    <h2>Socket Statistics</h2>
+    <div class="chart-container">
+        <canvas id="socket-stats-chart"></canvas>
+    </div>
+</div>
+
+<div class="section">
+    <!-- Models heading label updated to "Chipsets" to match the actual data shown -->
+    <h2>📋 Motherboard Chipsets</h2>
+    <div id="models-grid" class="model-grid">
+        <div class="loading">Loading chipsets...</div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+(function() {
+'use strict';
+
+let chipsetChart = null;
+let socketStatsChart = null;
+let allChipsets = [];
+
+// Fetch listings
+async function fetchListings() {
+    const activeOnly = document.getElementById('active-only').checked;
+    const minConfidence = document.getElementById('min-confidence').value;
+    const timeFilter = document.getElementById('time-filter').value;
+    const sortBy = document.getElementById('sort-by').value;
+    const sortOrder = document.getElementById('sort-order').value;
+    const chipset = document.getElementById('chipset-filter')?.value;
+    const socket = document.getElementById('socket-filter')?.value;
+    const vendor = document.getElementById('vendor-filter')?.value;
+    
+    const params = new URLSearchParams({
+        active: activeOnly,
+        min_confidence: minConfidence,
+        time: timeFilter,
+        sort: sortBy,
+        order: sortOrder
+    });
+    
+    if (chipset) params.append('chipset', chipset);
+    if (socket) params.append('socket', socket);
+    if (vendor) params.append('vendor', vendor);
+    
+    try {
+        const response = await fetch(`/api/motherboards?${params}`);
+        const data = await response.json();
+        renderListings(data);
+    } catch (error) {
+        document.getElementById('listings-table').innerHTML = 
+            `<div class="error">Error loading listings: ${error.message}</div>`;
+    }
+}
+
+// Fetch models
+async function fetchModels() {
+    var timeFilter = document.getElementById('time-filter')?.value || 'all_time';
+    
+    try {
+        var response = await fetch('/api/motherboard-models?time=' + timeFilter);
+        var data = await response.json();
+        renderModels(data);
+    } catch (error) {
+        document.getElementById('models-grid').innerHTML = 
+            '<div class="error">Error loading models: ' + error.message + '</div>';
+    }
+}
+
+// Handle socket filter change
+function handleSocketChange() {
+    fetchListings();
+}
+
+// Handle Vendor filter change
+function handleVendorChange() {
+    const vendor = document.getElementById('vendor-filter')?.value;
+    const socketSelect = document.getElementById('socket-filter');
+    const cpuSelect = document.getElementById('cpu-filter');
+    
+    // If Intel selected, filter to Intel sockets
+    if (vendor === 'Intel' && socketSelect) {
+        Array.from(socketSelect.options).forEach(opt => {
+            if (opt.value) {
+                opt.style.display = opt.value.includes('1700') || opt.value.includes('1200') || 
+                                   opt.value.includes('1151') || opt.value.includes('1150') ||
+                                   opt.value.includes('2066') ? '' : 'none';
+            }
+        });
+    } else if (vendor === 'AMD' && socketSelect) {
+        Array.from(socketSelect.options).forEach(opt => {
+            if (opt.value) {
+                opt.style.display = opt.value.includes('AM4') || opt.value.includes('AM5') || 
+                                   opt.value.includes('TR4') || opt.value.includes('sTRX4') ? '' : 'none';
+            }
+        });
+    } else if (socketSelect) {
+        Array.from(socketSelect.options).forEach(opt => {
+            opt.style.display = '';
+        });
+    }
+}
+
+// Fetch chipset stats
+async function fetchChipsets() {
+    var timeFilter = document.getElementById('time-filter')?.value || 'all_time';
+    
+    try {
+        var response = await fetch('/api/motherboard-chipsets?time=' + timeFilter);
+        var data = await response.json();
+        allChipsets = data || [];
+        renderChipsetChart(data);
+        updateChipsetDropdown();
+        populateSocketDropdown();
+    } catch (error) {
+        console.error('Error loading chipsets:', error);
+    }
+}
+
+// Populate socket dropdown from motherboard_reference.socket
+async function populateSocketDropdown() {
+    var socketSelect = document.getElementById('socket-filter');
+    if (!socketSelect) return;
+    
+    // Keep current selection
+    var currentSelection = socketSelect.value;
+    
+    // Clear and add "All" option
+    socketSelect.innerHTML = '<option value="">All Sockets</option>';
+    
+    try {
+        // Fetch unique sockets from motherboard_reference
+        var response = await fetch('/api/motherboard-sockets');
+        var sockets = await response.json();
+        
+        if (sockets && Array.isArray(sockets)) {
+            sockets.forEach(function(socket) {
+                if (socket) {
+                    var option = document.createElement('option');
+                    option.value = socket;
+                    option.textContent = socket;
+                    socketSelect.appendChild(option);
+                }
+            });
+        }
+    } catch (error) {
+        console.error('Error loading sockets:', error);
+    }
+    
+    // Restore selection if available
+    if (currentSelection && socketSelect.querySelector('option[value="' + currentSelection + '"]')) {
+        socketSelect.value = currentSelection;
+    }
+}
+
+// Update chipset dropdown
+function updateChipsetDropdown() {
+    var chipsetSelect = document.getElementById('chipset-filter');
+    if (!chipsetSelect || !allChipsets) return;
+    
+    // Keep current selection
+    var currentSelection = chipsetSelect.value;
+    
+    // Clear and add "All" option
+    chipsetSelect.innerHTML = '<option value="">All Chipsets</option>';
+    
+    // Add chipsets
+    allChipsets.forEach(function(chipset) {
+        if (chipset.chipset) {
+            var option = document.createElement('option');
+            option.value = chipset.chipset;
+            option.textContent = chipset.chipset;
+            chipsetSelect.appendChild(option);
+        }
+    });
+    
+    // Restore selection if still available
+    if (currentSelection && chipsetSelect.querySelector('option[value="' + currentSelection + '"]')) {
+        chipsetSelect.value = currentSelection;
+    }
+}
+
+// Render listings table
+// NOTE: use window.allListings so flagging code can mutate the same array
+window.allListings = window.allListings || [];
+
+function renderListings(listings) {
+    // Store listings globally so submitFlag can filter the live dataset
+    window.allListings = listings;
+
+    if (listings.error) {
+        document.getElementById('listings-table').innerHTML =
+            `<div class="error">Error: ${listings.error}</div>`;
+        return;
+    }
+
+    if (listings.length === 0) {
+        document.getElementById('listings-table').innerHTML =
+            `<div class="loading">No listings found</div>`;
+        return;
+    }
+
+    const showSummary = document.getElementById('show-summary')?.checked;
+    const totalPrice = listings.reduce((sum, item) => sum + (Number(item.price_eur) || 0), 0);
+
+    const html = `
+        <table>
+            <thead>
+                <tr>
+                    <th>Image</th>
+                    <th>Title</th>
+                    <th>Matched Model</th>
+                    <th>{{ t('Socket') }}</th>
+                    <th>Form Factor</th>
+                    <th>Chipset</th>
+                    <th>{{ t('Price') }}</th>
+                    <th>{{ t('Date Posted') }}</th>
+                    <th>Location</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                ${listings.map(item => {
+                    const dealBadge = computeMotherboardDealBadges(item);
+                    return `
+                    <tr style="cursor: pointer;" onclick="showListingDetail('${item.listing_id}')">
+                        <td class="listing-image-cell" onclick="event.stopPropagation()" style="position: relative;">
+                            ${dealBadge ? `<div style="position: absolute; top: 4px; right: 4px; display: flex; flex-direction: column; gap: 4px; z-index: 10;">${dealBadge}</div>` : ''}
+                            ${item.local_image_path || item.image_url ? (() => {
+                                const rowImgPath = item.local_image_path ? item.local_image_path.replace(/\\/g, '/') : null;
+                                const rowImgUrl = rowImgPath ? `/images/${rowImgPath}` : item.image_url;
+                                return `<img src="${rowImgUrl}" alt="${item.title}" class="listing-thumb" onerror="this.src='${item.image_url || ''}'; this.onerror=null;" onclick="event.stopPropagation(); showImageModal('${rowImgUrl.replace(/'/g, "\\'")}', '${item.title.replace(/'/g, "\\'")}')">`;
+                            })() : '<div class="listing-thumb-placeholder">📷</div>'}
+                        </td>                    <td title="${item.description || ''}">${item.title.substring(0, 60)}${item.title.length > 60 ? '...' : ''}</td>
+                    <td>
+                        <strong>${item.brand || '-'} ${item.motherboard_model || '-'}</strong>
+                        ${item.confidence_score ? `<br><small class="${getConfidenceClass(item.confidence_score)}">${(item.confidence_score * 100).toFixed(0)}% confidence</small>` : ''}
+                    </td>
+                    <td>${item.socket || '-'}</td>
+                    <td>${item.form_factor || '-'}</td>
+                    <td>${item.chipset || '-'}</td>
+                    <td class="price">€${item.price_eur ? Number(item.price_eur).toFixed(2) : '0.00'}</td>
+                    <td>${new Date(item.date_posted).toLocaleDateString()}</td>
+                    <td>${item.seller_location || '-'}</td>
+                        <td onclick="event.stopPropagation()">
+                            ${renderPriceDecreaseBadge(item)}
+                            <a href="${item.listing_url}" target="_blank" class="btn btn-small">View</a>
+                            ${renderHistoryButton(item.listing_id, item.history?.length > 0)}
+                        </td>
+                    </tr>
+                `}).join('')}
+            </tbody>
+            ${showSummary ? `
+            <tfoot style="background: #f8f9fa; font-weight: bold;">
+                <tr>
+                    <td colspan="2" style="text-align: right; padding: 0.75rem;">Summary:</td>
+                    <td style="padding: 0.75rem;" class="price">€${totalPrice.toFixed(2)} total</td>
+                    <td colspan="6" style="padding: 0.75rem;">${listings.length} listings shown</td>
+                    <td></td>
+                </tr>
+            </tfoot>` : ''}
+        </table>
+    `;
+
+    document.getElementById('listings-table').innerHTML = html;
+}
+
+// Render models (now showing chipsets)
+function renderModels(chipsets) {
+    if (chipsets.error) {
+        document.getElementById('models-grid').innerHTML = 
+            `<div class="error">Error: ${chipsets.error}</div>`;
+        return;
+    }
+    
+    if (chipsets.length === 0) {
+        document.getElementById('models-grid').innerHTML = 
+            `<div class="loading">No chipsets found</div>`;
+        return;
+    }
+    
+    const html = chipsets.map(chipset => `
+        <div class="model-card">
+            <h4>${chipset.chipset || 'Unknown Chipset'}</h4>
+            <div style="color: #666; font-size: 0.875rem; margin-bottom: 0.5rem;">
+                Socket: ${chipset.socket || '-'} | Form: ${chipset.form_factor || '-'}
+            </div>
+            <div style="color: #888; font-size: 0.75rem; margin-bottom: 0.5rem;">
+                Brands: ${chipset.brands || '-'}
+            </div>
+            <div class="model-stats">
+                <div class="model-stat">
+                    <div class="model-stat-value">${chipset.active_listings}</div>
+                    <div class="model-stat-label">Listings</div>
+                </div>
+                
+                <div class="model-stat">
+                    <div class="model-stat-value">€${chipset.avg_price ? Number(chipset.avg_price).toFixed(0) : '0'}</div>
+                    <div class="model-stat-label">{{ t('Avg Price') }}</div>
+                </div>
+            </div>
+            <div class="price-bar">
+                <div class="price-bar-fill" style="width: ${calculatePricePercentile(chipset.avg_price, chipset.min_price, chipset.max_price)}%"></div>
+            </div>
+            <div style="font-size: 0.75rem; color: #666; margin-top: 0.5rem;">
+                Range: €${chipset.min_price || 0} - €${chipset.max_price || 0}
+            </div>
+        </div>
+    `).join('');
+    
+    document.getElementById('models-grid').innerHTML = html;
+}
+
+// Render chipset chart
+function renderChipsetChart(chipsets) {
+    if (!chipsets || chipsets.length === 0) return;
+    
+    const ctx = document.getElementById('chipset-chart').getContext('2d');
+    if (!ctx) return;
+    
+    // Use active_listings or listing_count (handle both field names)
+    const getCount = (c) => c.active_listings || c.listing_count || 0;
+    
+    // Show all chipsets; no "Other" grouping
+    const labels = chipsets.map(c => c.chipset || 'Unknown');
+    const data = chipsets.map(c => getCount(c));
+    
+    const textColor = getComputedStyle(document.body).getPropertyValue('--text-color').trim() || '#333';
+    
+    if (chipsetChart) {
+        chipsetChart.destroy();
+    }
+    
+    chipsetChart = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            labels: labels,
+            datasets: [{
+                data: data,
+                backgroundColor: [
+                    '#667eea', '#764ba2', '#f093fb', '#f5576c', 
+                    '#4facfe', '#00f2fe', '#43e97b', '#38f9d7',
+                    '#ffecd2', '#fcb69f', '#a8edea', '#fed6e3'
+                ]
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'right',
+                    labels: {
+                        color: textColor,
+                        generateLabels: function(chart) {
+                            const data = chart.data;
+                            return data.labels.map((label, i) => ({
+                                text: `${label}: ${data.datasets[0].data[i]}`,
+                                fillStyle: data.datasets[0].backgroundColor[i % data.datasets[0].backgroundColor.length],
+                                hidden: false,
+                                index: i
+                            }));
+                        }
+                    }
+                }
+            }
+        }
+    });
+}
+
+// Fetch socket statistics
+async function fetchSocketStats() {
+    try {
+        var response = await fetch('/api/motherboard-socket-stats');
+        var data = await response.json();
+        renderSocketStatsChart(data);
+    } catch (error) {
+        console.error('Error loading socket stats:', error);
+    }
+}
+
+// Render socket stats bar chart
+function renderSocketStatsChart(stats) {
+    if (!stats || stats.length === 0) return;
+
+    const ctx = document.getElementById('socket-stats-chart').getContext('2d');
+    if (!ctx) return;
+
+    const labels = stats.map(s => s.socket || 'Unknown');
+    const mbCounts = stats.map(s => s.motherboard_count || 0);
+    const cpuCounts = stats.map(s => s.cpu_count || 0);
+    const textColor = getComputedStyle(document.body).getPropertyValue('--text-color').trim() || '#333';
+
+    if (socketStatsChart) {
+        socketStatsChart.destroy();
+    }
+
+    socketStatsChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: labels,
+            datasets: [
+                {
+                    label: 'Motherboard Listings',
+                    data: mbCounts,
+                    backgroundColor: '#667eea'
+                },
+                {
+                    label: 'CPU Listings',
+                    data: cpuCounts,
+                    backgroundColor: '#f5576c'
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                x: {
+                    ticks: { color: textColor, autoSkip: false, maxRotation: 45, minRotation: 45 },
+                    grid: { color: 'rgba(128,128,128,0.1)' }
+                },
+                y: {
+                    ticks: { color: textColor },
+                    grid: { color: 'rgba(128,128,128,0.1)' },
+                    beginAtZero: true
+                }
+            },
+            plugins: {
+                legend: {
+                    labels: { color: textColor }
+                }
+            }
+        }
+    });
+}
+
+// Helper functions
+function getConfidenceClass(score) {
+    if (!score) return '';
+    if (score >= 0.9) return 'confidence-high';
+    if (score >= 0.7) return 'confidence-medium';
+    return 'confidence-low';
+}
+
+function calculatePricePercentile(avg, min, max) {
+    if (max === min) return 50;
+    return ((avg - min) / (max - min)) * 100;
+}
+
+// Render helper functions (copied from shared utilities)
+function renderPriceDecreaseBadge(item) {
+    if (item.has_price_decreased && item.price_changes && item.price_changes.length > 0) {
+        const change = item.price_changes[0];
+        if (change.change < 0) {
+            return `<span class="badge badge-success" title="Price dropped by €${Math.abs(change.change).toFixed(2)}" style="margin-right: 4px;">↓ Price Drop</span>`;
+        }
+    }
+    return '';
+}
+
+function computeMotherboardDealBadges(item) {
+    let dealBadge = '';
+
+    const isNewListing = item.is_new === true;
+    if (isNewListing) {
+        dealBadge += `<span class="badge" style="background: #3b82f6; color: white; font-weight: bold;" title="New listing from current import!">🆕 NEW</span><br>`;
+    }
+    if (!isNewListing && item.price_stats && item.price_stats.below_avg) {
+        const avgPrice = parseFloat(item.price_stats.avg);
+        const currentPrice = item.price_eur;
+        const savingsPct = ((avgPrice - currentPrice) / avgPrice * 100);
+        if (savingsPct >= 15) {
+            dealBadge += `<span class="badge" style="background: #dc2626; color: white; font-weight: bold;" title="Price is ${savingsPct.toFixed(0)}% below average!">🔥 STEAL</span><br>`;
+        }
+    }
+    return dealBadge;
+}
+
+function renderChipsetPosition(item) {
+    if (!item.chipset_stats) return '<span class="text-muted">-</span>';
+    
+    const stats = item.chipset_stats;
+    const position = Number(stats.position) || 50;
+    const belowAvg = stats.below_avg;
+    
+    return `
+        <div style="min-width: 100px;" title="${stats.count || 0} listings • Avg: €${Number(stats.avg || 0).toFixed(0)} • Range: €${Number(stats.min || 0).toFixed(0)}-€${Number(stats.max || 0).toFixed(0)}">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 3px; font-size: 0.75rem;">
+                <span style="color: #ff69b4;">€${Number(stats.min || 0).toFixed(0)} - €${Number(stats.max || 0).toFixed(0)}</span>
+                <span style="color: ${belowAvg ? '#28a745' : '#dc8a18'}; font-weight: 600;">${position.toFixed(0)}%</span>
+            </div>
+            <div style="background: #e0e0e0; border-radius: 4px; height: 6px; position: relative; overflow: hidden;">
+                <div style="background: ${belowAvg ? '#28a745' : '#ffc107'}; height: 100%; width: ${position}%; border-radius: 4px;"></div>
+            </div>
+        </div>
+    `;
+}
+
+function renderHistoryButton(listingId, hasHistory) {
+    if (hasHistory) {
+        return `<button class="btn btn-small" onclick="event.stopPropagation(); showListingHistory('${listingId}')">History</button>`;
+    }
+    return '';
+}
+
+// Show listing history
+async function showListingHistory(listingId) {
+    try {
+        const response = await fetch(`/api/price-history/${listingId}`);
+        const data = await response.json();
+        
+        if (data.error || !data.current) {
+            alert('Error loading history');
+            return;
+        }
+        
+        const current = data.current;
+        const history = data.history || [];
+        
+        let html = `
+            <h3>Price History for ${current.title?.substring(0, 50) || listingId}</h3>
+            <p><strong>Current Price:</strong> €${current.price_eur}</p>
+        `;
+        
+        if (history.length > 0) {
+            html += `
+                <table style="width: 100%; margin-top: 1rem;">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>{{ t('Price') }}</th>
+                        </tr>
+                    </thead>
+                    
+                    <tbody>
+                        ${history.map(h => `
+                            <tr>
+                                <td>${h.recorded_at ? new Date(h.recorded_at).toLocaleDateString() : 'N/A'}</td>
+                                <td class="price">€${h.price_eur}</td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+            `;
+        }
+        
+        showModal(html);
+    } catch (error) {
+        console.error('Error loading history:', error);
+        alert('Error loading history');
+    }
+}
+
+// Show listing detail modal
+async function showListingDetail(listingId) {
+    try {
+        const response = await fetch(`/api/listing-details/${listingId}`);
+        const data = await response.json();
+        
+        if (data.error || !data.current) {
+            console.error('Error:', data.error);
+            return;
+        }
+        
+        const current = data.current;
+        const history = data.history || [];
+        
+        let html = `
+            <h3>${current.title || 'Listing Details'}</h3>
+            
+            ${(() => {
+                const detailImgPath = current.local_image_path ? current.local_image_path.replace(/\\/g, '/') : null;
+                const detailImgUrl = detailImgPath ? `/images/${detailImgPath}` : current.image_url;
+                return detailImgUrl ? `
+            <div style="margin-bottom: 1rem; text-align: center;">
+                <img src="${detailImgUrl}" alt="${current.title}" style="max-width: 100%; max-height: 70vh; border-radius: 8px; cursor: zoom-in;" onclick="showImageModal('${detailImgUrl.replace(/'/g, "\\'")}', '${current.title.replace(/'/g, "\\'")}')">
+            </div>
+            ` : '';
+            })()}
+            
+            <div style="margin-bottom: 1rem;">
+                <strong>Price:</strong> <span class="price" style="font-size: 1.25rem;">€${current.price_eur}</span>
+            </div>
+            
+            ${localStorage.getItem('motherboardShowListingId') === 'true' ? `<div style="margin-bottom: 1rem;" class="listing-id-field"><strong>Listing ID:</strong> <code>${current.listing_id}</code></div>` : ''}
+            
+            <div style="margin-bottom: 1rem;">
+                <strong>Location:</strong> ${current.seller_location || '-'}
+            </div>
+            
+            <div style="margin-bottom: 1rem;">
+                <strong>Date Posted:</strong> ${current.date_posted ? new Date(current.date_posted).toLocaleDateString() : '-'}
+            </div>
+            
+            ${current.brand ? `<div style="margin-bottom: 1rem;"><strong>Brand:</strong> ${current.brand}</div>` : ''}
+            ${current.mb_model ? `<div style="margin-bottom: 1rem;"><strong>Model:</strong> ${current.mb_model}</div>` : ''}
+            ${current.socket ? `<div style="margin-bottom: 1rem;"><strong>Socket:</strong> ${current.socket}</div>` : ''}
+            ${current.chipset ? `<div style="margin-bottom: 1rem;"><strong>Chipset:</strong> ${current.chipset}</div>` : ''}
+            ${current.form_factor ? `<div style="margin-bottom: 1rem;"><strong>Form Factor:</strong> ${current.form_factor}</div>` : ''}
+            ${current.ram_slots ? `<div style="margin-bottom: 1rem;"><strong>RAM Slots:</strong> ${current.ram_slots}</div>` : ''}
+            
+            <div style="margin-bottom: 1rem;">
+                <strong>Description:</strong>
+                <div class="listing-description">
+                    ${current.description || '<em>No description</em>'}
+                </div>
+            </div>
+            
+            <div style="margin-top: 1.5rem;">
+                <a href="${current.listing_url}" target="_blank" class="btn">View on Site</a>
+                <button class="btn btn-secondary" onclick="showFlagSection('${current.listing_id}')" style="margin-left: 0.5rem;" title="Exclude from chipset calculations">🚩 Flag</button>
+                <button class="btn btn-secondary" onclick="closeModal()" style="margin-left: 0.5rem;">{{ t('Close') }}</button>
+            </div>
+            
+            <!-- Floating Flag Section -->
+            <div class="flag-section floating-flag-section" id="flag-section-${current.listing_id}" style="display: none; margin-top: 1rem;">
+                <div class="flag-section-header" onclick="toggleFlagSection('${current.listing_id}')">
+                    <span>🚩 Flag This Listing</span>
+                    <span class="flag-toggle-icon">▼</span>
+                </div>
+                <div class="flag-section-content">
+                    <textarea id="flag-comment-${current.listing_id}" placeholder="Enter reason (e.g., Scam, Wrong specs, Sold)" rows="1" oninput="autoResizeTextarea(this)" style="width: 100%; padding: 0.75rem; border: 2px solid #e74c3c; border-radius: 8px; margin-bottom: 0.75rem; font-family: inherit;"></textarea>
+                    <div class="flag-actions" style="display: flex; gap: 0.5rem; justify-content: flex-end;">
+                        <button class="btn btn-small" onclick="submitFlag('${current.listing_id}')" style="background: #e74c3c;">Submit Flag</button>
+                        <button class="btn btn-small btn-secondary" onclick="hideFlagSection('${current.listing_id}')">{{ t('Cancel') }}</button>
+                    </div>
+                </div>
+            </div>
+        `;
+        
+        showModal(html);
+    } catch (error) {
+        console.error('Error loading details:', error);
+    }
+}
+
+// Show image modal - fixed to properly handle cleanup
+function showImageModal(imageUrl, title) {
+    // Remove any existing image modals first
+    const existingModal = document.querySelector('.image-modal-overlay');
+    if (existingModal) {
+        existingModal.remove();
+    }
+    
+    const modal = document.createElement('div');
+    modal.className = 'image-modal-overlay';
+    modal.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.9);
+        z-index: 9999;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: zoom-out;
+    `;
+    
+    const img = document.createElement('img');
+    img.src = imageUrl;
+    img.alt = title || 'Image';
+    img.onload = function() { fitPreviewImage(img); };
+    img.style.cssText = `
+        max-width: 90%;
+        max-height: 90%;
+        object-fit: contain;
+        border-radius: 8px;
+    `;
+    
+    modal.appendChild(img);
+    document.body.appendChild(modal);
+    
+    // Use named function for cleanup
+    const closeModal = function() {
+        modal.remove();
+    };
+    
+    modal.addEventListener('click', closeModal);
+    
+    img.addEventListener('click', function(e) {
+        e.stopPropagation();
+    });
+}
+
+function fitPreviewImage(img) {
+    if (!img || !img.naturalWidth || !img.naturalHeight) return;
+    const isPortrait = img.naturalHeight > img.naturalWidth;
+    if (isPortrait) {
+        img.style.maxWidth = '70%';
+        img.style.margin = '0 auto';
+    } else {
+        img.style.maxWidth = '90%';
+        img.style.margin = '0 auto';
+    }
+}
+
+// Expose to global scope for inline onclick/onchange handlers
+window.showImageModal = showImageModal;
+window.showListingDetail = showListingDetail;
+window.showListingHistory = showListingHistory;
+window.closeModal = closeModal;
+window.showFlagSection = showFlagSection;
+window.hideFlagSection = hideFlagSection;
+window.toggleFlagSection = toggleFlagSection;
+window.autoResizeTextarea = autoResizeTextarea;
+window.submitFlag = submitFlag;
+window.flagListing = flagListing;
+window.handleVendorChange = handleVendorChange;
+window.renderListings = renderListings;
+
+
+// Modal functions
+function showModal(content) {
+    let overlay = document.getElementById('detail-modal-overlay');
+    if (!overlay) {
+        overlay = document.createElement('div');
+        overlay.id = 'detail-modal-overlay';
+        overlay.className = 'modal-overlay';
+        overlay.innerHTML = `
+            <div class="modal">
+                <button class="modal-close" onclick="closeModal()">&times;</button>
+                <div id="modal-body"></div>
+            </div>
+        `;
+        document.body.appendChild(overlay);
+        
+        // Close on outside click
+        overlay.addEventListener('click', function(e) {
+            if (e.target === overlay) closeModal();
+        });
+    }
+    document.getElementById('modal-body').innerHTML = content;
+    overlay.classList.add('active');
+}
+
+function closeModal() {
+    const overlay = document.getElementById('detail-modal-overlay');
+    if (overlay) overlay.classList.remove('active');
+}
+
+// Flag section functions
+function showFlagSection(listingId) {
+    const section = document.getElementById(`flag-section-${listingId}`);
+    if (section) {
+        section.style.display = 'block';
+        section.classList.remove('collapsed');
+        const textarea = document.getElementById(`flag-comment-${listingId}`);
+        if (textarea) {
+            textarea.focus();
+            autoResizeTextarea(textarea);
+        }
+        updateToggleIcon(listingId);
+    }
+}
+
+function hideFlagSection(listingId) {
+    const section = document.getElementById(`flag-section-${listingId}`);
+    if (section) {
+        section.style.display = 'none';
+        const textarea = document.getElementById(`flag-comment-${listingId}`);
+        if (textarea) textarea.value = '';
+    }
+}
+
+function toggleFlagSection(listingId) {
+    const section = document.getElementById(`flag-section-${listingId}`);
+    if (section) {
+        section.classList.toggle('collapsed');
+        updateToggleIcon(listingId);
+        if (!section.classList.contains('collapsed')) {
+            const textarea = document.getElementById(`flag-comment-${listingId}`);
+            if (textarea) setTimeout(() => autoResizeTextarea(textarea), 0);
+        }
+    }
+}
+
+function updateToggleIcon(listingId) {
+    const section = document.getElementById(`flag-section-${listingId}`);
+    const icon = section ? section.querySelector('.flag-toggle-icon') : null;
+    if (section && icon) {
+        icon.textContent = section.classList.contains('collapsed') ? '▶' : '▼';
+    }
+}
+
+function autoResizeTextarea(textarea) {
+    textarea.style.height = 'auto';
+    textarea.style.height = Math.min(textarea.scrollHeight, 200) + 'px';
+}
+
+async function submitFlag(listingId) {
+    const commentInput = document.getElementById(`flag-comment-${listingId}`);
+    const comment = commentInput ? commentInput.value.trim() : '';
+    
+    if (!comment) {
+        alert('Please enter a reason for flagging');
+        return;
+    }
+    
+    try {
+        const response = await fetch('/api/flag-listing', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                listing_id: listingId,
+                reason: comment
+            })
+        });
+        
+        const data = await response.json();
+        if (data.success) {
+            alert('Listing flagged successfully!');
+            hideFlagSection(listingId);
+            closeModal();
+            // Remove flagged listing from local data and refresh the table immediately
+            if (window.allListings && Array.isArray(window.allListings)) {
+                window.allListings = window.allListings.filter(item => item.listing_id !== listingId);
+                renderListings(window.allListings);
+            } else {
+                fetchListings();
+            }
+        } else {
+            alert('Error: ' + (data.error || 'Unknown error'));
+        }
+    } catch (error) {
+        console.error('Error flagging listing:', error);
+        alert('Error flagging listing: ' + error.message);
+    }
+}
+
+// Legacy function for backward compatibility
+async function flagListing(listingId, title) {
+    showFlagSection(listingId);
+}
+
+// Initialize on page load
+document.addEventListener('DOMContentLoaded', function() {
+    // Attach event listeners after functions are defined
+    var socketFilter = document.getElementById('socket-filter');
+    if (socketFilter) {
+        socketFilter.addEventListener('change', handleSocketChange);
+    }
+    
+    var chipsetFilter = document.getElementById('chipset-filter');
+    if (chipsetFilter) {
+        chipsetFilter.addEventListener('change', fetchListings);
+    }
+    
+    // Attach vendor filter listener
+    var vendorFilter = document.getElementById('vendor-filter');
+    if (vendorFilter) {
+        vendorFilter.addEventListener('change', handleVendorChange);
+    }
+    
+    // Attach active-only checkbox listener  
+    var activeOnly = document.getElementById('active-only');
+    if (activeOnly) {
+        activeOnly.addEventListener('change', fetchListings);
+    }
+    
+    // Restore Show Listing ID toggle state
+    var showListingIdCheckbox = document.getElementById('show-listing-id');
+    if (showListingIdCheckbox) {
+        showListingIdCheckbox.checked = localStorage.getItem('motherboardShowListingId') === 'true';
+    }
+    
+    // Attach min-confidence filter listener
+    var minConfidence = document.getElementById('min-confidence');
+    if (minConfidence) {
+        minConfidence.addEventListener('change', fetchListings);
+    }
+    
+    // Attach time-filter listener
+    var timeFilter = document.getElementById('time-filter');
+    if (timeFilter) {
+        timeFilter.addEventListener('change', function() {
+            fetchListings();
+            fetchChipsets();
+            fetchSocketStats();
+            fetchModels();
+        });
+    }
+    
+    // Attach sort listeners
+    var sortBy = document.getElementById('sort-by');
+    var sortOrder = document.getElementById('sort-order');
+    if (sortBy) sortBy.addEventListener('change', fetchListings);
+    if (sortOrder) sortOrder.addEventListener('change', fetchListings);
+    
+    fetchChipsets();
+    fetchSocketStats();
+    fetchListings();
+    fetchModels();
+});
+})();
+</script>
+{% endblock %}

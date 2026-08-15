@@ -1,0 +1,3551 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laptops - SS-Crawler</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="/static/css/dark-mode.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-color: #f5f7fa;
+            --text-color: #333;
+            --card-bg: white;
+            --card-border: transparent;
+            --section-bg: white;
+            --table-header-bg: #f8f9fa;
+            --table-border: #eee;
+            --modal-bg: white;
+            --input-bg: white;
+            --input-border: #ddd;
+            --hover-bg: #f5f5f5;
+            --badge-bg: #eee;
+            --shadow: rgba(0,0,0,0.08);
+            --shadow-hover: rgba(0,0,0,0.12);
+            --desc-box-bg: #f8f9fa;
+            --desc-warn-bg: #fff3cd;
+            --desc-warn-border: #f39c12;
+            --desc-success-bg: #e8f5e9;
+            --desc-success-border: #27ae60;
+            --link-color: #4f46e5;
+            --link-hover-color: #4338ca;
+            --text-secondary: #6b7280;
+            --bar-bg: #e5e7eb;
+            --code-bg: #f5f5f5;
+            --code-text: #333;
+        }
+
+        [data-theme="dark"] {
+            --bg-color: #1a1a2e;
+            --text-color: #e0e0e0;
+            --card-bg: #16213e;
+            --card-border: #0f3460;
+            --section-bg: #16213e;
+            --table-header-bg: #0f3460;
+            --table-border: #1a1a2e;
+            --modal-bg: #16213e;
+            --input-bg: #1a1a2e;
+            --input-border: #0f3460;
+            --hover-bg: #0f3460;
+            --badge-bg: #0f3460;
+            --shadow: rgba(0,0,0,0.3);
+            --shadow-hover: rgba(0,0,0,0.4);
+            --desc-box-bg: #1a1a2e;
+            --desc-warn-bg: #3d3d1a;
+            --desc-warn-border: #f39c12;
+            --desc-success-bg: #1a3d1a;
+            --desc-success-border: #27ae60;
+            --link-color: #93c5fd;
+            --link-hover-color: #bfdbfe;
+            --text-secondary: #9ca3af;
+            --bar-bg: #3a3a4a;
+            --code-bg: #1a1a2e;
+            --modal-highlight-bg: #0f3460;
+            --modal-warn-bg: #3d3d1a;
+            --modal-muted-bg: #1a1a2e;
+            --modal-box-bg: #16213e;
+            --modal-border: #0f3460;
+            --modal-text-color: #e0e0e0;
+            --code-text: #e0e0e0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: var(--bg-color);
+            color: var(--text-color);
+            transition: background 0.3s, color 0.3s;
+        }
+
+        .navbar {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 1rem 1.5rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .navbar-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+        }
+
+        .navbar h1 {
+            color: white;
+            font-size: 1.5rem;
+            display: inline-block;
+            margin: 0;
+        }
+
+        .nav-utilities {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .nav-links {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem 0.75rem;
+        }
+
+        .nav-links a, #auth-nav a, .nav-utilities a {
+            color: white;
+            text-decoration: none;
+            opacity: 0.95;
+            transition: opacity 0.2s, background-color 0.2s, transform 0.15s;
+            padding: 0.35rem 0.7rem;
+            border-radius: 20px;
+            background: rgba(255,255,255,0.15);
+            font-size: 0.9rem;
+            line-height: 1;
+            white-space: nowrap;
+        }
+
+        .nav-links a:hover, #auth-nav a:hover, .nav-utilities a:hover {
+            opacity: 1;
+            background: rgba(255,255,255,0.3);
+            transform: translateY(-1px);
+            text-decoration: none;
+        }
+
+        .nav-links a.active, #auth-nav a.active, .nav-utilities a.active {
+            font-weight: bold;
+            opacity: 1;
+            background: rgba(255,255,255,0.4);
+        }
+
+        .staff-only { display: none !important; }
+
+        .dark-mode-toggle, .lang-toggle {
+            background: rgba(255,255,255,0.2);
+            border: 1px solid rgba(255,255,255,0.3);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.875rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s;
+        }
+
+        .dark-mode-toggle:hover, .lang-toggle:hover {
+            background: rgba(255,255,255,0.3);
+        }
+
+        [data-theme="dark"] .dark-mode-toggle, [data-theme="dark"] .lang-toggle {
+            background: rgba(255,255,255,0.2);
+        }
+
+        @keyframes rainbow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        @keyframes unicorn-glow {
+            0%, 100% {
+                box-shadow: 0 0 5px #ff0000, 0 0 10px #ff7f00, 0 0 15px #ffff00;
+                transform: scale(1);
+            }
+            25% {
+                box-shadow: 0 0 10px #00ff00, 0 0 20px #0000ff, 0 0 30px #9400d3;
+                transform: scale(1.05);
+            }
+            50% {
+                box-shadow: 0 0 20px #ff00ff, 0 0 30px #ff1493, 0 0 40px #ff69b4;
+                transform: scale(1.1);
+            }
+            75% {
+                box-shadow: 0 0 10px #00ffff, 0 0 20px #00ced1, 0 0 30px #ff0000;
+                transform: scale(1.05);
+            }
+        }
+
+        @keyframes unicorn-shine {
+            0% { filter: brightness(1) saturate(1); }
+            50% { filter: brightness(1.3) saturate(1.2); }
+            100% { filter: brightness(1) saturate(1); }
+        }
+
+        @keyframes float-up {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            25% { transform: translateY(-3px) rotate(1deg); }
+            50% { transform: translateY(-5px) rotate(0deg); }
+            75% { transform: translateY(-3px) rotate(-1deg); }
+        }
+
+        .unicorn-badge {
+            background: linear-gradient(90deg,
+                #ff0000 0%, #ff4500 10%, #ffa500 20%, #ffff00 30%,
+                #7fff00 40%, #00ff00 50%, #00ced1 60%, #0000ff 70%,
+                #8b00ff 80%, #ff00ff 90%, #ff1493 100%, #ff0000 100%);
+            background-size: 300% 100%;
+            color: white;
+            font-weight: bold;
+            padding: 0.35rem 0.75rem;
+            border-radius: 20px;
+            animation:
+                rainbow 2s linear infinite,
+                unicorn-glow 1.5s ease-in-out infinite,
+                unicorn-shine 0.8s ease-in-out infinite,
+                float-up 2s ease-in-out infinite;
+            text-shadow:
+                2px 2px 0 #000,
+                -1px -1px 0 #000,
+                1px -1px 0 #000,
+                -1px 1px 0 #000,
+                0 0 10px rgba(255,255,255,0.8);
+            display: inline-block;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+            border: 2px solid rgba(255,255,255,0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .unicorn-badge::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                45deg,
+                transparent 30%,
+                rgba(255,255,255,0.3) 50%,
+                transparent 70%
+            );
+            animation: shine-sweep 2s ease-in-out infinite;
+        }
+
+        @keyframes shine-sweep {
+            0% { transform: translateX(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) rotate(45deg); }
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 8px var(--shadow);
+            transition: transform 0.2s, box-shadow 0.2s;
+            border: 1px solid var(--card-border);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px var(--shadow-hover);
+        }
+
+        .stat-card h3 {
+            font-size: 0.875rem;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.5rem;
+        }
+
+        [data-theme="dark"] .stat-card h3 {
+            color: #aaa;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text-color);
+        }
+
+        .stat-card.gpu { border-left: 4px solid #667eea; }
+        .stat-card.cpu { border-left: 4px solid #764ba2; }
+
+        .stat-card.earnings-card {
+            border-left: 4px solid;
+        }
+
+        .stat-card.earnings-card .earnings {
+            color: #27ae60;
+            font-size: 1.8rem;
+        }
+
+        .stat-card.earnings-card small {
+            display: block;
+            margin-top: 0.5rem;
+            color: #666;
+        }
+
+        [data-theme="dark"] .stat-card.earnings-card small {
+            color: #aaa;
+        }
+
+        .section {
+            background: var(--section-bg);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 8px var(--shadow);
+            border: 1px solid var(--card-border);
+        }
+
+        .section h2 {
+            margin-bottom: 1rem;
+            color: var(--text-color);
+        }
+
+        .btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.875rem;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.2s;
+        }
+
+        .btn:hover {
+            background: #5a67d8;
+            transform: translateY(-1px);
+        }
+
+        .btn-small {
+            padding: 0.35rem 0.75rem;
+            font-size: 0.8rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .btn-secondary {
+            background: var(--text-secondary);
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: var(--card-bg);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .data-table th,
+        .data-table td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid var(--table-border);
+        }
+
+        .data-table th {
+            background: var(--table-header-bg);
+            font-weight: 600;
+            color: #666;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 0.5px;
+        }
+
+        [data-theme="dark"] .data-table th {
+            color: #aaa;
+        }
+
+        .data-table tr:hover {
+            background: var(--hover-bg);
+        }
+
+        .filters {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .filters label {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+            font-size: 0.875rem;
+            color: #666;
+        }
+
+        [data-theme="dark"] .filters label {
+            color: #aaa;
+        }
+
+        .filters select,
+        .filters input {
+            padding: 0.5rem;
+            border: 1px solid var(--input-border);
+            border-radius: 6px;
+            background: var(--input-bg);
+            color: var(--text-color);
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .pagination button {
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--input-border);
+            background: var(--card-bg);
+            color: var(--text-color);
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .pagination button.active {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+
+        .pagination button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        [data-theme="dark"] .modal-overlay {
+            background: rgba(0,0,0,0.7);
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal {
+            background: var(--modal-bg);
+            border-radius: 12px;
+            width: 90%;
+            max-width: 800px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+
+        .modal-header {
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid var(--table-border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-color);
+        }
+
+        .modal-content {
+            padding: 1.5rem;
+        }
+
+        .price-history-chart {
+            margin-top: 1rem;
+            height: 300px;
+        }
+
+        .listing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .listing-card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px var(--shadow);
+            transition: transform 0.2s, box-shadow 0.2s;
+            border: 1px solid var(--card-border);
+            cursor: pointer;
+        }
+
+        .listing-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px var(--shadow-hover);
+        }
+
+        .listing-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            background: var(--bar-bg);
+        }
+
+        .listing-info {
+            padding: 1rem;
+        }
+
+        .listing-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            font-size: 0.95rem;
+            color: var(--text-color);
+        }
+
+        .listing-price {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #667eea;
+            margin-bottom: 0.5rem;
+        }
+
+        .listing-meta {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-left: 0.5rem;
+        }
+
+        .badge-new {
+            background: #e8f5e9;
+            color: #27ae60;
+        }
+
+        .badge-steal {
+            background: #fff3cd;
+            color: #f39c12;
+        }
+
+        .badge-buy {
+            background: #e3f2fd;
+            color: #1976d2;
+        }
+
+        .badge-first {
+            background: #f3e5f5;
+            color: #7b1fa2;
+        }
+
+        [data-theme="dark"] .badge-new {
+            background: rgba(39, 174, 96, 0.2);
+            color: #81c784;
+        }
+
+        [data-theme="dark"] .badge-steal {
+            background: rgba(243, 156, 18, 0.2);
+            color: #ffd54f;
+        }
+
+        [data-theme="dark"] .badge-buy {
+            background: rgba(25, 118, 210, 0.2);
+            color: #64b5f6;
+        }
+
+        [data-theme="dark"] .badge-first {
+            background: rgba(123, 31, 162, 0.2);
+            color: #ce93d8;
+        }
+
+        .price-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .price-stat {
+            background: var(--desc-box-bg);
+            padding: 0.75rem;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .price-stat-value {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #667eea;
+        }
+
+        .price-stat-label {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            margin-top: 0.25rem;
+        }
+
+        .chart-container {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 8px var(--shadow);
+            border: 1px solid var(--card-border);
+        }
+
+        .chart-container h3 {
+            margin-bottom: 1rem;
+            color: #666;
+        }
+
+        [data-theme="dark"] .chart-container h3 {
+            color: #aaa;
+        }
+
+        .no-data {
+            text-align: center;
+            padding: 3rem;
+            color: var(--text-secondary);
+        }
+
+        .tab-buttons {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+            border-bottom: 1px solid var(--table-border);
+            padding-bottom: 0.5rem;
+        }
+
+        .tab-button {
+            padding: 0.5rem 1rem;
+            border: none;
+            background: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            border-radius: 6px 6px 0 0;
+        }
+
+        .tab-button.active {
+            background: #667eea;
+            color: white;
+        }
+
+        .model-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .model-card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 8px var(--shadow);
+            border: 1px solid var(--card-border);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .model-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px var(--shadow-hover);
+        }
+
+        .model-card h3 {
+            margin-bottom: 0.5rem;
+            color: var(--text-color);
+        }
+
+        .model-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .model-stat {
+            text-align: center;
+        }
+
+        .model-stat-value {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #667eea;
+        }
+
+        .model-stat-label {
+            color: #666;
+            font-size: 0.75rem;
+        }
+
+        [data-theme="dark"] .model-stat-label {
+            color: #aaa;
+        }
+
+        .price-bar {
+            height: 8px;
+            background: #e9ecef;
+            border-radius: 4px;
+            margin-top: 0.5rem;
+            position: relative;
+        }
+
+        .price-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            border-radius: 4px;
+            transition: width 0.3s;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 3rem;
+            color: #666;
+        }
+
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        [data-theme="dark"] .modal-overlay {
+            background: rgba(0,0,0,0.7);
+        }
+
+        [data-theme="dark"] #shared-listing-modal {
+            --modal-highlight-bg: #0f3460;
+            --modal-warn-bg: #3d3d1a;
+            --modal-muted-bg: #1a1a2e;
+            --modal-box-bg: #16213e;
+            --modal-border: #0f3460;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal {
+            background: var(--modal-bg);
+            border-radius: 12px;
+            width: 90%;
+            max-width: 800px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+
+        .modal-header {
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid var(--table-border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-color);
+        }
+
+        #shared-listing-content {
+            padding: 1.5rem;
+        }
+
+        #shared-listing-content h1,
+        #shared-listing-content h2,
+        #shared-listing-content h3 {
+            color: var(--text-color);
+            margin: 1rem 0 0.5rem 0;
+        }
+
+        #shared-listing-content p {
+            color: var(--text-color);
+            line-height: 1.6;
+            margin-bottom: 0.75rem;
+        }
+
+        #shared-listing-content ul,
+        #shared-listing-content ol {
+            margin-left: 1.5rem;
+            margin-bottom: 0.75rem;
+            color: var(--text-color);
+        }
+
+        #shared-listing-content table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+        }
+
+        #shared-listing-content table th,
+        #shared-listing-content table td {
+            border: 1px solid var(--table-border);
+            padding: 0.5rem;
+            text-align: left;
+            color: var(--text-color);
+        }
+
+        #shared-listing-content table th {
+            background: var(--table-header-bg);
+        }
+
+        #shared-listing-content img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            margin: 0.5rem 0;
+        }
+
+        #shared-listing-content pre {
+            background: var(--code-bg);
+            color: var(--code-text);
+            padding: 1rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 1rem 0;
+        }
+
+        #shared-listing-content code {
+            background: var(--code-bg);
+            color: var(--code-text);
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+        }
+
+        #shared-listing-content blockquote {
+            border-left: 4px solid #667eea;
+            padding-left: 1rem;
+            margin: 1rem 0;
+            color: var(--text-secondary);
+        }
+
+        .spec-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid var(--table-border);
+        }
+
+        .spec-label {
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .spec-value {
+            font-weight: 600;
+            color: var(--text-color);
+        }
+
+        .listing-detail-images {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+
+        .listing-detail-images img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        .listing-image-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 0.5rem;
+        }
+
+        .listing-image-grid img {
+            width: 100%;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .listing-image-grid img:hover {
+            transform: scale(1.05);
+        }
+
+        /* Shared listing thumbnail styling. Pages can override in their extra_css block. */
+        .listing-thumb {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            object-position: center;
+            border-radius: 6px;
+            cursor: pointer;
+            display: block;
+            margin: 0 auto;
+        }
+        .listing-thumb-placeholder {
+            width: 80px;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--section-bg, #f0f0f0);
+            border-radius: 6px;
+            font-size: 1.5rem;
+            color: var(--text-secondary, #999);
+            margin: 0 auto;
+        }
+
+        .comparison-section {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 2px 8px var(--shadow);
+            border: 1px solid var(--card-border);
+        }
+
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .comparison-item {
+            background: var(--desc-box-bg);
+            padding: 1rem;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .comparison-value {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-color);
+        }
+
+        .comparison-label {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            margin-top: 0.25rem;
+        }
+
+        .pc-builder-section {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 2px 8px var(--shadow);
+            border: 1px solid var(--card-border);
+        }
+
+        .pc-builder-parts {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1rem;
+        }
+
+        .pc-part-card {
+            background: var(--desc-box-bg);
+            border-radius: 8px;
+            padding: 1rem;
+            border: 2px dashed var(--table-border);
+        }
+
+        .pc-part-card.selected {
+            border: 2px solid #667eea;
+            background: rgba(102, 126, 234, 0.05);
+        }
+
+        .pc-part-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .pc-part-price {
+            color: #667eea;
+            font-weight: 700;
+        }
+
+        .pc-total {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #667eea;
+            margin-top: 1rem;
+            text-align: right;
+        }
+
+        .alert {
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        }
+
+        .alert-warning {
+            background: var(--desc-warn-bg);
+            color: #856404;
+            border: 1px solid var(--desc-warn-border);
+        }
+
+        .alert-success {
+            background: var(--desc-success-bg);
+            color: #155724;
+            border: 1px solid var(--desc-success-border);
+        }
+
+        [data-theme="dark"] .alert-warning {
+            color: #ffd54f;
+            background: var(--desc-warn-bg);
+        }
+
+        [data-theme="dark"] .alert-success {
+            color: #81c784;
+            background: var(--desc-success-bg);
+        }
+
+        .widget-card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 1rem;
+            box-shadow: 0 2px 8px var(--shadow);
+            border: 1px solid var(--card-border);
+            transition: transform 0.2s, box-shadow 0.2s;
+            cursor: pointer;
+        }
+
+        .widget-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px var(--shadow-hover);
+        }
+
+        .widget-title {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .widget-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-color);
+        }
+
+        .widget-change {
+            font-size: 0.8rem;
+            margin-top: 0.25rem;
+        }
+
+        .widget-change.positive { color: #27ae60; }
+        .widget-change.negative { color: #e74c3c; }
+
+        .drag-clone {
+            opacity: 0.8;
+            transform: rotate(3deg);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+        }
+
+        .project-board {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1rem;
+        }
+
+        .board-column {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 1rem;
+            box-shadow: 0 2px 8px var(--shadow);
+            border: 1px solid var(--card-border);
+            min-height: 200px;
+        }
+
+        .board-column h3 {
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--table-border);
+        }
+
+        .board-task {
+            background: var(--desc-box-bg);
+            border-radius: 8px;
+            padding: 0.75rem;
+            margin-bottom: 0.5rem;
+            cursor: pointer;
+            transition: transform 0.2s;
+            border: 1px solid var(--table-border);
+        }
+
+        .board-task:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 2px 8px var(--shadow);
+        }
+
+        .board-task.special {
+            border-left: 4px solid #667eea;
+        }
+
+        [data-theme="dark"] #shared-listing-content strong {
+            color: #e0e0e0;
+        }
+
+        [data-theme="dark"] #shared-listing-content table th {
+            background: #0f3460;
+            color: #e0e0e0;
+        }
+
+        [data-theme="dark"] #shared-listing-content table td {
+            border-bottom-color: #0f3460;
+            color: #e0e0e0;
+        }
+
+        [data-theme="dark"] #shared-listing-content em {
+            color: #aaa;
+        }
+
+        .trends-section {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background: var(--card-bg);
+            border-radius: 8px;
+            border: 1px solid var(--card-border);
+        }
+
+        .trends-controls {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .trend-value {
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .trend-up { color: #27ae60; }
+        .trend-down { color: #e74c3c; }
+
+        /* Shared listing thumbnail styling. Pages can override in extra_css block. */
+        .listing-thumb {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            object-position: center;
+            border-radius: 6px;
+            cursor: pointer;
+            display: block;
+            margin: 0 auto;
+        }
+        .listing-thumb-placeholder {
+            width: 80px;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--section-bg, #f0f0f0);
+            border-radius: 6px;
+            font-size: 1.5rem;
+            color: var(--text-secondary, #999);
+            margin: 0 auto;
+        }
+
+        
+    body > .container {
+        max-width: 1600px;
+    }
+
+    /* ===== Laptop page hero / header ===== */
+    .laptop-hero {
+        position: relative;
+        margin: 0 0 1.25rem;
+        padding: 1.25rem 1.5rem 1rem;
+        background:
+            linear-gradient(135deg, rgba(102,126,234,0.18) 0%, rgba(118,75,162,0.18) 100%),
+            var(--card-bg);
+        border: 1px solid var(--card-border, rgba(255,255,255,0.06));
+        border-radius: 14px;
+        box-shadow: 0 4px 18px rgba(0,0,0,0.18);
+        overflow: hidden;
+    }
+    .laptop-hero::before {
+        content: '';
+        position: absolute;
+        inset: 0 0 auto 0;
+        height: 3px;
+        background: linear-gradient(90deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+    }
+    .laptop-hero-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        flex-wrap: wrap;
+    }
+    .laptop-hero-title {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        margin: 0;
+        font-size: 1.85rem;
+        font-weight: 800;
+        letter-spacing: -0.01em;
+        color: var(--text-color);
+    }
+    .laptop-hero-title svg {
+        width: 32px;
+        height: 32px;
+        padding: 6px;
+        border-radius: 9px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: #fff;
+        box-shadow: 0 2px 8px rgba(102,126,234,0.45);
+    }
+    .laptop-hero-sub {
+        font-size: 0.85rem;
+        color: var(--text-secondary);
+        margin-top: 0.25rem;
+        margin-left: 44px;
+    }
+    .laptop-stat-tiles {
+        display: flex;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+    }
+    .laptop-stat-tile {
+        display: flex;
+        align-items: center;
+        gap: 0.55rem;
+        padding: 0.5rem 0.85rem;
+        background: rgba(255,255,255,0.04);
+        border: 1px solid var(--card-border, rgba(255,255,255,0.08));
+        border-radius: 10px;
+        min-width: 110px;
+    }
+    [data-theme="light"] .laptop-stat-tile {
+        background: rgba(0,0,0,0.03);
+    }
+    .laptop-stat-tile svg {
+        width: 18px;
+        height: 18px;
+        flex-shrink: 0;
+        opacity: 0.85;
+    }
+    .laptop-stat-tile .lstat-value {
+        font-weight: 700;
+        font-size: 1.05rem;
+        line-height: 1.1;
+    }
+    .laptop-stat-tile .lstat-label {
+        font-size: 0.7rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: var(--text-secondary);
+        line-height: 1.1;
+    }
+    .laptop-stat-tile .lstat-tile-body {
+        display: flex;
+        flex-direction: column;
+        line-height: 1.1;
+    }
+
+    /* Filter bar wrapper — visually distinct panel below the hero */
+    .laptop-filter-panel {
+        margin: 0 0 1rem;
+        padding: 0.85rem 1rem 0.75rem;
+        background: var(--card-bg);
+        border: 1px solid var(--card-border, rgba(255,255,255,0.06));
+        border-radius: 12px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+    .laptop-filter-panel > .laptop-filters-inner {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.6rem 0.85rem;
+        align-items: center;
+    }
+    .laptop-filter-group {
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+        font-size: 0.78rem;
+        color: var(--text-secondary);
+    }
+    .laptop-filter-group > .lfg-label {
+        font-weight: 600;
+        color: var(--text-secondary);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        font-size: 0.7rem;
+    }
+    .laptop-filter-divider {
+        width: 1px;
+        height: 22px;
+        background: var(--table-border);
+        margin: 0 0.15rem;
+    }
+
+    /* SVG-icon toggle bar (matches gpu.html .filter-icon-btn) */
+    .laptop-icon-bar {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+    }
+    .laptop-icon-btn {
+        position: relative;
+        width: 34px;
+        height: 34px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 8px;
+        border: 1px solid var(--table-border);
+        background: var(--input-bg, transparent);
+        color: var(--text-secondary);
+        cursor: pointer;
+        transition: background 0.15s, color 0.15s, border-color 0.15s, transform 0.1s;
+        padding: 0;
+    }
+    .laptop-icon-btn:hover {
+        border-color: var(--primary, #667eea);
+        color: var(--text-color);
+        transform: translateY(-1px);
+    }
+    .laptop-icon-btn:focus-visible {
+        outline: 2px solid var(--link-color);
+        outline-offset: 2px;
+    }
+    .laptop-icon-btn svg {
+        width: 18px;
+        height: 18px;
+    }
+    .laptop-icon-btn .badge-dot {
+        position: absolute;
+        top: 4px;
+        right: 4px;
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: var(--primary, #667eea);
+        opacity: 0;
+        transition: opacity 0.15s;
+    }
+    .laptop-icon-btn.active {
+        background: var(--primary, #667eea);
+        border-color: var(--primary, #667eea);
+        color: #fff;
+        box-shadow: 0 2px 8px rgba(102,126,234,0.35);
+    }
+    .laptop-icon-btn.active .badge-dot { opacity: 0; }
+    .laptop-icon-btn:not(.active) .badge-dot { opacity: 1; }
+
+    /* Per-toggle accent colors when active */
+    .laptop-icon-btn.t-macbooks.active  { background: linear-gradient(135deg, #1d1d1f 0%, #3a3a3c 100%); border-color: #1d1d1f; }
+    .laptop-icon-btn.t-active.active    { background: linear-gradient(135deg, #16a34a 0%, #0f7a35 100%); border-color: #0f7a35; }
+    .laptop-icon-btn.t-flagged.active   { background: linear-gradient(135deg, #dc2626 0%, #9a0006 100%); border-color: #9a0006; }
+    .laptop-icon-btn.t-perekups.active  { background: linear-gradient(135deg, #ea580c 0%, #b34000 100%); border-color: #b34000; }
+    .laptop-icon-btn.t-lombards.active  { background: linear-gradient(135deg, #b91c1c 0%, #7f1d1d 100%); border-color: #7f1d1d; }
+
+    /* Brand "Apple/Asus/..." colored dots inside filter dropdowns */
+    .laptop-icon-btn .tooltip {
+        position: absolute;
+        top: calc(100% + 6px);
+        left: 50%;
+        transform: translateX(-50%);
+        background: var(--card-bg);
+        color: var(--text-color);
+        border: 1px solid var(--table-border);
+        padding: 0.25rem 0.55rem;
+        border-radius: 6px;
+        font-size: 0.7rem;
+        font-weight: 600;
+        white-space: nowrap;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.12s;
+        z-index: 20;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.18);
+    }
+    .laptop-icon-btn:hover .tooltip,
+    .laptop-icon-btn:focus-visible .tooltip {
+        opacity: 1;
+    }
+
+    /* Active-filter pill row sits just below the panel */
+    .laptop-active-filters {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.4rem;
+        align-items: center;
+        font-size: 0.8rem;
+        color: var(--text-secondary);
+        margin: 0 0 1rem;
+        min-height: 1.5rem;
+    }
+    .laptop-active-filters > .laf-label {
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        font-size: 0.7rem;
+        margin-right: 0.25rem;
+    }
+    .laptop-active-filters > .laf-chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.3rem;
+        padding: 0.2rem 0.55rem;
+        background: rgba(102,126,234,0.15);
+        border: 1px solid rgba(102,126,234,0.4);
+        border-radius: 999px;
+        color: var(--text-color);
+        font-size: 0.75rem;
+    }
+    .laptop-active-filters > .laf-chip button {
+        background: none;
+        border: 0;
+        color: inherit;
+        cursor: pointer;
+        padding: 0;
+        font-size: 0.95rem;
+        line-height: 1;
+        opacity: 0.6;
+    }
+    .laptop-active-filters > .laf-chip button:hover { opacity: 1; }
+
+    /* Hide the legacy "Brand: <select>" wrapper inside the panel — we re-style it */
+    .laptop-filter-panel select,
+    .laptop-filter-panel input[type="text"],
+    .laptop-filter-panel input[type="number"] {
+        padding: 0.32rem 0.5rem;
+        border-radius: 6px;
+        border: 1px solid var(--input-border, var(--table-border));
+        background: var(--input-bg);
+        color: var(--text-color);
+        font-size: 0.8rem;
+    }
+    .laptop-filter-panel select { min-width: 92px; }
+    .laptop-filter-panel input[type="number"] { width: 72px; }
+
+    /* Remove the default "Brand:" / "GPU:" stacked label since we now use the .lfg-label */
+    .laptop-filter-panel label.lfg-flat {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.35rem;
+        font-size: 0.78rem;
+        color: var(--text-secondary);
+    }
+
+    /* Make the existing CPU dropdown still anchor to its trigger */
+    #cpu-filter-group { position: relative; display: inline-flex; align-items: center; gap: 0.4rem; }
+    #cpu-filter-group > label.lfg-flat { cursor: pointer; }
+
+    /* "Clear filters" button sits at the end */
+    .laptop-filter-panel .btn-small {
+        margin-left: auto;
+    }
+
+    .laptop-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+        gap: 1rem;
+        margin-top: 1rem;
+    }
+
+    .laptop-card {
+        background: var(--card-bg);
+        border: 1px solid var(--card-border, #eee);
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 2px 8px var(--shadow);
+        transition: transform 0.15s ease, box-shadow 0.15s ease;
+        cursor: pointer;
+        position: relative;
+    }
+
+    .laptop-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 16px var(--shadow-hover);
+    }
+
+    .laptop-card-image {
+        width: 100%;
+        height: 180px;
+        object-fit: cover;
+        display: block;
+        background: var(--bar-bg, #e5e7eb);
+    }
+
+    .seller-badge {
+        position: absolute;
+        top: 0.5rem;
+        left: 0.5rem;
+        padding: 0.25rem 0.5rem;
+        border-radius: 4px;
+        font-size: 0.7rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        color: #fff;
+        z-index: 2;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+    }
+
+    .seller-badge.lombards { background: #dc2626; }
+    .seller-badge.perekups { background: #ea580c; }
+
+    .laptop-card-placeholder {
+        width: 100%;
+        height: 180px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 3rem;
+        background: var(--bar-bg, #e5e7eb);
+    }
+
+    .laptop-card-body {
+        padding: 0.75rem;
+    }
+
+    .laptop-card-title {
+        font-weight: 600;
+        font-size: 0.95rem;
+        margin-bottom: 0.5rem;
+        line-height: 1.25;
+    }
+
+    .laptop-card-price {
+        font-size: 1.15rem;
+        font-weight: 700;
+        color: var(--link-color);
+        margin-bottom: 0.25rem;
+    }
+
+    .laptop-card-meta {
+        font-size: 0.85rem;
+        color: var(--text-secondary);
+        margin-bottom: 0.25rem;
+    }
+
+    .laptop-card-specs {
+        font-size: 0.8rem;
+        color: var(--text-secondary);
+        margin-top: 0.5rem;
+    }
+
+    .laptop-card-specs span {
+        display: inline-block;
+        margin-right: 0.5rem;
+    }
+
+    .laptop-card-footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 0.75rem;
+        font-size: 0.8rem;
+        color: var(--text-secondary);
+    }
+
+    .laptop-sentinel {
+        height: 48px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--text-secondary);
+        font-size: 0.875rem;
+        margin-top: 1rem;
+    }
+
+    /* Laptop detail popup layout fixes */
+    .laptop-detail-body {
+        max-width: 760px;
+        margin: 0 auto;
+    }
+    .laptop-detail-body h2 {
+        font-size: 1.15rem;
+        line-height: 1.35;
+        word-break: break-word;
+        margin-top: 0;
+    }
+    .laptop-detail-body .listing-detail-images {
+        margin-top: 0;
+        cursor: zoom-in;
+    }
+    .laptop-detail-body .listing-detail-images img {
+        max-height: 280px;
+        width: 100%;
+        object-fit: cover;
+        border-radius: 8px;
+        transition: transform 0.15s ease;
+    }
+    .laptop-detail-body .listing-detail-images:hover img {
+        transform: scale(1.01);
+    }
+
+    .lightbox-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,0.85);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 2000;
+        cursor: zoom-out;
+        opacity: 0;
+        transition: opacity 0.2s ease;
+        pointer-events: none;
+    }
+    .lightbox-overlay.active {
+        opacity: 1;
+        pointer-events: auto;
+    }
+    .lightbox-overlay img {
+        max-width: 92vw;
+        max-height: 92vh;
+        object-fit: contain;
+        border-radius: 6px;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+    }
+
+    /* Compact spec chips in laptop detail popup */
+    .laptop-detail-body .spec-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+        gap: 0.4rem;
+        margin: 0.5rem 0 1rem;
+    }
+    .laptop-detail-body .spec-chip {
+        display: flex;
+        align-items: center;
+        gap: 0.45rem;
+        background: var(--bar-bg);
+        border: 1px solid var(--table-border);
+        border-radius: 8px;
+        padding: 0.35rem 0.55rem;
+        min-width: 0;
+        transition: transform 0.12s ease, border-color 0.12s ease;
+    }
+    .laptop-detail-body .spec-chip:hover {
+        transform: translateY(-1px);
+        border-color: var(--link-color);
+    }
+    .laptop-detail-body .spec-chip-icon {
+        font-size: 1rem;
+        flex-shrink: 0;
+    }
+    .laptop-detail-body .spec-chip-text {
+        display: flex;
+        flex-direction: column;
+        min-width: 0;
+        line-height: 1.2;
+    }
+    .laptop-detail-body .spec-chip-label {
+        font-size: 0.62rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: var(--text-secondary);
+    }
+    .laptop-detail-body .spec-chip-value {
+        font-size: 0.85rem;
+        font-weight: 600;
+        color: var(--text-color);
+        word-break: break-word;
+    }
+
+    /* VALID badge + staff reference edit panel */
+    .valid-badge {
+        display: inline-block;
+        background: #16a34a;
+        color: #fff;
+        font-size: 0.62rem;
+        font-weight: 700;
+        letter-spacing: 0.05em;
+        padding: 0.15rem 0.5rem;
+        border-radius: 999px;
+        vertical-align: middle;
+        white-space: nowrap;
+    }
+    .valid-badge-sm {
+        font-size: 0.6rem;
+        padding: 0.05rem 0.35rem;
+    }
+    .laptop-detail-body .ref-edit-panel {
+        margin-top: 1rem;
+        padding: 0.65rem 0.75rem;
+        border: 1px dashed var(--table-border);
+        border-radius: 8px;
+    }
+    .ref-edit-panel .ref-edit-title {
+        font-size: 0.72rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: var(--text-secondary);
+        margin-bottom: 0.5rem;
+    }
+    .ref-edit-panel .ref-edit-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        align-items: flex-end;
+    }
+    .ref-edit-panel label {
+        display: flex;
+        flex-direction: column;
+        gap: 0.15rem;
+        font-size: 0.68rem;
+        color: var(--text-secondary);
+    }
+    .ref-edit-panel input[type="number"],
+    .ref-edit-panel input[type="text"],
+    .ref-edit-panel select {
+        padding: 0.3rem 0.45rem;
+        font-size: 0.8rem;
+        border: 1px solid var(--input-border);
+        border-radius: 6px;
+        background: var(--input-bg);
+        color: var(--text-color);
+        width: 86px;
+    }
+    .ref-edit-panel select { width: 100px; }
+    .ref-edit-panel input#ref-resolution { width: 110px; }
+    .ref-edit-panel .ref-valid-label {
+        flex-direction: row;
+        align-items: center;
+        gap: 0.35rem;
+        font-size: 0.78rem;
+        font-weight: 700;
+        color: #16a34a;
+        padding-bottom: 0.4rem;
+        cursor: pointer;
+    }
+    .ref-edit-panel .ref-save-status {
+        font-size: 0.78rem;
+        padding-bottom: 0.4rem;
+    }
+
+    #cpu-filter-group .filter-dropdown {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        z-index: 10;
+        background: var(--card-bg);
+        border: 1px solid var(--table-border);
+        border-radius: 8px;
+        padding: 0.75rem;
+        min-width: 760px;
+        max-width: 95vw;
+        max-height: 70vh;
+        overflow-y: auto;
+        box-shadow: 0 6px 20px var(--shadow);
+    }
+
+    #cpu-filter-group .filter-dropdown.open {
+        display: block;
+    }
+
+    .cpu-vendor-group {
+        margin-bottom: 1rem;
+    }
+
+    .cpu-vendor-header {
+        font-weight: 700;
+        font-size: 0.95rem;
+        color: var(--primary, #667eea);
+        margin-bottom: 0.5rem;
+        padding-bottom: 0.25rem;
+        border-bottom: 1px solid var(--table-border);
+    }
+
+    .cpu-class-row {
+        margin-bottom: 0.35rem;
+        border: 1px solid var(--table-border);
+        border-radius: 6px;
+        padding: 0.25rem 0.35rem;
+        background: var(--section-bg, rgba(0,0,0,0.03));
+    }
+
+    .cpu-class-header {
+        font-weight: 600;
+        font-size: 0.85rem;
+        color: var(--text-secondary);
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0.4rem 0.5rem;
+        border-radius: 6px;
+        transition: background 0.15s;
+        user-select: none;
+        background: var(--bar-bg, rgba(0,0,0,0.06));
+    }
+
+    .cpu-class-header:hover {
+        background: var(--table-border, rgba(0,0,0,0.12));
+    }
+
+    .cpu-class-header .class-actions {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        margin-left: auto;
+    }
+
+    .cpu-class-header .class-actions .mark-all {
+        width: 1.15rem;
+        height: 1.15rem;
+        border-radius: 50%;
+        border: 2px solid var(--primary, #667eea);
+        background: transparent;
+        cursor: pointer;
+        transition: background 0.15s, transform 0.1s, border-color 0.15s;
+        position: relative;
+        flex-shrink: 0;
+        padding: 0;
+    }
+
+    .cpu-class-header .class-actions .mark-all.selected {
+        background: var(--primary, #667eea);
+        border-color: var(--primary, #667eea);
+    }
+
+    .cpu-class-header .class-actions .mark-all:hover {
+        transform: scale(1.15);
+    }
+
+    .cpu-class-header::after {
+        content: '▸';
+        font-size: 0.75rem;
+        transition: transform 0.2s ease;
+        margin-left: 0.5rem;
+    }
+
+    .cpu-class-header.expanded::after {
+        transform: rotate(90deg);
+    }
+
+    .cpu-options-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+        gap: 0.35rem;
+        overflow: hidden;
+        transition: max-height 0.25s ease, opacity 0.25s ease, margin 0.25s ease;
+        max-height: 0;
+        opacity: 0;
+        margin-top: 0;
+    }
+
+    .cpu-options-grid.expanded {
+        max-height: 2000px;
+        opacity: 1;
+        margin-top: 0.35rem;
+    }
+
+    .cpu-option-label {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        padding: 0.35rem 0.65rem;
+        cursor: pointer;
+        white-space: nowrap;
+        border-radius: 999px;
+        transition: background 0.15s, color 0.15s, transform 0.1s, box-shadow 0.15s;
+        background: var(--card-bg);
+        border: 1px solid var(--table-border);
+        color: var(--text-color);
+        font-size: 0.8rem;
+        user-select: none;
+    }
+
+    .cpu-option-label:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 2px 6px var(--shadow);
+    }
+
+    .cpu-option-label input {
+        display: none;
+    }
+
+    .cpu-option-label .chip-check {
+        display: none;
+    }
+
+    .cpu-option-label.checked {
+        background: var(--primary, #667eea);
+        border-color: var(--primary, #667eea);
+        color: var(--primary-contrast, #fff);
+        box-shadow: 0 2px 8px rgba(102, 126, 234, 0.35);
+    }
+
+    [data-theme="dark"] .cpu-option-label.checked {
+        color: #fff;
+        box-shadow: 0 2px 10px rgba(102, 126, 234, 0.55);
+    }
+
+    /* Compact filter bar: labels inline with controls, denser spacing */
+    .section .filters {
+        gap: 0.5rem 0.75rem;
+    }
+    .section .filters label {
+        flex-direction: row;
+        align-items: center;
+        gap: 0.35rem;
+        font-size: 0.8rem;
+        white-space: nowrap;
+    }
+    .section .filters select,
+    .section .filters input[type="text"],
+    .section .filters input[type="number"] {
+        padding: 0.3rem 0.45rem;
+        font-size: 0.8rem;
+    }
+
+    /* Compact toggle chips replacing the old stacked checkbox labels */
+    .filters label.toggle-chip {
+        flex-direction: row;
+        align-items: center;
+        align-self: flex-end;
+        gap: 0.4rem;
+        padding: 0.32rem 0.75rem;
+        border-radius: 999px;
+        border: 1px solid var(--table-border);
+        background: var(--card-bg);
+        color: var(--text-secondary);
+        font-size: 0.8rem;
+        font-weight: 500;
+        cursor: pointer;
+        user-select: none;
+        white-space: nowrap;
+        transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease, transform 0.1s ease;
+    }
+    .filters label.toggle-chip:hover {
+        border-color: var(--link-color);
+        transform: translateY(-1px);
+    }
+    .filters label.toggle-chip input {
+        position: absolute;
+        opacity: 0;
+        width: 0;
+        height: 0;
+        margin: 0;
+        padding: 0;
+        border: none;
+    }
+    .filters label.toggle-chip::before {
+        content: '';
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        border: 1.5px solid currentColor;
+        flex-shrink: 0;
+        opacity: 0.5;
+        transition: background 0.15s ease, opacity 0.15s ease;
+    }
+    .filters label.toggle-chip:has(input:checked) {
+        background: var(--primary, #667eea);
+        border-color: var(--primary, #667eea);
+        color: var(--primary-contrast, #fff);
+        box-shadow: 0 2px 8px rgba(102, 126, 234, 0.35);
+    }
+    .filters label.toggle-chip:has(input:checked)::before {
+        background: currentColor;
+        opacity: 1;
+    }
+    .filters label.toggle-chip:has(input:focus-visible) {
+        outline: 2px solid var(--link-color);
+        outline-offset: 2px;
+    }
+
+
+        @media (prefers-reduced-motion: reduce) {
+            .unicorn-badge,
+            .widget-card,
+            .drag-clone,
+            .listing-thumb,
+            .listing-thumb:hover,
+            .model-card,
+            .model-card:hover,
+            .listing-image-grid img,
+            .listing-image-grid img:hover,
+            .btn,
+            .btn:hover {
+                animation: none !important;
+                transition: none !important;
+                transform: none !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Shared Listing Detail Modal -->
+    <div id="shared-listing-modal" class="modal-overlay">
+        <div class="modal" style="max-width: 1000px;">
+            <div class="modal-header">
+                <h3 id="shared-listing-title">Listing Details</h3>
+                <button class="modal-close" onclick="closeSharedListingModal()">×</button>
+            </div>
+            <div id="shared-listing-content"></div>
+        </div>
+    </div>
+    <nav class="navbar">
+        <div class="navbar-top">
+            <h1>🔍 SS-Crawler Dashboard</h1>
+            <div class="nav-utilities">
+                <span id="auth-nav"></span>
+                <button class="lang-toggle" onclick="toggleLanguage()" title="Switch language">
+                    <span id="lang-icon">🇱🇻</span>
+                    <span id="lang-text">LV</span>
+                </button>
+                <button class="dark-mode-toggle" onclick="toggleDarkMode()" title="Toggle Dark Mode">
+                    <span id="dark-mode-icon">🌙</span>
+                    <span id="dark-mode-text">Dark</span>
+                </button>
+            </div>
+        </div>
+        <div class="nav-links">
+            <a href="/">Dashboard</a>
+            <a href="/gpu">GPUs</a>
+            <a href="/cpu">CPUs</a>
+            <a href="/computers">Computers</a>
+            <a href="/motherboards">Motherboards</a>
+            <a href="/monitors">Monitors</a>
+            <a href="/ram">RAM</a>
+            <a href="/cameras">Cameras</a>
+            <a href="/lenses">Lenses</a>
+            <a href="/ssd">SSDs</a>
+            <a href="/psu">PSUs</a>
+            <a href="/cases">Cases</a>
+            <a href="/consoles">Consoles</a>
+            <a href="/pc-builder">PC Builder</a>
+            <a href="/models">Models</a>
+            <a href="/wiki" id="nav-wiki">Wiki</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        
+<div class="section">
+    
+    <div class="laptop-hero">
+        <div class="laptop-hero-row">
+            <div>
+                <h1 class="laptop-hero-title">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <rect x="3" y="4" width="18" height="12" rx="2"/>
+                        <line x1="2" y1="20" x2="22" y2="20"/>
+                    </svg>
+                    Laptops
+                </h1>
+                <div class="laptop-hero-sub">Scraped laptop listings from ss.com · shared per-model reference, staff-editable</div>
+            </div>
+            <div class="laptop-stat-tiles" id="laptop-stat-tiles">
+                <div class="laptop-stat-tile" id="laptop-stat-listings" title="Total active laptop listings">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="#667eea" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <rect x="3" y="4" width="18" height="12" rx="2"/>
+                        <line x1="2" y1="20" x2="22" y2="20"/>
+                    </svg>
+                    <div class="lstat-tile-body">
+                        <span class="lstat-value" id="lstat-listings">—</span>
+                        <span class="lstat-label">Listings</span>
+                    </div>
+                </div>
+                <div class="laptop-stat-tile" id="laptop-stat-models" title="Distinct brand+model+size combos in the reference table">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="#764ba2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M20 7H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"/>
+                        <line x1="12" y1="12" x2="12" y2="12"/>
+                    </svg>
+                    <div class="lstat-tile-body">
+                        <span class="lstat-value" id="lstat-models">—</span>
+                        <span class="lstat-label">Models</span>
+                    </div>
+                </div>
+                <div class="laptop-stat-tile" id="laptop-stat-valid" title="Models marked as VALID by an admin">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M20 6L9 17l-5-5"/>
+                    </svg>
+                    <div class="lstat-tile-body">
+                        <span class="lstat-value" id="lstat-valid">—</span>
+                        <span class="lstat-label">VALID</span>
+                    </div>
+                </div>
+                <div class="laptop-stat-tile" id="laptop-stat-res" title="Reference rows with a known resolution">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <rect x="2" y="3" width="20" height="14" rx="2"/>
+                        <line x1="8" y1="21" x2="16" y2="21"/>
+                        <line x1="12" y1="17" x2="12" y2="21"/>
+                    </svg>
+                    <div class="lstat-tile-body">
+                        <span class="lstat-value" id="lstat-res">—</span>
+                        <span class="lstat-label">Resolution</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+    <div class="laptop-filter-panel">
+        <div class="laptop-filters-inner">
+            <div class="laptop-filter-group">
+                <span class="lfg-label">Brand</span>
+                <select id="brand-filter" onchange="loadLaptops()">
+                    <option value="">All</option>
+                </select>
+            </div>
+            <div class="laptop-filter-divider"></div>
+            <div id="cpu-filter-group">
+                <label class="lfg-flat" onclick="toggleCPUFilter()">
+                    <span class="lfg-label">CPU</span>
+                    <span id="cpu-selected-label">Any</span>
+                </label>
+                <div id="cpu-options" class="filter-dropdown">
+                    <div id="cpu-sort-bar" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; padding-bottom: 0.35rem; border-bottom: 1px solid var(--table-border); gap: 0.5rem; flex-wrap: wrap;">
+                        <div style="display: flex; align-items: center; gap: 0.5rem;">
+                            <span style="font-weight: 600;">Sort:</span>
+                            <select id="cpu-sort-mode" onchange="renderCPUOptions(); saveFilters();">
+                                <option value="newest" selected>Newest</option>
+                                <option value="name">Name</option>
+                                <option value="count-desc">Most listings</option>
+                                <option value="count-asc">Least listings</option>
+                            </select>
+                            <span style="font-weight: 600;">Group:</span>
+                            <select id="cpu-group-mode" onchange="renderCPUOptions(); saveFilters();">
+                                <option value="class" selected>Class</option>
+                                <option value="generation">Generation</option>
+                            </select>
+                        </div>
+                        <button class="btn btn-small" type="button" onclick="clearAllCpus()">Clear all</button>
+                    </div>
+                    <div id="cpu-options-list">
+                        <!-- populated dynamically -->
+                    </div>
+                </div>
+            </div>
+            <div class="laptop-filter-group">
+                <span class="lfg-label">GPU</span>
+                <input type="text" id="gpu-filter" placeholder="e.g. GTX" oninput="debounceLoadLaptops()">
+            </div>
+            <div class="laptop-filter-divider"></div>
+            <div class="laptop-filter-group">
+                <span class="lfg-label">Price €</span>
+                <input type="number" id="min-price" placeholder="Min" oninput="debounceLoadLaptops()">
+                <span style="opacity:0.5;">–</span>
+                <input type="number" id="max-price" placeholder="Max" oninput="debounceLoadLaptops()">
+            </div>
+            <div class="laptop-filter-group">
+                <span class="lfg-label">RAM</span>
+                <select id="ram-min" onchange="loadLaptops()">
+                    <option value="">Min</option>
+                    <option value="4">4</option>
+                    <option value="8">8</option>
+                    <option value="16">16</option>
+                    <option value="32">32</option>
+                </select>
+                <select id="ram-max" onchange="loadLaptops()">
+                    <option value="">Max</option>
+                    <option value="8">8</option>
+                    <option value="16">16</option>
+                    <option value="32">32</option>
+                    <option value="64">64</option>
+                </select>
+                <span style="opacity:0.6; font-size:0.7rem;">GB</span>
+            </div>
+            <div class="laptop-filter-group">
+                <span class="lfg-label">Screen</span>
+                <select id="display-size-min" onchange="loadLaptops()">
+                    <option value="">Min</option>
+                    <option value="11">11″</option>
+                    <option value="12">12″</option>
+                    <option value="13">13″</option>
+                    <option value="14">14″</option>
+                    <option value="15">15″</option>
+                    <option value="16">16″</option>
+                    <option value="17">17″</option>
+                </select>
+                <select id="display-size-max" onchange="loadLaptops()">
+                    <option value="">Max</option>
+                    <option value="12">12″</option>
+                    <option value="13">13″</option>
+                    <option value="14">14″</option>
+                    <option value="15">15″</option>
+                    <option value="16">16″</option>
+                    <option value="17">17″</option>
+                    <option value="18">18″</option>
+                </select>
+            </div>
+            <div class="laptop-filter-divider"></div>
+            <div class="laptop-filter-group">
+                <span class="lfg-label">Sort</span>
+                <select id="sort-by" onchange="loadLaptops()">
+                    <option value="date_posted">Date Posted</option>
+                    <option value="price">Price</option>
+                </select>
+                <select id="sort-order" onchange="loadLaptops()">
+                    <option value="desc">Desc</option>
+                    <option value="asc">Asc</option>
+                </select>
+            </div>
+            <div class="laptop-filter-group">
+                <span class="lfg-label">Time</span>
+                <select id="time-filter" onchange="loadLaptops()">
+                    <option value="all_time">All Time</option>
+                    <option value="30d">30 Days</option>
+                    <option value="7d">7 Days</option>
+                </select>
+            </div>
+            <div class="laptop-filter-divider"></div>
+            <div class="laptop-icon-bar" id="laptop-toggle-bar" role="group" aria-label="Listing filters">
+                <button type="button" class="laptop-icon-btn t-macbooks" data-target="macbook-only" data-default="false" aria-pressed="false" onclick="toggleLaptopIcon(this)" title="Include macbooks (off by default)">
+                    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                        <path d="M17.05 12.04c-.03-2.7 2.21-4 2.31-4.06-1.26-1.84-3.22-2.09-3.92-2.12-1.67-.17-3.26.98-4.11.98-.86 0-2.16-.96-3.55-.93-1.83.03-3.51 1.06-4.45 2.7-1.9 3.29-.49 8.15 1.36 10.82.9 1.3 1.97 2.76 3.37 2.71 1.35-.05 1.86-.87 3.49-.87 1.62 0 2.09.87 3.52.84 1.45-.02 2.37-1.32 3.26-2.63 1.03-1.51 1.45-2.97 1.48-3.05-.03-.01-2.83-1.09-2.86-4.32zM14.4 4.06c.74-.9 1.24-2.14 1.1-3.39-1.06.04-2.35.71-3.11 1.6-.68.79-1.28 2.06-1.12 3.27 1.19.09 2.39-.6 3.13-1.48z"/>
+                    </svg>
+                    <span class="badge-dot"></span>
+                    <span class="tooltip">Include MacBooks</span>
+                </button>
+                <button type="button" class="laptop-icon-btn t-active" data-target="active-only" data-default="true" aria-pressed="true" onclick="toggleLaptopIcon(this)" title="Active listings only">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                        <polyline points="22 4 12 14.01 9 11.01"/>
+                    </svg>
+                    <span class="tooltip">Active only</span>
+                </button>
+                <button type="button" class="laptop-icon-btn t-flagged" data-target="exclude-flagged" data-default="true" aria-pressed="true" onclick="toggleLaptopIcon(this)" title="Exclude flagged listings">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/>
+                        <line x1="4" y1="22" x2="4" y2="15"/>
+                    </svg>
+                    <span class="tooltip">Exclude flagged</span>
+                </button>
+                <button type="button" class="laptop-icon-btn t-perekups" data-target="include-perekups" data-default="true" aria-pressed="true" onclick="toggleLaptopIcon(this)" title="Include perekups (resellers)">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
+                        <line x1="3" y1="6" x2="21" y2="6"/>
+                        <path d="M16 10a4 4 0 0 1-8 0"/>
+                    </svg>
+                    <span class="tooltip">Include perekups</span>
+                </button>
+                <button type="button" class="laptop-icon-btn t-lombards" data-target="include-lombards" data-default="true" aria-pressed="true" onclick="toggleLaptopIcon(this)" title="Include lombards (pawn shops)">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M2 4l3 12h14l3-12-6 7-4-9-4 9-6-7z"/>
+                        <circle cx="12" cy="20" r="1.5" fill="currentColor" stroke="none"/>
+                    </svg>
+                    <span class="tooltip">Include lombards</span>
+                </button>
+            </div>
+            <input type="hidden" id="macbook-only" value="false">
+            <input type="hidden" id="active-only" value="true">
+            <input type="hidden" id="exclude-flagged" value="true">
+            <input type="hidden" id="include-perekups" value="true">
+            <input type="hidden" id="include-lombards" value="true">
+            <input type="hidden" id="model-filter">
+            <input type="hidden" id="storage-min">
+            <input type="hidden" id="storage-max">
+            <input type="hidden" id="storage-type">
+            <input type="hidden" id="display-size">
+            <button class="btn btn-small" onclick="clearFilters()">Clear filters</button>
+        </div>
+    </div>
+
+    <div id="active-filters" class="laptop-active-filters"></div>
+
+    <!-- Similar listings modal -->
+    <div id="similar-modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); z-index:1000; align-items:center; justify-content:center;">
+        <div class="modal" style="max-width:480px;">
+            <div class="modal-header">
+                <h3>Show similar listings</h3>
+                <button class="modal-close" onclick="closeSimilarModal()">&times;</button>
+            </div>
+            <p style="margin-bottom:1rem; color:var(--text-secondary); font-size:0.9rem;">Pick which specs must match. Uncheck a spec to ignore it.</p>
+            <div id="similar-options" style="display:grid; gap:0.6rem; margin-bottom:1.5rem;">
+                <!-- populated dynamically -->
+            </div>
+            <div style="display:flex; justify-content:flex-end; gap:0.75rem;">
+                <button class="btn btn-small" onclick="closeSimilarModal()">Cancel</button>
+                <button class="btn btn-primary" onclick="applySimilarFilter()">Show similar</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="listings-container">
+        <div class="loading">Loading laptop listings...</div>
+    </div>
+
+    <div id="pagination" style="margin-top: 1.5rem; display: flex; justify-content: center; align-items: center; color: var(--text-secondary); font-size: 0.875rem;">
+        <span id="page-info"></span>
+    </div>
+    <div id="laptop-sentinel" class="laptop-sentinel" style="display: none;">
+        <span>Loading more…</span>
+    </div>
+</div>
+
+    </div>
+
+    
+
+    <script>
+    const translations = {"en": {"Access": "Access", "Accessible pages": "Accessible pages", "Actions": "Actions", "Active": "Active", "Active only": "Active only", "Admin": "Admin", "Admin Panel": "Admin Panel", "All": "All", "All Categories": "All Categories", "All Time": "All Time", "Any": "Any", "Apply": "Apply", "Are you sure?": "Are you sure?", "Ascending": "Ascending", "Avg Price": "Avg Price", "Back": "Back", "Brand": "Brand", "CPU": "CPU", "CPU Listings": "CPU Listings", "CPUs": "CPUs", "Calculated as: (max_price - min_price) \u00d7 listing_count": "Calculated as: (max_price - min_price) \u00d7 listing_count", "Cameras": "Cameras", "Cancel": "Cancel", "Capacity": "Capacity", "Case Listings": "Case Listings", "Cases": "Cases", "Category": "Category", "Class": "Class", "Clear": "Clear", "Close": "Close", "Computers": "Computers", "Confirm": "Confirm", "Consoles": "Consoles", "Cores": "Cores", "Create": "Create", "Created": "Created", "DDR Type": "DDR Type", "Dark": "Dark", "Dashboard": "Dashboard", "Date Posted": "Date Posted", "Delete": "Delete", "Delete user": "Delete user", "Descending": "Descending", "Description": "Description", "Details": "Details", "Download": "Download", "Edit": "Edit", "Edit user": "Edit user", "Email": "Email", "Enter password": "Enter password", "Enter username": "Enter username", "Error": "Error", "Error loading listing": "Error loading listing", "Exclude flagged": "Exclude flagged", "Expires": "Expires", "Export": "Export", "Failed to load earnings data": "Failed to load earnings data", "Failed to load listing details": "Failed to load listing details", "Failed to load price trends": "Failed to load price trends", "Failed to load statistics": "Failed to load statistics", "Failed to update": "Failed to update", "Filter": "Filter", "GPU": "GPU", "GPU Listings": "GPU Listings", "GPUs": "GPUs", "Hide": "Hide", "Info": "Info", "Interface": "Interface", "Invalid username or password": "Invalid username or password", "Last Month": "Last Month", "Last Week": "Last Week", "Last Year": "Last Year", "Lens Listings": "Lens Listings", "Lenses": "Lenses", "Light": "Light", "Listing Details": "Listing Details", "Loading...": "Loading...", "Login": "Login", "Logout": "Logout", "Model": "Model", "Model Statistics": "Model Statistics", "Models": "Models", "Monitors": "Monitors", "Motherboard": "Motherboard", "Motherboards": "Motherboards", "My Profile": "My Profile", "New password (leave blank to keep current)": "New password (leave blank to keep current)", "New user": "New user", "Next": "Next", "No": "No", "No earnings data available": "No earnings data available", "No price trend data available for the selected filters": "No price trend data available for the selected filters", "No results": "No results", "Order": "Order", "PC Builder": "PC Builder", "PSU": "PSU", "PSU Listings": "PSU Listings", "PSUs": "PSUs", "Page": "Page", "Password": "Password", "Potential Earnings": "Potential Earnings", "Potential Earnings by Category": "Potential Earnings by Category", "Previous": "Previous", "Price": "Price", "Price Trends Over Time": "Price Trends Over Time", "Profile": "Profile", "Profile updated": "Profile updated", "Quick Links": "Quick Links", "RAM": "RAM", "RAM Listings": "RAM Listings", "Refresh": "Refresh", "Reset filters": "Reset filters", "Role": "Role", "Role page access": "Role page access", "Role page access saved": "Role page access saved", "Rows per page": "Rows per page", "SS-Crawler Dashboard": "SS-Crawler Dashboard", "SSD": "SSD", "SSD Listings": "SSD Listings", "SSDs": "SSDs", "Save": "Save", "Save changes": "Save changes", "Save role access": "Save role access", "Save user access": "Save user access", "Screen": "Screen", "Search": "Search", "Series": "Series", "Show": "Show", "Sign in": "Sign in", "Socket": "Socket", "Sort by": "Sort by", "Source": "Source", "Specifications": "Specifications", "Storage": "Storage", "Submit": "Submit", "Subscription": "Subscription", "Subscription status": "Subscription status", "Subscription tier": "Subscription tier", "Success": "Success", "Switch language": "Switch language", "Time": "Time", "Time Period": "Time Period", "Total Listings": "Total Listings", "Type": "Type", "Update profile": "Update profile", "User page access": "User page access", "User page access saved": "User page access saved", "Username": "Username", "Users": "Users", "VRAM": "VRAM", "Vendor": "Vendor", "View CPU Listings": "View CPU Listings", "View GPU Listings": "View GPU Listings", "View Lens Listings": "View Lens Listings", "View on ss.com": "View on ss.com", "Warning": "Warning", "Wattage": "Wattage", "Welcome back": "Welcome back", "Wiki": "Wiki", "Yes": "Yes", "avg": "avg", "listings": "listings", "matched": "matched", "of": "of", "spread": "spread", "High confidence (\u226570%)": "High confidence (\u226570%)", "Price drop only": "Price drop only", "Show avg price": "Show avg price", "Active-only averages": "Active-only averages"}, "lv": {"Access": "Piek\u013cuve", "Accessible pages": "Pieejam\u0101s lapas", "Actions": "Darb\u012bbas", "Active": "Akt\u012bvs", "Active only": "Tikai akt\u012bvie", "Admin": "Administrators", "Admin Panel": "Administratora panelis", "All": "Visi", "All Categories": "Visas kategorijas", "All Time": "Visu laiku", "Any": "Jebkur\u0161", "Apply": "Lietot", "Are you sure?": "Vai esat p\u0101rliecin\u0101ts?", "Ascending": "Augo\u0161\u0101 sec\u012bb\u0101", "Avg Price": "Vid. cena", "Back": "Atpaka\u013c", "Brand": "Ra\u017eot\u0101js", "CPU": "CPU", "CPU Listings": "Procesoru sludin\u0101jumi", "CPUs": "Procesori", "Calculated as: (max_price - min_price) \u00d7 listing_count": "Apr\u0113\u0137in\u0101ts k\u0101: (max_cena - min_cena) \u00d7 sludin\u0101jumu_skaits", "Cameras": "Fotoapar\u0101ti", "Cancel": "Atcelt", "Capacity": "Tilpums", "Case Listings": "Korpusu sludin\u0101jumi", "Cases": "Korpusi", "Category": "Kategorija", "Class": "Klase", "Clear": "Not\u012br\u012bt", "Close": "Aizv\u0113rt", "Computers": "Datori", "Confirm": "Apstiprin\u0101t", "Consoles": "Konsules", "Cores": "Kodoli", "Create": "Izveidot", "Created": "Izveidots", "DDR Type": "DDR tips", "Dark": "Tum\u0161s", "Dashboard": "Panelis", "Date Posted": "Datums", "Delete": "Dz\u0113st", "Delete user": "Dz\u0113st lietot\u0101ju", "Descending": "Dilsto\u0161\u0101 sec\u012bb\u0101", "Description": "Apraksts", "Details": "Deta\u013cas", "Download": "Lejupiel\u0101d\u0113t", "Edit": "Redi\u0123\u0113t", "Edit user": "Redi\u0123\u0113t lietot\u0101ju", "Email": "E-pasts", "Enter password": "Ievadiet paroli", "Enter username": "Ievadiet lietot\u0101jv\u0101rdu", "Error": "K\u013c\u016bda", "Error loading listing": "K\u013c\u016bda iel\u0101d\u0113jot sludin\u0101jumu", "Exclude flagged": "Izsl\u0113gt atz\u012bm\u0113tos", "Expires": "Beidzas", "Export": "Eksport\u0113t", "Failed to load earnings data": "Neizdev\u0101s iel\u0101d\u0113t pe\u013c\u0146as datus", "Failed to load listing details": "Neizdev\u0101s iel\u0101d\u0113t sludin\u0101juma deta\u013cas", "Failed to load price trends": "Neizdev\u0101s iel\u0101d\u0113t cenu tendences", "Failed to load statistics": "Neizdev\u0101s iel\u0101d\u0113t statistiku", "Failed to update": "Neizdev\u0101s atjaunin\u0101t", "Filter": "Filtr\u0113t", "GPU": "GPU", "GPU Listings": "Videokar\u0161u sludin\u0101jumi", "GPUs": "Videokartes", "Hide": "Pasl\u0113pt", "Info": "Inform\u0101cija", "Interface": "Interfeiss", "Invalid username or password": "Nepareizs lietot\u0101jv\u0101rds vai parole", "Last Month": "P\u0113d\u0113jais m\u0113nesis", "Last Week": "P\u0113d\u0113j\u0101 ned\u0113\u013ca", "Last Year": "P\u0113d\u0113jais gads", "Lens Listings": "Objekt\u012bvu sludin\u0101jumi", "Lenses": "Objekt\u012bvi", "Light": "Gai\u0161s", "Listing Details": "Sludin\u0101juma Deta\u013cas", "Loading...": "Iel\u0101d\u0113...", "Login": "Pieteikties", "Logout": "Iziet", "Model": "Modelis", "Model Statistics": "Mode\u013cu statistika", "Models": "Mode\u013ci", "Monitors": "Monitori", "Motherboard": "M\u0101tesplate", "Motherboards": "M\u0101tesplates", "My Profile": "Mans Profils", "New password (leave blank to keep current)": "Jauna parole (atst\u0101jiet tuk\u0161u, lai saglab\u0101tu pa\u0161reiz\u0113jo)", "New user": "Jauns lietot\u0101js", "Next": "N\u0101kamais", "No": "N\u0113", "No earnings data available": "Nav pieejami pe\u013c\u0146as dati", "No price trend data available for the selected filters": "Nav cenu tenden\u010du datu izv\u0113l\u0113tajiem filtriem", "No results": "Nav rezult\u0101tu", "Order": "Sec\u012bba", "PC Builder": "PC salik\u0161ana", "PSU": "PSU", "PSU Listings": "Baro\u0161anas bloku sludin\u0101jumi", "PSUs": "Baro\u0161anas bloki", "Page": "Lapa", "Password": "Parole", "Potential Earnings": "Iesp\u0113jam\u0101 pe\u013c\u0146a", "Potential Earnings by Category": "Iesp\u0113jam\u0101 pe\u013c\u0146a pa kategorij\u0101m", "Previous": "Iepriek\u0161\u0113jais", "Price": "Cena", "Price Trends Over Time": "Cenu tendences laika gait\u0101", "Profile": "Profils", "Profile updated": "Profils atjaunin\u0101ts", "Quick Links": "\u0100tr\u0101s saites", "RAM": "RAM", "RAM Listings": "RAM sludin\u0101jumi", "Refresh": "Atsvaidzin\u0101t", "Reset filters": "Atiestat\u012bt filtrus", "Role": "Loma", "Role page access": "Lomas lapu piek\u013cuve", "Role page access saved": "Lomas lapu piek\u013cuve saglab\u0101ta", "Rows per page": "Rindas lap\u0101", "SS-Crawler Dashboard": "SS-Crawler Panelis", "SSD": "SSD", "SSD Listings": "SSD sludin\u0101jumi", "SSDs": "SSD", "Save": "Saglab\u0101t", "Save changes": "Saglab\u0101t izmai\u0146as", "Save role access": "Saglab\u0101t lomas piek\u013cuvi", "Save user access": "Saglab\u0101t lietot\u0101ja piek\u013cuvi", "Screen": "Ekr\u0101ns", "Search": "Mekl\u0113t", "Series": "S\u0113rija", "Show": "R\u0101d\u012bt", "Sign in": "Piesl\u0113gties", "Socket": "Slots", "Sort by": "K\u0101rtot p\u0113c", "Source": "Avots", "Specifications": "Specifik\u0101cijas", "Storage": "Atmi\u0146a", "Submit": "Iesniegt", "Subscription": "Abonements", "Subscription status": "Abonementa statuss", "Subscription tier": "Abonementa l\u012bmenis", "Success": "Veiksm\u012bgi", "Switch language": "P\u0101rsl\u0113gt valodu", "Time": "Laiks", "Time Period": "Laika periods", "Total Listings": "Kop\u0101 sludin\u0101jumi", "Type": "Tips", "Update profile": "Atjaunin\u0101t profilu", "User page access": "Lietot\u0101ja lapu piek\u013cuve", "User page access saved": "Lietot\u0101ja lapu piek\u013cuve saglab\u0101ta", "Username": "Lietot\u0101jv\u0101rds", "Users": "Lietot\u0101ji", "VRAM": "VRAM", "Vendor": "Ra\u017eot\u0101js", "View CPU Listings": "Skat\u012bt procesoru sludin\u0101jumus", "View GPU Listings": "Skat\u012bt videokar\u0161u sludin\u0101jumus", "View Lens Listings": "Skat\u012bt objekt\u012bvu sludin\u0101jumus", "View on ss.com": "Skat\u012bt ss.com vietn\u0113", "Warning": "Br\u012bdin\u0101jums", "Wattage": "Jauda", "Welcome back": "Laipni l\u016bdzam", "Wiki": "Wiki", "Yes": "J\u0101", "avg": "vid\u0113j\u0101", "listings": "sludin\u0101jumi", "matched": "atbilst", "of": "no", "spread": "starp\u012bba", "High confidence (\u226570%)": "Augsta p\u0101rliec\u012bba (\u226570%)", "Price drop only": "Tikai cenu kritums", "Show avg price": "R\u0101d\u012bt vid\u0113jo cenu", "Active-only averages": "Vid\u0113jais tikai akt\u012bvajiem"}};
+    // Prefer server-set language, then cookie/localStorage, then browser default
+    let currentLang = "en" || localStorage.getItem('ss_lang') || 'en';
+    if (!translations[currentLang]) currentLang = 'en';
+    localStorage.setItem('ss_lang', currentLang);
+    window.translations = translations;
+    window.currentLang = currentLang;
+    const LANG_NAMES = {en: 'EN', lv: 'LV'};
+    const LANG_ICONS = {en: '🇬🇧', lv: '🇱🇻'};
+
+    function setLanguage(lang) {
+        currentLang = lang;
+        localStorage.setItem('ss_lang', lang);
+        window.currentLang = lang;
+        updateLangToggle();
+        translatePage();
+        // Persist to backend + cookie so server-rendered pages stay in sync
+        fetch('/api/set-language', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({lang: lang}),
+            credentials: 'same-origin'
+        }).catch(err => console.error('Failed to persist language', err));
+    }
+
+    function toggleLanguage() {
+        setLanguage(currentLang === 'lv' ? 'en' : 'lv');
+    }
+
+    function updateLangToggle() {
+        const icon = document.getElementById('lang-icon');
+        const text = document.getElementById('lang-text');
+        if (icon) icon.textContent = LANG_ICONS[currentLang] || '🇬🇧';
+        if (text) text.textContent = LANG_NAMES[currentLang] || 'EN';
+        document.documentElement.lang = currentLang;
+    }
+
+    function t(key) {
+        const trans = translations[currentLang] || {};
+        return trans[key] || key;
+    }
+
+    function translatePage() {
+        document.querySelectorAll('[data-i18n]').forEach(el => {
+            const key = el.getAttribute('data-i18n');
+            if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
+                const attr = el.getAttribute('data-i18n-attr') || 'placeholder';
+                if (attr === 'value') el.value = t(key);
+                else el.setAttribute(attr, t(key));
+            } else {
+                el.textContent = t(key);
+            }
+        });
+        const btn = document.getElementById('dark-mode-text');
+        if (btn) btn.textContent = t('Dark');
+    }
+
+    async function renderAuthNav() {
+        try {
+            const resp = await fetch('/api/auth/me', {credentials: 'same-origin'});
+            const container = document.getElementById('auth-nav');
+            const wikiLink = document.getElementById('nav-wiki');
+            if (!container) return;
+            if (resp.ok) {
+                const user = await resp.json();
+                const isAdmin = user.role === 'admin';
+                if (wikiLink) wikiLink.style.display = isAdmin ? 'inline' : 'none';
+                container.innerHTML = `
+                    <span style="color: white; font-size: 0.875rem;">${user.username} (${user.role})</span>
+                    <a href="/profile">Profile</a>
+                    ${isAdmin ? '<a href="/admin">Admin</a><a href="/unmatched">Unmatched</a>' : ''}
+                    <a href="/logout">Logout</a>
+                `;
+            } else {
+                if (wikiLink) wikiLink.style.display = 'none';
+                container.innerHTML = '<a href="/login">Login</a>';
+            }
+        } catch (e) {
+            console.error('Auth nav error', e);
+        }
+    }
+
+    function initCommon() {
+        updateLangToggle();
+        translatePage();
+        renderAuthNav();
+    }
+
+    initCommon();
+
+    // Monitor Tier Calculator (client-side version matching Python logic)
+    function calculateMonitorTier(size, resolution, refreshRate, panelType) {
+        if (!size && !resolution && !refreshRate) {
+            return null;
+        }
+        const sizeNum = parseFloat(size);
+        const refreshNum = parseFloat(refreshRate);
+        const resLower = (resolution || '').toLowerCase();
+        let score = 0;
+        if (!isNaN(sizeNum)) {
+            if (sizeNum >= 32) score += 3;
+            else if (sizeNum >= 27) score += 2;
+            else if (sizeNum >= 24) score += 1;
+        }
+        if (resLower.includes('4k') || resLower.includes('3840') || resLower.includes('2160')) score += 4;
+        else if (resLower.includes('1440') || resLower.includes('2560')) score += 2;
+        else if (resLower.includes('1080') || resLower.includes('1920')) score += 1;
+        if (!isNaN(refreshNum)) {
+            if (refreshNum >= 240) score += 4;
+            else if (refreshNum >= 144) score += 3;
+            else if (refreshNum >= 100) score += 2;
+            else if (refreshNum >= 75) score += 1;
+        }
+        const panelLower = (panelType || '').toLowerCase();
+        if (panelLower.includes('oled')) score += 3;
+        else if (panelLower.includes('ips') || panelLower.includes('nano')) score += 2;
+        else if (panelLower.includes('va')) score += 1;
+        if (score >= 10) return 'GOD';
+        if (score >= 7) return 'High';
+        if (score >= 4) return 'Mid';
+        if (score >= 1) return 'Entry';
+        return 'Basic';
+    }
+
+    function toggleDarkMode() {
+        const currentTheme = document.documentElement.getAttribute('data-theme');
+        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+        document.documentElement.setAttribute('data-theme', newTheme);
+        localStorage.setItem('theme', newTheme);
+        const icon = document.getElementById('dark-mode-icon');
+        const text = document.getElementById('dark-mode-text');
+        if (icon) icon.textContent = newTheme === 'dark' ? '☀️' : '🌙';
+        if (text) text.textContent = newTheme === 'dark' ? t('Light') : t('Dark');
+    }
+
+    function initDarkMode() {
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        document.documentElement.setAttribute('data-theme', savedTheme);
+        const icon = document.getElementById('dark-mode-icon');
+        const text = document.getElementById('dark-mode-text');
+        if (icon) icon.textContent = savedTheme === 'dark' ? '☀️' : '🌙';
+        if (text) text.textContent = savedTheme === 'dark' ? t('Light') : t('Dark');
+    }
+
+    initDarkMode();
+
+    function openSharedListingModal(listingId, category) {
+        const modal = document.getElementById('shared-listing-modal');
+        const content = document.getElementById('shared-listing-content');
+        const title = document.getElementById('shared-listing-title');
+        title.textContent = t('Listing Details');
+        content.innerHTML = '<div class="loading">' + t('Loading...') + '</div>';
+        modal.classList.add('active');
+        fetch(`/api/listing/${category}/${listingId}`)
+            .then(response => {
+                if (!response.ok) throw new Error(t('Failed to load listing details'));
+                return response.json();
+            })
+            .then(data => {
+                content.innerHTML = renderListingContent(data, category);
+            })
+            .catch(error => {
+                content.innerHTML = '<div class="error">' + (error.message || t('Error loading listing')) + '</div>';
+            });
+    }
+
+    function closeSharedListingModal() {
+        const modal = document.getElementById('shared-listing-modal');
+        modal.classList.remove('active');
+    }
+
+    function renderListingContent(listing, category) {
+        let html = '';
+        if (listing.images && listing.images.length > 0) {
+            html += '<div class="listing-detail-images">';
+            listing.images.forEach(img => {
+                html += `<img src="${img}" alt="${listing.title || ''}" loading="lazy" onerror="this.style.display='none'">`;
+            });
+            html += '</div>';
+        }
+        html += `<h2>${listing.title || ''}</h2>`;
+        html += `<p style="font-size: 1.25rem; font-weight: 700; color: #667eea;">€${listing.price_eur || listing.price || 0}</p>`;
+        if (listing.url) {
+            html += `<p><a href="${listing.url}" target="_blank" rel="noopener">${t('View on ss.com')} →</a></p>`;
+        }
+        if (listing.description) {
+            html += `<div><strong>${t('Description')}:</strong></div>`;
+            html += `<p>${listing.description}</p>`;
+        }
+        if (listing.specs) {
+            html += `<h3>${t('Specifications')}</h3>`;
+            html += '<div>';
+            for (const [key, value] of Object.entries(listing.specs)) {
+                html += `<div class="spec-row"><span class="spec-label">${key}</span><span class="spec-value">${value}</span></div>`;
+            }
+            html += '</div>';
+        }
+        return html;
+    }
+
+    document.getElementById('shared-listing-modal').addEventListener('click', function(e) {
+        if (e.target === this) {
+            closeSharedListingModal();
+        }
+    });
+
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            closeSharedListingModal();
+        }
+    });
+    </script>
+
+    
+<script>
+    let currentPage = 0;
+    const pageSize = 24;
+    let totalListings = 0;
+    let isLoading = false;
+    let hasMore = true;
+    let debounceTimer;
+    let allCpuOptions = [];
+    let currentListings = [];
+    let similarTarget = null;
+    // Staff (mod/admin) can edit the shared laptop reference specs; only admins set VALID.
+    const LAPTOP_CAN_EDIT = false;
+    const LAPTOP_IS_ADMIN = false;
+    let currentDetailItem = null;
+    let currentDetailListingId = null;
+
+    function showSharedListingDetail(listingId) {
+        const modal = document.getElementById('shared-listing-modal');
+        const content = document.getElementById('shared-listing-content');
+        const title = document.getElementById('shared-listing-title');
+        title.textContent = t('Listing Details');
+        content.innerHTML = '<div class="loading">' + t('Loading...') + '</div>';
+        modal.classList.add('active');
+
+        fetch(`/api/listing-details/${listingId}`)
+            .then(response => {
+                if (!response.ok) throw new Error(t('Failed to load listing details'));
+                return response.json();
+            })
+            .then(data => {
+                const item = data.current || data;
+                currentDetailItem = item;
+                currentDetailListingId = listingId;
+                const thumbUrl = item.local_image_path
+                    ? `/images/${item.local_image_path.replace(/\\/g, '/')}`
+                    : item.image_url;
+                const dateStr = (item.date_posted || item.first_seen_at || item.created_at)
+                    ? new Date(item.date_posted || item.first_seen_at || item.created_at).toLocaleDateString()
+                    : 'N/A';
+                const title = cleanLaptopTitle(item.title || '');
+                let html = '<div class="laptop-detail-body">';
+                if (thumbUrl) {
+                    html += `<div class="listing-detail-images"><img src="${thumbUrl}" alt="${title.replace(/'/g, "\\'")}" loading="lazy" onerror="this.style.display='none'"></div>`;
+                }
+                html += `<h2>${title}${item.laptop_ref_valid ? ' <span class="valid-badge">✓ VALID</span>' : ''}</h2>`;
+                html += `<p style="font-size: 1.25rem; font-weight: 700; color: #667eea;">€${item.price_eur || item.price || 0}</p>`;
+                if (item.listing_url) {
+                    html += `<p><a href="${item.listing_url}" target="_blank" rel="noopener">${t('View on ss.com')} →</a></p>`;
+                }
+                const specs = [
+                    ['Brand', item.brand],
+                    ['Model', item.model],
+                    ['Display', item.display_size ? `${String(item.display_size).replace(/["″“”]/g, '').trim()}"` : null],
+                    ['CPU', item.cpu_raw],
+                    ['RAM', item.ram_gb ? `${item.ram_gb} GB` : null],
+                    ['Storage', item.storage_gb ? `${item.storage_gb} GB ${item.storage_type || ''}`.trim() : null],
+                    ['GPU', item.gpu_raw],
+                    ['Condition', item.condition_state],
+                    ['Seller type', item.seller_type ? item.seller_type.charAt(0).toUpperCase() + item.seller_type.slice(1) : null],
+                    ['Location', item.seller_location],
+                    ['Date', dateStr]
+                ].filter(([_, v]) => v);
+                // Shared per-model reference specs (same for all listings of this model)
+                if (item.material) specs.push(['Material', item.material]);
+                if (item.usb_c_count !== null && item.usb_c_count !== undefined) specs.push(['USB-C ports', item.usb_c_count]);
+                if (item.usb_count !== null && item.usb_count !== undefined) specs.push(['USB ports', item.usb_count]);
+                if (item.hdmi_count !== null && item.hdmi_count !== undefined) specs.push(['HDMI ports', item.hdmi_count]);
+                if (item.laptop_resolution) specs.push(['Resolution', item.laptop_resolution]);
+                if (specs.length) {
+                    const specIcons = { 'Brand': '🏷️', 'Model': '💻', 'Display': '🖥️', 'CPU': '🧠', 'RAM': '💾', 'Storage': '💽', 'GPU': '🎮', 'Condition': '✨', 'Seller type': '👤', 'Location': '📍', 'Date': '📅', 'Material': '🔩', 'USB-C ports': '⚡', 'USB ports': '🔌', 'HDMI ports': '📺', 'Resolution': '🎦' };
+                    html += `<h3>${t('Specifications')}</h3>`;
+                    html += '<div class="spec-grid">';
+                    for (const [label, value] of specs) {
+                        html += `<div class="spec-chip"><span class="spec-chip-icon">${specIcons[label] || '▫️'}</span><div class="spec-chip-text"><span class="spec-chip-label">${label}</span><span class="spec-chip-value">${value}</span></div></div>`;
+                    }
+                    html += '</div>';
+                }
+                if (LAPTOP_CAN_EDIT && item.brand && item.model) {
+                    const escAttr = (v) => String(v ?? '').replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;');
+                    html += `<div class="ref-edit-panel">
+                        <div class="ref-edit-title">🛠️ ${t('Model reference')}${item.laptop_ref_id ? '' : ' · ' + t('new model')}</div>
+                        <div class="ref-edit-row">
+                            <label>Material
+                                <select id="ref-material">
+                                    <option value="">—</option>
+                                    <option value="Plastic" ${item.material === 'Plastic' ? 'selected' : ''}>Plastic</option>
+                                    <option value="Metal" ${item.material === 'Metal' ? 'selected' : ''}>Metal</option>
+                                </select>
+                            </label>
+                            <label>USB-C
+                                <input type="number" id="ref-usb-c" min="0" max="20" value="${item.usb_c_count ?? ''}">
+                            </label>
+                            <label>USB
+                                <input type="number" id="ref-usb" min="0" max="20" value="${item.usb_count ?? ''}">
+                            </label>
+                            <label>HDMI
+                                <input type="number" id="ref-hdmi" min="0" max="20" value="${item.hdmi_count ?? ''}">
+                            </label>
+                            <label>Resolution
+                                <input type="text" id="ref-resolution" placeholder="1920x1080" value="${escAttr(item.laptop_resolution)}">
+                            </label>
+                            ${LAPTOP_IS_ADMIN ? `<label class="ref-valid-label"><input type="checkbox" id="ref-is-valid" ${item.laptop_ref_valid ? 'checked' : ''}> VALID</label>` : ''}
+                            <button class="btn btn-small btn-primary" onclick="saveLaptopReference()">${t('Save')}</button>
+                            <span id="ref-save-status" class="ref-save-status"></span>
+                        </div>
+                    </div>`;
+                }
+                if (item.description) {
+                    html += `<div><strong>${t('Description')}:</strong></div>`;
+                    html += `<p style="word-break: break-word;">${item.description}</p>`;
+                }
+                html += '</div>';
+                content.innerHTML = html;
+                const detailImg = content.querySelector('.listing-detail-images img');
+                if (detailImg) {
+                    detailImg.addEventListener('click', () => openLaptopLightbox(thumbUrl, title));
+                }
+            })
+            .catch(error => {
+                content.innerHTML = '<div class="error">' + (error.message || t('Error loading listing')) + '</div>';
+            });
+    }
+
+    function saveLaptopReference() {
+        const status = document.getElementById('ref-save-status');
+        if (!currentDetailItem) return;
+        const payload = {
+            brand: currentDetailItem.brand || '',
+            model: currentDetailItem.model || '',
+            display_size: currentDetailItem.display_size || '',
+            material: document.getElementById('ref-material').value || null,
+            usb_c_count: document.getElementById('ref-usb-c').value,
+            usb_count: document.getElementById('ref-usb').value,
+            hdmi_count: document.getElementById('ref-hdmi').value,
+            resolution: document.getElementById('ref-resolution').value.trim()
+        };
+        if (LAPTOP_IS_ADMIN) {
+            const validBox = document.getElementById('ref-is-valid');
+            if (validBox) payload.is_valid = validBox.checked;
+        }
+        if (status) { status.textContent = t('Saving...'); status.style.color = 'var(--text-secondary)'; }
+        fetch('/api/laptop-reference/save', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        })
+        .then(r => r.json().then(d => ({ ok: r.ok, d })))
+        .then(({ ok, d }) => {
+            if (ok && d.ok) {
+                if (status) { status.textContent = '✓ ' + t('Saved'); status.style.color = '#16a34a'; }
+                // Re-open the popup with fresh, propagated reference data
+                setTimeout(() => showSharedListingDetail(currentDetailListingId), 600);
+            } else {
+                if (status) { status.textContent = d.error || t('Save failed'); status.style.color = '#dc2626'; }
+            }
+        })
+        .catch(() => {
+            if (status) { status.textContent = t('Save failed'); status.style.color = '#dc2626'; }
+        });
+    }
+
+    const LS_KEY = 'laptop_filters_v1';
+
+    function saveFilters() {
+        const state = {
+            brand: document.getElementById('brand-filter').value,
+            macbookOnly: isToggleOn('macbook-only'),
+            cpuSortMode: document.getElementById('cpu-sort-mode').value,
+            cpuGroupMode: document.getElementById('cpu-group-mode').value,
+            cpus: Array.from(document.querySelectorAll('#cpu-options input:checked')).map(cb => cb.value),
+            gpu: document.getElementById('gpu-filter').value,
+            minPrice: document.getElementById('min-price').value,
+            maxPrice: document.getElementById('max-price').value,
+            ramMin: document.getElementById('ram-min').value,
+            ramMax: document.getElementById('ram-max').value,
+            storageMin: document.getElementById('storage-min').value,
+            storageMax: document.getElementById('storage-max').value,
+            storageType: document.getElementById('storage-type').value,
+            displaySizeMin: document.getElementById('display-size-min').value,
+            displaySizeMax: document.getElementById('display-size-max').value,
+            displaySize: document.getElementById('display-size').value,
+            model: document.getElementById('model-filter').value,
+            sort: document.getElementById('sort-by').value,
+            order: document.getElementById('sort-order').value,
+            time: document.getElementById('time-filter').value,
+            active: isToggleOn('active-only'),
+            excludeFlagged: isToggleOn('exclude-flagged'),
+            includePerekups: isToggleOn('include-perekups'),
+            includeLombards: isToggleOn('include-lombards')
+        };
+        localStorage.setItem(LS_KEY, JSON.stringify(state));
+        renderActiveFilters();
+    }
+
+    function restoreFilters() {
+        try {
+            const raw = localStorage.getItem(LS_KEY);
+            if (!raw) return;
+            const s = JSON.parse(raw);
+            if (s.brand !== undefined) document.getElementById('brand-filter').value = s.brand;
+            if (s.macbookOnly !== undefined) setToggle('macbook-only', !!s.macbookOnly);
+            if (s.cpuSortMode !== undefined) document.getElementById('cpu-sort-mode').value = s.cpuSortMode;
+            if (s.cpuGroupMode !== undefined) document.getElementById('cpu-group-mode').value = s.cpuGroupMode;
+            if (s.gpu !== undefined) document.getElementById('gpu-filter').value = s.gpu;
+            if (s.minPrice !== undefined) document.getElementById('min-price').value = s.minPrice;
+            if (s.maxPrice !== undefined) document.getElementById('max-price').value = s.maxPrice;
+            if (s.ramMin !== undefined) document.getElementById('ram-min').value = s.ramMin;
+            if (s.ramMax !== undefined) document.getElementById('ram-max').value = s.ramMax;
+            if (s.storageMin !== undefined) document.getElementById('storage-min').value = s.storageMin;
+            if (s.storageMax !== undefined) document.getElementById('storage-max').value = s.storageMax;
+            if (s.storageType !== undefined) document.getElementById('storage-type').value = s.storageType;
+            if (s.displaySizeMin !== undefined) document.getElementById('display-size-min').value = s.displaySizeMin;
+            if (s.displaySizeMax !== undefined) document.getElementById('display-size-max').value = s.displaySizeMax;
+            if (s.displaySize !== undefined) document.getElementById('display-size').value = s.displaySize;
+            if (s.model !== undefined) document.getElementById('model-filter').value = s.model;
+            if (s.sort !== undefined) document.getElementById('sort-by').value = s.sort;
+            if (s.order !== undefined) document.getElementById('sort-order').value = s.order;
+            if (s.time !== undefined) document.getElementById('time-filter').value = s.time;
+            if (s.active !== undefined) setToggle('active-only', !!s.active);
+            if (s.excludeFlagged !== undefined) setToggle('exclude-flagged', !!s.excludeFlagged);
+            if (s.includePerekups !== undefined) setToggle('include-perekups', !!s.includePerekups);
+            if (s.includeLombards !== undefined) setToggle('include-lombards', !!s.includeLombards);
+            if (Array.isArray(s.cpus)) {
+                // Options are populated after first load; store desired selection in a data attribute
+                document.getElementById('cpu-options').dataset.pending = JSON.stringify(s.cpus);
+            }
+            syncToggleButtons();
+        } catch (e) {
+            console.warn('Could not restore laptop filters', e);
+        }
+    }
+
+    /* ====== Laptop page header: icon-button toggles + stat tiles ====== */
+    // Each .laptop-icon-btn[data-target=foo] drives a hidden input #foo with value "true"/"false".
+    // The CSS-only `default-on` dot is just a hint when the button is OFF (i.e. the default is off).
+    const LAPTOP_TOGGLE_IDS = ['macbook-only', 'active-only', 'exclude-flagged', 'include-perekups', 'include-lombards'];
+
+    function isToggleOn(id) {
+        const el = document.getElementById(id);
+        if (!el) return false;
+        // Hidden inputs use .value; the old checkbox-style fallback covers anything still bound to a checkbox.
+        return el.type === 'checkbox' ? !!el.checked : el.value === 'true';
+    }
+
+    function setToggle(id, on) {
+        const el = document.getElementById(id);
+        if (!el) return;
+        if (el.type === 'checkbox') el.checked = !!on;
+        else el.value = on ? 'true' : 'false';
+    }
+
+    function syncToggleButtons() {
+        document.querySelectorAll('.laptop-icon-btn[data-target]').forEach(btn => {
+            const id = btn.dataset.target;
+            const on = isToggleOn(id);
+            btn.classList.toggle('active', on);
+            btn.setAttribute('aria-pressed', on ? 'true' : 'false');
+        });
+    }
+
+    function toggleLaptopIcon(btn) {
+        const id = btn.dataset.target;
+        const next = !isToggleOn(id);
+        setToggle(id, next);
+        syncToggleButtons();
+        loadLaptops();
+    }
+
+    async function loadLaptopStats() {
+        try {
+            const res = await fetch('/api/laptops?limit=1');
+            if (!res.ok) return;
+            const data = await res.json();
+            const total = data.total || 0;
+            const elListings = document.getElementById('lstat-listings');
+            if (elListings) elListings.textContent = total.toLocaleString();
+        } catch (e) { /* leave as "—" */ }
+        try {
+            const res = await fetch('/api/laptop-reference/stats');
+            if (!res.ok) return;
+            const data = await res.json();
+            const models = document.getElementById('lstat-models');
+            const valid = document.getElementById('lstat-valid');
+            const resEl = document.getElementById('lstat-res');
+            if (models) models.textContent = (data.models ?? '—').toLocaleString();
+            if (valid) valid.textContent = (data.valid ?? '—').toLocaleString();
+            if (resEl) resEl.textContent = (data.with_resolution ?? '—').toLocaleString();
+        } catch (e) { /* leave as "—" */ }
+    }
+
+    function debounceLoadLaptops() {
+        clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(loadLaptops, 300);
+    }
+
+    function renderLaptopCard(item) {
+        const thumbUrl = item.local_image_path
+            ? `/images/${item.local_image_path.replace(/\\/g, '/')}`
+            : item.image_url;
+        const rawTitle = item.title || 'Unknown laptop';
+        const title = cleanLaptopTitle(rawTitle);
+        const brandModel = [item.brand, item.model].filter(Boolean).join(' ');
+        const display = item.display_size ? `${item.display_size}"` : '';
+        const cpu = item.cpu_raw || '';
+        const ram = item.ram_gb ? `${item.ram_gb} GB RAM` : '';
+        const storage = [item.storage_gb ? `${item.storage_gb} GB` : '', item.storage_type || ''].filter(Boolean).join(' ');
+        const gpu = item.gpu_raw || '';
+        const dateStr = (item.date_posted || item.first_seen_at || item.created_at)
+            ? new Date(item.date_posted || item.first_seen_at || item.created_at).toLocaleDateString()
+            : 'N/A';
+
+        return `
+            <div class="laptop-card" onclick="showSharedListingDetail('${item.listing_id}', true)">
+                ${(item.seller_type || '').toLowerCase() !== 'private'
+                    ? `<span class="seller-badge ${(item.seller_type || '').toLowerCase()}">${item.seller_type || ''}</span>`
+                    : ''}
+                ${thumbUrl
+                    ? `<img src="${thumbUrl}" alt="${title.replace(/'/g, "\\'")}" class="laptop-card-image" loading="lazy">`
+                    : `<div class="laptop-card-placeholder">💻</div>`
+                }
+                <div class="laptop-card-body">
+                    <div class="laptop-card-price">€${item.price_eur}</div>
+                    <div class="laptop-card-title">${item.laptop_ref_valid ? '<span class="valid-badge valid-badge-sm">✓</span> ' : ''}${title}</div>
+                    ${brandModel ? `<div class="laptop-card-meta">${brandModel}</div>` : ''}
+                    <div class="laptop-card-specs">
+                        ${display ? `<span>📺 ${display}</span>` : ''}
+                        ${cpu ? `<span>🖥 ${cpu}</span>` : ''}
+                        ${ram ? `<span>🧠 ${ram}</span>` : ''}
+                        ${storage ? `<span>💾 ${storage}</span>` : ''}
+                        ${gpu ? `<span>🎮 ${gpu}</span>` : ''}
+                    </div>
+                    <div style="display:flex; justify-content:flex-end; margin-top:0.5rem;">
+                        <button class="btn btn-small" onclick="event.stopPropagation(); openSimilarModal('${item.listing_id}')">Similar</button>
+                    </div>
+                    <div class="laptop-card-footer">
+                        <span>${item.seller_location || 'N/A'}</span>
+                        <span>${dateStr}</span>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+
+    async function loadLaptops(page = 0) {
+        const append = page > 0;
+        currentPage = page;
+        const params = new URLSearchParams();
+        params.append('active', isToggleOn('active-only'));
+        params.append('exclude_flagged', isToggleOn('exclude-flagged'));
+        params.append('include_perekups', isToggleOn('include-perekups'));
+        params.append('include_lombards', isToggleOn('include-lombards'));
+        params.append('sort', document.getElementById('sort-by').value);
+        params.append('order', document.getElementById('sort-order').value);
+        params.append('time', document.getElementById('time-filter').value);
+        params.append('limit', pageSize);
+        params.append('offset', page * pageSize);
+
+        const brand = document.getElementById('brand-filter').value;
+        if (brand) params.append('brand', brand);
+        const selectedCpus = Array.from(document.querySelectorAll('#cpu-options input[type=checkbox]:checked')).map(cb => cb.value);
+        selectedCpus.forEach(cpu => params.append('cpu', cpu));
+        const gpu = document.getElementById('gpu-filter').value;
+        if (gpu) params.append('gpu', gpu);
+        const minPrice = document.getElementById('min-price').value;
+        if (minPrice) params.append('min_price', minPrice);
+        const maxPrice = document.getElementById('max-price').value;
+        if (maxPrice) params.append('max_price', maxPrice);
+        const ramMin = document.getElementById('ram-min').value;
+        if (ramMin) params.append('ram_min', ramMin);
+        const ramMax = document.getElementById('ram-max').value;
+        if (ramMax) params.append('ram_max', ramMax);
+        const storageMin = document.getElementById('storage-min').value;
+        if (storageMin) params.append('storage_min', storageMin);
+        const storageMax = document.getElementById('storage-max').value;
+        if (storageMax) params.append('storage_max', storageMax);
+        const storageType = document.getElementById('storage-type').value;
+        if (storageType) params.append('storage_type', storageType);
+        const displaySizeMin = document.getElementById('display-size-min').value;
+        if (displaySizeMin) params.append('display_size_min', displaySizeMin);
+        const displaySizeMax = document.getElementById('display-size-max').value;
+        if (displaySizeMax) params.append('display_size_max', displaySizeMax);
+        const displaySize = document.getElementById('display-size').value;
+        if (displaySize) params.append('display_size', displaySize);
+        const macbookOnly = isToggleOn('macbook-only');
+        if (macbookOnly) params.append('macbook_only', 'true');
+        else params.append('exclude_macbooks', 'true');
+        const modelFilter = document.getElementById('model-filter').value;
+        if (modelFilter) params.append('model', modelFilter);
+
+        saveFilters();
+
+        const container = document.getElementById('listings-container');
+        const sentinel = document.getElementById('laptop-sentinel');
+        if (isLoading) return;
+        isLoading = true;
+        if (sentinel) sentinel.style.display = 'flex';
+
+        try {
+            if (!append) {
+                container.innerHTML = '<div class="loading">Loading laptop listings...</div>';
+                currentListings = [];
+                hasMore = true;
+            }
+
+            const response = await fetch('/api/laptops?' + params.toString());
+            const data = await response.json();
+
+            if (data.error) {
+                throw new Error(data.error);
+            }
+
+            const listings = data.listings || [];
+            totalListings = data.total || 0;
+
+            if (!append) {
+                currentListings = listings;
+                populateBrandFilter(listings);
+            } else {
+                currentListings = currentListings.concat(listings);
+                populateBrandFilter(currentListings);
+            }
+
+            updatePagination();
+
+            if (!append && listings.length === 0) {
+                container.innerHTML = '<div class="loading">No laptop listings found</div>';
+                hasMore = false;
+                return;
+            }
+
+            let grid = document.getElementById('laptop-grid');
+            if (!grid) {
+                container.innerHTML = '<div class="laptop-grid" id="laptop-grid"></div>';
+                grid = document.getElementById('laptop-grid');
+            }
+
+            grid.insertAdjacentHTML('beforeend', listings.map(renderLaptopCard).join(''));
+            hasMore = listings.length === pageSize && currentListings.length < totalListings;
+        } catch (error) {
+            if (!append) {
+                container.innerHTML = `<div class="error">Failed to load listings: ${error.message}</div>`;
+            } else {
+                console.error('Failed to load more listings', error);
+            }
+            hasMore = false;
+        } finally {
+            isLoading = false;
+            if (sentinel) sentinel.style.display = hasMore ? 'flex' : 'none';
+        }
+    }
+
+    async function loadCPUOptions() {
+        try {
+            const params = new URLSearchParams();
+            params.append('active', 'true');
+            params.append('limit', '10000');
+            const response = await fetch('/api/laptops?' + params.toString());
+            const data = await response.json();
+            const listings = data.listings || [];
+            const counts = {};
+            listings.forEach(l => {
+                const cpu = (l.cpu_raw || '').trim();
+                if (cpu) counts[cpu] = (counts[cpu] || 0) + 1;
+            });
+            allCpuOptions = Object.entries(counts).sort((a, b) => {
+                const sortMode = document.getElementById('cpu-sort-mode').value;
+                if (sortMode === 'count-desc') return b[1] - a[1];
+                if (sortMode === 'count-asc') return a[1] - b[1];
+                // name sort
+                return a[0].toLowerCase().localeCompare(b[0].toLowerCase());
+            });
+            renderCPUOptions();
+        } catch (e) {
+            console.error('Failed to load CPU options', e);
+        }
+    }
+
+    function classifyCpuVendor(cpu) {
+        const n = cpu.toLowerCase();
+        if (n.includes('apple') || /\bm\d+\b/.test(n)) return 'Mac';
+        if (n.includes('snapdragon') || n.includes('qualcomm')) return 'Snapdragon';
+        if (n.includes('intel') || n.includes('core') || n.includes('pentium') || n.includes('celeron') || n.includes('atom') || /\bi[3579]\b/.test(n) || n.includes('core ultra')) return 'Intel';
+        if (n.includes('amd') || n.includes('ryzen') || n.includes('athlon')) return 'AMD';
+        return 'Other';
+    }
+
+    function classifyCpuClass(cpu, vendor) {
+        const n = cpu.toLowerCase();
+        if (vendor === 'Mac') {
+            const m = n.match(/\bm(\d+)(?:\s+(pro|max|ultra))?\b/);
+            if (m) return 'M' + m[1];
+            return 'Other';
+        }
+        if (vendor === 'Snapdragon') {
+            if (n.includes('x elite')) return 'X Elite';
+            const gen = n.match(/gen\s*(\d+)/);
+            if (gen) return 'Gen ' + gen[1];
+            return 'Other';
+        }
+        if (vendor === 'AMD') {
+            const r = n.match(/ryzen\s*(\d+)/);
+            if (r) return 'Ryzen ' + r[1];
+            if (n.includes('athlon')) return 'Athlon';
+            return 'Other';
+        }
+        if (vendor === 'Intel') {
+            const i = n.match(/\bi([3579])\b/);
+            if (i) return 'i' + i[1];
+            if (n.includes('core ultra')) return 'Core Ultra';
+            if (n.includes('pentium')) return 'Pentium';
+            if (n.includes('celeron')) return 'Celeron';
+            if (n.includes('atom')) return 'Atom';
+            return 'Other';
+        }
+        return 'Other';
+    }
+
+    function cpuGenerationScore(cpu) {
+        const n = cpu.toLowerCase();
+        // Apple M series
+        const m = n.match(/\bm(\d+)(?:\s+(pro|max|ultra))?\b/);
+        if (m) {
+            let score = parseInt(m[1], 10) * 1000;
+            const suffix = m[2];
+            if (suffix === 'pro') score += 200;
+            else if (suffix === 'max') score += 300;
+            else if (suffix === 'ultra') score += 400;
+            return score;
+        }
+        // Snapdragon Gen
+        const gen = n.match(/gen\s*(\d+)/);
+        if (gen) return parseInt(gen[1], 10) * 1000;
+        if (n.includes('x elite')) return 5000;
+        // Largest numeric cluster as a proxy for generation/model
+        const nums = n.match(/\d{3,5}/g);
+        if (nums) return Math.max(...nums.map(Number));
+        return 0;
+    }
+
+    function classifyCpuGeneration(cpu, vendor) {
+        const n = cpu.toLowerCase();
+        if (vendor === 'Mac') {
+            const m = n.match(/\bm(\d+)(?:\s+(pro|max|ultra))?\b/);
+            return m ? 'M' + m[1] : 'Other';
+        }
+        if (vendor === 'Snapdragon') {
+            const gen = n.match(/gen\s*(\d+)/);
+            return gen ? 'Gen ' + gen[1] : 'Other';
+        }
+        if (vendor === 'AMD') {
+            // Ryzen 7 5800U -> 5000 series; Ryzen 7 7840HS -> 7000 series
+            const nums = n.match(/\b(\d{4})\b/);
+            if (nums) {
+                const series = Math.floor(parseInt(nums[1], 10) / 1000) * 1000;
+                return series ? series + ' Series' : 'Other';
+            }
+            return 'Other';
+        }
+        if (vendor === 'Intel') {
+            const nLower = cpu.toLowerCase();
+            // Core i5-1235U / Core i7-1165G7 / Core i5-8350 / i5 6200U / I5-8265U
+            const match = nLower.match(/(?:core\s+)?i\s*([3579])\s*[-\s]?(\d{3,5})/);
+            if (match) {
+                const model = match[2];
+                if (/^\d{5}$/.test(model)) return model.slice(0, 2) + 'th Gen';
+                if (/^\d{4}$/.test(model)) return model.slice(0, 1) + 'th Gen';
+            }
+            if (nLower.includes('core ultra')) return 'Core Ultra';
+            if (nLower.includes('pentium')) return 'Pentium';
+            if (nLower.includes('celeron')) return 'Celeron';
+            if (nLower.includes('atom')) return 'Atom';
+            return 'Other';
+        }
+        return 'Other';
+    }
+
+    function renderCPUOptions() {
+        const wrapper = document.getElementById('cpu-options-list');
+        const sortMode = document.getElementById('cpu-sort-mode').value;
+        const groupMode = document.getElementById('cpu-group-mode').value;
+        const selected = new Set();
+        const pendingRaw = document.getElementById('cpu-options').dataset.pending;
+        if (pendingRaw) {
+            try {
+                JSON.parse(pendingRaw).forEach(v => selected.add(v));
+                delete document.getElementById('cpu-options').dataset.pending;
+            } catch (e) {}
+        }
+        document.querySelectorAll('#cpu-options input:checked').forEach(cb => selected.add(cb.value));
+
+        const vendorOrder = ['Intel', 'AMD', 'Snapdragon', 'Mac'];
+        const classOrder = {
+            'Intel': ['i9', 'i7', 'i5', 'i3', 'Core Ultra', 'Pentium', 'Celeron', 'Atom', 'Other'],
+            'AMD': ['Ryzen 9', 'Ryzen 7', 'Ryzen 5', 'Ryzen 3', 'Athlon', 'Other'],
+            'Snapdragon': ['X Elite', 'Gen 5', 'Gen 4', 'Gen 3', 'Gen 2', 'Gen 1', 'Other'],
+            'Mac': ['M4', 'M3', 'M2', 'M1', 'Other']
+        };
+
+        const options = [...allCpuOptions];
+        if (sortMode === 'count-desc') options.sort((a, b) => b[1] - a[1]);
+        else if (sortMode === 'count-asc') options.sort((a, b) => a[1] - b[1]);
+        else if (sortMode === 'newest') options.sort((a, b) => cpuGenerationScore(b[0]) - cpuGenerationScore(a[0]));
+        else options.sort((a, b) => a[0].toLowerCase().localeCompare(b[0].toLowerCase()));
+
+        const grouped = {};
+        options.forEach(([cpu, count]) => {
+            const vendor = classifyCpuVendor(cpu);
+            const cls = groupMode === 'generation' ? classifyCpuGeneration(cpu, vendor) : classifyCpuClass(cpu, vendor);
+            if (!grouped[vendor]) grouped[vendor] = {};
+            if (!grouped[vendor][cls]) grouped[vendor][cls] = [];
+            grouped[vendor][cls].push({cpu, count});
+        });
+
+        let html = '';
+        vendorOrder.forEach(vendor => {
+            const classes = grouped[vendor];
+            if (!classes) return;
+            let classKeys = Object.keys(classes);
+            if (groupMode === 'generation') {
+                classKeys = classKeys.sort((a, b) => {
+                    const toNum = s => {
+                        const m = s.match(/\d+/);
+                        return m ? parseInt(m[0], 10) : 0;
+                    };
+                    return toNum(b) - toNum(a);
+                });
+            } else {
+                const order = classOrder[vendor] || [];
+                classKeys = classKeys.sort((a, b) => {
+                    const ia = order.indexOf(a);
+                    const ib = order.indexOf(b);
+                    if (ia !== -1 && ib !== -1) return ia - ib;
+                    if (ia !== -1) return -1;
+                    if (ib !== -1) return 1;
+                    return a.localeCompare(b);
+                });
+            }
+            html += `<div class="cpu-vendor-group">
+                <div class="cpu-vendor-header">${vendor}</div>`;
+            classKeys.forEach(cls => {
+                const items = classes[cls];
+                const allChecked = items.length > 0 && items.every(({cpu}) => selected.has(cpu));
+                const someChecked = items.some(({cpu}) => selected.has(cpu));
+                html += `<div class="cpu-class-row">
+                    <div class="cpu-class-header" onclick="toggleCpuClass(this)">
+                        <span>${cls}</span>
+                        <div class="class-actions" onclick="event.stopPropagation()">
+                            <span class="mark-all ${allChecked ? 'selected' : ''}" onclick="markCpuClass(this, ${allChecked ? 'false' : 'true'})" title="${allChecked ? 'Clear' : 'Select'} all in ${cls}"></span>
+                        </div>
+                    </div>
+                    <div class="cpu-options-grid ${someChecked || allChecked ? 'expanded' : ''}">`;
+                items.forEach(({cpu, count}) => {
+                    const val = cpu.replace(/"/g, '&quot;');
+                    const checked = selected.has(cpu);
+                    html += `
+                        <label class="cpu-option-label ${checked ? 'checked' : ''}" title="${val}" onclick="toggleCpuChip(this)">
+                            <input type="checkbox" value="${val}" ${checked ? 'checked' : ''} onchange="loadLaptops(); updateCPUFilterLabel(); renderActiveFilters();">
+                            <span>${cpu} <small>(${count})</small></span>
+                        </label>`;
+                });
+                html += `</div></div>`;
+            });
+            html += `</div>`;
+        });
+
+        wrapper.innerHTML = html || '<div style="padding: 0.25rem; color: #888;">No CPU data</div>';
+        updateCPUFilterLabel();
+    }
+
+    function toggleCPUFilter() {
+        const el = document.getElementById('cpu-options');
+        el.classList.toggle('open');
+    }
+
+    function updateCPUFilterLabel() {
+        const selected = Array.from(document.querySelectorAll('#cpu-options input:checked')).map(cb => cb.value);
+        document.getElementById('cpu-selected-label').textContent = selected.length ? `${selected.length} selected` : 'Any';
+    }
+
+    function toggleCpuClass(header) {
+        header.classList.toggle('expanded');
+        const grid = header.nextElementSibling;
+        if (grid) grid.classList.toggle('expanded');
+    }
+
+    function toggleCpuChip(label) {
+        const cb = label.querySelector('input[type=checkbox]');
+        cb.checked = !cb.checked;
+        label.classList.toggle('checked', cb.checked);
+        loadLaptops();
+        updateCPUFilterLabel();
+        renderActiveFilters();
+    }
+
+    function markCpuClass(btn, select) {
+        const row = btn.closest('.cpu-class-row');
+        const grid = row.querySelector('.cpu-options-grid');
+        grid.querySelectorAll('input[type=checkbox]').forEach(cb => {
+            cb.checked = select;
+            cb.closest('.cpu-option-label').classList.toggle('checked', select);
+        });
+        btn.classList.toggle('selected', select);
+        if (select) {
+            grid.classList.add('expanded');
+            row.querySelector('.cpu-class-header').classList.add('expanded');
+        } else {
+            grid.classList.remove('expanded');
+            row.querySelector('.cpu-class-header').classList.remove('expanded');
+        }
+        loadLaptops();
+        updateCPUFilterLabel();
+        renderActiveFilters();
+    }
+
+    function clearAllCpus() {
+        document.querySelectorAll('#cpu-options input[type=checkbox]').forEach(cb => {
+            cb.checked = false;
+            cb.closest('.cpu-option-label').classList.remove('checked');
+        });
+        document.querySelectorAll('.cpu-class-header').forEach(h => h.classList.remove('expanded'));
+        document.querySelectorAll('.cpu-options-grid').forEach(g => g.classList.remove('expanded'));
+        document.querySelectorAll('.mark-all').forEach(m => m.classList.remove('selected'));
+        loadLaptops();
+        updateCPUFilterLabel();
+        renderActiveFilters();
+    }
+
+    document.addEventListener('click', (e) => {
+        const group = document.getElementById('cpu-filter-group');
+        if (group && !group.contains(e.target)) {
+            document.getElementById('cpu-options').classList.remove('open');
+        }
+    });
+
+    function updatePagination() {
+        const pageInfo = document.getElementById('page-info');
+        if (pageInfo) {
+            pageInfo.textContent = `${currentListings.length} of ${totalListings} laptops`;
+        }
+    }
+
+    function populateBrandFilter(listings) {
+        const select = document.getElementById('brand-filter');
+        const current = select.value;
+        const brands = new Set(listings.map(l => l.brand).filter(Boolean));
+        const existing = Array.from(select.options).map(o => o.value);
+        brands.forEach(brand => {
+            if (!existing.includes(brand)) {
+                const option = document.createElement('option');
+                option.value = brand;
+                option.textContent = brand;
+                select.appendChild(option);
+            }
+        });
+        if (current && Array.from(select.options).some(o => o.value === current)) {
+            select.value = current;
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        restoreFilters();
+        syncToggleButtons();
+        loadLaptopStats();
+        loadCPUOptions().then(() => {
+            updateCPUFilterLabel();
+            renderActiveFilters();
+            loadLaptops(0);
+
+            const sentinel = document.getElementById('laptop-sentinel');
+            if (sentinel && 'IntersectionObserver' in window) {
+                const observer = new IntersectionObserver(entries => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting && !isLoading && hasMore) {
+                            loadLaptops(currentPage + 1);
+                        }
+                    });
+                }, { rootMargin: '200px' });
+                observer.observe(sentinel);
+            }
+        });
+    });
+
+    function clearFilters() {
+        document.getElementById('brand-filter').value = '';
+        setToggle('macbook-only', false);
+        document.getElementById('gpu-filter').value = '';
+        document.getElementById('min-price').value = '';
+        document.getElementById('max-price').value = '';
+        document.getElementById('ram-min').value = '';
+        document.getElementById('ram-max').value = '';
+        document.getElementById('storage-min').value = '';
+        document.getElementById('storage-max').value = '';
+        document.getElementById('storage-type').value = '';
+        document.getElementById('display-size-min').value = '';
+        document.getElementById('display-size-max').value = '';
+        document.getElementById('display-size').value = '';
+        document.getElementById('model-filter').value = '';
+        document.getElementById('sort-by').value = 'date_posted';
+        document.getElementById('sort-order').value = 'desc';
+        document.getElementById('time-filter').value = 'all_time';
+        setToggle('active-only', true);
+        setToggle('exclude-flagged', true);
+        setToggle('include-perekups', true);
+        setToggle('include-lombards', true);
+        document.querySelectorAll('#cpu-options input:checked').forEach(cb => cb.checked = false);
+        syncToggleButtons();
+        currentPage = 0;
+        saveFilters();
+        loadLaptops(0);
+    }
+
+    function renderActiveFilters() {
+        const container = document.getElementById('active-filters');
+        const chips = [];
+        const brand = document.getElementById('brand-filter').value;
+        if (brand) chips.push(['Brand', brand]);
+        document.querySelectorAll('#cpu-options input:checked').forEach(cb => chips.push(['CPU', cb.value]));
+        const gpu = document.getElementById('gpu-filter').value;
+        if (gpu) chips.push(['GPU', gpu]);
+        const minPrice = document.getElementById('min-price').value;
+        const maxPrice = document.getElementById('max-price').value;
+        if (minPrice || maxPrice) chips.push(['Price', `${minPrice || '0'}€ – ${maxPrice || '∞'}`]);
+        const ramMin = document.getElementById('ram-min').value;
+        const ramMax = document.getElementById('ram-max').value;
+        if (ramMin || ramMax) chips.push(['RAM', `${ramMin || '0'} – ${ramMax || '∞'} GB`]);
+        const storageMin = document.getElementById('storage-min').value;
+        const storageMax = document.getElementById('storage-max').value;
+        if (storageMin || storageMax) chips.push(['Storage', `${storageMin || '0'} – ${storageMax || '∞'} GB`]);
+        const storageType = document.getElementById('storage-type').value;
+        if (storageType) chips.push(['Storage type', storageType]);
+        const displaySizeMin = document.getElementById('display-size-min').value;
+        const displaySizeMax = document.getElementById('display-size-max').value;
+        if (displaySizeMin || displaySizeMax) chips.push(['Screen', `${displaySizeMin || '0'}″ – ${displaySizeMax || '∞'}″`]);
+        const displaySize = document.getElementById('display-size').value;
+        if (displaySize) chips.push(['Display', `${displaySize}″`]);
+        const modelFilter = document.getElementById('model-filter').value;
+        if (modelFilter) chips.push(['Model', modelFilter]);
+        if (isToggleOn('macbook-only')) chips.push(['Include macbooks', null, 'macbook-only']);
+        const time = document.getElementById('time-filter').value;
+        if (time !== 'all_time') chips.push(['Time', time.replace('d', ' days')]);
+        if (!isToggleOn('active-only')) chips.push(['Active', 'off', 'active-only']);
+        if (!isToggleOn('exclude-flagged')) chips.push(['Flagged', 'included', 'exclude-flagged']);
+        if (!isToggleOn('include-perekups')) chips.push(['Perekups', 'hidden', 'include-perekups']);
+        if (!isToggleOn('include-lombards')) chips.push(['Lombards', 'hidden', 'include-lombards']);
+
+        if (chips.length === 0) {
+            container.innerHTML = '';
+            return;
+        }
+        container.innerHTML =
+            '<span class="laf-label">Active filters:</span>' +
+            chips.map(([label, value, clearId]) => {
+                const text = value === null || value === undefined ? label : `${label}: ${value}`;
+                if (clearId) {
+                    // Click the chip to clear that toggle (mirror the icon button).
+                    return `<span class="laf-chip" title="Click to clear">${text}<button type="button" aria-label="Clear" onclick="event.stopPropagation(); setToggle('${clearId}', ${clearId === 'macbook-only' ? 'false' : 'true'}); syncToggleButtons(); loadLaptops();">&times;</button></span>`;
+                }
+                return `<span class="laf-chip">${text}</span>`;
+            }).join('');
+    }
+
+    function cleanLaptopTitle(title) {
+        return title.replace(/^SS\.COM Datori un orgtehnika - Piezīmjdatori, Cena\s*[\d\s]+\s*€\.\s*/i, '').trim();
+    }
+
+    function openLaptopLightbox(url, alt) {
+        let overlay = document.getElementById('laptop-lightbox');
+        if (!overlay) {
+            overlay = document.createElement('div');
+            overlay.id = 'laptop-lightbox';
+            overlay.className = 'lightbox-overlay';
+            overlay.innerHTML = '<img loading="lazy">';
+            document.body.appendChild(overlay);
+            overlay.addEventListener('click', () => overlay.classList.remove('active'));
+            // Capture phase so this runs before base.html's modal Escape handler;
+            // stopPropagation keeps Escape from closing the underlying detail modal too.
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && overlay.classList.contains('active')) {
+                    overlay.classList.remove('active');
+                    e.stopPropagation();
+                }
+            }, true);
+        }
+        const img = overlay.querySelector('img');
+        img.src = url;
+        img.alt = alt || '';
+        overlay.classList.add('active');
+    }
+
+    function openSimilarModal(listingId) {
+        const item = currentListings.find(l => l.listing_id === listingId);
+        if (!item) return;
+        similarTarget = item;
+        const container = document.getElementById('similar-options');
+        const specs = [
+            { key: 'brand', label: 'Brand', value: item.brand || '' },
+            { key: 'model', label: 'Model', value: item.model || '' },
+            { key: 'cpu_raw', label: 'CPU', value: item.cpu_raw || '' },
+            { key: 'gpu_raw', label: 'GPU', value: item.gpu_raw || '' },
+            { key: 'ram_gb', label: 'RAM', value: item.ram_gb ? `${item.ram_gb} GB` : '' },
+            { key: 'storage_gb', label: 'Storage size', value: item.storage_gb ? `${item.storage_gb} GB` : '' },
+            { key: 'storage_type', label: 'Storage type', value: item.storage_type || '' },
+            { key: 'display_size', label: 'Display', value: item.display_size ? `${item.display_size}"` : '' }
+        ].filter(s => s.value);
+
+        container.innerHTML = specs.map((s, i) => `
+            <label style="display:flex; align-items:center; gap:0.5rem; cursor:pointer;">
+                <input type="checkbox" id="similar-${s.key}" value="${s.key}" checked>
+                <span><strong>${s.label}</strong>: ${s.value}</span>
+            </label>
+        `).join('') || '<p>No usable specs for this listing.</p>';
+        document.getElementById('similar-modal').style.display = 'flex';
+    }
+
+    function closeSimilarModal() {
+        document.getElementById('similar-modal').style.display = 'none';
+        similarTarget = null;
+    }
+
+    function applySimilarFilter() {
+        if (!similarTarget) return;
+        const item = similarTarget;
+        const checked = new Set(Array.from(document.querySelectorAll('#similar-options input:checked')).map(cb => cb.value));
+
+        const parseNum = (v) => {
+            if (!v) return '';
+            const n = parseFloat(String(v).replace(/[^0-9.]/g, ''));
+            return isNaN(n) ? '' : String(n);
+        };
+
+        // Reset everything first
+        document.getElementById('brand-filter').value = checked.has('brand') ? (item.brand || '') : '';
+        document.getElementById('macbook-only').checked = checked.has('brand') && (item.brand || '').toLowerCase() === 'apple';
+        document.getElementById('model-filter').value = checked.has('model') ? (item.model || '') : '';
+        document.getElementById('gpu-filter').value = checked.has('gpu_raw') ? (item.gpu_raw || '') : '';
+        document.getElementById('ram-min').value = checked.has('ram_gb') ? parseNum(item.ram_gb) : '';
+        document.getElementById('ram-max').value = checked.has('ram_gb') ? parseNum(item.ram_gb) : '';
+        document.getElementById('storage-min').value = checked.has('storage_gb') ? parseNum(item.storage_gb) : '';
+        document.getElementById('storage-max').value = checked.has('storage_gb') ? parseNum(item.storage_gb) : '';
+        document.getElementById('storage-type').value = checked.has('storage_type') ? (item.storage_type || '') : '';
+        document.getElementById('display-size-min').value = checked.has('display_size') ? parseNum(item.display_size) : '';
+        document.getElementById('display-size-max').value = checked.has('display_size') ? parseNum(item.display_size) : '';
+        document.getElementById('display-size').value = checked.has('display_size') ? parseNum(item.display_size) : '';
+
+        // CPU is multi-select: clear others and set pending for renderCPUOptions if needed
+        document.querySelectorAll('#cpu-options input:checked').forEach(cb => cb.checked = false);
+        if (checked.has('cpu_raw') && item.cpu_raw) {
+            const cpuContainer = document.getElementById('cpu-options');
+            const existing = cpuContainer.querySelector(`input[value="${CSS.escape(item.cpu_raw)}"]`);
+            if (existing) {
+                existing.checked = true;
+            } else {
+                const pending = cpuContainer.dataset.pending ? JSON.parse(cpuContainer.dataset.pending) : [];
+                pending.push(item.cpu_raw);
+                cpuContainer.dataset.pending = JSON.stringify(pending);
+            }
+        }
+        renderCPUOptions();
+
+        currentPage = 0;
+        closeSimilarModal();
+        updateCPUFilterLabel();
+        renderActiveFilters();
+        saveFilters();
+        loadLaptops(0);
+    }
+
+    document.getElementById('similar-modal').addEventListener('click', (e) => {
+        if (e.target.id === 'similar-modal') closeSimilarModal();
+    });
+</script>
+
+
+</body>
+</html>

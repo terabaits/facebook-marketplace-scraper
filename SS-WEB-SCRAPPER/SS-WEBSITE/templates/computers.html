@@ -6,38 +6,29 @@
 <div class="section">
     <div class="page-header">
         <h2>💻 Computer Listings</h2>
-        <div class="filters">
-            <label>
-                <input type="checkbox" id="active-only" checked onchange="loadComputers()">
-                Active only
-            </label>
-            <label>
-                <input type="checkbox" id="prebuilt-only" onchange="loadComputers()">
-                Prebuilt only
-            </label>
-            <label>
-                <input type="checkbox" id="hide-prebuilt" onchange="loadComputers()">
-                Hide Prebuilt
-            </label>
-            <label>
-                <input type="checkbox" id="admin-mark-prebuilt" class="hidden" onchange="toggleAdminMarkMode()">
-                <span id="admin-mark-label" class="hidden">Mark Prebuilt Mode</span>
-            </label>
-            <label>
-                Sort:
+        <div class="comp-filterbar">
+            <div class="filter-chips" role="group" aria-label="Toggles">
+                <button class="active" id="toggle-active" data-toggle="active" onclick="toggleComputerPill(this, 'active')">Active only</button>
+                <button id="toggle-prebuilt" data-toggle="prebuilt" onclick="toggleComputerPill(this, 'prebuilt')">Prebuilt only</button>
+                <button id="toggle-hide-prebuilt" data-toggle="hide-prebuilt" onclick="toggleComputerPill(this, 'hidePrebuilt')">Hide prebuilt</button>
+                <button id="toggle-admin-mark" data-toggle="admin-mark" class="hidden" onclick="toggleComputerPill(this, 'adminMark')">Mark prebuilt</button>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="filter-group">
+                <span class="filter-label">Sort</span>
                 <select id="sort-by" onchange="loadComputers()">
                     <option value="date_posted">Date Posted</option>
                     <option value="price">Price</option>
                 </select>
-            </label>
-            <label>
-                Order:
                 <select id="sort-order" onchange="loadComputers()">
                     <option value="desc">Descending</option>
                     <option value="asc">Ascending</option>
                 </select>
-            </label>
-            <button class="btn btn-primary" onclick="openAddListingModal()">➕ Add Listing</button>
+            </div>
+
+            <button class="export-btn" onclick="openAddListingModal()">➕ Add Listing</button>
         </div>
     </div>
     
@@ -540,10 +531,36 @@ async function loadStats() {
     }
 }
 
+// Strip the SS.COM category breadcrumb from a raw listing title
+function cleanComputerTitle(title) {
+    if (!title) return '';
+    let t = String(title)
+        .replace(/^Datori un orgtehnika\s*[\\/\-]?\s*Datori[,\s]+Cena\s*\d+\s*[\u20ac\u20bd\$]\.?\s*/i, '')
+        .replace(/^Datori un orgtehnika\s*[\\/\-]?\s*Dat[ao]ri\s*[\\/\-]?\s*P[\u0101a]rdod\s*/i, '')
+        .replace(/^Datori un orgtehnika\s*[\\/\-]?\s*/i, '')
+        .replace(/\s*-\s*Sludin\u0101jumi\s*$/i, '')
+        .replace(/\s*-\s*Sludinajumi\s*$/i, '')
+        .trim();
+    return t;
+}
+
+// Pill toggle handler for the main filter bar
+function toggleComputerPill(btn, key) {
+    const isOn = btn.classList.toggle('on');
+    btn.classList.toggle('active', isOn);
+    if (key === 'adminMark') {
+        toggleAdminMarkMode();
+        if (!isOn) {
+            btn.classList.toggle('on', isAdminMode());
+        }
+    }
+    loadComputers();
+}
+
 async function loadComputers() {
-    const activeOnly = document.getElementById('active-only').checked;
-    const prebuiltOnly = document.getElementById('prebuilt-only').checked;
-    const hidePrebuilt = document.getElementById('hide-prebuilt').checked;
+    const activeOnly = document.getElementById('toggle-active') ? document.getElementById('toggle-active').classList.contains('on') : true;
+    const prebuiltOnly = document.getElementById('toggle-prebuilt') ? document.getElementById('toggle-prebuilt').classList.contains('on') : false;
+    const hidePrebuilt = document.getElementById('toggle-hide-prebuilt') ? document.getElementById('toggle-hide-prebuilt').classList.contains('on') : false;
     const sortBy = document.getElementById('sort-by').value;
     const sortOrder = document.getElementById('sort-order').value;
     
@@ -576,10 +593,10 @@ async function loadComputers() {
                 <thead>
                     <tr>
                         <th>Image</th>
-                        <th>Title</th>
-                        <th>Type</th>
+                        <th>Listing</th>
                         <th>Price</th>
                         <th>Components</th>
+                        <th>Score</th>
                         <th>Location</th>
                         <th>Date</th>
                         <th>Actions</th>
@@ -589,10 +606,12 @@ async function loadComputers() {
         `;
         
         data.listings.forEach(item => {
-            // Build components summary
+            // Build components summary (vertical stack with full text - readable)
             let components = [];
             if (item.cpu_name) {
-                components.push(`<span class="badge badge-cpu">CPU: ${item.cpu_producer || ''} ${item.cpu_name}</span>`);
+                const cpuProducer = item.cpu_producer || '';
+                const cpuName = cpuProducer && item.cpu_name.toLowerCase().startsWith(cpuProducer.toLowerCase()) ? item.cpu_name : `${cpuProducer} ${item.cpu_name}`.trim();
+                components.push(`<span class="badge badge-cpu">CPU: ${cpuName}</span>`);
             }
             if (item.gpu_model) {
                 components.push(`<span class="badge badge-gpu">GPU: ${item.gpu_vendor || ''} ${item.gpu_model}</span>`);
@@ -616,16 +635,15 @@ async function loadComputers() {
             if (item.prebuilt_badge) {
                 components.push(item.prebuilt_badge);
             }
-            
             const componentsHtml = components.length > 0 ? components.join('<br>') : '<em class="no-components">No components detected</em>';
 
             // Use backend prebuilt flag
             const isPrebuilt = Boolean(item.is_prebuilt);
             const pcType = item.pc_type || (isPrebuilt ? 'prebuilt' : 'custom');
-            const typeBadge = isPrebuilt
-                ? `<span class="badge" style="background: #e74c3c; color: white;">🏭 Prebuilt</span>`
-                : `<span class="badge" style="background: #27ae60; color: white;">🛠️ Custom</span>`;
-            const prebuiltTitleBadge = isPrebuilt ? `<span class="badge" style="background: #e74c3c; color: white; margin-left: 0.5rem;">🏭 Prebuilt</span>` : '';
+            const pcTypeChip = isPrebuilt
+                ? '<span class="pc-type-chip prebuilt">🏭 Prebuilt</span>'
+                : '<span class="pc-type-chip custom">🛠️ Custom</span>';
+            const cleanTitle = cleanComputerTitle(item.title) || (isPrebuilt ? 'Prebuilt PC' : 'Custom PC');
             
             // Image - escape special chars for onclick
             const rawImageUrl = item.image_url ? item.image_url : '';
@@ -633,7 +651,7 @@ async function loadComputers() {
                 .replace(/\.t\./, '.800.')
                 .replace(/\.th\./, '.')
                 .replace(/\.thumb\./, '.')
-                .replace(/\//thumb\//, '/');
+                .replace('/thumb/', '/');
             const safeImageUrl = fullImageUrl.replace(/'/g, "\\'").replace(/"/g, '&quot;');
             const safeTitle = (item.title || '').replace(/'/g, "\\'").replace(/"/g, '&quot;');
             const safeListingId = item.listing_id ? item.listing_id.replace(/'/g, "\\'") : '';
@@ -652,17 +670,27 @@ async function loadComputers() {
                 <tr class="clickable ${pcType}-row" onclick="showComputerDetail('${safeListingId}')">
                     <td class="listing-image-cell">${imageHtml}</td>
                     <td>
-                        <strong>${item.title}</strong>${prebuiltTitleBadge}
-                        ${isAdminMode() && item.is_prebuilt ? `<button class="btn btn-tiny" onclick="event.stopPropagation(); unmarkPrebuilt('${safeListingId}')" title="Unmark as prebuilt">✕</button>` : ''}
+                        <div class="comp-cell-name">
+                            <div class="comp-title-row">
+                                <span class="comp-title">${cleanTitle}</span>
+                                ${pcTypeChip}
+                            </div>
+                            ${isAdminMode() && item.is_prebuilt ? `<button class="btn btn-tiny" onclick="event.stopPropagation(); unmarkPrebuilt('${safeListingId}')" title="Unmark as prebuilt">✕</button>` : ''}
+                        </div>
                     </td>
-                    <td>${typeBadge}</td>
-                    <td><span class="price">€${item.price_eur}</span></td>
+                    <td><span class="comp-price">€${item.price_eur}</span>${item.price_difference_eur < 0 ? `<div class="comp-price-sub">−€${Math.abs(item.price_difference_eur).toFixed(0)} below parts</div>` : ''}</td>
                     <td>${componentsHtml}</td>
-                    <td>${item.seller_location || 'N/A'}</td>
-                    <td>${item.date_posted ? new Date(item.date_posted).toLocaleDateString() : 'N/A'}</td>
                     <td>
-                        <button class="btn btn-small btn-secondary" onclick="event.stopPropagation(); showComputerDetail('${safeListingId}')">Details</button>
-                        <a href="${item.listing_url || '#' }" target="_blank" class="btn btn-small" onclick="event.stopPropagation()">View →</a>
+                        <div class="comp-scores">
+                            ${item.performance_score ? `<span class="comp-score perf" title="Performance score: CPU 40%, GPU 40%, RAM 10%, SSD 10%">⚡ ${item.performance_score.toFixed(1)}</span>` : ''}
+                            ${item.value_score ? `<span class="comp-score value" title="Value score = performance / price">💎 ${item.value_score.toFixed(2)}</span>` : ''}
+                        </div>
+                    </td>
+                    <td><span class="comp-meta">${item.seller_location || '—'}</span></td>
+                    <td><span class="comp-meta">${item.date_posted ? new Date(item.date_posted).toLocaleDateString('en-GB', {day:'2-digit',month:'short'}) : '—'}</span></td>
+                    <td class="comp-actions">
+                        <button class="comp-action-btn" title="View details" onclick="event.stopPropagation(); showComputerDetail('${safeListingId}')">📄</button>
+                        <a href="${item.listing_url || '#'}" target="_blank" class="comp-action-btn" title="Open listing" onclick="event.stopPropagation()">↗</a>
                     </td>
                 </tr>
             `;
@@ -720,8 +748,8 @@ async function showComputerDetail(listingId) {
             .replace(/\.t\./, '.800.')
             .replace(/\.th\./, '.')
             .replace(/\.thumb\./, '.')
-            .replace(/\//thumb\//, '/');
-        const imageHtml = fullImageUrl 
+            .replace('/thumb/', '/');
+        const imageHtml = fullImageUrl
             ? `<div class="computer-image-container">
                 <img src="${fullImageUrl}" alt="Computer" class="computer-main-image" onclick="showImageModal('${fullImageUrl.replace(/'/g, "\\'")}', '${(listing.title || '').replace(/'/g, "\\'")}')">
                </div>`
@@ -1338,7 +1366,7 @@ function showImageModal(imageUrl, title) {
         .replace(/\.t\./, '.800.')
         .replace(/\.th\./, '.')
         .replace(/\.thumb\./, '.')
-        .replace(/\//thumb\//, '/');
+        .replace('/thumb/', '/');
     document.getElementById('preview-image').src = fullImageUrl;
     document.getElementById('preview-image').alt = title;
     document.getElementById('preview-title').textContent = title;
@@ -2052,17 +2080,19 @@ setTimeout(() => {
 
 // Initialize on page load
 document.addEventListener('DOMContentLoaded', function() {
-    // Restore saved toggle states
+    // Restore saved toggle states (now pill-based)
     const savedPrebuiltOnly = localStorage.getItem('computersPrebuiltOnly');
     const savedHidePrebuilt = localStorage.getItem('computersHidePrebuilt');
     const savedSortBy = localStorage.getItem('computersSortBy');
     const savedSortOrder = localStorage.getItem('computersSortOrder');
-    
-    if (savedPrebuiltOnly !== null) {
-        document.getElementById('prebuilt-only').checked = savedPrebuiltOnly === 'true';
+
+    if (savedPrebuiltOnly === 'true') {
+        const btn = document.getElementById('toggle-prebuilt');
+        if (btn) { btn.classList.add('on'); btn.classList.add('active'); }
     }
-    if (savedHidePrebuilt !== null) {
-        document.getElementById('hide-prebuilt').checked = savedHidePrebuilt === 'true';
+    if (savedHidePrebuilt === 'true') {
+        const btn = document.getElementById('toggle-hide-prebuilt');
+        if (btn) { btn.classList.add('on'); btn.classList.add('active'); }
     }
     if (savedSortBy !== null) {
         document.getElementById('sort-by').value = savedSortBy;
@@ -3432,6 +3462,247 @@ document.addEventListener('DOMContentLoaded', function() {
 /* Utility Classes */
 .hidden {
     display: none !important;
+}
+
+
+/* ===== Computers page UI: modern filter bar + cells ===== */
+:root {
+    --comp-primary: #6366f1;
+    --comp-primary-soft: #818cf8;
+    --comp-text: var(--text-color, #1e293b);
+    --comp-text-dim: var(--text-dim, #64748b);
+    --comp-border: var(--card-border, rgba(0,0,0,0.08));
+    --comp-bg: var(--card-bg, #ffffff);
+    --comp-bg-soft: var(--section-bg, #f8fafc);
+    --comp-shadow: 0 1px 2px rgba(0,0,0,0.04);
+    --comp-radius: 10px;
+    --comp-radius-sm: 6px;
+}
+[data-theme="dark"] {
+    --comp-border: rgba(255,255,255,0.08);
+    --comp-shadow: 0 1px 3px rgba(0,0,0,0.3);
+}
+
+.comp-filterbar {
+    background: var(--comp-bg);
+    border: 1px solid var(--comp-border);
+    border-radius: var(--comp-radius);
+    padding: 0.75rem 1rem;
+    box-shadow: var(--comp-shadow);
+    margin-bottom: 1rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    align-items: center;
+}
+.comp-filterbar .filter-chips {
+    display: flex;
+    gap: 0.25rem;
+    border: 1px solid var(--comp-border);
+    border-radius: 8px;
+    padding: 2px;
+    background: var(--comp-bg-soft);
+}
+.comp-filterbar .filter-chips button {
+    background: transparent;
+    border: none;
+    color: var(--comp-text-dim);
+    padding: 0.3rem 0.65rem;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s;
+}
+.comp-filterbar .filter-chips button:hover {
+    background: var(--comp-bg);
+    color: var(--comp-text);
+}
+.comp-filterbar .filter-chips button.active,
+.comp-filterbar .filter-chips button.on {
+    background: var(--comp-primary);
+    color: white;
+}
+.comp-filterbar .filter-group {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+.comp-filterbar .filter-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--comp-text-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+.comp-filterbar select, .comp-filterbar input[type="text"] {
+    background: var(--comp-bg-soft);
+    border: 1px solid var(--comp-border);
+    color: var(--comp-text);
+    border-radius: 6px;
+    padding: 0.35rem 0.6rem;
+    font-size: 0.85rem;
+    font-weight: 500;
+    cursor: pointer;
+}
+.comp-filterbar .divider {
+    width: 1px;
+    height: 22px;
+    background: var(--comp-border);
+    margin: 0 0.25rem;
+}
+.comp-filterbar .export-btn {
+    margin-left: auto;
+    background: var(--comp-primary);
+    color: white;
+    border: none;
+    padding: 0.45rem 0.95rem;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    transition: all 0.15s;
+}
+.comp-filterbar .export-btn:hover {
+    background: #4f46e5;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(99, 102, 241, 0.25);
+}
+
+.comp-cell-name { min-width: 200px; }
+.comp-cell-name .comp-title-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+.comp-cell-name .comp-title {
+    font-weight: 600;
+    color: var(--comp-text);
+    font-size: 0.9rem;
+    line-height: 1.3;
+}
+.pc-type-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.2rem;
+    font-size: 0.65rem;
+    font-weight: 700;
+    padding: 2px 6px;
+    border-radius: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    white-space: nowrap;
+}
+.pc-type-chip.prebuilt { background: #fee2e2; color: #b91c1c; }
+.pc-type-chip.custom { background: #dbeafe; color: #1d4ed8; }
+[data-theme="dark"] .pc-type-chip.prebuilt { background: rgba(239,68,68,0.2); color: #fca5a5; }
+[data-theme="dark"] .pc-type-chip.custom { background: rgba(59,130,246,0.2); color: #93c5fd; }
+
+.comp-price {
+    font-size: 1.05rem;
+    font-weight: 800;
+    color: var(--comp-text);
+}
+.comp-price-sub {
+    font-size: 0.7rem;
+    color: #10b981;
+    font-weight: 600;
+    margin-top: 0.1rem;
+}
+
+.comp-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.25rem 0.6rem;
+    min-width: 240px;
+}
+.comp-row {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.78rem;
+    line-height: 1.3;
+    min-width: 0;
+}
+.comp-tag {
+    display: inline-block;
+    font-size: 0.6rem;
+    font-weight: 700;
+    padding: 1px 5px;
+    border-radius: 3px;
+    color: white;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    flex-shrink: 0;
+    min-width: 28px;
+    text-align: center;
+}
+.comp-tag.comp-cpu { background: #667eea; }
+.comp-tag.comp-gpu { background: #764ba2; }
+.comp-tag.comp-ram { background: #27ae60; }
+.comp-tag.comp-ssd { background: #3498db; }
+.comp-name {
+    color: var(--comp-text);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    min-width: 0;
+}
+.no-components {
+    color: var(--comp-text-dim);
+    font-size: 0.8rem;
+    font-style: italic;
+}
+
+.comp-scores {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+}
+.comp-score {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    font-size: 0.7rem;
+    font-weight: 700;
+    padding: 2px 7px;
+    border-radius: 4px;
+    white-space: nowrap;
+    color: white;
+}
+.comp-score.perf { background: #3498db; }
+.comp-score.value { background: #2ecc71; }
+
+.comp-meta { font-size: 0.8rem; color: var(--comp-text); }
+
+.comp-actions {
+    white-space: nowrap;
+    text-align: right;
+}
+.comp-action-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border: 1px solid var(--comp-border);
+    background: var(--comp-bg-soft);
+    color: var(--comp-text-dim);
+    border-radius: 6px;
+    cursor: pointer;
+    margin-left: 0.2rem;
+    transition: all 0.15s;
+    font-size: 0.85rem;
+    text-decoration: none;
+}
+.comp-action-btn:hover {
+    background: var(--comp-primary);
+    color: white;
+    border-color: var(--comp-primary);
 }
 </style>
 {% endblock %}

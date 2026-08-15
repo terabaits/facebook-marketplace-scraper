@@ -1,0 +1,242 @@
+﻿2268: @app.route('/api/computers')
+2269: def get_computers():
+2270:     """Get computer listings."""
+2271:     conn = get_db_connection()
+2272:     cursor = conn.cursor(cursor_factory=RealDictCursor)
+2273: 
+2274:     try:
+2275:         # Check if ram_reference table exists
+2276:         cursor.execute("""
+2277:             SELECT EXISTS (
+2278:                 SELECT FROM information_schema.tables
+2279:                 WHERE table_name = 'ram_reference'
+2280:             )
+2281:         """)
+2282:         ram_table_exists = cursor.fetchone()['exists']
+2283: 
+2284:         # Apply prebuilt filter from query string
+2285:         prebuilt_filter = request.args.get('prebuilt')
+2286:         prebuilt_clause = ""
+2287:         params = []
+2288:         if prebuilt_filter == 'true':
+2289:             prebuilt_clause = "AND cl.is_prebuilt = true"
+2290:         elif prebuilt_filter == 'false':
+2291:             prebuilt_clause = "AND cl.is_prebuilt = false"
+2292: 
+2293:         if ram_table_exists:
+2294:             query = f"""
+2295:                 SELECT
+2296:                     cl.listing_id,
+2297:                     cl.title,
+2298:                     cl.price_eur,
+2299:                     cl.seller_location,
+2300:                     cl.date_posted,
+2301:                     cl.first_seen_at,
+2302:                     cl.is_active,
+2303:                     cl.listing_url,
+2304:                     cl.image_url,
+2305:                     cl.build_type,
+2306:                     cl.is_prebuilt,
+2307:                     cl.components_total_eur,
+2308:                     cl.price_difference_eur,
+2309:                     cl.matched_cpu_id,
+2310:                     cl.matched_gpu_id,
+2311:                     cpu.producer as cpu_producer,
+2312:                     cpu.cpu_name,
+2313:                     gpu.vendor as gpu_vendor,
+2314:                     gpu.model as gpu_model,
+2315:                     ram.capacity_gb as ram_capacity,
+2316:                     ram.type as ram_type,
+2317:                     cl.ram_match_method,
+2318:                     cl.ssd_match_method,
+2319:                     ssd.capacity_gb as ssd_capacity
+2320:                 FROM computer_listings cl
+2321:                 LEFT JOIN cpu_reference cpu ON cl.matched_cpu_id = cpu.id
+2322:                 LEFT JOIN gpu_reference gpu ON cl.matched_gpu_id = gpu.id
+2323:                 LEFT JOIN ram_reference ram ON cl.matched_ram_id = ram.id
+2324:                 LEFT JOIN ssd_reference ssd ON cl.matched_ssd_id = ssd.id
+2325:                 WHERE cl.is_active = true {prebuilt_clause}
+2326:                 ORDER BY cl.date_posted DESC
+2327:                 LIMIT 100
+2328:             """
+2329:         else:
+2330:             query = f"""
+2331:                 SELECT
+2332:                     cl.listing_id,
+2333:                     cl.title,
+2334:                     cl.price_eur,
+2335:                     cl.seller_location,
+2336:                     cl.date_posted,
+2337:                     cl.first_seen_at,
+2338:                     cl.is_active,
+2339:                     cl.listing_url,
+2340:                     cl.image_url,
+2341:                     cl.build_type,
+2342:                     cl.is_prebuilt,
+2343:                     cl.components_total_eur,
+2344:                     cl.price_difference_eur,
+2345:                     cl.matched_cpu_id,
+2346:                     cl.matched_gpu_id,
+2347:                     cpu.producer as cpu_producer,
+2348:                     cpu.cpu_name,
+2349:                     gpu.vendor as gpu_vendor,
+2350:                     gpu.model as gpu_model,
+2351:                     NULL as ram_capacity,
+2352:                     NULL as ram_type,
+2353:                     cl.ram_match_method,
+2354:                     cl.ssd_match_method,
+2355:                     ssd.capacity_gb as ssd_capacity
+2356:                 FROM computer_listings cl
+2357:                 LEFT JOIN cpu_reference cpu ON cl.matched_cpu_id = cpu.id
+2358:                 LEFT JOIN gpu_reference gpu ON cl.matched_gpu_id = gpu.id
+2359:                 LEFT JOIN ssd_reference ssd ON cl.matched_ssd_id = ssd.id
+2360:                 WHERE cl.is_active = true {prebuilt_clause}
+2361:                 ORDER BY cl.date_posted DESC
+2362:                 LIMIT 100
+2363:             """
+2364: 
+2365:         cursor.execute(query)
+2366:         listings = cursor.fetchall()
+2367: 
+2368:         # Convert Decimal to float for JSON serialization and normalize fields
+2369:         listings_dict = []
+2370:         listing_ids = []
+2371:         for row in listings:
+2372:             row_dict = dict(row)
+2373:             if row_dict.get('price_eur') is not None:
+2374:                 row_dict['price_eur'] = float(row_dict['price_eur'])
+2375: 
+2376:             if row_dict.get('components_total_eur') is not None:
+2377:                 row_dict['components_total_eur'] = float(row_dict['components_total_eur'])
+2378:             if row_dict.get('price_difference_eur') is not None:
+2379:                 row_dict['price_difference_eur'] = float(row_dict['price_difference_eur'])
+2380: 
+2381:             # Normalize build_type from DB; fall back to a content-based heuristic if missing
+2382:             build_type = row_dict.get('build_type') or 'custom'
+2383:             if build_type not in ('custom', 'prebuilt', 'office', 'unknown'):
+2384:                 build_type = 'custom'
+2385:             row_dict['build_type'] = build_type
+2386:             row_dict['is_prebuilt'] = bool(row_dict.get('is_prebuilt')) or build_type == 'prebuilt'
+2387:             row_dict['pc_type'] = build_type
+2388: 
+2389:             # Fallback: derive SSD capacity from ssd_match_method for generic/fallback detections
+2390:             if not row_dict.get('ssd_capacity') and row_dict.get('ssd_match_method'):
+2391:                 capacity_match = re.search(r'(\d+)\s*GB', row_dict['ssd_match_method'], re.IGNORECASE)
+2392:                 if capacity_match:
+2393:                     row_dict['ssd_capacity'] = int(capacity_match.group(1))
+2394: 
+2395:             listing_ids.append(row_dict['listing_id'])
+2396:             listings_dict.append(row_dict)
+2397: 
+2398:         # Compute latest import date for NEW badge from computer_listings itself
+2399:         latest_first_seen = None
+2400:         try:
+2401:             cursor.execute("""
+2402:                 SELECT MAX(first_seen_at::date) as latest_date
+2403:                 FROM computer_listings
+2404:                 WHERE first_seen_at IS NOT NULL
+2405:             """)
+2406:             result = cursor.fetchone()
+2407:             latest_first_seen = result['latest_date'] if result and result['latest_date'] else None
+2408:         except Exception:
+2409:             pass
+2410: 
+2411:         # Compute peer-group price statistics by CPU+GPU combination
+2412:         peer_stats = {}
+2413:         try:
+2414:             cursor.execute("""
+2415:                 SELECT
+2416:                     COALESCE(cl.matched_cpu_id, 0) as matched_cpu_id,
+2417:                     COALESCE(cl.matched_gpu_id, 0) as matched_gpu_id,
+2418:                     ROUND(AVG(cl.price_eur)::numeric, 2) as avg_price,
+2419:                     MIN(cl.price_eur) as min_price,
+2420:                     MAX(cl.price_eur) as max_price,
+2421:                     COUNT(*) as listing_count
+2422:                 FROM computer_listings cl
+2423:                 WHERE cl.is_active = true
+2424:                 GROUP BY COALESCE(cl.matched_cpu_id, 0), COALESCE(cl.matched_gpu_id, 0)
+2425:             """)
+2426:             for row in cursor.fetchall():
+2427:                 key = (row['matched_cpu_id'], row['matched_gpu_id'])
+2428:                 peer_stats[key] = dict(row)
+2429:         except Exception:
+2430:             pass
+2431: 
+2432:         # Fetch per-listing price history stats for BUY badge (all-time low + variation)
+2433:         history_stats = {}
+2434:         if listing_ids:
+2435:             try:
+2436:                 cursor.execute("""
+2437:                     SELECT
+2438:                         listing_id,
+2439:                         MIN(price_eur) as min_price,
+2440:                         MAX(price_eur) as max_price,
+2441:                         COUNT(DISTINCT price_eur) as distinct_prices
+2442:                     FROM price_history
+2443:                     WHERE listing_id = ANY(%s)
+2444:                     GROUP BY listing_id
+2445:                 """, (listing_ids,))
+2446:                 for row in cursor.fetchall():
+2447:                     history_stats[row['listing_id']] = dict(row)
+2448:             except Exception:
+2449:                 pass
+2450: 
+2451:         # Enhance listings with NEW flag, peer price stats, and BUY signal
+2452:         enhanced_listings = []
+2453:         for listing_dict in listings_dict:
+2454:             # NEW badge: listing first seen on the latest import date for computers
+2455:             if latest_first_seen and listing_dict.get('first_seen_at'):
+2456:                 fs = listing_dict['first_seen_at']
+2457:                 listing_date = fs.date() if hasattr(fs, 'date') else fs
+2458:                 listing_dict['is_new'] = listing_date == latest_first_seen
+2459:             else:
+2460:                 listing_dict['is_new'] = False
+2461: 
+2462:             # Peer-group price stats for STEAL badge
+2463:             cpu_id = listing_dict.get('matched_cpu_id') or 0
+2464:             gpu_id = listing_dict.get('matched_gpu_id') or 0
+2465:             peer_key = (cpu_id, gpu_id)
+2466:             if peer_key in peer_stats:
+2467:                 stats = peer_stats[peer_key]
+2468:                 count = int(stats['listing_count']) if stats['listing_count'] else 0
+2469:                 if count > 1:
+2470:                     avg_price = float(stats['avg_price']) if stats['avg_price'] else 0
+2471:                     min_price = float(stats['min_price']) if stats['min_price'] else 0
+2472:                     max_price = float(stats['max_price']) if stats['max_price'] else 0
+2473:                     current_price = listing_dict.get('price_eur', 0)
+2474:                     listing_dict['price_stats'] = {
+2475:                         'avg': avg_price,
+2476:                         'min': min_price,
+2477:                         'max': max_price,
+2478:                         'below_avg': current_price < avg_price,
+2479:                         'percentile': round((current_price - min_price) / (max_price - min_price) * 100, 1)
+2480:                                       if max_price > min_price else 50,
+2481:                         'listing_count': count
+2482:                     }
+2483: 
+2484:             # BUY badge signal: current price at or below all-time recorded minimum and history has variation
+2485:             hist = history_stats.get(listing_dict['listing_id'])
+2486:             if hist:
+2487:                 hist_min = float(hist['min_price']) if hist['min_price'] is not None else None
+2488:                 hist_max = float(hist['max_price']) if hist['max_price'] is not None else None
+2489:                 current_price = listing_dict.get('price_eur')
+2490:                 has_variation = (hist['distinct_prices'] or 0) > 1 or (hist_max is not None and hist_min is not None and hist_max > hist_min)
+2491:                 if hist_min is not None and current_price is not None and current_price <= hist_min and has_variation:
+2492:                     listing_dict['is_buy'] = True
+2493:                 else:
+2494:                     listing_dict['is_buy'] = False
+2495:             else:
+2496:                 listing_dict['is_buy'] = False
+2497: 
+2498:             enhanced_listings.append(listing_dict)
+2499: 
+2500:         cursor.close()
+2501:         conn.close()
+2502:         return jsonify({'success': True, 'listings': enhanced_listings})
+2503:     except Exception as e:
+2504:         cursor.close()
+2505:         conn.close()
+2506:         return jsonify({'success': False, 'error': str(e)}), 500
+2507: 
+2508: 
+2509: @app.route('/api/computers/<listing_id>')

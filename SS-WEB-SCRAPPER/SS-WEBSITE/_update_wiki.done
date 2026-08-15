@@ -1,0 +1,65 @@
+"""Replace the 4.5 Laptops section in the wiki with a more complete version."""
+from pathlib import Path
+
+path = Path(r'G:\Github\SS-WEB-SCRAPPER\SS-WEBSITE\docs\project_wiki.md')
+text = path.read_text(encoding='utf-8')
+
+old = """### 4.5 Laptops (`/laptops`)
+
+- **What it shows:** Laptop listings matched to a per-model reference table.
+- **Unique features:**
+  - **Per-model reference table** (`laptop_reference`): one row per `brand|model|display_size`, keyed by a case-insensitive `normalized_key` so a single edit propagates to every listing of the same model. Carries `material` (`Plastic` / `Metal`), `usb_c_count`, `usb_count`, `hdmi_count`, `resolution`, and an admin-only `is_valid` (`VALID`) mark.
+  - **Detail popup spec chips** (Material, USB-C / USB / HDMI count, Resolution) pull from the reference table.
+  - **✓ VALID badge** on the card title and popup header when the admin has marked the model canonical; the future model-merge job can use this as the target when collapsing near-duplicate laptop models (e.g. `"Macbook Air"` vs `"Macbook air 13"`).
+  - **Staff edit panel** in the popup: mod/admin can set material/port counts/resolution; admin can additionally toggle the `VALID` mark. Save is `POST /api/laptop-reference/save`, gated by `require_login + require_role('mod')`; `is_valid` is admin-only and silently ignored for mods.
+  - **Resolution pre-fill**: when the table is populated, the most common `\\d{3,4}×\\d{3,4}` pattern in each model's listing descriptions is stored as the default resolution; staff can correct it.
+"""
+
+new = """### 4.5 Laptops (`/laptops`)
+
+- **What it shows:** Laptop listings matched to a per-model reference table.
+- **Unique features:**
+  - **Per-model reference table** (`laptop_reference`): one row per `brand|model|display_size`, keyed by a case-insensitive `normalized_key` so a single edit propagates to every listing of the same model. Carries `material` (`Plastic` / `Metal`), `usb_c_count`, `usb_count`, `hdmi_count`, `resolution`, and an admin-only `is_valid` (`VALID`) mark.
+  - **Real FK link** (`laptop_listings.laptop_reference_id`): the link is now an indexed INT column populated by the scraper, not a soft join on a computed expression. Migration `migrations/2026-08-14_add_laptop_reference_fk.sql` backfilled 771 of 790 existing listings; the remaining 19 are NULL because their `brand` or `model` is NULL. `/api/laptops` and `/api/listing-details/<id>` `LEFT JOIN laptop_reference lr ON lr.id = l.laptop_reference_id`.
+  - **Detail popup spec chips** (Material, USB-C / USB / HDMI count, Resolution) pull from the reference table.
+  - **✓ VALID badge** on the card title and popup header when the admin has marked the model canonical; the future model-merge job can use this as the target when collapsing near-duplicate laptop models (e.g. `"Macbook Air"` vs `"Macbook air 13"`).
+  - **Staff edit panel** in the popup: mod/admin can set material/port counts/resolution; admin can additionally toggle the `VALID` mark. Save is `POST /api/laptop-reference/save`, gated by `require_login + require_role('mod')`; `is_valid` is admin-only and silently ignored for mods.
+  - **Resolution pre-fill**: when the table is populated, the most common `\\d{3,4}×\\d{3,4}` pattern in each model's listing descriptions is stored as the default resolution; staff can correct it.
+
+#### 4.5.1 Laptop reference resolver & matching tolerances
+
+The link between a scraped listing and its `laptop_reference` row is built by `src/scraper/laptop_reference_resolver.py` (Python) and the same rules reproduced in the migration SQL. The tolerances are intentionally conservative — only safe normalizations, no fuzzy matching, because false merges are worse than the extra duplicates.
+
+**Tolerances applied (in order):**
+
+1. **`brand`** — `lower(trim(brand))` with whitespace collapse. `"Apple"` == `"apple"` == `" APPLE "`.
+2. **`display_size`** — keep digits and a single optional dot; strip inch marks, `"inch"`, `"collas"`. We do **not** strip trailing `.0` so the key matches the existing rows from the original migration.
+3. **`model`** — `lower(trim(model))` + collapse whitespace, then:
+   - strip parenthetical content: `"Macbook Pro (2019)"` → `"macbook pro"`
+   - strip leading/trailing **Latvian ad-words** (`klēpjdators`, `portatīvais`, `dators`) iteratively so `"Portatīvais dators Lenovo ThinkPad"` → `"lenovo thinkpad"`. English ad-words (`gaming`, `notebook`, `laptop`) are **not** stripped because they appear inside real product names (TUF Gaming A15, Envy Notebook, Surface Laptop).
+   - **do not** strip model-name tokens like `M2`, `Pro`, `Air`, `i5`, `X1`, `840`, `14`.
+   - **do not** fuzzy-match typos (e.g. `"Macbook"` vs `"Macbok"` stays split — admin merges later via `is_valid`).
+   - **do not** strip trailing numbers that happen to equal the display size. Many real model names contain the size (`XPS 13`, `Cyborg 15`, `Vivobook Go 15`, `Macbook Pro 14 M2`); stripping them caused 43 false merges in the test dataset.
+
+The Python module has a doctest-style test suite (`tests/test_laptop_reference_resolver.py`, 11 tests) that pins these rules.
+
+**Scraper flow** (`LaptopScraper._save_listing`):
+
+1. Compute `normalized_key = lower(brand)|lower(model)|display_size_digits`.
+2. If `laptop_reference.normalized_key = :k` exists → reuse that `id`.
+3. Else **INSERT a new row** with `material=NULL`, port counts `NULL`, and `resolution` auto-extracted from the first `\\d{3,4}[x×]\\d{3,4}` match in the description. `is_valid=false`; admin must mark.
+4. Write `laptop_reference_id` on `laptop_listings` (INSERT and UPDATE paths).
+
+**Backfill for existing data**: the migration `migrations/2026-08-14_add_laptop_reference_fk.sql` (a) re-derives `normalized_key` for every `laptop_reference` row using the same rules, (b) collapses duplicates by picking the lowest-`id` winner and re-pointing any `laptop_listings` to it, (c) backfills `laptop_listings.laptop_reference_id` for all rows whose brand/model are non-NULL. After running: 771 of 790 listings have an FK; refs went from 626 to 624 (2 collapsed via the Dell XPS 13 dedup).
+
+**Resolution backfill**: `backfill_laptop_reference_resolution.py` (in `SS-CRAWLER/`) walks NULL `resolution` rows and re-runs the regex group-frequency check. Run with `--dry-run` first. In practice only ~185 of 624 refs have a resolvable pattern in any of their listings' descriptions — the rest are staff-fillable via the popup UI.
+"""
+
+count = text.count(old)
+print(f"Old section found {count} time(s)")
+if count == 1:
+    text = text.replace(old, new)
+    path.write_text(text, encoding='utf-8')
+    print("Wiki updated.")
+else:
+    print("Aborting - section not found exactly once.")

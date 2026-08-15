@@ -1,0 +1,84 @@
+  25:         <div class="component-selection">
+  27:             <div class="component-card" data-component="cpu">
+  33:                 <div class="component-body">
+  34:                     <div class="select-container">
+  35:                         <input type="text" class="select-search" id="cpu-select-search" placeholder="🔍 Search CPU..." oninput="filterComponentSelect('cpu-select', this.value)" onfocus="showSearchDropdown('cpu')" onblur="hideSearchDropdown('cpu')">
+  36:                     <div class="search-dropdown" id="cpu-search-dropdown"></div>
+  37:                         <select id="cpu-select" class="component-select" onchange="selectComponent('cpu', this.value)">
+  40:                         <button class="view-listings-btn" id="cpu-view-btn" onclick="viewListings('cpu')" title="View all listings for this CPU" disabled>
+  50:             <div class="component-card" data-component="motherboard">
+  56:                 <div class="component-body">
+  59:                         <select id="mb-avg-mode" class="component-select" onchange="updateMotherboardAvgMode()" style="flex: 1; min-width: 120px;">
+  64:                         <select id="mb-avg-value" class="component-select" onchange="updateMotherboardAvgValue()" style="flex: 1; min-width: 140px;" disabled>
+  77:                     <div class="select-container">
+  78:                         <input type="text" class="select-search" id="motherboard-select-search" placeholder="🔍 Search Motherboard..."
+  80:                     <div class="search-dropdown" id="motherboard-search-dropdown"></div>
+  81:                         <select id="motherboard-select" class="component-select" onchange="selectComponent('motherboard', this.value)">
+  84:                         <button class="view-listings-btn" id="motherboard-view-btn" onclick="viewListings('motherboard')" title="View all listings for this motherboard" disabled>
+  93:             <div class="component-card" data-component="gpu">
+  99:                 <div class="component-body">
+ 100:                     <div class="select-container">
+ 101:                         <input type="text" class="select-search" id="gpu-select-search" placeholder="🔍 Search GPU..." oninput="filterComponentSelect('gpu-select', this.value)" onfocus="showSearchDropdown('gpu')" onblur="hideSearchDropdown('gpu')">
+ 102:                     <div class="search-dropdown" id="gpu-search-dropdown"></div>
+ 103:                         <select id="gpu-select" class="component-select" onchange="selectComponent('gpu', this.value)">
+ 106:                         <button class="view-listings-btn" id="gpu-view-btn" onclick="viewListings('gpu')" title="View all listings for this GPU" disabled>
+ 115:             <div class="component-card" data-component="ram">
+ 121:                 <div class="component-body">
+ 146:                     <div class="select-container">
+ 147:                         <input type="text" class="select-search" id="ram-select-search" placeholder="🔍 Search RAM..." oninput="filterComponentSelect('ram-select', this.value)" onfocus="showSearchDropdown('ram')" onblur="hideSearchDropdown('ram')">
+ 148:                     <div class="search-dropdown" id="ram-search-dropdown"></div>
+ 149:                         <select id="ram-select" class="component-select" onchange="selectComponent('ram', this.value)">
+ 152:                         <button class="view-listings-btn" id="ram-view-btn" onclick="viewListings('ram')" title="View all listings for this RAM" disabled>
+ 161:             <div class="component-card" data-component="ssd">
+ 167:                 <div class="component-body">
+ 194:                     <div class="select-container">
+ 195:                         <input type="text" class="select-search" id="ssd-select-search" placeholder="🔍 Search SSD..." oninput="filterComponentSelect('ssd-select', this.value)" onfocus="showSearchDropdown('ssd')" onblur="hideSearchDropdown('ssd')">
+ 196:                     <div class="search-dropdown" id="ssd-search-dropdown"></div>
+ 197:                         <select id="ssd-select" class="component-select" onchange="selectComponent('ssd', this.value)">
+ 200:                         <button class="view-listings-btn" id="ssd-view-btn" onclick="viewListings('ssd')" title="View all listings for this SSD" disabled>
+ 209:             <div class="component-card" data-component="psu">
+ 215:                 <div class="component-body">
+ 248:                     <div class="select-container">
+ 249:                         <input type="text" class="select-search" id="psu-select-search" placeholder="🔍 Search PSU..." oninput="filterComponentSelect('psu-select', this.value)" onfocus="showSearchDropdown('psu')" onblur="hideSearchDropdown('psu')">
+ 250:                     <div class="search-dropdown" id="psu-search-dropdown"></div>
+ 251:                         <select id="psu-select" class="component-select" onchange="selectComponent('psu', this.value)">
+ 254:                         <button class="view-listings-btn" id="psu-view-btn" onclick="viewListings('psu')" title="View all listings for this PSU" disabled>
+ 263:             <div class="component-card" data-component="case">
+ 269:                 <div class="component-body">
+ 270:                     <div class="select-container">
+ 271:                         <input type="text" class="select-search" id="case-select-search" placeholder="🔍 Search Case..."
+ 273:                     <div class="search-dropdown" id="case-search-dropdown"></div>
+ 274:                         <select id="case-select" class="component-select" onchange="selectComponent('case', this.value)">
+ 277:                         <button class="view-listings-btn" id="case-view-btn" onclick="viewListings('case')" title="View all listings for this Case" disabled>
+ 364: .component-selection {
+ 370: .component-card {
+ 379: .component-card:hover {
+ 384: .component-card.selected {
+ 414: .component-card.selected .component-status {
+ 420: .select-container {
+ 428: .component-select {
+ 441: .component-select option {
+ 446: .select-search {
+ 457: .select-search::placeholder {
+ 461: .view-listings-btn {
+ 473: .view-listings-btn:hover:not(:disabled) {
+ 478: .view-listings-btn:disabled {
+ 903:     .component-selection {
+ 913:     .select-container {
+ 917:     .view-listings-btn {
+ 937: .select-container {
+ 940: .select-search {
+ 944: .search-dropdown {
+ 960: .search-dropdown.active {
+ 963: .search-dropdown-item {
+ 974: .search-dropdown-item:last-child {
+ 977: .search-dropdown-item:hover,
+ 978: .search-dropdown-item.highlighted {
+ 981: .search-dropdown-item.no-results {
+ 987: .search-dropdown-item .item-price {
+1480:     const input = document.getElementById(selectId.replace('-select', '-select-search'));
+1530:     const dropdown = document.getElementById(`${type}-search-dropdown`);
+1535:         dropdown.innerHTML = '<div class="search-dropdown-item no-results">No matching results</div>';
+1551:         div.className = 'search-dropdown-item';
+1681:     const searchInput = document.getElementById(`${type}-select-search`);
+1926:         const input = document.getElementById(`${type}-select-search`);

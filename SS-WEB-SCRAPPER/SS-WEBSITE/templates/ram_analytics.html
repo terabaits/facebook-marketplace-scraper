@@ -1,0 +1,441 @@
+{% extends "base.html" %}
+
+{% block title %}RAM Price Analytics - SS-Crawler{% endblock %}
+
+{% block extra_css %}
+.analytics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.analytics-card {
+    background: white;
+    border-radius: 8px;
+    padding: 1.25rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    border-left: 4px solid #764ba2;
+}
+
+.analytics-card h4 {
+    font-size: 0.875rem;
+    color: #666;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+}
+
+.analytics-value {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #333;
+}
+
+.analytics-subtitle {
+    font-size: 0.75rem;
+    color: #666;
+    margin-top: 0.25rem;
+}
+
+.price-comparison {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.price-diff-positive {
+    color: #27ae60;
+}
+
+.price-diff-negative {
+    color: #e74c3c;
+}
+
+.table-container {
+    overflow-x: auto;
+}
+
+.analytics-table th, .analytics-table td {
+    padding: 0.75rem 1rem;
+    text-align: left;
+}
+
+.analytics-table th {
+    background: #f8f9fa;
+    font-weight: 600;
+    color: #666;
+}
+
+.analytics-table tr:hover {
+    background: #f8f9fa;
+}
+
+.ddr-badge {
+    display: inline-block;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.ddr-badge.ddr3 { background: #d4edda; color: #155724; }
+.ddr-badge.ddr4 { background: #d1ecf1; color: #0c5460; }
+.ddr-badge.ddr5 { background: #f8d7da; color: #721c24; }
+
+.chart-controls {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.chart-controls button {
+    background: #95a5a6;
+}
+
+.chart-controls button:hover {
+    background: #7f8c8d;
+}
+{% endblock %}
+
+{% block content %}
+<div class="section">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
+        <h2>RAM Price Analytics</h2>
+        <div class="filters" style="margin: 0;">
+            <label>
+                Time Range:
+                <select id="time-filter" onchange="loadAnalytics()">
+                    <option value="all_time">All Time</option>
+                    <option value="year">Last Year</option>
+                    <option value="month">Last Month</option>
+                </select>
+            </label>
+        </div>
+    </div>
+    
+    <div id="analytics-container">
+        <div class="loading">Loading RAM analytics...</div>
+    </div>
+</div>
+
+<div class="section">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+        <h2>Price Per GB by DDR Type</h2>
+        <div class="chart-controls">
+            <button class="btn btn-small" id="btn-day" onclick="setChartPeriod('day')">Daily</button>
+            <button class="btn btn-small" id="btn-week" onclick="setChartPeriod('week')">Weekly</button>
+            <button class="btn btn-small" id="btn-month" onclick="setChartPeriod('month')">Monthly</button>
+            <button class="btn btn-small" id="btn-year" onclick="setChartPeriod('year')">Yearly</button>
+        </div>
+    </div>
+    <div class="chart-container" style="height: 400px;">
+        <canvas id="pricePerGbChart"></canvas>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+let pricePerGbChart = null;
+let currentChartPeriod = 'month';
+let chartDataCache = null;
+
+function getSizeLabel(capacity) {
+    if (capacity >= 64) return '64GB+';
+    if (capacity >= 32) return '32GB';
+    if (capacity >= 16) return '16GB';
+    return '8GB';
+}
+
+function getDdrType(speed) {
+    if (!speed) return 'Unknown';
+    if (speed.includes('DDR3')) return 'DDR3';
+    if (speed.includes('DDR5')) return 'DDR5';
+    return 'DDR4';
+}
+
+function formatCurrency(value) {
+    return value ? `€${parseFloat(value).toFixed(2)}` : 'N/A';
+}
+
+function setChartPeriod(period) {
+    currentChartPeriod = period;
+    
+    // Update button styles
+    document.querySelectorAll('.chart-controls button').forEach(btn => {
+        btn.style.background = '#95a5a6';
+    });
+    document.getElementById(`btn-${period}`).style.background = '#764ba2';
+    
+    // Re-render chart
+    if (chartDataCache) {
+        renderPricePerGbChart(chartDataCache.monthly_trends);
+    }
+}
+
+function groupDataByPeriod(data, period) {
+    if (!data || data.length === 0) return [];
+    
+    const grouped = {};
+    
+    data.forEach(item => {
+        // month can be either YYYY-MM (monthly) or YYYY-MM-DD (daily)
+        const dateStr = item.month;
+        if (!dateStr) return;
+        
+        // Determine if it's daily or monthly format
+        const isDaily = dateStr.includes('-') && dateStr.split('-').length === 3;
+        
+        let date;
+        if (isDaily) {
+            const parts = dateStr.split('-');
+            date = new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2]));
+        } else {
+            const parts = dateStr.split('-');
+            date = new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, 15);
+        }
+        
+        let key;
+        
+        if (period === 'day') {
+            key = dateStr; // Keep daily format
+        } else if (period === 'week') {
+            const week = getWeekNumber(date);
+            key = `${date.getFullYear()}-W${week.toString().padStart(2, '0')}`;
+        } else if (period === 'year') {
+            key = date.getFullYear().toString();
+        } else {
+            // monthly
+            if (isDaily) {
+                // Group daily data by month
+                const parts = dateStr.split('-');
+                key = `${parts[0]}-${parts[1]}`;
+            } else {
+                key = dateStr;
+            }
+        }
+        
+        if (!grouped[key]) {
+            grouped[key] = {};
+        }
+        
+        const ddrType = item.ddr_type || 'DDR4';
+        if (!grouped[key][ddrType]) {
+            grouped[key][ddrType] = { prices: [], count: 0 };
+        }
+        grouped[key][ddrType].prices.push(item.price_per_gb);
+        grouped[key][ddrType].count += item.listing_count || 1;
+    });
+    
+    const result = [];
+    Object.keys(grouped).sort().forEach(periodKey => {
+        Object.keys(grouped[periodKey]).forEach(ddrType => {
+            const prices = grouped[periodKey][ddrType].prices;
+            result.push({
+                month: periodKey,
+                ddr_type: ddrType,
+                price_per_gb: prices.reduce((a, b) => a + b, 0) / prices.length,
+                listing_count: grouped[periodKey][ddrType].count
+            });
+        });
+    });
+    
+    return result;
+}
+
+function getWeekNumber(date) {
+    const d = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
+    const dayNum = d.getUTCDay() || 7;
+    d.setUTCDate(d.getUTCDate() + 4 - dayNum);
+    const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
+    return Math.ceil((((d - yearStart) / 86400000) + 1) / 7);
+}
+
+async function loadAnalytics() {
+    const timeFilter = document.getElementById('time-filter').value;
+    
+    try {
+        const response = await fetch(`/api/ram-analytics?time=${timeFilter}`);
+        const data = await response.json();
+        
+        if (!data.capacity_stats || data.capacity_stats.length === 0) {
+            document.getElementById('analytics-container').innerHTML = 
+                '<div class="loading">No RAM data available</div>';
+            return;
+        }
+        
+        chartDataCache = data;
+        renderAnalytics(data);
+        renderPricePerGbChart(data.monthly_trends);
+        
+    } catch (error) {
+        document.getElementById('analytics-container').innerHTML = 
+            `<div class="error">Failed to load analytics: ${error.message}</div>`;
+    }
+}
+
+function renderAnalytics(data) {
+    const container = document.getElementById('analytics-container');
+    
+    let html = `
+        <div class="analytics-grid">
+            <div class="analytics-card">
+                <h4>Total RAM Listings</h4>
+                <div class="analytics-value">${data.total_listings || 0}</div>
+                <div class="analytics-subtitle">${data.matched_listings || 0} matched</div>
+            </div>
+            <div class="analytics-card">
+                <h4>Average Price</h4>
+                <div class="analytics-value">${formatCurrency(data.avg_price)}</div>
+                <div class="analytics-subtitle">across all RAM</div>
+            </div>
+            <div class="analytics-card">
+                <h4>Price Range</h4>
+                <div class="analytics-value">${formatCurrency(data.min_price)} - ${formatCurrency(data.max_price)}</div>
+                <div class="analytics-subtitle">min to max</div>
+            </div>
+            <div class="analytics-card">
+                <h4>Total Memory Tracked</h4>
+                <div class="analytics-value">${(data.total_capacity || 0).toLocaleString()} GB</div>
+                <div class="analytics-subtitle">across all listings</div>
+            </div>
+        </div>
+        
+        <h3 style="margin: 1.5rem 0 1rem;">Price by Capacity</h3>
+        <div class="table-container">
+            <table class="analytics-table">
+                <thead>
+                    <tr>
+                        <th>{{ t('Capacity') }}</th>
+                        <th>{{ t('DDR Type') }}</th>
+                        <th>Listing Count</th>
+                        <th>{{ t('Avg Price') }}</th>
+                        <th>Avg Price per GB</th>
+                        <th>Reference Price (USD→EUR)</th>
+                        <th>vs Reference</th>
+                        <th>Price Range</th>
+                    </tr>
+                </thead>
+                <tbody>
+    `;
+    
+    data.capacity_stats.forEach(stat => {
+        const sizeLabel = getSizeLabel(stat.avg_capacity);
+        const ddrType = stat.ddr_type || 'DDR4';
+        const priceDiff = stat.avg_price - stat.ref_price_eur;
+        const priceDiffPct = stat.ref_price_eur > 0 ? (priceDiff / stat.ref_price_eur * 100).toFixed(1) : 0;
+        const diffClass = priceDiff <= 0 ? 'price-diff-positive' : 'price-diff-negative';
+        const diffSymbol = priceDiff <= 0 ? '-' : '+';
+        const ddrClass = ddrType.toLowerCase();
+        
+        html += `
+            <tr>
+                <td><strong>${sizeLabel}</strong></td>
+                <td><span class="ddr-badge ${ddrClass}">${ddrType}</span></td>
+                <td>${stat.listing_count}</td>
+                <td class="price">${formatCurrency(stat.avg_price)}</td>
+                <td>${formatCurrency(stat.avg_price_per_gb)}/GB</td>
+                <td>${formatCurrency(stat.ref_price_eur)}</td>
+                <td class="${diffClass}">${diffSymbol}${Math.abs(priceDiffPct)}%</td>
+                <td>${formatCurrency(stat.min_price)} - ${formatCurrency(stat.max_price)}</td>
+            </tr>
+        `;
+    });
+    
+    html += `
+                </tbody>
+            </table>
+        </div>
+    `;
+    
+    container.innerHTML = html;
+}
+
+function renderPricePerGbChart(monthlyTrends) {
+    const ctx = document.getElementById('pricePerGbChart').getContext('2d');
+    
+    if (pricePerGbChart) {
+        pricePerGbChart.destroy();
+    }
+    
+    // Group data by current period
+    const groupedData = groupDataByPeriod(monthlyTrends, currentChartPeriod);
+    
+    if (!groupedData || groupedData.length === 0) {
+        return;
+    }
+    
+    const ddrTypes = ['DDR3', 'DDR4', 'DDR5'];
+    const months = [...new Set(groupedData.map(t => t.month))].sort();
+    
+    const colors = {
+        'DDR3': 'rgba(39, 174, 96, 1)',
+        'DDR4': 'rgba(102, 126, 234, 1)',
+        'DDR5': 'rgba(231, 76, 60, 1)'
+    };
+    
+    const datasets = [];
+    
+    ddrTypes.forEach(ddrType => {
+        const data = months.map(month => {
+            const trend = groupedData.find(t => t.month === month && t.ddr_type === ddrType);
+            return trend ? trend.price_per_gb : null;
+        });
+        
+        if (data.some(v => v !== null)) {
+            datasets.push({
+                label: ddrType,
+                data: data,
+                borderColor: colors[ddrType],
+                backgroundColor: colors[ddrType].replace('1)', '0.1)'),
+                borderWidth: 2,
+                pointRadius: 3,
+                fill: false,
+                tension: 0.1
+            });
+        }
+    });
+    
+    pricePerGbChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: months,
+            datasets: datasets
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'top'
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            return context.dataset.label + ': ' + formatCurrency(context.raw) + '/GB';
+                        }
+                    }
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    title: {
+                        display: true,
+                        text: 'Price per GB (€)'
+                    }
+                },
+                x: {
+                    title: {
+                        display: true,
+                        text: currentChartPeriod === 'day' ? 'Date' : currentChartPeriod === 'week' ? 'Week' : currentChartPeriod === 'year' ? 'Year' : 'Month'
+                    }
+                }
+            }
+        }
+    });
+}
+
+// Load on page load
+document.addEventListener('DOMContentLoaded', loadAnalytics);
+</script>
+{% endblock %}

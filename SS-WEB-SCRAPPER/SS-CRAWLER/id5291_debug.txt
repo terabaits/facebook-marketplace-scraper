@@ -1,0 +1,19 @@
+Title: SS.COM Komplektējošie datoriem - RAM, Cena 30 €. Skhynix hma81gu6cjr8n-vk non-ecc dimm 1rx8 snpy7n41c/8g pc4-2666v-ua2-11 dell - Sludinājumi
+
+Description: Skhynix hma81gu6cjr8n-vk non-ecc dimm 1rx8 pc4-2666v-ua2-11 dell pn: snpy7n41c/8g
+Manufacturer: Skhynix
+RAM Type: DDR4
+Frequency: 2666 MHz
+Condition: lietota
+
+Capacity: 8
+RAM Type: DDR4
+RAM Frequency: 2666
+RAM Manufacturer: Skhynix
+RAM Model: None
+
+Normalized title: sscom komplektejosie datoriem ram cena 30 skhynix hma81gu6cjr8nvk nonecc dimm 1rx8 snpy7n41c8g pc42666vua211 dell sludinajumi
+
+'hynix' in normalized: True
+'skhynix' in normalized: True
+'hma81gu6cjr8n' in normalized: True

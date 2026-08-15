@@ -1,24 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}Console Listings - SS-Crawler
-
-<!-- Listing Detail Modal -->
-<div id="listing-detail-modal" class="modal-overlay">
-    <div class="modal" style="max-width: 900px; max-height: 90vh; overflow-y: auto;">
-        <div class="modal-header">
-            <h3 id="listing-detail-title">Listing Details</h3>
-            <button class="modal-close" onclick="closeListingDetailModal()">&times;</button>
-        </div>
-        <div id="listing-detail-content" style="padding: 1.5rem;">
-            <div class="loading">Loading listing details...</div>
-        </div>
-        <div style="padding: 1rem 1.5rem; background: #f8f9fa; border-top: 1px solid #eee; display: flex; gap: 1rem; justify-content: flex-end;">
-            <button id="listing-detail-flag-btn" class="btn btn-warning" onclick="toggleFlagFromDetail()">🚫 Flag</button>
-            <a id="listing-detail-link" href="#" target="_blank" class="btn">View on ss.com →</a>
-        </div>
-    </div>
-</div>
-{% endblock %}
+{% block title %}Console Listings - SS-Crawler{% endblock %}
 
 {% block content %}
 <!-- Price Distribution Chart (at top) -->
@@ -46,7 +28,7 @@
     <div id="simple-stats" style="display: flex; gap: 2rem; justify-content: center; align-items: center;">
         <div style="text-align: center;">
             <div id="total-count" style="font-size: 2rem; font-weight: bold; color: #3b82f6;">-</div>
-            <div style="color: #666;">Total Listings</div>
+            <div style="color: #666;">{{ t('Total Listings') }}</div>
         </div>
         <div style="text-align: center;">
             <div id="special-count" style="font-size: 2rem; font-weight: bold; color: #f59e0b;">-</div>
@@ -58,6 +40,53 @@
     </div>
 </div>
 
+
+<!-- Console Flag Modal -->
+<div id="flag-modal" class="modal-overlay">
+    <div class="modal" style="max-width: 500px;">
+        <div class="modal-header">
+            <h3>Flag Listing</h3>
+            <button class="modal-close" onclick="closeFlagModal()">&times;</button>
+        </div>
+        <div style="padding: 1.5rem;">
+            <p style="margin-bottom: 1rem;">Select a reason for flagging this listing:</p>
+            <div style="display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 1rem;">
+                <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                    <input type="radio" name="flag-reason" value="console_mismatch" checked>
+                    <span>Console model mismatch</span>
+                </label>
+                <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                    <input type="radio" name="flag-reason" value="wrong_price">
+                    <span>Wrong price</span>
+                </label>
+                <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                    <input type="radio" name="flag-reason" value="sold">
+                    <span>Already sold</span>
+                </label>
+                <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                    <input type="radio" name="flag-reason" value="spam">
+                    <span>Spam/Scam</span>
+                </label>
+                <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                    <input type="radio" name="flag-reason" value="skip">
+                    <span>Skip / Ignore</span>
+                </label>
+                <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                    <input type="radio" name="flag-reason" value="other">
+                    <span>Other</span>
+                </label>
+            </div>
+            <div style="margin-bottom: 1rem;">
+                <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Comment (optional):</label>
+                <textarea id="flag-comment" style="width: 100%; padding: 0.5rem; border-radius: 4px; border: 1px solid var(--border-color); background: var(--input-bg, #fff); color: var(--text-color, #333);" rows="3"></textarea>
+            </div>
+            <div style="display: flex; justify-content: flex-end; gap: 0.5rem;">
+                <button class="btn btn-secondary" onclick="closeFlagModal()">{{ t('Cancel') }}</button>
+                <button id="flag-submit-btn" class="btn" style="background: #dc3545; color: white;" onclick="submitConsoleFlag()">Submit Flag</button>
+            </div>
+        </div>
+    </div>
+</div>
 <!-- Console Models Grid -->
 <div class="section">
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
@@ -86,7 +115,7 @@
         <div class="filters" style="margin: 0;">
             <!-- Quick Filter Buttons -->
             <div style="display: flex; gap: 0.5rem; margin-right: 1rem;">
-                <button class="btn btn-small filter-btn active" onclick="filterByConsole('all')" data-filter="all">All</button>
+                <button class="btn btn-small filter-btn active" onclick="filterByConsole('all')" data-filter="all">{{ t('All') }}</button>
                 <button class="btn btn-small filter-btn" onclick="filterByConsole('PlayStation')" data-filter="PlayStation">PlayStation</button>
                 <button class="btn btn-small filter-btn" onclick="filterByConsole('Xbox')" data-filter="Xbox">Xbox</button>
                 <button class="btn btn-small filter-btn" onclick="filterByConsole('Nintendo')" data-filter="Nintendo">Nintendo</button>
@@ -95,7 +124,7 @@
                 <input type="checkbox" id="active-only" checked onchange="loadListings()">
                 Active only
             </label>
-            <label>
+            <label class="{% if not is_staff %}staff-only{% endif %}">
                 <input type="checkbox" id="high-confidence" checked onchange="loadListings()">
                 High confidence (≥70%)
             </label>
@@ -114,21 +143,21 @@
             <label>
                 Sort:
                 <select id="sort-by" onchange="loadListings()">
-                    <option value="date_posted">Date Posted</option>
-                    <option value="price">Price</option>
+                    <option value="date_posted">{{ t('Date Posted') }}</option>
+                    <option value="price">{{ t('Price') }}</option>
                     <option value="discount">Biggest Discount</option>
                 </select>
             </label>
             <label>
                 Order:
                 <select id="sort-order" onchange="loadListings()">
-                    <option value="desc">Descending</option>
-                    <option value="asc">Ascending</option>
+                    <option value="desc">{{ t('Descending') }}</option>
+                    <option value="asc">{{ t('Ascending') }}</option>
                 </select>
             </label>
         </div>
     </div>
-    
+
     <div id="listings-container">
         <div class="loading">Loading console listings...</div>
     </div>
@@ -147,7 +176,7 @@
             </div>
             <div style="margin: 1rem 0; padding: 1rem; background: #f8f9fa; border-radius: 8px;">
                 <p style="margin: 0; color: #666; font-size: 0.9rem;">
-                    <strong>Tip:</strong> Click the 🚫 flag button next to any listing to exclude it from price calculations. 
+                    <strong>Tip:</strong> Click the 🚫 flag button next to any listing to exclude it from price calculations.
                     Flagged listings will appear greyed out and won't affect averages.
                 </p>
             </div>
@@ -164,10 +193,10 @@
             <button class="modal-close" onclick="closeFlaggedModal()">&times;</button>
         </div>
         <div style="padding: 1.5rem;">
-            <p style="margin-bottom: 1rem; color: #666;">
+            <p style="margin-bottom: 1rem; color: var(--text-color);">
                 These URLs are excluded from price calculations. Copy them to use in your scraper's skip list.
             </p>
-            <textarea id="flagged-urls-text" style="width: 100%; height: 300px; font-family: monospace; font-size: 0.85rem; padding: 1rem; border: 1px solid #ddd; border-radius: 8px; resize: vertical;" readonly></textarea>
+            <textarea id="flagged-urls-text" style="width: 100%; height: 300px; font-family: monospace; font-size: 0.85rem; padding: 1rem; border: 1px solid var(--modal-border, #ddd); border-radius: 8px; resize: vertical; background: var(--modal-box-bg, var(--modal-bg)); color: var(--text-color);" readonly></textarea>
             <div style="margin-top: 1rem; display: flex; gap: 1rem;">
                 <button class="btn" onclick="copyFlaggedUrls()">Copy to Clipboard</button>
                 <button class="btn btn-secondary" onclick="downloadFlaggedUrls()">Download as File</button>
@@ -194,8 +223,56 @@ let historyChart = null;
 let allConsoles = [];
 let consoleModels = [];
 let flaggedListings = new Set();
+let currentFlagListingId = null;
+let currentFlagConsoleName = null;
 
 // Load flagged listings on startup
+
+function showFlagModal(listingId, consoleName) {
+    currentFlagListingId = listingId;
+    currentFlagConsoleName = consoleName || 'Unknown';
+    document.getElementById('flag-comment').value = '';
+    document.getElementById('flag-modal').classList.add('active');
+}
+
+function closeFlagModal() {
+    document.getElementById('flag-modal').classList.remove('active');
+    currentFlagListingId = null;
+    currentFlagConsoleName = null;
+}
+
+async function submitConsoleFlag() {
+    if (!currentFlagListingId) return;
+    const reasonEl = document.querySelector('input[name="flag-reason"]:checked');
+    const reason = reasonEl ? reasonEl.value : 'other';
+    const comment = document.getElementById('flag-comment').value.trim();
+
+    try {
+        const response = await fetch('/api/flag-listing', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                listing_id: currentFlagListingId,
+                console_name: currentFlagConsoleName,
+                reason: reason,
+                comment: comment || reason
+            })
+        });
+
+        if (!response.ok) {
+            const data = await response.json();
+            throw new Error(data.error || 'Failed to flag listing');
+        }
+
+        flaggedListings.add(currentFlagListingId);
+        closeFlagModal();
+        loadListings();  // Re-render to hide flagged
+    } catch (error) {
+        console.error('Error flagging listing:', error);
+        alert('Error flagging listing: ' + error.message);
+    }
+}
+
 async function loadFlaggedListings() {
     try {
         const response = await fetch('/api/flagged-listings');
@@ -210,7 +287,7 @@ async function loadSimpleStats() {
     try {
         const response = await fetch('/api/consoles/stats');
         const stats = await response.json();
-        
+
         document.getElementById('total-count').textContent = stats.total_listings || 0;
         document.getElementById('special-count').textContent = stats.special_editions || 0;
     } catch (error) {
@@ -223,34 +300,34 @@ async function loadModels() {
         console.log('Loading models...');
         const sort = document.getElementById('model-sort').value;
         const response = await fetch('/api/console-models?sort=' + sort);
-        
+
         if (!response.ok) {
             const errorText = await response.text();
             console.error('API Error:', response.status, errorText);
             throw new Error(`HTTP ${response.status}: ${errorText}`);
         }
-        
+
         const models = await response.json();
         console.log('Models loaded:', models);
-        
+
         // Check if response is an error object
         if (models.error) {
             throw new Error(models.error);
         }
-        
+
         consoleModels = models;
         const container = document.getElementById('models-container');
-        
+
         if (!Array.isArray(models)) {
             console.error('Expected array, got:', typeof models, models);
             throw new Error('Invalid response format');
         }
-        
+
         if (models.length === 0) {
             container.innerHTML = '<div class="loading">No console models found. All listings may be flagged.</div>';
             return;
         }
-        
+
         // Update console filter dropdown
         const consoleSelect = document.getElementById('console-filter');
         const existingValue = consoleSelect.value;
@@ -259,12 +336,12 @@ async function loadModels() {
             consoleSelect.innerHTML += `<option value="${model.console_name}">${model.console_name}</option>`;
         });
         consoleSelect.value = existingValue;
-        
+
         // Build models grid with icons
         let html = '<div class="console-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem;">';
-        
+
         console.log('getConsoleIcon available:', typeof getConsoleIcon !== 'undefined');
-        
+
         models.forEach(model => {
             let iconSvg = '';
             try {
@@ -297,20 +374,64 @@ async function loadModels() {
                         </div>
                         <div style="margin-top: 1rem; display: flex; gap: 0.5rem;">
                             <button class="btn btn-small" style="flex: 1;" onclick="event.stopPropagation(); showModelHistory(${model.console_id}, '${model.console_name}')">History</button>
-                            <button class="btn btn-small" style="flex: 1;" onclick="event.stopPropagation(); filterByConsole('${model.console_name}')">Filter</button>
+                            <button class="btn btn-small" style="flex: 1;" onclick="event.stopPropagation(); filterByConsole('${model.console_name}')">{{ t('Filter') }}</button>
                         </div>
                     </div>
                 </div>
             `;
         });
-        
+
         html += '</div>';
         container.innerHTML = html;
-        
+
     } catch (error) {
         console.error('Error loading models:', error);
-        document.getElementById('models-container').innerHTML = 
+        document.getElementById('models-container').innerHTML =
             '<div class="error">Error loading console models</div>';
+    }
+}
+
+function computeConsoleDealBadges(item, isFirstModelEver) {
+    let dealBadge = '';
+    const isNewListing = item.is_new === true;
+
+    // NEW: server-side flag based on latest import date for console category
+    if (isNewListing) {
+        dealBadge += `<span class="badge" style="background: #3b82f6; color: white; font-weight: bold;" title="New listing from current import!">🆕 NEW</span><br>`;
+    }
+
+    // STEAL: client-side, requires price_stats and ≥15% below model average. Suppressed for NEW listings.
+    if (!isNewListing && item.price_stats && item.price_stats.below_avg) {
+        const avgPrice = parseFloat(item.price_stats.avg);
+        const currentPrice = item.price_eur;
+        const savingsPct = ((avgPrice - currentPrice) / avgPrice * 100);
+        if (savingsPct >= 15) {
+            dealBadge += `<span class="badge" style="background: #dc2626; color: white; font-weight: bold;" title="Price is ${savingsPct.toFixed(0)}% below average!">🔥 STEAL</span><br>`;
+        }
+    }
+
+    return dealBadge;
+}
+
+function loadDiscoveredConsoleModels() {
+    const discoveredModelsKey = 'discovered_console_models';
+    let discoveredModels = new Set();
+    try {
+        const stored = localStorage.getItem(discoveredModelsKey);
+        if (stored) {
+            discoveredModels = new Set(JSON.parse(stored));
+        }
+    } catch (e) {
+        console.error('Error loading discovered console models:', e);
+    }
+    return { discoveredModelsKey, discoveredModels };
+}
+
+function saveDiscoveredConsoleModels(discoveredModelsKey, discoveredModels) {
+    try {
+        localStorage.setItem(discoveredModelsKey, JSON.stringify([...discoveredModels]));
+    } catch (e) {
+        console.error('Error saving discovered console models:', e);
     }
 }
 
@@ -321,7 +442,7 @@ async function loadListings() {
     const variantFilter = document.getElementById('variant-filter').value;
     const sortBy = document.getElementById('sort-by').value;
     const sortOrder = document.getElementById('sort-order').value;
-    
+
     const params = new URLSearchParams();
     params.append('active', activeOnly);
     params.append('sort', sortBy);
@@ -329,23 +450,23 @@ async function loadListings() {
     if (highConfidence) params.append('min_confidence', '0.70');
     if (consoleFilter !== 'all') params.append('console', consoleFilter);
     if (variantFilter !== 'all') params.append('variant', variantFilter);
-    
+
     try {
         const response = await fetch('/api/consoles?' + params.toString());
         const listings = await response.json();
-        
         allConsoles = listings;
+
         const container = document.getElementById('listings-container');
-        
+
         if (listings.length === 0) {
             container.innerHTML = '<div class="loading">No console listings found</div>';
             updateVariantFilter([]);
             return;
         }
-        
+
         // Update variant filter based on current listings
         updateVariantFilter(listings);
-        
+
         // Get console models for price comparison
         const modelsResponse = await fetch('/api/console-models');
         const models = await modelsResponse.json();
@@ -353,7 +474,7 @@ async function loadListings() {
         models.forEach(m => {
             avgPrices[m.console_name] = m.avg_price;
         });
-        
+
         // Calculate discount for each listing if sorting by discount
         if (sortBy === 'discount') {
             listings.forEach(item => {
@@ -370,7 +491,7 @@ async function loadListings() {
                 return (a.discount_pct - b.discount_pct) * dir;
             });
         }
-        
+
         let html = `
             <div style="overflow-x: auto;">
             <table style="width: 100%; border-collapse: collapse;">
@@ -378,39 +499,42 @@ async function loadListings() {
                     <tr style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
                         <th style="padding: 0.75rem; text-align: center;">Image</th>
                         <th style="padding: 0.75rem;">Console</th>
-                        <th style="padding: 0.75rem;">Price</th>
+                        <th style="padding: 0.75rem;">{{ t('Price') }}</th>
                         <th style="padding: 0.75rem;">Location</th>
                         <th style="padding: 0.75rem;">Date</th>
+                        <th style="padding: 0.75rem;">Market Position</th>
                         <th style="padding: 0.75rem;">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
         `;
-        
+
         listings.forEach(item => {
-            const consoleName = item.console_name || 'Unknown';
-            const variantInfo = item.variant_name ? ` (${item.variant_name})` : '';
-            // Check both the global Set and the API response
             const isFlagged = item.is_flagged === true || flaggedListings.has(item.listing_id);
-            
+
             // Update the flaggedListings Set for consistency
             if (isFlagged) flaggedListings.add(item.listing_id);
-            
+
             // Skip flagged listings entirely (T163)
             if (isFlagged) return;
 
+            const consoleName = item.console_name || 'Unknown';
+            const variantName = item.variant_name || '';
+            const variantInfo = variantName && !variantName.toLowerCase().startsWith(consoleName.toLowerCase()) ? ` (${variantName})` : '';
+
+            const dealBadge = computeConsoleDealBadges(item);
             const rowStyle = '';
-            
+
             const avgPrice = avgPrices[consoleName];
             const priceDiff = avgPrice ? item.price_eur - avgPrice : 0;
             const priceDiffPct = avgPrice ? ((priceDiff / avgPrice) * 100).toFixed(1) : 0;
-            
+
             let priceClass = '';
             let priceIndicator = '';
             if (avgPrice) {
                 const pctDiff = ((item.price_eur - avgPrice) / avgPrice * 100).toFixed(0);
                 const absPctDiff = Math.abs(pctDiff);
-                
+
                 if (priceDiff < 0) {
                     // Below average - green badge like GPU page
                     priceClass = 'price-below-avg';
@@ -425,12 +549,12 @@ async function loadListings() {
                     priceIndicator = `<span style="background: linear-gradient(135deg, #dc2626, #ef4444); color: white; font-size: 0.7rem; padding: 2px 6px; border-radius: 4px; font-weight: bold; margin-left: 0.5rem; vertical-align: middle;">+${pctDiff}%</span>`;
                 }
             }
-            
+
             const confidence = item.console_confidence_score || 0;
             let confidenceClass = 'confidence-high';
             if (confidence < 0.70) confidenceClass = 'confidence-medium';
             if (confidence < 0.50) confidenceClass = 'confidence-low';
-            
+
             // Format date - show any valid date, not just recent ones
             let dateStr = 'N/A';
             const rawDate = item.date_posted || item.first_seen_at || item.last_seen_at || item.created_at;
@@ -442,36 +566,53 @@ async function loadListings() {
                     }
                 } catch (e) {}
             }
-            
-            // Skip flagged listings entirely (T163)
-            if (isFlagged) return;
-            
+
             html += `
-                <tr ${rowStyle}>
-                    <td style="padding: 0.75rem; text-align: center; width: 100px;">
-                        ${item.image_url ? `<img src="${item.image_url}" alt="${consoleName}" 
-                            onclick="event.stopPropagation(); showImageModal('${item.image_url}', '${consoleName}')"
-                            style="max-width: 90px; max-height: 70px; border-radius: 6px; cursor: pointer; box-shadow: 0 2px 4px rgba(0,0,0,0.1); object-fit: cover;"
-                        >` : '<div style="width: 90px; height: 70px; background: linear-gradient(135deg, #f5f5f5 0%, #eee 100%); border-radius: 6px; display: flex; align-items: center; justify-content: center; color: #999; font-size: 1.5rem;">📷</div>'}
+                <tr ${rowStyle} onclick="showListingDetail('${item.listing_id}')" style="cursor: pointer;">
+                    <td style="padding: 0.75rem; text-align: center; width: 100px; position: relative;">
+                        ${dealBadge ? `<div style="position: absolute; top: 4px; right: 4px; display: flex; flex-direction: column; gap: 4px; z-index: 10;">${dealBadge}</div>` : ''}
+                        ${item.image_url || item.local_image_path ? (() => {
+                            const localPath = item.local_image_path ? item.local_image_path.replace(/\\/g, '/') : null;
+                            const imgUrl = localPath ? `/images/${localPath}` : item.image_url;
+                            return `<img src="${imgUrl}" alt="${consoleName}" onerror="this.src='${item.image_url || ''}'; this.onerror=null;"
+                                onclick="event.stopPropagation(); showImageModal('${imgUrl}', '${consoleName}')"
+                                style="max-width: 90px; max-height: 70px; border-radius: 6px; cursor: pointer; box-shadow: 0 2px 4px rgba(0,0,0,0.1); object-fit: cover;"
+                            >`;
+                        })() : '<div style="width: 90px; height: 70px; background: linear-gradient(135deg, #f5f5f5 0%, #eee 100%); border-radius: 6px; display: flex; align-items: center; justify-content: center; color: #999; font-size: 1.5rem;">📷</div>'}
                     </td>
                     <td style="padding: 0.75rem;">
                         <div style="font-weight: bold; font-size: 1.05rem;">${consoleName}${variantInfo}</div>
                         ${item.edition_name ? `<div style="font-size: 0.85rem; color: #666; margin-top: 0.25rem;">Edition: ${item.edition_name}</div>` : ''}
                         <div style="margin-top: 0.25rem;"><span class="${confidenceClass}" style="font-size: 0.85rem;">${(confidence*100).toFixed(0)}% confidence</span></div>
                         ${item.is_special_edition ? '<div style="margin-top: 0.25rem;"><span class="badge" style="background: #f59e0b; color: white;">Special</span></div>' : ''}
-                        
+
                     </td>
                     <td style="padding: 0.75rem;" class="${priceClass}">
-                        <div style="font-weight: bold; font-size: 1.1rem;">€${item.price_eur.toFixed(2)}</div>
-                        ${priceIndicator}
+                        <div style="display: flex; align-items: center; gap: 0.5rem; font-weight: bold; font-size: 1.1rem;">
+                            <span>€${item.price_eur.toFixed(2)}</span>
+                            ${priceIndicator}
+                        </div>
                     </td>
                     <td style="padding: 0.75rem;" class="listing-location">${item.seller_location || 'N/A'}</td>
                     <td style="padding: 0.75rem;" class="listing-date">${dateStr}</td>
+                    <td style="padding: 0.75rem; text-align: center;">
+                        ${item.is_unicorn ? `
+                            <span style="background: linear-gradient(135deg, #ec4899, #8b5cf6); color: white; font-weight: bold; padding: 4px 8px; border-radius: 6px; font-size: 0.75rem; display: inline-block;" title="Only one listing of this model in all history!">🦄 UNICORN</span>
+                        ` : (item.price_stats ? `
+                            <div style="font-size: 0.85rem; color: #666;">
+                                Avg: €${item.price_stats.avg}<br>
+                                Range: €${item.price_stats.min} - €${item.price_stats.max}
+                            </div>
+                            <div style="margin-top: 0.25rem; width: 100%; height: 6px; background: #e5e7eb; border-radius: 3px; overflow: hidden;" title="Price percentile: ${item.price_stats.percentile}%">
+                                <div style="height: 100%; background: linear-gradient(135deg, #667eea, #764ba2); width: ${item.price_stats.percentile}%;"></div>
+                            </div>
+                        ` : '<span style="font-size: 0.85rem; color: #888;">No price data</span>')}
+                    </td>
                     <td style="padding: 0.75rem;">
                         <a href="${item.listing_url}" target="_blank" class="btn btn-small" style="white-space: nowrap;">View →</a>
                         <div style="display: flex; align-items: center; gap: 0.5rem; margin-top: 0.5rem;">
                             <input type="text" id="comment-${item.listing_id}" placeholder="Comment..." style="flex: 1; min-width: 80px; padding: 0.25rem 0.5rem; font-size: 0.8rem; border: 1px solid #ddd; border-radius: 4px;">
-                            <button class="btn btn-small" onclick="toggleFlagWithComment('${item.listing_id}', '${consoleName}', ${isFlagged})" title="Flag listing" style="white-space: nowrap;">
+                            <button class="btn btn-small" onclick="event.stopPropagation(); showFlagModal('${item.listing_id}', '${consoleName}')" title="Flag listing" style="white-space: nowrap;">
                                 🚫
                             </button>
                         </div>
@@ -479,14 +620,14 @@ async function loadListings() {
                 </tr>
             `;
         });
-        
+
         html += '</tbody></table></div>';
         container.innerHTML = html;
-        
+
         updatePriceChart(listings);
     } catch (error) {
         console.error('Error loading listings:', error);
-        document.getElementById('listings-container').innerHTML = 
+        document.getElementById('listings-container').innerHTML =
             '<div class="error">Error loading listings. Please try again.</div>';
     }
 }
@@ -494,7 +635,7 @@ async function loadListings() {
 async function toggleFlagWithComment(listingId, consoleName, isCurrentlyFlagged) {
     const commentInput = document.getElementById(`comment-${listingId}`);
     const comment = commentInput ? commentInput.value.trim() : '';
-    
+
     try {
         if (isCurrentlyFlagged) {
             await fetch(`/api/unflag-listing/${listingId}`, { method: 'POST' });
@@ -506,6 +647,15 @@ async function toggleFlagWithComment(listingId, consoleName, isCurrentlyFlagged)
                 body: JSON.stringify({ listing_id: listingId, console_name: consoleName, reason: comment || 'User flagged' })
             });
             flaggedListings.add(listingId);
+        }
+        // Remove flagged row from the table immediately so it disappears from the page
+        if (!isCurrentlyFlagged) {
+            const row = document.querySelector(`tr[data-listing-id="${listingId}"]`);
+            if (row) {
+                row.style.transition = 'opacity 0.3s ease';
+                row.style.opacity = '0';
+                setTimeout(() => row.remove(), 300);
+            }
         }
         loadListings();
     } catch (error) {
@@ -522,19 +672,19 @@ async function toggleFlag(listingId, consoleName, isCurrentlyFlagged) {
 function updateVariantFilter(listings) {
     const variantSelect = document.getElementById('variant-filter');
     const currentValue = variantSelect.value;
-    
+
     const variants = new Set();
     listings.forEach(item => {
         if (item.variant_name) {
             variants.add(item.variant_name);
         }
     });
-    
+
     variantSelect.innerHTML = '<option value="all">All Variants</option>';
     Array.from(variants).sort().forEach(variant => {
         variantSelect.innerHTML += `<option value="${variant}">${variant}</option>`;
     });
-    
+
     if (currentValue !== 'all' && variants.has(currentValue)) {
         variantSelect.value = currentValue;
     }
@@ -550,9 +700,9 @@ async function showModelHistory(consoleId, consoleName) {
     try {
         const response = await fetch(`/api/console-model-history/${consoleId}`);
         const listings = await response.json();
-        
+
         document.getElementById('history-title').textContent = `${consoleName} - Price History`;
-        
+
         // Prepare chart data - FILTER OUT flagged items from chart only
         const unflaggedListings = listings.filter(item => !flaggedListings.has(item.listing_id));
         const sorted = [...unflaggedListings].sort((a, b) => new Date(a.date_posted) - new Date(b.date_posted));
@@ -561,11 +711,11 @@ async function showModelHistory(consoleId, consoleName) {
             return !isNaN(d.getTime()) ? d.toLocaleDateString() : 'N/A';
         });
         const prices = sorted.map(l => l.price_eur);
-        
+
         if (historyChart) {
             historyChart.destroy();
         }
-        
+
         const ctx = document.getElementById('historyChart').getContext('2d');
         historyChart = new Chart(ctx, {
             type: 'line',
@@ -592,16 +742,17 @@ async function showModelHistory(consoleId, consoleName) {
                 }
             }
         });
-        
-        // Build listings table with flag buttons - SHOW ALL listings including flagged ones
+
+        // Build listings table - exclude flagged listings entirely (T163)
+        const visibleListings = listings.filter(item => !flaggedListings.has(item.listing_id));
         let html = `
-            <h4 style="margin-top: 2rem;">All Listings (${listings.length})</h4>
+            <h4 style="margin-top: 2rem;">Listings (${visibleListings.length})</h4>
             <table>
                 <thead>
                     <tr>
                         <th>Image</th>
                         <th>Title</th>
-                        <th>Price</th>
+                        <th>{{ t('Price') }}</th>
                         <th>Location</th>
                         <th>Date</th>
                         <th>Status</th>
@@ -610,16 +761,19 @@ async function showModelHistory(consoleId, consoleName) {
                 </thead>
                 <tbody>
         `;
-        
-        listings.forEach(item => {
+
+        visibleListings.forEach(item => {
             const isFlagged = flaggedListings.has(item.listing_id);
-            const rowStyle = isFlagged ? 'style="opacity: 0.5; background: #f5f5f5;"' : '';
             const flaggedBadge = isFlagged ? ' <span class="badge" style="background: #999;">Flagged</span>' : '';
-            
+
             html += `
-                <tr id="history-row-${item.listing_id}" ${rowStyle}>
+                <tr id="history-row-${item.listing_id}">
                     <td style="padding: 0.5rem; text-align: center; width: 80px;">
-                        ${item.image_url ? `<img src="${item.image_url}" alt="" style="max-width: 70px; max-height: 50px; border-radius: 4px; object-fit: cover; cursor: pointer;" onclick="event.stopPropagation(); showImageModal('${item.image_url}', '${item.title.replace(/'/g, "\\'")}')">` : '<div style="width: 70px; height: 50px; background: #f5f5f5; border-radius: 4px; display: flex; align-items: center; justify-content: center; color: #999; font-size: 1.2rem;">📷</div>'}
+                        ${item.image_url ? (() => {
+                            const localPath = item.local_image_path ? item.local_image_path.replace(/\\/g, '/') : null;
+                            const imgUrl = localPath ? `/images/${localPath}` : item.image_url;
+                            return `<img src="${imgUrl}" alt="" style="max-width: 70px; max-height: 50px; border-radius: 4px; object-fit: cover; cursor: pointer;" onerror="this.src='${item.image_url}'; this.onerror=null;" onclick="event.stopPropagation(); showImageModal('${imgUrl}', '${item.title.replace(/'/g, "\'")}')">`;
+                        })() : '<div style="width: 70px; height: 50px; background: #f5f5f5; border-radius: 4px; display: flex; align-items: center; justify-content: center; color: #999; font-size: 1.2rem;">📷</div>'}
                     </td>
                     <td><a href="${item.listing_url}" target="_blank">${item.title}</a></td>
                     <td class="price">€${item.price_eur}</td>
@@ -628,20 +782,20 @@ async function showModelHistory(consoleId, consoleName) {
                     <td>${item.is_active ? '<span class="badge badge-success">Active</span>' : '<span class="badge badge-danger">Inactive</span>'}${flaggedBadge}</td>
                     <td>
                         <div style="display: flex; align-items: center; gap: 0.5rem;">
-                            <input type="text" id="history-comment-${item.listing_id}" placeholder="Comment..." style="flex: 1; min-width: 80px; padding: 0.25rem 0.5rem; font-size: 0.85rem; border: 1px solid #ddd; border-radius: 4px;" value="${isFlagged ? 'Already flagged' : ''}" ${isFlagged ? 'disabled' : ''}>
-                            <button id="history-flag-btn-${item.listing_id}" class="btn btn-small ${isFlagged ? 'btn-secondary' : ''}" onclick="toggleFlagFromHistoryWithComment('${item.listing_id}', '${consoleName}', ${isFlagged})" title="${isFlagged ? 'Unflag' : 'Flag'} listing" style="white-space: nowrap;">
-                                ${isFlagged ? '✓ Flagged' : '🚫 Flag'}
+                            <input type="text" id="history-comment-${item.listing_id}" placeholder="Comment..." style="flex: 1; min-width: 80px; padding: 0.25rem 0.5rem; font-size: 0.85rem; border: 1px solid #ddd; border-radius: 4px;">
+                            <button id="history-flag-btn-${item.listing_id}" class="btn btn-small" onclick="toggleFlagFromHistoryWithComment('${item.listing_id}', '${consoleName}', ${isFlagged})" title="Flag listing" style="white-space: nowrap;">
+                                🚫 Flag
                             </button>
                         </div>
                     </td>
                 </tr>
             `;
         });
-        
+
         html += '</tbody></table>';
         document.getElementById('history-listings').innerHTML = html;
         document.getElementById('history-modal').classList.add('active');
-        
+
     } catch (error) {
         console.error('Error loading history:', error);
     }
@@ -650,7 +804,7 @@ async function showModelHistory(consoleId, consoleName) {
 async function toggleFlagFromHistoryWithComment(listingId, consoleName, isCurrentlyFlagged) {
     const commentInput = document.getElementById(`history-comment-${listingId}`);
     const comment = commentInput ? commentInput.value.trim() : '';
-    
+
     try {
         if (isCurrentlyFlagged) {
             await fetch(`/api/unflag-listing/${listingId}`, { method: 'POST' });
@@ -663,14 +817,14 @@ async function toggleFlagFromHistoryWithComment(listingId, consoleName, isCurren
             });
             flaggedListings.add(listingId);
         }
-        
+
         // Update just the UI for this row instead of refreshing the entire modal
         const row = document.getElementById(`history-row-${listingId}`);
         if (row) {
             const isNowFlagged = !isCurrentlyFlagged;
             row.style.opacity = isNowFlagged ? '0.5' : '1';
             row.style.background = isNowFlagged ? '#f5f5f5' : '';
-            
+
             // Update button
             const btn = document.getElementById(`history-flag-btn-${listingId}`);
             if (btn) {
@@ -678,14 +832,14 @@ async function toggleFlagFromHistoryWithComment(listingId, consoleName, isCurren
                 btn.className = isNowFlagged ? 'btn btn-small btn-secondary' : 'btn btn-small';
                 btn.onclick = function() { toggleFlagFromHistoryWithComment(listingId, consoleName, isNowFlagged); };
             }
-            
+
             // Update comment input
             const commentInp = document.getElementById(`history-comment-${listingId}`);
             if (commentInp) {
                 commentInp.value = isNowFlagged ? 'Already flagged' : '';
                 commentInp.disabled = isNowFlagged;
             }
-            
+
             // Update badge if exists
             const badgeCell = row.querySelector('td:nth-child(5)');
             if (badgeCell && isNowFlagged) {
@@ -698,13 +852,13 @@ async function toggleFlagFromHistoryWithComment(listingId, consoleName, isCurren
                 if (badge) badge.remove();
             }
         }
-        
+
         // Update the chart only (filter flagged from chart, but keep in table)
         const consoleId = consoleModels.find(m => m.console_name === consoleName)?.console_id;
         if (consoleId) {
             updateHistoryChartOnly(consoleId, consoleName);
         }
-        
+
         // Also refresh main listings
         loadListings();
     } catch (error) {
@@ -718,7 +872,7 @@ async function updateHistoryChartOnly(consoleId, consoleName) {
     try {
         const response = await fetch(`/api/console-model-history/${consoleId}`);
         const listings = await response.json();
-        
+
         // Prepare chart data - FILTER OUT flagged items from chart only
         const unflaggedListings = listings.filter(item => !flaggedListings.has(item.listing_id));
         const sorted = [...unflaggedListings].sort((a, b) => new Date(a.date_posted) - new Date(b.date_posted));
@@ -727,11 +881,11 @@ async function updateHistoryChartOnly(consoleId, consoleName) {
             return !isNaN(d.getTime()) ? d.toLocaleDateString() : 'N/A';
         });
         const prices = sorted.map(l => l.price_eur);
-        
+
         if (historyChart) {
             historyChart.destroy();
         }
-        
+
         const ctx = document.getElementById('historyChart').getContext('2d');
         historyChart = new Chart(ctx, {
             type: 'line',
@@ -771,7 +925,7 @@ async function showFlaggedUrls() {
     try {
         const response = await fetch('/api/flagged-urls');
         const urls = await response.json();
-        
+
         let text = '';
         if (urls.length === 0) {
             text = '# No flagged listings yet\n\n# Example format:\n# https://www.ss.com/msg/lv/electronics/computers/game-consoles/xxxxx.html\n';
@@ -783,7 +937,7 @@ async function showFlaggedUrls() {
                 text += `${u.url}\n\n`;
             });
         }
-        
+
         document.getElementById('flagged-urls-text').value = text;
         document.getElementById('flagged-modal').classList.add('active');
     } catch (error) {
@@ -820,16 +974,16 @@ function downloadFlaggedUrls() {
 function updatePriceChart(listings) {
     const ctx = document.getElementById('priceDistChart');
     if (!ctx) return;
-    
+
     const grouping = document.getElementById('chart-grouping').value;
     const consolePrices = {};
-    
+
     // Filter out flagged items from the chart
     const unflaggedListings = listings.filter(item => {
         const isFlagged = item.is_flagged === true || flaggedListings.has(item.listing_id);
         return !isFlagged;
     });
-    
+
     unflaggedListings.forEach(item => {
         let key;
         if (grouping === 'brand') {
@@ -844,23 +998,24 @@ function updatePriceChart(listings) {
             // variant level
             key = item.variant_name ? `${item.console_name} (${item.variant_name})` : item.console_name || 'Unknown';
         }
-        
+
         if (!consolePrices[key]) {
             consolePrices[key] = [];
         }
         consolePrices[key].push(item.price_eur);
     });
-    
+
     const labels = Object.keys(consolePrices);
     const data = labels.map(key => {
         const prices = consolePrices[key];
         return prices.reduce((a, b) => a + b, 0) / prices.length;
     });
-    
+    const counts = labels.map(key => consolePrices[key].length);
+
     if (priceChart) {
         priceChart.destroy();
     }
-    
+
     priceChart = new Chart(ctx, {
         type: 'bar',
         data: {
@@ -874,11 +1029,14 @@ function updatePriceChart(listings) {
         options: {
             responsive: true,
             maintainAspectRatio: false,
-            plugins: { 
+            plugins: {
                 legend: { display: false },
                 title: {
                     display: true,
                     text: `Average Price by ${grouping.charAt(0).toUpperCase() + grouping.slice(1)}`
+                },
+                barCountLabels: {
+                    counts: counts
                 }
             },
             scales: {
@@ -887,7 +1045,32 @@ function updatePriceChart(listings) {
                     ticks: { callback: function(value) { return '€' + value.toFixed(0); } }
                 }
             }
-        }
+        },
+        plugins: [{
+            id: 'barCountLabels',
+            afterDatasetsDraw(chart, args, options) {
+                const { ctx, chartArea: { top, bottom, left, right }, scales: { x, y } } = chart;
+                const counts = options.counts || [];
+                ctx.save();
+                ctx.font = 'bold 12px sans-serif';
+                ctx.fillStyle = '#fff';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'bottom';
+                chart.data.datasets.forEach((dataset, i) => {
+                    const meta = chart.getDatasetMeta(i);
+                    meta.data.forEach((bar, index) => {
+                        const value = dataset.data[index];
+                        const count = counts[index];
+                        if (count !== undefined && count !== null) {
+                            const xPos = bar.x;
+                            const yPos = Math.max(bar.y + 16, top + 12);
+                            ctx.fillText(`n=${count}`, xPos, yPos);
+                        }
+                    });
+                });
+                ctx.restore();
+            }
+        }]
     });
 }
 
@@ -900,6 +1083,10 @@ document.getElementById('flagged-modal').addEventListener('click', function(e) {
     if (e.target === this) closeFlaggedModal();
 });
 
+document.getElementById('flag-modal').addEventListener('click', function(e) {
+    if (e.target === this) closeFlagModal();
+});
+
 // Add CSS for dark mode compatibility - Location and Date columns
 const darkModeStyles = document.createElement('style');
 darkModeStyles.textContent = `
@@ -907,17 +1094,17 @@ darkModeStyles.textContent = `
     .listing-location, .listing-date {
         color: var(--text-color, #333) !important;
     }
-    
+
     [data-theme="dark"] .listing-location,
     [data-theme="dark"] .listing-date {
         color: #e0e0e0 !important;
     }
-    
+
     /* Ensure table cells inherit proper colors */
     tbody td {
         color: var(--text-color, #333);
     }
-    
+
     [data-theme="dark"] tbody td {
         color: #e0e0e0;
     }
@@ -935,7 +1122,7 @@ function showImageModal(imageUrl, title) {
             <div class="modal" style="max-width: 90%; max-height: 90%; padding: 0; overflow: hidden;">
                 <div style="position: relative; background: #000;">
                     <button onclick="closeImageModal()" style="position: absolute; top: 10px; right: 10px; background: rgba(0,0,0,0.7); color: white; border: none; border-radius: 50%; width: 40px; height: 40px; font-size: 20px; cursor: pointer; z-index: 10;">&times;</button>
-                    <img id="preview-image" src="" alt="" style="max-width: 100%; max-height: 85vh; display: block; margin: 0 auto;">
+                    <img id="preview-image" src="" alt="" style="max-width: 100%; max-height: 85vh; display: block; margin: 0 auto;" onload="fitPreviewImage(this)">
                 </div>
                 <div style="padding: 1rem; background: white; text-align: center;">
                     <p id="preview-title" style="margin: 0; font-weight: 600;"></p>
@@ -956,6 +1143,18 @@ function showImageModal(imageUrl, title) {
 function closeImageModal() {
     const modal = document.getElementById('image-preview-modal');
     if (modal) modal.classList.remove('active');
+}
+
+function fitPreviewImage(img) {
+    if (!img || !img.naturalWidth || !img.naturalHeight) return;
+    const isPortrait = img.naturalHeight > img.naturalWidth;
+    if (isPortrait) {
+        img.style.maxWidth = '70%';
+        img.style.margin = '0 auto';
+    } else {
+        img.style.maxWidth = '100%';
+        img.style.margin = '0 auto';
+    }
 }
 
 // Load on page load
@@ -996,10 +1195,10 @@ filterByConsole = function(consoleName) {
             btn.classList.add('active');
         }
     });
-    
+
     // Update dropdown
     document.getElementById('console-filter').value = consoleName;
-    
+
     // Call original function
     return originalFilterByConsole(consoleName);
 };
@@ -1009,57 +1208,59 @@ let currentDetailListing = null;
 
 async function showListingDetail(listingId) {
     currentDetailListing = listingId;
-    
+
     try {
         const response = await fetch(`/api/listing-details/${listingId}`);
         const data = await response.json();
-        
+
         if (data.error || !data.current) {
             alert('Error loading listing details');
             return;
         }
-        
+
         const item = data.current;
-        
+
         // Set title
         document.getElementById('listing-detail-title').textContent = item.title || 'Listing Details';
-        
+
         // Build content
         let html = '';
-        
+
         // Image
-        if (item.image_url) {
+        if (item.image_url || item.local_image_path) {
+            const localPath = item.local_image_path ? item.local_image_path.replace(/\\/g, '/') : null;
+            const imgUrl = localPath ? `/images/${localPath}` : item.image_url;
             html += `
                 <div style="text-align: center; margin-bottom: 1.5rem;">
-                    <img src="${item.image_url}" alt="${item.title}" 
+                    <img src="${imgUrl}" alt="${item.title}" onerror="this.src='${item.image_url || ''}'; this.onerror=null;"
                          style="max-width: 100%; max-height: 300px; border-radius: 8px; cursor: pointer;"
-                         onclick="showImageModal('${item.image_url}', '${item.title.replace(/'/g, "\\'")}')">
+                         onclick="showImageModal('${imgUrl}', '${item.title.replace(/'/g, "\'")}')">
                 </div>
             `;
         }
-        
+
         // Info grid
         html += `
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem;">
-                <div style="background: #f8f9fa; padding: 1rem; border-radius: 8px;">
+                <div style="background: var(--modal-box-bg, #f8f9fa); padding: 1rem; border-radius: 8px;">
                     <strong>Price:</strong> <span class="price" style="font-size: 1.25rem;">€${item.price_eur}</span>
                 </div>
-                <div style="background: #f8f9fa; padding: 1rem; border-radius: 8px;">
+                <div style="background: var(--modal-box-bg, #f8f9fa); padding: 1rem; border-radius: 8px;">
                     <strong>Location:</strong> ${item.seller_location || 'N/A'}
                 </div>
-                <div style="background: #f8f9fa; padding: 1rem; border-radius: 8px;">
+                <div style="background: var(--modal-box-bg, #f8f9fa); padding: 1rem; border-radius: 8px;">
                     <strong>Date:</strong> ${item.date_posted ? new Date(item.date_posted).toLocaleDateString() : 'N/A'}
                 </div>
-                <div style="background: #f8f9fa; padding: 1rem; border-radius: 8px;">
+                <div style="background: var(--modal-box-bg, #f8f9fa); padding: 1rem; border-radius: 8px;">
                     <strong>Status:</strong> ${item.is_active ? '<span style="color: #27ae60;">Active</span>' : '<span style="color: #e74c3c;">Inactive</span>'}
                 </div>
             </div>
         `;
-        
+
         // Console-specific info
         if (item.console_name) {
             html += `
-                <div style="background: #e8f5e9; padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
+                <div style="background: var(--modal-highlight-bg, #e8f5e9); padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
                     <strong>Console:</strong> ${item.console_name}<br>
                     ${item.variant_name ? `<strong>Variant:</strong> ${item.variant_name}<br>` : ''}
                     ${item.edition_name ? `<strong>Edition:</strong> ${item.edition_name}<br>` : ''}
@@ -1067,17 +1268,17 @@ async function showListingDetail(listingId) {
                 </div>
             `;
         }
-        
+
         // Description
         html += `
             <div style="margin-bottom: 1rem;">
                 <strong>Description:</strong>
-                <div style="background: #f8f9fa; padding: 1rem; border-radius: 8px; margin-top: 0.5rem; max-height: 200px; overflow-y: auto; white-space: pre-wrap;">
+                <div style="background: var(--modal-box-bg, #f8f9fa); padding: 1rem; border-radius: 8px; margin-top: 0.5rem; max-height: 200px; overflow-y: auto; white-space: pre-wrap;">
                     ${item.description || '<em>No description</em>'}
                 </div>
             </div>
         `;
-        
+
         // Price history
         if (data.history && data.history.length > 0) {
             html += `
@@ -1086,7 +1287,7 @@ async function showListingDetail(listingId) {
                     <thead>
                         <tr>
                             <th>Date</th>
-                            <th>Price</th>
+                            <th>{{ t('Price') }}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -1101,31 +1302,31 @@ async function showListingDetail(listingId) {
             });
             html += '</tbody></table>';
         }
-        
+
         // Flag status
         if (data.flag) {
             html += `
-                <div style="background: #fff3cd; border: 1px solid #ffc107; padding: 1rem; border-radius: 8px; margin-top: 1rem;">
+                <div style="background: var(--modal-warn-bg, #fff3cd); border: 1px solid var(--modal-border, #ffc107); padding: 1rem; border-radius: 8px; margin-top: 1rem;">
                     <strong>🚫 Flagged:</strong> ${data.flag.comment || 'No comment'}<br>
                     <small>Flagged on: ${new Date(data.flag.flagged_at).toLocaleDateString()}</small>
                 </div>
             `;
         }
-        
+
         document.getElementById('listing-detail-content').innerHTML = html;
-        
+
         // Update link
         document.getElementById('listing-detail-link').href = item.listing_url;
-        
+
         // Update flag button
         const isFlagged = flaggedListings.has(listingId);
         const flagBtn = document.getElementById('listing-detail-flag-btn');
         flagBtn.textContent = isFlagged ? '✓ Unflag' : '🚫 Flag';
         flagBtn.className = isFlagged ? 'btn btn-secondary' : 'btn btn-warning';
-        
+
         // Show modal
         document.getElementById('listing-detail-modal').classList.add('active');
-        
+
     } catch (error) {
         console.error('Error loading listing details:', error);
         alert('Error loading listing details');
@@ -1139,10 +1340,10 @@ function closeListingDetailModal() {
 
 async function toggleFlagFromDetail() {
     if (!currentDetailListing) return;
-    
+
     const isFlagged = flaggedListings.has(currentDetailListing);
     await toggleFlag(currentDetailListing, '', isFlagged);
-    
+
     // Refresh modal
     showListingDetail(currentDetailListing);
 }
@@ -1159,4 +1360,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 </script>
+
+<!-- Listing Detail Modal -->
+<div id="listing-detail-modal" class="modal-overlay">
+    <div class="modal" style="max-width: 900px; max-height: 90vh; overflow-y: auto;">
+        <div class="modal-header">
+            <h3 id="listing-detail-title">{{ t('Listing Details') }}</h3>
+            <button class="modal-close" onclick="closeListingDetailModal()">&times;</button>
+        </div>
+        <div id="listing-detail-content" style="padding: 1.5rem;">
+            <div class="loading">Loading listing details...</div>
+        </div>
+        <div style="padding: 1rem 1.5rem; background: var(--modal-box-bg, #f8f9fa); border-top: 1px solid var(--modal-border, #eee); display: flex; gap: 1rem; justify-content: flex-end;">
+            <button id="listing-detail-flag-btn" class="btn btn-warning" onclick="toggleFlagFromDetail()">🚫 Flag</button>
+            <a id="listing-detail-link" href="#" target="_blank" class="btn">View on ss.com →</a>
+        </div>
+    </div>
+</div>
 {% endblock %}

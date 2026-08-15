@@ -1,0 +1,446 @@
+{% extends "base.html" %}
+
+{% block title %}SSD Price Analytics - SS-Crawler{% endblock %}
+
+{% block extra_css %}
+.analytics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.analytics-card {
+    background: white;
+    border-radius: 8px;
+    padding: 1.25rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    border-left: 4px solid #667eea;
+}
+
+.analytics-card h4 {
+    font-size: 0.875rem;
+    color: #666;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+}
+
+.analytics-value {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #333;
+}
+
+.analytics-subtitle {
+    font-size: 0.75rem;
+    color: #666;
+    margin-top: 0.25rem;
+}
+
+.price-comparison {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.price-diff-positive {
+    color: #27ae60;
+}
+
+.price-diff-negative {
+    color: #e74c3c;
+}
+
+.table-container {
+    overflow-x: auto;
+}
+
+.analytics-table th, .analytics-table td {
+    padding: 0.75rem 1rem;
+    text-align: left;
+}
+
+.analytics-table th {
+    background: #f8f9fa;
+    font-weight: 600;
+    color: #666;
+}
+
+.analytics-table tr:hover {
+    background: #f8f9fa;
+}
+
+.chart-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+}
+
+.chart-card {
+    background: white;
+    border-radius: 8px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.chart-card h3 {
+    margin-bottom: 1rem;
+    font-size: 1rem;
+    color: #333;
+}
+
+.chart-controls {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.chart-controls button {
+    background: #95a5a6;
+}
+
+.chart-controls button:hover {
+    background: #7f8c8d;
+}
+{% endblock %}
+
+{% block content %}
+<div class="section">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
+        <h2>SSD Price Analytics</h2>
+        <div class="filters" style="margin: 0;">
+            <label>
+                Time Range:
+                <select id="time-filter" onchange="loadAnalytics()">
+                    <option value="all_time">All Time</option>
+                    <option value="year">Last Year</option>
+                    <option value="month">Last Month</option>
+                </select>
+            </label>
+        </div>
+    </div>
+    
+    <div id="analytics-container">
+        <div class="loading">Loading SSD analytics...</div>
+    </div>
+</div>
+
+<div class="section">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+        <h2>Price Per GB Over Time</h2>
+        <div class="chart-controls">
+            <button class="btn btn-small" id="btn-month" onclick="setChartPeriod('month')">Monthly</button>
+            <button class="btn btn-small" id="btn-week" onclick="setChartPeriod('week')">Weekly</button>
+            <button class="btn btn-small" id="btn-year" onclick="setChartPeriod('year')">Yearly</button>
+        </div>
+    </div>
+    
+    <div class="chart-container" style="height: 400px;">
+        <canvas id="pricePerGbChart"></canvas>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+let pricePerGbChart = null;
+let currentChartPeriod = 'month';
+let chartDataCache = null;
+
+function getSizeLabel(capacity) {
+    if (capacity >= 4096) return '4TB+';
+    if (capacity >= 2048) return '2TB';
+    if (capacity >= 1024) return '1TB';
+    if (capacity >= 512) return '500GB';
+    if (capacity >= 256) return '250GB';
+    return '120GB';
+}
+
+function formatCurrency(value) {
+    return value ? `€${parseFloat(value).toFixed(2)}` : 'N/A';
+}
+
+function setChartPeriod(period) {
+    currentChartPeriod = period;
+    
+    // Update button styles
+    document.querySelectorAll('.chart-controls button').forEach(btn => {
+        btn.style.background = '#95a5a6';
+    });
+    document.getElementById(`btn-${period}`).style.background = '#667eea';
+    
+    // Re-render chart
+    if (chartDataCache) {
+        renderPricePerGbChart(chartDataCache.monthly_trends);
+    }
+}
+
+function groupDataByPeriod(data, period) {
+    if (!data || data.length === 0) return [];
+    
+    const grouped = {};
+    
+    data.forEach(item => {
+        // Parse the month string (format: YYYY-MM)
+        const monthStr = item.month;
+        if (!monthStr) return;
+        
+        // Split YYYY-MM
+        const parts = monthStr.split('-');
+        if (parts.length < 2) return;
+        
+        const year = parseInt(parts[0]);
+        const month = parseInt(parts[1]) - 1; // JS months are 0-indexed
+        const date = new Date(year, month, 15); // Use middle of month
+        
+        let key;
+        
+        if (period === 'week') {
+            // Get ISO week
+            const week = getWeekNumber(date);
+            key = `${year}-W${week.toString().padStart(2, '0')}`;
+        } else if (period === 'year') {
+            key = year.toString();
+        } else {
+            // month - keep as is
+            key = monthStr;
+        }
+        
+        if (!grouped[key]) {
+            grouped[key] = {};
+        }
+        
+        const bucket = item.capacity_bucket || getSizeLabel(item.capacity_gb);
+        if (!grouped[key][bucket]) {
+            grouped[key][bucket] = { prices: [], count: 0 };
+        }
+        grouped[key][bucket].prices.push(item.price_per_gb);
+        grouped[key][bucket].count += item.listing_count || 1;
+    });
+    
+    // Convert back to array format
+    const result = [];
+    Object.keys(grouped).sort().forEach(periodKey => {
+        Object.keys(grouped[periodKey]).forEach(bucket => {
+            const prices = grouped[periodKey][bucket].prices;
+            result.push({
+                month: periodKey,
+                capacity_bucket: bucket,
+                price_per_gb: prices.reduce((a, b) => a + b, 0) / prices.length,
+                listing_count: grouped[periodKey][bucket].count
+            });
+        });
+    });
+    
+    return result;
+}
+
+function getWeekNumber(date) {
+    const d = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
+    const dayNum = d.getUTCDay() || 7;
+    d.setUTCDate(d.getUTCDate() + 4 - dayNum);
+    const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
+    return Math.ceil((((d - yearStart) / 86400000) + 1) / 7);
+}
+
+async function loadAnalytics() {
+    const timeFilter = document.getElementById('time-filter').value;
+    
+    try {
+        const response = await fetch(`/api/ssd-analytics?time=${timeFilter}`);
+        const data = await response.json();
+        
+        console.log('SSD Analytics data:', data);
+        
+        // Check if we have any data at all
+        const hasData = data && (
+            (data.capacity_stats && data.capacity_stats.length > 0) ||
+            (data.monthly_trends && data.monthly_trends.length > 0) ||
+            (data.total_listings && data.total_listings > 0)
+        );
+        
+        if (!hasData) {
+            document.getElementById('analytics-container').innerHTML = 
+                '<div class="loading">No SSD data available (0 listings found)</div>';
+            return;
+        }
+        
+        chartDataCache = data;
+        renderAnalytics(data);
+        if (data.monthly_trends && data.monthly_trends.length > 0) {
+            renderPricePerGbChart(data.monthly_trends);
+        }
+        
+    } catch (error) {
+        document.getElementById('analytics-container').innerHTML = 
+            `<div class="error">Failed to load analytics: ${error.message}</div>`;
+    }
+}
+
+function renderAnalytics(data) {
+    const container = document.getElementById('analytics-container');
+    
+    let html = `
+        <div class="analytics-grid">
+            <div class="analytics-card">
+                <h4>Total SSD Listings</h4>
+                <div class="analytics-value">${data.total_listings || 0}</div>
+                <div class="analytics-subtitle">${data.matched_listings || 0} matched</div>
+            </div>
+            <div class="analytics-card">
+                <h4>Average Price</h4>
+                <div class="analytics-value">${formatCurrency(data.avg_price)}</div>
+                <div class="analytics-subtitle">across all SSDs</div>
+            </div>
+            <div class="analytics-card">
+                <h4>Price Range</h4>
+                <div class="analytics-value">${formatCurrency(data.min_price)} - ${formatCurrency(data.max_price)}</div>
+                <div class="analytics-subtitle">min to max</div>
+            </div>
+            <div class="analytics-card">
+                <h4>Total Capacity Tracked</h4>
+                <div class="analytics-value">${(data.total_capacity || 0).toLocaleString()} GB</div>
+                <div class="analytics-subtitle">across all listings</div>
+            </div>
+        </div>
+        
+        <h3 style="margin: 1.5rem 0 1rem;">Price by Capacity</h3>
+        <div class="table-container">
+            <table class="analytics-table">
+                <thead>
+                    <tr>
+                        <th>{{ t('Capacity') }}</th>
+                        <th>Listing Count</th>
+                        <th>{{ t('Avg Price') }}</th>
+                        <th>Avg Price per GB</th>
+                        <th>Reference Price (USD→EUR)</th>
+                        <th>vs Reference</th>
+                        <th>Price Range</th>
+                    </tr>
+                </thead>
+                <tbody>
+    `;
+    
+    data.capacity_stats.forEach(stat => {
+        const sizeLabel = getSizeLabel(stat.avg_capacity);
+        const priceDiff = stat.avg_price - stat.ref_price_eur;
+        const priceDiffPct = stat.ref_price_eur > 0 ? (priceDiff / stat.ref_price_eur * 100).toFixed(1) : 0;
+        const diffClass = priceDiff <= 0 ? 'price-diff-positive' : 'price-diff-negative';
+        const diffSymbol = priceDiff <= 0 ? '-' : '+';
+        
+        html += `
+            <tr>
+                <td><strong>${sizeLabel}</strong></td>
+                <td>${stat.listing_count}</td>
+                <td class="price">${formatCurrency(stat.avg_price)}</td>
+                <td>${formatCurrency(stat.avg_price_per_gb)}/GB</td>
+                <td>${formatCurrency(stat.ref_price_eur)}</td>
+                <td class="${diffClass}">${diffSymbol}${Math.abs(priceDiffPct)}%</td>
+                <td>${formatCurrency(stat.min_price)} - ${formatCurrency(stat.max_price)}</td>
+            </tr>
+        `;
+    });
+    
+    html += `
+                </tbody>
+            </table>
+        </div>
+    `;
+    
+    container.innerHTML = html;
+}
+
+function renderPricePerGbChart(monthlyTrends) {
+    const ctx = document.getElementById('pricePerGbChart').getContext('2d');
+    
+    if (pricePerGbChart) {
+        pricePerGbChart.destroy();
+    }
+    
+    // Group data by current period
+    const groupedData = groupDataByPeriod(monthlyTrends, currentChartPeriod);
+    
+    if (!groupedData || groupedData.length === 0) {
+        return;
+    }
+    
+    // Group data by capacity buckets
+    const capacityBuckets = ['120GB', '250GB', '500GB', '1TB', '2TB', '4TB+'];
+    const datasets = [];
+    
+    const colors = [
+        'rgba(102, 126, 234, 1)',
+        'rgba(118, 75, 162, 1)',
+        'rgba(39, 174, 96, 1)',
+        'rgba(243, 156, 18, 1)',
+        'rgba(231, 76, 60, 1)',
+        'rgba(149, 165, 166, 1)'
+    ];
+    
+    const months = [...new Set(groupedData.map(t => t.month))].sort();
+    
+    capacityBuckets.forEach((bucket, idx) => {
+        const data = months.map(month => {
+            const trend = groupedData.find(t => t.month === month && t.capacity_bucket === bucket);
+            return trend ? trend.price_per_gb : null;
+        });
+        
+        // Only add if we have data
+        if (data.some(v => v !== null)) {
+            datasets.push({
+                label: bucket,
+                data: data,
+                borderColor: colors[idx % colors.length],
+                backgroundColor: colors[idx % colors.length].replace('1)', '0.1)'),
+                borderWidth: 2,
+                pointRadius: 3,
+                fill: false,
+                tension: 0.1
+            });
+        }
+    });
+    
+    pricePerGbChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: months,
+            datasets: datasets
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'top'
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            return context.dataset.label + ': ' + formatCurrency(context.raw) + '/GB';
+                        }
+                    }
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    title: {
+                        display: true,
+                        text: 'Price per GB (€)'
+                    }
+                },
+                x: {
+                    title: {
+                        display: true,
+                        text: currentChartPeriod === 'week' ? 'Week' : currentChartPeriod === 'year' ? 'Year' : 'Month'
+                    }
+                }
+            }
+        }
+    });
+}
+
+// Load on page load
+document.addEventListener('DOMContentLoaded', loadAnalytics);
+</script>
+{% endblock %}

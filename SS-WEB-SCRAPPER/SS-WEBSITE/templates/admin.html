@@ -1,0 +1,796 @@
+{% extends "base.html" %}
+
+{% block title %}{{ t('Admin Panel') }} - SS-Crawler{% endblock %}
+
+{% block extra_css %}
+.admin-tabs { display: flex; gap: 0.25rem; border-bottom: 2px solid var(--table-border); margin-bottom: 1rem; }
+.admin-tab { background: transparent; border: none; padding: 0.75rem 1.25rem; cursor: pointer; font-size: 1rem; color: var(--text-secondary); border-bottom: 2px solid transparent; margin-bottom: -2px; transition: color 0.15s, border-color 0.15s; }
+.admin-tab:hover { color: var(--text-primary); }
+.admin-tab.active { color: var(--primary); border-bottom-color: var(--primary); font-weight: 600; }
+.admin-tab-panel { display: none; }
+.admin-tab-panel.active { display: block; }
+
+/* Role access "cool" checkbox chips */
+.role-page-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.35rem 0.65rem;
+    border: 1px solid var(--table-border);
+    border-radius: 999px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    user-select: none;
+    transition: background-color 0.15s, color 0.15s, border-color 0.15s;
+}
+.role-page-chip:hover { border-color: var(--primary); }
+.role-page-chip input[type="checkbox"] {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 1.1rem;
+    height: 1.1rem;
+    border: 2px solid var(--text-secondary);
+    border-radius: 4px;
+    margin: 0;
+    position: relative;
+    cursor: pointer;
+    transition: background-color 0.15s, border-color 0.15s;
+}
+.role-page-chip input[type="checkbox"]:checked {
+    background-color: var(--primary);
+    border-color: var(--primary);
+}
+.role-page-chip input[type="checkbox"]:checked::after {
+    content: '✓';
+    color: #fff;
+    font-size: 0.75rem;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+.role-page-chip:has(input:checked) input[type=\"checkbox\"] {
+    background-color: #fff;
+    border-color: #fff;
+}
+.role-page-chip:has(input:checked) input[type=\"checkbox\"]:checked::after {
+    color: var(--primary);
+}
+.role-page-chip:has(input:checked) {
+    background-color: var(--primary);
+    border-color: var(--primary);
+    color: #fff;
+}
+
+/* Compact matrix layout so page names appear only once */
+.role-access-matrix th,
+.role-access-matrix td { padding: 0.4rem 0.5rem; }
+.role-access-matrix .role-page-chip { padding: 0.35rem; }
+{% endblock %}
+
+{% block content %}
+<div class="section">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+        <h2>{{ t('Admin Panel') }}</h2>
+        <a href="/profile" class="btn btn-small">{{ t('My Profile') }}</a>
+    </div>
+
+    <!-- Users -->
+    <div class="card" style="margin-bottom: 1.5rem;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+            <h3>{{ t('Users') }}</h3>
+            <button class="btn btn-primary" onclick="openUserModal()">+ {{ t('New user') }}</button>
+        </div>
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>{{ t('Username') }}</th>
+                    <th>{{ t('Email') }}</th>
+                    <th>{{ t('Role') }}</th>
+                    <th>{{ t('Subscription') }}</th>
+                    <th>{{ t('Subscription tier') }}</th>
+                    <th>{{ t('Active') }}</th>
+                    <th>{{ t('Created') }}</th>
+                    <th style="text-align: right;">{{ t('Actions') }}</th>
+                </tr>
+            </thead>
+            <tbody id="users-table">
+                {% for u in users %}
+                <tr data-id="{{ u.id }}">
+                    <td>{{ u.id }}</td>
+                    <td>{{ u.username }}</td>
+                    <td>{{ u.email or '-' }}</td>
+                    <td>{{ u.role }}</td>
+                    <td>{{ u.subscription_status }}</td>
+                    <td>{{ u.subscription_tier or '-' }}</td>
+                    <td>{{ t('Yes') if u.is_active else t('No') }}</td>
+                    <td>{{ u.created_at.strftime('%Y-%m-%d') }}</td>
+                    <td style="text-align: right;">
+                        <button class="btn btn-small" onclick="editUser({{ u.id }})">{{ t('Edit user') }}</button>
+                        <button class="btn btn-small" onclick="editAccess({{ u.id }}, '{{ u.role }}')">{{ t('Access') }}</button>
+                        <button class="btn btn-small" onclick="deleteUser({{ u.id }})">{{ t('Delete') }}</button>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Role access -->
+    <div class="card" style="margin-bottom: 1.5rem;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem; flex-wrap: wrap; gap: 0.5rem;">
+            <h3 style="margin: 0;">{{ t('Role page access') }}</h3>
+            <button class="btn btn-primary btn-small" onclick="saveAllRoleAccess()">{{ t('Save role access') }}</button>
+        </div>
+        <p style="color: var(--text-secondary); font-size: 0.85rem; margin-bottom: 0.75rem;">{{ t('Each page name shown once; toggle access per role.') }}</p>
+        <div style="overflow-x: auto;">
+            <table class="data-table role-access-matrix">
+                <thead>
+                    <tr>
+                        <th style="text-align: left;">{{ t('Page') }}</th>
+                        {% for role in roles %}
+                        <th style="text-align: center; text-transform: capitalize;">{{ role }}</th>
+                        {% endfor %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for page in pages %}
+                    <tr>
+                        <td style="font-weight: 500;">{{ page }}</td>
+                        {% for role in roles %}
+                        <td style="text-align: center;">
+                            <label class="role-page-chip" title="{{ role }}: {{ page }}">
+                                <input type="checkbox" class="role-page-{{ role }}" value="{{ page }}" {% if page in role_defaults[role] %}checked{% endif %} aria-label="{{ role }}: {{ page }}">
+                            </label>
+                        </td>
+                        {% endfor %}
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Admin page toggles -->
+<div class="card" style="margin-bottom: 1.5rem;">
+    <h3>{{ t('Admin Page Toggles') }}</h3>
+    <p style="color: var(--text-secondary); font-size: 0.9rem; margin-top: 0.25rem;">{{ t('Display switches that affect listing pages across the site.') }}</p>
+    <div id="admin-toggles-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 0.75rem; margin-top: 1rem;">
+        <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+            <input type="checkbox" data-toggle="showListingId"> {{ t('Show listing IDs') }}
+        </label>
+        <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+            <input type="checkbox" data-toggle="showGPUId"> {{ t('Show GPU matched ID') }}
+        </label>
+        <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+            <input type="checkbox" data-toggle="showSourceDots"> {{ t('Show source dots') }}
+        </label>
+        <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+            <input type="checkbox" data-toggle="showSummaryFields"> {{ t('Show summary fields') }}
+        </label>
+        <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+            <input type="checkbox" data-toggle="showDeleteButtons"> {{ t('Show delete buttons') }}
+        </label>
+        <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+            <input type="checkbox" data-toggle="showGeForceInGPUName"> {{ t('Show "GeForce" in NVIDIA names') }}
+        </label>
+        <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+            <input type="checkbox" data-toggle="enableRAMColumnCustomization"> {{ t('Enable RAM column customization') }}
+        </label>
+    </div>
+</div>
+
+<!-- Review tabs -->
+<div class="section">
+    <div class="admin-tabs" role="tablist">
+        <button class="admin-tab active" role="tab" aria-selected="true" data-tab="flagged" onclick="switchAdminTab('flagged')">{{ t('Flagged') }} <span id="tab-badge-flagged" class="tab-badge"></span></button>
+        <button class="admin-tab" role="tab" aria-selected="false" data-tab="unmatched" onclick="switchAdminTab('unmatched')">{{ t('Unmatched') }}</button>
+        <button class="admin-tab" role="tab" aria-selected="false" data-tab="spreads" onclick="switchAdminTab('spreads')">{{ t('Differences') }}</button>
+    </div>
+
+    <div id="tab-flagged" class="admin-tab-panel active" role="tabpanel">
+        <div class="card" style="margin-bottom: 1.5rem;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 0.5rem;">
+                <h3>{{ t('Flagged Listings') }}</h3>
+                <div style="display: flex; gap: 0.5rem;">
+                    <button class="btn btn-small" onclick="exportFlaggedCSV()">{{ t('Export CSV') }}</button>
+                    <button class="btn btn-small" onclick="loadFlaggedListings(true)">{{ t('Refresh') }}</button>
+                </div>
+            </div>
+            <div style="display: flex; gap: 0.75rem; align-items: center; flex-wrap: wrap; margin-bottom: 0.75rem;">
+                <select id="flagged-category-filter" style="min-width: 140px; padding: 0.35rem 0.5rem; border-radius: 4px; border: 1px solid var(--table-border); background: var(--card-bg); color: var(--text-primary);">
+                    <option value="all">{{ t('All pages') }}</option>
+                    <option value="gpu">GPU</option>
+                    <option value="cpu">CPU</option>
+                    <option value="ssd">SSD</option>
+                    <option value="ram">RAM</option>
+                    <option value="psu">PSU</option>
+                    <option value="case">Case</option>
+                    <option value="motherboard">Motherboard</option>
+                    <option value="monitor">Monitor</option>
+                    <option value="lens">Lens</option>
+                    <option value="camera">Camera</option>
+                    <option value="console">Console</option>
+                    <option value="computer">Computer</option>
+                </select>
+                <select id="flagged-sort" style="min-width: 160px; padding: 0.35rem 0.5rem; border-radius: 4px; border: 1px solid var(--table-border); background: var(--card-bg); color: var(--text-primary);">
+                    <option value="flagged_at_desc">{{ t('Newest first') }}</option>
+                    <option value="flagged_at_asc">{{ t('Oldest first') }}</option>
+                    <option value="price_asc">{{ t('Price low-high') }}</option>
+                    <option value="price_desc">{{ t('Price high-low') }}</option>
+                    <option value="title_asc">{{ t('Title A-Z') }}</option>
+                    <option value="category_asc">{{ t('Page A-Z') }}</option>
+                </select>
+                <span id="flagged-count" style="color: var(--text-secondary); font-size: 0.85rem; margin-left: auto;"></span>
+            </div>
+            <div id="flagged-listings-container" style="max-height: 60vh; overflow-y: auto;">
+                <div class="loading">{{ t('Loading flagged listings...') }}</div>
+            </div>
+        </div>
+    </div>
+
+    <div id="tab-unmatched" class="admin-tab-panel" role="tabpanel">
+        <div class="card" style="margin-bottom: 1.5rem;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                <h3>{{ t('Unmatched Listings') }}</h3>
+                <a href="/unmatched" class="btn btn-small">{{ t('Open full review page') }}</a>
+            </div>
+            <div id="unmatched-admin-container">
+                <div class="loading">{{ t('Loading unmatched listings...') }}</div>
+            </div>
+        </div>
+    </div>
+
+    <div id="tab-spreads" class="admin-tab-panel" role="tabpanel">
+        <div class="card" style="margin-bottom: 1.5rem;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 0.5rem;">
+                <h3>{{ t('Price Spreads') }}</h3>
+                <div style="display: flex; gap: 0.5rem; align-items: center;">
+                    <label style="display: inline-flex; align-items: center; gap: 0.25rem; cursor: pointer; font-size: 0.9rem;">
+                        <input type="checkbox" id="spreads-active-only" checked> {{ t('Active only') }}
+                    </label>
+                    <button class="btn btn-small" onclick="loadPriceSpreads()">{{ t('Refresh') }}</button>
+                </div>
+            </div>
+            <div id="price-spreads-container">
+                <div class="loading">{{ t('Loading price spreads...') }}</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- User modal -->
+<div id="user-modal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 100; justify-content: center; align-items: center;">
+    <div class="card" style="width: 420px; max-width: 90vw;">
+        <h3 id="user-modal-title">{{ t('New user') }}</h3>
+        <form id="user-form" style="display: flex; flex-direction: column; gap: 0.75rem; margin-top: 1rem;">
+            <input type="hidden" id="user-id">
+
+            <label>{{ t('Username') }}
+                <input type="text" id="user-username" required style="width: 100%;">
+            </label>
+            <label>{{ t('Email') }}
+                <input type="email" id="user-email" style="width: 100%;">
+            </label>
+            <label>{{ t('Password') }}
+                <input type="password" id="user-password" style="width: 100%;">
+            </label>
+            <label>{{ t('Role') }}
+                <select id="user-role" style="width: 100%;">
+                    {% for r in roles %}
+                    <option value="{{ r }}">{{ r }}</option>
+                    {% endfor %}
+                </select>
+            </label>
+            <label>{{ t('Subscription status') }}
+                <select id="user-sub-status" style="width: 100%;">
+                    <option value="inactive">inactive</option>
+                    <option value="active">active</option>
+                    <option value="trialing">trialing</option>
+                    <option value="past_due">past_due</option>
+                    <option value="cancelled">cancelled</option>
+                </select>
+            </label>
+            <label>{{ t('Subscription tier') }}
+                <input type="text" id="user-sub-tier" style="width: 100%;">
+            </label>
+            <label style="display: inline-flex; align-items: center; gap: 0.5rem;">
+                <input type="checkbox" id="user-active" checked> {{ t('Active') }}
+            </label>
+            <div style="display: flex; gap: 0.5rem; justify-content: flex-end;">
+                <button type="button" class="btn btn-small" onclick="closeUserModal()">{{ t('Cancel') }}</button>
+                <button type="submit" class="btn btn-primary">{{ t('Save') }}</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- User access modal -->
+<div id="access-modal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 100; justify-content: center; align-items: center;">
+    <div class="card" style="width: 520px; max-width: 90vw;">
+        <h3>{{ t('User page access') }}</h3>
+        <p style="color: var(--text-secondary); font-size: 0.9rem;">Checked = explicitly allowed. Unchecked but not in denied = inherited from role. Denied = always hidden.</p>
+        <input type="hidden" id="access-user-id">
+        <div id="access-checkboxes" style="display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 1rem 0;">
+            {% for page in pages %}
+            <label style="display: inline-flex; align-items: center; gap: 0.25rem; padding: 0.25rem 0.4rem; border: 1px solid var(--table-border); border-radius: 4px; cursor: pointer;">
+                <input type="checkbox" class="access-page" value="{{ page }}">
+                {{ page }}
+            </label>
+            {% endfor %}
+        </div>
+        <div style="display: flex; gap: 0.5rem; justify-content: flex-end;">
+            <button type="button" class="btn btn-small" onclick="closeAccessModal()">{{ t('Cancel') }}</button>
+            <button type="button" class="btn btn-primary" onclick="saveAccess()">{{ t('Save user access') }}</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    const roles = {{ roles | tojson }};
+    const pages = {{ pages | tojson }};
+    const users = {{ users | tojson }};
+
+    function openUserModal(user = null) {
+        document.getElementById('user-modal').style.display = 'flex';
+        document.getElementById('user-modal-title').textContent = user ? t('Edit user') : t('New user');
+        document.getElementById('user-id').value = user ? user.id : '';
+        document.getElementById('user-username').value = user ? user.username : '';
+        document.getElementById('user-username').disabled = !!user;
+        document.getElementById('user-email').value = user ? (user.email || '') : '';
+        document.getElementById('user-password').value = '';
+        document.getElementById('user-password').required = !user;
+        document.getElementById('user-role').value = user ? user.role : 'user';
+        document.getElementById('user-sub-status').value = user ? user.subscription_status : 'inactive';
+        document.getElementById('user-sub-tier').value = user ? (user.subscription_tier || '') : '';
+        document.getElementById('user-active').checked = user ? user.is_active : true;
+    }
+
+    function closeUserModal() {
+        document.getElementById('user-modal').style.display = 'none';
+    }
+
+    function editUser(id) {
+        const user = users.find(u => u.id === id);
+        if (user) openUserModal(user);
+    }
+
+    document.getElementById('user-form').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const id = document.getElementById('user-id').value;
+        const payload = {
+            action: id ? 'update' : 'create',
+            username: document.getElementById('user-username').value,
+            email: document.getElementById('user-email').value || null,
+            password: document.getElementById('user-password').value || null,
+            role: document.getElementById('user-role').value,
+            subscription_status: document.getElementById('user-sub-status').value,
+            subscription_tier: document.getElementById('user-sub-tier').value || null,
+            is_active: document.getElementById('user-active').checked
+        };
+        if (id) payload.id = parseInt(id);
+        const resp = await fetch('/api/admin/users', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(payload)
+        });
+        if (resp.ok) {
+            closeUserModal();
+            location.reload();
+        } else {
+            const data = await resp.json();
+            alert(data.error || t('Failed to update'));
+        }
+    });
+
+    async function deleteUser(id) {
+        if (!confirm(t('Delete') + ' user ' + id + '?')) return;
+        const resp = await fetch('/api/admin/users', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({action: 'delete', id: id})
+        });
+        if (resp.ok) location.reload();
+    }
+
+    async function saveAllRoleAccess() {
+        const payload = {};
+        roles.forEach(role => {
+            payload[role] = Array.from(document.querySelectorAll('.role-page-' + role + ':checked')).map(cb => cb.value);
+        });
+        const resp = await fetch('/api/admin/role-access', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({roles: payload})
+        });
+        if (resp.ok) alert(t('Role page access saved'));
+        else alert(t('Failed to update'));
+    }
+
+    function editAccess(userId, role) {
+        document.getElementById('access-modal').style.display = 'flex';
+        document.getElementById('access-user-id').value = userId;
+        const roleDefaults = {{ role_defaults | tojson }}[role] || [];
+        document.querySelectorAll('.access-page').forEach(cb => {
+            cb.checked = roleDefaults.includes(cb.value);
+            cb.dataset.default = roleDefaults.includes(cb.value);
+        });
+    }
+
+    function closeAccessModal() {
+        document.getElementById('access-modal').style.display = 'none';
+    }
+
+    async function saveAccess() {
+        const userId = parseInt(document.getElementById('access-user-id').value);
+        const allowed = [];
+        const denied = [];
+        document.querySelectorAll('.access-page').forEach(cb => {
+            if (cb.checked && cb.dataset.default !== 'true') allowed.push(cb.value);
+            if (!cb.checked && cb.dataset.default === 'true') denied.push(cb.value);
+        });
+        const resp = await fetch('/api/admin/user-access', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({user_id: userId, allowed_pages: allowed, denied_pages: denied})
+        });
+        if (resp.ok) {
+            closeAccessModal();
+            alert(t('User page access') + ' saved');
+        } else {
+            alert(t('Failed to update'));
+        }
+    }
+
+    // Admin page toggles
+    function initAdminToggles() {
+        document.querySelectorAll('#admin-toggles-grid input[data-toggle]').forEach(cb => {
+            const key = cb.dataset.toggle;
+            const val = localStorage.getItem(key);
+            let def = true;
+            if (key === 'showDeleteButtons') def = false;
+            cb.checked = val !== null ? (val === 'true') : def;
+            cb.addEventListener('change', () => {
+                localStorage.setItem(key, cb.checked);
+            });
+        });
+    }
+
+    // Flagged listings review
+    let flaggedOffset = 0;
+    const flaggedLimit = 25;
+    let flaggedTotal = 0;
+    let flaggedLoading = false;
+    let flaggedHasMore = true;
+    let flaggedObserver = null;
+
+    async function loadFlaggedListings(reset = false) {
+        if (flaggedLoading) return;
+        if (reset) {
+            flaggedOffset = 0;
+            flaggedHasMore = true;
+            window.flaggedData = [];
+            const container = document.getElementById('flagged-listings-container');
+            container.innerHTML = '<div class="loading">' + t('Loading flagged listings...') + '</div>';
+            if (flaggedObserver) { flaggedObserver.disconnect(); flaggedObserver = null; }
+        }
+        if (!flaggedHasMore && !reset) return;
+
+        flaggedLoading = true;
+        const cat = document.getElementById('flagged-category-filter')?.value || 'all';
+        const sort = document.getElementById('flagged-sort')?.value || 'flagged_at_desc';
+        const container = document.getElementById('flagged-listings-container');
+        try {
+            const resp = await fetch(`/api/flagged-listings?limit=${flaggedLimit}&offset=${flaggedOffset}&category=${cat}&sort=${sort}`);
+            const data = await resp.json();
+            if (!resp.ok) throw new Error(data.error || t('Failed to load'));
+            const items = data.items || data || [];
+            const total = data.total !== undefined ? data.total : items.length;
+            flaggedTotal = total;
+            if (reset) container.innerHTML = '';
+            if (!items.length) {
+                if (reset) container.innerHTML = '<p>' + t('No flagged listings found.') + '</p>';
+                flaggedHasMore = false;
+                updateFlaggedCount();
+                return;
+            }
+            window.flaggedData = (window.flaggedData || []).concat(items);
+            renderFlaggedRows(items, !reset);
+            flaggedOffset += items.length;
+            flaggedHasMore = flaggedOffset < flaggedTotal;
+            updateFlaggedCount();
+            setupFlaggedInfiniteScroll();
+        } catch (e) {
+            container.innerHTML = '<p style="color: #e74c3c;">' + t('Error loading flagged listings') + '</p>';
+        } finally {
+            flaggedLoading = false;
+        }
+    }
+
+    function renderFlaggedRows(items, append) {
+        const container = document.getElementById('flagged-listings-container');
+        let tbody = document.querySelector('#flagged-table tbody');
+        if (!tbody) {
+            container.innerHTML = `
+                <table id="flagged-table" class="data-table">
+                    <thead>
+                        <tr>
+                            <th>${t('ID')}</th>
+                            <th>${t('Category')}</th>
+                            <th>${t('Title')}</th>
+                            <th>${t('Price')}</th>
+                            <th>${t('Reason')}</th>
+                            <th>${t('Flagged at')}</th>
+                            <th>${t('Actions')}</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+                <div id="flagged-sentinel" style="height: 20px; margin-top: 0.5rem;"></div>
+                <div id="flagged-end-msg" style="display: none; color: var(--text-secondary); text-align: center; margin-top: 0.5rem; font-size: 0.85rem;">${t('No more flagged listings')}</div>
+            `;
+            tbody = document.querySelector('#flagged-table tbody');
+        }
+        const rows = items.map(item => `
+            <tr>
+                <td>${item.listing_id || ''}</td>
+                <td>${item.category || ''}</td>
+                <td><a href="${item.listing_url || '#'}" target="_blank">${escapeHtml(item.title || '')}</a></td>
+                <td>${item.price_eur !== null && item.price_eur !== undefined ? item.price_eur + ' €' : ''}</td>
+                <td>${escapeHtml(item.reason || '')}</td>
+                <td>${item.flagged_at ? new Date(item.flagged_at).toLocaleString() : ''}</td>
+                <td><button class="btn btn-small" onclick="unflagListing('${item.listing_id}')">${t('Unflag')}</button></td>
+            </tr>
+        `).join('');
+        tbody.insertAdjacentHTML('beforeend', rows);
+        const endMsg = document.getElementById('flagged-end-msg');
+        if (endMsg) endMsg.style.display = flaggedHasMore ? 'none' : 'block';
+    }
+
+    function updateFlaggedCount() {
+        const shown = window.flaggedData ? window.flaggedData.length : 0;
+        const el = document.getElementById('flagged-count');
+        if (el) el.textContent = `${shown} / ${flaggedTotal} ${t('flagged')}`;
+        const badge = document.getElementById('tab-badge-flagged');
+        if (badge) badge.textContent = flaggedTotal ? `(${flaggedTotal})` : '';
+    }
+
+    function setupFlaggedInfiniteScroll() {
+        const sentinel = document.getElementById('flagged-sentinel');
+        const container = document.getElementById('flagged-listings-container');
+        if (!sentinel || !container || flaggedObserver) return;
+        flaggedObserver = new IntersectionObserver((entries) => {
+            if (entries[0].isIntersecting && !flaggedLoading && flaggedHasMore) {
+                loadFlaggedListings(false);
+            }
+        }, { root: container, rootMargin: '80px' });
+        flaggedObserver.observe(sentinel);
+    }
+
+    function exportFlaggedCSV() {
+        const cat = document.getElementById('flagged-category-filter')?.value || 'all';
+        const sort = document.getElementById('flagged-sort')?.value || 'flagged_at_desc';
+        fetch(`/api/flagged-listings?category=${cat}&sort=${sort}&limit=10000`)
+            .then(resp => resp.json())
+            .then(data => {
+                const items = data.items || data || [];
+                if (!items.length) {
+                    alert(t('No flagged listings to export'));
+                    return;
+                }
+                const columns = [
+                    {key: 'listing_id', label: 'ID'},
+                    {key: 'category', label: 'Category'},
+                    {key: 'title', label: 'Title'},
+                    {key: 'price_eur', label: 'Price EUR'},
+                    {key: 'seller_location', label: 'Location'},
+                    {key: 'listing_url', label: 'URL'},
+                    {key: 'image_url', label: 'Image URL'},
+                    {key: 'reason', label: 'Reason'},
+                    {key: 'flagged_at', label: 'Flagged At'}
+                ];
+                const escapeCsv = val => {
+                    if (val === null || val === undefined) return '';
+                    let s = String(val).replace(/"/g, '""');
+                    if (/[",\n\r]/.test(s)) s = '"' + s + '"';
+                    return s;
+                };
+                const header = columns.map(c => escapeCsv(c.label)).join(',');
+                const rows = items.map(item => columns.map(c => escapeCsv(item[c.key])).join(','));
+                const csv = [header, ...rows].join('\n');
+                const blob = new Blob([csv], {type: 'text/csv;charset=utf-8;'});
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'flagged_listings_' + new Date().toISOString().slice(0, 10) + '.csv';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            })
+            .catch(() => alert(t('Failed to load data for export')));
+    }
+
+    async function unflagListing(listingId) {
+        if (!confirm(t('Remove flag from') + ' ' + listingId + '?')) return;
+        const resp = await fetch('/api/unflag', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({listing_id: listingId})
+        });
+        if (resp.ok) loadFlaggedListings(true);
+        else alert(t('Failed to unflag'));
+    }
+
+    function switchAdminTab(tab) {
+        document.querySelectorAll('.admin-tab').forEach(btn => {
+            const active = btn.dataset.tab === tab;
+            btn.classList.toggle('active', active);
+            btn.setAttribute('aria-selected', active ? 'true' : 'false');
+        });
+        document.querySelectorAll('.admin-tab-panel').forEach(panel => {
+            panel.classList.toggle('active', panel.id === 'tab-' + tab);
+        });
+        localStorage.setItem('admin_active_tab', tab);
+        if (tab === 'flagged') loadFlaggedListings(true);
+        if (tab === 'unmatched') loadUnmatchedAdmin();
+        if (tab === 'spreads') loadPriceSpreads();
+    }
+
+    // Unmatched listings summary
+    async function loadUnmatchedAdmin() {
+        const container = document.getElementById('unmatched-admin-container');
+        container.innerHTML = '<div class="loading">' + t('Loading unmatched listings...') + '</div>';
+        try {
+            const resp = await fetch('/api/unmatched?category=all');
+            const data = await resp.json();
+            const listings = data.listings || [];
+            if (!listings.length) {
+                container.innerHTML = '<p>' + t('No unmatched listings found.') + '</p>';
+                return;
+            }
+            const rows = listings.slice(0, 50).map(item => `
+                <tr>
+                    <td>${item.listing_id || ''}</td>
+                    <td>${item.category || ''}</td>
+                    <td><a href="${item.listing_url || '#'}" target="_blank">${escapeHtml(item.title || '')}</a></td>
+                    <td>${item.price_eur !== null && item.price_eur !== undefined ? item.price_eur + ' €' : ''}</td>
+                    <td>${item.date_posted ? new Date(item.date_posted).toLocaleString() : ''}</td>
+                    <td><a href="/unmatched" class="btn btn-small">${t('Review')}</a></td>
+                </tr>
+            `).join('');
+            container.innerHTML = `
+                <p style="margin-bottom: 0.5rem; color: var(--text-secondary);">${listings.length} ${t('listings need review')}</p>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>${t('ID')}</th>
+                            <th>${t('Category')}</th>
+                            <th>${t('Title')}</th>
+                            <th>${t('Price')}</th>
+                            <th>${t('Posted')}</th>
+                            <th>${t('Actions')}</th>
+                        </tr>
+                    </thead>
+                    <tbody>${rows}</tbody>
+                </table>
+                ${listings.length > 50 ? '<p style="margin-top: 0.5rem; color: var(--text-secondary);">' + t('Showing first 50. Open full page for all.') + '</p>' : ''}
+            `;
+        } catch (e) {
+            container.innerHTML = '<p style="color: #e74c3c;">' + t('Error loading unmatched listings') + '</p>';
+        }
+    }
+
+    // Price spreads / mismatch detector
+    async function loadPriceSpreads() {
+        const container = document.getElementById('price-spreads-container');
+        const activeOnly = document.getElementById('spreads-active-only')?.checked ?? true;
+        container.innerHTML = '<div class="loading">' + t('Loading price spreads...') + '</div>';
+        try {
+            const resp = await fetch('/api/price-spreads?active=' + activeOnly);
+            const data = await resp.json();
+            if (!resp.ok) {
+                container.innerHTML = '<p style="color: #e74c3c;">' + (data.error || t('Failed to load')) + '</p>';
+                return;
+            }
+            const catLabels = {
+                gpu: 'GPU', cpu: 'CPU', ssd: 'SSD', ram: 'RAM', psu: 'PSU',
+                case: 'Case', motherboard: 'Motherboard', monitor: 'Monitor'
+            };
+            let html = '';
+            let any = false;
+            for (const [cat, rows] of Object.entries(data)) {
+                if (!rows || !rows.length) continue;
+                any = true;
+                const label = catLabels[cat] || cat;
+                const tableRows = rows.map(row => `
+                    <tr>
+                        <td>${escapeHtml(formatModelName(row, cat))}</td>
+                        <td>${row.listing_count || 0}</td>
+                        <td>${row.min_price !== null && row.min_price !== undefined ? row.min_price + ' €' : '-'}</td>
+                        <td>${row.max_price !== null && row.max_price !== undefined ? row.max_price + ' €' : '-'}</td>
+                        <td>${row.avg_price !== null && row.avg_price !== undefined ? row.avg_price + ' €' : '-'}</td>
+                        <td>${row.price_spread !== null && row.price_spread !== undefined ? row.price_spread + ' €' : '-'}</td>
+                        <td>${row.spread_percent !== null && row.spread_percent !== undefined ? row.spread_percent + '%' : '-'}</td>
+                    </tr>
+                `).join('');
+                html += `
+                    <h4 style="margin-top: 1rem; margin-bottom: 0.5rem;">${escapeHtml(label)}</h4>
+                    <table class="data-table" style="margin-bottom: 1rem;">
+                        <thead>
+                            <tr>
+                                <th>${t('Model')}</th>
+                                <th>${t('Listings')}</th>
+                                <th>${t('Min')}</th>
+                                <th>${t('Max')}</th>
+                                <th>${t('Average')}</th>
+                                <th>${t('Spread')}</th>
+                                <th>${t('Spread %')}</th>
+                            </tr>
+                        </thead>
+                        <tbody>${tableRows}</tbody>
+                    </table>
+                `;
+            }
+            container.innerHTML = any ? html : '<p>' + t('No price spreads found.') + '</p>';
+        } catch (e) {
+            container.innerHTML = '<p style="color: #e74c3c;">' + t('Error loading price spreads') + '</p>';
+        }
+    }
+
+    function formatModelName(row, cat) {
+        const parts = [];
+        if (cat === 'gpu') {
+            if (row.vendor) parts.push(row.vendor);
+            if (row.model) parts.push(row.model);
+            if (row.vram_gb) parts.push(row.vram_gb + 'GB');
+        } else if (cat === 'cpu') {
+            if (row.producer) parts.push(row.producer);
+            if (row.cpu_name) parts.push(row.cpu_name);
+            if (row.processor_number) parts.push(row.processor_number);
+        } else if (cat === 'ssd' || cat === 'ram') {
+            if (row.brand) parts.push(row.brand);
+            if (row.model) parts.push(row.model);
+            if (row.name) parts.push(row.name);
+            if (row.capacity_gb) parts.push(row.capacity_gb + 'GB');
+            if (row.speed) parts.push(row.speed);
+        } else if (cat === 'psu') {
+            if (row.name) parts.push(row.name);
+            if (row.wattage) parts.push(row.wattage + 'W');
+        } else if (cat === 'case') {
+            if (row.name) parts.push(row.name);
+            if (row.type) parts.push(row.type);
+        } else if (cat === 'motherboard') {
+            if (row.brand) parts.push(row.brand);
+            if (row.model) parts.push(row.model);
+            if (row.socket) parts.push(row.socket);
+            if (row.chipset) parts.push(row.chipset);
+        } else if (cat === 'monitor') {
+            if (row.brand) parts.push(row.brand);
+            if (row.model) parts.push(row.model);
+            if (row.size) parts.push(row.size + '"');
+            if (row.resolution) parts.push(row.resolution);
+            if (row.refresh_rate) parts.push(row.refresh_rate + 'Hz');
+        }
+        return parts.join(' ') || (row.model_id ? 'ID ' + row.model_id : t('Unknown'));
+    }
+
+    function escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+    }
+
+    // Initialize after base.html has defined t() and translations
+    document.addEventListener('DOMContentLoaded', () => {
+        initAdminToggles();
+        const savedTab = localStorage.getItem('admin_active_tab') || 'flagged';
+        switchAdminTab(savedTab);
+        document.getElementById('spreads-active-only')?.addEventListener('change', loadPriceSpreads);
+        document.getElementById('flagged-category-filter')?.addEventListener('change', () => loadFlaggedListings(true));
+        document.getElementById('flagged-sort')?.addEventListener('change', () => loadFlaggedListings(true));
+    });
+</script>
+{% endblock %}

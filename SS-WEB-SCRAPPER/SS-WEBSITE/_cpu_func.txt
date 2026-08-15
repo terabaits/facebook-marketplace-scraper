@@ -1,0 +1,513 @@
+@app.route('/api/cpus')
+def get_cpus():
+    """Get CPU listings with filters."""
+    conn = None
+    cursor = None
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor(cursor_factory=RealDictCursor)
+
+        show_active = request.args.get('active', 'true').lower() == 'true'
+        min_confidence = float(request.args.get('min_confidence', 0))
+        time_filter = request.args.get('time', 'all_time')
+        sort_by = request.args.get('sort', 'date_posted')
+        sort_order = request.args.get('order', 'desc')
+        cpu_type_filter = request.args.get('cpu_type', '')
+        cpu_class_filter = request.args.get('cpu_class', '')
+        source_filter = request.args.get('source', '')
+        vendor_filter = request.args.get('vendor', '')
+        series_filter = request.args.get('series', '')
+
+        query = """
+            SELECT
+                l.listing_id,
+                l.title,
+                l.price_eur,
+                l.seller_location,
+                l.date_posted,
+                l.first_seen_at,
+                l.created_at,
+                l.is_active,
+                l.cpu_confidence_score as confidence_score,
+                l.cpu_match_method as match_method,
+                l.matched_cpu_id,
+                c.producer as vendor,
+                c.cpu_name,
+                c.processor_number,
+                c.cores,
+                c.threads,
+                c.socket,
+                c.base_freq,
+                COALESCE(agg.cinebench_r23_multi, r23.cinebench_r23_multi) AS cinebench_r23_multi,
+                COALESCE(agg.cinebench_r26_multi, r26.cinebench_r26_multi) AS cinebench_r26_multi,
+                COALESCE(agg.passmark_score, pm.passmark_score) AS passmark_cpu_mark,
+                l.image_url,
+                l.local_image_path,
+                l.listing_url
+            FROM listings l
+            LEFT JOIN cpu_reference c ON l.matched_cpu_id = c.id
+            LEFT JOIN cpu_complete_data agg ON c.id = agg.cpu_reference_id
+            LEFT JOIN cpu_benchmarks_r23 r23 ON c.cpu_name = r23.cpu_name
+            LEFT JOIN cpu_benchmarks_r26 r26 ON c.cpu_name = r26.cpu_name
+            LEFT JOIN cpu_benchmarks_passmark pm ON c.cpu_name = pm.cpu_name
+            WHERE l.category = 'cpu'
+        """
+
+        params = []
+        if show_active:
+            query += " AND l.is_active = true"
+        if min_confidence > 0:
+            query += " AND l.cpu_confidence_score >= %s"
+            params.append(min_confidence)
+
+        if cpu_type_filter:
+            query += " AND c.producer ILIKE %s"
+            params.append(f'%{cpu_type_filter}%')
+
+        # Add vendor filter
+        if vendor_filter and vendor_filter.lower() != 'all':
+            query += " AND c.producer ILIKE %s"
+            params.append(f'%{vendor_filter}%')
+
+        # Add series filter (i3, i5, i7, Ryzen 5, etc)
+        if series_filter:
+            query += " AND c.processor_number ILIKE %s"
+            params.append(f'%{series_filter}%')
+
+        # Add model filter
+        model_filter = request.args.get('model', '')
+        if model_filter:
+            query += " AND (c.cpu_name ILIKE %s OR c.processor_number ILIKE %s)"
+            params.append(f'%{model_filter}%')
+            params.append(f'%{model_filter}%')
+
+        # Add source filter
+        if source_filter and source_filter.lower() != 'all':
+            query += " AND l.source = %s"
+            params.append(source_filter)
+
+        # Apply CPU class filter in SQL when possible to reduce payload.
+        # This only works when the row references cpu_reference. Listings with
+        # NULL matched_cpu_id or cpu_name/processor_number cannot match a real
+        # class and will be excluded by an exact filter.
+        if cpu_class_filter:
+            # Build the SQL condition that mirrors get_cpu_class() family
+            # tokens, but with simple ILIKE checks.
+            family_tokens = {
+                'Budget': ["i3", "pentium", "celeron", "core2", "core duo", "ryzen 3", "athlon", "a-series", "phenom"],
+                'Mid-Range': ["i5", "fx", "ryzen 5"],
+                'High-End': ["i7", "ryzen 7"],
+                'Enthusiast': ["i9", "xeon", "ryzen 9", "threadripper"],
+            }
+            if cpu_class_filter in family_tokens:
+                conditions = []
+                for token in family_tokens[cpu_class_filter]:
+                    conditions.append("(c.processor_number ILIKE %s OR c.cpu_name ILIKE %s)")
+                    like = f'%{token}%'
+                    params.append(like)
+                    params.append(like)
+                query += " AND (" + " OR ".join(conditions) + ")"
+
+        query += get_time_filter_sql(time_filter)
+
+        sort_dir = 'ASC' if sort_order == 'asc' else 'DESC'
+        # Map frontend sort options to SQL expressions. Price/perf metrics are
+        # computed in SQL so sorting works server-side before LIMIT 100.
+        if sort_by == 'price':
+            sort_expr = 'l.price_eur'
+        elif sort_by == 'r23_score':
+            sort_expr = 'COALESCE(agg.cinebench_r23_multi, r23.cinebench_r23_multi)'
+        elif sort_by == 'passmark_score':
+            sort_expr = 'COALESCE(agg.passmark_score, pm.passmark_score)'
+        elif sort_by == 'price_per_r23':
+            sort_expr = 'l.price_eur / NULLIF(COALESCE(agg.cinebench_r23_multi, r23.cinebench_r23_multi), 0) * 1000'
+        elif sort_by == 'price_per_passmark':
+            sort_expr = 'l.price_eur / NULLIF(COALESCE(agg.passmark_score, pm.passmark_score), 0) * 1000'
+        else:
+            sort_expr = 'l.date_posted'
+        query += f" ORDER BY {sort_expr} {sort_dir} NULLS LAST LIMIT 100"
+
+        cursor.execute(query, params)
+        listings = cursor.fetchall()
+
+        # Add price statistics for each CPU model
+        cpu_stats = {}
+        cursor.execute("""
+            SELECT
+                c.id,
+                c.cpu_name,
+                c.processor_number,
+                ROUND(AVG(l.price_eur)::numeric, 2) as avg_price,
+                MIN(l.price_eur) as min_price,
+                MAX(l.price_eur) as max_price,
+                COUNT(*) as listing_count
+            FROM listings l
+            JOIN cpu_reference c ON l.matched_cpu_id = c.id
+            WHERE l.category = 'cpu' AND l.is_active = true
+            GROUP BY c.id, c.cpu_name, c.processor_number
+        """)
+        for row in cursor.fetchall():
+            cpu_stats[row['id']] = dict(row)
+
+        # Enhance listings with price comparison
+        enhanced_listings = []
+        for listing in listings:
+            listing_dict = dict(listing)
+            if listing['matched_cpu_id'] and listing['matched_cpu_id'] in cpu_stats:
+                stats = cpu_stats[listing['matched_cpu_id']]
+                listing_dict['price_stats'] = {
+                    'avg': stats['avg_price'],
+                    'min': stats['min_price'],
+                    'max': stats['max_price'],
+                    'below_avg': listing['price_eur'] < stats['avg_price'],
+                    'percentile': round((listing['price_eur'] - stats['min_price']) /
+                                      (stats['max_price'] - stats['min_price']) * 100, 1)
+                                      if stats['max_price'] > stats['min_price'] else 50,
+                    'listing_count': stats['listing_count']
+                }
+                # Mark as unicorn if only 1 listing exists for this CPU model
+                if stats['listing_count'] == 1:
+                    listing_dict['is_unicorn'] = True
+
+            # Mark as new if this listing is from the latest import for CPU category
+            listing_dict['is_new'] = is_listing_new(listing_dict.get('first_seen_at'), 'cpu')
+
+            # Build benchmarks object for frontend table columns
+            benchmarks = {}
+            r23 = listing_dict.get('cinebench_r23_multi')
+            r26 = listing_dict.get('cinebench_r26_multi')
+            passmark = listing_dict.get('passmark_cpu_mark')
+            if r23:
+                benchmarks['r23_multi'] = r23
+            if r26:
+                benchmarks['r26_multi'] = r26
+            if passmark:
+                benchmarks['passmark'] = passmark
+            if benchmarks:
+                listing_dict['benchmarks'] = benchmarks
+
+            # Calculate price/performance metrics
+            price = float(listing_dict.get('price_eur', 0))
+            if price > 0:
+                if r23:
+                    listing_dict['price_per_r23'] = round(price / (r23 / 1000), 2)
+                if passmark:
+                    listing_dict['price_per_passmark'] = round(price / (passmark / 1000), 2)
+
+            # Derive CPU performance class for frontend chart/filter
+            listing_dict['cpu_class'] = get_cpu_class(listing_dict)
+
+            # Apply CPU class filter post-query if requested
+            if cpu_class_filter and listing_dict['cpu_class'] != cpu_class_filter:
+                continue
+
+            enhanced_listings.append(listing_dict)
+
+        cursor.close()
+        conn.close()
+
+        return jsonify(enhanced_listings)
+    except Exception as e:
+        import traceback
+        traceback.print_exc()
+        if cursor:
+            cursor.close()
+        if conn:
+            conn.close()
+        # Always return an array to prevent frontend .forEach() errors
+        return jsonify([]), 500
+
+
+@app.route('/api/price-history/<listing_id>')
+def get_price_history(listing_id):
+    """Get price history for a specific listing."""
+    conn = get_db_connection()
+    cursor = conn.cursor(cursor_factory=RealDictCursor)
+
+    cursor.execute("""
+        SELECT price_eur, recorded_at
+        FROM price_history
+        WHERE listing_id = %s
+        ORDER BY recorded_at ASC
+    """, (listing_id,))
+
+    history = cursor.fetchall()
+
+    cursor.close()
+    conn.close()
+
+    return jsonify([convert_decimal_to_float(dict(row)) for row in history])
+
+
+@app.route('/api/listing-details/<listing_id>')
+def get_listing_details(listing_id):
+    """Get detailed information for a specific listing including price history."""
+    conn = get_db_connection()
+    cursor = conn.cursor(cursor_factory=RealDictCursor)
+
+    # Get the current listing with CPU/GPU/Case/Console details based on its category.
+    cursor.execute("""
+        SELECT
+            l.listing_id,
+            l.title,
+            l.price_eur,
+            l.description,
+            l.source,
+            l.image_url,
+            l.local_image_path,
+            l.category,
+            l.matched_gpu_id,
+            g.model as gpu_model,
+            l.matched_cpu_id,
+            c.producer as vendor,
+            c.cpu_name,
+            c.processor_number,
+            c.cores,
+            c.threads,
+            c.socket,
+            l.matched_case_id,
+            cr.name as case_name,
+            cr.type as case_type,
+            cr.color as case_color,
+            l.case_confidence_score,
+            l.case_match_method,
+            l.matched_console_id,
+            con.name as console_name,
+            con.company as console_company,
+            con.generation as console_generation,
+            l.date_posted,
+            l.listing_url,
+            l.seller_location,
+            l.is_active
+        FROM listings l
+        LEFT JOIN gpu_reference g ON l.matched_gpu_id = g.id
+        LEFT JOIN cpu_reference c ON l.matched_cpu_id = c.id
+        LEFT JOIN case_reference cr ON l.matched_case_id = cr.id
+        LEFT JOIN console_reference con ON l.matched_console_id::integer = con.id
+        WHERE l.listing_id = %s
+    """, (listing_id,))
+
+    current = cursor.fetchone()
+
+    # Fallback for category-specific tables (e.g. console_listings) not in main listings table.
+    if not current:
+        cursor.execute("""
+            SELECT
+                cl.listing_id,
+                cl.title,
+                cl.price_eur,
+                cl.title as description,
+                'ss.lv' as source,
+                cl.image_url,
+                NULL as local_image_path,
+                'console' as category,
+                NULL as matched_gpu_id,
+                NULL as gpu_model,
+                NULL as matched_cpu_id,
+                NULL as vendor,
+                NULL as cpu_name,
+                NULL as processor_number,
+                NULL as cores,
+                NULL as threads,
+                NULL as socket,
+                NULL as matched_case_id,
+                NULL as case_name,
+                NULL as case_type,
+                NULL as case_color,
+                cl.matched_console_id,
+                cr.name as console_name,
+                cr.company as console_company,
+                cr.generation as console_generation,
+                cv.model_name as variant_name,
+                ce.edition_name,
+                cl.is_special_edition,
+                cl.date_posted,
+                cl.listing_url,
+                cl.seller_location,
+                cl.is_active
+            FROM console_listings cl
+            LEFT JOIN console_reference cr ON cl.matched_console_id = cr.id
+            LEFT JOIN console_variants cv ON cl.matched_variant_id = cv.id
+            LEFT JOIN console_editions ce ON cl.matched_edition_id = ce.id
+            WHERE cl.listing_id = %s
+        """, (listing_id,))
+        current = cursor.fetchone()
+
+    if not current:
+        cursor.close()
+        conn.close()
+        return jsonify({'error': 'Listing not found'}), 404
+
+    # Get price history for this listing
+    cursor.execute("""
+        SELECT price_eur, recorded_at, change_type
+        FROM price_history
+        WHERE listing_id = %s
+        ORDER BY recorded_at DESC
+    """, (listing_id,))
+
+    history = cursor.fetchall()
+
+    cursor.close()
+    conn.close()
+
+    return jsonify({
+        'current': convert_decimal_to_float(dict(current)),
+        'history': [convert_decimal_to_float(dict(row)) for row in history]
+    })
+
+
+@app.route('/api/model-history/<model_type>/<int:model_id>')
+def get_model_history(model_type, model_id):
+    """Get all historical prices for a specific model."""
+    conn = get_db_connection()
+    cursor = conn.cursor(cursor_factory=RealDictCursor)
+
+    if model_type == 'gpu':
+        cursor.execute("""
+            SELECT
+                l.listing_id,
+                l.title,
+                l.price_eur,
+                l.seller_location,
+                l.date_posted,
+                l.is_active,
+                l.listing_url,
+                l.local_image_path,
+                l.image_url
+            FROM listings l
+            WHERE l.matched_gpu_id = %s AND l.category = 'gpu'
+            ORDER BY l.date_posted DESC
+        """, (model_id,))
+    elif model_type == 'ssd':
+        cursor.execute("""
+            SELECT
+                l.listing_id,
+                l.title,
+                l.price_eur,
+                l.seller_location,
+                l.date_posted,
+                l.is_active,
+                l.listing_url,
+                l.local_image_path,
+                l.image_url
+            FROM listings l
+            WHERE l.matched_ssd_id = %s AND l.category = 'ssd'
+            ORDER BY l.date_posted DESC
+        """, (model_id,))
+    else:
+        cursor.execute("""
+            SELECT
+                l.listing_id,
+                l.title,
+                l.price_eur,
+                l.seller_location,
+                l.date_posted,
+                l.is_active,
+                l.listing_url,
+                l.local_image_path,
+                l.image_url
+            FROM listings l
+            WHERE l.matched_cpu_id = %s AND l.category = 'cpu'
+            ORDER BY l.date_posted DESC
+        """, (model_id,))
+
+    listings = cursor.fetchall()
+
+    # Calculate stats for the model
+    prices = [float(row['price_eur']) for row in listings if row['price_eur']]
+    stats = {}
+    if prices:
+        stats = {
+            'avg': round(sum(prices) / len(prices), 2),
+            'min': round(min(prices), 2),
+            'max': round(max(prices), 2),
+            'count': len(prices)
+        }
+
+    # Fetch model info for CPU reference
+    model_info = {}
+    if model_type == 'cpu':
+        try:
+            cursor.execute("""
+                SELECT id, cpu_name, producer, cores, threads, base_freq
+                FROM cpu_reference
+                WHERE id = %s
+            """, (model_id,))
+            row = cursor.fetchone()
+            if row:
+                model_info = dict(row)
+        except Exception:
+            pass
+
+    cursor.close()
+    conn.close()
+
+    return jsonify({
+        'listings': [convert_decimal_to_float(dict(row)) for row in listings],
+        'stats': stats,
+        'model_info': model_info
+    })
+
+
+@app.route('/api/gpu-models')
+def get_gpu_models():
+    """Get aggregated GPU model statistics with sorting."""
+    conn = get_db_connection()
+    cursor = conn.cursor(cursor_factory=RealDictCursor)
+
+    sort = request.args.get('sort', 'price_desc')
+    time_filter = request.args.get('time', 'all_time')
+
+    order_map = {
+        'price_desc': 'avg_price DESC',
+        'price_asc': 'avg_price ASC',
+        'listings_desc': 'active_listings DESC',
+        'listings_asc': 'active_listings ASC'
+    }
+    order_by = order_map.get(sort, 'avg_price DESC')
+
+    date_clause = get_time_filter_sql(time_filter, 'l')
+    active_time_clause, flagged_clause = get_active_avg_clauses(request, 'l')
+
+    cursor.execute(f"""
+        SELECT
+            g.id,
+            g.vendor,
+            g.model,
+            g.vram_gb,
+            g.year_released,
+            COUNT(l.listing_id) as active_listings,
+            ROUND(AVG(l.price_eur)::numeric, 2) as avg_price,
+            MIN(l.price_eur) as min_price,
+            MAX(l.price_eur) as max_price,
+            MIN(l.date_posted) as first_seen,
+            MAX(l.date_posted) as last_seen
+        FROM gpu_reference g
+        JOIN listings l ON g.id = l.matched_gpu_id
+        WHERE l.category = 'gpu'
+            AND l.confidence_score >= 0.70
+            {date_clause}
+            {active_time_clause}
+            {flagged_clause}
+        GROUP BY g.id, g.vendor, g.model, g.vram_gb, g.year_released
+        HAVING COUNT(l.listing_id) >= 1
+        ORDER BY {order_by}
+    """)
+
+    models = cursor.fetchall()
+
+    # Format VRAM
+    formatted_models = []
+    for model in models:
+        model_dict = dict(model)
+        model_dict['vram_gb'] = format_vram(model_dict['vram_gb'])
+        formatted_models.append(model_dict)
+
+    cursor.close()
+    conn.close()
+
+    return jsonify(formatted_models)
+
+
+@app.route('/api/cpus/platform-stats')

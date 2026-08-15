@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+
+{% block title %}Camera Lens Listings - DEBUG{% endblock %}
+
+{% block content %}
+<div class="section">
+    <h2>📷 Camera Lens Listings (DEBUG MODE)</h2>
+    
+    <div id="debug-output" style="background: #f5f5f5; padding: 1rem; margin-bottom: 1rem; font-family: monospace; font-size: 0.85rem;">
+        <p>Debug info will appear here...</p>
+    </div>
+    
+    <div id="listings-container">
+        <div class="loading">Loading lens listings...</div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+const debugOutput = document.getElementById('debug-output');
+
+function log(msg) {
+    console.log(msg);
+    debugOutput.innerHTML += '<p>' + msg + '</p>';
+}
+
+async function loadListings() {
+    log('Starting loadListings...');
+    
+    try {
+        log('Fetching /api/lenses...');
+        const response = await fetch('/api/lenses?active=true');
+        log('Response status: ' + response.status);
+        log('Response ok: ' + response.ok);
+        
+        const text = await response.text();
+        log('Response length: ' + text.length + ' chars');
+        log('First 200 chars: ' + text.substring(0, 200));
+        
+        let listings;
+        try {
+            listings = JSON.parse(text);
+            log('JSON parsed successfully. Type: ' + typeof listings);
+            if (Array.isArray(listings)) {
+                log('Is array with ' + listings.length + ' items');
+            } else if (listings.error) {
+                log('ERROR from API: ' + listings.error);
+                document.getElementById('listings-container').innerHTML = 
+                    '<div class="error">API Error: ' + listings.error + '</div>';
+                return;
+            }
+        } catch (e) {
+            log('JSON parse ERROR: ' + e.message);
+            document.getElementById('listings-container').innerHTML = 
+                '<div class="error">Invalid JSON response</div>';
+            return;
+        }
+        
+        const container = document.getElementById('listings-container');
+        
+        if (!Array.isArray(listings) || listings.length === 0) {
+            container.innerHTML = '<div class="loading">No lens listings found</div>';
+            return;
+        }
+        
+        // Simple table
+        let html = '<table><thead><tr><th>Title</th><th>{{ t('Price') }}</th></tr></thead><tbody>';
+        listings.forEach(item => {
+            html += `<tr><td>${item.title || 'N/A'}</td><td>€${item.price_eur || 0}</td></tr>`;
+        });
+        html += '</tbody></table>';
+        
+        container.innerHTML = html;
+        log('Table rendered successfully');
+        
+    } catch (error) {
+        log('FATAL ERROR: ' + error.message);
+        document.getElementById('listings-container').innerHTML = 
+            `<div class="error">Failed to load: ${error.message}</div>`;
+    }
+}
+
+// Load on page load
+document.addEventListener('DOMContentLoaded', loadListings);
+</script>
+{% endblock %}

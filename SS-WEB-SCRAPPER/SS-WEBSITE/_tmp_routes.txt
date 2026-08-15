@@ -1,0 +1,6 @@
+﻿560 "@app.route('/api/gpus')"
+948 "@app.route('/api/cpus')"
+1460 "@app.route('/api/cpus/platform-stats')"
+2268 "@app.route('/api/computers')"
+2509 "@app.route('/api/computers/<listing_id>')"
+3139 "@app.route('/api/computers/stats')"

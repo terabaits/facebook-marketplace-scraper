@@ -1,0 +1,109 @@
+{% extends "base.html" %}
+
+{% block title %}{{ t('Login') }} - SS-Crawler{% endblock %}
+
+{% block extra_css %}
+.login-card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    padding: 1.75rem;
+    box-shadow: 0 6px 24px var(--shadow);
+    max-width: 340px;
+    margin: 2.5rem auto;
+}
+
+.login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.login-field {
+    position: relative;
+}
+
+.login-field label {
+    display: block;
+    font-size: 0.8rem;
+    font-weight: 600;
+    margin-bottom: 0.3rem;
+    color: var(--text-color);
+}
+
+.login-field input {
+    width: 100%;
+    padding: 0.65rem 0.85rem;
+    border: 1.5px solid var(--input-border);
+    border-radius: 8px;
+    background: var(--input-bg);
+    color: var(--text-color);
+    font-size: 0.95rem;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    outline: none;
+}
+
+.login-field input:focus {
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.15);
+}
+
+.login-field input::placeholder {
+    color: var(--text-secondary);
+    opacity: 0.6;
+}
+
+.login-btn {
+    width: 100%;
+    padding: 0.45rem 0.75rem;
+    border: none;
+    border-radius: 8px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.15s, box-shadow 0.15s;
+    margin-top: 0.25rem;
+}
+
+.login-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 14px rgba(102, 126, 234, 0.35);
+}
+
+.login-error {
+    background: rgba(231, 76, 60, 0.12);
+    color: #e74c3c;
+    padding: 0.65rem 0.85rem;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    font-size: 0.85rem;
+    border: 1px solid rgba(231, 76, 60, 0.25);
+}
+
+[data-theme="dark"] .login-error {
+    color: #ff8a80;
+    background: rgba(231, 76, 60, 0.15);
+    border-color: rgba(231, 76, 60, 0.3);
+}
+{% endblock %}
+
+{% block content %}
+<div class="login-card">
+    {% if error %}
+    <div class="login-error">{{ t(error) }}</div>
+    {% endif %}
+    <form method="POST" action="/login" class="login-form">
+        <div class="login-field">
+            <label for="username">{{ t('Username') }}</label>
+            <input type="text" id="username" name="username" placeholder="{{ t('Enter username') }}" required autofocus>
+        </div>
+        <div class="login-field">
+            <label for="password">{{ t('Password') }}</label>
+            <input type="password" id="password" name="password" placeholder="{{ t('Enter password') }}" required>
+        </div>
+        <button type="submit" class="login-btn">{{ t('Sign in') }}</button>
+    </form>
+</div>
+{% endblock %}

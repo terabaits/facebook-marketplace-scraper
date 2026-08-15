@@ -1,0 +1,217 @@
+2026-06-27 13:44:04 | INFO     | ss_crawler | [ssd_scraper] Initializing SSD scraper...
+2026-06-27 13:44:04 | INFO     | ss_crawler | [database] Database connected: localhost:5433/ss_market
+2026-06-27 13:44:04 | INFO     | ss_crawler | [ssd_scraper] Database: postgresql+psycopg2://crawler:crawler_pass@localhost:5433/ss_market
+2026-06-27 13:44:05 | INFO     | ss_crawler | [ssd_matcher] SSDMatcher initialized with 2453 SSDs
+2026-06-27 13:44:05 | INFO     | ss_crawler | [ssd_scraper] Loaded 2453 SSD references
+2026-06-27 13:44:05 | INFO     | ss_crawler | [ssd_scraper] Starting SSD scraper from https://www.ss.com/lv/electronics/computers/completing-pc/ssd/
+2026-06-27 13:44:05 | INFO     | ss_crawler | [ssd_scraper] Fetching page 1: https://www.ss.com/lv/electronics/computers/completing-pc/ssd/
+2026-06-27 13:44:05 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/lv/electronics/computers/completing-pc/ssd/
+2026-06-27 13:44:08 | INFO     | ss_crawler | [ssd_scraper] Found 32 listings on page 1, 32 new
+2026-06-27 13:44:08 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ssd/cgmejh.html
+2026-06-27 13:44:11 | INFO     | ss_crawler | [ssd_scraper] Matched cgmejh: WD SN8100 (100% confidence)
+2026-06-27 13:44:11 | INFO     | ss_crawler | [ssd_scraper] ✅ cgmejh: New
+2026-06-27 13:44:11 | INFO     | ss_crawler | [image_downloader] Downloaded image for cgmejh (stored as cgmejh_72f410fd.jpg)
+2026-06-27 13:44:11 | INFO     | ss_crawler | [ssd_scraper] Image saved locally: cgmejh_72f410fd.jpg
+2026-06-27 13:44:11 | INFO     | ss_crawler | [ssd_scraper] Updated local_image_path in DB: True
+2026-06-27 13:44:11 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ssd/cgmejh.html
+2026-06-27 13:44:14 | INFO     | ss_crawler | [ssd_scraper] Matched cgmejh: WD SN8100 (100% confidence)
+2026-06-27 13:44:14 | INFO     | ss_crawler | [ssd_scraper] ⏸️ cgmejh: Unchanged
+2026-06-27 13:44:14 | INFO     | ss_crawler | [ssd_scraper] Image saved locally: ssds\cgmejh_72f410fd.jpg
+2026-06-27 13:44:14 | INFO     | ss_crawler | [ssd_scraper] Updated local_image_path in DB: True
+2026-06-27 13:44:14 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ssd/cgmejh.html
+2026-06-27 22:49:17 | INFO     | ss_crawler | [computer_scraper] Initializing computer scraper...
+2026-06-27 22:49:17 | INFO     | ss_crawler | [database] Database connected: localhost:5433/ss_market
+2026-06-27 22:49:17 | INFO     | ss_crawler | [computer_scraper] Database: postgresql+psycopg2://crawler:crawler_pass@localhost:5433/ss_market
+2026-06-27 22:49:19 | INFO     | ss_crawler | [cpu_matcher] CPUMatcher initialized with 5320 CPUs
+2026-06-27 22:49:19 | INFO     | ss_crawler | [matcher] GPUMatcher initialized with 631 GPUs
+2026-06-27 22:49:19 | INFO     | ss_crawler | [ram_matcher] RAMMatcher initialized with 5284 RAM references
+2026-06-27 22:49:19 | INFO     | ss_crawler | [ssd_matcher] SSDMatcher initialized with 2453 SSDs
+2026-06-27 22:49:19 | INFO     | ss_crawler | [psu_matcher] PSUMatcher initialized with 2895 PSU references
+2026-06-27 22:49:20 | INFO     | ss_crawler | [case_matcher] CaseMatcher initialized with 5742 case references
+2026-06-27 22:49:22 | INFO     | ss_crawler | [motherboard_matcher] MotherboardMatcher initialized with 5732 motherboards
+2026-06-27 22:49:22 | INFO     | ss_crawler | [computer_monitor_matcher] ComputerMonitorMatcher initialized with 20272 monitors
+2026-06-27 22:49:22 | INFO     | ss_crawler | [computer_matcher] ComputerMatcher initialized: 5320 CPUs, 631 GPUs, 5284 RAMs, 2453 SSDs, 2895 PSUs, 5742 Cases, 5732 Motherboards, 20272 Monitors
+2026-06-27 22:49:22 | INFO     | ss_crawler | [computer_scraper] Loaded references: 5320 CPUs, 631 GPUs, 5284 RAMs, 2453 SSDs, 2895 PSUs, 5742 Cases, 5732 Motherboards, 20272 Monitors
+2026-06-27 22:49:22 | INFO     | ss_crawler | [computer_scraper] Computer scrape run started: ID 55
+2026-06-27 22:49:22 | INFO     | ss_crawler | [computer_scraper] Fetching computer category: https://www.ss.com/lv/electronics/computers/pc/
+2026-06-27 22:49:22 | INFO     | ss_crawler | [crawler] Fetching Computer category page: https://www.ss.com/lv/electronics/computers/pc/
+2026-06-27 22:49:24 | INFO     | ss_crawler | [computer_parser] Found 30 listings on page
+2026-06-27 22:49:24 | INFO     | ss_crawler | [computer_scraper] Found 30 computer listings to process
+2026-06-27 22:49:24 | INFO     | ss_crawler | [crawler] Fetching Computer listing 1/30: https://www.ss.com/msg/lv/electronics/computers/pc/hfcxk.html
+2026-06-27 22:49:27 | INFO     | ss_crawler | [ssd_matcher] SSDMatcher initialized with 95 SSDs
+2026-06-27 22:49:27 | INFO     | ss_crawler | [computer_matcher] [SSD DEBUG] Set result.ssd: {'id': 447, 'brand': 'Crucial', 'model': 'MX300', 'interface': 'SATA/AHCI', 'form_factor': '2.5" & M.2 (1TB)', 'capacity_gb': 256, 'controller': 'Marvell 88SS1074', 'configuration': 'Dual-core, 4-ch, 8-CE/ch', 'has_dram': True, 'hmb': None, 'nand_brand': 'Micron', 'nand_type': 'TLC', 'layers': '32', 'read_speed_mb': 530, 'write_speed_mb': 500, 'category': 'Mid-Range SATA', 'notes': None, 'search_keywords': ['crucial 300', 'crucial mx300', 'mx300', '300', 'crucial'], 'normalized_name': 'crucial mx300', 'name': 'Crucial MX300'}
+2026-06-27 22:49:28 | INFO     | ss_crawler | [image_downloader] Downloaded image for hfcxk (stored as hfcxk_957ac47e.jpg)
+2026-06-27 22:49:28 | INFO     | ss_crawler | [computer_scraper] Image saved locally: hfcxk_957ac47e.jpg
+2026-06-27 22:49:28 | INFO     | ss_crawler | [computer_scraper] NEW: New: Datori un orgtehnika/Datori/ Pārdod...
+2026-06-27 22:49:28 | INFO     | ss_crawler | [crawler] Fetching Computer listing 2/30: https://www.ss.com/msg/lv/electronics/computers/pc/hcmox.html
+2026-06-27 22:49:31 | INFO     | ss_crawler | [image_downloader] Downloaded image for hcmox (stored as hcmox_fee9e0e7.jpg)
+2026-06-27 22:49:31 | INFO     | ss_crawler | [computer_scraper] Image saved locally: hcmox_fee9e0e7.jpg
+2026-06-27 22:49:31 | INFO     | ss_crawler | [computer_scraper] NEW: New: Datori un orgtehnika/Datori/ Pārdod...
+2026-06-27 22:49:31 | INFO     | ss_crawler | [crawler] Fetching Computer listing 3/30: https://www.ss.com/msg/lv/electronics/computers/pc/mxlnp.html
+2026-06-27 22:49:33 | INFO     | ss_crawler | [computer_parser] Skipping listing mxlnp: Contains skip pattern: 'piegāde visā latvijā'
+2026-06-27 22:49:33 | INFO     | ss_crawler | [computer_scraper] SKIPPED: Filtered by skip patterns
+2026-06-27 22:49:33 | INFO     | ss_crawler | [crawler] Fetching Computer listing 4/30: https://www.ss.com/msg/lv/electronics/computers/pc/loonp.html
+2026-06-27 22:49:36 | INFO     | ss_crawler | [ssd_matcher] SSDMatcher initialized with 90 SSDs
+2026-06-27 22:49:36 | INFO     | ss_crawler | [computer_matcher] [SSD DEBUG] Set result.ssd: {'id': 1515, 'brand': 'Samsung', 'model': '860 EVO', 'interface': 'SATA/AHCI', 'form_factor': '2.5" & M.2 (2TB)', 'capacity_gb': 500, 'controller': 'Samsung MJX', 'configuration': 'Tri-core, 8-ch, 8-CE/ch', 'has_dram': True, 'hmb': None, 'nand_brand': 'Samsung', 'nand_type': 'TLC', 'layers': '64', 'read_speed_mb': 550, 'write_speed_mb': 520, 'category': 'High-End SATA', 'notes': None, 'search_keywords': ['samsung', 'samsung 860', 'samsung 860 evo', '860 evo', '860'], 'normalized_name': 'samsung 860 evo', 'name': 'Samsung 860 EVO'}
+2026-06-27 22:49:36 | WARNING  | ss_crawler | [listing_versioning] Legacy listing loonp v1 has NULL fingerprint, creating new version
+2026-06-27 22:49:36 | INFO     | ss_crawler | [computer_scraper] NEW_VERSION: New version (2): Datori un orgtehnika/Datori/ Pārdod...
+2026-06-27 22:49:36 | INFO     | ss_crawler | [crawler] Fetching Computer listing 5/30: https://www.ss.com/msg/lv/electronics/computers/pc/dpfdn.html
+2026-06-27 22:49:39 | INFO     | ss_crawler | [ssd_matcher] SSDMatcher initialized with 90 SSDs
+2026-06-27 22:49:39 | INFO     | ss_crawler | [computer_matcher] [SSD DEBUG] Set result.ssd: {'id': 1514, 'brand': 'Samsung', 'model': '860 EVO', 'interface': 'SATA/AHCI', 'form_factor': '2.5" & M.2 (2TB)', 'capacity_gb': 250, 'controller': 'Samsung MJX', 'configuration': 'Tri-core, 8-ch, 8-CE/ch', 'has_dram': True, 'hmb': None, 'nand_brand': 'Samsung', 'nand_type': 'TLC', 'layers': '64', 'read_speed_mb': 550, 'write_speed_mb': 520, 'category': 'High-End SATA', 'notes': None, 'search_keywords': ['samsung', 'samsung 860', 'samsung 860 evo', '860 evo', '860'], 'normalized_name': 'samsung 860 evo', 'name': 'Samsung 860 EVO'}
+2026-06-27 22:49:39 | WARNING  | ss_crawler | [listing_versioning] Legacy listing dpfdn v1 has NULL fingerprint, creating new version
+2026-06-27 22:49:39 | INFO     | ss_crawler | [computer_scraper] NEW_VERSION: New version (2): Datori un orgtehnika/Datori/ Pārdod...
+2026-06-27 22:49:39 | INFO     | ss_crawler | [crawler] Fetching Computer listing 6/30: https://www.ss.com/msg/lv/electronics/computers/pc/ehmno.html
+2026-06-27 22:49:43 | INFO     | ss_crawler | [ssd_matcher] SSDMatcher initialized with 90 SSDs
+2026-06-27 22:49:43 | INFO     | ss_crawler | [computer_matcher] [SSD DEBUG] Set result.ssd: {'id': 1521, 'brand': 'Samsung', 'model': '860 Pro', 'interface': 'SATA/AHCI', 'form_factor': '2.5"', 'capacity_gb': 512, 'controller': 'Samsung MJX', 'configuration': 'Tri-core, 8-ch, 8-CE/ch', 'has_dram': True, 'hmb': None, 'nand_brand': 'Samsung', 'nand_type': 'MLC', 'layers': '64', 'read_speed_mb': 560, 'write_speed_mb': 530, 'category': 'High-End SATA', 'notes': None, 'search_keywords': ['samsung', 'samsung 860', '860', '860 pro', 'samsung 860 pro'], 'normalized_name': 'samsung 860 pro', 'name': 'Samsung 860 Pro'}
+2026-06-27 22:49:43 | WARNING  | ss_crawler | [listing_versioning] Legacy listing ehmno v1 has NULL fingerprint, creating new version
+2026-06-27 22:49:43 | INFO     | ss_crawler | [computer_scraper] NEW_VERSION: New version (2): Datori un orgtehnika/Datori/ Pārdod...
+2026-06-27 22:49:43 | INFO     | ss_crawler | [crawler] Fetching Computer listing 7/30: https://www.ss.com/msg/lv/electronics/computers/pc/bpnhhi.html
+2026-06-27 22:49:46 | INFO     | ss_crawler | [computer_parser] Skipping listing bpnhhi: Contains skip pattern: 'piegāde visā latvijā'
+2026-06-27 22:49:46 | INFO     | ss_crawler | [computer_scraper] SKIPPED: Filtered by skip patterns
+2026-06-27 22:49:46 | INFO     | ss_crawler | [crawler] Fetching Computer listing 8/30: https://www.ss.com/msg/lv/electronics/computers/pc/aeihp.html
+2026-06-27 22:49:48 | INFO     | ss_crawler | [ssd_matcher] SSDMatcher initialized with 90 SSDs
+2026-06-27 22:49:48 | INFO     | ss_crawler | [computer_matcher] [SSD DEBUG] Set result.ssd: {'id': 1515, 'brand': 'Samsung', 'model': '860 EVO', 'interface': 'SATA/AHCI', 'form_factor': '2.5" & M.2 (2TB)', 'capacity_gb': 500, 'controller': 'Samsung MJX', 'configuration': 'Tri-core, 8-ch, 8-CE/ch', 'has_dram': True, 'hmb': None, 'nand_brand': 'Samsung', 'nand_type': 'TLC', 'layers': '64', 'read_speed_mb': 550, 'write_speed_mb': 520, 'category': 'High-End SATA', 'notes': None, 'search_keywords': ['samsung', 'samsung 860', 'samsung 860 evo', '860 evo', '860'], 'normalized_name': 'samsung 860 evo', 'name': 'Samsung 860 EVO'}
+2026-06-27 22:49:49 | INFO     | ss_crawler | [image_downloader] Downloaded image for aeihp (stored as aeihp_2846517a.jpg)
+2026-06-27 22:49:49 | INFO     | ss_crawler | [computer_scraper] Image saved locally: aeihp_2846517a.jpg
+2026-06-27 22:49:49 | INFO     | ss_crawler | [computer_scraper] NEW: New: Datori un orgtehnika/Datori/ Pārdod...
+2026-06-27 22:49:49 | INFO     | ss_crawler | [crawler] Fetching Computer listing 9/30: https://www.ss.com/msg/lv/electronics/computers/pc/ebifp.html
+2026-06-27 22:49:51 | INFO     | ss_crawler | [computer_parser] Skipping listing ebifp: Contains skip pattern: 'mājas lapā'
+2026-06-27 22:49:51 | INFO     | ss_crawler | [computer_scraper] SKIPPED: Filtered by skip patterns
+2026-06-27 22:49:51 | INFO     | ss_crawler | [crawler] Fetching Computer listing 10/30: https://www.ss.com/msg/lv/electronics/computers/pc/pcbni.html
+2026-06-27 22:49:54 | INFO     | ss_crawler | [ssd_matcher] SSDMatcher initialized with 95 SSDs
+2026-06-27 22:49:54 | INFO     | ss_crawler | [computer_matcher] [SSD DEBUG] Set result.ssd: {'id': 835, 'brand': 'Kingston', 'model': 'KC600', 'interface': 'SATA/AHCI', 'form_factor': '2.5"', 'capacity_gb': 256, 'controller': 'SMI SM2259', 'configuration': 'Single-core, 4-ch, 8-CE/ch', 'has_dram': True, 'hmb': None, 'nand_brand': 'Micron', 'nand_type': 'TLC', 'layers': '96', 'read_speed_mb': 550, 'write_speed_mb': 520, 'category': 'High-End SATA', 'notes': None, 'search_keywords': ['kingston 600', '600', 'kingston kc600', 'kc600', 'kingston'], 'normalized_name': 'kingston kc600', 'name': 'Kingston KC600'}
+2026-06-27 22:49:54 | INFO     | ss_crawler | [image_downloader] Downloaded image for pcbni (stored as pcbni_5e311d9f.jpg)
+2026-06-27 22:49:54 | INFO     | ss_crawler | [computer_scraper] Image saved locally: pcbni_5e311d9f.jpg
+2026-06-27 22:49:54 | INFO     | ss_crawler | [computer_scraper] NEW: New: Datori un orgtehnika/Datori/ Pārdod...
+2026-06-27 22:49:54 | INFO     | ss_crawler | [crawler] Fetching Computer listing 11/30: https://www.ss.com/msg/lv/electronics/computers/pc/pbllh.html
+2026-06-27 22:49:57 | INFO     | ss_crawler | [computer_parser] Skipping listing pbllh: Contains skip pattern: 'piegāde visā latvijā'
+2026-06-27 22:49:57 | INFO     | ss_crawler | [computer_scraper] SKIPPED: Filtered by skip patterns
+2026-06-27 22:49:57 | INFO     | ss_crawler | [crawler] Fetching Computer listing 12/30: https://www.ss.com/msg/lv/electronics/computers/pc/efxbj.html
+2026-06-27 22:50:00 | INFO     | ss_crawler | [computer_parser] Skipping listing efxbj: Contains skip pattern: 'garantija 2 gadi'
+2026-06-27 22:50:00 | INFO     | ss_crawler | [computer_scraper] SKIPPED: Filtered by skip patterns
+2026-06-27 22:50:00 | INFO     | ss_crawler | [crawler] Fetching Computer listing 13/30: https://www.ss.com/msg/lv/electronics/computers/pc/ecclj.html
+2026-06-27 22:50:01 | INFO     | ss_crawler | [computer_parser] Skipping listing ecclj: Contains skip pattern: 'mac'
+2026-06-27 22:50:01 | INFO     | ss_crawler | [computer_scraper] SKIPPED: Filtered by skip patterns
+2026-06-27 22:50:01 | INFO     | ss_crawler | [crawler] Fetching Computer listing 14/30: https://www.ss.com/msg/lv/electronics/computers/pc/kjfip.html
+2026-06-27 22:50:03 | INFO     | ss_crawler | [computer_parser] Skipping listing kjfip: Contains skip pattern: 'mac'
+2026-06-27 22:50:03 | INFO     | ss_crawler | [computer_scraper] SKIPPED: Filtered by skip patterns
+2026-06-27 22:50:03 | INFO     | ss_crawler | [crawler] Fetching Computer listing 15/30: https://www.ss.com/msg/lv/electronics/computers/repairing-pcs/repairing-pcs/bndfmb.html
+2026-06-27 22:50:05 | INFO     | ss_crawler | [computer_parser] Skipping listing bndfmb: Contains skip pattern: 'remonts'
+2026-06-27 22:50:05 | INFO     | ss_crawler | [computer_scraper] SKIPPED: Filtered by skip patterns
+2026-06-27 22:50:05 | INFO     | ss_crawler | [crawler] Fetching Computer listing 16/30: https://www.ss.com/msg/lv/electronics/computers/pc/eonib.html
+2026-06-27 22:50:07 | INFO     | ss_crawler | [computer_parser] Skipping listing eonib: Contains skip pattern: 'piegāde visā latvijā'
+2026-06-27 22:50:07 | INFO     | ss_crawler | [computer_scraper] SKIPPED: Filtered by skip patterns
+2026-06-27 22:50:07 | INFO     | ss_crawler | [crawler] Fetching Computer listing 17/30: https://www.ss.com/msg/lv/electronics/computers/pc/fkifk.html
+2026-06-27 22:50:10 | INFO     | ss_crawler | [ssd_matcher] SSDMatcher initialized with 41 SSDs
+2026-06-27 22:50:10 | INFO     | ss_crawler | [computer_matcher] [SSD DEBUG] Set result.ssd: {'id': 559, 'brand': 'Gigabyte', 'model': 'Gen4 Aorus', 'interface': 'x4 PCIe 4.0/NVMe', 'form_factor': 'M.2', 'capacity_gb': 2000, 'controller': 'Phison E16', 'configuration': 'Dual R5 + CoX, 8-ch, 4-CE/ch', 'has_dram': True, 'hmb': 'No', 'nand_brand': 'Kioxia', 'nand_type': 'TLC', 'layers': '96', 'read_speed_mb': 5000, 'write_speed_mb': 4400, 'category': 'Mid-Range NVMe', 'notes': 'DS Heatsink', 'search_keywords': ['gen4 aorus', 'gigabyte 4', 'gigabyte gen4 aorus', '4', 'gigabyte'], 'normalized_name': 'gigabyte gen4 aorus', 'name': 'Gigabyte Gen4 Aorus'}
+2026-06-27 22:50:10 | WARNING  | ss_crawler | [listing_versioning] Legacy listing fkifk v1 has NULL fingerprint, creating new version
+2026-06-27 22:50:10 | INFO     | ss_crawler | [computer_scraper] NEW_VERSION: New version (2): Datori un orgtehnika/Datori/ Pārdod...
+2026-06-27 22:50:10 | INFO     | ss_crawler | [crawler] Fetching Computer listing 18/30: https://www.ss.com/msg/lv/electronics/computers/pc/jodnb.html
+2026-06-27 22:50:13 | INFO     | ss_crawler | [ssd_matcher] SSDMatcher initialized with 16 SSDs
+2026-06-27 22:50:13 | INFO     | ss_crawler | [computer_matcher] [SSD DEBUG] Set result.ssd: {'id': 770, 'brand': 'Intel', 'model': '545s', 'interface': 'SATA/AHCI', 'form_factor': '2.5" & M.2 (256GB)', 'capacity_gb': 512, 'controller': 'SMI SM2259', 'configuration': 'Single-core, 4-ch, 8-CE/ch', 'has_dram': True, 'hmb': None, 'nand_brand': 'Intel', 'nand_type': 'TLC', 'layers': '64', 'read_speed_mb': 550, 'write_speed_mb': 500, 'category': 'High-End SATA', 'notes': None, 'search_keywords': ['545', 'intel 545s', 'intel', '545s', 'intel 545'], 'normalized_name': 'intel 545s', 'name': 'Intel 545s'}
+2026-06-27 22:50:13 | WARNING  | ss_crawler | [listing_versioning] Legacy listing jodnb v1 has NULL fingerprint, creating new version
+2026-06-27 22:50:13 | INFO     | ss_crawler | [computer_scraper] NEW_VERSION: New version (2): Datori un orgtehnika/Datori/ Pārdod...
+2026-06-27 22:50:13 | INFO     | ss_crawler | [crawler] Fetching Computer listing 19/30: https://www.ss.com/msg/lv/electronics/computers/pc/lnpdk.html
+2026-06-27 22:50:15 | INFO     | ss_crawler | [ssd_matcher] SSDMatcher initialized with 82 SSDs
+2026-06-27 22:50:15 | INFO     | ss_crawler | [computer_matcher] [SSD DEBUG] Set result.ssd: {'id': 370, 'brand': 'Corsair', 'model': 'EX100U', 'interface': 'USB 3.2 Gen 2x2', 'form_factor': 'USB-C', 'capacity_gb': 512, 'controller': 'Phison U18', 'configuration': 'Single-CPU, 2-ch, 8-CE/ch', 'has_dram': False, 'hmb': 'No', 'nand_brand': 'Kioxia', 'nand_type': 'TLC', 'layers': '112', 'read_speed_mb': 1600, 'write_speed_mb': 1500, 'category': 'Entry-Level NVMe', 'notes': 'Portable', 'search_keywords': ['corsair', '100', 'ex100u', 'corsair 100', 'corsair ex100u'], 'normalized_name': 'corsair ex100u', 'name': 'Corsair EX100U'}
+2026-06-27 22:50:15 | INFO     | ss_crawler | [image_downloader] Downloaded image for lnpdk (stored as lnpdk_0fc60755.jpg)
+2026-06-27 22:50:15 | INFO     | ss_crawler | [computer_scraper] Image saved locally: lnpdk_0fc60755.jpg
+2026-06-27 22:50:15 | INFO     | ss_crawler | [computer_scraper] NEW: New: Datori un orgtehnika/Datori/ Pārdod...
+2026-06-27 22:50:15 | INFO     | ss_crawler | [crawler] Fetching Computer listing 20/30: https://www.ss.com/msg/lv/electronics/computers/pc/mxooi.html
+2026-06-27 22:50:17 | INFO     | ss_crawler | [computer_matcher] [SSD DEBUG] Set result.ssd: {'id': 2098, 'brand': 'WD', 'model': 'Blue (2D)', 'interface': 'SATA/AHCI', 'form_factor': '2.5" & M.2', 'capacity_gb': 250, 'controller': 'Marvell 88SS1074', 'configuration': 'Dual-core, 4-ch, 8-CE/ch', 'has_dram': True, 'hmb': None, 'nand_brand': 'SanDisk', 'nand_type': 'TLC', 'layers': 'N/A', 'read_speed_mb': 545, 'write_speed_mb': 525, 'category': 'Entry-Level SATA', 'notes': None, 'search_keywords': ['wd 2', '2', 'blue 2d', 'wd', 'wd blue (2d)', 'blue (2d)'], 'normalized_name': 'wd blue 2d', 'name': 'WD Blue (2D)'}
+2026-06-27 22:50:17 | INFO     | ss_crawler | [image_downloader] Downloaded image for mxooi (stored as mxooi_47f65868.jpg)
+2026-06-27 22:50:17 | INFO     | ss_crawler | [computer_scraper] Image saved locally: mxooi_47f65868.jpg
+2026-06-27 22:50:17 | INFO     | ss_crawler | [computer_scraper] NEW: New: Datori un orgtehnika/Datori/ Pārdod...
+2026-06-27 22:50:17 | INFO     | ss_crawler | [crawler] Fetching Computer listing 21/30: https://www.ss.com/msg/lv/electronics/computers/pc/fnxxd.html
+2026-06-27 22:50:20 | INFO     | ss_crawler | [computer_parser] Skipping listing fnxxd: Contains skip pattern: 'mac'
+2026-06-27 22:50:20 | INFO     | ss_crawler | [computer_scraper] SKIPPED: Filtered by skip patterns
+2026-06-27 22:50:20 | INFO     | ss_crawler | [crawler] Fetching Computer listing 22/30: https://www.ss.com/msg/lv/electronics/computers/pc/mxbfm.html
+2026-06-27 22:50:24 | INFO     | ss_crawler | [computer_parser] Skipping listing mxbfm: Contains skip pattern: 'piegāde visā latvijā'
+2026-06-27 22:50:24 | INFO     | ss_crawler | [computer_scraper] SKIPPED: Filtered by skip patterns
+2026-06-27 22:50:24 | INFO     | ss_crawler | [crawler] Fetching Computer listing 23/30: https://www.ss.com/msg/lv/electronics/computers/repairing-pcs/repairing-pcs/odldk.html
+2026-06-27 22:50:27 | INFO     | ss_crawler | [computer_parser] Skipping listing odldk: Contains skip pattern: 'remonts'
+2026-06-27 22:50:27 | INFO     | ss_crawler | [computer_scraper] SKIPPED: Filtered by skip patterns
+2026-06-27 22:50:27 | INFO     | ss_crawler | [crawler] Fetching Computer listing 24/30: https://www.ss.com/msg/lv/electronics/computers/pc/mxhep.html
+2026-06-27 22:50:30 | INFO     | ss_crawler | [image_downloader] Downloaded image for mxhep (stored as mxhep_54f87f18.jpg)
+2026-06-27 22:50:30 | INFO     | ss_crawler | [computer_scraper] Image saved locally: mxhep_54f87f18.jpg
+2026-06-27 22:50:30 | INFO     | ss_crawler | [computer_scraper] NEW: New: Datori un orgtehnika/Datori/ Pārdod...
+2026-06-27 22:50:30 | INFO     | ss_crawler | [crawler] Fetching Computer listing 25/30: https://www.ss.com/msg/lv/electronics/computers/pc/gfkxd.html
+2026-06-27 22:50:33 | INFO     | ss_crawler | [computer_parser] Skipping listing gfkxd: Contains skip pattern: 'mājas lapā'
+2026-06-27 22:50:33 | INFO     | ss_crawler | [computer_scraper] SKIPPED: Filtered by skip patterns
+2026-06-27 22:50:33 | INFO     | ss_crawler | [crawler] Fetching Computer listing 26/30: https://www.ss.com/msg/lv/electronics/computers/pc/glclo.html
+2026-06-27 22:50:35 | INFO     | ss_crawler | [computer_parser] Skipping listing glclo: Contains skip pattern: 'mājas lapā'
+2026-06-27 22:50:35 | INFO     | ss_crawler | [computer_scraper] SKIPPED: Filtered by skip patterns
+2026-06-27 22:50:35 | INFO     | ss_crawler | [crawler] Fetching Computer listing 27/30: https://www.ss.com/msg/lv/electronics/computers/pc/fxeeg.html
+2026-06-27 22:50:38 | INFO     | ss_crawler | [computer_parser] Skipping listing fxeeg: Contains skip pattern: 'mac'
+2026-06-27 22:50:38 | INFO     | ss_crawler | [computer_scraper] SKIPPED: Filtered by skip patterns
+2026-06-27 22:50:38 | INFO     | ss_crawler | [crawler] Fetching Computer listing 28/30: https://www.ss.com/msg/lv/electronics/computers/pc/jnolo.html
+2026-06-27 22:50:42 | INFO     | ss_crawler | [ssd_matcher] SSDMatcher initialized with 95 SSDs
+2026-06-27 22:50:42 | INFO     | ss_crawler | [computer_matcher] [SSD DEBUG] Set result.ssd: {'id': 836, 'brand': 'Kingston', 'model': 'KC600', 'interface': 'SATA/AHCI', 'form_factor': '2.5"', 'capacity_gb': 512, 'controller': 'SMI SM2259', 'configuration': 'Single-core, 4-ch, 8-CE/ch', 'has_dram': True, 'hmb': None, 'nand_brand': 'Micron', 'nand_type': 'TLC', 'layers': '96', 'read_speed_mb': 550, 'write_speed_mb': 520, 'category': 'High-End SATA', 'notes': None, 'search_keywords': ['kingston 600', '600', 'kingston kc600', 'kc600', 'kingston'], 'normalized_name': 'kingston kc600', 'name': 'Kingston KC600'}
+2026-06-27 22:50:43 | WARNING  | ss_crawler | [listing_versioning] Legacy listing jnolo v1 has NULL fingerprint, creating new version
+2026-06-27 22:50:43 | INFO     | ss_crawler | [computer_scraper] NEW_VERSION: New version (2): Datori un orgtehnika/Datori/ Pārdod...
+2026-06-27 22:50:43 | INFO     | ss_crawler | [crawler] Fetching Computer listing 29/30: https://www.ss.com/msg/lv/electronics/computers/pc/cjioc.html
+2026-06-27 22:50:45 | INFO     | ss_crawler | [computer_matcher] [SSD DEBUG] Set result.ssd: {'id': 321, 'brand': 'ASUS', 'model': 'Strix SQ7', 'interface': 'x4 PCIe 4.0/NVMe', 'form_factor': 'M.2', 'capacity_gb': 1000, 'controller': 'Phison E18', 'configuration': 'Triple R5 + CoX, 8-ch, 4-CE/ch', 'has_dram': True, 'hmb': None, 'nand_brand': 'Micron', 'nand_type': 'TLC', 'layers': '176', 'read_speed_mb': 7000, 'write_speed_mb': 6000, 'category': 'High-End NVMe', 'notes': None, 'search_keywords': ['asus strix sq7', 'asus', '7', 'strix sq7', 'asus 7'], 'normalized_name': 'asus strix sq7', 'name': 'ASUS Strix SQ7'}
+2026-06-27 22:50:45 | INFO     | ss_crawler | [image_downloader] Downloaded image for cjioc (stored as cjioc_91e15af5.jpg)
+2026-06-27 22:50:45 | INFO     | ss_crawler | [computer_scraper] Image saved locally: cjioc_91e15af5.jpg
+2026-06-27 22:50:45 | INFO     | ss_crawler | [computer_scraper] NEW: New: Datori un orgtehnika/Datori/ Pārdod...
+2026-06-27 22:50:45 | INFO     | ss_crawler | [crawler] Fetching Computer listing 30/30: https://www.ss.com/msg/lv/electronics/computers/pc/pknbe.html
+2026-06-27 22:50:47 | INFO     | ss_crawler | [computer_parser] Skipping listing pknbe: Contains skip pattern: 'piegāde visā latvijā'
+2026-06-27 22:50:47 | INFO     | ss_crawler | [computer_scraper] SKIPPED: Filtered by skip patterns
+2026-06-27 22:50:47 | INFO     | ss_crawler | [computer_scraper] Fetching computer category: https://www.ss.com/lv/electronics/computers/pc/page2.html
+2026-06-27 22:50:47 | INFO     | ss_crawler | [crawler] Fetching Computer category page: https://www.ss.com/lv/electronics/computers/pc/page2.html
+2026-06-27 22:50:51 | INFO     | ss_crawler | [computer_parser] Found 30 listings on page
+2026-06-27 22:50:51 | INFO     | ss_crawler | [computer_scraper] Found 30 computer listings to process
+2026-06-27 22:50:51 | INFO     | ss_crawler | [crawler] Fetching Computer listing 1/30: https://www.ss.com/msg/lv/electronics/computers/pc/ennbe.html
+2026-06-27 22:50:53 | INFO     | ss_crawler | [computer_parser] Skipping listing ennbe: Contains skip pattern: 'garantija 2 gadi'
+2026-06-27 22:50:53 | INFO     | ss_crawler | [computer_scraper] SKIPPED: Filtered by skip patterns
+2026-06-27 22:50:53 | INFO     | ss_crawler | [crawler] Fetching Computer listing 2/30: https://www.ss.com/msg/lv/electronics/computers/pc/eckcc.html
+2026-06-27 22:50:57 | INFO     | ss_crawler | [image_downloader] Downloaded image for eckcc (stored as eckcc_b8be3346.jpg)
+2026-06-27 22:50:57 | INFO     | ss_crawler | [computer_scraper] Image saved locally: eckcc_b8be3346.jpg
+2026-06-27 22:50:57 | INFO     | ss_crawler | [computer_scraper] NEW: New: Datori un orgtehnika/Datori/ Pārdod...
+2026-06-27 22:50:57 | INFO     | ss_crawler | [crawler] Fetching Computer listing 3/30: https://www.ss.com/msg/lv/electronics/computers/pc/fxegh.html
+2026-06-27 23:07:31 | INFO     | ss_crawler | [ram_scraper] Initializing RAM scraper...
+2026-06-27 23:07:31 | INFO     | ss_crawler | [database] Database connected: localhost:5433/ss_market
+2026-06-27 23:07:31 | INFO     | ss_crawler | [ram_scraper] Database: postgresql+psycopg2://crawler:crawler_pass@localhost:5433/ss_market
+2026-06-27 23:07:31 | INFO     | ss_crawler | [ram_matcher] RAMMatcher initialized with 5284 RAM references
+2026-06-27 23:07:31 | INFO     | ss_crawler | [ram_scraper] Loaded 5284 RAM references
+2026-06-27 23:07:31 | INFO     | ss_crawler | [ram_scraper] Starting RAM scraper from https://www.ss.com/lv/electronics/computers/completing-pc/ram/
+2026-06-27 23:07:31 | INFO     | ss_crawler | [ram_scraper] Fetching page 1: https://www.ss.com/lv/electronics/computers/completing-pc/ram/
+2026-06-27 23:07:31 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/lv/electronics/computers/completing-pc/ram/
+2026-06-27 23:07:34 | INFO     | ss_crawler | [ram_scraper] Found 32 listings on page 1, 32 new
+2026-06-27 23:07:34 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/hfggm.html
+2026-06-27 23:07:36 | INFO     | ss_crawler | [ram_scraper] Matched hfggm: Corsair Vengeance RGB 192 GB (100% confidence)
+2026-06-27 23:07:36 | INFO     | ss_crawler | [ram_scraper] 💰 hfggm: Updated (title, description, location, match)
+2026-06-27 23:07:36 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/hfggm.html
+2026-06-27 23:07:40 | INFO     | ss_crawler | [ram_scraper] Matched hfggm: Corsair Vengeance RGB 192 GB (100% confidence)
+2026-06-27 23:07:40 | INFO     | ss_crawler | [ram_scraper] 💰 hfggm: Updated (content)
+2026-06-27 23:07:40 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/hfggm.html
+2026-06-27 23:07:42 | INFO     | ss_crawler | [ram_scraper] Matched hfggm: Corsair Vengeance RGB 192 GB (100% confidence)
+2026-06-27 23:07:42 | INFO     | ss_crawler | [ram_scraper] 💰 hfggm: Updated (content)
+2026-06-27 23:07:42 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/fgjpj.html
+2026-06-27 23:07:44 | INFO     | ss_crawler | [ram_scraper] Matched fgjpj: Corsair Vengeance LPX 32 GB (100% confidence)
+2026-06-27 23:07:44 | INFO     | ss_crawler | [ram_scraper] ✨ fgjpj: New
+2026-06-27 23:07:44 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/bjhhn.html
+2026-06-27 23:07:46 | INFO     | ss_crawler | [ram_scraper] Matched bjhhn: G.Skill Ripjaws S5 32 GB (100% confidence)
+2026-06-27 23:07:46 | INFO     | ss_crawler | [ram_scraper] ✨ bjhhn: New
+2026-06-27 23:07:46 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/fifie.html
+2026-06-27 23:07:48 | INFO     | ss_crawler | [ram_scraper] No match for fifie: SS.COM Komplektējošie datoriem - RAM, Cena 2 €. Ra
+2026-06-27 23:07:48 | INFO     | ss_crawler | [ram_scraper] 💰 fifie: Updated (title)
+2026-06-27 23:07:48 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/hbgle.html
+2026-06-27 23:07:52 | INFO     | ss_crawler | [ram_scraper] No match for hbgle: SS.COM Komplektējošie datoriem - RAM, Cena 25 €. П
+2026-06-27 23:07:52 | INFO     | ss_crawler | [ram_scraper] 💰 hbgle: Updated (title)
+2026-06-27 23:07:52 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/edome.html
+2026-06-27 23:07:55 | INFO     | ss_crawler | [ram_scraper] Matched edome: Corsair Vengeance LPX 16 GB (100% confidence)
+2026-06-27 23:07:55 | INFO     | ss_crawler | [ram_scraper] ✨ edome: New
+2026-06-27 23:07:55 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/fmfpe.html
+2026-06-27 23:07:58 | INFO     | ss_crawler | [ram_scraper] Matched fmfpe: G.Skill Aegis 5 16 GB (100% confidence)
+2026-06-27 23:07:58 | INFO     | ss_crawler | [ram_scraper] ✨ fmfpe: New
+2026-06-27 23:07:58 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/piddi.html
+2026-06-27 23:08:01 | INFO     | ss_crawler | [ram_scraper] Matched piddi: Corsair Vengeance RGB 32 GB (100% confidence)
+2026-06-27 23:08:01 | INFO     | ss_crawler | [ram_scraper] 💰 piddi: Updated (price €400.00→€380.00, title, description)
+2026-06-27 23:08:01 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/bxcbjc.html
+2026-06-27 23:08:03 | INFO     | ss_crawler | [ram_scraper] Matched bxcbjc: SK Hynix HMAA2GU6CJR8N-XN 16 GB (100% confidence)
+2026-06-27 23:08:03 | INFO     | ss_crawler | [ram_scraper] ✨ bxcbjc: New
+2026-06-27 23:08:03 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/pjdlf.html
+2026-06-27 23:08:05 | INFO     | ss_crawler | [ram_scraper] Matched pjdlf: Kingston Fury Renegade RGB 16 GB (100% confidence)
+2026-06-27 23:08:05 | INFO     | ss_crawler | [ram_scraper] 💰 pjdlf: Updated (title)
+2026-06-27 23:08:05 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ram/pkmxo.html

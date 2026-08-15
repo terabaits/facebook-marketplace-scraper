@@ -1,0 +1,82 @@
+def get_ram():
+    """Get RAM listings with filters."""
+    conn = None
+    cursor = None
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor(cursor_factory=RealDictCursor)
+        
+        show_active = request.args.get('active', 'true').lower() == 'true'
+        sort_by = request.args.get('sort', 'date_posted')
+        sort_order = request.args.get('order', 'desc')
+        capacity_filter = request.args.get('capacity', '')
+        type_filter = request.args.get('type', '')
+        speed_filter = request.args.get('speed', '')
+        time_filter = request.args.get('time', 'all_time')
+        min_confidence = float(request.args.get('min_confidence', 0))
+        
+        # Check if ram_reference table exists
+        cursor.execute("""
+            SELECT EXISTS (
+                SELECT FROM information_schema.tables 
+                WHERE table_name = 'ram_reference'
+            )
+        """)
+        result = cursor.fetchone()
+        table_exists = result.get('exists', False) if result else False
+        
+        if not table_exists:
+            cursor.close()
+            conn.close()
+            return jsonify([])
+        
+        # Get available columns
+        cursor.execute("""
+            SELECT column_name FROM information_schema.columns 
+            WHERE table_name = 'ram_reference'
+        """)
+        columns = {row['column_name'] for row in cursor.fetchall()}
+        
+        # Build query based on available columns
+        speed_column = 'speed_mhz' if 'speed_mhz' in columns else 'speed'
+        speed_field = f'r.{speed_column}'
+        
+        query = f"""
+            SELECT 
+                l.listing_id,
+                l.title,
+                l.price_eur,
+                l.seller_location,
+                l.date_posted,
+                l.is_active,
+                l.image_url,
+                l.listing_url,
+                r.name as ram_name,
+                r.capacity_gb,
+                r.type as ram_type,
+                {speed_field} as speed_mhz,
+                r.modules
+            FROM listings l
+            LEFT JOIN ram_reference r ON l.matched_ram_id = r.id
+            WHERE l.category = 'ram'
+        """
+        
+        params = []
+        if show_active:
+            query += " AND l.is_active = true"
+        if min_confidence > 0:
+            query += " AND l.confidence_score >= %s"
+            params.append(min_confidence)
+        if capacity_filter:
+            query += " AND r.capacity_gb = %s"
+            params.append(int(capacity_filter))
+        if type_filter:
+            query += " AND r.type ILIKE %s"
+            params.append(f'%{type_filter}%')
+        if speed_filter:
+            query += f" AND r.{speed_column} >= %s"
+            params.append(int(speed_filter))
+        
+        query += get_time_filter_sql(time_filter, 'l')
+        
+        sort_column = 'l.price_eur' if sort_by == 'price' else 'l.dat

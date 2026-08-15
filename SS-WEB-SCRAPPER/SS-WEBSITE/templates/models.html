@@ -112,7 +112,7 @@ async function loadGPUModels() {
                     </div>
                     <div class="model-stat">
                         <div class="model-stat-value">€${model.avg_price}</div>
-                        <div class="model-stat-label">Avg Price</div>
+                        <div class="model-stat-label">{{ t('Avg Price') }}</div>
                     </div>
                     
                     <div class="model-stat">
@@ -164,7 +164,7 @@ async function loadCPUModels() {
                     </div>
                     <div class="model-stat">
                         <div class="model-stat-value">€${model.avg_price}</div>
-                        <div class="model-stat-label">Avg Price</div>
+                        <div class="model-stat-label">{{ t('Avg Price') }}</div>
                     </div>
                     
                     <div class="model-stat">
@@ -244,7 +244,7 @@ async function showModelHistory(modelType, modelId, modelName) {
                 <thead>
                     <tr>
                         <th>Title</th>
-                        <th>Price</th>
+                        <th>{{ t('Price') }}</th>
                         <th>Location</th>
                         <th>Date</th>
                         <th>Status</th>

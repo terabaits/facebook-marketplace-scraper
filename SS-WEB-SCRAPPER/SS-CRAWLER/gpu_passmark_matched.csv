@@ -1,0 +1,317 @@
+passmark_id,passmark_name,gpu_reference_id,gpu_reference_vendor,gpu_reference_model,gpu_reference_normalized,vram_mb,g3d_mark,g2d_mark,tdp_w,category,match_score,match_method
+1169,GeForce 210,464,NVIDIA,GeForce 210,geforce210,1024,144,30,305,Desktop,100.00,strong_name
+1170,GeForce 256,326,NVIDIA,GeForce 256,geforce256,,5,201,,Unknown,95.00,strong_name
+1180,GeForce 605,512,NVIDIA,GeForce 605,geforce605,,331,168,,Unknown,95.00,strong_name
+1191,GeForce 6200,380,NVIDIA,GeForce 6200,geforce6200,256,37,31,,Desktop,100.00,strong_name
+1194,GeForce 6200 TurboCache,379,NVIDIA,GeForce 6200,geforce6200,,52,38,,Unknown,95.00,strong_name
+1197,GeForce 6500,385,NVIDIA,GeForce 6500,geforce6500,256,38,300,,Desktop,100.00,strong_name
+1198,GeForce 6600,387,NVIDIA,GeForce 6600,geforce6600,256,86,37,,Desktop,100.00,strong_name
+1199,GeForce 6600 GT,389,NVIDIA,GeForce 6600GT,geforce6600gt,256,143,53,,Desktop,100.00,strong_name
+1205,GeForce 6800,391,NVIDIA,GeForce 6800,geforce6800,256,113,258,,Desktop,100.00,strong_name
+1207,GeForce 6800 GS,392,NVIDIA,GeForce 6800GS,geforce6800gs,256,192,72,,Desktop,100.00,strong_name
+1208,GeForce 6800 GS/XT,392,NVIDIA,GeForce 6800GS,geforce6800gs,256,103,196,,Desktop,100.00,strong_name
+1210,GeForce 6800 GT,393,NVIDIA,GeForce 6800GT,geforce6800gt,256,142,212,,Desktop,100.00,strong_name
+1214,GeForce 6800 Ultra,395,NVIDIA,GeForce 6800 Ultra,geforce6800ultra,512,139,153,,Desktop,100.00,strong_name
+1215,GeForce 6800 XE,390,NVIDIA,GeForce 6800,geforce6800,,59,166,,Unknown,95.00,strong_name
+1231,GeForce 7200 GS,398,NVIDIA,GeForce 7200GS,geforce7200gs,256,23,98,,Desktop,100.00,strong_name
+1232,GeForce 7300 GS,402,NVIDIA,GeForce 7300GS,geforce7300gs,256,80,41,,Desktop,100.00,strong_name
+1233,GeForce 7300 GT,403,NVIDIA,GeForce 7300GT,geforce7300gt,256,122,26,,Desktop,100.00,strong_name
+1235,GeForce 7300 LE,399,NVIDIA,GeForce 7300LE,geforce7300le,128,82,33,,Desktop,100.00,strong_name
+9,GeForce 7600 GS,405,NVIDIA,GeForce 7600GS,geforce7600gs,256,166,33,,Desktop,100.00,strong_name
+1243,GeForce 7600 GT,407,NVIDIA,GeForce 7600GT,geforce7600gt,256,235,47,,Desktop,100.00,strong_name
+1248,GeForce 7800 GS,408,NVIDIA,GeForce 7800GS,geforce7800gs,256,177,199,,Desktop,100.00,strong_name
+1249,GeForce 7800 GT,409,NVIDIA,GeForce 7800GT,geforce7800gt,256,244,273,,Desktop,100.00,strong_name
+1250,GeForce 7800 GTX,411,NVIDIA,GeForce 7800GTX,geforce7800gtx,512,268,143,86,Desktop,100.00,strong_name
+1251,GeForce 7900 GS,412,NVIDIA,GeForce 7900GS,geforce7900gs,256,262,65,,Desktop,100.00,strong_name
+1252,GeForce 7900 GT,413,NVIDIA,GeForce 7900GT,geforce7900gt,256,258,160,,Desktop,100.00,strong_name
+1253,GeForce 7900 GT/GTO,413,NVIDIA,GeForce 7900GT,geforce7900gt,256,247,469,,Desktop,100.00,strong_name
+1254,GeForce 7900 GTX,415,NVIDIA,GeForce 7900GTX,geforce7900gtx,512,388,165,,Desktop,100.00,strong_name
+1255,GeForce 7950 GT,419,NVIDIA,GeForce 7950GT,geforce7950gt,512,345,112,,Desktop,100.00,strong_name
+73,GeForce 8400 GS,424,NVIDIA,GeForce 8400GS,geforce8400gs,512,169,22,40,Desktop,100.00,strong_name
+1272,GeForce 8600 GS,428,NVIDIA,GeForce 8600GS,geforce8600gs,512,179,82,47,Desktop,100.00,strong_name
+1277,GeForce 8800 GS,434,NVIDIA,GeForce 8800GS,geforce8800gs,768,330,121,105,Desktop,100.00,strong_name
+1279,GeForce 8800 GT,437,NVIDIA,GeForce 8800GT,geforce8800gt,1024,453,46,125,Desktop,100.00,strong_name
+119,GeForce 8800 GTX,441,NVIDIA,GeForce 8800GTX,geforce8800gtx,768,556,80,155,Desktop,100.00,strong_name
+1281,GeForce 8800 Ultra,442,NVIDIA,GeForce 8800 Ultra,geforce8800ultra,768,643,252,171,Desktop,100.00,strong_name
+1294,GeForce 9300 GS,443,NVIDIA,GeForce 9300GS,geforce9300gs,256,102,80,,Desktop,100.00,strong_name
+78,GeForce 9500 GS,447,NVIDIA,GeForce 9500GS,geforce9500gs,,216,34,,Unknown,95.00,strong_name
+95,GeForce 9600 GT,453,NVIDIA,GeForce 9600GT,geforce9600gt,1024,470,41,95,Desktop,100.00,strong_name
+60,GeForce 9800 GT,455,NVIDIA,GeForce 9800GT,geforce9800gt,1024,441,51,125,Desktop,100.00,strong_name
+3260,GeForce 9800 GT 1024MB,454,NVIDIA,GeForce 9800GT,geforce9800gt,,134,315,,Unknown,95.00,strong_name
+1320,GeForce 9800 GTX,456,NVIDIA,GeForce 9800GTX,geforce9800gtx,512,769,366,140,Desktop,100.00,strong_name
+1321,GeForce 9800 GTX/9800 GTX+,456,NVIDIA,GeForce 9800GTX,geforce9800gtx,,571,78,,Unknown,95.00,strong_name
+1330,GeForce FX 5200,354,NVIDIA,GeForce FX 5200,geforcefx5200,128,8,154,,Desktop,100.00,strong_name
+1333,GeForce FX 5200 Ultra,355,NVIDIA,GeForce FX 5200 Ultra,geforcefx5200ultra,128,12,138,,Desktop,100.00,strong_name
+1335,GeForce FX 5500,357,NVIDIA,GeForce FX 5500,geforcefx5500,256,8,152,,Desktop,100.00,strong_name
+1336,GeForce FX 5600,359,NVIDIA,GeForce FX 5600,geforcefx5600,256,13,168,,Desktop,100.00,strong_name
+1337,GeForce FX 5600 Ultra,362,NVIDIA,GeForce FX 5600 Ultra,geforcefx5600ultra,128,17,122,,Desktop,100.00,strong_name
+1340,GeForce FX 5700,365,NVIDIA,GeForce FX 5700,geforcefx5700,256,41,173,,Desktop,100.00,strong_name
+1341,GeForce FX 5700 Ultra,369,NVIDIA,GeForce FX 5700 Ultra,geforcefx5700ultra,256,34,126,,Desktop,100.00,strong_name
+1342,GeForce FX 5700LE,367,NVIDIA,GeForce FX 5700LE,geforcefx5700le,256,25,147,,Desktop,100.00,strong_name
+1346,GeForce FX 5900,372,NVIDIA,GeForce FX 5900,geforcefx5900,128,35,188,,Desktop,100.00,strong_name
+1347,GeForce FX 5900 Ultra,374,NVIDIA,GeForce FX 5900 Ultra,geforcefx5900ultra,256,41,170,,Desktop,100.00,strong_name
+1348,GeForce FX 5900XT,373,NVIDIA,GeForce FX 5900XT,geforcefx5900xt,128,40,134,,Desktop,100.00,strong_name
+1350,GeForce FX 5950 Ultra,375,NVIDIA,GeForce FX 5950 Ultra,geforcefx5950ultra,256,59,274,,Desktop,100.00,strong_name
+1379,GeForce Go 6600 TE/6200 TE,386,NVIDIA,GeForce 6600,geforce6600,,45,223,,Unknown,95.00,strong_name
+3757,GeForce GT 1030,563,NVIDIA,GeForce GT 1030,geforcegt1030,2048,2398,446,30,Desktop,100.00,strong_name
+1402,GeForce GT 120,460,NVIDIA,GeForce GT 120,geforcegt120,512,187,46,50,Desktop,100.00,strong_name
+1403,GeForce GT 120 / 9500 GT,460,NVIDIA,GeForce GT 120,geforcegt120,,325,327,,Unknown,95.00,strong_name
+72,GeForce GT 220,466,NVIDIA,GeForce GT 220,geforcegt220,1024,222,42,58,Desktop,100.00,strong_name
+61,GeForce GT 240,468,NVIDIA,GeForce GT 240,geforcegt240,1024,474,41,69,Desktop,100.00,strong_name
+1413,GeForce GT 320,480,NVIDIA,GeForce GT 320,geforcegt320,1024,468,57,43,Desktop,100.00,strong_name
+1416,GeForce GT 330,481,NVIDIA,GeForce GT 330,geforcegt330,,398,49,,Unknown,95.00,strong_name
+1420,GeForce GT 420,484,NVIDIA,GeForce GT 420,geforcegt420,1024,436,198,50,Desktop,100.00,strong_name
+53,GeForce GT 430,486,NVIDIA,GeForce GT 430,geforcegt430,1024,594,209,49,Desktop,100.00,strong_name
+1426,GeForce GT 530,499,NVIDIA,GeForce GT 530,geforcegt530,2048,653,241,50,Desktop,100.00,strong_name
+112,GeForce GT 545,500,NVIDIA,GeForce GT 545,geforcegt545,,1126,331,,Unknown,95.00,strong_name
+33,GeForce GT 610,516,NVIDIA,GeForce GT 610,geforcegt610,2048,339,135,29,Desktop,100.00,strong_name
+1431,GeForce GT 630,520,NVIDIA,GeForce GT 630,geforcegt630,2048,684,242,50,Desktop,100.00,strong_name
+2910,GeForce GT 710,538,NVIDIA,GeForce GT 710,geforcegt710,2048,618,216,25,Desktop,100.00,strong_name
+2896,GeForce GT 720,540,NVIDIA,GeForce GT 720,geforcegt720,2048,661,226,19,Desktop,100.00,strong_name
+2906,GeForce GT 730,542,NVIDIA,GeForce GT 730,geforcegt730,2048,825,260,49,Desktop,100.00,strong_name
+2883,GeForce GT 740,543,NVIDIA,GeForce GT 740,geforcegt740,1024,1419,351,64,Desktop,100.00,strong_name
+1436,GeForce GTS 240,469,NVIDIA,GeForce GTS 240,geforcegts240,1024,510,87,120,Desktop,100.00,strong_name
+29,GeForce GTS 250,471,NVIDIA,GeForce GTS 250,geforcegts250,1024,563,47,150,Desktop,100.00,strong_name
+1,GeForce GTS 450,489,NVIDIA,GeForce GTS 450,geforcegts450,1024,1355,330,106,Desktop,100.00,strong_name
+3596,GeForce GTX 1050,564,NVIDIA,GeForce GTX 1050,geforcegtx1050,2048,5050,458,75,Desktop,100.00,strong_name
+4603,GeForce GTX 1050 3GB,565,NVIDIA,GeForce GTX 1050,geforcegtx1050,3072,5115,606,75,Desktop,100.00,strong_name
+3595,GeForce GTX 1050 Ti,566,NVIDIA,GeForce GTX 1050 Ti,geforcegtx1050ti,4096,6366,656,75,Desktop,100.00,strong_name
+3548,GeForce GTX 1060,568,NVIDIA,GeForce GTX 1060 6GB,geforcegtx10606gb,6144,10034,739,120,Desktop,100.00,strong_name
+3566,GeForce GTX 1060 3GB,567,NVIDIA,GeForce GTX 1060 3GB,geforcegtx10603gb,3072,9845,776,120,Desktop,100.00,strong_name
+3521,GeForce GTX 1070,569,NVIDIA,GeForce GTX 1070,geforcegtx1070,8192,13513,848,150,Desktop,100.00,strong_name
+3842,GeForce GTX 1070 Ti,570,NVIDIA,GeForce GTX 1070 Ti,geforcegtx1070ti,8192,14671,876,180,Desktop,100.00,strong_name
+3502,GeForce GTX 1080,571,NVIDIA,GeForce GTX 1080,geforcegtx1080,8192,15605,888,180,Desktop,100.00,strong_name
+3699,GeForce GTX 1080 Ti,572,NVIDIA,GeForce GTX 1080 Ti,geforcegtx1080ti,11264,18592,941,250,Desktop,100.00,strong_name
+4571,GeForce GTX 1630,575,NVIDIA,GeForce GTX 1630,geforcegtx1630,4096,4972,659,75,Desktop,100.00,strong_name
+4078,GeForce GTX 1650,576,NVIDIA,GeForce GTX 1650,geforcegtx1650,4096,7870,552,75,Desktop,100.00,strong_name
+4167,GeForce GTX 1650 SUPER,578,NVIDIA,GeForce GTX 1650 Super,geforcegtx1650super,4096,10195,750,100,Desktop,100.00,strong_name
+4062,GeForce GTX 1660,579,NVIDIA,GeForce GTX 1660,geforcegtx1660,6144,11615,777,120,Desktop,100.00,strong_name
+4159,GeForce GTX 1660 SUPER,580,NVIDIA,GeForce GTX 1660 Super,geforcegtx1660super,6144,12670,807,125,Desktop,100.00,strong_name
+4045,GeForce GTX 1660 Ti,581,NVIDIA,GeForce GTX 1660 Ti,geforcegtx1660ti,6144,12588,770,120,Desktop,100.00,strong_name
+17,GeForce GTX 260,472,NVIDIA,GeForce GTX 260,geforcegtx260,896,1199,46,202,Desktop,100.00,strong_name
+21,GeForce GTX 275,474,NVIDIA,GeForce GTX 275,geforcegtx275,896,1345,51,219,Desktop,100.00,strong_name
+66,GeForce GTX 280,476,NVIDIA,GeForce GTX 280,geforcegtx280,1024,1294,54,236,Desktop,100.00,strong_name
+1444,GeForce GTX 285,477,NVIDIA,GeForce GTX 285,geforcegtx285,1024,1453,64,204,Desktop,100.00,strong_name
+31,GeForce GTX 460,490,NVIDIA,GeForce GTX 460,geforcegtx460,768,2269,395,150,Desktop,100.00,strong_name
+123,GeForce GTX 460 SE,492,NVIDIA,GeForce GTX 460 SE,geforcegtx460se,1024,1991,372,150,Desktop,100.00,strong_name
+1447,GeForce GTX 460 v2,491,NVIDIA,GeForce GTX 460,geforcegtx460,1024,2065,406,160,Desktop,100.00,strong_name
+82,GeForce GTX 465,493,NVIDIA,GeForce GTX 465,geforcegtx465,1024,2645,463,200,Desktop,100.00,strong_name
+55,GeForce GTX 470,494,NVIDIA,GeForce GTX 470,geforcegtx470,1280,3166,409,215,Desktop,100.00,strong_name
+100,GeForce GTX 480,495,NVIDIA,GeForce GTX 480,geforcegtx480,1536,4078,431,250,Desktop,100.00,strong_name
+71,GeForce GTX 560,503,NVIDIA,GeForce GTX 560,geforcegtx560,1024,2772,433,150,Desktop,100.00,strong_name
+18,GeForce GTX 560 Ti,506,NVIDIA,GeForce GTX 560 Ti,geforcegtx560ti,2048,3081,442,170,Desktop,100.00,strong_name
+68,GeForce GTX 580,510,NVIDIA,GeForce GTX 580,geforcegtx580,3072,4630,490,244,Desktop,100.00,strong_name
+2155,GeForce GTX 650,524,NVIDIA,GeForce GTX 650,geforcegtx650,2048,1757,379,64,Desktop,100.00,strong_name
+2177,GeForce GTX 650 Ti,526,NVIDIA,GeForce GTX 650 Ti,geforcegtx650ti,2048,2535,420,110,Desktop,100.00,strong_name
+2479,GeForce GTX 650 Ti BOOST,526,NVIDIA,GeForce GTX 650 Ti,geforcegtx650ti,2048,3416,475,134,Desktop,100.00,strong_name
+88,GeForce GTX 660 Ti,531,NVIDIA,GeForce GTX 660 Ti,geforcegtx660ti,3072,4413,472,150,Desktop,100.00,strong_name
+35,GeForce GTX 670,533,NVIDIA,GeForce GTX 670,geforcegtx670,4096,5374,540,170,Desktop,100.00,strong_name
+41,GeForce GTX 680,535,NVIDIA,GeForce GTX 680,geforcegtx680,4096,5609,531,195,Desktop,100.00,strong_name
+1462,GeForce GTX 690,536,NVIDIA,GeForce GTX 690,geforcegtx690,2048,5476,468,300,Desktop,100.00,strong_name
+2561,GeForce GTX 760,548,NVIDIA,GeForce GTX 760,geforcegtx760,4096,4827,539,170,Desktop,100.00,strong_name
+2531,GeForce GTX 770,550,NVIDIA,GeForce GTX 770,geforcegtx770,4096,5961,565,230,Desktop,100.00,strong_name
+2717,GeForce GTX 780 Ti,552,NVIDIA,GeForce GTX 780 Ti,geforcegtx780ti,3072,9458,633,250,Desktop,100.00,strong_name
+3295,GeForce GTX 950,556,NVIDIA,GeForce GTX 950,geforcegtx950,2048,5351,652,90,Desktop,100.00,strong_name
+3114,GeForce GTX 960,558,NVIDIA,GeForce GTX 960,geforcegtx960,4096,6147,677,120,Desktop,100.00,strong_name
+2954,GeForce GTX 970,559,NVIDIA,GeForce GTX 970,geforcegtx970,4096,9637,763,145,Desktop,100.00,strong_name
+2953,GeForce GTX 980,560,NVIDIA,GeForce GTX 980,geforcegtx980,4096,11073,788,165,Desktop,100.00,strong_name
+3218,GeForce GTX 980 Ti,561,NVIDIA,GeForce GTX 980 Ti,geforcegtx980ti,6144,13620,849,250,Desktop,100.00,strong_name
+1463,GeForce PCX 5300,376,NVIDIA,GeForce PCX 5300,geforcepcx5300,128,6,197,,Desktop,100.00,strong_name
+1464,GeForce PCX 5750,377,NVIDIA,GeForce PCX 5750,geforcepcx5750,128,35,310,,Desktop,100.00,strong_name
+4037,GeForce RTX 2060,582,NVIDIA,GeForce RTX 2060,geforcertx2060,6144,14087,744,160,Desktop,100.00,strong_name
+4602,GeForce RTX 2060 12GB,583,NVIDIA,GeForce RTX 2060,geforcertx2060,12288,15924,851,185,Desktop,100.00,strong_name
+4117,GeForce RTX 2060 SUPER,584,NVIDIA,GeForce RTX 2060 Super,geforcertx2060super,8192,16467,857,175,Desktop,100.00,strong_name
+4001,GeForce RTX 2070,585,NVIDIA,GeForce RTX 2070,geforcertx2070,8192,16063,816,175,Desktop,100.00,strong_name
+4116,GeForce RTX 2070 SUPER,586,NVIDIA,GeForce RTX 2070 Super,geforcertx2070super,8192,18126,878,215,Desktop,100.00,strong_name
+3989,GeForce RTX 2080,587,NVIDIA,GeForce RTX 2080,geforcertx2080,8096,18565,897,250,Desktop,95.00,strong_name
+4123,GeForce RTX 2080 SUPER,588,NVIDIA,GeForce RTX 2080 Super,geforcertx2080super,8192,19419,918,250,Desktop,100.00,strong_name
+3991,GeForce RTX 2080 Ti,589,NVIDIA,GeForce RTX 2080 Ti,geforcertx2080ti,11264,21433,926,250,Desktop,100.00,strong_name
+5069,GeForce RTX 3050 6GB,591,NVIDIA,GeForce RTX 3050 6GB,geforcertx30506gb,6144,10742,882,70,Desktop,100.00,strong_name
+4495,GeForce RTX 3050 8GB,592,NVIDIA,GeForce RTX 3050 8GB,geforcertx30508gb,8192,12483,918,130,Desktop,100.00,strong_name
+4569,GeForce RTX 3050 OEM,592,NVIDIA,GeForce RTX 3050 8GB,geforcertx30508gb,8192,11884,984,130,Desktop,100.00,strong_name
+4345,GeForce RTX 3060 12GB,594,NVIDIA,GeForce RTX 3060,geforcertx3060,12288,16714,965,170,Desktop,100.00,strong_name
+4966,GeForce RTX 3060 8GB,593,NVIDIA,GeForce RTX 3060,geforcertx3060,8192,15203,974,170,Desktop,100.00,strong_name
+4318,GeForce RTX 3060 Ti,595,NVIDIA,GeForce RTX 3060 Ti,geforcertx3060ti,8192,20238,989,200,Desktop,100.00,strong_name
+4283,GeForce RTX 3070,596,NVIDIA,GeForce RTX 3070,geforcertx3070,8192,22093,1005,220,Desktop,100.00,strong_name
+4413,GeForce RTX 3070 Ti,597,NVIDIA,GeForce RTX 3070 Ti,geforcertx3070ti,8192,23189,1058,290,Desktop,100.00,strong_name
+4282,GeForce RTX 3080,598,NVIDIA,GeForce RTX 3080,geforcertx3080,10240,24997,1062,320,Desktop,100.00,strong_name
+4601,GeForce RTX 3080 12GB,599,NVIDIA,GeForce RTX 3080,geforcertx3080,12288,26559,1095,350,Desktop,100.00,strong_name
+4409,GeForce RTX 3080 Ti,600,NVIDIA,GeForce RTX 3080 Ti,geforcertx3080ti,12288,26750,1095,350,Desktop,100.00,strong_name
+4284,GeForce RTX 3090,601,NVIDIA,GeForce RTX 3090,geforcertx3090,24576,26511,1069,350,Desktop,100.00,strong_name
+4524,GeForce RTX 3090 Ti,602,NVIDIA,GeForce RTX 3090 Ti,geforcertx3090ti,24576,29265,1226,450,Desktop,100.00,strong_name
+4850,GeForce RTX 4060,603,NVIDIA,GeForce RTX 4060,geforcertx4060,8192,19496,1037,115,Desktop,100.00,strong_name
+4827,GeForce RTX 4060 Ti,604,NVIDIA,GeForce RTX 4060 Ti,geforcertx4060ti,8192,22600,1095,160,Desktop,100.00,strong_name
+4898,GeForce RTX 4060 Ti 16GB,605,NVIDIA,GeForce RTX 4060 Ti,geforcertx4060ti,16384,22583,1079,165,Desktop,100.00,strong_name
+4795,GeForce RTX 4070,606,NVIDIA,GeForce RTX 4070,geforcertx4070,12288,26877,1166,200,Desktop,100.00,strong_name
+4973,GeForce RTX 4070 SUPER,607,NVIDIA,GeForce RTX 4070 Super,geforcertx4070super,12288,29939,1192,220,Desktop,100.00,strong_name
+4699,GeForce RTX 4070 Ti,608,NVIDIA,GeForce RTX 4070 Ti,geforcertx4070ti,12288,31537,1209,285,Desktop,100.00,strong_name
+4980,GeForce RTX 4070 Ti SUPER,609,NVIDIA,GeForce RTX 4070 Ti Super,geforcertx4070tisuper,16384,31832,1245,285,Desktop,100.00,strong_name
+4622,GeForce RTX 4080,610,NVIDIA,GeForce RTX 4080,geforcertx4080,16384,34451,1250,320,Desktop,100.00,strong_name
+4984,GeForce RTX 4080 SUPER,611,NVIDIA,GeForce RTX 4080 SUPER,geforcertx4080super,16384,34241,1279,320,Desktop,100.00,strong_name
+4606,GeForce RTX 4090,612,NVIDIA,GeForce RTX 4090,geforcertx4090,24576,38052,1303,450,Desktop,100.00,strong_name
+5012,GeForce RTX 4090 D,612,NVIDIA,GeForce RTX 4090,geforcertx4090,,30429,985,,Unknown,95.00,strong_name
+5602,GeForce RTX 5060,613,NVIDIA,GeForce RTX 5060,geforcertx5060,8192,20679,1150,170,Desktop,100.00,strong_name
+6160,GeForce RTX 5060 Ti 16GB,615,NVIDIA,GeForce RTX 5060 Ti,geforcertx5060ti,16384,22624,1206,180,Desktop,100.00,strong_name
+6441,GeForce RTX 5060 Ti 8GB,614,NVIDIA,GeForce RTX 5060 Ti,geforcertx5060ti,8192,22046,1174,180,Desktop,100.00,strong_name
+5940,GeForce RTX 5070,616,NVIDIA,GeForce RTX 5070,geforcertx5070,12288,28676,1293,250,Desktop,100.00,strong_name
+5878,GeForce RTX 5070 Ti,617,NVIDIA,GeForce RTX 5070 Ti,geforcertx5070ti,16384,32360,1325,300,Desktop,100.00,strong_name
+5721,GeForce RTX 5080,618,NVIDIA,GeForce RTX 5080,geforcertx5080,16384,35639,1400,360,Desktop,100.00,strong_name
+5725,GeForce RTX 5090,619,NVIDIA,GeForce RTX 5090,geforcertx5090,32768,38968,1410,575,Desktop,100.00,strong_name
+5898,GeForce RTX 5090 D,619,NVIDIA,GeForce RTX 5090,geforcertx5090,32768,41928,1387,575,Desktop,100.00,strong_name
+7099,GeForce RTX 5090 D v2,619,NVIDIA,GeForce RTX 5090,geforcertx5090,,32739,1311,,Desktop,95.00,strong_name
+2495,GT 430,485,NVIDIA,GeForce GT 430,geforcegt430,,223,325,,Unknown,95.00,strong_name
+4879,Intel Arc A310,620,INTEL,Intel Arc A310,intelarca310,4096,5459,632,75,Desktop,100.00,strong_name
+4983,Intel Arc A310 LP,620,INTEL,Intel Arc A310,intelarca310,4096,4874,598,45,Desktop,100.00,strong_name
+4568,Intel Arc A380,621,INTEL,Intel Arc A380,intelarca380,6144,6314,637,75,Desktop,100.00,strong_name
+4940,Intel Arc A580,622,INTEL,Intel Arc A580,intelarca580,8192,12030,738,185,Desktop,100.00,strong_name
+4612,Intel Arc A750,623,INTEL,Intel Arc A750,intelarca750,8192,12639,737,225,Desktop,100.00,strong_name
+4605,Intel Arc A770,625,INTEL,Intel Arc A770,intelarca770,16384,13351,761,225,Desktop,100.00,strong_name
+5652,Intel Arc B570,627,INTEL,Intel Arc B570,intelarcb570,10240,14116,628,150,Desktop,100.00,strong_name
+5306,Intel Arc B580,626,INTEL,Intel Arc B580,intelarcb580,12288,16023,703,190,Desktop,100.00,strong_name
+1055,MEDION RADEON 9800 XXL,55,AMD,Radeon 9800,radeon9800,,72,187,,Unknown,95.00,strong_name
+1150,NVIDIA GeForce3 Ti200,337,NVIDIA,GeForce3 Ti 200,geforce3ti200,,6,218,,Unknown,95.00,fuzzy
+1605,Quadro FX 5600,358,NVIDIA,GeForce FX 5600,geforcefx5600,,518,98,,Unknown,95.00,strong_name
+556,RADEON 7500,8,AMD,Radeon 7500,radeon7500,64,3,35,,Desktop,100.00,strong_name
+1695,RADEON 7500 Family,8,AMD,Radeon 7500,radeon7500,,5,125,,Unknown,95.00,strong_name
+1697,RADEON 8500 Family,12,AMD,Radeon 8500,radeon8500,,7,146,,Unknown,95.00,strong_name
+1699,RADEON 9000,17,AMD,Radeon 9000,radeon9000,128,5,126,,Desktop,100.00,strong_name
+1700,RADEON 9000 Family,16,AMD,Radeon 9000,radeon9000,,4,123,,Unknown,95.00,strong_name
+1703,RADEON 9100 Family,20,AMD,Radeon 9100,radeon9100,,6,163,,Unknown,95.00,strong_name
+557,RADEON 9100 IGP,20,AMD,Radeon 9100,radeon9100,,5,128,,Unknown,95.00,strong_name
+558,RADEON 9200,26,AMD,Radeon 9200,radeon9200,256,4,135,,Desktop,100.00,strong_name
+1706,RADEON 9200 PRO Family,31,AMD,Radeon 9200 Pro,radeon9200pro,,3,135,,Unknown,95.00,strong_name
+1710,RADEON 9250,33,AMD,Radeon 9250,radeon9250,256,3,127,,Desktop,100.00,strong_name
+1711,RADEON 9500,35,AMD,Radeon 9500,radeon9500,128,36,173,,Desktop,100.00,strong_name
+1713,RADEON 9500 PRO / 9700,36,AMD,Radeon 9500 Pro,radeon9500pro,,42,157,,Unknown,95.00,strong_name
+559,RADEON 9550,38,AMD,Radeon 9550,radeon9550,256,35,145,,Desktop,100.00,strong_name
+560,Radeon 9550 / X1050,37,AMD,Radeon 9550,radeon9550,,29,150,,Unknown,95.00,strong_name
+1716,RADEON 9600 Family,41,AMD,Radeon 9600,radeon9600,,25,150,,Unknown,95.00,strong_name
+1717,RADEON 9600 PRO,49,AMD,Radeon 9600 Pro,radeon9600pro,256,43,163,,Desktop,100.00,strong_name
+1718,RADEON 9600 PRO Family,48,AMD,Radeon 9600 Pro,radeon9600pro,,27,148,,Unknown,95.00,strong_name
+1722,RADEON 9600 TX Family,41,AMD,Radeon 9600,radeon9600,,18,138,,Unknown,95.00,strong_name
+1726,RADEON 9700 PRO,53,AMD,Radeon 9700 Pro,radeon9700pro,128,54,149,,Desktop,100.00,strong_name
+151,Radeon 9700 TX with TV-Out,52,AMD,Radeon 9700,radeon9700,,44,152,,Unknown,95.00,strong_name
+1729,RADEON 9800,55,AMD,Radeon 9800,radeon9800,128,58,191,,Desktop,100.00,strong_name
+1731,RADEON 9800 PRO,60,AMD,Radeon 9800 Pro,radeon9800pro,256,59,153,,Desktop,100.00,strong_name
+571,Radeon HD 2400 XT,141,AMD,Radeon HD 2400XT,radeonhd2400xt,256,119,357,25,Desktop,100.00,strong_name
+572,Radeon HD 2600 PRO,143,AMD,Radeon HD 2600 Pro,radeonhd2600pro,512,211,337,35,Desktop,100.00,strong_name
+573,Radeon HD 2600 Pro AGP,142,AMD,Radeon HD 2600 Pro,radeonhd2600pro,,110,137,,Unknown,95.00,strong_name
+574,Radeon HD 2600 XT,145,AMD,Radeon HD 2600XT,radeonhd2600xt,512,283,371,45,Desktop,100.00,strong_name
+577,Radeon HD 2900 PRO,148,AMD,Radeon HD 2900 Pro,radeonhd2900pro,1024,628,397,200,Desktop,100.00,strong_name
+578,Radeon HD 2900 XT,150,AMD,Radeon HD 2900XT,radeonhd2900xt,1024,660,397,215,Desktop,100.00,strong_name
+583,Radeon HD 3470,153,AMD,Radeon HD 3470,radeonhd3470,512,117,55,30,Desktop,100.00,strong_name
+587,Radeon HD 3850,159,AMD,Radeon HD 3850,radeonhd3850,1024,401,29,75,Desktop,100.00,strong_name
+10,Radeon HD 3870,161,AMD,Radeon HD 3870,radeonhd3870,1024,552,57,106,Desktop,100.00,strong_name
+589,Radeon HD 3870 X2,162,AMD,Radeon HD 3870X2,radeonhd3870x2,512,587,117,165,Desktop,100.00,strong_name
+12,Radeon HD 4670,168,AMD,Radeon HD 4670,radeonhd4670,1024,381,33,59,Desktop,100.00,strong_name
+601,Radeon HD 4770,169,AMD,Radeon HD 4770,radeonhd4770,512,909,81,80,Desktop,100.00,strong_name
+602,Radeon HD 4850 X2,173,AMD,Radeon HD 4850X2,radeonhd4850x2,1024,1132,542,250,Desktop,100.00,strong_name
+98,Radeon HD 4870 X2,178,AMD,Radeon HD 4870X2,radeonhd4870x2,1024,1309,565,286,Desktop,100.00,strong_name
+50,Radeon HD 5750,190,AMD,Radeon HD 5750,radeonhd5750,1024,1174,343,86,Desktop,100.00,strong_name
+69,Radeon HD 5830,192,AMD,Radeon HD 5830,radeonhd5830,1024,1725,398,175,Desktop,100.00,strong_name
+48,Radeon HD 5870,195,AMD,Radeon HD 5870,radeonhd5870,2048,2182,423,228,Desktop,100.00,strong_name
+262,RADEON HD 6350,198,AMD,Radeon HD 6350,radeonhd6350,512,141,171,191,Desktop,100.00,strong_name
+267,Radeon HD 6450,200,AMD,Radeon HD 6450,radeonhd6450,512,198,119,18,Desktop,100.00,strong_name
+54,Radeon HD 6570,203,AMD,Radeon HD 6570,radeonhd6570,1024,553,221,44,Desktop,100.00,strong_name
+3633,Radeon HD 6670/7670,204,AMD,Radeon HD 6670,radeonhd6670,,946,320,,Unknown,95.00,strong_name
+282,Radeon HD 6750,206,AMD,Radeon HD 6750,radeonhd6750,1024,1036,286,86,Desktop,100.00,strong_name
+284,Radeon HD 6770,207,AMD,Radeon HD 6770,radeonhd6770,1024,1272,325,108,Desktop,100.00,strong_name
+286,Radeon HD 6790,208,AMD,Radeon HD 6790,radeonhd6790,1024,1584,392,150,Desktop,100.00,strong_name
+45,Radeon HD 6850,209,AMD,Radeon HD 6850,radeonhd6850,1024,1929,436,127,Desktop,100.00,strong_name
+36,Radeon HD 6950,213,AMD,Radeon HD 6950,radeonhd6950,1024,2594,449,200,Desktop,100.00,strong_name
+84,Radeon HD 6970,216,AMD,Radeon HD 6970,radeonhd6970,2048,2829,436,250,Desktop,100.00,strong_name
+292,Radeon HD 6990,217,AMD,Radeon HD 6990,radeonhd6990,2048,3118,504,375,Desktop,100.00,strong_name
+296,Radeon HD 7350,218,AMD,Radeon HD 7350,radeonhd7350,512,165,187,191,Desktop,100.00,strong_name
+297,Radeon HD 7450,221,AMD,Radeon HD 7450,radeonhd7450,1024,224,145,18,Desktop,100.00,strong_name
+298,Radeon HD 7470,223,AMD,Radeon HD 7470,radeonhd7470,1024,289,152,27,Desktop,100.00,strong_name
+90,Radeon HD 7570,225,AMD,Radeon HD 7570,radeonhd7570,1024,620,253,44,Desktop,100.00,strong_name
+319,Radeon HD 7670,227,AMD,Radeon HD 7670,radeonhd7670,1024,796,317,66,Desktop,100.00,strong_name
+2502,Radeon HD 7790,232,AMD,Radeon HD 7790,radeonhd7790,2048,3090,459,85,Desktop,100.00,strong_name
+323,Radeon HD 7850,233,AMD,Radeon HD 7850,radeonhd7850,2048,3902,578,130,Desktop,100.00,strong_name
+324,Radeon HD 7870,234,AMD,Radeon HD 7870 GHz Ed.,radeonhd7870ghzed,2048,4559,587,175,Desktop,100.00,strong_name
+2557,Radeon HD 7870 XT,235,AMD,Radeon HD 7870 XT,radeonhd7870xt,2048,4470,661,185,Desktop,100.00,strong_name
+325,Radeon HD 7950 / R9 280,256,AMD,Radeon R9 280,radeonr9280,3072,4765,691,200,Desktop,100.00,strong_name
+51,Radeon HD 7970 / R9 280X,238,AMD,Radeon HD 7970,radeonhd7970,3072,5248,730,250,Desktop,100.00,strong_name
+2528,Radeon HD 7990,240,AMD,Radeon HD 7990,radeonhd7990,3072,5566,766,375,Desktop,100.00,strong_name
+2713,Radeon R7 240,242,AMD,Radeon R7 240,radeonr7240,2048,898,281,30,Desktop,100.00,strong_name
+2768,Radeon R7 250,244,AMD,Radeon R7 250,radeonr7250,2048,1048,285,75,Desktop,100.00,strong_name
+2903,Radeon R7 260,249,AMD,Radeon R7 260,radeonr7260,1024,2892,559,95,Desktop,100.00,strong_name
+3233,Radeon R7 360,263,AMD,Radeon R7 360,radeonr7360,2048,3121,527,100,Desktop,100.00,strong_name
+3471,Radeon R7 370,264,AMD,Radeon R7 370,radeonr7370,,4483,617,150,Desktop,95.00,strong_name
+3550,Radeon R9 270,253,AMD,Radeon R9 270,radeonr9270,,4314,589,,Unknown,95.00,strong_name
+2766,Radeon R9 270 / R7 370,253,AMD,Radeon R9 270,radeonr9270,2048,4260,645,150,Desktop,100.00,strong_name
+3465,Radeon R9 280,256,AMD,Radeon R9 280,radeonr9280,3072,5523,671,250,Desktop,100.00,strong_name
+4392,Radeon R9 285,258,AMD,Radeon R9 285,radeonr9285,,6680,597,,Unknown,95.00,strong_name
+3116,Radeon R9 285 / 380,258,AMD,Radeon R9 285,radeonr9285,2048,5550,655,190,Desktop,100.00,strong_name
+4259,Radeon R9 290,259,AMD,Radeon R9 290,radeonr9290,,8141,758,,Unknown,95.00,strong_name
+2719,Radeon R9 290 / 390,259,AMD,Radeon R9 290,radeonr9290,4096,8150,695,275,Desktop,100.00,strong_name
+3460,Radeon R9 380,267,AMD,Radeon R9 380,radeonr9380,4096,5956,663,190,Desktop,100.00,strong_name
+3464,Radeon R9 390,269,AMD,Radeon R9 390,radeonr9390,8192,8778,790,275,Desktop,100.00,strong_name
+3557,Radeon RX 460,276,AMD,Radeon RX 460,radeonrx460,4096,4097,582,75,Desktop,100.00,strong_name
+3558,Radeon RX 470/570,278,AMD,Radeon RX 470,radeonrx470,8192,7912,725,120,Desktop,100.00,strong_name
+3533,Radeon RX 480,280,AMD,Radeon RX 480,radeonrx480,8192,8529,772,150,Desktop,100.00,strong_name
+4420,Radeon RX 5300,295,AMD,Radeon RX 5300,radeonrx5300,3072,7603,706,100,Desktop,100.00,strong_name
+3854,Radeon RX 540,282,AMD,Radeon RX 540,radeonrx540,4096,2174,320,,Desktop,100.00,strong_name
+3761,Radeon RX 550,284,AMD,Radeon RX 550,radeonrx550,4096,2698,476,50,Desktop,100.00,strong_name
+4164,Radeon RX 5500,296,AMD,Radeon RX 5500,radeonrx5500,4096,8852,763,150,Desktop,100.00,strong_name
+4174,Radeon RX 5500 XT,299,AMD,Radeon RX 5500 XT,radeonrx5500xt,8192,9059,776,130,Desktop,100.00,strong_name
+3708,Radeon RX 560,286,AMD,Radeon RX 560,radeonrx560,4096,3686,486,80,Desktop,100.00,strong_name
+4205,Radeon RX 5600,300,AMD,Radeon RX 5600,radeonrx5600,6144,11690,882,150,Desktop,100.00,strong_name
+4640,Radeon RX 5600 OEM,300,AMD,Radeon RX 5600,radeonrx5600,,12382,849,,Unknown,95.00,strong_name
+4107,Radeon RX 5700,302,AMD,Radeon RX 5700,radeonrx5700,8192,14213,876,180,Desktop,100.00,strong_name
+4111,Radeon RX 5700 XT,303,AMD,Radeon RX 5700 XT,radeonrx5700xt,8192,16055,920,225,Desktop,100.00,strong_name
+4114,Radeon RX 5700 XT 50th Anniversary,303,AMD,Radeon RX 5700 XT,radeonrx5700xt,8192,16528,939,235,Desktop,100.00,strong_name
+3736,Radeon RX 580,290,AMD,Radeon RX 580,radeonrx580,8192,8786,770,185,Desktop,100.00,strong_name
+4025,Radeon RX 590,291,AMD,Radeon RX 590,radeonrx590,8192,9280,789,175,Desktop,100.00,strong_name
+4536,Radeon RX 6400,305,AMD,Radeon RX 6400,radeonrx6400,4096,7741,737,53,Desktop,100.00,strong_name
+4488,Radeon RX 6500 XT,306,AMD,Radeon RX 6500 XT,radeonrx6500xt,4096,9620,817,107,Desktop,100.00,strong_name
+4465,Radeon RX 6600,308,AMD,Radeon RX 6600,radeonrx6600,8192,15053,896,132,Desktop,100.00,strong_name
+5228,Radeon RX 6600 LE,308,AMD,Radeon RX 6600,radeonrx6600,,14043,853,,Unknown,95.00,strong_name
+4444,Radeon RX 6600 XT,309,AMD,Radeon RX 6600 XT,radeonrx6600xt,8192,16444,914,160,Desktop,100.00,strong_name
+4541,Radeon RX 6650 XT,310,AMD,Radeon RX 6650 XT,radeonrx6650xt,8192,17111,926,176,Desktop,100.00,strong_name
+4564,Radeon RX 6700,311,AMD,Radeon RX 6700,radeonrx6700,10240,18924,941,175,Desktop,100.00,strong_name
+4369,Radeon RX 6700 XT,312,AMD,Radeon RX 6700 XT,radeonrx6700xt,12288,19726,954,230,Desktop,100.00,strong_name
+4543,Radeon RX 6750 XT,313,AMD,Radeon RX 6750 XT,radeonrx6750xt,12288,20703,980,250,Desktop,100.00,strong_name
+4314,Radeon RX 6800,314,AMD,Radeon RX 6800,radeonrx6800,16384,22058,1000,250,Desktop,100.00,strong_name
+4312,Radeon RX 6800 XT,315,AMD,Radeon RX 6800 XT,radeonrx6800xt,16384,25071,1046,300,Desktop,100.00,strong_name
+4322,Radeon RX 6900 XT,316,AMD,Radeon RX 6900 XT,radeonrx6900xt,16384,26640,1063,300,Desktop,100.00,strong_name
+4540,Radeon RX 6950 XT,317,AMD,Radeon RX 6950 XT,radeonrx6950xt,16384,28068,1081,335,Desktop,100.00,strong_name
+4832,Radeon RX 7600,318,AMD,Radeon RX 7600,radeonrx7600,8192,16461,985,165,Desktop,100.00,strong_name
+4982,Radeon RX 7600 XT,319,AMD,Radeon RX 7600 XT,radeonrx7600xt,16384,17335,1026,190,Desktop,100.00,strong_name
+4919,Radeon RX 7700 XT,320,AMD,Radeon RX 7700 XT,radeonrx7700xt,12288,22700,1157,245,Desktop,100.00,strong_name
+4917,Radeon RX 7800 XT,321,AMD,Radeon RX 7800 XT,radeonrx7800xt,16384,24414,1193,263,Desktop,100.00,strong_name
+4906,Radeon RX 7900 GRE,322,AMD,Radeon RX 7900 GRE,radeonrx7900gre,16384,27448,1209,260,Desktop,100.00,strong_name
+4646,Radeon RX 7900 XT,323,AMD,Radeon RX 7900 XT,radeonrx7900xt,20480,29066,1245,315,Desktop,100.00,strong_name
+4644,Radeon RX 7900 XTX,324,AMD,Radeon RX 7900 XTX,radeonrx7900xtx,24576,31434,1288,355,Desktop,100.00,strong_name
+5957,Radeon RX 9060 XT 16GB,628,AMD,Radeon RX 9060 XT,radeonrx9060xt,16384,20086,1170,160,Desktop,100.00,strong_name
+5958,Radeon RX 9070,630,AMD,Radeon RX 9070,radeonrx9070,16384,25384,1265,220,Desktop,100.00,strong_name
+6421,Radeon RX 9070 GRE,629,AMD,Radeon RX 9070 GRE,radeonrx9070gre,12288,23892,1252,220,Desktop,100.00,strong_name
+5956,Radeon RX 9070 XT,631,AMD,Radeon RX 9070 XT,radeonrx9070xt,16384,26922,1314,304,Desktop,100.00,strong_name
+3821,Radeon RX Vega 56,292,AMD,Radeon RX Vega 56,radeonrxvega56,8192,12946,764,210,Desktop,78.06,fuzzy
+3808,Radeon RX Vega 64,293,AMD,Radeon RX Vega 64,radeonrxvega64,8192,13858,785,295,Desktop,78.06,fuzzy
+609,Radeon X1050,100,AMD,Radeon X1050,radeonx1050,256,49,245,,Desktop,100.00,strong_name
+154,Radeon X1300,102,AMD,Radeon X1300,radeonx1300,256,58,237,,Desktop,100.00,strong_name
+159,Radeon X1300 PRO,104,AMD,Radeon X1300 Pro,radeonx1300pro,,84,313,,Unknown,95.00,strong_name
+613,Radeon X1550,109,AMD,Radeon X1550,radeonx1550,512,67,253,27,Desktop,100.00,strong_name
+1752,Radeon X1550 64-bit,108,AMD,Radeon X1550,radeonx1550,,48,257,,Unknown,95.00,strong_name
+2494,Radeon X1600 Pro,111,AMD,Radeon X1600 Pro,radeonx1600pro,512,99,273,41,Desktop,100.00,strong_name
+1755,Radeon X1600 Pro / X1300XT,110,AMD,Radeon X1600 Pro,radeonx1600pro,,69,285,,Unknown,95.00,strong_name
+1756,Radeon X1650 GTO,114,AMD,Radeon X1650,radeonx1650,,75,384,,Unknown,95.00,strong_name
+614,Radeon X1650 Pro,119,AMD,Radeon X1650 Pro,radeonx1650pro,512,85,241,44,Desktop,100.00,strong_name
+1764,Radeon X1950 Pro,136,AMD,Radeon X1950 Pro,radeonx1950pro,512,113,318,66,Desktop,100.00,strong_name
+1766,RADEON X550,69,AMD,Radeon X550,radeonx550,256,51,266,,Desktop,100.00,strong_name
+161,RADEON X600 PRO,70,AMD,Radeon X600 Pro,radeonx600pro,,67,252,,Unknown,95.00,strong_name
+1773,RADEON X700,75,AMD,Radeon X700,radeonx700,256,73,248,,Desktop,100.00,strong_name
+1774,RADEON X700 PRO,79,AMD,Radeon X700 Pro,radeonx700pro,256,76,302,,Desktop,100.00,strong_name
+1777,RADEON X800 GTO,83,AMD,Radeon X800,radeonx800,256,115,162,,Desktop,100.00,strong_name
+1778,RADEON X800 PRO,91,AMD,Radeon X800 Pro,radeonx800pro,256,65,190,,Desktop,100.00,strong_name
+1779,RADEON X800 PRO/GTO,91,AMD,Radeon X800 Pro,radeonx800pro,256,73,181,,Desktop,100.00,strong_name
+619,RADEON X800 XL,83,AMD,Radeon X800,radeonx800,256,69,271,,Desktop,100.00,strong_name
+620,RADEON X850 PRO,94,AMD,Radeon X850 Pro,radeonx850pro,256,73,157,,Desktop,100.00,strong_name
+1853,SAPPHIRE RADEON 9000 ATLANTIS PRO,18,AMD,Radeon 9000 Pro,radeon9000pro,,5,158,,Unknown,95.00,strong_name
+1859,SAPPHIRE RADEON 9600 ATLANTIS,41,AMD,Radeon 9600,radeon9600,,47,149,,Unknown,95.00,strong_name
+1864,SAPPHIRE Radeon X1550,108,AMD,Radeon X1550,radeonx1550,,61,285,,Unknown,95.00,strong_name
+648,CONNECT 3D RADEON X300,62,AMD,Radeon X300,radeonx300,,36,191,,Unknown,95.00,strong_name
+3638,Asus GTX 650 FML II EC-EGPU,523,NVIDIA,GeForce GTX 650,geforcegtx650,,721,534,,Unknown,95.00,strong_name
+6498,GeForce RTX 3060,593,NVIDIA,GeForce RTX 3060,geforcertx3060,,16888,975,,Desktop,95.00,strong_name
+4186,Radeon RX 5600 XT,301,AMD,Radeon RX 5600 XT,radeonrx5600xt,6144,13391,871,150,Desktop,100.00,strong_name

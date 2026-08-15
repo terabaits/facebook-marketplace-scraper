@@ -15,28 +15,19 @@ logger = get_logger("database")
 class DatabaseManager:
     """Manages database connections and sessions."""
     
-    _instance = None
-    _engine = None
-    _session_factory = None
-    
-    def __new__(cls, config: DatabaseConfig = None):
-        if cls._instance is None:
-            cls._instance = super().__new__(cls)
-            cls._instance._initialized = False
-        return cls._instance
-    
     def __init__(self, config: DatabaseConfig = None):
-        if self._initialized or config is None:
-            return
+        if config is None:
+            raise ValueError("DatabaseConfig is required")
         
         self.config = config
+        self._engine = None
+        self._session_factory = None
         self._connect()
-        self._initialized = True
-    
+
     def _connect(self):
         """Initialize database connection."""
         connection_string = self.config.connection_string
-        
+
         # Create engine with connection pooling
         self._engine = create_engine(
             connection_string,
@@ -46,33 +37,33 @@ class DatabaseManager:
             pool_pre_ping=True,  # Verify connections before use
             echo=False
         )
-        
+
         # Add event listeners for debugging
         event.listen(self._engine, 'connect', self._on_connect)
         event.listen(self._engine, 'checkout', self._on_checkout)
-        
+
         # Create session factory
         self._session_factory = sessionmaker(
             autocommit=False,
             autoflush=False,
             bind=self._engine
         )
-        
+
         logger.info(f"Database connected: {self.config.host}:{self.config.port}/{self.config.name}")
-    
+
     def _on_connect(self, dbapi_conn, connection_record):
         """Called when a new connection is created."""
         logger.debug("New database connection created")
-    
+
     def _on_checkout(self, dbapi_conn, connection_record, connection_proxy):
         """Called when a connection is retrieved from the pool."""
         logger.debug("Database connection checked out from pool")
-    
+
     @contextmanager
     def session(self) -> Generator[Session, None, None]:
         """
         Context manager for database sessions.
-        
+
         Usage:
             with db_manager.session() as session:
                 # use session
@@ -80,7 +71,7 @@ class DatabaseManager:
         """
         if self._session_factory is None:
             raise RuntimeError("Database not initialized. Call with config first.")
-        
+
         session = self._session_factory()
         try:
             yield session
@@ -91,13 +82,13 @@ class DatabaseManager:
             raise
         finally:
             session.close()
-    
+
     def get_session(self) -> Session:
         """Get a new session (manual management required)."""
         if self._session_factory is None:
             raise RuntimeError("Database not initialized.")
         return self._session_factory()
-    
+
     def close(self):
         """Close all connections."""
         if self._engine:

@@ -1,0 +1,45 @@
+scraper:
+  base_url: https://www.ss.com
+  category_path: /lv/electronics/computers/completing-pc/video/
+  cpu_category_path: /lv/electronics/computers/completing-pc/cpu/
+  request_timeout: 30
+  retry_attempts: 5
+  retry_delays:
+  - 1
+  - 2
+  - 4
+  - 8
+  - 16
+  retryable_status:
+  - 500
+  - 502
+  - 503
+  - 504
+  - 408
+  - 429
+  stop_on_status:
+  - 403
+  throttle_min: 1.5
+  throttle_max: 3.5
+  test_mode: false
+  max_listings: 0
+  save_html_samples: true
+  html_samples_dir: logs/html_samples
+  stale_after_days: 7
+  min_confidence_threshold: 0.7
+database:
+  host: localhost
+  port: 5433
+  name: ss_market
+  user: crawler
+  password: crawler_pass
+proxy:
+  enabled: false
+  urls: []
+  rotation: true
+logging:
+  level: INFO
+  file: logs/scraper_{date}.log
+  console: true
+  max_bytes: 10485760
+  backup_count: 5

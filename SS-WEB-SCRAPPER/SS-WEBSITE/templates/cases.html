@@ -1,0 +1,398 @@
+{% extends "base.html" %}
+
+{% block title %}Case Listings - SS-Crawler{% endblock %}
+
+{% block content %}
+<div class="section">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
+        <h2>{{ t('Case Listings') }}</h2>
+        <div class="filters" style="margin: 0;">
+            <label>
+                <input type="checkbox" id="active-only" checked onchange="loadListings()">
+                Active only
+            </label>
+            <label class="{% if not is_staff %}staff-only{% endif %}">
+                <input type="checkbox" id="high-confidence" checked onchange="loadListings()">
+                High confidence (≥70%)
+            </label>
+            <label>
+                Sort:
+                <select id="sort-by" onchange="loadListings()">
+                    <option value="date_posted">{{ t('Date Posted') }}</option>
+                    <option value="price">{{ t('Price') }}</option>
+                </select>
+            </label>
+            <label>
+                Order:
+                <select id="sort-order" onchange="loadListings()">
+                    <option value="desc">{{ t('Descending') }}</option>
+                    <option value="asc">{{ t('Ascending') }}</option>
+                </select>
+            </label>
+            <label>
+                Time:
+                <select id="time-filter" onchange="loadListings()">
+                    <option value="all_time">All Time</option>
+                    <option value="month">Last Month</option>
+                    <option value="week">Last Week</option>
+                </select>
+            </label>
+        </div>
+    </div>
+
+    <div id="listings-container">
+        <div class="loading">Loading case listings...</div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+async function loadListings() {
+    const activeOnly = document.getElementById('active-only').checked;
+    const highConfidence = document.getElementById('high-confidence').checked;
+    const sortBy = document.getElementById('sort-by').value;
+    const sortOrder = document.getElementById('sort-order').value;
+    const timeFilter = document.getElementById('time-filter').value;
+
+    const params = new URLSearchParams();
+    params.append('active', activeOnly);
+    params.append('sort', sortBy);
+    params.append('order', sortOrder);
+    params.append('time', timeFilter);
+    if (highConfidence) params.append('min_confidence', '0.70');
+
+    try {
+        const response = await fetch('/api/cases?' + params.toString());
+        let listings = await response.json();
+
+        const container = document.getElementById('listings-container');
+
+        // Check for API error
+        if (listings.error) {
+            throw new Error(listings.error);
+        }
+
+        // Ensure listings is an array
+        if (!Array.isArray(listings)) {
+            console.error('Expected array, got:', typeof listings, listings);
+            throw new Error('Invalid response format from API');
+        }
+
+        if (listings.length === 0) {
+            container.innerHTML = '<div class="loading">No listings found</div>';
+            return;
+        }
+
+        let html = `
+            <table>
+                <thead>
+                    <tr>
+                        <th>Case</th>
+                        <th>{{ t('Type') }}</th>
+                        <th>{{ t('Price') }}</th>
+                        <th>Location</th>
+                        <th>Date</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+        `;
+
+        listings.forEach(item => {
+            const caseName = item.case_name || item.title;
+            const caseType = item.case_type || 'Unknown';
+
+            const confidence = item.case_confidence_score || 0;
+            let confidenceClass = 'confidence-high';
+            if (confidence < 0.70) confidenceClass = 'confidence-medium';
+            if (confidence < 0.50) confidenceClass = 'confidence-low';
+
+            const thumbUrl = item.local_image_path
+                ? `/images/${item.local_image_path.replace(/\\/g, '/')}`
+                : item.image_url;
+            const dealBadge = computeCaseDealBadges(item);
+            const dealBadgeOverlay = dealBadge
+                ? `<div style="position: absolute; top: 4px; right: 4px; display: flex; flex-direction: column; gap: 4px; z-index: 10;">${dealBadge}</div>`
+                : '';
+
+            html += `
+                <tr style="cursor: pointer;" onclick="showCaseListingDetail('${item.listing_id}')">
+                    <td onclick="event.stopPropagation();" style="position: relative;">
+                        ${thumbUrl ? `<div class="listing-image-wrapper" style="position: relative; display: inline-block;">${dealBadgeOverlay}<img src="${thumbUrl}" alt="${caseName}" class="listing-thumb" onclick="event.stopPropagation(); showImageModal('${thumbUrl}', '${caseName.replace(/'/g, "\\'")}')"></div>` : '<div class="listing-thumb-placeholder">📦</div>'}
+                        <strong>${caseName}</strong>
+                        ${item.case_match_method ? `<br><small class="${confidenceClass}">${(confidence*100).toFixed(0)}% confidence</small>` : ''}
+                    </td>
+                    <td>${caseType}</td>
+                    <td>
+                        <span class="price">€${item.price_eur}</span>
+                    </td>
+                    <td>${item.seller_location || 'N/A'}</td>
+                    <td>${(item.date_posted || item.first_seen_at || item.created_at) ? new Date(item.date_posted || item.first_seen_at || item.created_at).toLocaleDateString() : 'N/A'}</td>
+                    <td onclick="event.stopPropagation();">
+                        <button class="btn btn-small btn-secondary" onclick="showCaseListingDetail('${item.listing_id}')">{{ t('Details') }}</button>
+                        <a href="${item.listing_url}" target="_blank" class="btn btn-small">View →</a>
+                    </td>
+                </tr>
+            `;
+        });
+
+        html += '</tbody></table>';
+        container.innerHTML = html;
+
+    } catch (error) {
+        document.getElementById('listings-container').innerHTML =
+            `<div class="error">Failed to load listings: ${error.message}</div>`;
+    }
+}
+
+function computeCaseDealBadges(item) {
+    let dealBadge = '';
+    const isNewListing = item.is_new === true;
+    if (isNewListing) {
+        dealBadge += `<span class="badge" style="background: #3b82f6; color: white; font-weight: bold;" title="New listing from current import!">🆕 NEW</span><br>`;
+    }
+    if (!isNewListing && item.price_stats && item.price_stats.below_avg) {
+        const avgPrice = parseFloat(item.price_stats.avg);
+        const currentPrice = item.price_eur;
+        const savingsPct = ((avgPrice - currentPrice) / avgPrice * 100);
+        if (savingsPct >= 15) {
+            dealBadge += `<span class="badge" style="background: #dc2626; color: white; font-weight: bold;" title="Price is ${savingsPct.toFixed(0)}% below average!">🔥 STEAL</span><br>`;
+        }
+    }
+    return dealBadge;
+}
+
+async function showCaseListingDetail(listingId) {
+    try {
+        const response = await fetch(`/api/listing-details/${listingId}`);
+        const data = await response.json();
+
+        if (data.error || !data.current) {
+            alert('Error loading listing details');
+            return;
+        }
+
+        const current = data.current;
+        const history = data.history || [];
+        const caseName = current.case_name || current.title;
+
+        const thumbUrl = current.local_image_path
+            ? `/images/${current.local_image_path.replace(/\\/g, '/')}`
+            : current.image_url;
+
+        let html = `
+            <h3>${caseName}</h3>
+
+            ${thumbUrl ? `
+            <div style="margin-bottom: 1rem; text-align: center;">
+                <img src="${thumbUrl}" alt="${caseName}" style="max-width: 100%; max-height: 70vh; border-radius: 8px; cursor: zoom-in;"
+                     onclick="showImageModal('${thumbUrl.replace(/'/g, "\\'")}', '${caseName.replace(/'/g, "\\'")}')">
+            </div>
+            ` : ''}
+
+            <div style="margin-bottom: 1rem;">
+                <strong>Title:</strong> ${current.title || '-'}
+            </div>
+
+            <div style="margin-bottom: 1rem;">
+                <strong>Price:</strong> <span class="price" style="font-size: 1.25rem;">€${current.price_eur}</span>
+            </div>
+
+            <div style="margin-bottom: 1rem;">
+                <strong>Location:</strong> ${current.seller_location || '-'}
+            </div>
+
+            <div style="margin-bottom: 1rem;">
+                <strong>Date Posted:</strong> ${(current.date_posted || current.first_seen_at || current.created_at) ? new Date(current.date_posted || current.first_seen_at || current.created_at).toLocaleDateString() : '-'}
+            </div>
+
+            <div style="margin-bottom: 1rem;">
+                <strong>Source:</strong> ${current.source || '-'}
+            </div>
+
+            ${current.case_type ? `<div style="margin-bottom: 1rem;"><strong>Case Type:</strong> ${current.case_type}</div>` : ''}
+            ${current.case_color ? `<div style="margin-bottom: 1rem;"><strong>Color:</strong> ${current.case_color}</div>` : ''}
+
+            ${current.matched_case_id ? `
+            <div style="margin-bottom: 1rem; padding: 0.75rem; background: var(--modal-box-bg, #f8f9fa); border: 1px solid var(--modal-border, #eee); border-radius: 8px;">
+                <div style="margin-bottom: 0.25rem;"><strong>Matched Model</strong></div>
+                ${current.case_confidence_score ? `<div>Confidence: ${(current.case_confidence_score * 100).toFixed(0)}%</div>` : ''}
+                ${current.case_match_method ? `<div>Method: ${current.case_match_method}</div>` : ''}
+                ${current.matched_case_id ? `<div>Model ID: ${current.matched_case_id}</div>` : ''}
+            </div>
+            ` : ''}
+
+            <div style="margin-bottom: 1rem;">
+                <strong>Description:</strong>
+                <div class="listing-description">
+                    ${current.description || '<em>No description</em>'}
+                </div>
+            </div>
+
+            ${history.length > 0 ? `
+            <div style="margin-bottom: 1rem;">
+                <strong>Historical Prices:</strong>
+                <ul style="margin: 0.5rem 0; padding-left: 1.25rem;">
+                    ${history.map(h => `
+                        <li>${h.recorded_at ? new Date(h.recorded_at).toLocaleDateString() : 'N/A'} — €${h.price_eur}</li>
+                    `).join('')}
+                </ul>
+            </div>
+            ` : ''}
+
+            <div style="margin-top: 1.5rem;">
+                <a href="${current.listing_url}" target="_blank" class="btn">View on Site</a>
+                <button class="btn btn-secondary" onclick="closeModal()" style="margin-left: 0.5rem;">{{ t('Close') }}</button>
+            </div>
+        `;
+
+        showModal(html);
+    } catch (error) {
+        console.error('Error loading details:', error);
+        alert('Error loading details: ' + error.message);
+    }
+}
+
+async function showCaseListingHistory(listingId) {
+    try {
+        const response = await fetch(`/api/price-history/${listingId}`);
+        const history = await response.json();
+
+        let html = `
+            <h3>Price History for ${listingId}</h3>
+        `;
+
+        if (history && history.length > 0) {
+            html += `
+                <table style="width: 100%; margin-top: 1rem;">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>{{ t('Price') }}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${history.map(h => `
+                            <tr>
+                                <td>${h.recorded_at ? new Date(h.recorded_at).toLocaleDateString() : 'N/A'}</td>
+                                <td class="price">€${h.price_eur}</td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+            `;
+        } else {
+            html += `<p>No price history available.</p>`;
+        }
+
+        html += `
+            <div style="margin-top: 1.5rem;">
+                <button class="btn btn-secondary" onclick="closeModal()">{{ t('Close') }}</button>
+            </div>
+        `;
+
+        showModal(html);
+    } catch (error) {
+        console.error('Error loading history:', error);
+        alert('Error loading history: ' + error.message);
+    }
+}
+
+function showModal(content) {
+    let overlay = document.getElementById('detail-modal-overlay');
+    if (!overlay) {
+        overlay = document.createElement('div');
+        overlay.id = 'detail-modal-overlay';
+        overlay.className = 'modal-overlay';
+        overlay.innerHTML = `
+            <div class="modal">
+                <button class="modal-close" onclick="closeModal()">&times;</button>
+                <div id="modal-body"></div>
+            </div>
+        `;
+        document.body.appendChild(overlay);
+
+        overlay.addEventListener('click', function(e) {
+            if (e.target === overlay) closeModal();
+        });
+    }
+    document.getElementById('modal-body').innerHTML = content;
+    overlay.classList.add('active');
+}
+
+function closeModal() {
+    const overlay = document.getElementById('detail-modal-overlay');
+    if (overlay) overlay.classList.remove('active');
+}
+
+// Show image modal - reused from motherboards.html
+function showImageModal(imageUrl, title) {
+    const existingModal = document.querySelector('.image-modal-overlay');
+    if (existingModal) {
+        existingModal.remove();
+    }
+
+    const modal = document.createElement('div');
+    modal.className = 'image-modal-overlay';
+    modal.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.9);
+        z-index: 9999;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: zoom-out;
+    `;
+
+    const img = document.createElement('img');
+    img.src = imageUrl;
+    img.alt = title || 'Image';
+    img.onload = function() { fitPreviewImage(img); };
+    img.style.cssText = `
+        max-width: 90%;
+        max-height: 90%;
+        object-fit: contain;
+        border-radius: 8px;
+    `;
+
+    modal.appendChild(img);
+    document.body.appendChild(modal);
+
+    const closeImageModal = function() {
+        modal.remove();
+    };
+
+    modal.addEventListener('click', closeImageModal);
+
+    img.addEventListener('click', function(e) {
+        e.stopPropagation();
+    });
+}
+
+function fitPreviewImage(img) {
+    if (!img || !img.naturalWidth || !img.naturalHeight) return;
+    const isPortrait = img.naturalHeight > img.naturalWidth;
+    if (isPortrait) {
+        img.style.maxWidth = '70%';
+        img.style.margin = '0 auto';
+    } else {
+        img.style.maxWidth = '90%';
+        img.style.margin = '0 auto';
+    }
+}
+
+// Expose to global scope for inline onclick handlers
+window.showImageModal = showImageModal;
+window.showCaseListingDetail = showCaseListingDetail;
+window.showCaseListingHistory = showCaseListingHistory;
+window.closeModal = closeModal;
+
+// Load on page load
+document.addEventListener('DOMContentLoaded', loadListings);
+</script>
+{% endblock %}

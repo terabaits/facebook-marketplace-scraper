@@ -1,0 +1,39 @@
+"""Debug script to find the bug."""
+import sys
+from pathlib import Path
+ROOT = Path(__file__).resolve().parent
+sys.path.insert(0, str(ROOT))
+
+from src.scraper.cpu_reference_resolver import (
+    normalize_cpu_name,
+    _strip_prefixes,
+    _classify_vendor,
+    _canonicalize_intel,
+    _drop_trailing_size,
+    _strip_marks_and_noise,
+)
+import re
+
+# Direct test of _canonicalize_intel
+print('=== direct _canonicalize_intel test ===')
+print('"I5-1135g7" ->', repr(_canonicalize_intel('I5-1135g7')))
+print('"i5-1135g7" ->', repr(_canonicalize_intel('i5-1135g7')))
+print('"i7-11400H" ->', repr(_canonicalize_intel('i7-11400H')))
+print('"I7-11400H" ->', repr(_canonicalize_intel('I7-11400H')))
+
+# Step by step
+print('\n=== step by step on "I5-1135g7" ===')
+s = 'I5-1135g7'
+print('original:', repr(s))
+s = _strip_marks_and_noise(s)
+print('after marks/noise:', repr(s))
+s = re.sub(r'\s+', ' ', s).strip()
+print('after whitespace:', repr(s))
+s = _strip_prefixes(s).strip()
+print('after strip_prefixes:', repr(s))
+s = re.sub(r'\s+', ' ', s).strip()
+print('after whitespace 2:', repr(s))
+s = _drop_trailing_size(s)
+print('after drop_trailing_size:', repr(s))
+print('classify:', _classify_vendor(s))
+print('canonicalize_intel:', _canonicalize_intel(s))

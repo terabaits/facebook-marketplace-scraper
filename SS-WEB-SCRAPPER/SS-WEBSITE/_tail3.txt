@@ -1,0 +1,60 @@
+﻿len 4795
+old; padding: 2px 6px;
+                    border-radius: 4px; margin-right: 6px; vertical-align: middle;">
+                    ${item.vendor === 'NVIDIA' ? 'NVIDIA' : item.vendor === 'AMD' ? 'AMD' : 'INTEL'}
+                </span>
+            ` : '';
+
+            const gpuName = gpuModel || item.title;
+            const vram = item.vram_gb ? `${item.vram_gb}GB` : 'N/A';
+            const modelId = item.matched_gpu_id;
+
+            let priceClass = 'price';
+            let priceIndicator = '';
+            let priceDecreasedBadge = '';
+            let dealBadge = '';
+
+            // Check if this is the first time we're seeing this model EVER
+            const modelKey = item.gpu_model || item.title;
+            const isFirstModelEver = modelKey && !discoveredModels.has(modelKey);
+            if (isFirstModelEver && modelKey) {
+                discoveredModels.add(modelKey);
+                newModelsDiscovered.push(modelKey);
+            }
+
+            // Check for NEW, FIRST, STEAL and BUY indicators
+            // NEW: Only show for listings from the current import (not in previous import)
+            let isNewListing = item.is_new === true;
+
+            if (isNewListing) {
+                // New listing from current import - show NEW badge
+                dealBadge += `<span class="badge" style="background: #3b82f6; color: white; font-weight: bold;" title="New listing from current import!">🆕 NEW</span><br>`;
+            }
+
+            if (isFirstModelEver && modelKey) {
+                // First model ever discovered - show FIRST badge
+                dealBadge += `<span class="badge" style="background: #9333ea; color: white; font-weight: bold;" title="First time this model appears!">✨ FIRST</span><br>`;
+            }
+
+            if (!isNewListing && item.price_stats && item.price_stats.below_avg) {
+                // STEAL: only show if price is at least 15% below average
+                const avgPrice = parseFloat(item.price_stats.avg);
+                const currentPrice = item.price_eur;
+                const savingsPct = ((avgPrice - currentPrice) / avgPrice * 100);
+
+                // Must be at least 15% below average to be a STEAL
+                if (savingsPct >= 15) {
+                    dealBadge += `<span class="badge" style="background: #dc2626; color: white; font-weight: bold;" title="Price is ${savingsPct.toFixed(0)}% below average!">🔥 STEAL</span><br>`;
+                }
+            }
+
+            // Check if this is all-time lowest (BUY)
+            // Only show BUY if there's actual price history with different prices
+            let isAllTimeLowest = false;
+
+            // Check if price decreased
+            if (item.has_price_decreased) {
+                const lastChange = item.price_changes?.[0];
+                if (lastChange && lastChange.change < 0) {
+                    priceDecreasedBadge = `<span class="badge badge-success" title="Price dropped by €${Math.abs(lastChange.change).toFixed(2)}">↓ Price Drop</span><br>`;
+

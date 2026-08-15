@@ -1,0 +1,14 @@
+2026-07-29 16:28:23 | INFO     | ss_crawler | [database] Database connected: localhost:5433/ss_market
+2026-07-29 16:28:23 | ERROR    | ss_crawler | [database] Database transaction failed: (psycopg2.OperationalError) connection to server at "localhost" (::1), port 5433 failed: FATAL:  password authentication failed for user "postgres"
+
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+2026-07-29 16:28:45 | INFO     | ss_crawler | [database] Database connected: localhost:5433/ss_market
+2026-07-29 16:28:46 | INFO     | ss_crawler | [case_matcher] CaseMatcher initialized with 5742 case references
+2026-07-29 16:28:46 | INFO     | ss_crawler | [psu_matcher] PSUMatcher initialized with 2895 PSU references
+2026-07-29 16:29:03 | INFO     | ss_crawler | [database] Database connected: localhost:5433/ss_market
+2026-07-29 16:29:04 | INFO     | ss_crawler | [case_matcher] CaseMatcher initialized with 5742 case references
+2026-07-29 16:29:04 | INFO     | ss_crawler | [psu_matcher] PSUMatcher initialized with 2895 PSU references
+2026-07-29 16:29:59 | INFO     | ss_crawler | [database] Database connected: localhost:5433/ss_market
+2026-07-29 16:29:59 | INFO     | ss_crawler | [psu_matcher] PSUMatcher initialized with 2895 PSU references
+2026-07-29 16:30:09 | INFO     | ss_crawler | [database] Database connected: localhost:5433/ss_market
+2026-07-29 16:30:09 | INFO     | ss_crawler | [psu_matcher] PSUMatcher initialized with 2895 PSU references

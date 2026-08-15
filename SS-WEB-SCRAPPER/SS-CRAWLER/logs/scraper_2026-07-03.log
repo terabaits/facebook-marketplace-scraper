@@ -1,0 +1,300 @@
+2026-07-03 10:03:34 | INFO     | ss_crawler | [ssd_scraper] Initializing SSD scraper...
+2026-07-03 10:03:34 | INFO     | ss_crawler | [database] Database connected: localhost:5433/ss_market
+2026-07-03 10:03:34 | INFO     | ss_crawler | [ssd_scraper] Database: postgresql+psycopg2://crawler:crawler_pass@localhost:5433/ss_market
+2026-07-03 10:03:34 | INFO     | ss_crawler | [ssd_matcher] SSDMatcher initialized with 2453 SSDs
+2026-07-03 10:03:34 | INFO     | ss_crawler | [ssd_scraper] Loaded 2453 SSD references
+2026-07-03 10:03:34 | INFO     | ss_crawler | [ssd_scraper] Starting SSD scraper from https://www.ss.com/lv/electronics/computers/completing-pc/ssd/
+2026-07-03 10:03:34 | INFO     | ss_crawler | [ssd_scraper] Fetching page 1: https://www.ss.com/lv/electronics/computers/completing-pc/ssd/
+2026-07-03 10:03:34 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/lv/electronics/computers/completing-pc/ssd/
+2026-07-03 10:03:38 | INFO     | ss_crawler | [ssd_scraper] Found 32 listings on page 1, 32 new
+2026-07-03 10:03:38 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ssd/bbbffd.html
+2026-07-03 10:03:40 | INFO     | ss_crawler | [ssd_scraper] Matched bbbffd: ADATA SX6000 (100% confidence)
+2026-07-03 10:03:40 | ERROR    | ss_crawler | [ssd_scraper] Error scraping listing bbbffd: compute_content_hash() takes 3 positional arguments but 4 were given
+2026-07-03 10:03:40 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ssd/bbbffd.html
+2026-07-03 10:03:43 | INFO     | ss_crawler | [ssd_scraper] Matched bbbffd: ADATA SX6000 (100% confidence)
+2026-07-03 10:03:43 | ERROR    | ss_crawler | [ssd_scraper] Error scraping listing bbbffd: compute_content_hash() takes 3 positional arguments but 4 were given
+2026-07-03 10:03:43 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ssd/bbbffd.html
+2026-07-03 10:03:46 | INFO     | ss_crawler | [ssd_scraper] Matched bbbffd: ADATA SX6000 (100% confidence)
+2026-07-03 10:03:46 | ERROR    | ss_crawler | [ssd_scraper] Error scraping listing bbbffd: compute_content_hash() takes 3 positional arguments but 4 were given
+2026-07-03 10:03:46 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ssd/cgmdfx.html
+2026-07-03 10:03:50 | INFO     | ss_crawler | [ssd_scraper] No match for cgmdfx: Intenso 512Gb Ssd disks piemērots klēpjdatoriem un
+2026-07-03 10:03:50 | ERROR    | ss_crawler | [ssd_scraper] Error scraping listing cgmdfx: compute_content_hash() takes 3 positional arguments but 4 were given
+2026-07-03 10:03:50 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ssd/cckeii.html
+2026-07-03 10:03:52 | INFO     | ss_crawler | [ssd_scraper] Matched cckeii: Samsung T9 (100% confidence)
+2026-07-03 10:03:52 | ERROR    | ss_crawler | [ssd_scraper] Error scraping listing cckeii: compute_content_hash() takes 3 positional arguments but 4 were given
+2026-07-03 10:03:52 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ssd/mecfg.html
+2026-07-03 11:22:49 | INFO     | ss_crawler | [ssd_scraper] Initializing SSD scraper...
+2026-07-03 11:22:49 | INFO     | ss_crawler | [database] Database connected: localhost:5433/ss_market
+2026-07-03 11:22:49 | INFO     | ss_crawler | [ssd_scraper] Database: postgresql+psycopg2://crawler:crawler_pass@localhost:5433/ss_market
+2026-07-03 11:22:49 | INFO     | ss_crawler | [ssd_matcher] SSDMatcher initialized with 2453 SSDs
+2026-07-03 11:22:49 | INFO     | ss_crawler | [ssd_scraper] Loaded 2453 SSD references
+2026-07-03 11:22:49 | INFO     | ss_crawler | [ssd_scraper] Starting SSD scraper from https://www.ss.com/lv/electronics/computers/completing-pc/ssd/
+2026-07-03 11:22:49 | INFO     | ss_crawler | [ssd_scraper] Fetching page 1: https://www.ss.com/lv/electronics/computers/completing-pc/ssd/
+2026-07-03 11:22:49 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/lv/electronics/computers/completing-pc/ssd/
+2026-07-03 11:22:52 | INFO     | ss_crawler | [ssd_scraper] Found 32 listings on page 1, 32 new
+2026-07-03 11:22:52 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ssd/bbbffd.html
+2026-07-03 11:22:54 | INFO     | ss_crawler | [ssd_scraper] Matched bbbffd: ADATA SX6000 (100% confidence)
+2026-07-03 11:22:54 | INFO     | ss_crawler | [ssd_scraper] 🔄 bbbffd: Updated (title, description)
+2026-07-03 11:22:54 | INFO     | ss_crawler | [image_downloader] Downloaded image for bbbffd (stored as bbbffd_c23e5c51.jpg)
+2026-07-03 11:22:54 | INFO     | ss_crawler | [ssd_scraper] Image saved locally: bbbffd_c23e5c51.jpg
+2026-07-03 11:22:54 | INFO     | ss_crawler | [ssd_scraper] Updated local_image_path in DB: True
+2026-07-03 11:22:54 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ssd/bbbffd.html
+2026-07-03 11:22:57 | INFO     | ss_crawler | [ssd_scraper] Matched bbbffd: ADATA SX6000 (100% confidence)
+2026-07-03 11:22:57 | INFO     | ss_crawler | [ssd_scraper] 🔄 bbbffd: Updated (content)
+2026-07-03 11:22:57 | INFO     | ss_crawler | [ssd_scraper] Image saved locally: ssds\bbbffd_c23e5c51.jpg
+2026-07-03 11:22:57 | INFO     | ss_crawler | [ssd_scraper] Updated local_image_path in DB: True
+2026-07-03 11:22:57 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ssd/bbbffd.html
+2026-07-03 11:23:00 | INFO     | ss_crawler | [ssd_scraper] Matched bbbffd: ADATA SX6000 (100% confidence)
+2026-07-03 11:23:00 | INFO     | ss_crawler | [ssd_scraper] 🔄 bbbffd: Updated (content)
+2026-07-03 11:23:00 | INFO     | ss_crawler | [ssd_scraper] Image saved locally: ssds\bbbffd_c23e5c51.jpg
+2026-07-03 11:23:00 | INFO     | ss_crawler | [ssd_scraper] Updated local_image_path in DB: True
+2026-07-03 11:23:00 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ssd/cgmdfx.html
+2026-07-03 11:23:01 | INFO     | ss_crawler | [ssd_scraper] No match for cgmdfx: Intenso 512Gb Ssd disks piemērots klēpjdatoriem un
+2026-07-03 11:23:01 | INFO     | ss_crawler | [ssd_scraper] ✅ cgmdfx: New
+2026-07-03 11:23:02 | INFO     | ss_crawler | [image_downloader] Downloaded image for cgmdfx (stored as cgmdfx_c81b8e4e.jpg)
+2026-07-03 11:23:02 | INFO     | ss_crawler | [ssd_scraper] Image saved locally: cgmdfx_c81b8e4e.jpg
+2026-07-03 11:23:02 | INFO     | ss_crawler | [ssd_scraper] Updated local_image_path in DB: True
+2026-07-03 11:23:02 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ssd/cckeii.html
+2026-07-03 11:23:05 | INFO     | ss_crawler | [ssd_scraper] Matched cckeii: Samsung T9 (100% confidence)
+2026-07-03 11:23:05 | INFO     | ss_crawler | [ssd_scraper] 🔄 cckeii: Updated (price €230.00→€245.00, title, description, location, match)
+2026-07-03 11:23:05 | INFO     | ss_crawler | [image_downloader] Downloaded image for cckeii (stored as cckeii_e4e0e2f3.jpg)
+2026-07-03 11:23:05 | INFO     | ss_crawler | [ssd_scraper] Image saved locally: cckeii_e4e0e2f3.jpg
+2026-07-03 11:23:05 | INFO     | ss_crawler | [ssd_scraper] Updated local_image_path in DB: True
+2026-07-03 11:23:05 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ssd/mecfg.html
+2026-07-03 18:32:20 | INFO     | ss_crawler | [ssd_scraper] Initializing SSD scraper...
+2026-07-03 18:32:20 | INFO     | ss_crawler | [database] Database connected: localhost:5433/ss_market
+2026-07-03 18:32:20 | INFO     | ss_crawler | [ssd_scraper] Database: postgresql+psycopg2://crawler:crawler_pass@localhost:5433/ss_market
+2026-07-03 18:32:20 | INFO     | ss_crawler | [ssd_matcher] SSDMatcher initialized with 2453 SSDs
+2026-07-03 18:32:20 | INFO     | ss_crawler | [ssd_scraper] Loaded 2453 SSD references
+2026-07-03 18:32:20 | INFO     | ss_crawler | [ssd_scraper] Starting SSD scraper from https://www.ss.com/lv/electronics/computers/completing-pc/ssd/
+2026-07-03 18:32:20 | INFO     | ss_crawler | [ssd_scraper] Fetching page 1: https://www.ss.com/lv/electronics/computers/completing-pc/ssd/
+2026-07-03 18:32:20 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/lv/electronics/computers/completing-pc/ssd/
+2026-07-03 18:32:22 | INFO     | ss_crawler | [ssd_scraper] Found 32 listings on page 1, 32 new
+2026-07-03 18:32:22 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ssd/bbbffd.html
+2026-07-03 18:32:25 | INFO     | ss_crawler | [ssd_scraper] Matched bbbffd: ADATA SX6000 (100% confidence)
+2026-07-03 18:32:25 | INFO     | ss_crawler | [ssd_scraper] 🔄 bbbffd: Updated (content)
+2026-07-03 18:32:25 | INFO     | ss_crawler | [ssd_scraper] Image saved locally: ssds\bbbffd_c23e5c51.jpg
+2026-07-03 18:32:25 | INFO     | ss_crawler | [ssd_scraper] Updated local_image_path in DB: True
+2026-07-03 18:32:25 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ssd/bbbffd.html
+2026-07-03 18:32:28 | INFO     | ss_crawler | [ssd_scraper] Matched bbbffd: ADATA SX6000 (100% confidence)
+2026-07-03 18:32:28 | INFO     | ss_crawler | [ssd_scraper] 🔄 bbbffd: Updated (content)
+2026-07-03 18:32:28 | INFO     | ss_crawler | [ssd_scraper] Image saved locally: ssds\bbbffd_c23e5c51.jpg
+2026-07-03 18:32:28 | INFO     | ss_crawler | [ssd_scraper] Updated local_image_path in DB: True
+2026-07-03 18:32:28 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ssd/bbbffd.html
+2026-07-03 18:32:31 | INFO     | ss_crawler | [ssd_scraper] Matched bbbffd: ADATA SX6000 (100% confidence)
+2026-07-03 18:32:31 | INFO     | ss_crawler | [ssd_scraper] 🔄 bbbffd: Updated (content)
+2026-07-03 18:32:31 | INFO     | ss_crawler | [ssd_scraper] Image saved locally: ssds\bbbffd_c23e5c51.jpg
+2026-07-03 18:32:31 | INFO     | ss_crawler | [ssd_scraper] Updated local_image_path in DB: True
+2026-07-03 18:32:31 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ssd/cgmdfx.html
+2026-07-03 18:32:35 | INFO     | ss_crawler | [ssd_scraper] No match for cgmdfx: Intenso 512Gb Ssd disks piemērots klēpjdatoriem un
+2026-07-03 18:32:35 | INFO     | ss_crawler | [ssd_scraper] ⏸️ cgmdfx: Unchanged
+2026-07-03 18:32:35 | INFO     | ss_crawler | [ssd_scraper] Image saved locally: ssds\cgmdfx_c81b8e4e.jpg
+2026-07-03 18:32:35 | INFO     | ss_crawler | [ssd_scraper] Updated local_image_path in DB: True
+2026-07-03 18:32:35 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ssd/cgknmp.html
+2026-07-03 18:32:38 | INFO     | ss_crawler | [ssd_scraper] Matched cgknmp: Kingston NV3 (100% confidence)
+2026-07-03 18:32:38 | INFO     | ss_crawler | [ssd_scraper] 🔄 cgknmp: Updated (title, description)
+2026-07-03 18:32:38 | INFO     | ss_crawler | [image_downloader] Downloaded image for cgknmp (stored as cgknmp_88f2e08a.jpg)
+2026-07-03 18:32:38 | INFO     | ss_crawler | [ssd_scraper] Image saved locally: ssds\cgknmp_88f2e08a.jpg
+2026-07-03 18:32:38 | INFO     | ss_crawler | [ssd_scraper] Updated local_image_path in DB: True
+2026-07-03 18:32:38 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ssd/ccilhn.html
+2026-07-03 18:32:41 | INFO     | ss_crawler | [ssd_scraper] Matched ccilhn: Kingston A400 (100% confidence)
+2026-07-03 18:32:41 | INFO     | ss_crawler | [ssd_scraper] 🔄 ccilhn: Updated (title, description)
+2026-07-03 18:32:41 | INFO     | ss_crawler | [image_downloader] Downloaded image for ccilhn (stored as ccilhn_aa029f49.jpg)
+2026-07-03 18:32:41 | INFO     | ss_crawler | [ssd_scraper] Image saved locally: ssds\ccilhn_aa029f49.jpg
+2026-07-03 18:32:41 | INFO     | ss_crawler | [ssd_scraper] Updated local_image_path in DB: True
+2026-07-03 18:32:41 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ssd/cckeii.html
+2026-07-03 18:32:44 | INFO     | ss_crawler | [ssd_scraper] Matched cckeii: Samsung T9 (100% confidence)
+2026-07-03 18:32:44 | INFO     | ss_crawler | [ssd_scraper] 🔄 cckeii: Updated (content)
+2026-07-03 18:32:44 | INFO     | ss_crawler | [ssd_scraper] Image saved locally: ssds\cckeii_e4e0e2f3.jpg
+2026-07-03 18:32:44 | INFO     | ss_crawler | [ssd_scraper] Updated local_image_path in DB: True
+2026-07-03 18:32:44 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ssd/mecfg.html
+2026-07-03 18:32:46 | INFO     | ss_crawler | [ssd_scraper] Matched mecfg: Samsung T9 (100% confidence)
+2026-07-03 18:32:46 | INFO     | ss_crawler | [ssd_scraper] 🔄 mecfg: Updated (title, description, location)
+2026-07-03 18:32:47 | INFO     | ss_crawler | [image_downloader] Downloaded image for mecfg (stored as mecfg_268564d0.jpg)
+2026-07-03 18:32:47 | INFO     | ss_crawler | [ssd_scraper] Image saved locally: ssds\mecfg_268564d0.jpg
+2026-07-03 18:32:47 | INFO     | ss_crawler | [ssd_scraper] Updated local_image_path in DB: True
+2026-07-03 18:32:47 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ssd/blcfpb.html
+2026-07-03 18:32:50 | INFO     | ss_crawler | [ssd_scraper] Matched blcfpb: SanDisk Extreme PRO Port. V2 (100% confidence)
+2026-07-03 18:32:50 | INFO     | ss_crawler | [ssd_scraper] 🔄 blcfpb: Updated (title, description, location, match)
+2026-07-03 18:32:50 | INFO     | ss_crawler | [image_downloader] Downloaded image for blcfpb (stored as blcfpb_9d5c5d65.jpg)
+2026-07-03 18:32:50 | INFO     | ss_crawler | [ssd_scraper] Image saved locally: ssds\blcfpb_9d5c5d65.jpg
+2026-07-03 18:32:50 | INFO     | ss_crawler | [ssd_scraper] Updated local_image_path in DB: True
+2026-07-03 18:32:50 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ssd/bfhgkd.html
+2026-07-03 18:32:52 | INFO     | ss_crawler | [ssd_scraper] Matched bfhgkd: WD Green (100% confidence)
+2026-07-03 18:32:52 | INFO     | ss_crawler | [ssd_scraper] ✅ bfhgkd: New
+2026-07-03 18:32:53 | INFO     | ss_crawler | [image_downloader] Downloaded image for bfhgkd (stored as bfhgkd_880f2274.jpg)
+2026-07-03 18:32:53 | INFO     | ss_crawler | [ssd_scraper] Image saved locally: ssds\bfhgkd_880f2274.jpg
+2026-07-03 18:32:53 | INFO     | ss_crawler | [ssd_scraper] Updated local_image_path in DB: True
+2026-07-03 18:32:53 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ssd/cdconp.html
+2026-07-03 18:32:54 | INFO     | ss_crawler | [ssd_scraper] No match for cdconp: Pārdodu m. 2 Nvme Ssd uz 1Tb Xpg. Disks ir ideālā 
+2026-07-03 18:32:54 | INFO     | ss_crawler | [ssd_scraper] ✅ cdconp: New
+2026-07-03 18:32:55 | INFO     | ss_crawler | [image_downloader] Downloaded image for cdconp (stored as cdconp_1f5e8455.jpg)
+2026-07-03 18:32:55 | INFO     | ss_crawler | [ssd_scraper] Image saved locally: ssds\cdconp_1f5e8455.jpg
+2026-07-03 18:32:55 | INFO     | ss_crawler | [ssd_scraper] Updated local_image_path in DB: True
+2026-07-03 18:32:55 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ssd/bhenxg.html
+2026-07-03 18:47:00 | INFO     | ss_crawler | [ssd_scraper] Initializing SSD scraper...
+2026-07-03 18:47:00 | INFO     | ss_crawler | [database] Database connected: localhost:5433/ss_market
+2026-07-03 18:47:00 | INFO     | ss_crawler | [ssd_scraper] Database: postgresql+psycopg2://crawler:crawler_pass@localhost:5433/ss_market
+2026-07-03 18:47:00 | INFO     | ss_crawler | [ssd_matcher] SSDMatcher initialized with 2453 SSDs
+2026-07-03 18:47:00 | INFO     | ss_crawler | [ssd_scraper] Loaded 2453 SSD references
+2026-07-03 18:47:00 | INFO     | ss_crawler | [ssd_scraper] Starting SSD scraper from https://www.ss.com/lv/electronics/computers/completing-pc/ssd/
+2026-07-03 18:47:00 | INFO     | ss_crawler | [ssd_scraper] Fetching page 1: https://www.ss.com/lv/electronics/computers/completing-pc/ssd/
+2026-07-03 18:47:00 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/lv/electronics/computers/completing-pc/ssd/
+2026-07-03 18:47:02 | INFO     | ss_crawler | [ssd_scraper] Found 32 listings on page 1, 32 new
+2026-07-03 18:47:02 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ssd/bbbffd.html
+2026-07-03 18:47:05 | INFO     | ss_crawler | [ssd_scraper] Matched bbbffd: ADATA SX6000 (100% confidence)
+2026-07-03 18:47:05 | INFO     | ss_crawler | [ssd_scraper] 🔄 bbbffd: Updated (content)
+2026-07-03 18:47:05 | INFO     | ss_crawler | [ssd_scraper] Image saved locally: ssds\bbbffd_3f8d1e85.jpg
+2026-07-03 18:47:05 | INFO     | ss_crawler | [ssd_scraper] Updated local_image_path in DB: True
+2026-07-03 18:47:05 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ssd/bbbffd.html
+2026-07-03 18:47:08 | INFO     | ss_crawler | [ssd_scraper] Matched bbbffd: ADATA SX6000 (100% confidence)
+2026-07-03 18:47:08 | INFO     | ss_crawler | [ssd_scraper] 🔄 bbbffd: Updated (content)
+2026-07-03 18:47:08 | INFO     | ss_crawler | [ssd_scraper] Image saved locally: ssds\bbbffd_3f8d1e85.jpg
+2026-07-03 18:47:08 | INFO     | ss_crawler | [ssd_scraper] Updated local_image_path in DB: True
+2026-07-03 18:47:08 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ssd/bbbffd.html
+2026-07-03 18:47:11 | INFO     | ss_crawler | [ssd_scraper] Matched bbbffd: ADATA SX6000 (100% confidence)
+2026-07-03 18:47:11 | INFO     | ss_crawler | [ssd_scraper] 🔄 bbbffd: Updated (content)
+2026-07-03 18:47:11 | INFO     | ss_crawler | [ssd_scraper] Image saved locally: ssds\bbbffd_3f8d1e85.jpg
+2026-07-03 18:47:11 | INFO     | ss_crawler | [ssd_scraper] Updated local_image_path in DB: True
+2026-07-03 18:47:11 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ssd/cgmdfx.html
+2026-07-03 18:47:13 | INFO     | ss_crawler | [ssd_scraper] No match for cgmdfx: Intenso 512Gb Ssd disks piemērots klēpjdatoriem un
+2026-07-03 18:47:13 | INFO     | ss_crawler | [ssd_scraper] ✅ cgmdfx: New
+2026-07-03 18:47:14 | INFO     | ss_crawler | [image_downloader] Downloaded image for cgmdfx (stored as cgmdfx_d5748ea9.jpg)
+2026-07-03 18:47:14 | INFO     | ss_crawler | [ssd_scraper] Image saved locally: ssds\cgmdfx_d5748ea9.jpg
+2026-07-03 18:47:14 | INFO     | ss_crawler | [ssd_scraper] Updated local_image_path in DB: True
+2026-07-03 18:47:14 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ssd/cgknmp.html
+2026-07-03 18:47:16 | INFO     | ss_crawler | [ssd_scraper] Matched cgknmp: Kingston NV3 (100% confidence)
+2026-07-03 18:47:16 | INFO     | ss_crawler | [ssd_scraper] 🔄 cgknmp: Updated (content)
+2026-07-03 18:47:16 | INFO     | ss_crawler | [ssd_scraper] Image saved locally: ssds\cgknmp_1c88de02.jpg
+2026-07-03 18:47:16 | INFO     | ss_crawler | [ssd_scraper] Updated local_image_path in DB: True
+2026-07-03 18:47:16 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ssd/ccilhn.html
+2026-07-03 19:31:04 | INFO     | ss_crawler | [ssd_scraper] Initializing SSD scraper...
+2026-07-03 19:31:04 | INFO     | ss_crawler | [database] Database connected: localhost:5433/ss_market
+2026-07-03 19:31:04 | INFO     | ss_crawler | [ssd_scraper] Database: postgresql+psycopg2://crawler:crawler_pass@localhost:5433/ss_market
+2026-07-03 19:31:04 | INFO     | ss_crawler | [ssd_matcher] SSDMatcher initialized with 2453 SSDs
+2026-07-03 19:31:04 | INFO     | ss_crawler | [ssd_scraper] Loaded 2453 SSD references
+2026-07-03 19:31:04 | INFO     | ss_crawler | [ssd_scraper] Starting SSD scraper from https://www.ss.com/lv/electronics/computers/completing-pc/ssd/
+2026-07-03 19:31:04 | INFO     | ss_crawler | [ssd_scraper] Fetching page 1: https://www.ss.com/lv/electronics/computers/completing-pc/ssd/
+2026-07-03 19:31:04 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/lv/electronics/computers/completing-pc/ssd/
+2026-07-03 19:31:08 | INFO     | ss_crawler | [ssd_scraper] Found 32 listings on page 1, 32 new
+2026-07-03 19:31:08 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ssd/bbbffd.html
+2026-07-03 19:31:10 | INFO     | ss_crawler | [ssd_scraper] Matched bbbffd: ADATA SX6000 (100% confidence)
+2026-07-03 19:31:10 | INFO     | ss_crawler | [ssd_scraper] 🔄 bbbffd: Updated (content)
+2026-07-03 19:31:10 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ssd/bbbffd.html
+2026-07-03 19:31:14 | INFO     | ss_crawler | [ssd_scraper] Matched bbbffd: ADATA SX6000 (100% confidence)
+2026-07-03 19:31:14 | INFO     | ss_crawler | [ssd_scraper] 🔄 bbbffd: Updated (content)
+2026-07-03 19:31:14 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ssd/bbbffd.html
+2026-07-03 19:31:17 | INFO     | ss_crawler | [ssd_scraper] Matched bbbffd: ADATA SX6000 (100% confidence)
+2026-07-03 19:31:17 | INFO     | ss_crawler | [ssd_scraper] 🔄 bbbffd: Updated (content)
+2026-07-03 19:31:17 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ssd/cgmdfx.html
+2026-07-03 19:31:20 | INFO     | ss_crawler | [ssd_scraper] No match for cgmdfx: Intenso 512Gb Ssd disks piemērots klēpjdatoriem un
+2026-07-03 19:31:20 | INFO     | ss_crawler | [ssd_scraper] ⏸️ cgmdfx: Unchanged
+2026-07-03 19:31:20 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ssd/cgknmp.html
+2026-07-03 19:31:23 | INFO     | ss_crawler | [ssd_scraper] Matched cgknmp: Kingston NV3 (100% confidence)
+2026-07-03 19:31:23 | INFO     | ss_crawler | [ssd_scraper] 🔄 cgknmp: Updated (content)
+2026-07-03 19:31:23 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ssd/ccilhn.html
+2026-07-03 19:31:25 | INFO     | ss_crawler | [ssd_scraper] Matched ccilhn: Kingston A400 (100% confidence)
+2026-07-03 19:31:25 | INFO     | ss_crawler | [ssd_scraper] 🔄 ccilhn: Updated (content)
+2026-07-03 19:31:25 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ssd/cckeii.html
+2026-07-03 19:31:27 | INFO     | ss_crawler | [ssd_scraper] Matched cckeii: Samsung T9 (100% confidence)
+2026-07-03 19:31:27 | INFO     | ss_crawler | [ssd_scraper] 🔄 cckeii: Updated (content)
+2026-07-03 19:31:27 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ssd/mecfg.html
+2026-07-03 19:31:29 | INFO     | ss_crawler | [ssd_scraper] Matched mecfg: Samsung T9 (100% confidence)
+2026-07-03 19:31:29 | INFO     | ss_crawler | [ssd_scraper] 🔄 mecfg: Updated (content)
+2026-07-03 19:31:29 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ssd/blcfpb.html
+2026-07-03 19:31:31 | INFO     | ss_crawler | [ssd_scraper] Matched blcfpb: SanDisk Extreme PRO Port. V2 (100% confidence)
+2026-07-03 19:31:31 | INFO     | ss_crawler | [ssd_scraper] 🔄 blcfpb: Updated (content)
+2026-07-03 19:31:31 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ssd/bfhgkd.html
+2026-07-03 19:31:35 | INFO     | ss_crawler | [ssd_scraper] Matched bfhgkd: WD Green (100% confidence)
+2026-07-03 19:31:35 | INFO     | ss_crawler | [ssd_scraper] ✅ bfhgkd: New
+2026-07-03 19:31:35 | INFO     | ss_crawler | [image_downloader] Downloaded image for bfhgkd (stored as bfhgkd_1106b939.jpg, 142960 bytes)
+2026-07-03 19:31:35 | INFO     | ss_crawler | [ssd_scraper] Image saved locally: ssds\bfhgkd_1106b939.jpg
+2026-07-03 19:31:35 | INFO     | ss_crawler | [ssd_scraper] Updated local_image_path in DB: True
+2026-07-03 19:31:35 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ssd/cdconp.html
+2026-07-03 19:31:38 | INFO     | ss_crawler | [ssd_scraper] No match for cdconp: Pārdodu m. 2 Nvme Ssd uz 1Tb Xpg. Disks ir ideālā 
+2026-07-03 19:31:38 | INFO     | ss_crawler | [ssd_scraper] ⏸️ cdconp: Unchanged
+2026-07-03 19:31:38 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ssd/bhenxg.html
+2026-07-03 19:31:43 | INFO     | ss_crawler | [ssd_scraper] Matched bhenxg: WD Green (100% confidence)
+2026-07-03 19:31:43 | INFO     | ss_crawler | [ssd_scraper] ✅ bhenxg: New
+2026-07-03 19:31:44 | INFO     | ss_crawler | [image_downloader] Downloaded image for bhenxg (stored as bhenxg_198ed3c0.jpg, 184730 bytes)
+2026-07-03 19:31:44 | INFO     | ss_crawler | [ssd_scraper] Image saved locally: ssds\bhenxg_198ed3c0.jpg
+2026-07-03 19:31:44 | INFO     | ss_crawler | [ssd_scraper] Updated local_image_path in DB: True
+2026-07-03 19:31:44 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ssd/bdieki.html
+2026-07-03 19:31:46 | INFO     | ss_crawler | [ssd_scraper] Matched bdieki: Patriot P400 (100% confidence)
+2026-07-03 19:31:46 | INFO     | ss_crawler | [ssd_scraper] ✅ bdieki: New
+2026-07-03 19:31:47 | INFO     | ss_crawler | [image_downloader] Downloaded image for bdieki (stored as bdieki_7d63b08f.jpg, 64691 bytes)
+2026-07-03 19:31:47 | INFO     | ss_crawler | [ssd_scraper] Image saved locally: ssds\bdieki_7d63b08f.jpg
+2026-07-03 19:31:47 | INFO     | ss_crawler | [ssd_scraper] Updated local_image_path in DB: True
+2026-07-03 19:31:47 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ssd/bomngi.html
+2026-07-03 19:31:50 | INFO     | ss_crawler | [ssd_scraper] Matched bomngi: Kingston A400 (100% confidence)
+2026-07-03 19:31:50 | INFO     | ss_crawler | [ssd_scraper] 🔄 bomngi: Updated (title, description)
+2026-07-03 19:31:50 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ssd/bcnmoh.html
+2026-07-03 19:31:53 | INFO     | ss_crawler | [ssd_scraper] Matched bcnmoh: Crucial T500 (100% confidence)
+2026-07-03 19:31:53 | INFO     | ss_crawler | [ssd_scraper] 🔄 bcnmoh: Updated (title, description, location, match)
+2026-07-03 19:31:53 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ssd/boeccm.html
+2026-07-03 19:31:56 | INFO     | ss_crawler | [ssd_scraper] Matched boeccm: Kingston NV1 (100% confidence)
+2026-07-03 19:31:56 | INFO     | ss_crawler | [ssd_scraper] 🔄 boeccm: Updated (title, description, location)
+2026-07-03 19:31:56 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ssd/bdemlo.html
+2026-07-03 19:31:59 | INFO     | ss_crawler | [ssd_scraper] No match for bdemlo: Продам малопользованый жёсткий диск. На 2Тb.
+2026-07-03 19:31:59 | INFO     | ss_crawler | [ssd_scraper] ✅ bdemlo: New
+2026-07-03 19:32:00 | INFO     | ss_crawler | [image_downloader] Downloaded image for bdemlo (stored as bdemlo_57ec5ac4.jpg, 66634 bytes)
+2026-07-03 19:32:00 | INFO     | ss_crawler | [ssd_scraper] Image saved locally: ssds\bdemlo_57ec5ac4.jpg
+2026-07-03 19:32:00 | INFO     | ss_crawler | [ssd_scraper] Updated local_image_path in DB: True
+2026-07-03 19:32:00 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ssd/bopkkl.html
+2026-07-03 19:32:03 | INFO     | ss_crawler | [ssd_scraper] Matched bopkkl: Intel 545s (100% confidence)
+2026-07-03 19:32:03 | INFO     | ss_crawler | [ssd_scraper] ✅ bopkkl: New
+2026-07-03 19:32:05 | INFO     | ss_crawler | [image_downloader] Downloaded image for bopkkl (stored as bopkkl_65b0cc8d.jpg, 39359 bytes)
+2026-07-03 19:32:05 | INFO     | ss_crawler | [ssd_scraper] Image saved locally: ssds\bopkkl_65b0cc8d.jpg
+2026-07-03 19:32:05 | INFO     | ss_crawler | [ssd_scraper] Updated local_image_path in DB: True
+2026-07-03 19:32:05 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ssd/bedcbg.html
+2026-07-03 19:32:06 | INFO     | ss_crawler | [ssd_scraper] Matched bedcbg: Kingston KC600 (100% confidence)
+2026-07-03 19:32:07 | INFO     | ss_crawler | [ssd_scraper] ✅ bedcbg: New
+2026-07-03 19:32:07 | INFO     | ss_crawler | [image_downloader] Downloaded image for bedcbg (stored as bedcbg_05e9a6e0.jpg, 45278 bytes)
+2026-07-03 19:32:07 | INFO     | ss_crawler | [ssd_scraper] Image saved locally: ssds\bedcbg_05e9a6e0.jpg
+2026-07-03 19:32:07 | INFO     | ss_crawler | [ssd_scraper] Updated local_image_path in DB: True
+2026-07-03 19:32:07 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ssd/pbkpx.html
+2026-07-03 19:32:09 | INFO     | ss_crawler | [ssd_scraper] Matched pbkpx: Intel 545s (100% confidence)
+2026-07-03 19:32:09 | INFO     | ss_crawler | [ssd_scraper] ✅ pbkpx: New
+2026-07-03 19:32:09 | INFO     | ss_crawler | [image_downloader] Downloaded image for pbkpx (stored as pbkpx_fc822518.jpg, 119697 bytes)
+2026-07-03 19:32:09 | INFO     | ss_crawler | [ssd_scraper] Image saved locally: ssds\pbkpx_fc822518.jpg
+2026-07-03 19:32:09 | INFO     | ss_crawler | [ssd_scraper] Updated local_image_path in DB: True
+2026-07-03 19:32:09 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ssd/boljmh.html
+2026-07-03 19:32:12 | INFO     | ss_crawler | [ssd_scraper] Matched boljmh: Patriot P300 (100% confidence)
+2026-07-03 19:32:12 | INFO     | ss_crawler | [ssd_scraper] 🔄 boljmh: Updated (title, description, location)
+2026-07-03 19:32:12 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ssd/bebobc.html
+2026-07-03 19:32:15 | INFO     | ss_crawler | [ssd_scraper] No match for bebobc: Продаём Ssd Intel 180Gb , в рабочем состоянии. Tes
+2026-07-03 19:32:15 | INFO     | ss_crawler | [ssd_scraper] 🔄 bebobc: Updated (title, description)
+2026-07-03 19:32:15 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ssd/bommeg.html
+2026-07-03 19:32:18 | INFO     | ss_crawler | [ssd_scraper] Matched bommeg: Kingston NV2 (76% confidence)
+2026-07-03 19:32:18 | INFO     | ss_crawler | [ssd_scraper] 🔄 bommeg: Updated (title, description)
+2026-07-03 19:32:18 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ssd/cgmeko.html
+2026-07-03 19:32:21 | INFO     | ss_crawler | [ssd_scraper] No match for cgmeko: Pārdodu kvalitatīvu Toshiba Ssd.
+2026-07-03 19:32:21 | INFO     | ss_crawler | [ssd_scraper] ✅ cgmeko: New
+2026-07-03 19:32:22 | INFO     | ss_crawler | [image_downloader] Downloaded image for cgmeko (stored as cgmeko_ea810632.jpg, 120327 bytes)
+2026-07-03 19:32:22 | INFO     | ss_crawler | [ssd_scraper] Image saved locally: ssds\cgmeko_ea810632.jpg
+2026-07-03 19:32:22 | INFO     | ss_crawler | [ssd_scraper] Updated local_image_path in DB: True
+2026-07-03 19:32:22 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ssd/cglick.html
+2026-07-03 19:32:25 | INFO     | ss_crawler | [ssd_scraper] Matched cglick: Patriot P400 (100% confidence)
+2026-07-03 19:32:25 | INFO     | ss_crawler | [ssd_scraper] 🔄 cglick: Updated (price €100.00→€110.00, title, description)
+2026-07-03 19:32:25 | INFO     | ss_crawler | [image_downloader] Downloaded image for cglick (stored as cglick_cf39f2cf.jpg, 36583 bytes)
+2026-07-03 19:32:25 | INFO     | ss_crawler | [ssd_scraper] Image saved locally: ssds\cglick_cf39f2cf.jpg
+2026-07-03 19:32:25 | INFO     | ss_crawler | [ssd_scraper] Updated local_image_path in DB: True
+2026-07-03 19:32:25 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ssd/cgjgfg.html
+2026-07-03 19:32:28 | INFO     | ss_crawler | [ssd_scraper] No match for cgjgfg: Nopirku 25.gada decembrī, jauns ar ksenukai garant
+2026-07-03 19:32:28 | INFO     | ss_crawler | [ssd_scraper] 🔄 cgjgfg: Updated (title, description)
+2026-07-03 19:32:28 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ssd/cgljid.html
+2026-07-03 19:32:31 | INFO     | ss_crawler | [ssd_scraper] No match for cgljid: Jauni nvme 256Gb Ssd diski komplektā ar pagarinātā
+2026-07-03 19:32:31 | INFO     | ss_crawler | [ssd_scraper] 🔄 cgljid: Updated (title, description, location)
+2026-07-03 19:32:31 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ssd/bompdg.html
+2026-07-03 19:32:34 | INFO     | ss_crawler | [ssd_scraper] Matched bompdg: Kingston A400 (100% confidence)
+2026-07-03 19:32:34 | INFO     | ss_crawler | [ssd_scraper] 🔄 bompdg: Updated (title, description, location, match)
+2026-07-03 19:32:34 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ssd/bfhxex.html
+2026-07-03 19:32:39 | INFO     | ss_crawler | [ssd_scraper] No match for bfhxex: Jauni nvme 256Gb Ssd diski komplektā ar pagarinātā
+2026-07-03 19:32:39 | INFO     | ss_crawler | [ssd_scraper] 🔄 bfhxex: Updated (title, description, location)
+2026-07-03 19:32:39 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ssd/bcghkx.html
+2026-07-03 19:32:42 | INFO     | ss_crawler | [ssd_scraper] No match for bcghkx: Pārdodu lietotu Sata ssd 512gb
+2026-07-03 19:32:42 | INFO     | ss_crawler | [ssd_scraper] ✅ bcghkx: New
+2026-07-03 19:32:42 | INFO     | ss_crawler | [image_downloader] Downloaded image for bcghkx (stored as bcghkx_f4cbfcd9.jpg, 139296 bytes)
+2026-07-03 19:32:42 | INFO     | ss_crawler | [ssd_scraper] Image saved locally: ssds\bcghkx_f4cbfcd9.jpg
+2026-07-03 19:32:42 | INFO     | ss_crawler | [ssd_scraper] Updated local_image_path in DB: True
+2026-07-03 19:32:42 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/completing-pc/ssd/bdkkjl.html

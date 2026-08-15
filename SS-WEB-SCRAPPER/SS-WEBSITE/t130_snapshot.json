@@ -1,0 +1,39 @@
+{
+  "id": "T130",
+  "title": "about the CPU chart box: draging arround is glitchy. a dont see where I can drag them to hide?",
+  "page": "CPU",
+  "category": "",
+  "priority": "High",
+  "fix": "Fixed CPU widget drag-and-drop UX in templates/cpu.html: (1) Replaced native glitchy DnD with a placeholder-based drag preview and drag-mode toggle—dragging is now enabled only after clicking the '✋ Drag' button to avoid accidental drags. (2) Replaced ambiguous '⋮⋮' handles with a clear '☰' drag handle, hover highlight, and opacity/cursor feedback. (3) Added a '👁 Manage' button that opens a widget manager modal where each widget can be shown/hidden; hidden state persists to localStorage alongside pinned/saved state. (4) Added per-widget '🙈' hide buttons and persisted hidden/minimized states. (5) Reset now clears order, pinned, hidden, minimized, and drag-mode keys and reloads. Charts remain rendered after reorder because only the widget cards move, not their internal content.",
+  "column": "assignment",
+  "created": "2026-06-26T19:42:59.959953",
+  "updated": "2026-07-07T10:29:42.787038",
+  "linked_task_id": null,
+  "relationship_type": null,
+  "started_at": "2026-06-29T13:40:03.536273",
+  "reopen_history": [
+    {
+      "reopened_at": "2026-06-27T12:58:54.395380",
+      "update": "Dragging around doesnt really work. I cant put chart next to specific other chart. It just goes somewhere at the end of charts when I release mouse.",
+      "previous_completed_at": "2026-06-26T17:57:05.347643+00:00"
+    },
+    {
+      "reopened_at": "2026-07-01T21:47:13.489826",
+      "update": "Now nothing drags around",
+      "previous_completed_at": "2026-06-29T13:47:27.082663"
+    },
+    {
+      "reopened_at": "2026-07-06T16:20:18.597629",
+      "update": "Add the option to resize the chart boxes",
+      "previous_completed_at": null
+    },
+    {
+      "reopened_at": "2026-07-07T10:29:42.787038",
+      "update": "resize doesnt seem to work",
+      "previous_completed_at": null
+    }
+  ],
+  "status": "talking",
+  "updated_at": "2026-06-29T14:43:35.000958",
+  "code_snippet": "cpu:2867 CPU Statistics - Total listings: 38\ncpu:2878 CPU Statistics - Models found: 31\ncpu:1 Uncaught (in promise) Error: A listener indicated an asynchronous response by returning true, but the message channel closed before a response was received\ncpu:1 Uncaught (in promise) Error: A listener indicated an asynchronous response by returning true, but the message channel closed before a response was received\ncpu:1 Uncaught (in promise) Error: A listener indicated an asynchronous response by returning true, but the message channel closed before a response was received"
+}

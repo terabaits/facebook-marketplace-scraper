@@ -1,0 +1,409 @@
+2026-08-10 21:18:32 | INFO     | ss_crawler | [database] Database connected: localhost:5433/ss_market
+2026-08-10 21:18:32 | INFO     | ss_crawler | [laptop_scraper] Scraping laptop category: /lv/electronics/computers/noutbooks/
+2026-08-10 21:18:32 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/lv/electronics/computers/noutbooks/
+2026-08-10 21:18:34 | INFO     | ss_crawler | [laptop_scraper] Found 30 laptop listings on page 1
+2026-08-10 21:18:34 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/noutbooks/jomfn.html
+2026-08-10 21:18:37 | INFO     | ss_crawler | [laptop_scraper] [NEW] LAPTOP jomfn: Lenovo/IBM T490s €195.0
+2026-08-10 21:18:38 | INFO     | ss_crawler | [image_downloader] Downloaded image for jomfn (stored as jomfn_ec852f33.jpg, 97487 bytes)
+2026-08-10 21:18:38 | INFO     | ss_crawler | [laptop_scraper] Image saved locally: laptops\jomfn_ec852f33.jpg
+2026-08-10 21:18:38 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/noutbooks/denbp.html
+2026-08-10 21:18:40 | INFO     | ss_crawler | [laptop_scraper] [NEW] LAPTOP denbp: Dell Xps 13 (7390) €180.0
+2026-08-10 21:18:40 | INFO     | ss_crawler | [image_downloader] Downloaded image for denbp (stored as denbp_997b79d7.jpg, 35440 bytes)
+2026-08-10 21:18:40 | INFO     | ss_crawler | [laptop_scraper] Image saved locally: laptops\denbp_997b79d7.jpg
+2026-08-10 21:18:40 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/noutbooks/hemhp.html
+2026-08-10 21:18:43 | INFO     | ss_crawler | [laptop_scraper] [NEW] LAPTOP hemhp: Dell Precision 7540 €440.0
+2026-08-10 21:18:43 | INFO     | ss_crawler | [image_downloader] Downloaded image for hemhp (stored as hemhp_a59e6beb.jpg, 146637 bytes)
+2026-08-10 21:18:43 | INFO     | ss_crawler | [laptop_scraper] Image saved locally: laptops\hemhp_a59e6beb.jpg
+2026-08-10 21:18:43 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/noutbooks/ipphh.html
+2026-08-10 21:18:47 | INFO     | ss_crawler | [laptop_scraper] [NEW] LAPTOP ipphh: Msi Katana 12 €430.0
+2026-08-10 21:18:47 | INFO     | ss_crawler | [image_downloader] Downloaded image for ipphh (stored as ipphh_0476b277.jpg, 66757 bytes)
+2026-08-10 21:18:47 | INFO     | ss_crawler | [laptop_scraper] Image saved locally: laptops\ipphh_0476b277.jpg
+2026-08-10 21:18:47 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/noutbooks/kbbgh.html
+2026-08-10 21:18:47 | INFO     | ss_crawler | [database] Database connected: localhost:5433/ss_market
+2026-08-10 21:18:47 | INFO     | ss_crawler | [laptop_scraper] Scraping laptop category: /lv/electronics/computers/noutbooks/
+2026-08-10 21:18:47 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/lv/electronics/computers/noutbooks/
+2026-08-10 21:18:49 | INFO     | ss_crawler | [laptop_scraper] Found 30 laptop listings on page 1
+2026-08-10 21:18:49 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/noutbooks/jomfn.html
+2026-08-10 21:18:50 | INFO     | ss_crawler | [laptop_scraper] [NEW] LAPTOP kbbgh: Apple Macbook Pro €269.0
+2026-08-10 21:18:50 | INFO     | ss_crawler | [image_downloader] Downloaded image for kbbgh (stored as kbbgh_11a6634c.jpg, 39730 bytes)
+2026-08-10 21:18:50 | INFO     | ss_crawler | [laptop_scraper] Image saved locally: laptops\kbbgh_11a6634c.jpg
+2026-08-10 21:18:50 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/noutbooks/kneib.html
+2026-08-10 21:18:52 | INFO     | ss_crawler | [laptop_scraper] [NEW] LAPTOP kneib: Asus Vivobook Pro €450.0
+2026-08-10 21:18:52 | INFO     | ss_crawler | [laptop_scraper] [UNCHANGED] LAPTOP jomfn
+2026-08-10 21:18:52 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/noutbooks/denbp.html
+2026-08-10 21:18:52 | INFO     | ss_crawler | [image_downloader] Downloaded image for kneib (stored as kneib_41154f26.jpg, 57807 bytes)
+2026-08-10 21:18:52 | INFO     | ss_crawler | [laptop_scraper] Image saved locally: laptops\kneib_41154f26.jpg
+2026-08-10 21:18:52 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/noutbooks/kjmhn.html
+2026-08-10 21:18:54 | INFO     | ss_crawler | [laptop_scraper] [UNCHANGED] LAPTOP denbp
+2026-08-10 21:18:54 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/noutbooks/hemhp.html
+2026-08-10 21:18:54 | INFO     | ss_crawler | [laptop_scraper] [NEW] LAPTOP kjmhn: Dell Xps 13 9320 €649.0
+2026-08-10 21:18:55 | INFO     | ss_crawler | [image_downloader] Downloaded image for kjmhn (stored as kjmhn_2c8ee75f.jpg, 32558 bytes)
+2026-08-10 21:18:55 | INFO     | ss_crawler | [laptop_scraper] Image saved locally: laptops\kjmhn_2c8ee75f.jpg
+2026-08-10 21:18:55 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/noutbooks/lfoxg.html
+2026-08-10 21:18:57 | INFO     | ss_crawler | [laptop_scraper] [NEW] LAPTOP lfoxg: HP Elitebook G6 €190.0
+2026-08-10 21:18:57 | INFO     | ss_crawler | [image_downloader] Downloaded image for lfoxg (stored as lfoxg_58a75887.jpg, 119070 bytes)
+2026-08-10 21:18:57 | INFO     | ss_crawler | [laptop_scraper] Image saved locally: laptops\lfoxg_58a75887.jpg
+2026-08-10 21:18:57 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/noutbooks/lnfje.html
+2026-08-10 21:18:57 | INFO     | ss_crawler | [laptop_scraper] [UNCHANGED] LAPTOP hemhp
+2026-08-10 21:18:57 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/noutbooks/ipphh.html
+2026-08-10 21:18:59 | INFO     | ss_crawler | [laptop_scraper] [NEW] LAPTOP lnfje: Asus Vivibook X513 €209.0
+2026-08-10 21:19:00 | INFO     | ss_crawler | [image_downloader] Downloaded image for lnfje (stored as lnfje_f8c307b5.jpg, 42603 bytes)
+2026-08-10 21:19:00 | INFO     | ss_crawler | [laptop_scraper] Image saved locally: laptops\lnfje_f8c307b5.jpg
+2026-08-10 21:19:00 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/noutbooks/efbmo.html
+2026-08-10 21:19:01 | INFO     | ss_crawler | [laptop_scraper] [UNCHANGED] LAPTOP ipphh
+2026-08-10 21:19:01 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/noutbooks/kbbgh.html
+2026-08-10 21:19:01 | INFO     | ss_crawler | [laptop_scraper] [NEW] LAPTOP efbmo: Lenovo/IBM 80Ue €165.0
+2026-08-10 21:19:02 | INFO     | ss_crawler | [image_downloader] Downloaded image for efbmo (stored as efbmo_d411729e.jpg, 59439 bytes)
+2026-08-10 21:19:02 | INFO     | ss_crawler | [laptop_scraper] Image saved locally: laptops\efbmo_d411729e.jpg
+2026-08-10 21:19:02 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/noutbooks/lblhx.html
+2026-08-10 21:19:03 | INFO     | ss_crawler | [laptop_scraper] [UNCHANGED] LAPTOP kbbgh
+2026-08-10 21:19:03 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/noutbooks/kneib.html
+2026-08-10 21:19:04 | INFO     | ss_crawler | [laptop_scraper] [UNCHANGED] LAPTOP kneib
+2026-08-10 21:19:04 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/noutbooks/kjmhn.html
+2026-08-10 21:19:05 | INFO     | ss_crawler | [laptop_scraper] [NEW] LAPTOP lblhx: Asus Vivibook go 15 €210.0
+2026-08-10 21:19:05 | INFO     | ss_crawler | [image_downloader] Downloaded image for lblhx (stored as lblhx_4173a2ee.jpg, 38566 bytes)
+2026-08-10 21:19:05 | INFO     | ss_crawler | [laptop_scraper] Image saved locally: laptops\lblhx_4173a2ee.jpg
+2026-08-10 21:19:05 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/noutbooks/pdchi.html
+2026-08-10 21:19:07 | INFO     | ss_crawler | [laptop_scraper] [UNCHANGED] LAPTOP kjmhn
+2026-08-10 21:19:07 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/noutbooks/lfoxg.html
+2026-08-10 21:19:08 | INFO     | ss_crawler | [laptop_scraper] [NEW] LAPTOP pdchi: Asus Fx505D €225.0
+2026-08-10 21:19:08 | INFO     | ss_crawler | [image_downloader] Downloaded image for pdchi (stored as pdchi_12942358.jpg, 55096 bytes)
+2026-08-10 21:19:08 | INFO     | ss_crawler | [laptop_scraper] Image saved locally: laptops\pdchi_12942358.jpg
+2026-08-10 21:19:08 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/noutbooks/pipxb.html
+2026-08-10 21:19:09 | INFO     | ss_crawler | [laptop_scraper] [UNCHANGED] LAPTOP lfoxg
+2026-08-10 21:19:09 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/noutbooks/lnfje.html
+2026-08-10 21:19:11 | INFO     | ss_crawler | [laptop_scraper] [UNCHANGED] LAPTOP lnfje
+2026-08-10 21:19:11 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/noutbooks/efbmo.html
+2026-08-10 21:19:11 | INFO     | ss_crawler | [laptop_scraper] [NEW] LAPTOP pipxb: Asus E1504A €245.0
+2026-08-10 21:19:12 | INFO     | ss_crawler | [image_downloader] Downloaded image for pipxb (stored as pipxb_c9798a62.jpg, 40221 bytes)
+2026-08-10 21:19:12 | INFO     | ss_crawler | [laptop_scraper] Image saved locally: laptops\pipxb_c9798a62.jpg
+2026-08-10 21:19:12 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/noutbooks/mchhx.html
+2026-08-10 21:19:13 | INFO     | ss_crawler | [laptop_scraper] [UNCHANGED] LAPTOP efbmo
+2026-08-10 21:19:13 | INFO     | ss_crawler | [laptop_scraper] Listing limit reached: 10
+2026-08-10 21:19:15 | INFO     | ss_crawler | [laptop_scraper] [NEW] LAPTOP mchhx: Acer Predator 300 €760.0
+2026-08-10 21:19:15 | INFO     | ss_crawler | [image_downloader] Downloaded image for mchhx (stored as mchhx_40dd6c2d.jpg, 50483 bytes)
+2026-08-10 21:19:15 | INFO     | ss_crawler | [laptop_scraper] Image saved locally: laptops\mchhx_40dd6c2d.jpg
+2026-08-10 21:19:15 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/noutbooks/pofjf.html
+2026-08-10 21:19:17 | INFO     | ss_crawler | [laptop_scraper] [NEW] LAPTOP pofjf: Apple Macbook Air 13 €379.0
+2026-08-10 21:19:17 | INFO     | ss_crawler | [image_downloader] Downloaded image for pofjf (stored as pofjf_7df9d5be.jpg, 40716 bytes)
+2026-08-10 21:19:17 | INFO     | ss_crawler | [laptop_scraper] Image saved locally: laptops\pofjf_7df9d5be.jpg
+2026-08-10 21:19:17 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/noutbooks/pjdkb.html
+2026-08-10 21:19:18 | INFO     | ss_crawler | [database] Database connected: localhost:5433/ss_market
+2026-08-10 21:19:18 | INFO     | ss_crawler | [laptop_scraper] Scraping laptop category: /lv/electronics/computers/noutbooks/
+2026-08-10 21:19:18 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/lv/electronics/computers/noutbooks/
+2026-08-10 21:19:19 | INFO     | ss_crawler | [laptop_scraper] [NEW] LAPTOP pjdkb: Dell Dc15255 €355.0
+2026-08-10 21:19:19 | INFO     | ss_crawler | [image_downloader] Downloaded image for pjdkb (stored as pjdkb_9edbcac7.jpg, 32053 bytes)
+2026-08-10 21:19:19 | INFO     | ss_crawler | [laptop_scraper] Image saved locally: laptops\pjdkb_9edbcac7.jpg
+2026-08-10 21:19:19 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/noutbooks/pbipf.html
+2026-08-10 21:19:21 | INFO     | ss_crawler | [laptop_scraper] Found 30 laptop listings on page 1
+2026-08-10 21:19:21 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/noutbooks/jomfn.html
+2026-08-10 21:19:22 | INFO     | ss_crawler | [laptop_scraper] [NEW] LAPTOP pbipf: Acer Aspire al17 €499.0
+2026-08-10 21:19:22 | INFO     | ss_crawler | [image_downloader] Downloaded image for pbipf (stored as pbipf_88eb223e.jpg, 46478 bytes)
+2026-08-10 21:19:22 | INFO     | ss_crawler | [laptop_scraper] Image saved locally: laptops\pbipf_88eb223e.jpg
+2026-08-10 21:19:22 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/noutbooks/ddikj.html
+2026-08-10 21:19:24 | INFO     | ss_crawler | [laptop_scraper] [NEW] LAPTOP ddikj: Lenovo/IBM Ip flex 3 €115.0
+2026-08-10 21:19:24 | INFO     | ss_crawler | [laptop_scraper] [UNCHANGED] LAPTOP jomfn
+2026-08-10 21:19:24 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/noutbooks/denbp.html
+2026-08-10 21:19:24 | INFO     | ss_crawler | [image_downloader] Downloaded image for ddikj (stored as ddikj_d7430800.jpg, 35295 bytes)
+2026-08-10 21:19:24 | INFO     | ss_crawler | [laptop_scraper] Image saved locally: laptops\ddikj_d7430800.jpg
+2026-08-10 21:19:24 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/noutbooks/dfoki.html
+2026-08-10 21:19:27 | INFO     | ss_crawler | [laptop_scraper] [NEW] LAPTOP dfoki: HP 3168 €70.0
+2026-08-10 21:19:27 | INFO     | ss_crawler | [laptop_scraper] [UNCHANGED] LAPTOP denbp
+2026-08-10 21:19:27 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/noutbooks/hemhp.html
+2026-08-10 21:19:27 | INFO     | ss_crawler | [image_downloader] Downloaded image for dfoki (stored as dfoki_5c56cdc5.jpg, 52903 bytes)
+2026-08-10 21:19:27 | INFO     | ss_crawler | [laptop_scraper] Image saved locally: laptops\dfoki_5c56cdc5.jpg
+2026-08-10 21:19:27 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/noutbooks/pkhjx.html
+2026-08-10 21:19:29 | INFO     | ss_crawler | [laptop_scraper] [UNCHANGED] LAPTOP hemhp
+2026-08-10 21:19:29 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/noutbooks/ipphh.html
+2026-08-10 21:19:30 | INFO     | ss_crawler | [laptop_scraper] [NEW] LAPTOP pkhjx: Asus Vivibook go 15 €245.0
+2026-08-10 21:19:30 | INFO     | ss_crawler | [image_downloader] Downloaded image for pkhjx (stored as pkhjx_4c394566.jpg, 36204 bytes)
+2026-08-10 21:19:30 | INFO     | ss_crawler | [laptop_scraper] Image saved locally: laptops\pkhjx_4c394566.jpg
+2026-08-10 21:19:30 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/noutbooks/kbjxb.html
+2026-08-10 21:19:32 | INFO     | ss_crawler | [laptop_scraper] [UNCHANGED] LAPTOP ipphh
+2026-08-10 21:19:32 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/noutbooks/kbbgh.html
+2026-08-10 21:19:33 | INFO     | ss_crawler | [laptop_scraper] [NEW] LAPTOP kbjxb: HP Probook 430 €70.0
+2026-08-10 21:19:34 | INFO     | ss_crawler | [image_downloader] Downloaded image for kbjxb (stored as kbjxb_e27b6990.jpg, 49235 bytes)
+2026-08-10 21:19:34 | INFO     | ss_crawler | [laptop_scraper] Image saved locally: laptops\kbjxb_e27b6990.jpg
+2026-08-10 21:19:34 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/noutbooks/klbmj.html
+2026-08-10 21:19:35 | INFO     | ss_crawler | [laptop_scraper] [UNCHANGED] LAPTOP kbbgh
+2026-08-10 21:19:35 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/noutbooks/kneib.html
+2026-08-10 21:19:37 | INFO     | ss_crawler | [laptop_scraper] [UNCHANGED] LAPTOP kneib
+2026-08-10 21:19:37 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/noutbooks/kjmhn.html
+2026-08-10 21:19:37 | INFO     | ss_crawler | [laptop_scraper] [NEW] LAPTOP klbmj: Lenovo/IBM T14s gen1 €300.0
+2026-08-10 21:19:37 | INFO     | ss_crawler | [image_downloader] Downloaded image for klbmj (stored as klbmj_adc7b913.jpg, 132055 bytes)
+2026-08-10 21:19:37 | INFO     | ss_crawler | [laptop_scraper] Image saved locally: laptops\klbmj_adc7b913.jpg
+2026-08-10 21:19:37 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/noutbooks/dlmxd.html
+2026-08-10 21:19:40 | INFO     | ss_crawler | [laptop_scraper] [UNCHANGED] LAPTOP kjmhn
+2026-08-10 21:19:40 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/noutbooks/lfoxg.html
+2026-08-10 21:19:41 | INFO     | ss_crawler | [laptop_scraper] [NEW] LAPTOP dlmxd: Dell Desktop-88Dee6 €75.0
+2026-08-10 21:19:41 | INFO     | ss_crawler | [image_downloader] Downloaded image for dlmxd (stored as dlmxd_a5730ba9.jpg, 102261 bytes)
+2026-08-10 21:19:41 | INFO     | ss_crawler | [laptop_scraper] Image saved locally: laptops\dlmxd_a5730ba9.jpg
+2026-08-10 21:19:41 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/noutbooks/lggok.html
+2026-08-10 21:19:43 | INFO     | ss_crawler | [laptop_scraper] [UNCHANGED] LAPTOP lfoxg
+2026-08-10 21:19:43 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/noutbooks/lnfje.html
+2026-08-10 21:19:43 | INFO     | ss_crawler | [laptop_scraper] [NEW] LAPTOP lggok: HP Envy notebook €90.0
+2026-08-10 21:19:43 | INFO     | ss_crawler | [image_downloader] Downloaded image for lggok (stored as lggok_381a4676.jpg, 46223 bytes)
+2026-08-10 21:19:43 | INFO     | ss_crawler | [laptop_scraper] Image saved locally: laptops\lggok_381a4676.jpg
+2026-08-10 21:19:43 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/noutbooks/pjhig.html
+2026-08-10 21:19:46 | INFO     | ss_crawler | [laptop_scraper] [UNCHANGED] LAPTOP lnfje
+2026-08-10 21:19:46 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/noutbooks/efbmo.html
+2026-08-10 21:19:47 | INFO     | ss_crawler | [laptop_scraper] [NEW] LAPTOP pjhig: HP Elitebook 840 €79.0
+2026-08-10 21:19:47 | INFO     | ss_crawler | [image_downloader] Downloaded image for pjhig (stored as pjhig_a2e3e24b.jpg, 64346 bytes)
+2026-08-10 21:19:47 | INFO     | ss_crawler | [laptop_scraper] Image saved locally: laptops\pjhig_a2e3e24b.jpg
+2026-08-10 21:19:47 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/noutbooks/kcofh.html
+2026-08-10 21:19:49 | INFO     | ss_crawler | [laptop_scraper] [NEW] LAPTOP kcofh: Asus Vivobook Go 14 €170.0
+2026-08-10 21:19:49 | INFO     | ss_crawler | [image_downloader] Downloaded image for kcofh (stored as kcofh_4e9b5a0e.jpg, 46843 bytes)
+2026-08-10 21:19:49 | INFO     | ss_crawler | [laptop_scraper] Image saved locally: laptops\kcofh_4e9b5a0e.jpg
+2026-08-10 21:19:49 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/noutbooks/kilkl.html
+2026-08-10 21:19:50 | INFO     | ss_crawler | [laptop_scraper] [UNCHANGED] LAPTOP efbmo
+2026-08-10 21:19:50 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/noutbooks/lblhx.html
+2026-08-10 21:19:51 | INFO     | ss_crawler | [laptop_scraper] [UNCHANGED] LAPTOP lblhx
+2026-08-10 21:19:51 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/noutbooks/pdchi.html
+2026-08-10 21:19:52 | INFO     | ss_crawler | [laptop_scraper] [NEW] LAPTOP kilkl: Lenovo/IBM V15 G3 €190.0
+2026-08-10 21:19:52 | INFO     | ss_crawler | [image_downloader] Downloaded image for kilkl (stored as kilkl_8db19a7b.jpg, 67129 bytes)
+2026-08-10 21:19:52 | INFO     | ss_crawler | [laptop_scraper] Image saved locally: laptops\kilkl_8db19a7b.jpg
+2026-08-10 21:19:52 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/noutbooks/pjxpk.html
+2026-08-10 21:19:55 | INFO     | ss_crawler | [laptop_scraper] [UNCHANGED] LAPTOP pdchi
+2026-08-10 21:19:55 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/noutbooks/pipxb.html
+2026-08-10 21:19:55 | INFO     | ss_crawler | [laptop_scraper] [NEW] LAPTOP pjxpk: Asus Vivobook 16X €299.0
+2026-08-10 21:19:55 | INFO     | ss_crawler | [image_downloader] Downloaded image for pjxpk (stored as pjxpk_cf536808.jpg, 33197 bytes)
+2026-08-10 21:19:55 | INFO     | ss_crawler | [laptop_scraper] Image saved locally: laptops\pjxpk_cf536808.jpg
+2026-08-10 21:19:55 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/noutbooks/efgeb.html
+2026-08-10 21:19:57 | INFO     | ss_crawler | [laptop_scraper] [NEW] LAPTOP efgeb: Acer Aspire 3 €240.0
+2026-08-10 21:19:57 | INFO     | ss_crawler | [image_downloader] Downloaded image for efgeb (stored as efgeb_11fd0d24.jpg, 29801 bytes)
+2026-08-10 21:19:57 | INFO     | ss_crawler | [laptop_scraper] Image saved locally: laptops\efgeb_11fd0d24.jpg
+2026-08-10 21:19:57 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/noutbooks/pncfh.html
+2026-08-10 21:19:57 | INFO     | ss_crawler | [laptop_scraper] [UNCHANGED] LAPTOP pipxb
+2026-08-10 21:19:57 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/noutbooks/mchhx.html
+2026-08-10 21:19:59 | INFO     | ss_crawler | [laptop_scraper] [NEW] LAPTOP pncfh: Asus Tuf Gaming F15 €429.0
+2026-08-10 21:20:00 | INFO     | ss_crawler | [laptop_scraper] [UNCHANGED] LAPTOP mchhx
+2026-08-10 21:20:00 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/noutbooks/pofjf.html
+2026-08-10 21:20:00 | INFO     | ss_crawler | [image_downloader] Downloaded image for pncfh (stored as pncfh_394c738f.jpg, 70305 bytes)
+2026-08-10 21:20:00 | INFO     | ss_crawler | [laptop_scraper] Image saved locally: laptops\pncfh_394c738f.jpg
+2026-08-10 21:20:02 | INFO     | ss_crawler | [laptop_scraper] [UNCHANGED] LAPTOP pofjf
+2026-08-10 21:20:02 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/noutbooks/pjdkb.html
+2026-08-10 21:20:05 | INFO     | ss_crawler | [laptop_scraper] [UNCHANGED] LAPTOP pjdkb
+2026-08-10 21:20:05 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/noutbooks/pbipf.html
+2026-08-10 21:20:07 | INFO     | ss_crawler | [laptop_scraper] [UNCHANGED] LAPTOP pbipf
+2026-08-10 21:20:07 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/noutbooks/ddikj.html
+2026-08-10 21:20:09 | INFO     | ss_crawler | [laptop_scraper] [UNCHANGED] LAPTOP ddikj
+2026-08-10 21:20:09 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/noutbooks/dfoki.html
+2026-08-10 21:20:11 | INFO     | ss_crawler | [laptop_scraper] [UNCHANGED] LAPTOP dfoki
+2026-08-10 21:20:11 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/noutbooks/pkhjx.html
+2026-08-10 21:20:15 | INFO     | ss_crawler | [laptop_scraper] [UNCHANGED] LAPTOP pkhjx
+2026-08-10 21:20:15 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/noutbooks/kbjxb.html
+2026-08-10 21:20:17 | INFO     | ss_crawler | [laptop_scraper] [UNCHANGED] LAPTOP kbjxb
+2026-08-10 21:20:17 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/noutbooks/klbmj.html
+2026-08-10 21:20:19 | INFO     | ss_crawler | [laptop_scraper] [UNCHANGED] LAPTOP klbmj
+2026-08-10 21:20:19 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/noutbooks/dlmxd.html
+2026-08-10 21:20:22 | INFO     | ss_crawler | [laptop_scraper] [UNCHANGED] LAPTOP dlmxd
+2026-08-10 21:20:22 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/noutbooks/lggok.html
+2026-08-10 21:20:25 | INFO     | ss_crawler | [laptop_scraper] [UNCHANGED] LAPTOP lggok
+2026-08-10 21:20:25 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/noutbooks/pjhig.html
+2026-08-10 21:20:29 | INFO     | ss_crawler | [laptop_scraper] [UNCHANGED] LAPTOP pjhig
+2026-08-10 21:20:29 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/noutbooks/kcofh.html
+2026-08-10 21:20:31 | INFO     | ss_crawler | [laptop_scraper] [UNCHANGED] LAPTOP kcofh
+2026-08-10 21:20:31 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/noutbooks/kilkl.html
+2026-08-10 21:20:34 | INFO     | ss_crawler | [laptop_scraper] [UNCHANGED] LAPTOP kilkl
+2026-08-10 21:20:34 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/noutbooks/pjxpk.html
+2026-08-10 21:20:37 | INFO     | ss_crawler | [laptop_scraper] [UNCHANGED] LAPTOP pjxpk
+2026-08-10 21:20:37 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/noutbooks/efgeb.html
+2026-08-10 21:20:40 | INFO     | ss_crawler | [laptop_scraper] [UNCHANGED] LAPTOP efgeb
+2026-08-10 21:20:40 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/noutbooks/pncfh.html
+2026-08-10 21:20:42 | INFO     | ss_crawler | [laptop_scraper] [UNCHANGED] LAPTOP pncfh
+2026-08-10 21:42:21 | INFO     | ss_crawler | [database] Database connected: localhost:5433/ss_market
+2026-08-10 21:42:21 | INFO     | ss_crawler | [laptop_scraper] Scraping laptop category: /lv/electronics/computers/noutbooks/
+2026-08-10 21:42:21 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/lv/electronics/computers/noutbooks/
+2026-08-10 21:42:24 | INFO     | ss_crawler | [laptop_scraper] Found 30 laptop listings on page 1
+2026-08-10 21:42:24 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/noutbooks/jomfn.html
+2026-08-10 21:42:26 | INFO     | ss_crawler | [laptop_scraper] [UNCHANGED] LAPTOP jomfn
+2026-08-10 21:42:26 | INFO     | ss_crawler | [laptop_scraper] Image saved locally: laptops\jomfn_ec852f33.jpg
+2026-08-10 21:42:26 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/noutbooks/denbp.html
+2026-08-10 21:42:29 | INFO     | ss_crawler | [laptop_scraper] [UNCHANGED] LAPTOP denbp
+2026-08-10 21:42:29 | INFO     | ss_crawler | [laptop_scraper] Image saved locally: laptops\denbp_997b79d7.jpg
+2026-08-10 21:42:29 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/noutbooks/hemhp.html
+2026-08-10 21:42:32 | INFO     | ss_crawler | [laptop_scraper] [UNCHANGED] LAPTOP hemhp
+2026-08-10 21:42:32 | INFO     | ss_crawler | [laptop_scraper] Image saved locally: laptops\hemhp_a59e6beb.jpg
+2026-08-10 21:42:32 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/noutbooks/ipphh.html
+2026-08-10 21:42:36 | INFO     | ss_crawler | [laptop_scraper] [UNCHANGED] LAPTOP ipphh
+2026-08-10 21:42:36 | INFO     | ss_crawler | [laptop_scraper] Image saved locally: laptops\ipphh_0476b277.jpg
+2026-08-10 21:42:36 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/noutbooks/kbbgh.html
+2026-08-10 21:42:38 | WARNING  | ss_crawler | [laptop_scraper] Failed to save laptop version for kbbgh: (psycopg2.errors.ForeignKeyViolation) insert or update on table "listing_versions" violates foreign key constraint "listing_versions_listing_id_fkey"
+DETAIL:  Key (listing_id)=(kbbgh) is not present in table "listings".
+
+[SQL: 
+                INSERT INTO listing_versions (
+                    listing_id, version_number, title, description,
+                    price_eur, seller_location, content_hash
+                )
+                SELECT
+                    listing_id,
+                    COALESCE((SELECT MAX(version_number) FROM listing_versions
+                              WHERE listing_id = %(id)s), 0) + 1,
+                    title, description, price_eur, seller_location, content_hash
+                FROM laptop_listings
+                WHERE listing_id = %(id)s
+                ]
+[parameters: {'id': 'kbbgh'}]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+2026-08-10 21:42:38 | ERROR    | ss_crawler | [database] Database transaction failed: (psycopg2.errors.InFailedSqlTransaction) current transaction is aborted, commands ignored until end of transaction block
+
+[SQL: 
+                            UPDATE laptop_listings
+                            SET title = %(title)s,
+                                description = %(desc)s,
+                                price_eur = %(price)s,
+                                seller_location = %(location)s,
+                                date_posted = %(date_posted)s,
+                                image_url = %(image_url)s,
+                                brand = %(brand)s,
+                                model = %(model)s,
+                                display_size = %(display_size)s,
+                                cpu_raw = %(cpu_raw)s,
+                                cpu_freq_ghz = %(cpu_freq_ghz)s,
+                                ram_gb = %(ram_gb)s,
+                                storage_gb = %(storage_gb)s,
+                                storage_type = %(storage_type)s,
+                                gpu_raw = %(gpu_raw)s,
+                                condition_state = %(condition_state)s,
+                                content_hash = %(content_hash)s,
+                                is_active = true,
+                                last_seen_at = NOW(),
+                                updated_at = NOW()
+                            WHERE listing_id = %(id)s
+                            ]
+[parameters: {'title': 'SS.COM Datori un orgtehnika - Piezīmjdatori, Cena 269 €. Pārdodam portatīvo datoru Apple Macbook 44  Šo курьера нашей - Sludinājumi', 'desc': 'Pārdodam portatīvo datoru Apple Macbook Pro(2016). Garantija 180 dienas Intel Core i7 Intel Iris Graphics Komplektācija:lādētāj s Stāvoklis:Lietots L ... (691 characters truncated) ... Pro Displejs: 13" Procesors: Intel Core i7 Procesora frekvence, Ghz: 3.30 HDD apjoms, Gb: 512 Operatīvā atmiņa, Gb: 16 Stāvoklis: lietota Cena: 269 €', 'price': 269.0, 'location': 'Rīga', 'date_posted': datetime.datetime(2026, 8, 10, 19, 53), 'image_url': 'https://i.ss.com/gallery/8/1531/382724/electronics-computers-noutbooks-76544603.800.jpg', 'brand': 'Apple', 'model': 'Macbook Pro', 'display_size': '13"', 'cpu_raw': 'Intel Core i7', 'cpu_freq_ghz': None, 'ram_gb': 16, 'storage_gb': 512, 'storage_type': 'HDD', 'gpu_raw': 'komplektācija:lādētāj s stāvoklis:', 'condition_state': None, 'content_hash': '317e477ed3c5d21eebee1cbde29e9189f21da950da0b37598ce122e8359cbbff', 'id': 'kbbgh'}]
+(Background on this error at: https://sqlalche.me/e/20/2j85)
+2026-08-10 21:42:38 | ERROR    | ss_crawler | [laptop_scraper] [ERROR] Error saving laptop kbbgh: (psycopg2.errors.InFailedSqlTransaction) current transaction is aborted, commands ignored until end of transaction block
+
+[SQL: 
+                            UPDATE laptop_listings
+                            SET title = %(title)s,
+                                description = %(desc)s,
+                                price_eur = %(price)s,
+                                seller_location = %(location)s,
+                                date_posted = %(date_posted)s,
+                                image_url = %(image_url)s,
+                                brand = %(brand)s,
+                                model = %(model)s,
+                                display_size = %(display_size)s,
+                                cpu_raw = %(cpu_raw)s,
+                                cpu_freq_ghz = %(cpu_freq_ghz)s,
+                                ram_gb = %(ram_gb)s,
+                                storage_gb = %(storage_gb)s,
+                                storage_type = %(storage_type)s,
+                                gpu_raw = %(gpu_raw)s,
+                                condition_state = %(condition_state)s,
+                                content_hash = %(content_hash)s,
+                                is_active = true,
+                                last_seen_at = NOW(),
+                                updated_at = NOW()
+                            WHERE listing_id = %(id)s
+                            ]
+[parameters: {'title': 'SS.COM Datori un orgtehnika - Piezīmjdatori, Cena 269 €. Pārdodam portatīvo datoru Apple Macbook 44  Šo курьера нашей - Sludinājumi', 'desc': 'Pārdodam portatīvo datoru Apple Macbook Pro(2016). Garantija 180 dienas Intel Core i7 Intel Iris Graphics Komplektācija:lādētāj s Stāvoklis:Lietots L ... (691 characters truncated) ... Pro Displejs: 13" Procesors: Intel Core i7 Procesora frekvence, Ghz: 3.30 HDD apjoms, Gb: 512 Operatīvā atmiņa, Gb: 16 Stāvoklis: lietota Cena: 269 €', 'price': 269.0, 'location': 'Rīga', 'date_posted': datetime.datetime(2026, 8, 10, 19, 53), 'image_url': 'https://i.ss.com/gallery/8/1531/382724/electronics-computers-noutbooks-76544603.800.jpg', 'brand': 'Apple', 'model': 'Macbook Pro', 'display_size': '13"', 'cpu_raw': 'Intel Core i7', 'cpu_freq_ghz': None, 'ram_gb': 16, 'storage_gb': 512, 'storage_type': 'HDD', 'gpu_raw': 'komplektācija:lādētāj s stāvoklis:', 'condition_state': None, 'content_hash': '317e477ed3c5d21eebee1cbde29e9189f21da950da0b37598ce122e8359cbbff', 'id': 'kbbgh'}]
+(Background on this error at: https://sqlalche.me/e/20/2j85)
+2026-08-10 21:42:38 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/noutbooks/kneib.html
+2026-08-10 21:42:41 | INFO     | ss_crawler | [laptop_scraper] [UNCHANGED] LAPTOP kneib
+2026-08-10 21:42:41 | INFO     | ss_crawler | [laptop_scraper] Image saved locally: laptops\kneib_41154f26.jpg
+2026-08-10 21:42:41 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/noutbooks/kjmhn.html
+2026-08-10 21:42:43 | INFO     | ss_crawler | [laptop_scraper] [UNCHANGED] LAPTOP kjmhn
+2026-08-10 21:42:43 | INFO     | ss_crawler | [laptop_scraper] Image saved locally: laptops\kjmhn_2c8ee75f.jpg
+2026-08-10 21:42:43 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/noutbooks/lfoxg.html
+2026-08-10 21:42:46 | INFO     | ss_crawler | [laptop_scraper] [UNCHANGED] LAPTOP lfoxg
+2026-08-10 21:42:46 | INFO     | ss_crawler | [laptop_scraper] Image saved locally: laptops\lfoxg_58a75887.jpg
+2026-08-10 21:42:46 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/noutbooks/lnfje.html
+2026-08-10 21:42:49 | INFO     | ss_crawler | [laptop_scraper] [UNCHANGED] LAPTOP lnfje
+2026-08-10 21:42:49 | INFO     | ss_crawler | [laptop_scraper] Image saved locally: laptops\lnfje_f8c307b5.jpg
+2026-08-10 21:42:49 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/noutbooks/efbmo.html
+2026-08-10 21:42:51 | INFO     | ss_crawler | [laptop_scraper] [UNCHANGED] LAPTOP efbmo
+2026-08-10 21:42:51 | INFO     | ss_crawler | [laptop_scraper] Image saved locally: laptops\efbmo_d411729e.jpg
+2026-08-10 21:42:51 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/noutbooks/lblhx.html
+2026-08-10 21:42:52 | INFO     | ss_crawler | [laptop_scraper] [UNCHANGED] LAPTOP lblhx
+2026-08-10 21:42:52 | INFO     | ss_crawler | [laptop_scraper] Image saved locally: laptops\lblhx_4173a2ee.jpg
+2026-08-10 21:42:52 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/noutbooks/pdchi.html
+2026-08-10 21:42:54 | INFO     | ss_crawler | [laptop_scraper] [UNCHANGED] LAPTOP pdchi
+2026-08-10 21:42:54 | INFO     | ss_crawler | [laptop_scraper] Image saved locally: laptops\pdchi_12942358.jpg
+2026-08-10 21:42:54 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/noutbooks/pipxb.html
+2026-08-10 21:42:57 | INFO     | ss_crawler | [laptop_scraper] [UNCHANGED] LAPTOP pipxb
+2026-08-10 21:42:57 | INFO     | ss_crawler | [laptop_scraper] Image saved locally: laptops\pipxb_c9798a62.jpg
+2026-08-10 21:42:57 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/noutbooks/mchhx.html
+2026-08-10 21:43:00 | INFO     | ss_crawler | [laptop_scraper] [UNCHANGED] LAPTOP mchhx
+2026-08-10 21:43:00 | INFO     | ss_crawler | [laptop_scraper] Image saved locally: laptops\mchhx_40dd6c2d.jpg
+2026-08-10 21:43:00 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/noutbooks/pofjf.html
+2026-08-10 21:43:03 | INFO     | ss_crawler | [laptop_scraper] [UNCHANGED] LAPTOP pofjf
+2026-08-10 21:43:03 | INFO     | ss_crawler | [laptop_scraper] Image saved locally: laptops\pofjf_7df9d5be.jpg
+2026-08-10 21:43:03 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/noutbooks/pjdkb.html
+2026-08-10 21:43:06 | INFO     | ss_crawler | [laptop_scraper] [UNCHANGED] LAPTOP pjdkb
+2026-08-10 21:43:06 | INFO     | ss_crawler | [laptop_scraper] Image saved locally: laptops\pjdkb_9edbcac7.jpg
+2026-08-10 21:43:06 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/noutbooks/pbipf.html
+2026-08-10 21:43:09 | INFO     | ss_crawler | [laptop_scraper] [UNCHANGED] LAPTOP pbipf
+2026-08-10 21:43:09 | INFO     | ss_crawler | [laptop_scraper] Image saved locally: laptops\pbipf_88eb223e.jpg
+2026-08-10 21:43:09 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/noutbooks/ddikj.html
+2026-08-10 21:43:13 | INFO     | ss_crawler | [laptop_scraper] [UNCHANGED] LAPTOP ddikj
+2026-08-10 21:43:13 | INFO     | ss_crawler | [laptop_scraper] Image saved locally: laptops\ddikj_d7430800.jpg
+2026-08-10 21:43:13 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/noutbooks/dfoki.html
+2026-08-10 21:43:15 | INFO     | ss_crawler | [laptop_scraper] [UNCHANGED] LAPTOP dfoki
+2026-08-10 21:43:15 | INFO     | ss_crawler | [laptop_scraper] Image saved locally: laptops\dfoki_5c56cdc5.jpg
+2026-08-10 21:43:15 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/noutbooks/pkhjx.html
+2026-08-10 21:43:18 | INFO     | ss_crawler | [laptop_scraper] [UNCHANGED] LAPTOP pkhjx
+2026-08-10 21:43:18 | INFO     | ss_crawler | [laptop_scraper] Image saved locally: laptops\pkhjx_4c394566.jpg
+2026-08-10 21:43:18 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/noutbooks/kbjxb.html
+2026-08-10 21:43:21 | INFO     | ss_crawler | [laptop_scraper] [UNCHANGED] LAPTOP kbjxb
+2026-08-10 21:43:21 | INFO     | ss_crawler | [laptop_scraper] Image saved locally: laptops\kbjxb_e27b6990.jpg
+2026-08-10 21:43:21 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/noutbooks/klbmj.html
+2026-08-10 21:43:24 | INFO     | ss_crawler | [laptop_scraper] [UNCHANGED] LAPTOP klbmj
+2026-08-10 21:43:24 | INFO     | ss_crawler | [laptop_scraper] Image saved locally: laptops\klbmj_adc7b913.jpg
+2026-08-10 21:43:24 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/noutbooks/dlmxd.html
+2026-08-10 21:43:27 | INFO     | ss_crawler | [laptop_scraper] [UNCHANGED] LAPTOP dlmxd
+2026-08-10 21:43:27 | INFO     | ss_crawler | [laptop_scraper] Image saved locally: laptops\dlmxd_a5730ba9.jpg
+2026-08-10 21:43:27 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/noutbooks/lggok.html
+2026-08-10 21:43:29 | INFO     | ss_crawler | [laptop_scraper] [UNCHANGED] LAPTOP lggok
+2026-08-10 21:43:29 | INFO     | ss_crawler | [laptop_scraper] Image saved locally: laptops\lggok_381a4676.jpg
+2026-08-10 21:43:29 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/noutbooks/pjhig.html
+2026-08-10 21:43:31 | INFO     | ss_crawler | [laptop_scraper] [UNCHANGED] LAPTOP pjhig
+2026-08-10 21:43:31 | INFO     | ss_crawler | [laptop_scraper] Image saved locally: laptops\pjhig_a2e3e24b.jpg
+2026-08-10 21:43:31 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/noutbooks/kcofh.html
+2026-08-10 21:43:35 | INFO     | ss_crawler | [laptop_scraper] [UNCHANGED] LAPTOP kcofh
+2026-08-10 21:43:35 | INFO     | ss_crawler | [laptop_scraper] Image saved locally: laptops\kcofh_4e9b5a0e.jpg
+2026-08-10 21:43:35 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/noutbooks/kilkl.html
+2026-08-10 21:43:38 | INFO     | ss_crawler | [laptop_scraper] [UNCHANGED] LAPTOP kilkl
+2026-08-10 21:43:38 | INFO     | ss_crawler | [laptop_scraper] Image saved locally: laptops\kilkl_8db19a7b.jpg
+2026-08-10 21:43:38 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/noutbooks/pjxpk.html
+2026-08-10 21:43:40 | INFO     | ss_crawler | [laptop_scraper] [UNCHANGED] LAPTOP pjxpk
+2026-08-10 21:43:40 | INFO     | ss_crawler | [laptop_scraper] Image saved locally: laptops\pjxpk_cf536808.jpg
+2026-08-10 21:43:40 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/noutbooks/efgeb.html
+2026-08-10 21:43:42 | INFO     | ss_crawler | [laptop_scraper] [UNCHANGED] LAPTOP efgeb
+2026-08-10 21:43:42 | INFO     | ss_crawler | [laptop_scraper] Image saved locally: laptops\efgeb_11fd0d24.jpg
+2026-08-10 21:43:42 | INFO     | ss_crawler | [crawler] Fetching : https://www.ss.com/msg/lv/electronics/computers/noutbooks/pncfh.html
+2026-08-10 21:43:45 | INFO     | ss_crawler | [laptop_scraper] [UNCHANGED] LAPTOP pncfh
+2026-08-10 21:43:45 | INFO     | ss_crawler | [laptop_scraper] Image saved locally: laptops\pncfh_394c738f.jpg
+2026-08-10 21:57:23 | INFO     | ss_crawler | [image_downloader] Downloaded image for pjhig (stored as pjhig_a2e3e24b.jpg, 64346 bytes)
+2026-08-10 21:59:18 | INFO     | ss_crawler | [image_downloader] Downloaded image for jomfn (stored as jomfn_ec852f33.jpg, 97487 bytes)
+2026-08-10 21:59:18 | INFO     | ss_crawler | [image_downloader] Downloaded image for denbp (stored as denbp_997b79d7.jpg, 35440 bytes)
+2026-08-10 21:59:19 | INFO     | ss_crawler | [image_downloader] Downloaded image for hemhp (stored as hemhp_a59e6beb.jpg, 146637 bytes)
+2026-08-10 21:59:19 | INFO     | ss_crawler | [image_downloader] Downloaded image for kneib (stored as kneib_41154f26.jpg, 57807 bytes)
+2026-08-10 21:59:19 | INFO     | ss_crawler | [image_downloader] Downloaded image for kjmhn (stored as kjmhn_2c8ee75f.jpg, 32558 bytes)
+2026-08-10 21:59:19 | INFO     | ss_crawler | [image_downloader] Downloaded image for ipphh (stored as ipphh_0476b277.jpg, 66757 bytes)
+2026-08-10 21:59:19 | INFO     | ss_crawler | [image_downloader] Downloaded image for mchhx (stored as mchhx_40dd6c2d.jpg, 50483 bytes)
+2026-08-10 21:59:20 | INFO     | ss_crawler | [image_downloader] Downloaded image for ddikj (stored as ddikj_d7430800.jpg, 35295 bytes)
+2026-08-10 21:59:20 | INFO     | ss_crawler | [image_downloader] Downloaded image for kbjxb (stored as kbjxb_e27b6990.jpg, 49235 bytes)
+2026-08-10 21:59:20 | INFO     | ss_crawler | [image_downloader] Downloaded image for pjxpk (stored as pjxpk_cf536808.jpg, 33197 bytes)
+2026-08-10 21:59:20 | INFO     | ss_crawler | [image_downloader] Downloaded image for pofjf (stored as pofjf_7df9d5be.jpg, 40716 bytes)
+2026-08-10 21:59:21 | INFO     | ss_crawler | [image_downloader] Downloaded image for lfoxg (stored as lfoxg_58a75887.jpg, 119070 bytes)
+2026-08-10 21:59:21 | INFO     | ss_crawler | [image_downloader] Downloaded image for lnfje (stored as lnfje_f8c307b5.jpg, 42603 bytes)
+2026-08-10 21:59:21 | INFO     | ss_crawler | [image_downloader] Downloaded image for pdchi (stored as pdchi_12942358.jpg, 55096 bytes)
+2026-08-10 21:59:21 | INFO     | ss_crawler | [image_downloader] Downloaded image for pipxb (stored as pipxb_c9798a62.jpg, 40221 bytes)
+2026-08-10 21:59:21 | INFO     | ss_crawler | [image_downloader] Downloaded image for efbmo (stored as efbmo_d411729e.jpg, 59439 bytes)
+2026-08-10 21:59:22 | INFO     | ss_crawler | [image_downloader] Downloaded image for kbbgh (stored as kbbgh_11a6634c.jpg, 39730 bytes)
+2026-08-10 21:59:22 | INFO     | ss_crawler | [image_downloader] Downloaded image for pbipf (stored as pbipf_88eb223e.jpg, 46478 bytes)
+2026-08-10 21:59:22 | INFO     | ss_crawler | [image_downloader] Downloaded image for pkhjx (stored as pkhjx_4c394566.jpg, 36204 bytes)
+2026-08-10 21:59:23 | INFO     | ss_crawler | [image_downloader] Downloaded image for lblhx (stored as lblhx_4173a2ee.jpg, 38566 bytes)
+2026-08-10 21:59:23 | INFO     | ss_crawler | [image_downloader] Downloaded image for pjdkb (stored as pjdkb_9edbcac7.jpg, 32053 bytes)
+2026-08-10 21:59:23 | INFO     | ss_crawler | [image_downloader] Downloaded image for klbmj (stored as klbmj_adc7b913.jpg, 132055 bytes)
+2026-08-10 21:59:23 | INFO     | ss_crawler | [image_downloader] Downloaded image for dlmxd (stored as dlmxd_a5730ba9.jpg, 102261 bytes)
+2026-08-10 21:59:24 | INFO     | ss_crawler | [image_downloader] Downloaded image for lggok (stored as lggok_381a4676.jpg, 46223 bytes)
+2026-08-10 21:59:24 | INFO     | ss_crawler | [image_downloader] Downloaded image for kcofh (stored as kcofh_4e9b5a0e.jpg, 46843 bytes)
+2026-08-10 21:59:24 | INFO     | ss_crawler | [image_downloader] Downloaded image for kilkl (stored as kilkl_8db19a7b.jpg, 67129 bytes)
+2026-08-10 21:59:24 | INFO     | ss_crawler | [image_downloader] Downloaded image for efgeb (stored as efgeb_11fd0d24.jpg, 29801 bytes)
+2026-08-10 21:59:24 | INFO     | ss_crawler | [image_downloader] Downloaded image for pncfh (stored as pncfh_394c738f.jpg, 70305 bytes)
+2026-08-10 21:59:25 | INFO     | ss_crawler | [image_downloader] Downloaded image for dfoki (stored as dfoki_5c56cdc5.jpg, 52903 bytes)

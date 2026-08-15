@@ -7,6 +7,295 @@
         max-width: 1600px;
     }
 
+    /* ===== Laptop page hero / header ===== */
+    .laptop-hero {
+        position: relative;
+        margin: 0 0 1.25rem;
+        padding: 1.25rem 1.5rem 1rem;
+        background:
+            linear-gradient(135deg, rgba(102,126,234,0.18) 0%, rgba(118,75,162,0.18) 100%),
+            var(--card-bg);
+        border: 1px solid var(--card-border, rgba(255,255,255,0.06));
+        border-radius: 14px;
+        box-shadow: 0 4px 18px rgba(0,0,0,0.18);
+        overflow: hidden;
+    }
+    .laptop-hero::before {
+        content: '';
+        position: absolute;
+        inset: 0 0 auto 0;
+        height: 3px;
+        background: linear-gradient(90deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+    }
+    .laptop-hero-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        flex-wrap: wrap;
+    }
+    .laptop-hero-title {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        margin: 0;
+        font-size: 1.85rem;
+        font-weight: 800;
+        letter-spacing: -0.01em;
+        color: var(--text-color);
+    }
+    .laptop-hero-title svg {
+        width: 32px;
+        height: 32px;
+        padding: 6px;
+        border-radius: 9px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: #fff;
+        box-shadow: 0 2px 8px rgba(102,126,234,0.45);
+    }
+    .laptop-hero-sub {
+        font-size: 0.85rem;
+        color: var(--text-secondary);
+        margin-top: 0.25rem;
+        margin-left: 44px;
+    }
+    .laptop-stat-tiles {
+        display: flex;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+    }
+    .laptop-stat-tile {
+        display: flex;
+        align-items: center;
+        gap: 0.55rem;
+        padding: 0.5rem 0.85rem;
+        background: rgba(255,255,255,0.04);
+        border: 1px solid var(--card-border, rgba(255,255,255,0.08));
+        border-radius: 10px;
+        min-width: 110px;
+    }
+    [data-theme="light"] .laptop-stat-tile {
+        background: rgba(0,0,0,0.03);
+    }
+    .laptop-stat-tile svg {
+        width: 18px;
+        height: 18px;
+        flex-shrink: 0;
+        opacity: 0.85;
+    }
+    .laptop-stat-tile .lstat-value {
+        font-weight: 700;
+        font-size: 1.05rem;
+        line-height: 1.1;
+    }
+    .laptop-stat-tile .lstat-label {
+        font-size: 0.7rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: var(--text-secondary);
+        line-height: 1.1;
+    }
+    .laptop-stat-tile .lstat-tile-body {
+        display: flex;
+        flex-direction: column;
+        line-height: 1.1;
+    }
+
+    /* Filter bar wrapper — visually distinct panel below the hero */
+    .laptop-filter-panel {
+        margin: 0 0 1rem;
+        padding: 0.85rem 1rem 0.75rem;
+        background: var(--card-bg);
+        border: 1px solid var(--card-border, rgba(255,255,255,0.06));
+        border-radius: 12px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+    .laptop-filter-panel > .laptop-filters-inner {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.6rem 0.85rem;
+        align-items: center;
+    }
+    .laptop-filter-group {
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+        font-size: 0.78rem;
+        color: var(--text-secondary);
+    }
+    .laptop-filter-group > .lfg-label {
+        font-weight: 600;
+        color: var(--text-secondary);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        font-size: 0.7rem;
+    }
+    .laptop-filter-divider {
+        width: 1px;
+        height: 22px;
+        background: var(--table-border);
+        margin: 0 0.15rem;
+    }
+
+    /* SVG-icon toggle bar (matches gpu.html .filter-icon-btn) */
+    .laptop-icon-bar {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+    }
+    .laptop-icon-btn {
+        position: relative;
+        width: 34px;
+        height: 34px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 8px;
+        border: 1px solid var(--table-border);
+        background: var(--input-bg, transparent);
+        color: var(--text-secondary);
+        cursor: pointer;
+        transition: background 0.15s, color 0.15s, border-color 0.15s, transform 0.1s;
+        padding: 0;
+    }
+    .laptop-icon-btn:hover {
+        border-color: var(--primary, #667eea);
+        color: var(--text-color);
+        transform: translateY(-1px);
+    }
+    .laptop-icon-btn:focus-visible {
+        outline: 2px solid var(--link-color);
+        outline-offset: 2px;
+    }
+    .laptop-icon-btn svg {
+        width: 18px;
+        height: 18px;
+    }
+    .laptop-icon-btn .badge-dot {
+        position: absolute;
+        top: 4px;
+        right: 4px;
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: var(--primary, #667eea);
+        opacity: 0;
+        transition: opacity 0.15s;
+    }
+    .laptop-icon-btn.active {
+        background: var(--primary, #667eea);
+        border-color: var(--primary, #667eea);
+        color: #fff;
+        box-shadow: 0 2px 8px rgba(102,126,234,0.35);
+    }
+    .laptop-icon-btn.active .badge-dot { opacity: 0; }
+    .laptop-icon-btn:not(.active) .badge-dot { opacity: 1; }
+
+    /* Per-toggle accent colors when active */
+    .laptop-icon-btn.t-macbooks.active  { background: linear-gradient(135deg, #1d1d1f 0%, #3a3a3c 100%); border-color: #1d1d1f; }
+    .laptop-icon-btn.t-active.active    { background: linear-gradient(135deg, #16a34a 0%, #0f7a35 100%); border-color: #0f7a35; }
+    .laptop-icon-btn.t-flagged.active   { background: linear-gradient(135deg, #dc2626 0%, #9a0006 100%); border-color: #9a0006; }
+    .laptop-icon-btn.t-perekups.active  { background: linear-gradient(135deg, #ea580c 0%, #b34000 100%); border-color: #b34000; }
+    .laptop-icon-btn.t-lombards.active  { background: linear-gradient(135deg, #b91c1c 0%, #7f1d1d 100%); border-color: #7f1d1d; }
+
+    /* Brand "Apple/Asus/..." colored dots inside filter dropdowns */
+    .laptop-icon-btn .tooltip {
+        position: absolute;
+        top: calc(100% + 6px);
+        left: 50%;
+        transform: translateX(-50%);
+        background: var(--card-bg);
+        color: var(--text-color);
+        border: 1px solid var(--table-border);
+        padding: 0.25rem 0.55rem;
+        border-radius: 6px;
+        font-size: 0.7rem;
+        font-weight: 600;
+        white-space: nowrap;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.12s;
+        z-index: 20;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.18);
+    }
+    .laptop-icon-btn:hover .tooltip,
+    .laptop-icon-btn:focus-visible .tooltip {
+        opacity: 1;
+    }
+
+    /* Active-filter pill row sits just below the panel */
+    .laptop-active-filters {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.4rem;
+        align-items: center;
+        font-size: 0.8rem;
+        color: var(--text-secondary);
+        margin: 0 0 1rem;
+        min-height: 1.5rem;
+    }
+    .laptop-active-filters > .laf-label {
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        font-size: 0.7rem;
+        margin-right: 0.25rem;
+    }
+    .laptop-active-filters > .laf-chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.3rem;
+        padding: 0.2rem 0.55rem;
+        background: rgba(102,126,234,0.15);
+        border: 1px solid rgba(102,126,234,0.4);
+        border-radius: 999px;
+        color: var(--text-color);
+        font-size: 0.75rem;
+    }
+    .laptop-active-filters > .laf-chip button {
+        background: none;
+        border: 0;
+        color: inherit;
+        cursor: pointer;
+        padding: 0;
+        font-size: 0.95rem;
+        line-height: 1;
+        opacity: 0.6;
+    }
+    .laptop-active-filters > .laf-chip button:hover { opacity: 1; }
+
+    /* Hide the legacy "Brand: <select>" wrapper inside the panel — we re-style it */
+    .laptop-filter-panel select,
+    .laptop-filter-panel input[type="text"],
+    .laptop-filter-panel input[type="number"] {
+        padding: 0.32rem 0.5rem;
+        border-radius: 6px;
+        border: 1px solid var(--input-border, var(--table-border));
+        background: var(--input-bg);
+        color: var(--text-color);
+        font-size: 0.8rem;
+    }
+    .laptop-filter-panel select { min-width: 92px; }
+    .laptop-filter-panel input[type="number"] { width: 72px; }
+
+    /* Remove the default "Brand:" / "GPU:" stacked label since we now use the .lfg-label */
+    .laptop-filter-panel label.lfg-flat {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.35rem;
+        font-size: 0.78rem;
+        color: var(--text-secondary);
+    }
+
+    /* Make the existing CPU dropdown still anchor to its trigger */
+    #cpu-filter-group { position: relative; display: inline-flex; align-items: center; gap: 0.4rem; }
+    #cpu-filter-group > label.lfg-flat { cursor: pointer; }
+
+    /* "Clear filters" button sits at the end */
+    .laptop-filter-panel .btn-small {
+        margin-left: auto;
+    }
+
     .laptop-grid {
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
@@ -109,152 +398,1260 @@
         color: var(--text-secondary);
     }
 
-    #cpu-filter-group .filter-dropdown {
-        display: none;
-        position: absolute;
-        top: 100%;
-        left: 0;
-        z-index: 10;
-        background: var(--card-bg);
-        border: 1px solid var(--table-border);
-        border-radius: 6px;
-        padding: 0.75rem;
-        min-width: 560px;
-        max-height: none;
-        overflow-y: visible;
-        box-shadow: 0 4px 12px var(--shadow);
+    .laptop-sentinel {
+        height: 48px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--text-secondary);
+        font-size: 0.875rem;
+        margin-top: 1rem;
     }
 
-    #cpu-filter-group .filter-dropdown.open {
+    /* Laptop detail popup layout fixes */
+    .laptop-detail-body {
+        max-width: 760px;
+        margin: 0 auto;
+    }
+    .laptop-detail-body h2 {
+        font-size: 1.15rem;
+        line-height: 1.35;
+        word-break: break-word;
+        margin-top: 0;
+    }
+    .laptop-detail-body .listing-detail-images {
+        margin-top: 0;
+        cursor: zoom-in;
+    }
+    .laptop-detail-body .listing-detail-images img {
+        max-height: 280px;
+        width: 100%;
+        object-fit: cover;
+        border-radius: 8px;
+        transition: transform 0.15s ease;
+    }
+    .laptop-detail-body .listing-detail-images:hover img {
+        transform: scale(1.01);
+    }
+
+    .lightbox-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,0.85);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 2000;
+        cursor: zoom-out;
+        opacity: 0;
+        transition: opacity 0.2s ease;
+        pointer-events: none;
+    }
+    .lightbox-overlay.active {
+        opacity: 1;
+        pointer-events: auto;
+    }
+    .lightbox-overlay img {
+        max-width: 92vw;
+        max-height: 92vh;
+        object-fit: contain;
+        border-radius: 6px;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+    }
+
+    /* Compact spec chips in laptop detail popup */
+    .laptop-detail-body .spec-grid {
         display: grid;
-        grid-template-columns: repeat(3, 1fr);
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+        gap: 0.4rem;
+        margin: 0.5rem 0 1rem;
+    }
+    .laptop-detail-body .spec-chip {
+        display: flex;
+        align-items: center;
+        gap: 0.45rem;
+        padding: 0.5rem 0.65rem;
+        background: var(--bar-bg, rgba(0,0,0,0.03));
+        border: 1px solid var(--table-border);
+        border-radius: 8px;
+        min-width: 0;
+        transition: transform 0.12s ease, border-color 0.12s ease;
+    }
+    [data-theme="light"] .laptop-detail-body .spec-chip {
+        background: rgba(0,0,0,0.025);
+    }
+    .laptop-detail-body .spec-chip:hover {
+        transform: translateY(-1px);
+        border-color: var(--link-color);
+    }
+    .laptop-detail-body .spec-chip-icon {
+        width: 18px;
+        height: 18px;
+        flex-shrink: 0;
+        color: var(--text-secondary);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .laptop-detail-body .spec-chip-icon svg {
+        width: 18px;
+        height: 18px;
+    }
+    .laptop-detail-body .spec-chip-text {
+        display: flex;
+        flex-direction: column;
+        min-width: 0;
+        line-height: 1.2;
+    }
+    .laptop-detail-body .spec-chip-label {
+        font-size: 0.62rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: var(--text-secondary);
+    }
+    .laptop-detail-body .spec-chip-value {
+        font-size: 0.85rem;
+        font-weight: 600;
+        color: var(--text-color);
+        word-break: break-word;
+    }
+
+    /* Section headings (Specifications, Description) */
+    .laptop-detail-body .laptop-specs-heading {
+        font-size: 0.85rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        color: var(--text-secondary);
+        margin: 1.1rem 0 0.35rem;
+        padding-bottom: 0.3rem;
+        border-bottom: 1px solid var(--table-border);
+    }
+
+    /* Meta row: location + seller + date pills (custom SVG icons) */
+    .laptop-detail-body .laptop-meta-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.4rem;
+        margin: 0.55rem 0 0.25rem;
+    }
+    .laptop-detail-body .laptop-meta-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        padding: 0.32rem 0.7rem;
+        background: var(--bar-bg, rgba(0,0,0,0.04));
+        border: 1px solid var(--table-border);
+        border-radius: 999px;
+        font-size: 0.78rem;
+        color: var(--text-color);
+        font-weight: 500;
+    }
+    .laptop-detail-body .laptop-meta-pill svg {
+        width: 14px;
+        height: 14px;
+        color: var(--text-secondary);
+        flex-shrink: 0;
+    }
+    [data-theme="light"] .laptop-detail-body .laptop-meta-pill {
+        background: rgba(0,0,0,0.05);
+    }
+
+    /* Description block: card with paragraph spacing + scroll cap */
+    .laptop-detail-body .laptop-description {
+        max-height: 240px;
+        overflow-y: auto;
+        padding: 0.75rem 0.9rem;
+        background: var(--bar-bg, rgba(0,0,0,0.025));
+        border: 1px solid var(--table-border);
+        border-radius: 8px;
+        font-size: 0.86rem;
+        line-height: 1.55;
+        color: var(--text-color);
+        word-break: break-word;
+    }
+    [data-theme="light"] .laptop-detail-body .laptop-description {
+        background: rgba(0,0,0,0.02);
+    }
+    .laptop-detail-body .laptop-description p {
+        margin: 0 0 0.65rem;
+    }
+    .laptop-detail-body .laptop-description p:last-child {
+        margin-bottom: 0;
+    }
+    .laptop-detail-body .laptop-description::-webkit-scrollbar {
+        width: 8px;
+    }
+    .laptop-detail-body .laptop-description::-webkit-scrollbar-thumb {
+        background: var(--table-border);
+        border-radius: 999px;
+    }
+
+    /* VALID badge + staff reference edit panel */
+    .valid-badge {
+        display: inline-block;
+        background: #16a34a;
+        color: #fff;
+        font-size: 0.62rem;
+        font-weight: 700;
+        letter-spacing: 0.05em;
+        padding: 0.15rem 0.5rem;
+        border-radius: 999px;
+        vertical-align: middle;
+        white-space: nowrap;
+    }
+    .valid-badge-sm {
+        font-size: 0.6rem;
+        padding: 0.05rem 0.35rem;
+    }
+    .laptop-detail-body .laptop-debug-ids {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.4rem;
+        margin: 0.25rem 0 0.6rem;
+        font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    }
+    .laptop-detail-body .laptop-debug-id {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.3rem;
+        padding: 0.15rem 0.5rem;
+        font-size: 0.7rem;
+        background: var(--bar-bg, rgba(0,0,0,0.04));
+        border: 1px solid var(--table-border);
+        border-radius: 5px;
+        color: var(--text-secondary);
+    }
+    .laptop-detail-body .laptop-debug-k {
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        font-weight: 700;
+        font-size: 0.6rem;
+    }
+    .laptop-detail-body .laptop-debug-v {
+        color: var(--text-color);
+        font-weight: 600;
+    }
+    [data-theme="light"] .laptop-detail-body .laptop-debug-id {
+        background: rgba(0,0,0,0.05);
+    }
+
+    .laptop-detail-body .ref-edit-panel {
+        margin-top: 1rem;
+        padding: 0.65rem 0.75rem;
+        border: 1px dashed var(--table-border);
+        border-radius: 8px;
+    }
+    .ref-edit-panel .ref-edit-title {
+        font-size: 0.72rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: var(--text-secondary);
+        margin-bottom: 0.5rem;
+    }
+    .ref-edit-panel .ref-edit-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        align-items: flex-end;
+    }
+    .ref-edit-panel label {
+        display: flex;
+        flex-direction: column;
+        gap: 0.15rem;
+        font-size: 0.68rem;
+        color: var(--text-secondary);
+    }
+    .ref-edit-panel input[type="number"],
+    .ref-edit-panel input[type="text"],
+    .ref-edit-panel select {
+        padding: 0.3rem 0.45rem;
+        font-size: 0.8rem;
+        border: 1px solid var(--input-border);
+        border-radius: 6px;
+        background: var(--input-bg);
+        color: var(--text-color);
+        width: 86px;
+    }
+    .ref-edit-panel select { width: 100px; }
+    .ref-edit-panel input#ref-resolution { width: 110px; }
+    .ref-edit-panel .ref-valid-label {
+        flex-direction: row;
+        align-items: center;
         gap: 0.35rem;
+        font-size: 0.78rem;
+        font-weight: 700;
+        color: #16a34a;
+        padding-bottom: 0.4rem;
+        cursor: pointer;
+    }
+    .ref-edit-panel .ref-save-status {
+        font-size: 0.78rem;
+        padding-bottom: 0.4rem;
+    }
+
+    /* ===== Toggle chip group (no checkboxes!) =====
+       Each chip is a clickable label; the whole label is the toggle target.
+       A leading SVG swaps between a hollow circle (off) and a filled dot (on).
+       The vendor-tinted border + soft fill give a clear on/off without a fake
+       checkbox. The underlying <input type="checkbox"> is hidden (visually +
+       from a11y tree via the label semantics) and stays focusable. */
+    .ref-edit-panel .ref-toggle-group {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.4rem;
+        align-items: center;
+        flex: 1 1 100%;
+        margin-top: 0.35rem;
+    }
+    .ref-edit-panel .ref-toggle-group-label {
+        font-size: 0.66rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        color: var(--text-secondary);
+        margin-right: 0.25rem;
+    }
+    .ref-edit-panel .ref-toggle {
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        padding: 0.3rem 0.65rem 0.3rem 0.55rem;
+        font-size: 0.75rem;
+        font-weight: 600;
+        color: var(--text-secondary);
+        background: var(--input-bg);
+        border: 1px solid var(--input-border, var(--table-border));
+        border-radius: 999px;
+        cursor: pointer;
+        user-select: none;
+        transition: background-color 0.15s ease, border-color 0.15s ease,
+                    color 0.15s ease, transform 0.12s ease;
+    }
+    .ref-edit-panel .ref-toggle:hover {
+        transform: translateY(-1px);
+        border-color: var(--text-secondary);
+    }
+    .ref-edit-panel .ref-toggle input[type="checkbox"] {
+        position: absolute;
+        opacity: 0;
+        pointer-events: none;
+        width: 0;
+        height: 0;
+    }
+    .ref-edit-panel .ref-toggle .ref-toggle-icon {
+        width: 14px;
+        height: 14px;
+        flex-shrink: 0;
+        color: currentColor;
+    }
+    .ref-edit-panel .ref-toggle .ref-toggle-icon.on { display: none; }
+    .ref-edit-panel .ref-toggle .ref-toggle-icon.off { display: inline-block; }
+    .ref-edit-panel .ref-toggle.checked .ref-toggle-icon.on { display: inline-block; }
+    .ref-edit-panel .ref-toggle.checked .ref-toggle-icon.off { display: none; }
+    /* Tinted on-state per chip: t-hdmi / t-pd / t-eth / t-touch / t-valid.
+       Each has its own accent so the staff can see at a glance which mark
+       they're toggling. */
+    .ref-edit-panel .ref-toggle.t-hdmi.checked {
+        background: rgba(239, 68, 68, 0.14);
+        border-color: #ef4444;
+        color: #ef4444;
+    }
+    .ref-edit-panel .ref-toggle.t-pd.checked {
+        background: rgba(168, 85, 247, 0.14);
+        border-color: #a855f7;
+        color: #a855f7;
+    }
+    .ref-edit-panel .ref-toggle.t-eth.checked {
+        background: rgba(245, 158, 11, 0.14);
+        border-color: #f59e0b;
+        color: #b45309;
+    }
+    .ref-edit-panel .ref-toggle.t-touch.checked {
+        background: rgba(59, 130, 246, 0.14);
+        border-color: #3b82f6;
+        color: #2563eb;
+    }
+    .ref-edit-panel .ref-toggle.t-valid.checked {
+        background: rgba(22, 163, 74, 0.18);
+        border-color: #16a34a;
+        color: #16a34a;
+        font-weight: 800;
+    }
+    .ref-edit-panel .ref-toggle input:focus-visible + .ref-toggle-icon {
+        outline: 2px solid var(--primary, #667eea);
+        outline-offset: 2px;
+        border-radius: 3px;
+    }
+    .ref-edit-panel .ref-toggle:focus-within {
+        outline: 2px solid var(--primary, #667eea);
+        outline-offset: 2px;
+    }
+
+    /* ===== CPU Filter Popup — designed for tech people =====
+       Generous whitespace, monospace model names, vendor color dots,
+       inline search, tier badges, count chips, and a clear footer. */
+    #cpu-filter-group .filter-dropdown {
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+        top: calc(100% + 8px);
+        left: 0;
+        z-index: 100;
+        background: var(--card-bg);
+        border: 1px solid var(--card-border, rgba(255,255,255,0.08));
+        border-radius: 14px;
+        padding: 0;
+        min-width: 820px;
+        max-width: 96vw;
+        max-height: 78vh;
+        overflow: hidden;
+        box-shadow:
+            0 24px 60px rgba(0,0,0,0.28),
+            0 2px 8px rgba(0,0,0,0.12),
+            0 0 0 1px rgba(0,0,0,0.04);
+        opacity: 0;
+        transform: translateY(-6px) scale(0.98);
+        transform-origin: top left;
+        transition: opacity 0.15s ease, transform 0.15s ease;
+        pointer-events: none;
+    }
+    #cpu-filter-group .filter-dropdown.open {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+        pointer-events: auto;
+    }
+
+    /* Header */
+    .cpu-popup-header {
+        padding: 14px 18px 12px;
+        border-bottom: 1px solid var(--table-border);
+        background: linear-gradient(180deg, rgba(102,126,234,0.04) 0%, transparent 100%);
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        flex-shrink: 0;
+    }
+    .cpu-popup-title {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-weight: 700;
+        font-size: 0.95rem;
+        color: var(--text-color);
+        letter-spacing: -0.01em;
+    }
+    .cpu-popup-title svg {
+        width: 18px;
+        height: 18px;
+        color: var(--primary, #667eea);
+    }
+    .cpu-popup-count {
+        margin-left: auto;
+        font-size: 0.7rem;
+        font-weight: 600;
+        color: var(--text-secondary);
+        background: var(--bar-bg, rgba(0,0,0,0.06));
+        padding: 3px 8px;
+        border-radius: 999px;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+    }
+    [data-theme="light"] .cpu-popup-count {
+        background: rgba(0,0,0,0.05);
+    }
+    .cpu-popup-search {
+        position: relative;
+        display: flex;
+        align-items: center;
+    }
+    .cpu-popup-search svg {
+        position: absolute;
+        left: 11px;
+        width: 15px;
+        height: 15px;
+        color: var(--text-secondary);
+        pointer-events: none;
+    }
+    .cpu-popup-search input {
+        width: 100%;
+        padding: 9px 56px 9px 36px;
+        border-radius: 8px;
+        border: 1px solid var(--input-border, var(--table-border));
+        background: var(--input-bg, rgba(255,255,255,0.03));
+        color: var(--text-color);
+        font-size: 0.85rem;
+        transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    }
+    .cpu-popup-search input::placeholder {
+        color: var(--text-secondary);
+        opacity: 0.75;
+    }
+    .cpu-popup-search input:focus {
+        outline: none;
+        border-color: var(--primary, #667eea);
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.18);
+    }
+    .cpu-popup-search kbd {
+        position: absolute;
+        right: 10px;
+        padding: 2px 7px;
+        font-size: 0.7rem;
+        color: var(--text-secondary);
+        background: var(--bar-bg, rgba(0,0,0,0.08));
+        border: 1px solid var(--table-border);
+        border-radius: 4px;
+        pointer-events: none;
+    }
+    [data-theme="light"] .cpu-popup-search kbd {
+        background: rgba(0,0,0,0.05);
+    }
+
+    /* Toolbar (Sort / Group / Clear all) */
+    .cpu-popup-toolbar {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 9px 18px;
+        border-bottom: 1px solid var(--table-border);
+        background: var(--card-bg);
+        flex-shrink: 0;
+    }
+    .cpu-toolbar-group {
+        display: flex;
+        align-items: center;
+        gap: 0.45rem;
+        font-size: 0.75rem;
+        color: var(--text-secondary);
+    }
+    .cpu-toolbar-label {
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        font-weight: 600;
+        font-size: 0.7rem;
+    }
+    .cpu-toolbar-select {
+        padding: 4px 8px;
+        border: 1px solid var(--input-border, var(--table-border));
+        background: var(--input-bg);
+        color: var(--text-color);
+        border-radius: 6px;
+        font-size: 0.78rem;
+        cursor: pointer;
+    }
+    .cpu-toolbar-divider {
+        width: 1px;
+        height: 16px;
+        background: var(--table-border);
+    }
+    .cpu-toolbar-spacer { flex: 1; }
+    .cpu-toolbar-btn {
+        padding: 4px 11px;
+        border: 1px solid var(--input-border, var(--table-border));
+        background: var(--input-bg);
+        color: var(--text-secondary);
+        border-radius: 6px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.12s ease;
+    }
+    .cpu-toolbar-btn:hover {
+        color: var(--text-color);
+        border-color: var(--primary, #667eea);
+    }
+
+    /* Body (scrollable CPU list) */
+    .cpu-popup-body {
+        overflow-y: auto;
+        overflow-x: hidden;
+        padding: 8px 14px 14px;
+        flex: 1;
+        min-height: 0;
+    }
+    .cpu-popup-body::-webkit-scrollbar { width: 10px; }
+    .cpu-popup-body::-webkit-scrollbar-track { background: transparent; }
+    .cpu-popup-body::-webkit-scrollbar-thumb {
+        background: var(--table-border);
+        border-radius: 999px;
+        border: 2px solid var(--card-bg);
+    }
+    .cpu-popup-body::-webkit-scrollbar-thumb:hover {
+        background: var(--text-secondary);
+    }
+
+    /* Vendor section — now collapsible AND selectable. The header has a
+       chevron on the left (collapse/expand), the vendor dot + name in the
+       middle, and a "Select all" pill on the right. */
+    .cpu-vendor-section { margin-top: 10px; }
+    .cpu-vendor-section:first-child { margin-top: 4px; }
+    .cpu-vendor-header {
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+        padding: 0.3rem 0.2rem;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background-color 0.12s ease;
+    }
+    .cpu-vendor-header:hover { background: var(--bar-bg, rgba(0,0,0,0.04)); }
+    .cpu-vendor-left {
+        display: flex;
+        align-items: center;
+        gap: 0.45rem;
+        flex: 1 1 auto;
+        min-width: 0;
+    }
+    .cpu-vendor-header .cpu-chevron {
+        width: 12px;
+        height: 12px;
+        color: var(--text-secondary);
+        flex-shrink: 0;
+        transition: transform 0.18s ease;
+    }
+    .cpu-vendor-section.collapsed > .cpu-vendor-header .cpu-chevron {
+        transform: rotate(-90deg);
+    }
+    .cpu-vendor-section.collapsed .cpu-class-block { display: none; }
+    .cpu-vendor-section.expanded .cpu-class-block { display: block; }
+    /* Default: class blocks inside the vendor are hidden until expanded.
+       Mirrors the default-collapsed behaviour (see `cpu-vendor-section`
+       template class) so the popup doesn't drown the user in options. */
+    .cpu-vendor-section:not(.expanded) .cpu-class-block { display: none; }
+    .cpu-class-block.collapsed .cpu-options-grid { display: none; }
+    .cpu-class-block:not(.collapsed) .cpu-options-grid { display: grid; }
+    .cpu-vendor-actions {
+        flex-shrink: 0;
+    }
+        padding: 8px 6px 6px;
+        font-size: 0.75rem;
+        font-weight: 700;
+        color: var(--text-color);
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        user-select: none;
+    }
+    .cpu-vendor-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        flex-shrink: 0;
+        box-shadow: 0 0 0 3px rgba(0,0,0,0.04);
+    }
+    [data-theme="light"] .cpu-vendor-dot {
+        box-shadow: 0 0 0 3px rgba(0,0,0,0.05);
+    }
+    .cpu-vendor-meta {
+        margin-left: auto;
+        font-size: 0.7rem;
+        font-weight: 500;
+        color: var(--text-secondary);
+        text-transform: none;
+        letter-spacing: 0;
+    }
+
+    /* Class block (collapsible) */
+    .cpu-class-block {
+        margin: 0 0 4px;
+        border-radius: 8px;
+        overflow: hidden;
+    }
+    .cpu-class-block:hover { background: rgba(255,255,255,0.015); }
+    [data-theme="light"] .cpu-class-block:hover { background: rgba(0,0,0,0.018); }
+    .cpu-class-header {
+        display: flex;
+        align-items: center;
+        padding: 6px 8px 6px 4px;
+        cursor: pointer;
+        user-select: none;
+        border-radius: 6px;
+        transition: background 0.12s ease;
+    }
+    .cpu-class-header:hover { background: var(--bar-bg, rgba(0,0,0,0.05)); }
+    [data-theme="light"] .cpu-class-header:hover { background: rgba(0,0,0,0.04); }
+    .cpu-class-left {
+        display: flex;
+        align-items: center;
+        gap: 0.45rem;
+        flex: 1;
+        min-width: 0;
+    }
+    .cpu-chevron {
+        width: 14px;
+        height: 14px;
+        color: var(--text-secondary);
+        transition: transform 0.18s ease;
+        flex-shrink: 0;
+    }
+    .cpu-class-block.expanded .cpu-chevron { transform: rotate(90deg); }
+    .cpu-class-label {
+        font-size: 0.92rem;
+        font-weight: 700;
+        color: var(--text-color);
+        letter-spacing: -0.01em;
+    }
+    .cpu-class-tier {
+        font-size: 0.68rem;
+        color: var(--text-secondary);
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        padding: 1px 7px;
+        background: var(--bar-bg, rgba(0,0,0,0.06));
+        border-radius: 999px;
+    }
+    [data-theme="light"] .cpu-class-tier { background: rgba(0,0,0,0.05); }
+    .cpu-class-actions {
+        display: flex;
+        align-items: center;
+        gap: 0.85rem;
+        flex-shrink: 0;
+    }
+    .cpu-class-count {
+        font-size: 0.72rem;
+        color: var(--text-secondary);
+        font-weight: 500;
+    }
+    .cpu-class-toggle {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        padding: 3px 10px;
+        font-size: 0.72rem;
+        font-weight: 600;
+        color: var(--text-secondary);
+        background: transparent;
+        border: 1.5px solid var(--table-border);
+        border-radius: 999px;
+        cursor: pointer;
+        user-select: none;
+        transition: all 0.12s ease;
+    }
+    .cpu-class-toggle:hover {
+        color: var(--primary, #667eea);
+        border-color: var(--primary, #667eea);
+    }
+    .cpu-class-toggle.checked {
+        background: var(--primary, #667eea);
+        color: #fff;
+        border-color: var(--primary, #667eea);
+        box-shadow: 0 2px 6px rgba(102, 126, 234, 0.4);
+    }
+    .cpu-class-toggle svg { width: 12px; height: 12px; }
+    .cpu-class-toggle.checked .sa-icon-empty { display: none; }
+    .cpu-class-toggle:not(.checked) .sa-icon-check { display: none; }
+    .cpu-class-toggle input {
+        position: absolute;
+        opacity: 0;
+        width: 0;
+        height: 0;
+        margin: 0;
+        pointer-events: none;
+    }
+
+    /* Options grid */
+    .cpu-options-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+        gap: 4px;
+        max-height: 0;
+        overflow: hidden;
+        opacity: 0;
+        padding: 0 4px;
+        transition: max-height 0.22s ease, opacity 0.18s ease, padding 0.18s ease, margin 0.18s ease;
+        margin-top: 0;
+    }
+    .cpu-class-block.expanded .cpu-options-grid {
+        max-height: 1200px;
+        opacity: 1;
+        padding: 4px 4px 8px;
+        margin-top: 0;
+    }
+    .cpu-option {
+        display: flex;
+        align-items: center;
+        gap: 0.55rem;
+        padding: 7px 10px 7px 12px;
+        border-left: 3px solid transparent;
+        border-radius: 6px;
+        background: transparent;
+        cursor: pointer;
+        font-size: 0.85rem;
+        color: var(--text-color);
+        user-select: none;
+        position: relative;
+        margin: 1px 0;
+        transition: background 0.1s ease, border-color 0.1s ease;
+    }
+    .cpu-option:hover { background: var(--bar-bg, rgba(0,0,0,0.05)); }
+    [data-theme="light"] .cpu-option:hover { background: rgba(0,0,0,0.035); }
+    .cpu-option input {
+        position: absolute;
+        opacity: 0;
+        width: 0;
+        height: 0;
+        margin: 0;
+        pointer-events: none;
+    }
+    .cpu-option-check {
+        width: 16px;
+        height: 16px;
+        color: var(--primary, #667eea);
+        flex-shrink: 0;
+        opacity: 0;
+        transform: scale(0.5);
+        transition: opacity 0.12s ease, transform 0.18s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .cpu-option.checked {
+        background: rgba(102, 126, 234, 0.10);
+        border-left-color: var(--primary, #667eea);
+    }
+    .cpu-option.checked:hover { background: rgba(102, 126, 234, 0.16); }
+    .cpu-option.checked .cpu-option-check {
+        opacity: 1;
+        transform: scale(1);
+    }
+    .cpu-option:focus-within {
+        outline: 2px solid var(--link-color);
+        outline-offset: -1px;
+        border-radius: 6px;
+    }
+    .cpu-option-name {
+        flex: 1;
+        font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+        font-size: 0.85rem;
+        font-weight: 500;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    .cpu-option-count {
+        font-size: 0.7rem;
+        color: var(--text-secondary);
+        font-weight: 600;
+        background: var(--bar-bg, rgba(0,0,0,0.05));
+        padding: 2px 8px;
+        border-radius: 999px;
+        flex-shrink: 0;
+        min-width: 26px;
+        text-align: center;
+        font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+        transition: background 0.12s ease, color 0.12s ease;
+    }
+    [data-theme="light"] .cpu-option-count { background: rgba(0,0,0,0.06); }
+    .cpu-option.checked .cpu-option-count {
+        background: rgba(102, 126, 234, 0.22);
+        color: var(--primary, #667eea);
+    }
+
+    /* Footer */
+    .cpu-popup-footer {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 10px 18px;
+        border-top: 1px solid var(--table-border);
+        background: var(--card-bg);
+        flex-shrink: 0;
+    }
+    .cpu-popup-footer-info {
+        font-size: 0.78rem;
+        color: var(--text-secondary);
+    }
+    .cpu-popup-footer-actions {
+        margin-left: auto;
+        display: flex;
+        gap: 0.5rem;
+    }
+    .cpu-popup-btn {
+        padding: 6px 14px;
+        border-radius: 6px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.12s ease;
+        border: 1px solid transparent;
+    }
+    .cpu-popup-btn-ghost {
+        background: transparent;
+        border-color: var(--input-border, var(--table-border));
+        color: var(--text-secondary);
+    }
+    .cpu-popup-btn-ghost:hover {
+        color: var(--text-color);
+        border-color: var(--text-secondary);
+    }
+    .cpu-popup-btn-primary {
+        background: var(--primary, #667eea);
+        color: #fff;
+        box-shadow: 0 2px 8px rgba(102, 126, 234, 0.35);
+    }
+    .cpu-popup-btn-primary:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 14px rgba(102, 126, 234, 0.5);
+    }
+
+    /* Hidden by search */
+    .cpu-class-block.hidden,
+    .cpu-vendor-section.hidden { display: none; }
+    .cpu-option.hidden { display: none; }
+
+    /* Compact filter bar: labels inline with controls, denser spacing */
+    .section .filters {
+        gap: 0.5rem 0.75rem;
+    }
+    .section .filters label {
+        flex-direction: row;
+        align-items: center;
+        gap: 0.35rem;
+        font-size: 0.8rem;
+        white-space: nowrap;
+    }
+    .section .filters select,
+    .section .filters input[type="text"],
+    .section .filters input[type="number"] {
+        padding: 0.3rem 0.45rem;
+        font-size: 0.8rem;
+    }
+
+    /* Compact toggle chips replacing the old stacked checkbox labels */
+    .filters label.toggle-chip {
+        flex-direction: row;
+        align-items: center;
+        align-self: flex-end;
+        gap: 0.4rem;
+        padding: 0.32rem 0.75rem;
+        border-radius: 999px;
+        border: 1px solid var(--table-border);
+        background: var(--card-bg);
+        color: var(--text-secondary);
+        font-size: 0.8rem;
+        font-weight: 500;
+        cursor: pointer;
+        user-select: none;
+        white-space: nowrap;
+        transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease, transform 0.1s ease;
+    }
+    .filters label.toggle-chip:hover {
+        border-color: var(--link-color);
+        transform: translateY(-1px);
+    }
+    .filters label.toggle-chip input {
+        position: absolute;
+        opacity: 0;
+        width: 0;
+        height: 0;
+        margin: 0;
+        padding: 0;
+        border: none;
+    }
+    .filters label.toggle-chip::before {
+        content: '';
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        border: 1.5px solid currentColor;
+        flex-shrink: 0;
+        opacity: 0.5;
+        transition: background 0.15s ease, opacity 0.15s ease;
+    }
+    .filters label.toggle-chip:has(input:checked) {
+        background: var(--primary, #667eea);
+        border-color: var(--primary, #667eea);
+        color: var(--primary-contrast, #fff);
+        box-shadow: 0 2px 8px rgba(102, 126, 234, 0.35);
+    }
+    .filters label.toggle-chip:has(input:checked)::before {
+        background: currentColor;
+        opacity: 1;
+    }
+    .filters label.toggle-chip:has(input:focus-visible) {
+        outline: 2px solid var(--link-color);
+        outline-offset: 2px;
     }
 {% endblock %}
 
 {% block content %}
 <div class="section">
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
-        <h2>Laptops</h2>
-        <div class="filters" style="margin: 0; flex-wrap: wrap;">
-            <label>
-                Brand:
-                <select id="brand-filter" onchange="loadLaptops()">
-                    <option value="">{{ t('All') }}</option>
-                </select>
-            </label>
-            <div id="cpu-filter-group" style="position: relative;">
-                <label style="cursor: pointer;" onclick="toggleCPUFilter()">
-                    CPU: <span id="cpu-selected-label">{{ t('Any') }}</span>
-                </label>
-                <div id="cpu-options" class="filter-dropdown">
-                    <div id="cpu-sort-bar" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; padding-bottom: 0.35rem; border-bottom: 1px solid var(--table-border);">
-                        <span style="font-weight: 600;">Sort:</span>
-                        <select id="cpu-sort-mode" onchange="renderCPUOptions(); saveFilters();">
-                            <option value="name">Name</option>
-                            <option value="count-desc">Most listings</option>
-                            <option value="count-asc">Least listings</option>
-                        </select>
+    {# ===== Hero header ===== #}
+    <div class="laptop-hero">
+        <div class="laptop-hero-row">
+            <div>
+                <h1 class="laptop-hero-title">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <rect x="3" y="4" width="18" height="12" rx="2"/>
+                        <line x1="2" y1="20" x2="22" y2="20"/>
+                    </svg>
+                    Laptops
+                </h1>
+                <div class="laptop-hero-sub">Scraped laptop listings from ss.com · shared per-model reference, staff-editable</div>
+            </div>
+            <div class="laptop-stat-tiles" id="laptop-stat-tiles">
+                <div class="laptop-stat-tile" id="laptop-stat-listings" title="Total active laptop listings">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="#667eea" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <rect x="3" y="4" width="18" height="12" rx="2"/>
+                        <line x1="2" y1="20" x2="22" y2="20"/>
+                    </svg>
+                    <div class="lstat-tile-body">
+                        <span class="lstat-value" id="lstat-listings">—</span>
+                        <span class="lstat-label">Listings</span>
                     </div>
-                    <div id="cpu-options-list">
-                        <!-- populated dynamically -->
+                </div>
+                <div class="laptop-stat-tile" id="laptop-stat-models" title="Distinct brand+model+size combos in the reference table">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="#764ba2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M20 7H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"/>
+                        <line x1="12" y1="12" x2="12" y2="12"/>
+                    </svg>
+                    <div class="lstat-tile-body">
+                        <span class="lstat-value" id="lstat-models">—</span>
+                        <span class="lstat-label">Models</span>
+                    </div>
+                </div>
+                <div class="laptop-stat-tile" id="laptop-stat-valid" title="Models marked as VALID by an admin">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M20 6L9 17l-5-5"/>
+                    </svg>
+                    <div class="lstat-tile-body">
+                        <span class="lstat-value" id="lstat-valid">—</span>
+                        <span class="lstat-label">VALID</span>
+                    </div>
+                </div>
+                <div class="laptop-stat-tile" id="laptop-stat-res" title="Reference rows with a known resolution">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <rect x="2" y="3" width="20" height="14" rx="2"/>
+                        <line x1="8" y1="21" x2="16" y2="21"/>
+                        <line x1="12" y1="17" x2="12" y2="21"/>
+                    </svg>
+                    <div class="lstat-tile-body">
+                        <span class="lstat-value" id="lstat-res">—</span>
+                        <span class="lstat-label">Resolution</span>
                     </div>
                 </div>
             </div>
-            <label>
-                <input type="checkbox" id="macbook-only" onchange="loadLaptops()">
-                Include macbooks
-            </label>
-            <label>
-                GPU:
+        </div>
+    </div>
+
+    {# ===== Filter panel ===== #}
+    <div class="laptop-filter-panel">
+        <div class="laptop-filters-inner">
+            <div class="laptop-filter-group">
+                <span class="lfg-label">Brand</span>
+                <select id="brand-filter" onchange="loadLaptops()">
+                    <option value="">{{ t('All') }}</option>
+                </select>
+            </div>
+            <div class="laptop-filter-divider"></div>
+            <div class="laptop-filter-group">
+                <span class="lfg-label">City</span>
+                <select id="city-filter" onchange="loadLaptops()">
+                    <option value="">{{ t('All') }}</option>
+                </select>
+            </div>
+            <div class="laptop-filter-group">
+                <span class="lfg-label">Exclude city</span>
+                <select id="exclude-city-filter" onchange="loadLaptops()">
+                    <option value="">{{ t('None') }}</option>
+                </select>
+            </div>
+            <div class="laptop-filter-group">
+                <span class="lfg-label">Material</span>
+                <select id="material-filter" onchange="loadLaptops()">
+                    <option value="">{{ t('Any') }}</option>
+                    <option value="metal">Metal</option>
+                    <option value="plastic">Plastic</option>
+                    <option value="unknown">Unknown (unmarked)</option>
+                </select>
+            </div>
+            <div class="laptop-filter-group">
+                <span class="lfg-label">Refresh ≥</span>
+                <select id="refresh-rate-filter" onchange="loadLaptops()">
+                    <option value="">{{ t('Any') }}</option>
+                    <option value="60">60 Hz</option>
+                    <option value="90">90 Hz</option>
+                    <option value="120">120 Hz</option>
+                    <option value="144">144 Hz</option>
+                    <option value="240">240 Hz</option>
+                </select>
+            </div>
+            <div class="laptop-filter-divider"></div>
+            <div id="cpu-filter-group">
+                <label class="lfg-flat" onclick="toggleCPUFilter()">
+                    <span class="lfg-label">CPU</span>
+                    <span id="cpu-selected-label">{{ t('Any') }}</span>
+                </label>
+                <div id="cpu-options" class="filter-dropdown" role="dialog" aria-label="Filter by CPU">
+                    <div class="cpu-popup-header">
+                        <div class="cpu-popup-title">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <rect x="4" y="4" width="16" height="16" rx="2"/>
+                                <rect x="9" y="9" width="6" height="6"/>
+                                <line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/>
+                                <line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/>
+                                <line x1="20" y1="9" x2="23" y2="9"/><line x1="20" y1="14" x2="23" y2="14"/>
+                                <line x1="1" y1="9" x2="4" y2="9"/><line x1="1" y1="14" x2="4" y2="14"/>
+                            </svg>
+                            Filter by CPU
+                            <span class="cpu-popup-count" id="cpu-popup-count">0 selected</span>
+                        </div>
+                        <div class="cpu-popup-search">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                            </svg>
+                            <input type="text" id="cpu-popup-search-input" placeholder="Search CPU model (e.g. i7-1165, Ryzen 7)..." aria-label="Search CPU models">
+                            <kbd>/</kbd>
+                        </div>
+                    </div>
+                    <div class="cpu-popup-toolbar">
+                        <div class="cpu-toolbar-group">
+                            <span class="cpu-toolbar-label">Sort</span>
+                            <select id="cpu-sort-mode" class="cpu-toolbar-select" onchange="renderCPUOptions(); saveFilters();">
+                                <option value="newest" selected>Newest</option>
+                                <option value="name">Name</option>
+                                <option value="count-desc">Most listings</option>
+                                <option value="count-asc">Least listings</option>
+                            </select>
+                        </div>
+                        <div class="cpu-toolbar-divider"></div>
+                        <div class="cpu-toolbar-group">
+                            <span class="cpu-toolbar-label">Group</span>
+                            <select id="cpu-group-mode" class="cpu-toolbar-select" onchange="renderCPUOptions(); saveFilters();">
+                                <option value="class" selected>Class</option>
+                                <option value="generation">Generation</option>
+                            </select>
+                        </div>
+                        <div class="cpu-toolbar-spacer"></div>
+                        <button class="cpu-toolbar-btn" type="button" onclick="clearAllCpus()">Clear all</button>
+                    </div>
+                    <div class="cpu-popup-body" id="cpu-options-list">
+                        <!-- populated dynamically -->
+                    </div>
+                    <div class="cpu-popup-footer">
+                        <span class="cpu-popup-footer-info" id="cpu-popup-footer-info">0 selected</span>
+                        <div class="cpu-popup-footer-actions">
+                            <button class="cpu-popup-btn cpu-popup-btn-ghost" type="button" onclick="closeCPUFilter()">Close</button>
+                            <button class="cpu-popup-btn cpu-popup-btn-primary" type="button" onclick="applyCPUFilter()">Apply</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="laptop-filter-group">
+                <span class="lfg-label">GPU</span>
                 <input type="text" id="gpu-filter" placeholder="e.g. GTX" oninput="debounceLoadLaptops()">
-            </label>
-            <label>
-                Min €:
-                <input type="number" id="min-price" style="width: 80px;" oninput="debounceLoadLaptops()">
-            </label>
-            <label>
-                Max €:
-                <input type="number" id="max-price" style="width: 80px;" oninput="debounceLoadLaptops()">
-            </label>
-            <label>
-                RAM:
-                <select id="ram-min" onchange="loadLaptops()" style="width: 70px;">
+            </div>
+            <div class="laptop-filter-divider"></div>
+            <div class="laptop-filter-group">
+                <span class="lfg-label">Price €</span>
+                <input type="number" id="min-price" placeholder="Min" oninput="debounceLoadLaptops()">
+                <span style="opacity:0.5;">–</span>
+                <input type="number" id="max-price" placeholder="Max" oninput="debounceLoadLaptops()">
+            </div>
+            <div class="laptop-filter-group">
+                <span class="lfg-label">RAM</span>
+                <select id="ram-min" onchange="loadLaptops()">
                     <option value="">Min</option>
-                    <option value="4">4 GB</option>
-                    <option value="8">8 GB</option>
-                    <option value="16">16 GB</option>
-                    <option value="32">32 GB</option>
+                    <option value="4">4</option>
+                    <option value="8">8</option>
+                    <option value="16">16</option>
+                    <option value="32">32</option>
                 </select>
-                <select id="ram-max" onchange="loadLaptops()" style="width: 70px;">
+                <select id="ram-max" onchange="loadLaptops()">
                     <option value="">Max</option>
-                    <option value="8">8 GB</option>
-                    <option value="16">16 GB</option>
-                    <option value="32">32 GB</option>
-                    <option value="64">64 GB</option>
+                    <option value="8">8</option>
+                    <option value="16">16</option>
+                    <option value="32">32</option>
+                    <option value="64">64</option>
                 </select>
-            </label>
-            <label>
-                Screen:
-                <select id="display-size-min" onchange="loadLaptops()" style="width: 75px;">
+                <span style="opacity:0.6; font-size:0.7rem;">GB</span>
+            </div>
+            <div class="laptop-filter-group">
+                <span class="lfg-label">Screen</span>
+                <select id="display-size-min" onchange="loadLaptops()">
                     <option value="">Min</option>
-                    <option value="11">11"</option>
-                    <option value="12">12"</option>
-                    <option value="13">13"</option>
-                    <option value="14">14"</option>
-                    <option value="15">15"</option>
-                    <option value="16">16"</option>
-                    <option value="17">17"</option>
+                    <option value="11">11″</option>
+                    <option value="12">12″</option>
+                    <option value="13">13″</option>
+                    <option value="14">14″</option>
+                    <option value="15">15″</option>
+                    <option value="16">16″</option>
+                    <option value="17">17″</option>
                 </select>
-                <select id="display-size-max" onchange="loadLaptops()" style="width: 75px;">
+                <select id="display-size-max" onchange="loadLaptops()">
                     <option value="">Max</option>
-                    <option value="12">12"</option>
-                    <option value="13">13"</option>
-                    <option value="14">14"</option>
-                    <option value="15">15"</option>
-                    <option value="16">16"</option>
-                    <option value="17">17"</option>
-                    <option value="18">18"</option>
+                    <option value="12">12″</option>
+                    <option value="13">13″</option>
+                    <option value="14">14″</option>
+                    <option value="15">15″</option>
+                    <option value="16">16″</option>
+                    <option value="17">17″</option>
+                    <option value="18">18″</option>
                 </select>
-            </label>
-            <label>
-                Sort:
+            </div>
+            <div class="laptop-filter-divider"></div>
+            <div class="laptop-filter-group">
+                <span class="lfg-label">Sort</span>
                 <select id="sort-by" onchange="loadLaptops()">
                     <option value="date_posted">{{ t('Date Posted') }}</option>
                     <option value="price">{{ t('Price') }}</option>
                 </select>
-            </label>
-            <label>
-                Order:
                 <select id="sort-order" onchange="loadLaptops()">
                     <option value="desc">Desc</option>
                     <option value="asc">Asc</option>
                 </select>
-            </label>
-            <label>
-                Time:
+            </div>
+            <div class="laptop-filter-group">
+                <span class="lfg-label">Time</span>
                 <select id="time-filter" onchange="loadLaptops()">
                     <option value="all_time">All Time</option>
                     <option value="30d">30 Days</option>
                     <option value="7d">7 Days</option>
                 </select>
-            </label>
-            <label>
-                <input type="checkbox" id="active-only" checked onchange="loadLaptops()">
-                Active only
-            </label>
-            <label>
-                <input type="checkbox" id="exclude-flagged" checked onchange="loadLaptops()">
-                Exclude flagged
-            </label>
-            <label>
-                <input type="checkbox" id="include-perekups" checked onchange="loadLaptops()">
-                Include perekups
-            </label>
-            <label>
-                <input type="checkbox" id="include-lombards" checked onchange="loadLaptops()">
-                Include lombards
-            </label>
+            </div>
+            <div class="laptop-filter-divider"></div>
+            <div class="laptop-icon-bar" id="laptop-toggle-bar" role="group" aria-label="Listing filters">
+                <button type="button" class="laptop-icon-btn t-macbooks" data-target="macbook-only" data-default="false" aria-pressed="false" onclick="toggleLaptopIcon(this)" title="Include macbooks (off by default)">
+                    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                        <path d="M17.05 12.04c-.03-2.7 2.21-4 2.31-4.06-1.26-1.84-3.22-2.09-3.92-2.12-1.67-.17-3.26.98-4.11.98-.86 0-2.16-.96-3.55-.93-1.83.03-3.51 1.06-4.45 2.7-1.9 3.29-.49 8.15 1.36 10.82.9 1.3 1.97 2.76 3.37 2.71 1.35-.05 1.86-.87 3.49-.87 1.62 0 2.09.87 3.52.84 1.45-.02 2.37-1.32 3.26-2.63 1.03-1.51 1.45-2.97 1.48-3.05-.03-.01-2.83-1.09-2.86-4.32zM14.4 4.06c.74-.9 1.24-2.14 1.1-3.39-1.06.04-2.35.71-3.11 1.6-.68.79-1.28 2.06-1.12 3.27 1.19.09 2.39-.6 3.13-1.48z"/>
+                    </svg>
+                    <span class="badge-dot"></span>
+                    <span class="tooltip">Include MacBooks</span>
+                </button>
+                <button type="button" class="laptop-icon-btn t-active" data-target="active-only" data-default="true" aria-pressed="true" onclick="toggleLaptopIcon(this)" title="Active listings only">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                        <polyline points="22 4 12 14.01 9 11.01"/>
+                    </svg>
+                    <span class="tooltip">Active only</span>
+                </button>
+                <button type="button" class="laptop-icon-btn t-flagged" data-target="exclude-flagged" data-default="true" aria-pressed="true" onclick="toggleLaptopIcon(this)" title="Exclude flagged listings">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/>
+                        <line x1="4" y1="22" x2="4" y2="15"/>
+                    </svg>
+                    <span class="tooltip">Exclude flagged</span>
+                </button>
+                <button type="button" class="laptop-icon-btn t-perekups" data-target="include-perekups" data-default="true" aria-pressed="true" onclick="toggleLaptopIcon(this)" title="Include perekups (resellers)">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
+                        <line x1="3" y1="6" x2="21" y2="6"/>
+                        <path d="M16 10a4 4 0 0 1-8 0"/>
+                    </svg>
+                    <span class="tooltip">Include perekups</span>
+                </button>
+                <button type="button" class="laptop-icon-btn t-lombards" data-target="include-lombards" data-default="true" aria-pressed="true" onclick="toggleLaptopIcon(this)" title="Include lombards (pawn shops)">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M2 4l3 12h14l3-12-6 7-4-9-4 9-6-7z"/>
+                        <circle cx="12" cy="20" r="1.5" fill="currentColor" stroke="none"/>
+                    </svg>
+                    <span class="tooltip">Include lombards</span>
+                </button>
+            </div>
+            <input type="hidden" id="macbook-only" value="false">
+            <input type="hidden" id="active-only" value="true">
+            <input type="hidden" id="exclude-flagged" value="true">
+            <input type="hidden" id="include-perekups" value="true">
+            <input type="hidden" id="include-lombards" value="true">
             <input type="hidden" id="model-filter">
             <input type="hidden" id="storage-min">
             <input type="hidden" id="storage-max">
@@ -264,7 +1661,7 @@
         </div>
     </div>
 
-    <div id="active-filters" style="margin-bottom: 1rem; min-height: 1.5rem; display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; font-size: 0.85rem; color: var(--text-secondary);"></div>
+    <div id="active-filters" class="laptop-active-filters"></div>
 
     <!-- Similar listings modal -->
     <div id="similar-modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); z-index:1000; align-items:center; justify-content:center;">
@@ -288,10 +1685,11 @@
         <div class="loading">Loading laptop listings...</div>
     </div>
 
-    <div id="pagination" style="margin-top: 1.5rem; display: flex; justify-content: center; align-items: center; gap: 1rem;">
-        <button class="btn btn-small" id="prev-page" onclick="changePage(-1)">{{ t('Previous') }}</button>
+    <div id="pagination" style="margin-top: 1.5rem; display: flex; justify-content: center; align-items: center; color: var(--text-secondary); font-size: 0.875rem;">
         <span id="page-info"></span>
-        <button class="btn btn-small" id="next-page" onclick="changePage(1)">{{ t('Next') }}</button>
+    </div>
+    <div id="laptop-sentinel" class="laptop-sentinel" style="display: none;">
+        <span>Loading more…</span>
     </div>
 </div>
 {% endblock %}
@@ -301,10 +1699,71 @@
     let currentPage = 0;
     const pageSize = 24;
     let totalListings = 0;
+    let isLoading = false;
+    let hasMore = true;
     let debounceTimer;
     let allCpuOptions = [];
     let currentListings = [];
     let similarTarget = null;
+
+    // ---- Custom SVG icon set for the spec popup ----
+    // All icons use 24x24 viewBox + stroke="currentColor" so they inherit
+    // the chip text colour and scale nicely. Each is a small, line-art
+    // icon in the same Feather/Lucide style so the popup doesn't look
+    // like a 2005 forum.
+    const SPEC_ICONS = {
+        dot:        `<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="12" cy="12" r="3"/></svg>`,
+        brand:      `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>`,
+        model:      `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="12" rx="2"/><line x1="2" y1="20" x2="22" y2="20"/></svg>`,
+        'model-raw':`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>`,
+        display:    `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>`,
+        cpu:        `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/><line x1="20" y1="9" x2="23" y2="9"/><line x1="20" y1="14" x2="23" y2="14"/><line x1="1" y1="9" x2="4" y2="9"/><line x1="1" y1="14" x2="4" y2="14"/></svg>`,
+        ram:        `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="6" width="20" height="12" rx="1"/><line x1="6" y1="10" x2="6" y2="14"/><line x1="10" y1="10" x2="10" y2="14"/><line x1="14" y1="10" x2="14" y2="14"/><line x1="18" y1="10" x2="18" y2="14"/></svg>`,
+        storage:    `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="22" y1="12" x2="2" y2="12"/><path d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/><line x1="6" y1="16" x2="6.01" y2="16"/><line x1="10" y1="16" x2="10.01" y2="16"/></svg>`,
+        gpu:        `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="8" cy="12" r="1.5"/><circle cx="16" cy="12" r="1.5"/><line x1="2" y1="10" x2="0" y2="10"/><line x1="2" y1="14" x2="0" y2="14"/><line x1="22" y1="10" x2="24" y2="10"/><line x1="22" y1="14" x2="24" y2="14"/></svg>`,
+        condition:  `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2l2.4 5.4L20 8l-4 4.2 1 5.8-5-2.6-5 2.6 1-5.8-4-4.2 5.6-.6L12 2z"/></svg>`,
+        material:   `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>`,
+        'usb-c':    `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10" cy="20" r="1.5"/><path d="M10 18V8a2 2 0 0 1 2-2h6"/><path d="M18 2l4 4-4 4"/><path d="M14 12h6"/></svg>`,
+        usb:        `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10" cy="20" r="1.5"/><path d="M10 18V8a2 2 0 0 1 2-2h6"/><path d="M18 4l4 4-4 4"/><path d="M14 12h6"/></svg>`,
+        hdmi:       `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 8h20v8H2z" rx="1"/><path d="M6 8V5h4"/><path d="M14 5h4v3"/><path d="M2 16v3h3"/><path d="M19 19h3v-3"/></svg>`,
+        'video-pd': `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="14" height="12" rx="1.5"/><polyline points="16 8 22 6 22 14 16 12"/><path d="M9 19l-2 3"/><path d="M15 19l2 3"/></svg>`,
+        ethernet:   `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="6" width="20" height="12" rx="2"/><line x1="6" y1="12" x2="10" y2="12"/><line x1="14" y1="9" x2="14" y2="15"/><line x1="18" y1="10" x2="18" y2="14"/></svg>`,
+        touch:      `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 11V6a3 3 0 0 1 6 0v5"/><path d="M9 11V8a3 3 0 0 0-6 0v6a8 8 0 0 0 8 8h2a8 8 0 0 0 8-8V9a3 3 0 0 0-6 0v3"/></svg>`,
+        refresh:    `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="13 2 13 9 20 9"/><polyline points="20 15 13 15 13 22"/><path d="M20 9A8 8 0 0 0 5.6 5.6L2 9"/><path d="M4 15a8 8 0 0 0 14.4 3.4L22 15"/></svg>`,
+        resolution: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg>`,
+        // Meta-row icons (location / seller / date)
+        location:   `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>`,
+        seller:     `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>`,
+        date:       `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>`,
+    };
+
+    /**
+     * Clean the listing description for the spec popup. ss.com appends a
+     * tri-lingual "Marka: HP Modelis: Elitebook 850 ... Cena: 100 €"
+     * boilerplate at the end. Strip that (and the RU/EN copies of the
+     * same) so the user sees only the marketing copy. Also collapse
+     * runs of whitespace and split into paragraphs for readability.
+     */
+    function cleanLaptopDescription(raw) {
+        if (!raw) return [];
+        // Strip the structured dump block. Matches the Latvian (Marka:),
+        // Russian (Марка:), and English (Brand:) variants — they're all
+        // a single line that ends with "Cena: N €" or "Price: N €".
+        const dumpRe = /(?:^|\s)(?:Marka|Марка|Brand|Marka\/Brand)\s*:[^\n]*?(?:Cena|Price|Цена)\s*:[^\n]*?[€$£]\s*$/gim;
+        let cleaned = raw.replace(dumpRe, ' ');
+        // Collapse whitespace runs and trim
+        cleaned = cleaned.replace(/[ \t]+/g, ' ').replace(/\n{3,}/g, '\n\n').trim();
+        if (!cleaned) return [];
+        // Split into paragraphs (single newline is a soft break, double is a hard one)
+        const paragraphs = cleaned.split(/\n\s*\n+/).map(p => p.trim()).filter(Boolean);
+        // Within each paragraph, replace single newlines with <br> for soft breaks
+        return paragraphs.map(p => p.replace(/\n/g, '<br>'));
+    }
+    // Staff (mod/admin) can edit the shared laptop reference specs; only admins set VALID.
+    const LAPTOP_CAN_EDIT = {{ 'true' if is_staff else 'false' }};
+    const LAPTOP_IS_ADMIN = {{ 'true' if current_user and current_user.role == 'admin' else 'false' }};
+    let currentDetailItem = null;
+    let currentDetailListingId = null;
 
     function showSharedListingDetail(listingId) {
         const modal = document.getElementById('shared-listing-modal');
@@ -319,61 +1778,286 @@
                 if (!response.ok) throw new Error(t('Failed to load listing details'));
                 return response.json();
             })
-            .then(item => {
+            .then(data => {
+                const item = data.current || data;
+                currentDetailItem = item;
+                currentDetailListingId = listingId;
                 const thumbUrl = item.local_image_path
                     ? `/images/${item.local_image_path.replace(/\\/g, '/')}`
                     : item.image_url;
                 const dateStr = (item.date_posted || item.first_seen_at || item.created_at)
                     ? new Date(item.date_posted || item.first_seen_at || item.created_at).toLocaleDateString()
                     : 'N/A';
-                let html = '';
+                const title = cleanLaptopTitle(item.title || '');
+                let html = '<div class="laptop-detail-body">';
                 if (thumbUrl) {
-                    html += `<div class="listing-detail-images"><img src="${thumbUrl}" alt="${item.title || ''}" loading="lazy" onerror="this.style.display='none'"></div>`;
+                    html += `<div class="listing-detail-images"><img src="${thumbUrl}" alt="${title.replace(/'/g, "\\'")}" loading="lazy" onerror="this.style.display='none'"></div>`;
                 }
-                html += `<h2>${item.title || ''}</h2>`;
+                html += `<h2>${title}${item.laptop_ref_valid ? ' <span class="valid-badge">✓ VALID</span>' : ''}</h2>`;
                 html += `<p style="font-size: 1.25rem; font-weight: 700; color: #667eea;">€${item.price_eur || item.price || 0}</p>`;
-                if (item.listing_url) {
-                    html += `<p><a href="${item.listing_url}" target="_blank" rel="noopener">${t('View on ss.com')} →</a></p>`;
-                }
-                const specs = [
-                    ['Brand', item.brand],
-                    ['Model', item.model],
-                    ['Display', item.display_size ? `${item.display_size}"` : null],
-                    ['CPU', item.cpu_raw],
-                    ['RAM', item.ram_gb ? `${item.ram_gb} GB` : null],
-                    ['Storage', item.storage_gb ? `${item.storage_gb} GB ${item.storage_type || ''}`.trim() : null],
-                    ['GPU', item.gpu_raw],
-                    ['Condition', item.condition_state],
-                    ['Seller type', item.seller_type],
-                    ['Location', item.seller_location],
-                    ['Date', dateStr]
-                ].filter(([_, v]) => v);
-                if (specs.length) {
-                    html += `<h3>${t('Specifications')}</h3>`;
-                    html += '<div>';
-                    for (const [label, value] of specs) {
-                        html += `<div class="spec-row"><span class="spec-label">${label}</span><span class="spec-value">${value}</span></div>`;
+                // ----- Meta row: location + date in their own pill row, not buried
+                // in the spec grid. Uses custom SVG icons (see SPEC_ICONS).
+                const metaBits = [];
+                if (item.seller_location) metaBits.push({ k: 'location', label: item.seller_location, title: t('Location') });
+                if (item.seller_type) metaBits.push({ k: 'seller', label: item.seller_type.charAt(0).toUpperCase() + item.seller_type.slice(1), title: t('Seller type') });
+                if (dateStr && dateStr !== 'N/A') metaBits.push({ k: 'date', label: dateStr, title: t('Date posted') });
+                if (metaBits.length) {
+                    html += '<div class="laptop-meta-row">';
+                    for (const m of metaBits) {
+                        html += `<span class="laptop-meta-pill" title="${m.title}">${SPEC_ICONS[m.k] || ''}<span>${m.label}</span></span>`;
                     }
                     html += '</div>';
                 }
-                if (item.description) {
-                    html += `<div><strong>${t('Description')}:</strong></div>`;
-                    html += `<p>${item.description}</p>`;
+                // Staff-only debug row: the internal IDs staff need to look up
+                // the listing / CPU in psql or the wiki. Visible to mod+admin.
+                if (LAPTOP_CAN_EDIT) {
+                    const ids = [];
+                    if (item.listing_id) ids.push(['Listing', item.listing_id]);
+                    if (item.cpu_ref_id) ids.push(['CPU', `laptop_reference_cpu #${item.cpu_ref_id}`]);
+                    if (item.cpu_model_normalized) ids.push(['CPU model', item.cpu_model_normalized]);
+                    if (item.laptop_ref_id) ids.push(['Reference', `laptop_reference #${item.laptop_ref_id}`]);
+                    if (ids.length) {
+                        html += '<div class="laptop-debug-ids">';
+                        ids.forEach(([k, v]) => {
+                            html += `<span class="laptop-debug-id"><span class="laptop-debug-k">${k}</span><span class="laptop-debug-v">${v}</span></span>`;
+                        });
+                        html += '</div>';
+                    }
                 }
+                if (item.listing_url) {
+                    html += `<p><a href="${item.listing_url}" target="_blank" rel="noopener">${t('View on ss.com')} →</a></p>`;
+                }
+                // Helper: only push [label, value] when value is truthy.
+                // Avoids the "destructuring null" TypeError we'd get from a
+                // bare .filter(([_, v]) => v) when an IIFE returns null.
+                const pushIf = (label, value) => (value ? [label, value] : null);
+                const specs = [
+                    ['brand',   item.brand],
+                    // Canonical model from the reference row (e.g. "Vostro 15" +
+                    // "5000" or "Aspire 5" + "A515-58P"). Falls back to the
+                    // listing's raw `item.model` if no reference is linked.
+                    pushIf('model',
+                        (item.laptop_model && item.laptop_model_number)
+                            ? `${item.laptop_model} ${item.laptop_model_number}`
+                            : (item.laptop_model || item.model)),
+                    // Raw model the seller wrote (helps staff spot the canonical
+                    // version of a model that the seller mangled). Only shown
+                    // when it differs from the canonical.
+                    (() => {
+                        const canonical = (item.laptop_model || item.model || '').trim();
+                        const number = (item.laptop_model_number || '').trim();
+                        const canonicalFull = number ? `${canonical} ${number}`.toLowerCase() : canonical.toLowerCase();
+                        const raw = (item.model || '').trim();
+                        if (!raw || (canonicalFull && raw.toLowerCase() === canonicalFull)) return null;
+                        return ['model-raw', raw];
+                    })(),
+                    ['display', item.display_size ? `${String(item.display_size).replace(/["″“”]/g, '').trim()}"` : null],
+                    ['cpu',     getDisplayCpu(item)],
+                    ['ram',     item.ram_gb ? `${item.ram_gb} GB` : null],
+                    ['storage', item.storage_gb ? `${item.storage_gb} GB ${item.storage_type || ''}`.trim() : null],
+                    ['gpu',     item.gpu_raw],
+                    ['condition', item.condition_state],
+                ].filter(x => x && x[1]);
+                // Shared per-model reference specs (same for all listings of this model)
+                if (item.material) specs.push(['material', item.material]);
+                if (item.usb_c_count !== null && item.usb_c_count !== undefined) specs.push(['usb-c', item.usb_c_count]);
+                if (item.usb_count !== null && item.usb_count !== undefined) specs.push(['usb', item.usb_count]);
+                if (item.has_hdmi === true) specs.push(['hdmi', 'Yes']);
+                if (item.has_video_pd_usb_c === true) specs.push(['video-pd', 'Yes']);
+                if (item.has_ethernet === true) specs.push(['ethernet', 'Yes']);
+                if (item.has_touchscreen === true) specs.push(['touch', 'Yes']);
+                if (item.refresh_rate_hz) specs.push(['refresh', `${item.refresh_rate_hz} Hz`]);
+                if (item.laptop_resolution) specs.push(['resolution', item.laptop_resolution]);
+                if (specs.length) {
+                    // Use the SPEC_ICONS map (custom SVG) instead of emoji.
+                    const labels = {
+                        brand: t('Brand'), model: t('Model'), 'model-raw': t('Model (raw)'),
+                        display: t('Display'), cpu: t('CPU'), ram: t('RAM'),
+                        storage: t('Storage'), gpu: t('GPU'), condition: t('Condition'),
+                        material: t('Material'), 'usb-c': t('USB-C ports'), usb: t('USB ports'),
+                        hdmi: t('HDMI'), 'video-pd': t('Video + PD via USB-C'),
+                        ethernet: t('Ethernet'), touch: t('Touchscreen'),
+                        refresh: t('Refresh rate'), resolution: t('Resolution'),
+                    };
+                    html += `<h3 class="laptop-specs-heading">${t('Specifications')}</h3>`;
+                    html += '<div class="spec-grid">';
+                    for (const [k, value] of specs) {
+                        const icon = SPEC_ICONS[k] || SPEC_ICONS.dot;
+                        html += `<div class="spec-chip"><span class="spec-chip-icon">${icon}</span><div class="spec-chip-text"><span class="spec-chip-label">${labels[k] || k}</span><span class="spec-chip-value">${value}</span></div></div>`;
+                    }
+                    html += '</div>';
+                }
+                if (LAPTOP_CAN_EDIT && item.brand && item.model) {
+                    const escAttr = (v) => String(v ?? '').replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;');
+                    // Build a small inline-SVG circle: hollow for "off", filled + check for "on".
+                    const svgOff = `<svg class="ref-toggle-icon off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/></svg>`;
+                    const svgOn  = `<svg class="ref-toggle-icon on"  viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>`;
+                    // Reusable toggle chip builder. value=true means the row is on.
+                    const chip = (id, klass, label, value) => `
+                        <label class="ref-toggle ${klass} ${value ? 'checked' : ''}" data-toggle-id="${id}">
+                            <input type="checkbox" id="${id}" ${value ? 'checked' : ''}>
+                            ${svgOff}${svgOn}
+                            <span>${label}</span>
+                        </label>`;
+                    const v = (x) => x === true;  // strict bool check (NULL/false/0 → false)
+                    html += `<div class="ref-edit-panel">
+                        <div class="ref-edit-title">🛠️ ${t('Model reference')}${item.laptop_ref_id ? '' : ' · ' + t('new model')}</div>
+                        <div class="ref-edit-row">
+                            <label>Model
+                                <input type="text" id="ref-model" value="${escAttr(item.laptop_model || item.model || '')}" placeholder="Family name (e.g. Aspire 5)">
+                            </label>
+                            <label>Model №
+                                <input type="text" id="ref-model-number" value="${escAttr(item.laptop_model_number || '')}" placeholder="SKU (e.g. A515-58P)">
+                            </label>
+                            <label>Material
+                                <select id="ref-material">
+                                    <option value="">—</option>
+                                    <option value="Plastic" ${item.material === 'Plastic' ? 'selected' : ''}>Plastic</option>
+                                    <option value="Metal" ${item.material === 'Metal' ? 'selected' : ''}>Metal</option>
+                                </select>
+                            </label>
+                            <label>USB-C
+                                <input type="number" id="ref-usb-c" min="0" max="20" value="${item.usb_c_count ?? ''}">
+                            </label>
+                            <label>USB
+                                <input type="number" id="ref-usb" min="0" max="20" value="${item.usb_count ?? ''}">
+                            </label>
+                            <label>Resolution
+                                <input type="text" id="ref-resolution" placeholder="1920x1080" value="${escAttr(item.laptop_resolution)}">
+                            </label>
+                            <label>Refresh
+                                <input type="number" id="ref-refresh-rate" min="30" max="1000" step="1" placeholder="Hz" value="${item.refresh_rate_hz ?? ''}">
+                            </label>
+                            <button class="btn btn-small btn-primary" onclick="saveLaptopReference()">${t('Save')}</button>
+                            <span id="ref-save-status" class="ref-save-status"></span>
+                        </div>
+                        <div class="ref-toggle-group">
+                            <span class="ref-toggle-group-label">${t('Ports & features')}</span>
+                            ${chip('ref-hdmi',           't-hdmi',  'HDMI',                    v(item.has_hdmi))}
+                            ${chip('ref-video-pd-usb-c', 't-pd',    'Video + PD via USB-C',    v(item.has_video_pd_usb_c))}
+                            ${chip('ref-ethernet',       't-eth',   'Ethernet',                v(item.has_ethernet))}
+                            ${chip('ref-touchscreen',    't-touch', 'Touchscreen',             v(item.has_touchscreen))}
+                            ${LAPTOP_IS_ADMIN ? chip('ref-is-valid', 't-valid', 'VALID', v(item.laptop_ref_valid)) : ''}
+                        </div>
+                    </div>`;
+                }
+                // ----- Description -----
+                // ss.com dumps the structured fields at the end of the
+                // description in three languages (LV / RU / EN) as
+                // "Marka: HP Modelis: ... Displejs: ... Procesors: ...
+                // Cena: 100 €". We strip that boilerplate and split the
+                // remainder into paragraphs for readability.
+                if (item.description) {
+                    const cleaned = cleanLaptopDescription(item.description);
+                    if (cleaned) {
+                        html += `<h3 class="laptop-specs-heading">${t('Description')}</h3>`;
+                        html += '<div class="laptop-description">';
+                        cleaned.forEach(para => {
+                            html += `<p>${para}</p>`;
+                        });
+                        html += '</div>';
+                    }
+                }
+                html += '</div>';
                 content.innerHTML = html;
+                const detailImg = content.querySelector('.listing-detail-images img');
+                if (detailImg) {
+                    detailImg.addEventListener('click', () => openLaptopLightbox(thumbUrl, title));
+                }
             })
             .catch(error => {
                 content.innerHTML = '<div class="error">' + (error.message || t('Error loading listing')) + '</div>';
             });
     }
 
+    function saveLaptopReference() {
+        const status = document.getElementById('ref-save-status');
+        if (!currentDetailItem) return;
+        // _chk(id) reads the hidden checkbox state inside a toggle chip and
+        // returns true / false (never null) so the backend always gets a bool
+        // — absent from the payload if the row doesn't exist.
+        const _chk = (id) => {
+            const el = document.getElementById(id);
+            return el ? !!el.checked : null;
+        };
+        // Prefer the (possibly edited) model in the input, but fall back to
+        // the listing's original model so the user never has to think about
+        // the case where the model field is empty.
+        const modelEl = document.getElementById('ref-model');
+        const modelVal = (modelEl && modelEl.value.trim()) || currentDetailItem.model || '';
+        const payload = {
+            brand: currentDetailItem.brand || '',
+            model: modelVal,
+            model_number: document.getElementById('ref-model-number').value.trim(),
+            display_size: currentDetailItem.display_size || '',
+            material: document.getElementById('ref-material').value || null,
+            usb_c_count: document.getElementById('ref-usb-c').value,
+            usb_count: document.getElementById('ref-usb').value,
+            resolution: document.getElementById('ref-resolution').value.trim(),
+            refresh_rate_hz: document.getElementById('ref-refresh-rate').value,
+            has_hdmi: _chk('ref-hdmi'),
+            has_video_pd_usb_c: _chk('ref-video-pd-usb-c'),
+            has_ethernet: _chk('ref-ethernet'),
+            has_touchscreen: _chk('ref-touchscreen'),
+        };
+        if (LAPTOP_IS_ADMIN) {
+            payload.is_valid = _chk('ref-is-valid');
+        }
+        if (status) { status.textContent = t('Saving...'); status.style.color = 'var(--text-secondary)'; }
+        fetch('/api/laptop-reference/save', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        })
+        .then(r => r.json().then(d => ({ ok: r.ok, d })))
+        .then(({ ok, d }) => {
+            if (ok && d.ok) {
+                if (status) { status.textContent = '✓ ' + t('Saved'); status.style.color = '#16a34a'; }
+                // Re-open the popup with fresh, propagated reference data
+                setTimeout(() => showSharedListingDetail(currentDetailListingId), 600);
+            } else {
+                if (status) { status.textContent = d.error || t('Save failed'); status.style.color = '#dc2626'; }
+            }
+        })
+        .catch(() => {
+            if (status) { status.textContent = t('Save failed'); status.style.color = '#dc2626'; }
+        });
+    }
+
+    /**
+     * Wire up the toggle chip click handlers (no checkboxes visible).
+     * Each chip wraps a hidden <input type="checkbox">; clicking the chip
+     * flips that input and updates the chip's .checked class for styling.
+     * Delegated on document so it survives popup re-renders.
+     */
+    document.addEventListener('change', (e) => {
+        if (e.target && e.target.matches('.ref-toggle input[type="checkbox"]')) {
+            const chip = e.target.closest('.ref-toggle');
+            if (chip) chip.classList.toggle('checked', e.target.checked);
+        }
+    });
+    // Keyboard support: space/enter on the focused chip toggles the input.
+    document.addEventListener('keydown', (e) => {
+        if ((e.key === ' ' || e.key === 'Enter') &&
+            e.target && e.target.matches('.ref-toggle input[type="checkbox"]')) {
+            e.preventDefault();
+            e.target.checked = !e.target.checked;
+            e.target.dispatchEvent(new Event('change', { bubbles: true }));
+        }
+    });
+
     const LS_KEY = 'laptop_filters_v1';
 
     function saveFilters() {
         const state = {
             brand: document.getElementById('brand-filter').value,
-            macbookOnly: document.getElementById('macbook-only').checked,
+            city: document.getElementById('city-filter').value,
+            excludeCity: document.getElementById('exclude-city-filter').value,
+            material: document.getElementById('material-filter').value,
+            refreshMin: document.getElementById('refresh-rate-filter').value,
+            macbookOnly: isToggleOn('macbook-only'),
             cpuSortMode: document.getElementById('cpu-sort-mode').value,
+            cpuGroupMode: document.getElementById('cpu-group-mode').value,
             cpus: Array.from(document.querySelectorAll('#cpu-options input:checked')).map(cb => cb.value),
             gpu: document.getElementById('gpu-filter').value,
             minPrice: document.getElementById('min-price').value,
@@ -390,10 +2074,10 @@
             sort: document.getElementById('sort-by').value,
             order: document.getElementById('sort-order').value,
             time: document.getElementById('time-filter').value,
-            active: document.getElementById('active-only').checked,
-            excludeFlagged: document.getElementById('exclude-flagged').checked,
-            includePerekups: document.getElementById('include-perekups').checked,
-            includeLombards: document.getElementById('include-lombards').checked
+            active: isToggleOn('active-only'),
+            excludeFlagged: isToggleOn('exclude-flagged'),
+            includePerekups: isToggleOn('include-perekups'),
+            includeLombards: isToggleOn('include-lombards')
         };
         localStorage.setItem(LS_KEY, JSON.stringify(state));
         renderActiveFilters();
@@ -405,8 +2089,13 @@
             if (!raw) return;
             const s = JSON.parse(raw);
             if (s.brand !== undefined) document.getElementById('brand-filter').value = s.brand;
-            if (s.macbookOnly !== undefined) document.getElementById('macbook-only').checked = s.macbookOnly;
+            if (s.city !== undefined) document.getElementById('city-filter').value = s.city;
+            if (s.excludeCity !== undefined) document.getElementById('exclude-city-filter').value = s.excludeCity;
+            if (s.material !== undefined) document.getElementById('material-filter').value = s.material;
+            if (s.refreshMin !== undefined) document.getElementById('refresh-rate-filter').value = s.refreshMin;
+            if (s.macbookOnly !== undefined) setToggle('macbook-only', !!s.macbookOnly);
             if (s.cpuSortMode !== undefined) document.getElementById('cpu-sort-mode').value = s.cpuSortMode;
+            if (s.cpuGroupMode !== undefined) document.getElementById('cpu-group-mode').value = s.cpuGroupMode;
             if (s.gpu !== undefined) document.getElementById('gpu-filter').value = s.gpu;
             if (s.minPrice !== undefined) document.getElementById('min-price').value = s.minPrice;
             if (s.maxPrice !== undefined) document.getElementById('max-price').value = s.maxPrice;
@@ -422,17 +2111,76 @@
             if (s.sort !== undefined) document.getElementById('sort-by').value = s.sort;
             if (s.order !== undefined) document.getElementById('sort-order').value = s.order;
             if (s.time !== undefined) document.getElementById('time-filter').value = s.time;
-            if (s.active !== undefined) document.getElementById('active-only').checked = s.active;
-            if (s.excludeFlagged !== undefined) document.getElementById('exclude-flagged').checked = s.excludeFlagged;
-            if (s.includePerekups !== undefined) document.getElementById('include-perekups').checked = s.includePerekups;
-            if (s.includeLombards !== undefined) document.getElementById('include-lombards').checked = s.includeLombards;
+            if (s.active !== undefined) setToggle('active-only', !!s.active);
+            if (s.excludeFlagged !== undefined) setToggle('exclude-flagged', !!s.excludeFlagged);
+            if (s.includePerekups !== undefined) setToggle('include-perekups', !!s.includePerekups);
+            if (s.includeLombards !== undefined) setToggle('include-lombards', !!s.includeLombards);
             if (Array.isArray(s.cpus)) {
                 // Options are populated after first load; store desired selection in a data attribute
                 document.getElementById('cpu-options').dataset.pending = JSON.stringify(s.cpus);
             }
+            syncToggleButtons();
         } catch (e) {
             console.warn('Could not restore laptop filters', e);
         }
+    }
+
+    /* ====== Laptop page header: icon-button toggles + stat tiles ====== */
+    // Each .laptop-icon-btn[data-target=foo] drives a hidden input #foo with value "true"/"false".
+    // The CSS-only `default-on` dot is just a hint when the button is OFF (i.e. the default is off).
+    const LAPTOP_TOGGLE_IDS = ['macbook-only', 'active-only', 'exclude-flagged', 'include-perekups', 'include-lombards'];
+
+    function isToggleOn(id) {
+        const el = document.getElementById(id);
+        if (!el) return false;
+        // Hidden inputs use .value; the old checkbox-style fallback covers anything still bound to a checkbox.
+        return el.type === 'checkbox' ? !!el.checked : el.value === 'true';
+    }
+
+    function setToggle(id, on) {
+        const el = document.getElementById(id);
+        if (!el) return;
+        if (el.type === 'checkbox') el.checked = !!on;
+        else el.value = on ? 'true' : 'false';
+    }
+
+    function syncToggleButtons() {
+        document.querySelectorAll('.laptop-icon-btn[data-target]').forEach(btn => {
+            const id = btn.dataset.target;
+            const on = isToggleOn(id);
+            btn.classList.toggle('active', on);
+            btn.setAttribute('aria-pressed', on ? 'true' : 'false');
+        });
+    }
+
+    function toggleLaptopIcon(btn) {
+        const id = btn.dataset.target;
+        const next = !isToggleOn(id);
+        setToggle(id, next);
+        syncToggleButtons();
+        loadLaptops();
+    }
+
+    async function loadLaptopStats() {
+        try {
+            const res = await fetch('/api/laptops?limit=1');
+            if (!res.ok) return;
+            const data = await res.json();
+            const total = data.total || 0;
+            const elListings = document.getElementById('lstat-listings');
+            if (elListings) elListings.textContent = total.toLocaleString();
+        } catch (e) { /* leave as "—" */ }
+        try {
+            const res = await fetch('/api/laptop-reference/stats');
+            if (!res.ok) return;
+            const data = await res.json();
+            const models = document.getElementById('lstat-models');
+            const valid = document.getElementById('lstat-valid');
+            const resEl = document.getElementById('lstat-res');
+            if (models) models.textContent = (data.models ?? '—').toLocaleString();
+            if (valid) valid.textContent = (data.valid ?? '—').toLocaleString();
+            if (resEl) resEl.textContent = (data.with_resolution ?? '—').toLocaleString();
+        } catch (e) { /* leave as "—" */ }
     }
 
     function debounceLoadLaptops() {
@@ -440,13 +2188,62 @@
         debounceTimer = setTimeout(loadLaptops, 300);
     }
 
+    function renderLaptopCard(item) {
+        const thumbUrl = item.local_image_path
+            ? `/images/${item.local_image_path.replace(/\\/g, '/')}`
+            : item.image_url;
+        const rawTitle = item.title || 'Unknown laptop';
+        const title = cleanLaptopTitle(rawTitle);
+        const brandModel = [item.brand, item.model].filter(Boolean).join(' ');
+        const display = item.display_size ? `${item.display_size}"` : '';
+        const cpu = getDisplayCpu(item);
+        const ram = item.ram_gb ? `${item.ram_gb} GB RAM` : '';
+        const storage = [item.storage_gb ? `${item.storage_gb} GB` : '', item.storage_type || ''].filter(Boolean).join(' ');
+        const gpu = item.gpu_raw || '';
+        const dateStr = (item.date_posted || item.first_seen_at || item.created_at)
+            ? new Date(item.date_posted || item.first_seen_at || item.created_at).toLocaleDateString()
+            : 'N/A';
+
+        return `
+            <div class="laptop-card" onclick="showSharedListingDetail('${item.listing_id}', true)">
+                ${(item.seller_type || '').toLowerCase() !== 'private'
+                    ? `<span class="seller-badge ${(item.seller_type || '').toLowerCase()}">${item.seller_type || ''}</span>`
+                    : ''}
+                ${thumbUrl
+                    ? `<img src="${thumbUrl}" alt="${title.replace(/'/g, "\\'")}" class="laptop-card-image" loading="lazy">`
+                    : `<div class="laptop-card-placeholder">💻</div>`
+                }
+                <div class="laptop-card-body">
+                    <div class="laptop-card-price">€${item.price_eur}</div>
+                    <div class="laptop-card-title">${item.laptop_ref_valid ? '<span class="valid-badge valid-badge-sm">✓</span> ' : ''}${title}</div>
+                    ${brandModel ? `<div class="laptop-card-meta">${brandModel}</div>` : ''}
+                    <div class="laptop-card-specs">
+                        ${display ? `<span>📺 ${display}</span>` : ''}
+                        ${cpu ? `<span>🖥 ${cpu}</span>` : ''}
+                        ${ram ? `<span>🧠 ${ram}</span>` : ''}
+                        ${storage ? `<span>💾 ${storage}</span>` : ''}
+                        ${gpu ? `<span>🎮 ${gpu}</span>` : ''}
+                    </div>
+                    <div style="display:flex; justify-content:flex-end; margin-top:0.5rem;">
+                        <button class="btn btn-small" onclick="event.stopPropagation(); openSimilarModal('${item.listing_id}')">Similar</button>
+                    </div>
+                    <div class="laptop-card-footer">
+                        <span>${item.seller_location || 'N/A'}</span>
+                        <span>${dateStr}</span>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+
     async function loadLaptops(page = 0) {
+        const append = page > 0;
         currentPage = page;
         const params = new URLSearchParams();
-        params.append('active', document.getElementById('active-only').checked);
-        params.append('exclude_flagged', document.getElementById('exclude-flagged').checked);
-        params.append('include_perekups', document.getElementById('include-perekups').checked);
-        params.append('include_lombards', document.getElementById('include-lombards').checked);
+        params.append('active', isToggleOn('active-only'));
+        params.append('exclude_flagged', isToggleOn('exclude-flagged'));
+        params.append('include_perekups', isToggleOn('include-perekups'));
+        params.append('include_lombards', isToggleOn('include-lombards'));
         params.append('sort', document.getElementById('sort-by').value);
         params.append('order', document.getElementById('sort-order').value);
         params.append('time', document.getElementById('time-filter').value);
@@ -455,7 +2252,19 @@
 
         const brand = document.getElementById('brand-filter').value;
         if (brand) params.append('brand', brand);
-        const selectedCpus = Array.from(document.querySelectorAll('#cpu-options input[type=checkbox]:checked')).map(cb => cb.value);
+        const city = document.getElementById('city-filter').value;
+        if (city) params.append('city', city);
+        const excludeCity = document.getElementById('exclude-city-filter').value;
+        if (excludeCity) params.append('exclude_city', excludeCity);
+        const material = document.getElementById('material-filter').value;
+        if (material) params.append('material', material);
+        const refreshMin = document.getElementById('refresh-rate-filter').value;
+        if (refreshMin) params.append('refresh_rate_min', refreshMin);
+        // Two parallel CPU filter channels: cpu_ref_id (FK match, preferred) and
+        // cpu (legacy ILIKE on cpu_raw) for older flow.
+        const selectedCpuRefIds = Array.from(document.querySelectorAll('#cpu-options input[data-cpu-ref-id]:checked')).map(cb => cb.dataset.cpuRefId);
+        selectedCpuRefIds.forEach(id => params.append('cpu_ref_id', id));
+        const selectedCpus = Array.from(document.querySelectorAll('#cpu-options input[type=checkbox]:checked:not([data-cpu-ref-id])')).map(cb => cb.value);
         selectedCpus.forEach(cpu => params.append('cpu', cpu));
         const gpu = document.getElementById('gpu-filter').value;
         if (gpu) params.append('gpu', gpu);
@@ -479,16 +2288,27 @@
         if (displaySizeMax) params.append('display_size_max', displaySizeMax);
         const displaySize = document.getElementById('display-size').value;
         if (displaySize) params.append('display_size', displaySize);
-        const macbookOnly = document.getElementById('macbook-only').checked;
+        const macbookOnly = isToggleOn('macbook-only');
         if (macbookOnly) params.append('macbook_only', 'true');
+        else params.append('exclude_macbooks', 'true');
         const modelFilter = document.getElementById('model-filter').value;
         if (modelFilter) params.append('model', modelFilter);
 
         saveFilters();
 
         const container = document.getElementById('listings-container');
+        const sentinel = document.getElementById('laptop-sentinel');
+        if (isLoading) return;
+        isLoading = true;
+        if (sentinel) sentinel.style.display = 'flex';
+
         try {
-            container.innerHTML = '<div class="loading">Loading laptop listings...</div>';
+            if (!append) {
+                container.innerHTML = '<div class="loading">Loading laptop listings...</div>';
+                currentListings = [];
+                hasMore = true;
+            }
+
             const response = await fetch('/api/laptops?' + params.toString());
             const data = await response.json();
 
@@ -497,133 +2317,540 @@
             }
 
             const listings = data.listings || [];
-            currentListings = listings;
             totalListings = data.total || 0;
 
-            updatePagination();
-            populateBrandFilter(listings);
+            if (!append) {
+                currentListings = listings;
+                populateBrandFilter(listings);
+            } else {
+                currentListings = currentListings.concat(listings);
+                populateBrandFilter(currentListings);
+            }
 
-            if (listings.length === 0) {
+            updatePagination();
+
+            if (!append && listings.length === 0) {
                 container.innerHTML = '<div class="loading">No laptop listings found</div>';
+                hasMore = false;
                 return;
             }
 
-            let html = '<div class="laptop-grid">';
-            listings.forEach(item => {
-                const thumbUrl = item.local_image_path
-                    ? `/images/${item.local_image_path.replace(/\\/g, '/')}`
-                    : item.image_url;
-                const rawTitle = item.title || 'Unknown laptop';
-                const title = cleanLaptopTitle(rawTitle);
-                const brandModel = [item.brand, item.model].filter(Boolean).join(' ');
-                const display = item.display_size ? `${item.display_size}"` : '';
-                const cpu = item.cpu_raw || '';
-                const ram = item.ram_gb ? `${item.ram_gb} GB RAM` : '';
-                const storage = [item.storage_gb ? `${item.storage_gb} GB` : '', item.storage_type || ''].filter(Boolean).join(' ');
-                const gpu = item.gpu_raw || '';
-                const dateStr = (item.date_posted || item.first_seen_at || item.created_at)
-                    ? new Date(item.date_posted || item.first_seen_at || item.created_at).toLocaleDateString()
-                    : 'N/A';
+            let grid = document.getElementById('laptop-grid');
+            if (!grid) {
+                container.innerHTML = '<div class="laptop-grid" id="laptop-grid"></div>';
+                grid = document.getElementById('laptop-grid');
+            }
 
-                html += `
-                    <div class="laptop-card" onclick="showSharedListingDetail('${item.listing_id}', true)">
-                        ${(item.seller_type || '').toLowerCase() !== 'private'
-                            ? `<span class="seller-badge ${(item.seller_type || '').toLowerCase()}">${item.seller_type || ''}</span>`
-                            : ''}
-                        ${thumbUrl
-                            ? `<img src="${thumbUrl}" alt="${title.replace(/'/g, "\\'")}" class="laptop-card-image" loading="lazy">`
-                            : `<div class="laptop-card-placeholder">💻</div>`
-                        }
-                        <div class="laptop-card-body">
-                            <div class="laptop-card-price">€${item.price_eur}</div>
-                            <div class="laptop-card-title">${title}</div>
-                            ${brandModel ? `<div class="laptop-card-meta">${brandModel}</div>` : ''}
-                            <div class="laptop-card-specs">
-                                ${display ? `<span>📺 ${display}</span>` : ''}
-                                ${cpu ? `<span>🖥 ${cpu}</span>` : ''}
-                                ${ram ? `<span>🧠 ${ram}</span>` : ''}
-                                ${storage ? `<span>💾 ${storage}</span>` : ''}
-                                ${gpu ? `<span>🎮 ${gpu}</span>` : ''}
-                            </div>
-                            <div style="display:flex; justify-content:flex-end; margin-top:0.5rem;">
-                                <button class="btn btn-small" onclick="event.stopPropagation(); openSimilarModal('${item.listing_id}')">Similar</button>
-                            </div>
-                            <div class="laptop-card-footer">
-                                <span>${item.seller_location || 'N/A'}</span>
-                                <span>${dateStr}</span>
-                            </div>
-                        </div>
-                    </div>
-                `;
-            });
-            html += '</div>';
-            container.innerHTML = html;
+            grid.insertAdjacentHTML('beforeend', listings.map(renderLaptopCard).join(''));
+            hasMore = listings.length === pageSize && currentListings.length < totalListings;
         } catch (error) {
-            container.innerHTML = `<div class="error">Failed to load listings: ${error.message}</div>`;
+            if (!append) {
+                container.innerHTML = `<div class="error">Failed to load listings: ${error.message}</div>`;
+            } else {
+                console.error('Failed to load more listings', error);
+            }
+            hasMore = false;
+        } finally {
+            isLoading = false;
+            if (sentinel) sentinel.style.display = hasMore ? 'flex' : 'none';
         }
     }
 
     async function loadCPUOptions() {
         try {
-            const params = new URLSearchParams();
-            params.append('active', 'true');
-            params.append('limit', '10000');
-            const response = await fetch('/api/laptops?' + params.toString());
+            // Use the canonical CPU reference list rather than aggregating raw
+            // cpu_raw strings — the latter would surface 5 variants of the same
+            // "i7-11400H" model. The endpoint returns {ref_id, brand, model, count}.
+            const response = await fetch('/api/laptops/cpu-options');
             const data = await response.json();
-            const listings = data.listings || [];
-            const counts = {};
-            listings.forEach(l => {
-                const cpu = (l.cpu_raw || '').trim();
-                if (cpu) counts[cpu] = (counts[cpu] || 0) + 1;
-            });
-            allCpuOptions = Object.entries(counts).sort((a, b) => {
-                const sortMode = document.getElementById('cpu-sort-mode').value;
-                if (sortMode === 'count-desc') return b[1] - a[1];
-                if (sortMode === 'count-asc') return a[1] - b[1];
-                // name sort
-                return a[0].toLowerCase().localeCompare(b[0].toLowerCase());
-            });
+            const items = (data.cpus || []).filter(c => c && c.model);
+            // Map brand into a vendor bucket the existing classifyCpuVendor
+            // function understands. The brand comes pre-canonicalized from
+            // the resolver (Intel/AMD/Apple/Qualcomm).
+            const vendorFor = (brand) => {
+                if (brand === 'Apple') return 'Mac';
+                if (brand === 'Qualcomm') return 'Snapdragon';
+                return brand;
+            };
+            allCpuOptions = items.map(c => ({
+                ref_id: c.id,
+                brand: c.brand,
+                vendor: vendorFor(c.brand),
+                model: c.model,
+                count: parseInt(c.listing_count, 10) || 0,
+            }));
             renderCPUOptions();
         } catch (e) {
             console.error('Failed to load CPU options', e);
         }
     }
 
+    function classifyCpuVendor(cpu) {
+        const n = cpu.toLowerCase();
+        if (n.includes('apple') || /\bm\d+\b/.test(n)) return 'Mac';
+        if (n.includes('snapdragon') || n.includes('qualcomm')) return 'Snapdragon';
+        if (n.includes('intel') || n.includes('core') || n.includes('pentium') || n.includes('celeron') || n.includes('atom') || /\bi[3579]\b/.test(n) || n.includes('core ultra')) return 'Intel';
+        if (n.includes('amd') || n.includes('ryzen') || n.includes('athlon')) return 'AMD';
+        return 'Other';
+    }
+
+    function classifyCpuClass(cpu, vendor) {
+        const n = cpu.toLowerCase();
+        if (vendor === 'Mac') {
+            const m = n.match(/\bm(\d+)(?:\s+(pro|max|ultra))?\b/);
+            if (m) return 'M' + m[1];
+            return 'Other';
+        }
+        if (vendor === 'Snapdragon') {
+            if (n.includes('x elite')) return 'X Elite';
+            const gen = n.match(/gen\s*(\d+)/);
+            if (gen) return 'Gen ' + gen[1];
+            return 'Other';
+        }
+        if (vendor === 'AMD') {
+            const r = n.match(/ryzen\s*(\d+)/);
+            if (r) return 'Ryzen ' + r[1];
+            if (n.includes('athlon')) return 'Athlon';
+            return 'Other';
+        }
+        if (vendor === 'Intel') {
+            const i = n.match(/\bi([3579])\b/);
+            if (i) return 'i' + i[1];
+            if (n.includes('core ultra')) return 'Core Ultra';
+            if (n.includes('pentium')) return 'Pentium';
+            if (n.includes('celeron')) return 'Celeron';
+            if (n.includes('atom')) return 'Atom';
+            return 'Other';
+        }
+        return 'Other';
+    }
+
+    function cpuGenerationScore(cpu) {
+        const n = cpu.toLowerCase();
+        // Apple M series
+        const m = n.match(/\bm(\d+)(?:\s+(pro|max|ultra))?\b/);
+        if (m) {
+            let score = parseInt(m[1], 10) * 1000;
+            const suffix = m[2];
+            if (suffix === 'pro') score += 200;
+            else if (suffix === 'max') score += 300;
+            else if (suffix === 'ultra') score += 400;
+            return score;
+        }
+        // Snapdragon Gen
+        const gen = n.match(/gen\s*(\d+)/);
+        if (gen) return parseInt(gen[1], 10) * 1000;
+        if (n.includes('x elite')) return 5000;
+        // Largest numeric cluster as a proxy for generation/model
+        const nums = n.match(/\d{3,5}/g);
+        if (nums) return Math.max(...nums.map(Number));
+        return 0;
+    }
+
+    function classifyCpuGeneration(cpu, vendor) {
+        const n = cpu.toLowerCase();
+        if (vendor === 'Mac') {
+            const m = n.match(/\bm(\d+)(?:\s+(pro|max|ultra))?\b/);
+            return m ? 'M' + m[1] : 'Other';
+        }
+        if (vendor === 'Snapdragon') {
+            const gen = n.match(/gen\s*(\d+)/);
+            return gen ? 'Gen ' + gen[1] : 'Other';
+        }
+        if (vendor === 'AMD') {
+            // Ryzen 7 5800U -> 5000 series; Ryzen 7 7840HS -> 7000 series
+            const nums = n.match(/\b(\d{4})\b/);
+            if (nums) {
+                const series = Math.floor(parseInt(nums[1], 10) / 1000) * 1000;
+                return series ? series + ' Series' : 'Other';
+            }
+            return 'Other';
+        }
+        if (vendor === 'Intel') {
+            const nLower = cpu.toLowerCase();
+            // Core i5-1235U / Core i7-1165G7 / Core i5-8350 / i5 6200U / I5-8265U
+            const match = nLower.match(/(?:core\s+)?i\s*([3579])\s*[-\s]?(\d{3,5})/);
+            if (match) {
+                const model = match[2];
+                if (/^\d{5}$/.test(model)) return model.slice(0, 2) + 'th Gen';
+                if (/^\d{4}$/.test(model)) return model.slice(0, 1) + 'th Gen';
+            }
+            if (nLower.includes('core ultra')) return 'Core Ultra';
+            if (nLower.includes('pentium')) return 'Pentium';
+            if (nLower.includes('celeron')) return 'Celeron';
+            if (nLower.includes('atom')) return 'Atom';
+            return 'Other';
+        }
+        return 'Other';
+    }
+
     function renderCPUOptions() {
         const wrapper = document.getElementById('cpu-options-list');
         const sortMode = document.getElementById('cpu-sort-mode').value;
-        const selected = new Set();
+        const groupMode = document.getElementById('cpu-group-mode').value;
+        // selectedRefIds: a Set of cpu ref_id (number) values currently checked.
+        const selectedRefIds = new Set();
         const pendingRaw = document.getElementById('cpu-options').dataset.pending;
         if (pendingRaw) {
             try {
-                JSON.parse(pendingRaw).forEach(v => selected.add(v));
+                JSON.parse(pendingRaw).forEach(v => selectedRefIds.add(parseInt(v, 10)));
                 delete document.getElementById('cpu-options').dataset.pending;
             } catch (e) {}
         }
-        document.querySelectorAll('#cpu-options input:checked').forEach(cb => selected.add(cb.value));
+        document.querySelectorAll('#cpu-options input[data-cpu-ref-id]:checked').forEach(cb => {
+            selectedRefIds.add(parseInt(cb.dataset.cpuRefId, 10));
+        });
 
+        const vendorOrder = ['Intel', 'AMD', 'Snapdragon', 'Mac', 'Other'];
+        const classOrder = {
+            'Intel': ['i9', 'i7', 'i5', 'i3', 'Core Ultra', 'Pentium', 'Celeron', 'Atom', 'Other'],
+            'AMD': ['Ryzen 9', 'Ryzen 7', 'Ryzen 5', 'Ryzen 3', 'Athlon', 'Other'],
+            'Snapdragon': ['X Elite', 'Gen 5', 'Gen 4', 'Gen 3', 'Gen 2', 'Gen 1', 'Other'],
+            'Mac': ['M4', 'M3', 'M2', 'M1', 'Other']
+        };
+        // Vendor accent colors
+        const vendorColor = {
+            'Intel': '#0071c5',
+            'AMD': '#ed1c24',
+            'Mac': '#6e6e73',
+            'Snapdragon': '#3253dc',
+        };
+        // Tier names per class (best-effort)
+        const tierByClass = {
+            'i9': 'Enthusiast', 'Core Ultra': 'High-End',
+            'i7': 'High-End', 'i5': 'Mid-Range', 'i3': 'Budget',
+            'Pentium': 'Budget', 'Celeron': 'Budget', 'Atom': 'Budget', 'Xeon': 'Enthusiast',
+            'Ryzen 9': 'Enthusiast', 'Ryzen 7': 'High-End', 'Ryzen 5': 'Mid-Range', 'Ryzen 3': 'Budget',
+            'M4': 'Apple Silicon', 'M3': 'Apple Silicon', 'M2': 'Apple Silicon', 'M1': 'Apple Silicon',
+            'X Elite': 'ARM', 'Gen 5': 'ARM', 'Gen 4': 'ARM', 'Gen 3': 'ARM', 'Gen 2': 'ARM', 'Gen 1': 'ARM',
+        };
+
+        // Each option is now {ref_id, brand, vendor, model, count}. Sorting
+        // uses the model string as the lexical key.
         const options = [...allCpuOptions];
-        if (sortMode === 'count-desc') options.sort((a, b) => b[1] - a[1]);
-        else if (sortMode === 'count-asc') options.sort((a, b) => a[1] - b[1]);
-        else options.sort((a, b) => a[0].toLowerCase().localeCompare(b[0].toLowerCase()));
+        if (sortMode === 'count-desc') options.sort((a, b) => b.count - a.count);
+        else if (sortMode === 'count-asc') options.sort((a, b) => a.count - b.count);
+        else if (sortMode === 'newest') options.sort((a, b) => cpuGenerationScore(b.model) - cpuGenerationScore(a.model));
+        else options.sort((a, b) => a.model.toLowerCase().localeCompare(b.model.toLowerCase()));
 
-        wrapper.innerHTML = options.map(([cpu, count]) => `
-            <label style="display: flex; align-items: center; gap: 0.35rem; padding: 0.25rem 0; cursor: pointer; white-space: nowrap;">
-                <input type="checkbox" value="${cpu.replace(/"/g, '&quot;')}" ${selected.has(cpu) ? 'checked' : ''} onchange="loadLaptops(); updateCPUFilterLabel(); renderActiveFilters();">
-                ${cpu} <small>(${count})</small>
-            </label>
-        `).join('') || '<div style="padding: 0.25rem; color: #888;">No CPU data</div>';
+        const grouped = {};
+        options.forEach(opt => {
+            const cls = groupMode === 'generation' ? classifyCpuGeneration(opt.model, opt.vendor) : classifyCpuClass(opt.model, opt.vendor);
+            if (!grouped[opt.vendor]) grouped[opt.vendor] = {};
+            if (!grouped[opt.vendor][cls]) grouped[opt.vendor][cls] = [];
+            grouped[opt.vendor][cls].push(opt);
+        });
+
+        let html = '';
+        vendorOrder.forEach(vendor => {
+            const classes = grouped[vendor];
+            if (!classes) return;
+            let classKeys = Object.keys(classes);
+            if (groupMode === 'generation') {
+                classKeys = classKeys.sort((a, b) => {
+                    const toNum = s => {
+                        const m = s.match(/\d+/);
+                        return m ? parseInt(m[0], 10) : 0;
+                    };
+                    return toNum(b) - toNum(a);
+                });
+            } else {
+                const order = classOrder[vendor] || [];
+                classKeys = classKeys.sort((a, b) => {
+                    const ia = order.indexOf(a);
+                    const ib = order.indexOf(b);
+                    if (ia !== -1 && ib !== -1) return ia - ib;
+                    if (ia !== -1) return -1;
+                    if (ib !== -1) return 1;
+                    return a.localeCompare(b);
+                });
+            }
+            // Aggregate vendor stats
+            let vendorCpuCount = 0;
+            let vendorListingCount = 0;
+            classKeys.forEach(cls => {
+                vendorCpuCount += classes[cls].length;
+                classes[cls].forEach(({count}) => { vendorListingCount += count; });
+            });
+            const dotColor = vendorColor[vendor] || '#888';
+            // Vendor-level selected count — used for the "Select all" state.
+            const allVendorSelected = options.filter(o => o.vendor === vendor)
+                .every(o => selectedRefIds.has(o.ref_id));
+            const someVendorSelected = options.some(o => o.vendor === vendor && selectedRefIds.has(o.ref_id));
+
+            // The vendor section is itself collapsible AND its header carries
+            // a "Select all" pill — mirrors the per-class behaviour.
+            // Default state: collapsed (only the vendor header is visible). The
+            // section auto-expands when the user picks any CPU inside it.
+            html += `<div class="cpu-vendor-section ${someVendorSelected ? 'expanded' : 'collapsed'}" data-vendor="${vendor}">
+                <div class="cpu-vendor-header" onclick="toggleCpuVendor(this)">
+                    <div class="cpu-vendor-left">
+                        <svg class="cpu-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <polyline points="9 6 15 12 9 18"/>
+                        </svg>
+                        <span class="cpu-vendor-dot" style="background: ${dotColor};"></span>
+                        <span class="cpu-vendor-name">${vendor}</span>
+                        <span class="cpu-vendor-meta">${classKeys.length} ${classKeys.length === 1 ? 'class' : 'classes'} · ${vendorCpuCount} CPUs · ${vendorListingCount} listings</span>
+                    </div>
+                    <div class="cpu-vendor-actions" onclick="event.stopPropagation()">
+                        <div class="cpu-class-toggle ${allVendorSelected ? 'checked' : ''}" role="button" tabindex="0" title="Select all ${vendor} CPUs"
+                             onclick="event.stopPropagation(); toggleCpuVendorAll(this)">
+                            <svg class="sa-icon-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            <svg class="sa-icon-empty" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+                            </svg>
+                            <span>${allVendorSelected ? 'All selected' : 'Select all'}</span>
+                        </div>
+                    </div>
+                </div>`;
+            classKeys.forEach(cls => {
+                const items = classes[cls];
+                const allChecked = items.length > 0 && items.every(({ref_id}) => selectedRefIds.has(ref_id));
+                const someChecked = items.some(({ref_id}) => selectedRefIds.has(ref_id));
+                const tier = tierByClass[cls] || '';
+                // Class blocks within a vendor default to collapsed too; they
+                // auto-expand only when the user picks something in them.
+                html += `<div class="cpu-class-block ${someChecked || allChecked ? 'expanded' : 'collapsed'}" data-class="${cls}">
+                    <div class="cpu-class-header" onclick="toggleCpuClass(this)">
+                        <div class="cpu-class-left">
+                            <svg class="cpu-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <polyline points="9 6 15 12 9 18"/>
+                            </svg>
+                            <span class="cpu-class-label">${cls}</span>
+                            ${tier ? `<span class="cpu-class-tier">${tier}</span>` : ''}
+                        </div>
+                        <div class="cpu-class-actions" onclick="event.stopPropagation()">
+                            <span class="cpu-class-count">${items.length} ${items.length === 1 ? 'CPU' : 'CPUs'}</span>
+                            <div class="cpu-class-toggle ${allChecked ? 'checked' : ''}" role="button" tabindex="0" title="Select all in ${cls}"
+                                 onclick="event.stopPropagation(); toggleCpuClassAll(this)">
+                                <svg class="sa-icon-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                    <polyline points="20 6 9 17 4 12"/>
+                                </svg>
+                                <svg class="sa-icon-empty" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                    <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+                                </svg>
+                                <span>${allChecked ? 'All selected' : 'Select all'}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="cpu-options-grid">`;
+                items.forEach(({ref_id, model, count}) => {
+                    const val = String(model).replace(/"/g, '&quot;');
+                    const checked = selectedRefIds.has(ref_id);
+                    html += `
+                        <label class="cpu-option ${checked ? 'checked' : ''}" data-cpu="${val}" data-cpu-ref-id="${ref_id}" title="${val}">
+                            <input type="checkbox" data-cpu-ref-id="${ref_id}" value="${val}" ${checked ? 'checked' : ''}>
+                            <svg class="cpu-option-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            <span class="cpu-option-name">${model}</span>
+                            <span class="cpu-option-count">${count}</span>
+                        </label>`;
+                });
+                html += `</div></div>`;
+            });
+            html += `</div>`;
+        });
+
+        wrapper.innerHTML = html || '<div style="padding: 0.25rem; color: #888;">No CPU data</div>';
+        // Wire up the option change handler
+        wrapper.querySelectorAll('.cpu-option input[type=checkbox]').forEach(cb => {
+            cb.addEventListener('change', (e) => {
+                const label = e.target.closest('.cpu-option');
+                if (label) label.classList.toggle('checked', e.target.checked);
+                updateCPUFilterLabel();
+                updatePopupFooter();
+                // Vendor-level select-all button reflects partial state
+                syncVendorSelectAllState(e.target.closest('.cpu-vendor-section'));
+            });
+        });
+        // Re-apply the current search filter
+        filterCPUOptionsBySearch();
         updateCPUFilterLabel();
+        updatePopupFooter();
+    }
+
+    /**
+     * Toggle the entire vendor section (collapse / expand all class blocks
+     * inside). Mirrors toggleCpuClass below for per-class behaviour.
+     */
+    function toggleCpuVendor(header) {
+        const section = header.closest('.cpu-vendor-section');
+        if (section) section.classList.toggle('collapsed');
+    }
+
+    /**
+     * Select / deselect every CPU option in the vendor section that contains
+     * the clicked pill. No checkbox re-render — toggles the inputs in place
+     * and updates the .checked class.
+     */
+    function toggleCpuVendorAll(btn) {
+        const section = btn.closest('.cpu-vendor-section');
+        if (!section) return;
+        const willSelect = !btn.classList.contains('checked');
+        section.querySelectorAll('.cpu-option input[type=checkbox]').forEach(cb => {
+            cb.checked = willSelect;
+            const lbl = cb.closest('.cpu-option');
+            if (lbl) lbl.classList.toggle('checked', willSelect);
+        });
+        btn.classList.toggle('checked', willSelect);
+        btn.querySelector('span:last-child').textContent = willSelect ? 'All selected' : 'Select all';
+        if (willSelect) {
+            section.classList.remove('collapsed');
+            section.classList.add('expanded');
+            // Also expand any class blocks that have a selected item
+            section.querySelectorAll('.cpu-class-block').forEach(b => b.classList.add('expanded'));
+        }
+        loadLaptops();
+        updateCPUFilterLabel();
+        updatePopupFooter();
+    }
+
+    /**
+     * Re-compute the "Select all" pill state for a vendor section based on
+     * the current state of its child checkboxes. Used after a single-option
+     * change so the vendor pill reflects partial selection.
+     */
+    function syncVendorSelectAllState(section) {
+        if (!section) return;
+        const pill = section.querySelector('.cpu-vendor-actions .cpu-class-toggle');
+        if (!pill) return;
+        const inputs = section.querySelectorAll('.cpu-option input[type=checkbox]');
+        if (!inputs.length) return;
+        const checked = section.querySelectorAll('.cpu-option input[type=checkbox]:checked');
+        pill.classList.toggle('checked', checked.length === inputs.length);
+        pill.querySelector('span:last-child').textContent = (checked.length === inputs.length) ? 'All selected' : 'Select all';
+    }
+
+    function filterCPUOptionsBySearch() {
+        const q = (document.getElementById('cpu-popup-search-input')?.value || '').trim().toLowerCase();
+        const wrapper = document.getElementById('cpu-options-list');
+        if (!wrapper) return;
+        wrapper.querySelectorAll('.cpu-option').forEach(opt => {
+            const cpu = (opt.dataset.cpu || '').toLowerCase();
+            const show = !q || cpu.includes(q);
+            opt.classList.toggle('hidden', !show);
+        });
+        wrapper.querySelectorAll('.cpu-class-block').forEach(block => {
+            const visibleOpts = block.querySelectorAll('.cpu-option:not(.hidden)').length;
+            block.classList.toggle('hidden', q && visibleOpts === 0);
+        });
+        wrapper.querySelectorAll('.cpu-vendor-section').forEach(section => {
+            const visibleOpts = section.querySelectorAll('.cpu-option:not(.hidden)').length;
+            section.classList.toggle('hidden', q && visibleOpts === 0);
+        });
+    }
+
+    function updatePopupFooter() {
+        const checked = Array.from(document.querySelectorAll('#cpu-options input:checked'));
+        const countEl = document.getElementById('cpu-popup-count');
+        const infoEl = document.getElementById('cpu-popup-footer-info');
+        const applyBtn = document.querySelector('.cpu-popup-btn-primary');
+        if (countEl) countEl.textContent = `${checked.length} selected`;
+        let total = 0;
+        checked.forEach(cb => {
+            const opt = cb.closest('.cpu-option');
+            const c = opt && opt.querySelector('.cpu-option-count');
+            if (c) total += parseInt(c.textContent, 10) || 0;
+        });
+        if (infoEl) infoEl.textContent = `${checked.length} selected · ${total} listings`;
+        if (applyBtn) applyBtn.textContent = checked.length ? `Apply (${checked.length})` : 'Apply';
+    }
+
+    function closeCPUFilter() {
+        const el = document.getElementById('cpu-options');
+        if (el) el.classList.remove('open');
+    }
+
+    function applyCPUFilter() {
+        loadLaptops();
+        updateCPUFilterLabel();
+        renderActiveFilters();
+        closeCPUFilter();
     }
 
     function toggleCPUFilter() {
         const el = document.getElementById('cpu-options');
+        const wasOpen = el.classList.contains('open');
         el.classList.toggle('open');
+        if (!wasOpen) {
+            setTimeout(() => {
+                const search = document.getElementById('cpu-popup-search-input');
+                if (search) search.focus();
+            }, 50);
+            document.querySelectorAll('.cpu-class-block').forEach(block => {
+                const hasChecked = block.querySelectorAll('.cpu-option.checked').length > 0;
+                if (hasChecked) block.classList.add('expanded');
+            });
+        }
     }
 
     function updateCPUFilterLabel() {
-        const selected = Array.from(document.querySelectorAll('#cpu-options input:checked')).map(cb => cb.value);
+        const selected = Array.from(document.querySelectorAll('#cpu-options input:checked'));
         document.getElementById('cpu-selected-label').textContent = selected.length ? `${selected.length} selected` : 'Any';
+    }
+
+    function toggleCpuClass(header) {
+        const block = header.closest('.cpu-class-block');
+        if (block) block.classList.toggle('expanded');
+    }
+
+    function toggleCpuClassAll(btn) {
+        const block = btn.closest('.cpu-class-block');
+        if (!block) return;
+        const grid = block.querySelector('.cpu-options-grid');
+        const willSelect = !btn.classList.contains('checked');
+        grid.querySelectorAll('input[type=checkbox]').forEach(cb => {
+            cb.checked = willSelect;
+            const lbl = cb.closest('.cpu-option');
+            if (lbl) lbl.classList.toggle('checked', willSelect);
+        });
+        btn.classList.toggle('checked', willSelect);
+        btn.querySelector('span:last-child').textContent = willSelect ? 'All selected' : 'Select all';
+        if (willSelect) block.classList.add('expanded');
+        loadLaptops();
+        updateCPUFilterLabel();
+        updatePopupFooter();
+    }
+
+    function markCpuClass(checkbox, select) {
+        // legacy path — kept for any code path that still uses the input
+        const block = checkbox.closest('.cpu-class-block');
+        if (!block) return;
+        const grid = block.querySelector('.cpu-options-grid');
+        grid.querySelectorAll('input[type=checkbox]').forEach(cb => {
+            cb.checked = select;
+            const lbl = cb.closest('.cpu-option');
+            if (lbl) lbl.classList.toggle('checked', select);
+        });
+        const btn = block.querySelector('.cpu-class-toggle');
+        if (btn) {
+            btn.classList.toggle('checked', select);
+            const lbl = btn.querySelector('span:last-child');
+            if (lbl) lbl.textContent = select ? 'All selected' : 'Select all';
+        }
+        if (select) block.classList.add('expanded');
+        loadLaptops();
+        updateCPUFilterLabel();
+        updatePopupFooter();
+    }
+
+    function clearAllCpus() {
+        document.querySelectorAll('#cpu-options input[type=checkbox]').forEach(cb => {
+            cb.checked = false;
+            const lbl = cb.closest('.cpu-option');
+            if (lbl) lbl.classList.remove('checked');
+        });
+        document.querySelectorAll('.cpu-class-block').forEach(b => b.classList.remove('expanded'));
+        // Reset all "Select all" buttons
+        document.querySelectorAll('.cpu-class-toggle').forEach(btn => {
+            btn.classList.remove('checked');
+            const lbl = btn.querySelector('span:last-child');
+            if (lbl) lbl.textContent = 'Select all';
+        });
+        updatePopupFooter();
     }
 
     document.addEventListener('click', (e) => {
@@ -634,14 +2861,10 @@
     });
 
     function updatePagination() {
-        const totalPages = Math.ceil(totalListings / pageSize) || 1;
-        document.getElementById('page-info').textContent = `Page ${currentPage + 1} of ${totalPages} (${totalListings} total)`;
-        document.getElementById('prev-page').disabled = currentPage === 0;
-        document.getElementById('next-page').disabled = (currentPage + 1) * pageSize >= totalListings;
-    }
-
-    function changePage(delta) {
-        loadLaptops(currentPage + delta);
+        const pageInfo = document.getElementById('page-info');
+        if (pageInfo) {
+            pageInfo.textContent = `${currentListings.length} of ${totalListings} laptops`;
+        }
     }
 
     function populateBrandFilter(listings) {
@@ -662,18 +2885,106 @@
         }
     }
 
+    async function loadCityOptions() {
+        try {
+            const res = await fetch('/api/laptops/cities');
+            const data = await res.json();
+            const cities = data.cities || [];
+            ['city-filter', 'exclude-city-filter'].forEach(id => {
+                const select = document.getElementById(id);
+                if (!select) return;
+                // Keep the first (placeholder) option, drop the rest
+                const currentValue = select.value;
+                while (select.options.length > 1) select.remove(1);
+                cities.forEach(city => {
+                    const opt = document.createElement('option');
+                    opt.value = city;
+                    opt.textContent = city;
+                    select.appendChild(opt);
+                });
+                // Restore the previously selected city if it's still in the list
+                if (currentValue) select.value = currentValue;
+            });
+        } catch (e) {
+            console.error('Failed to load city options', e);
+        }
+    }
+
     document.addEventListener('DOMContentLoaded', () => {
         restoreFilters();
+        syncToggleButtons();
+        loadLaptopStats();
+        loadCityOptions();
         loadCPUOptions().then(() => {
             updateCPUFilterLabel();
             renderActiveFilters();
             loadLaptops(0);
+
+            // Wire up the CPU popup search input
+            const searchInput = document.getElementById('cpu-popup-search-input');
+            if (searchInput) {
+                searchInput.addEventListener('input', filterCPUOptionsBySearch);
+                searchInput.addEventListener('keydown', (e) => {
+                    if (e.key === 'Escape') {
+                        e.preventDefault();
+                        closeCPUFilter();
+                    } else if (e.key === 'Enter') {
+                        e.preventDefault();
+                        applyCPUFilter();
+                    }
+                });
+            }
+            // Close the popup when clicking outside it
+            document.addEventListener('click', (e) => {
+                const dropdown = document.getElementById('cpu-options');
+                const trigger = document.getElementById('cpu-filter-group');
+                if (!dropdown || !trigger) return;
+                if (dropdown.classList.contains('open')
+                    && !dropdown.contains(e.target)
+                    && !trigger.contains(e.target)) {
+                    closeCPUFilter();
+                }
+            });
+            // Esc anywhere closes the popup
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') {
+                    const dropdown = document.getElementById('cpu-options');
+                    if (dropdown && dropdown.classList.contains('open')) {
+                        closeCPUFilter();
+                    }
+                }
+                // "/" focuses the search when popup is open and target is not an input
+                if (e.key === '/' && !['INPUT', 'TEXTAREA'].includes(e.target.tagName)) {
+                    const dropdown = document.getElementById('cpu-options');
+                    if (dropdown && dropdown.classList.contains('open')) {
+                        e.preventDefault();
+                        const si = document.getElementById('cpu-popup-search-input');
+                        if (si) si.focus();
+                    }
+                }
+            });
+
+            const sentinel = document.getElementById('laptop-sentinel');
+            if (sentinel && 'IntersectionObserver' in window) {
+                const observer = new IntersectionObserver(entries => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting && !isLoading && hasMore) {
+                            loadLaptops(currentPage + 1);
+                        }
+                    });
+                }, { rootMargin: '200px' });
+                observer.observe(sentinel);
+            }
         });
     });
 
     function clearFilters() {
         document.getElementById('brand-filter').value = '';
-        document.getElementById('macbook-only').checked = false;
+        document.getElementById('city-filter').value = '';
+        document.getElementById('exclude-city-filter').value = '';
+        document.getElementById('material-filter').value = '';
+        document.getElementById('refresh-rate-filter').value = '';
+        setToggle('macbook-only', false);
         document.getElementById('gpu-filter').value = '';
         document.getElementById('min-price').value = '';
         document.getElementById('max-price').value = '';
@@ -689,11 +3000,12 @@
         document.getElementById('sort-by').value = 'date_posted';
         document.getElementById('sort-order').value = 'desc';
         document.getElementById('time-filter').value = 'all_time';
-        document.getElementById('active-only').checked = true;
-        document.getElementById('exclude-flagged').checked = true;
-        document.getElementById('include-perekups').checked = true;
-        document.getElementById('include-lombards').checked = true;
+        setToggle('active-only', true);
+        setToggle('exclude-flagged', true);
+        setToggle('include-perekups', true);
+        setToggle('include-lombards', true);
         document.querySelectorAll('#cpu-options input:checked').forEach(cb => cb.checked = false);
+        syncToggleButtons();
         currentPage = 0;
         saveFilters();
         loadLaptops(0);
@@ -703,45 +3015,112 @@
         const container = document.getElementById('active-filters');
         const chips = [];
         const brand = document.getElementById('brand-filter').value;
-        if (brand) chips.push(`Brand: ${brand}`);
-        document.querySelectorAll('#cpu-options input:checked').forEach(cb => chips.push(`CPU: ${cb.value}`));
+        if (brand) chips.push(['Brand', brand]);
+        document.querySelectorAll('#cpu-options input:checked').forEach(cb => chips.push(['CPU', cb.value]));
         const gpu = document.getElementById('gpu-filter').value;
-        if (gpu) chips.push(`GPU: ${gpu}`);
+        if (gpu) chips.push(['GPU', gpu]);
         const minPrice = document.getElementById('min-price').value;
         const maxPrice = document.getElementById('max-price').value;
-        if (minPrice || maxPrice) chips.push(`Price: ${minPrice || '0'}€ - ${maxPrice || '∞'}`);
+        if (minPrice || maxPrice) chips.push(['Price', `${minPrice || '0'}€ – ${maxPrice || '∞'}`]);
         const ramMin = document.getElementById('ram-min').value;
         const ramMax = document.getElementById('ram-max').value;
-        if (ramMin || ramMax) chips.push(`RAM: ${ramMin || '0'} - ${ramMax || '∞'} GB`);
+        if (ramMin || ramMax) chips.push(['RAM', `${ramMin || '0'} – ${ramMax || '∞'} GB`]);
         const storageMin = document.getElementById('storage-min').value;
         const storageMax = document.getElementById('storage-max').value;
-        if (storageMin || storageMax) chips.push(`Storage: ${storageMin || '0'} - ${storageMax || '∞'} GB`);
+        if (storageMin || storageMax) chips.push(['Storage', `${storageMin || '0'} – ${storageMax || '∞'} GB`]);
         const storageType = document.getElementById('storage-type').value;
-        if (storageType) chips.push(`Storage type: ${storageType}`);
+        if (storageType) chips.push(['Storage type', storageType]);
         const displaySizeMin = document.getElementById('display-size-min').value;
         const displaySizeMax = document.getElementById('display-size-max').value;
-        if (displaySizeMin || displaySizeMax) chips.push(`Screen: ${displaySizeMin || '0'}\" - ${displaySizeMax || '∞'}\"`);
+        if (displaySizeMin || displaySizeMax) chips.push(['Screen', `${displaySizeMin || '0'}″ – ${displaySizeMax || '∞'}″`]);
         const displaySize = document.getElementById('display-size').value;
-        if (displaySize) chips.push(`Display: ${displaySize}\"`);
+        if (displaySize) chips.push(['Display', `${displaySize}″`]);
         const modelFilter = document.getElementById('model-filter').value;
-        if (modelFilter) chips.push(`Model: ${modelFilter}`);
-        if (document.getElementById('macbook-only').checked) chips.push('Include macbooks');
+        if (modelFilter) chips.push(['Model', modelFilter]);
+        const cityFilter = document.getElementById('city-filter').value;
+        if (cityFilter) chips.push(['City', cityFilter]);
+        const excludeCity = document.getElementById('exclude-city-filter').value;
+        if (excludeCity) chips.push(['Exclude city', excludeCity]);
+        const materialFilter = document.getElementById('material-filter').value;
+        if (materialFilter) chips.push(['Material', materialFilter.charAt(0).toUpperCase() + materialFilter.slice(1)]);
+        const refreshFilter = document.getElementById('refresh-rate-filter').value;
+        if (refreshFilter) chips.push(['Refresh ≥', `${refreshFilter} Hz`]);
+        if (isToggleOn('macbook-only')) chips.push(['Include macbooks', null, 'macbook-only']);
         const time = document.getElementById('time-filter').value;
-        if (time !== 'all_time') chips.push(`Time: ${time.replace('d',' days')}`);
-        if (!document.getElementById('active-only').checked) chips.push('Active: off');
-        if (!document.getElementById('exclude-flagged').checked) chips.push('Flagged: included');
-        if (!document.getElementById('include-perekups').checked) chips.push('Perekups: hidden');
-        if (!document.getElementById('include-lombards').checked) chips.push('Lombards: hidden');
+        if (time !== 'all_time') chips.push(['Time', time.replace('d', ' days')]);
+        if (!isToggleOn('active-only')) chips.push(['Active', 'off', 'active-only']);
+        if (!isToggleOn('exclude-flagged')) chips.push(['Flagged', 'included', 'exclude-flagged']);
+        if (!isToggleOn('include-perekups')) chips.push(['Perekups', 'hidden', 'include-perekups']);
+        if (!isToggleOn('include-lombards')) chips.push(['Lombards', 'hidden', 'include-lombards']);
 
         if (chips.length === 0) {
             container.innerHTML = '';
             return;
         }
-        container.innerHTML = '<strong>Active filters:</strong> ' + chips.map(c => `<span style="background: var(--bar-bg); padding: 0.15rem 0.4rem; border-radius: 4px; border: 1px solid var(--table-border);">${c}</span>`).join('');
+        container.innerHTML =
+            '<span class="laf-label">Active filters:</span>' +
+            chips.map(([label, value, clearId]) => {
+                const text = value === null || value === undefined ? label : `${label}: ${value}`;
+                if (clearId) {
+                    // Click the chip to clear that toggle (mirror the icon button).
+                    return `<span class="laf-chip" title="Click to clear">${text}<button type="button" aria-label="Clear" onclick="event.stopPropagation(); setToggle('${clearId}', ${clearId === 'macbook-only' ? 'false' : 'true'}); syncToggleButtons(); loadLaptops();">&times;</button></span>`;
+                }
+                return `<span class="laf-chip">${text}</span>`;
+            }).join('');
     }
 
     function cleanLaptopTitle(title) {
-        return title.replace(/^SS\.COM Datori un orgtehnika - Piezīmjdatori, Cena\s*[\d\s]+\s*€\.\s*/i, '').trim();
+        if (!title) return '';
+        return title
+            // Drop the SS.COM breadcrumb prefix ("...Piezīmjdatori, Cena 150 €.")
+            .replace(/^SS\.COM Datori un orgtehnika - Piezīmjdatori, Cena\s*[\d\s]+\s*€\.\s*/i, '')
+            // Drop the " - Sludinājumi" / "-Sludinājumi" suffix ss.com sometimes appends
+            .replace(/\s*-\s*Sludinājumi\s*$/i, '')
+            .trim();
+    }
+
+    /**
+     * Return the canonical CPU name for a listing item.
+     * Prefers the normalized (brand, model) pair from `laptop_reference_cpu`
+     * (e.g. "Intel i7-11400H"), falls back to the raw cpu_raw string when
+     * no reference is linked. Brand prefix is included when the model alone
+     * would be ambiguous (e.g. "Apple M2" vs "Intel M-something").
+     */
+    function getDisplayCpu(item) {
+        if (!item) return '';
+        const normBrand = item.cpu_brand_normalized;
+        const normModel = item.cpu_model_normalized;
+        if (normBrand && normModel) {
+            // Apple convention: "M2 Pro" / "M2" without the "Apple" word
+            if (normBrand === 'Apple') return normModel;
+            return `${normBrand} ${normModel}`;
+        }
+        if (normModel) return normModel;
+        return (item.cpu_raw || '').trim();
+    }
+
+    function openLaptopLightbox(url, alt) {
+        let overlay = document.getElementById('laptop-lightbox');
+        if (!overlay) {
+            overlay = document.createElement('div');
+            overlay.id = 'laptop-lightbox';
+            overlay.className = 'lightbox-overlay';
+            overlay.innerHTML = '<img loading="lazy">';
+            document.body.appendChild(overlay);
+            overlay.addEventListener('click', () => overlay.classList.remove('active'));
+            // Capture phase so this runs before base.html's modal Escape handler;
+            // stopPropagation keeps Escape from closing the underlying detail modal too.
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && overlay.classList.contains('active')) {
+                    overlay.classList.remove('active');
+                    e.stopPropagation();
+                }
+            }, true);
+        }
+        const img = overlay.querySelector('img');
+        img.src = url;
+        img.alt = alt || '';
+        overlay.classList.add('active');
     }
 
     function openSimilarModal(listingId) {
@@ -752,7 +3131,7 @@
         const specs = [
             { key: 'brand', label: 'Brand', value: item.brand || '' },
             { key: 'model', label: 'Model', value: item.model || '' },
-            { key: 'cpu_raw', label: 'CPU', value: item.cpu_raw || '' },
+            { key: 'cpu_raw', label: 'CPU', value: getDisplayCpu(item) },
             { key: 'gpu_raw', label: 'GPU', value: item.gpu_raw || '' },
             { key: 'ram_gb', label: 'RAM', value: item.ram_gb ? `${item.ram_gb} GB` : '' },
             { key: 'storage_gb', label: 'Storage size', value: item.storage_gb ? `${item.storage_gb} GB` : '' },
@@ -787,7 +3166,7 @@
 
         // Reset everything first
         document.getElementById('brand-filter').value = checked.has('brand') ? (item.brand || '') : '';
-        document.getElementById('macbook-only').checked = checked.has('brand') && (item.brand || '').toLowerCase() === 'apple';
+        setToggle('macbook-only', checked.has('brand') && (item.brand || '').toLowerCase() === 'apple');
         document.getElementById('model-filter').value = checked.has('model') ? (item.model || '') : '';
         document.getElementById('gpu-filter').value = checked.has('gpu_raw') ? (item.gpu_raw || '') : '';
         document.getElementById('ram-min').value = checked.has('ram_gb') ? parseNum(item.ram_gb) : '';
@@ -799,16 +3178,26 @@
         document.getElementById('display-size-max').value = checked.has('display_size') ? parseNum(item.display_size) : '';
         document.getElementById('display-size').value = checked.has('display_size') ? parseNum(item.display_size) : '';
 
-        // CPU is multi-select: clear others and set pending for renderCPUOptions if needed
+        // CPU is multi-select: clear others and set pending for renderCPUOptions.
+        // Prefer the canonical ref_id (new flow) — the raw cpu_raw fallback
+        // is kept for listings that don't have a CPU reference yet.
         document.querySelectorAll('#cpu-options input:checked').forEach(cb => cb.checked = false);
-        if (checked.has('cpu_raw') && item.cpu_raw) {
-            const cpuContainer = document.getElementById('cpu-options');
-            const existing = cpuContainer.querySelector(`input[value="${CSS.escape(item.cpu_raw)}"]`);
-            if (existing) {
-                existing.checked = true;
-            } else {
+        const cpuContainer = document.getElementById('cpu-options');
+        if (checked.has('cpu_raw')) {
+            if (item.cpu_ref_id) {
+                const existing = cpuContainer.querySelector(`input[data-cpu-ref-id="${item.cpu_ref_id}"]`);
+                if (existing) {
+                    existing.checked = true;
+                } else {
+                    const pending = cpuContainer.dataset.pending ? JSON.parse(cpuContainer.dataset.pending) : [];
+                    pending.push(String(item.cpu_ref_id));
+                    cpuContainer.dataset.pending = JSON.stringify(pending);
+                }
+            } else if (item.cpu_raw) {
+                // Fallback: no reference — try matching by the raw model name.
+                // Render is async; stash the raw as a fallback in the pending queue.
                 const pending = cpuContainer.dataset.pending ? JSON.parse(cpuContainer.dataset.pending) : [];
-                pending.push(item.cpu_raw);
+                pending.push(`raw:${item.cpu_raw}`);
                 cpuContainer.dataset.pending = JSON.stringify(pending);
             }
         }
@@ -825,5 +3214,12 @@
     document.getElementById('similar-modal').addEventListener('click', (e) => {
         if (e.target.id === 'similar-modal') closeSimilarModal();
     });
+
+function toggleGridSize() {
+    const grid = document.querySelector('.laptop-grid');
+    const current = getComputedStyle(grid).getPropertyValue('--grid-columns');
+    const newGrid = current === '4' ? '3' : '4';
+    document.querySelector('.laptop-grid').style.setProperty('--grid-columns', newGrid);
+}
 </script>
 {% endblock %}

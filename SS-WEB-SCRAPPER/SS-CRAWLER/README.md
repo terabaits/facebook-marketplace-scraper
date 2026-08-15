@@ -1,6 +1,6 @@
 # SS-Crawler v2
 
-GPU and CPU scraper for ss.com (Latvian marketplace) with intelligent matching against reference database.
+GPU, CPU, and multi-category scraper for ss.com / Andele Mandele (Latvian marketplaces) with intelligent matching against a reference database.
 
 ## Features
 
@@ -32,7 +32,30 @@ pip install -r requirements.txt
 
 ### 3. Run Scraper
 
-**Scrape GPUs:**
+The scraper supports every category on SS.com as well as the **Andele Mandele** marketplace. Use one or more `--<category>` flags with `python main.py scrape`.
+
+#### Available categories
+
+| Flag | What it scrapes |
+|------|-----------------|
+| `--gpu` | Video cards / GPUs |
+| `--cpu` | Processors / CPUs |
+| `--ssd` | Solid-state drives |
+| `--ram` | Memory modules |
+| `--cases` | PC cases |
+| `--psu` | Power supplies |
+| `--motherboards` | Motherboards |
+| `--monitors` | Monitors |
+| `--consoles` | Gaming consoles |
+| `--lenses` | Camera lenses |
+| `--cameras` | Camera bodies |
+| `--computers` | Complete desktop computers |
+| `--laptops` | Laptops |
+| `--andele` | Use the Andele Mandele source instead of SS.com |
+
+#### Examples
+
+**Scrape GPUs on SS.com:**
 ```bash
 python main.py scrape --gpu
 ```
@@ -42,9 +65,24 @@ python main.py scrape --gpu
 python main.py scrape --cpu
 ```
 
-**Scrape both:**
+**Scrape GPUs on Andele Mandele:**
 ```bash
-python main.py scrape --gpu --cpu
+python main.py scrape --andele --gpu
+```
+
+**Scrape a few common categories:**
+```bash
+python main.py scrape --gpu --cpu --ssd --ram
+```
+
+**Scrape every SS.com category in one run:**
+```bash
+python main.py scrape --gpu --cpu --ssd --ram --cases --psu --motherboards --monitors --consoles --lenses --cameras --computers --laptops
+```
+
+Or use the PowerShell helper from the repo root:
+```powershell
+.\run_all_scrapers.ps1
 ```
 
 **Test mode (limited listings):**
@@ -58,7 +96,7 @@ python main.py scrape --cpu --test --limit 1
 python main.py scrape --cpu --max-pages 0
 ```
 
-**Limit to specific number of listings:**
+**Limit to a specific number of listings:**
 ```bash
 python main.py scrape --gpu --limit 50
 ```

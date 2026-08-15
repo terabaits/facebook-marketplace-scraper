@@ -1,0 +1,25 @@
+"""Debug script with print statements."""
+import re
+
+def _canonicalize_intel(model: str) -> str:
+    m = re.match(r"^i([3579])-(\d{4,6})([a-z]{0,3})$", model, re.IGNORECASE)
+    print(f'  match: {m}, groups: {m.groups() if m else None}')
+    if m:
+        cls = m.group(1).lower()
+        num = m.group(2)
+        suffix = m.group(3)
+        if suffix:
+            suffix = suffix[0].upper() + suffix[1:].lower()
+        return f"i{cls}-{num}{suffix}"
+    return model
+
+# Test - using the function literally
+print('Test 1: "I5-1135g7"')
+print('  result:', _canonicalize_intel('I5-1135g7'))
+
+# Test the regex directly
+print('\nTest 2: direct regex on "I5-1135g7"')
+p = r"^i([3579])-(\d{4,6})([a-z]{0,3})$"
+print('  pattern:', p)
+m = re.match(p, 'I5-1135g7', re.IGNORECASE)
+print('  match:', m)

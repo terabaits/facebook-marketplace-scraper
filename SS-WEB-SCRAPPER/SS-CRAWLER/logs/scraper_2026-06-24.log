@@ -1,0 +1,1031 @@
+2026-06-24 16:09:26 | INFO     | ss_crawler | [database] Database connected: localhost:5433/ss_market
+2026-06-24 16:09:27 | INFO     | ss_crawler | [download_missing_matched_images] Found 191 matched ss.com listings without images; processing 5 in this run.
+2026-06-24 16:09:27 | INFO     | ss_crawler | [download_missing_matched_images] [DRY-RUN] Would download image for ccxcb (camera): https://i.ss.com/gallery/8/1499/374593/photo-optics-digital-cameras-sony-74918539.t.jpg
+2026-06-24 16:09:27 | INFO     | ss_crawler | [download_missing_matched_images] [DRY-RUN] Would download image for bfmpkx (camera): https://i.ss.com/gallery/8/1506/376483/photo-optics-slr-cameras-canon-75296577.t.jpg
+2026-06-24 16:09:27 | INFO     | ss_crawler | [download_missing_matched_images] [DRY-RUN] Would download image for bfhpcg (camera): https://i.ss.com/gallery/8/1506/376479/photo-optics-slr-cameras-canon-75295755.t.jpg
+2026-06-24 16:09:27 | INFO     | ss_crawler | [download_missing_matched_images] [DRY-RUN] Would download image for bffnko (camera): https://i.ss.com/gallery/8/1495/373545/photo-optics-slr-cameras-canon-74708874.t.jpg
+2026-06-24 16:09:27 | INFO     | ss_crawler | [download_missing_matched_images] [DRY-RUN] Would download image for bfhxjl (camera): https://i.ss.com/gallery/8/1501/375173/photo-optics-slr-cameras-canon-75034460.t.jpg
+2026-06-24 16:09:27 | INFO     | ss_crawler | [download_missing_matched_images] Run complete: processed=5, downloaded=0, failed=0
+2026-06-24 16:09:30 | INFO     | ss_crawler | [database] Database connected: localhost:5433/ss_market
+2026-06-24 16:09:31 | INFO     | ss_crawler | [download_missing_matched_images] Found 191 matched ss.com listings without images; processing 3 in this run.
+2026-06-24 16:09:31 | INFO     | ss_crawler | [image_downloader] Downloaded image for ccxcb (stored as ccxcb_8ac5ff77.jpg)
+2026-06-24 16:09:31 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for ccxcb -> cameras\ccxcb_8ac5ff77.jpg
+2026-06-24 16:09:31 | INFO     | ss_crawler | [image_downloader] Downloaded image for bfmpkx (stored as bfmpkx_b5e70ac7.jpg)
+2026-06-24 16:09:31 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for bfmpkx -> cameras\bfmpkx_b5e70ac7.jpg
+2026-06-24 16:09:31 | INFO     | ss_crawler | [image_downloader] Downloaded image for bfhpcg (stored as bfhpcg_338927e0.jpg)
+2026-06-24 16:09:31 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for bfhpcg -> cameras\bfhpcg_338927e0.jpg
+2026-06-24 16:09:31 | INFO     | ss_crawler | [download_missing_matched_images] Run complete: processed=3, downloaded=3, failed=0
+2026-06-24 19:22:30 | INFO     | ss_crawler | [database] Database connected: localhost:5433/ss_market
+2026-06-24 19:22:30 | INFO     | ss_crawler | [download_missing_matched_images] Found 188 matched ss.com listings without images; processing 5 in this run.
+2026-06-24 19:22:30 | INFO     | ss_crawler | [download_missing_matched_images] [DRY-RUN] Would download image for dhlem (camera): https://i.ss.com/gallery/8/1502/375390/photo-optics-digital-cameras-canon-75077883.t.jpg
+2026-06-24 19:22:30 | INFO     | ss_crawler | [download_missing_matched_images] [DRY-RUN] Would download image for gbnbx (camera): https://i.ss.com/gallery/8/1478/369255/photo-optics-digital-cameras-sony-73850815.t.jpg
+2026-06-24 19:22:30 | INFO     | ss_crawler | [download_missing_matched_images] [DRY-RUN] Would download image for fkmdh (camera): https://i.ss.com/gallery/8/1506/376340/photo-optics-digital-cameras-canon-75267825.t.jpg
+2026-06-24 19:22:30 | INFO     | ss_crawler | [download_missing_matched_images] [DRY-RUN] Would download image for mdexl (camera): https://i.ss.com/gallery/8/1506/376282/photo-optics-digital-cameras-sony-75256391.t.jpg
+2026-06-24 19:22:30 | INFO     | ss_crawler | [download_missing_matched_images] [DRY-RUN] Would download image for cgnkl (camera): https://i.ss.com/gallery/8/1505/376212/photo-optics-digital-cameras-canon-75242346.t.jpg
+2026-06-24 19:22:30 | INFO     | ss_crawler | [download_missing_matched_images] Run complete: processed=5, downloaded=0, failed=0
+2026-06-24 19:23:26 | INFO     | ss_crawler | [database] Database connected: localhost:5433/ss_market
+2026-06-24 19:23:26 | INFO     | ss_crawler | [download_missing_matched_images] Found 188 matched ss.com listings without images; processing 5 in this run.
+2026-06-24 19:23:26 | INFO     | ss_crawler | [image_downloader] Downloaded image for dhlem (stored as dhlem_1a44fe71.jpg)
+2026-06-24 19:23:26 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for dhlem -> cameras\dhlem_1a44fe71.jpg
+2026-06-24 19:23:26 | INFO     | ss_crawler | [image_downloader] Downloaded image for gbnbx (stored as gbnbx_9f371485.jpg)
+2026-06-24 19:23:26 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for gbnbx -> cameras\gbnbx_9f371485.jpg
+2026-06-24 19:23:26 | INFO     | ss_crawler | [image_downloader] Downloaded image for fkmdh (stored as fkmdh_e3fc98c8.jpg)
+2026-06-24 19:23:26 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for fkmdh -> cameras\fkmdh_e3fc98c8.jpg
+2026-06-24 19:23:27 | INFO     | ss_crawler | [image_downloader] Downloaded image for mdexl (stored as mdexl_0e430012.jpg)
+2026-06-24 19:23:27 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for mdexl -> cameras\mdexl_0e430012.jpg
+2026-06-24 19:23:27 | INFO     | ss_crawler | [image_downloader] Downloaded image for cgnkl (stored as cgnkl_c6ec2ba0.jpg)
+2026-06-24 19:23:27 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for cgnkl -> cameras\cgnkl_c6ec2ba0.jpg
+2026-06-24 19:23:27 | INFO     | ss_crawler | [download_missing_matched_images] Run complete: processed=5, downloaded=5, failed=0
+2026-06-24 19:23:31 | INFO     | ss_crawler | [database] Database connected: localhost:5433/ss_market
+2026-06-24 19:23:31 | INFO     | ss_crawler | [download_missing_matched_images] Found 183 matched ss.com listings without images; processing 5 in this run.
+2026-06-24 19:23:31 | INFO     | ss_crawler | [image_downloader] Downloaded image for bfebgj (stored as bfebgj_29a5f2c1.jpg)
+2026-06-24 19:23:31 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for bfebgj -> cameras\bfebgj_29a5f2c1.jpg
+2026-06-24 19:23:31 | INFO     | ss_crawler | [image_downloader] Downloaded image for bfhnhx (stored as bfhnhx_1714a580.jpg)
+2026-06-24 19:23:31 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for bfhnhx -> cameras\bfhnhx_1714a580.jpg
+2026-06-24 19:23:31 | INFO     | ss_crawler | [image_downloader] Downloaded image for bfdnlk (stored as bfdnlk_cad44ae6.jpg)
+2026-06-24 19:23:31 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for bfdnlk -> cameras\bfdnlk_cad44ae6.jpg
+2026-06-24 19:23:31 | INFO     | ss_crawler | [image_downloader] Downloaded image for bfimkm (stored as bfimkm_04587bc2.jpg)
+2026-06-24 19:23:31 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for bfimkm -> cameras\bfimkm_04587bc2.jpg
+2026-06-24 19:23:31 | INFO     | ss_crawler | [image_downloader] Downloaded image for bfgbnl (stored as bfgbnl_a3c87983.jpg)
+2026-06-24 19:23:31 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for bfgbnl -> cameras\bfgbnl_a3c87983.jpg
+2026-06-24 19:23:31 | INFO     | ss_crawler | [download_missing_matched_images] Run complete: processed=5, downloaded=5, failed=0
+2026-06-24 19:36:23 | INFO     | ss_crawler | [database] Database connected: localhost:5433/ss_market
+2026-06-24 19:36:23 | INFO     | ss_crawler | [download_missing_matched_images] Found 178 matched ss.com listings without images; processing 178 in this run.
+2026-06-24 19:36:24 | INFO     | ss_crawler | [image_downloader] Downloaded image for cmgpj (stored as cmgpj_421a70a2.jpg)
+2026-06-24 19:36:24 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for cmgpj -> cameras\cmgpj_421a70a2.jpg
+2026-06-24 19:36:24 | INFO     | ss_crawler | [image_downloader] Downloaded image for comgg (stored as comgg_4128115f.jpg)
+2026-06-24 19:36:24 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for comgg -> cameras\comgg_4128115f.jpg
+2026-06-24 19:36:24 | INFO     | ss_crawler | [image_downloader] Downloaded image for foggl (stored as foggl_6a635884.jpg)
+2026-06-24 19:36:24 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for foggl -> cameras\foggl_6a635884.jpg
+2026-06-24 19:36:24 | INFO     | ss_crawler | [image_downloader] Downloaded image for focee (stored as focee_22a1e144.jpg)
+2026-06-24 19:36:24 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for focee -> cameras\focee_22a1e144.jpg
+2026-06-24 19:36:24 | INFO     | ss_crawler | [image_downloader] Downloaded image for dphho (stored as dphho_2397f312.jpg)
+2026-06-24 19:36:24 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for dphho -> cameras\dphho_2397f312.jpg
+2026-06-24 19:36:24 | INFO     | ss_crawler | [image_downloader] Downloaded image for ffnln (stored as ffnln_05a5151d.jpg)
+2026-06-24 19:36:24 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for ffnln -> cameras\ffnln_05a5151d.jpg
+2026-06-24 19:36:24 | INFO     | ss_crawler | [image_downloader] Downloaded image for bjjho (stored as bjjho_79e65e06.jpg)
+2026-06-24 19:36:24 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for bjjho -> cameras\bjjho_79e65e06.jpg
+2026-06-24 19:36:24 | INFO     | ss_crawler | [image_downloader] Downloaded image for fdhkd (stored as fdhkd_81a572c4.jpg)
+2026-06-24 19:36:24 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for fdhkd -> cameras\fdhkd_81a572c4.jpg
+2026-06-24 19:36:24 | INFO     | ss_crawler | [image_downloader] Downloaded image for gpgxb (stored as gpgxb_7a329314.jpg)
+2026-06-24 19:36:24 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for gpgxb -> cameras\gpgxb_7a329314.jpg
+2026-06-24 19:36:24 | INFO     | ss_crawler | [image_downloader] Downloaded image for dboid (stored as dboid_fa8841fd.jpg)
+2026-06-24 19:36:24 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for dboid -> cameras\dboid_fa8841fd.jpg
+2026-06-24 19:36:24 | INFO     | ss_crawler | [image_downloader] Downloaded image for epxhn (stored as epxhn_c40231c2.jpg)
+2026-06-24 19:36:24 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for epxhn -> cameras\epxhn_c40231c2.jpg
+2026-06-24 19:36:24 | INFO     | ss_crawler | [image_downloader] Downloaded image for fhxmh (stored as fhxmh_29fb14d5.jpg)
+2026-06-24 19:36:24 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for fhxmh -> cameras\fhxmh_29fb14d5.jpg
+2026-06-24 19:36:24 | INFO     | ss_crawler | [image_downloader] Downloaded image for eifkc (stored as eifkc_ba975856.jpg)
+2026-06-24 19:36:24 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for eifkc -> cameras\eifkc_ba975856.jpg
+2026-06-24 19:36:24 | INFO     | ss_crawler | [image_downloader] Downloaded image for ddbfl (stored as ddbfl_0255fe46.jpg)
+2026-06-24 19:36:24 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for ddbfl -> cameras\ddbfl_0255fe46.jpg
+2026-06-24 19:36:24 | INFO     | ss_crawler | [image_downloader] Downloaded image for bkemfb (stored as bkemfb_209d2640.jpg)
+2026-06-24 19:36:24 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for bkemfb -> cameras\bkemfb_209d2640.jpg
+2026-06-24 19:36:24 | INFO     | ss_crawler | [image_downloader] Downloaded image for chmkf (stored as chmkf_3e51f641.jpg)
+2026-06-24 19:36:24 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for chmkf -> cameras\chmkf_3e51f641.jpg
+2026-06-24 19:36:24 | INFO     | ss_crawler | [image_downloader] Downloaded image for dloeh (stored as dloeh_35585129.jpg)
+2026-06-24 19:36:24 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for dloeh -> cameras\dloeh_35585129.jpg
+2026-06-24 19:36:25 | INFO     | ss_crawler | [image_downloader] Downloaded image for ddkbe (stored as ddkbe_a94df6b7.jpg)
+2026-06-24 19:36:25 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for ddkbe -> cameras\ddkbe_a94df6b7.jpg
+2026-06-24 19:36:25 | INFO     | ss_crawler | [image_downloader] Downloaded image for bfehol (stored as bfehol_5d30379e.jpg)
+2026-06-24 19:36:25 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for bfehol -> cameras\bfehol_5d30379e.jpg
+2026-06-24 19:36:25 | INFO     | ss_crawler | [image_downloader] Downloaded image for bfjmde (stored as bfjmde_ef180fcd.jpg)
+2026-06-24 19:36:25 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for bfjmde -> cameras\bfjmde_ef180fcd.jpg
+2026-06-24 19:36:25 | INFO     | ss_crawler | [image_downloader] Downloaded image for bfkmmx (stored as bfkmmx_822b3625.jpg)
+2026-06-24 19:36:25 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for bfkmmx -> cameras\bfkmmx_822b3625.jpg
+2026-06-24 19:36:25 | INFO     | ss_crawler | [image_downloader] Downloaded image for bfcono (stored as bfcono_b6f38afc.jpg)
+2026-06-24 19:36:25 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for bfcono -> cameras\bfcono_b6f38afc.jpg
+2026-06-24 19:36:25 | INFO     | ss_crawler | [image_downloader] Downloaded image for bfixjn (stored as bfixjn_7fdb4841.jpg)
+2026-06-24 19:36:25 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for bfixjn -> cameras\bfixjn_7fdb4841.jpg
+2026-06-24 19:36:25 | INFO     | ss_crawler | [image_downloader] Downloaded image for bfmjlo (stored as bfmjlo_e55ae58f.jpg)
+2026-06-24 19:36:25 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for bfmjlo -> cameras\bfmjlo_e55ae58f.jpg
+2026-06-24 19:36:25 | INFO     | ss_crawler | [image_downloader] Downloaded image for bfhcif (stored as bfhcif_9d52b1d0.jpg)
+2026-06-24 19:36:25 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for bfhcif -> cameras\bfhcif_9d52b1d0.jpg
+2026-06-24 19:36:25 | INFO     | ss_crawler | [image_downloader] Downloaded image for bfgdce (stored as bfgdce_33d14979.jpg)
+2026-06-24 19:36:25 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for bfgdce -> cameras\bfgdce_33d14979.jpg
+2026-06-24 19:36:25 | INFO     | ss_crawler | [image_downloader] Downloaded image for bfdcoi (stored as bfdcoi_95eabc95.jpg)
+2026-06-24 19:36:25 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for bfdcoi -> cameras\bfdcoi_95eabc95.jpg
+2026-06-24 19:36:25 | INFO     | ss_crawler | [image_downloader] Downloaded image for bfgbfm (stored as bfgbfm_ba4c8d66.jpg)
+2026-06-24 19:36:25 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for bfgbfm -> cameras\bfgbfm_ba4c8d66.jpg
+2026-06-24 19:36:25 | INFO     | ss_crawler | [image_downloader] Downloaded image for bffnko (stored as bffnko_f6515b04.jpg)
+2026-06-24 19:36:25 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for bffnko -> cameras\bffnko_f6515b04.jpg
+2026-06-24 19:36:25 | INFO     | ss_crawler | [image_downloader] Downloaded image for bfhxjl (stored as bfhxjl_0c09c3d8.jpg)
+2026-06-24 19:36:25 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for bfhxjl -> cameras\bfhxjl_0c09c3d8.jpg
+2026-06-24 19:36:25 | INFO     | ss_crawler | [image_downloader] Downloaded image for bfkbjc (stored as bfkbjc_75e82547.jpg)
+2026-06-24 19:36:25 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for bfkbjc -> cameras\bfkbjc_75e82547.jpg
+2026-06-24 19:36:25 | INFO     | ss_crawler | [image_downloader] Downloaded image for bfkcxb (stored as bfkcxb_d47537f1.jpg)
+2026-06-24 19:36:25 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for bfkcxb -> cameras\bfkcxb_d47537f1.jpg
+2026-06-24 19:36:25 | INFO     | ss_crawler | [image_downloader] Downloaded image for bfgdbp (stored as bfgdbp_d6a38840.jpg)
+2026-06-24 19:36:25 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for bfgdbp -> cameras\bfgdbp_d6a38840.jpg
+2026-06-24 19:36:25 | INFO     | ss_crawler | [image_downloader] Downloaded image for bfjbhd (stored as bfjbhd_05dba418.jpg)
+2026-06-24 19:36:25 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for bfjbhd -> cameras\bfjbhd_05dba418.jpg
+2026-06-24 19:36:25 | INFO     | ss_crawler | [image_downloader] Downloaded image for bfjxkc (stored as bfjxkc_c160effc.jpg)
+2026-06-24 19:36:25 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for bfjxkc -> cameras\bfjxkc_c160effc.jpg
+2026-06-24 19:36:25 | INFO     | ss_crawler | [image_downloader] Downloaded image for bfilgn (stored as bfilgn_df62bcd6.jpg)
+2026-06-24 19:36:25 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for bfilgn -> cameras\bfilgn_df62bcd6.jpg
+2026-06-24 19:36:25 | INFO     | ss_crawler | [image_downloader] Downloaded image for bfghig (stored as bfghig_089a4747.jpg)
+2026-06-24 19:36:25 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for bfghig -> cameras\bfghig_089a4747.jpg
+2026-06-24 19:36:26 | INFO     | ss_crawler | [image_downloader] Downloaded image for bgmddk (stored as bgmddk_0fa99d9e.jpg)
+2026-06-24 19:36:26 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for bgmddk -> cameras\bgmddk_0fa99d9e.jpg
+2026-06-24 19:36:26 | INFO     | ss_crawler | [image_downloader] Downloaded image for bfijnm (stored as bfijnm_ec7be5dc.jpg)
+2026-06-24 19:36:26 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for bfijnm -> cameras\bfijnm_ec7be5dc.jpg
+2026-06-24 19:36:26 | INFO     | ss_crawler | [image_downloader] Downloaded image for bfdolo (stored as bfdolo_895dc3eb.jpg)
+2026-06-24 19:36:26 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for bfdolo -> cameras\bfdolo_895dc3eb.jpg
+2026-06-24 19:36:26 | INFO     | ss_crawler | [image_downloader] Downloaded image for bfjdfg (stored as bfjdfg_1589ce4c.jpg)
+2026-06-24 19:36:26 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for bfjdfg -> cameras\bfjdfg_1589ce4c.jpg
+2026-06-24 19:36:26 | INFO     | ss_crawler | [image_downloader] Downloaded image for bfjioe (stored as bfjioe_68a8ebc3.jpg)
+2026-06-24 19:36:26 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for bfjioe -> cameras\bfjioe_68a8ebc3.jpg
+2026-06-24 19:36:26 | INFO     | ss_crawler | [image_downloader] Downloaded image for bfgjbm (stored as bfgjbm_fa2460c5.jpg)
+2026-06-24 19:36:26 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for bfgjbm -> cameras\bfgjbm_fa2460c5.jpg
+2026-06-24 19:36:26 | INFO     | ss_crawler | [image_downloader] Downloaded image for gfpbc (stored as gfpbc_49f51fcd.jpg)
+2026-06-24 19:36:26 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for gfpbc -> cameras\gfpbc_49f51fcd.jpg
+2026-06-24 19:36:26 | INFO     | ss_crawler | [image_downloader] Downloaded image for mgfhn (stored as mgfhn_5f33b36e.jpg)
+2026-06-24 19:36:26 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for mgfhn -> cameras\mgfhn_5f33b36e.jpg
+2026-06-24 19:36:26 | INFO     | ss_crawler | [image_downloader] Downloaded image for eeepk (stored as eeepk_cbe603a8.jpg)
+2026-06-24 19:36:26 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for eeepk -> cameras\eeepk_cbe603a8.jpg
+2026-06-24 19:36:26 | INFO     | ss_crawler | [image_downloader] Downloaded image for pbcfp (stored as pbcfp_d3a81544.jpg)
+2026-06-24 19:36:26 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for pbcfp -> cameras\pbcfp_d3a81544.jpg
+2026-06-24 19:36:26 | INFO     | ss_crawler | [image_downloader] Downloaded image for fkelb (stored as fkelb_710917c6.jpg)
+2026-06-24 19:36:26 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for fkelb -> cameras\fkelb_710917c6.jpg
+2026-06-24 19:36:26 | INFO     | ss_crawler | [image_downloader] Downloaded image for enmdk (stored as enmdk_71d0992a.jpg)
+2026-06-24 19:36:26 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for enmdk -> cameras\enmdk_71d0992a.jpg
+2026-06-24 19:36:26 | INFO     | ss_crawler | [image_downloader] Downloaded image for bfgbgp (stored as bfgbgp_05668a26.jpg)
+2026-06-24 19:36:26 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for bfgbgp -> cameras\bfgbgp_05668a26.jpg
+2026-06-24 19:36:26 | INFO     | ss_crawler | [image_downloader] Downloaded image for bfgojj (stored as bfgojj_f29da100.jpg)
+2026-06-24 19:36:26 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for bfgojj -> cameras\bfgojj_f29da100.jpg
+2026-06-24 19:36:26 | INFO     | ss_crawler | [image_downloader] Downloaded image for bfengn (stored as bfengn_46354dee.jpg)
+2026-06-24 19:36:26 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for bfengn -> cameras\bfengn_46354dee.jpg
+2026-06-24 19:36:26 | INFO     | ss_crawler | [image_downloader] Downloaded image for bfhpbx (stored as bfhpbx_edd3645b.jpg)
+2026-06-24 19:36:26 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for bfhpbx -> cameras\bfhpbx_edd3645b.jpg
+2026-06-24 19:36:26 | INFO     | ss_crawler | [image_downloader] Downloaded image for bfkbhp (stored as bfkbhp_d28bca67.jpg)
+2026-06-24 19:36:26 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for bfkbhp -> cameras\bfkbhp_d28bca67.jpg
+2026-06-24 19:36:26 | INFO     | ss_crawler | [image_downloader] Downloaded image for bfijfo (stored as bfijfo_a6d0c039.jpg)
+2026-06-24 19:36:26 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for bfijfo -> cameras\bfijfo_a6d0c039.jpg
+2026-06-24 19:36:26 | INFO     | ss_crawler | [image_downloader] Downloaded image for bgmhpk (stored as bgmhpk_6ef43938.jpg)
+2026-06-24 19:36:26 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for bgmhpk -> cameras\bgmhpk_6ef43938.jpg
+2026-06-24 19:36:26 | INFO     | ss_crawler | [image_downloader] Downloaded image for bfkgdb (stored as bfkgdb_611c3c46.jpg)
+2026-06-24 19:36:26 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for bfkgdb -> cameras\bfkgdb_611c3c46.jpg
+2026-06-24 19:36:27 | INFO     | ss_crawler | [image_downloader] Downloaded image for bfefch (stored as bfefch_c6dc50f3.jpg)
+2026-06-24 19:36:27 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for bfefch -> cameras\bfefch_c6dc50f3.jpg
+2026-06-24 19:36:27 | INFO     | ss_crawler | [image_downloader] Downloaded image for bfjmxe (stored as bfjmxe_b7f2950d.jpg)
+2026-06-24 19:36:27 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for bfjmxe -> cameras\bfjmxe_b7f2950d.jpg
+2026-06-24 19:36:27 | INFO     | ss_crawler | [image_downloader] Downloaded image for bfigdp (stored as bfigdp_704a6fa1.jpg)
+2026-06-24 19:36:27 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for bfigdp -> cameras\bfigdp_704a6fa1.jpg
+2026-06-24 19:36:27 | INFO     | ss_crawler | [image_downloader] Downloaded image for bfhgdn (stored as bfhgdn_af327403.jpg)
+2026-06-24 19:36:27 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for bfhgdn -> cameras\bfhgdn_af327403.jpg
+2026-06-24 19:36:27 | INFO     | ss_crawler | [image_downloader] Downloaded image for bfoccg (stored as bfoccg_fcf81669.jpg)
+2026-06-24 19:36:27 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for bfoccg -> cameras\bfoccg_fcf81669.jpg
+2026-06-24 19:36:27 | INFO     | ss_crawler | [image_downloader] Downloaded image for bfjxgh (stored as bfjxgh_c5978c0e.jpg)
+2026-06-24 19:36:27 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for bfjxgh -> cameras\bfjxgh_c5978c0e.jpg
+2026-06-24 19:36:27 | INFO     | ss_crawler | [image_downloader] Downloaded image for hfigf (stored as hfigf_22860ac8.jpg)
+2026-06-24 19:36:27 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for hfigf -> cameras\hfigf_22860ac8.jpg
+2026-06-24 19:36:27 | INFO     | ss_crawler | [image_downloader] Downloaded image for bfkmck (stored as bfkmck_b82f5a46.jpg)
+2026-06-24 19:36:27 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for bfkmck -> cameras\bfkmck_b82f5a46.jpg
+2026-06-24 19:36:27 | INFO     | ss_crawler | [image_downloader] Downloaded image for bfhxip (stored as bfhxip_b2545050.jpg)
+2026-06-24 19:36:27 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for bfhxip -> cameras\bfhxip_b2545050.jpg
+2026-06-24 19:36:27 | INFO     | ss_crawler | [image_downloader] Downloaded image for bfiffo (stored as bfiffo_9035742d.jpg)
+2026-06-24 19:36:27 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for bfiffo -> cameras\bfiffo_9035742d.jpg
+2026-06-24 19:36:27 | INFO     | ss_crawler | [image_downloader] Downloaded image for bfeixi (stored as bfeixi_496eecac.jpg)
+2026-06-24 19:36:27 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for bfeixi -> cameras\bfeixi_496eecac.jpg
+2026-06-24 19:36:27 | INFO     | ss_crawler | [image_downloader] Downloaded image for bfmipn (stored as bfmipn_33cdaac3.jpg)
+2026-06-24 19:36:27 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for bfmipn -> cameras\bfmipn_33cdaac3.jpg
+2026-06-24 19:36:27 | INFO     | ss_crawler | [image_downloader] Downloaded image for bfibmc (stored as bfibmc_e1fe1d2f.jpg)
+2026-06-24 19:36:27 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for bfibmc -> cameras\bfibmc_e1fe1d2f.jpg
+2026-06-24 19:36:27 | INFO     | ss_crawler | [image_downloader] Downloaded image for bffjdf (stored as bffjdf_8fbaf7e7.jpg)
+2026-06-24 19:36:27 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for bffjdf -> cameras\bffjdf_8fbaf7e7.jpg
+2026-06-24 19:36:27 | INFO     | ss_crawler | [image_downloader] Downloaded image for bfkflm (stored as bfkflm_90570f5e.jpg)
+2026-06-24 19:36:27 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for bfkflm -> cameras\bfkflm_90570f5e.jpg
+2026-06-24 19:36:27 | INFO     | ss_crawler | [image_downloader] Downloaded image for bfgpkd (stored as bfgpkd_1ed8a6b5.jpg)
+2026-06-24 19:36:27 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for bfgpkd -> cameras\bfgpkd_1ed8a6b5.jpg
+2026-06-24 19:36:27 | INFO     | ss_crawler | [image_downloader] Downloaded image for bfjcgo (stored as bfjcgo_7cc365e7.jpg)
+2026-06-24 19:36:27 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for bfjcgo -> cameras\bfjcgo_7cc365e7.jpg
+2026-06-24 19:36:28 | INFO     | ss_crawler | [image_downloader] Downloaded image for fiedf (stored as fiedf_1204f56c.jpg)
+2026-06-24 19:36:28 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for fiedf -> cameras\fiedf_1204f56c.jpg
+2026-06-24 19:36:28 | INFO     | ss_crawler | [image_downloader] Downloaded image for dlcjo (stored as dlcjo_225df8cb.jpg)
+2026-06-24 19:36:28 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for dlcjo -> cameras\dlcjo_225df8cb.jpg
+2026-06-24 19:36:28 | INFO     | ss_crawler | [image_downloader] Downloaded image for gfbec (stored as gfbec_8d683a50.jpg)
+2026-06-24 19:36:28 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for gfbec -> cameras\gfbec_8d683a50.jpg
+2026-06-24 19:36:28 | INFO     | ss_crawler | [image_downloader] Downloaded image for cbplo (stored as cbplo_5ef85d91.jpg)
+2026-06-24 19:36:28 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for cbplo -> cameras\cbplo_5ef85d91.jpg
+2026-06-24 19:36:28 | INFO     | ss_crawler | [image_downloader] Downloaded image for dpomp (stored as dpomp_e9e2382f.jpg)
+2026-06-24 19:36:28 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for dpomp -> cameras\dpomp_e9e2382f.jpg
+2026-06-24 19:36:28 | INFO     | ss_crawler | [image_downloader] Downloaded image for fbbjl (stored as fbbjl_f296aea8.jpg)
+2026-06-24 19:36:28 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for fbbjl -> cameras\fbbjl_f296aea8.jpg
+2026-06-24 19:36:28 | INFO     | ss_crawler | [image_downloader] Downloaded image for mxpej (stored as mxpej_3d22d72d.jpg)
+2026-06-24 19:36:28 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for mxpej -> cameras\mxpej_3d22d72d.jpg
+2026-06-24 19:36:28 | INFO     | ss_crawler | [image_downloader] Downloaded image for egidm (stored as egidm_e7afefa7.jpg)
+2026-06-24 19:36:28 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for egidm -> cameras\egidm_e7afefa7.jpg
+2026-06-24 19:36:28 | INFO     | ss_crawler | [image_downloader] Downloaded image for dbfcd (stored as dbfcd_b751e229.jpg)
+2026-06-24 19:36:28 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for dbfcd -> cameras\dbfcd_b751e229.jpg
+2026-06-24 19:36:28 | INFO     | ss_crawler | [image_downloader] Downloaded image for fldjp (stored as fldjp_94516005.jpg)
+2026-06-24 19:36:28 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for fldjp -> cameras\fldjp_94516005.jpg
+2026-06-24 19:36:28 | INFO     | ss_crawler | [image_downloader] Downloaded image for elhoc (stored as elhoc_2b3b48fd.jpg)
+2026-06-24 19:36:28 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for elhoc -> cameras\elhoc_2b3b48fd.jpg
+2026-06-24 19:36:28 | INFO     | ss_crawler | [image_downloader] Downloaded image for bhjgh (stored as bhjgh_9e6d286f.jpg)
+2026-06-24 19:36:28 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for bhjgh -> cameras\bhjgh_9e6d286f.jpg
+2026-06-24 19:36:28 | INFO     | ss_crawler | [image_downloader] Downloaded image for efgnp (stored as efgnp_81dd4f59.jpg)
+2026-06-24 19:36:28 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for efgnp -> cameras\efgnp_81dd4f59.jpg
+2026-06-24 19:36:28 | INFO     | ss_crawler | [image_downloader] Downloaded image for bplhmk (stored as bplhmk_ebffcc16.jpg)
+2026-06-24 19:36:28 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for bplhmk -> gpus\bplhmk_ebffcc16.jpg
+2026-06-24 19:36:28 | INFO     | ss_crawler | [image_downloader] Downloaded image for popej (stored as popej_47c42c20.jpg)
+2026-06-24 19:36:28 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for popej -> gpus\popej_47c42c20.jpg
+2026-06-24 19:36:28 | INFO     | ss_crawler | [image_downloader] Downloaded image for pnxbk (stored as pnxbk_a2a42cc9.jpg)
+2026-06-24 19:36:28 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for pnxbk -> gpus\pnxbk_a2a42cc9.jpg
+2026-06-24 19:36:28 | INFO     | ss_crawler | [image_downloader] Downloaded image for mobxc (stored as mobxc_35f83c32.jpg)
+2026-06-24 19:36:28 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for mobxc -> gpus\mobxc_35f83c32.jpg
+2026-06-24 19:36:29 | INFO     | ss_crawler | [image_downloader] Downloaded image for cxlfoh (stored as cxlfoh_8c94edcd.jpg)
+2026-06-24 19:36:29 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for cxlfoh -> gpus\cxlfoh_8c94edcd.jpg
+2026-06-24 19:36:29 | INFO     | ss_crawler | [image_downloader] Downloaded image for bckcog (stored as bckcog_677bd916.jpg)
+2026-06-24 19:36:29 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for bckcog -> gpus\bckcog_677bd916.jpg
+2026-06-24 19:36:29 | INFO     | ss_crawler | [image_downloader] Downloaded image for pmxfb (stored as pmxfb_ba0dabb7.jpg)
+2026-06-24 19:36:29 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for pmxfb -> gpus\pmxfb_ba0dabb7.jpg
+2026-06-24 19:36:29 | INFO     | ss_crawler | [image_downloader] Downloaded image for adenj (stored as adenj_61b1b459.jpg)
+2026-06-24 19:36:29 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for adenj -> gpus\adenj_61b1b459.jpg
+2026-06-24 19:36:29 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for hxnom -> cpus\hxnom_a99fe0f3.jpg
+2026-06-24 19:36:29 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for hdkkj -> cpus\hdkkj_89f60087.jpg
+2026-06-24 19:36:29 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for fnfhp -> cpus\fnfhp_80be9ac8.jpg
+2026-06-24 19:36:29 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for pjlmb -> cpus\pjlmb_41467480.jpg
+2026-06-24 19:36:29 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for mjffp -> cpus\mjffp_f608ef1d.jpg
+2026-06-24 19:36:29 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for nbbkn -> cpus\nbbkn_e2e09f2e.jpg
+2026-06-24 19:36:29 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for hifej -> cpus\hifej_ad388816.jpg
+2026-06-24 19:36:29 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for fgegn -> cpus\fgegn_06597625.jpg
+2026-06-24 19:36:29 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for fjnll -> cpus\fjnll_e5c1170d.jpg
+2026-06-24 19:36:29 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for ffjli -> cpus\ffjli_a4c5dca3.jpg
+2026-06-24 19:36:29 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for fbkdj -> cpus\fbkdj_d42b76bf.jpg
+2026-06-24 19:36:29 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for hjxif -> cpus\hjxif_ce7011ba.jpg
+2026-06-24 19:36:29 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for fklkk -> cpus\fklkk_e942437a.jpg
+2026-06-24 19:36:29 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for bmxhf -> cpus\bmxhf_b8ae951e.jpg
+2026-06-24 19:36:29 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for hjlxh -> cpus\hjlxh_eaba2ad9.jpg
+2026-06-24 19:36:29 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for mjgde -> cpus\mjgde_2e6107d4.jpg
+2026-06-24 19:36:29 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for hjfbj -> cpus\hjfbj_33f16aea.jpg
+2026-06-24 19:36:29 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for dxhjl -> cpus\dxhjl_165db282.jpg
+2026-06-24 19:36:29 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for pmfbx -> cpus\pmfbx_3038a392.jpg
+2026-06-24 19:36:29 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for hcflh -> cpus\hcflh_093ac1c4.jpg
+2026-06-24 19:36:29 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for hjcmo -> cpus\hjcmo_f75be93a.jpg
+2026-06-24 19:36:29 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for dncgp -> cpus\dncgp_d0614065.jpg
+2026-06-24 19:36:29 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for bmxhi -> cpus\bmxhi_aaf3c3b6.jpg
+2026-06-24 19:36:29 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for efbel -> cpus\efbel_c69f7d9e.jpg
+2026-06-24 19:36:29 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for gfokc -> cpus\gfokc_a8ba7679.jpg
+2026-06-24 19:36:29 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for phgxk -> cpus\phgxk_94e174e0.jpg
+2026-06-24 19:36:29 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for ehfgo -> cpus\ehfgo_c6a19937.jpg
+2026-06-24 19:36:29 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for pjlnl -> cpus\pjlnl_c96fa3e2.jpg
+2026-06-24 19:36:29 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for hmjnp -> cpus\hmjnp_c839a6e2.jpg
+2026-06-24 19:36:29 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for edfhx -> cpus\edfhx_5e58304f.jpg
+2026-06-24 19:36:29 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for bkxjh -> cpus\bkxjh_eb37e5f0.jpg
+2026-06-24 19:36:29 | INFO     | ss_crawler | [image_downloader] Downloaded image for bfcibn (stored as bfcibn_064ebd0a.jpg)
+2026-06-24 19:36:29 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for bfcibn -> lenses\bfcibn_064ebd0a.jpg
+2026-06-24 19:36:29 | INFO     | ss_crawler | [image_downloader] Downloaded image for gxnof (stored as gxnof_c51ed7fe.jpg)
+2026-06-24 19:36:29 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for gxnof -> lenses\gxnof_c51ed7fe.jpg
+2026-06-24 19:36:29 | INFO     | ss_crawler | [image_downloader] Downloaded image for dfmbj (stored as dfmbj_28cc9ec6.jpg)
+2026-06-24 19:36:29 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for dfmbj -> lenses\dfmbj_28cc9ec6.jpg
+2026-06-24 19:36:29 | INFO     | ss_crawler | [image_downloader] Downloaded image for bkmpjx (stored as bkmpjx_788dcc72.jpg)
+2026-06-24 19:36:29 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for bkmpjx -> lenses\bkmpjx_788dcc72.jpg
+2026-06-24 19:36:29 | INFO     | ss_crawler | [image_downloader] Downloaded image for fmgco (stored as fmgco_4756f74d.jpg)
+2026-06-24 19:36:29 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for fmgco -> lenses\fmgco_4756f74d.jpg
+2026-06-24 19:36:29 | INFO     | ss_crawler | [image_downloader] Downloaded image for beggcn (stored as beggcn_074e0599.jpg)
+2026-06-24 19:36:29 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for beggcn -> lenses\beggcn_074e0599.jpg
+2026-06-24 19:36:29 | INFO     | ss_crawler | [image_downloader] Downloaded image for dkobo (stored as dkobo_a4b94740.jpg)
+2026-06-24 19:36:29 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for dkobo -> lenses\dkobo_a4b94740.jpg
+2026-06-24 19:36:29 | INFO     | ss_crawler | [image_downloader] Downloaded image for kxigk (stored as kxigk_894022b2.jpg)
+2026-06-24 19:36:29 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for kxigk -> lenses\kxigk_894022b2.jpg
+2026-06-24 19:36:29 | INFO     | ss_crawler | [image_downloader] Downloaded image for bjicng (stored as bjicng_5473291d.jpg)
+2026-06-24 19:36:29 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for bjicng -> lenses\bjicng_5473291d.jpg
+2026-06-24 19:36:29 | INFO     | ss_crawler | [image_downloader] Downloaded image for acpei (stored as acpei_73a13eaf.jpg)
+2026-06-24 19:36:29 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for acpei -> lenses\acpei_73a13eaf.jpg
+2026-06-24 19:36:29 | INFO     | ss_crawler | [image_downloader] Downloaded image for kcgdj (stored as kcgdj_dba24646.jpg)
+2026-06-24 19:36:29 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for kcgdj -> lenses\kcgdj_dba24646.jpg
+2026-06-24 19:36:29 | INFO     | ss_crawler | [image_downloader] Downloaded image for bgpxpg (stored as bgpxpg_f783e3a9.jpg)
+2026-06-24 19:36:29 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for bgpxpg -> lenses\bgpxpg_f783e3a9.jpg
+2026-06-24 19:36:29 | INFO     | ss_crawler | [image_downloader] Downloaded image for bckxe (stored as bckxe_dd64b31a.jpg)
+2026-06-24 19:36:29 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for bckxe -> lenses\bckxe_dd64b31a.jpg
+2026-06-24 19:36:29 | INFO     | ss_crawler | [image_downloader] Downloaded image for cpkld (stored as cpkld_0c7920b7.jpg)
+2026-06-24 19:36:29 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for cpkld -> lenses\cpkld_0c7920b7.jpg
+2026-06-24 19:36:29 | INFO     | ss_crawler | [image_downloader] Downloaded image for gcxje (stored as gcxje_041e4a5b.jpg)
+2026-06-24 19:36:29 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for gcxje -> lenses\gcxje_041e4a5b.jpg
+2026-06-24 19:36:30 | INFO     | ss_crawler | [image_downloader] Downloaded image for dcocb (stored as dcocb_f5c59612.jpg)
+2026-06-24 19:36:30 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for dcocb -> lenses\dcocb_f5c59612.jpg
+2026-06-24 19:36:30 | INFO     | ss_crawler | [image_downloader] Downloaded image for heegb (stored as heegb_8f7351b9.jpg)
+2026-06-24 19:36:30 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for heegb -> lenses\heegb_8f7351b9.jpg
+2026-06-24 19:36:30 | INFO     | ss_crawler | [image_downloader] Downloaded image for ghhol (stored as ghhol_88981c1a.jpg)
+2026-06-24 19:36:30 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for ghhol -> lenses\ghhol_88981c1a.jpg
+2026-06-24 19:36:30 | INFO     | ss_crawler | [image_downloader] Downloaded image for bbixgh (stored as bbixgh_b31cecf6.jpg)
+2026-06-24 19:36:30 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for bbixgh -> lenses\bbixgh_b31cecf6.jpg
+2026-06-24 19:36:30 | INFO     | ss_crawler | [image_downloader] Downloaded image for mcigh (stored as mcigh_2bfb3bff.jpg)
+2026-06-24 19:36:30 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for mcigh -> lenses\mcigh_2bfb3bff.jpg
+2026-06-24 19:36:30 | INFO     | ss_crawler | [image_downloader] Downloaded image for dmmde (stored as dmmde_2cd1cb37.jpg)
+2026-06-24 19:36:30 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for dmmde -> lenses\dmmde_2cd1cb37.jpg
+2026-06-24 19:36:30 | INFO     | ss_crawler | [image_downloader] Downloaded image for loolb (stored as loolb_16a3ab7d.jpg)
+2026-06-24 19:36:30 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for loolb -> lenses\loolb_16a3ab7d.jpg
+2026-06-24 19:36:30 | INFO     | ss_crawler | [image_downloader] Downloaded image for bfjmof (stored as bfjmof_8b67115d.jpg)
+2026-06-24 19:36:30 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for bfjmof -> cameras\bfjmof_8b67115d.jpg
+2026-06-24 19:36:30 | INFO     | ss_crawler | [image_downloader] Downloaded image for bfjcnn (stored as bfjcnn_0086e738.jpg)
+2026-06-24 19:36:30 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for bfjcnn -> cameras\bfjcnn_0086e738.jpg
+2026-06-24 19:36:30 | INFO     | ss_crawler | [image_downloader] Downloaded image for bfioei (stored as bfioei_65b71019.jpg)
+2026-06-24 19:36:30 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for bfioei -> cameras\bfioei_65b71019.jpg
+2026-06-24 19:36:30 | INFO     | ss_crawler | [image_downloader] Downloaded image for bfjxkf (stored as bfjxkf_acbca9ec.jpg)
+2026-06-24 19:36:30 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for bfjxkf -> cameras\bfjxkf_acbca9ec.jpg
+2026-06-24 19:36:30 | INFO     | ss_crawler | [image_downloader] Downloaded image for bfiigm (stored as bfiigm_4a62ad91.jpg)
+2026-06-24 19:36:30 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for bfiigm -> cameras\bfiigm_4a62ad91.jpg
+2026-06-24 19:36:30 | INFO     | ss_crawler | [image_downloader] Downloaded image for bfjnoh (stored as bfjnoh_f6515b04.jpg)
+2026-06-24 19:36:30 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for bfjnoh -> cameras\bfjnoh_f6515b04.jpg
+2026-06-24 19:36:30 | INFO     | ss_crawler | [image_downloader] Downloaded image for bfjejn (stored as bfjejn_1c833a94.jpg)
+2026-06-24 19:36:30 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for bfjejn -> cameras\bfjejn_1c833a94.jpg
+2026-06-24 19:36:30 | INFO     | ss_crawler | [image_downloader] Downloaded image for bfkjpc (stored as bfkjpc_170b90d1.jpg)
+2026-06-24 19:36:30 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for bfkjpc -> cameras\bfkjpc_170b90d1.jpg
+2026-06-24 19:36:30 | INFO     | ss_crawler | [image_downloader] Downloaded image for bfdige (stored as bfdige_c2e77039.jpg)
+2026-06-24 19:36:30 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for bfdige -> cameras\bfdige_c2e77039.jpg
+2026-06-24 19:36:30 | INFO     | ss_crawler | [image_downloader] Downloaded image for bgxgkf (stored as bgxgkf_a18e16b3.jpg)
+2026-06-24 19:36:30 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for bgxgkf -> cameras\bgxgkf_a18e16b3.jpg
+2026-06-24 19:36:30 | INFO     | ss_crawler | [image_downloader] Downloaded image for bfedll (stored as bfedll_69b71e5c.jpg)
+2026-06-24 19:36:30 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for bfedll -> cameras\bfedll_69b71e5c.jpg
+2026-06-24 19:36:30 | INFO     | ss_crawler | [image_downloader] Downloaded image for cnidj (stored as cnidj_00ed3a66.jpg)
+2026-06-24 19:36:30 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for cnidj -> cameras\cnidj_00ed3a66.jpg
+2026-06-24 19:36:30 | INFO     | ss_crawler | [image_downloader] Downloaded image for mghdo (stored as mghdo_d47e2b60.jpg)
+2026-06-24 19:36:30 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for mghdo -> cameras\mghdo_d47e2b60.jpg
+2026-06-24 19:36:30 | INFO     | ss_crawler | [image_downloader] Downloaded image for bfibml (stored as bfibml_1b198dd2.jpg)
+2026-06-24 19:36:30 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for bfibml -> cameras\bfibml_1b198dd2.jpg
+2026-06-24 19:36:31 | INFO     | ss_crawler | [image_downloader] Downloaded image for bfexoo (stored as bfexoo_22a5771b.jpg)
+2026-06-24 19:36:31 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for bfexoo -> cameras\bfexoo_22a5771b.jpg
+2026-06-24 19:36:31 | INFO     | ss_crawler | [image_downloader] Downloaded image for dneip (stored as dneip_a5bc66b8.jpg)
+2026-06-24 19:36:31 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for dneip -> cameras\dneip_a5bc66b8.jpg
+2026-06-24 19:36:31 | INFO     | ss_crawler | [image_downloader] Downloaded image for abbkx (stored as abbkx_11268da5.jpg)
+2026-06-24 19:36:31 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for abbkx -> cameras\abbkx_11268da5.jpg
+2026-06-24 19:36:31 | INFO     | ss_crawler | [image_downloader] Downloaded image for bfjmij (stored as bfjmij_9bf57f3c.jpg)
+2026-06-24 19:36:31 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for bfjmij -> cameras\bfjmij_9bf57f3c.jpg
+2026-06-24 19:36:31 | INFO     | ss_crawler | [image_downloader] Downloaded image for bffjnj (stored as bffjnj_cdbc454d.jpg)
+2026-06-24 19:36:31 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for bffjnj -> cameras\bffjnj_cdbc454d.jpg
+2026-06-24 19:36:31 | INFO     | ss_crawler | [image_downloader] Downloaded image for bfgmoo (stored as bfgmoo_d1e1f7a0.jpg)
+2026-06-24 19:36:31 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for bfgmoo -> cameras\bfgmoo_d1e1f7a0.jpg
+2026-06-24 19:36:31 | INFO     | ss_crawler | [image_downloader] Downloaded image for bfjbmp (stored as bfjbmp_278aca7a.jpg)
+2026-06-24 19:36:31 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for bfjbmp -> cameras\bfjbmp_278aca7a.jpg
+2026-06-24 19:36:31 | INFO     | ss_crawler | [image_downloader] Downloaded image for gjifd (stored as gjifd_595dbd01.jpg)
+2026-06-24 19:36:31 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for gjifd -> cameras\gjifd_595dbd01.jpg
+2026-06-24 19:36:31 | INFO     | ss_crawler | [image_downloader] Downloaded image for bfdbpj (stored as bfdbpj_b52cebcd.jpg)
+2026-06-24 19:36:31 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for bfdbpj -> cameras\bfdbpj_b52cebcd.jpg
+2026-06-24 19:36:31 | INFO     | ss_crawler | [image_downloader] Downloaded image for bfhxbg (stored as bfhxbg_02bd7082.jpg)
+2026-06-24 19:36:31 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for bfhxbg -> cameras\bfhxbg_02bd7082.jpg
+2026-06-24 19:36:31 | INFO     | ss_crawler | [image_downloader] Downloaded image for djfoc (stored as djfoc_e32399d2.jpg)
+2026-06-24 19:36:31 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for djfoc -> cameras\djfoc_e32399d2.jpg
+2026-06-24 19:36:31 | INFO     | ss_crawler | [image_downloader] Downloaded image for djjic (stored as djjic_259b2ba2.jpg)
+2026-06-24 19:36:31 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for djjic -> cameras\djjic_259b2ba2.jpg
+2026-06-24 19:36:31 | INFO     | ss_crawler | [image_downloader] Downloaded image for fcfjb (stored as fcfjb_5ef4585f.jpg)
+2026-06-24 19:36:31 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for fcfjb -> cameras\fcfjb_5ef4585f.jpg
+2026-06-24 19:36:31 | INFO     | ss_crawler | [image_downloader] Downloaded image for fdkfe (stored as fdkfe_62a42716.jpg)
+2026-06-24 19:36:31 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for fdkfe -> cameras\fdkfe_62a42716.jpg
+2026-06-24 19:36:31 | INFO     | ss_crawler | [image_downloader] Downloaded image for adopd (stored as adopd_0f78a34e.jpg)
+2026-06-24 19:36:31 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for adopd -> cameras\adopd_0f78a34e.jpg
+2026-06-24 19:36:31 | INFO     | ss_crawler | [image_downloader] Downloaded image for egfon (stored as egfon_6e406b4a.jpg)
+2026-06-24 19:36:31 | INFO     | ss_crawler | [download_missing_matched_images] Downloaded image for egfon -> cameras\egfon_6e406b4a.jpg
+2026-06-24 19:36:31 | INFO     | ss_crawler | [download_missing_matched_images] Run complete: processed=178, downloaded=178, failed=0
+2026-06-24 19:37:48 | INFO     | ss_crawler | [database] Database connected: localhost:5433/ss_market
+2026-06-24 19:37:48 | INFO     | ss_crawler | [download_missing_matched_images] No matched ss.com listings missing images.
+2026-06-24 19:38:03 | INFO     | ss_crawler | [database] Database connected: localhost:5433/ss_market
+2026-06-24 19:38:12 | INFO     | ss_crawler | [database] Database connected: localhost:5433/ss_market
+2026-06-24 19:40:46 | INFO     | ss_crawler | [database] Database connected: localhost:5433/ss_market
+2026-06-24 19:40:46 | INFO     | ss_crawler | [fetch_missing_images] Found 48 listings without image_url; processing 3 in this run.
+2026-06-24 19:40:46 | INFO     | ss_crawler | [fetch_missing_images] Found image for cdpxic: https://i.ss.com/gallery/8/1509/377201/computers-completing-pc-ssd-75440179.t.jpg
+2026-06-24 19:40:46 | INFO     | ss_crawler | [fetch_missing_images] Found image for mhngk: https://i.ss.com/gallery/8/1451/362747/computers-completing-pc-ssd-72549208.t.jpg
+2026-06-24 19:40:47 | INFO     | ss_crawler | [fetch_missing_images] Found image for cebeif: https://i.ss.com/gallery/7/1327/331749/computers-completing-pc-ssd-66349675.t.jpg
+2026-06-24 19:40:47 | INFO     | ss_crawler | [fetch_missing_images] Run complete: processed=3, image_url_found=3, downloaded=0, failed=0
+2026-06-24 19:41:46 | INFO     | ss_crawler | [database] Database connected: localhost:5433/ss_market
+2026-06-24 19:41:46 | INFO     | ss_crawler | [fetch_missing_images] Found 48 listings without image_url; processing 48 in this run.
+2026-06-24 19:41:46 | INFO     | ss_crawler | [fetch_missing_images] Found image for cdpxic: https://i.ss.com/gallery/8/1509/377201/computers-completing-pc-ssd-75440179.t.jpg
+2026-06-24 19:41:46 | INFO     | ss_crawler | [image_downloader] Downloaded image for cdpxic (stored as cdpxic_1563d388.jpg)
+2026-06-24 19:41:46 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for cdpxic -> ssds\cdpxic_1563d388.jpg
+2026-06-24 19:41:47 | INFO     | ss_crawler | [fetch_missing_images] Found image for mhngk: https://i.ss.com/gallery/8/1451/362747/computers-completing-pc-ssd-72549208.t.jpg
+2026-06-24 19:41:47 | INFO     | ss_crawler | [image_downloader] Downloaded image for mhngk (stored as mhngk_4bc6b298.jpg)
+2026-06-24 19:41:47 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for mhngk -> ssds\mhngk_4bc6b298.jpg
+2026-06-24 19:41:47 | INFO     | ss_crawler | [fetch_missing_images] Found image for cebeif: https://i.ss.com/gallery/7/1327/331749/computers-completing-pc-ssd-66349675.t.jpg
+2026-06-24 19:41:47 | INFO     | ss_crawler | [image_downloader] Downloaded image for cebeif (stored as cebeif_1606413b.jpg)
+2026-06-24 19:41:47 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for cebeif -> ssds\cebeif_1606413b.jpg
+2026-06-24 19:41:48 | INFO     | ss_crawler | [fetch_missing_images] Found image for boeccm: https://i.ss.com/gallery/8/1484/370898/computers-completing-pc-ssd-74179498.t.jpg
+2026-06-24 19:41:48 | INFO     | ss_crawler | [image_downloader] Downloaded image for boeccm (stored as boeccm_b5fbbab9.jpg)
+2026-06-24 19:41:48 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for boeccm -> ssds\boeccm_b5fbbab9.jpg
+2026-06-24 19:41:49 | INFO     | ss_crawler | [fetch_missing_images] Found image for bdocnc: https://i.ss.com/gallery/8/1462/365410/computers-completing-pc-ssd-73081877.t.jpg
+2026-06-24 19:41:49 | INFO     | ss_crawler | [image_downloader] Downloaded image for bdocnc (stored as bdocnc_9af77acc.jpg)
+2026-06-24 19:41:49 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for bdocnc -> ssds\bdocnc_9af77acc.jpg
+2026-06-24 19:41:49 | INFO     | ss_crawler | [fetch_missing_images] Found image for cgkcie: https://i.ss.com/gallery/8/1473/368013/computers-completing-pc-ssd-73602568.t.jpg
+2026-06-24 19:41:49 | INFO     | ss_crawler | [image_downloader] Downloaded image for cgkcie (stored as cgkcie_e1f458bc.jpg)
+2026-06-24 19:41:49 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for cgkcie -> ssds\cgkcie_e1f458bc.jpg
+2026-06-24 19:41:50 | INFO     | ss_crawler | [fetch_missing_images] Found image for cgjgfg: https://i.ss.com/gallery/8/1461/365153/computers-completing-pc-ssd-73030519.t.jpg
+2026-06-24 19:41:50 | INFO     | ss_crawler | [image_downloader] Downloaded image for cgjgfg (stored as cgjgfg_47091460.jpg)
+2026-06-24 19:41:50 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for cgjgfg -> ssds\cgjgfg_47091460.jpg
+2026-06-24 19:41:51 | INFO     | ss_crawler | [fetch_missing_images] Found image for cgljid: https://i.ss.com/gallery/8/1490/372304/computers-completing-pc-ssd-74460674.t.jpg
+2026-06-24 19:41:51 | INFO     | ss_crawler | [image_downloader] Downloaded image for cgljid (stored as cgljid_c3237072.jpg)
+2026-06-24 19:41:51 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for cgljid -> ssds\cgljid_c3237072.jpg
+2026-06-24 19:41:51 | INFO     | ss_crawler | [fetch_missing_images] Found image for cckeii: https://i.ss.com/gallery/8/1469/367045/computers-completing-pc-ssd-73408874.t.jpg
+2026-06-24 19:41:51 | INFO     | ss_crawler | [image_downloader] Downloaded image for cckeii (stored as cckeii_30a0a4cd.jpg)
+2026-06-24 19:41:51 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for cckeii -> ssds\cckeii_30a0a4cd.jpg
+2026-06-24 19:41:52 | INFO     | ss_crawler | [fetch_missing_images] Found image for mecfg: https://i.ss.com/gallery/8/1500/374952/computers-completing-pc-ssd-74990277.t.jpg
+2026-06-24 19:41:52 | INFO     | ss_crawler | [image_downloader] Downloaded image for mecfg (stored as mecfg_3ee05711.jpg)
+2026-06-24 19:41:52 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for mecfg -> ssds\mecfg_3ee05711.jpg
+2026-06-24 19:41:53 | INFO     | ss_crawler | [fetch_missing_images] Found image for blcfpb: https://i.ss.com/gallery/8/1500/374953/computers-completing-pc-ssd-74990453.t.jpg
+2026-06-24 19:41:53 | INFO     | ss_crawler | [image_downloader] Downloaded image for blcfpb (stored as blcfpb_1bbc9df6.jpg)
+2026-06-24 19:41:53 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for blcfpb -> ssds\blcfpb_1bbc9df6.jpg
+2026-06-24 19:41:53 | INFO     | ss_crawler | [fetch_missing_images] Found image for lonie: https://i.ss.com/gallery/8/1501/375241/computers-completing-pc-ssd-75048138.t.jpg
+2026-06-24 19:41:54 | INFO     | ss_crawler | [image_downloader] Downloaded image for lonie (stored as lonie_dc19ceb5.jpg)
+2026-06-24 19:41:54 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for lonie -> ssds\lonie_dc19ceb5.jpg
+2026-06-24 19:41:54 | INFO     | ss_crawler | [fetch_missing_images] Found image for bcnmoh: https://i.ss.com/gallery/8/1501/375241/computers-completing-pc-ssd-75048141.t.jpg
+2026-06-24 19:41:54 | INFO     | ss_crawler | [image_downloader] Downloaded image for bcnmoh (stored as bcnmoh_419beb9b.jpg)
+2026-06-24 19:41:54 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for bcnmoh -> ssds\bcnmoh_419beb9b.jpg
+2026-06-24 19:41:55 | INFO     | ss_crawler | [fetch_missing_images] Found image for boljmh: https://i.ss.com/gallery/8/1502/375315/computers-completing-pc-ssd-75062998.t.jpg
+2026-06-24 19:41:55 | INFO     | ss_crawler | [image_downloader] Downloaded image for boljmh (stored as boljmh_a5348860.jpg)
+2026-06-24 19:41:55 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for boljmh -> ssds\boljmh_a5348860.jpg
+2026-06-24 19:41:55 | INFO     | ss_crawler | [fetch_missing_images] Found image for bedcbh: https://i.ss.com/gallery/8/1445/361005/computers-completing-pc-ssd-72200874.t.jpg
+2026-06-24 19:41:56 | INFO     | ss_crawler | [image_downloader] Downloaded image for bedcbh (stored as bedcbh_17b6141f.jpg)
+2026-06-24 19:41:56 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for bedcbh -> ssds\bedcbh_17b6141f.jpg
+2026-06-24 19:41:56 | INFO     | ss_crawler | [fetch_missing_images] Found image for bdkkjl: https://i.ss.com/gallery/7/1371/342564/computers-completing-pc-ssd-68512770.t.jpg
+2026-06-24 19:41:56 | INFO     | ss_crawler | [image_downloader] Downloaded image for bdkkjl (stored as bdkkjl_2fd2c16c.jpg)
+2026-06-24 19:41:56 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for bdkkjl -> ssds\bdkkjl_2fd2c16c.jpg
+2026-06-24 19:41:57 | INFO     | ss_crawler | [fetch_missing_images] Found image for bfhxex: https://i.ss.com/gallery/8/1490/372304/computers-completing-pc-ssd-74460674.t.jpg
+2026-06-24 19:41:57 | INFO     | ss_crawler | [image_downloader] Downloaded image for bfhxex (stored as bfhxex_c3237072.jpg)
+2026-06-24 19:41:57 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for bfhxex -> ssds\bfhxex_c3237072.jpg
+2026-06-24 19:41:58 | INFO     | ss_crawler | [fetch_missing_images] Found image for bompdg: https://i.ss.com/gallery/8/1490/372341/computers-completing-pc-ssd-74468065.t.jpg
+2026-06-24 19:41:58 | INFO     | ss_crawler | [image_downloader] Downloaded image for bompdg (stored as bompdg_d617eed8.jpg)
+2026-06-24 19:41:58 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for bompdg -> ssds\bompdg_d617eed8.jpg
+2026-06-24 19:41:58 | INFO     | ss_crawler | [fetch_missing_images] Found image for boncfe: https://i.ss.com/gallery/8/1490/372341/computers-completing-pc-ssd-74468065.t.jpg
+2026-06-24 19:41:58 | INFO     | ss_crawler | [image_downloader] Downloaded image for boncfe (stored as boncfe_d617eed8.jpg)
+2026-06-24 19:41:58 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for boncfe -> ssds\boncfe_d617eed8.jpg
+2026-06-24 19:41:59 | INFO     | ss_crawler | [fetch_missing_images] Found image for bokgxg: https://i.ss.com/gallery/8/1504/375834/computers-completing-pc-ssd-75166658.t.jpg
+2026-06-24 19:41:59 | INFO     | ss_crawler | [image_downloader] Downloaded image for bokgxg (stored as bokgxg_891b4d00.jpg)
+2026-06-24 19:41:59 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for bokgxg -> ssds\bokgxg_891b4d00.jpg
+2026-06-24 19:42:00 | INFO     | ss_crawler | [fetch_missing_images] Found image for ccpjxj: https://i.ss.com/gallery/8/1428/356997/computers-completing-pc-ssd-71399215.t.jpg
+2026-06-24 19:42:00 | INFO     | ss_crawler | [image_downloader] Downloaded image for ccpjxj (stored as ccpjxj_89134656.jpg)
+2026-06-24 19:42:00 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for ccpjxj -> ssds\ccpjxj_89134656.jpg
+2026-06-24 19:42:00 | INFO     | ss_crawler | [fetch_missing_images] Found image for bpnikk: https://i.ss.com/gallery/8/1504/375895/computers-completing-pc-ssd-75178893.t.jpg
+2026-06-24 19:42:00 | INFO     | ss_crawler | [image_downloader] Downloaded image for bpnikk (stored as bpnikk_ced77d41.jpg)
+2026-06-24 19:42:00 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for bpnikk -> ssds\bpnikk_ced77d41.jpg
+2026-06-24 19:42:01 | INFO     | ss_crawler | [fetch_missing_images] Found image for bommeg: https://i.ss.com/gallery/8/1411/352651/computers-completing-pc-ssd-70530164.t.jpg
+2026-06-24 19:42:01 | INFO     | ss_crawler | [image_downloader] Downloaded image for bommeg (stored as bommeg_e46067ff.jpg)
+2026-06-24 19:42:01 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for bommeg -> ssds\bommeg_e46067ff.jpg
+2026-06-24 19:42:02 | INFO     | ss_crawler | [fetch_missing_images] Found image for bebobc: https://i.ss.com/gallery/6/1137/284120/computers-completing-pc-ssd-56823949.t.jpg
+2026-06-24 19:42:02 | INFO     | ss_crawler | [image_downloader] Downloaded image for bebobc (stored as bebobc_2a47d817.jpg)
+2026-06-24 19:42:02 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for bebobc -> ssds\bebobc_2a47d817.jpg
+2026-06-24 19:42:02 | INFO     | ss_crawler | [fetch_missing_images] Found image for ccilhn: https://i.ss.com/gallery/8/1478/369452/computers-completing-pc-ssd-73890202.t.jpg
+2026-06-24 19:42:02 | INFO     | ss_crawler | [image_downloader] Downloaded image for ccilhn (stored as ccilhn_ee3837d1.jpg)
+2026-06-24 19:42:02 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for ccilhn -> ssds\ccilhn_ee3837d1.jpg
+2026-06-24 19:42:03 | INFO     | ss_crawler | [fetch_missing_images] Found image for mghco: https://i.ss.com/gallery/8/1493/373062/computers-completing-pc-ssd-74612262.t.jpg
+2026-06-24 19:42:03 | INFO     | ss_crawler | [image_downloader] Downloaded image for mghco (stored as mghco_671042b5.jpg)
+2026-06-24 19:42:03 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for mghco -> ssds\mghco_671042b5.jpg
+2026-06-24 19:42:04 | INFO     | ss_crawler | [fetch_missing_images] Found image for cgkccg: https://i.ss.com/gallery/8/1472/367875/computers-completing-pc-ssd-73574901.t.jpg
+2026-06-24 19:42:04 | INFO     | ss_crawler | [image_downloader] Downloaded image for cgkccg (stored as cgkccg_0af68236.jpg)
+2026-06-24 19:42:04 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for cgkccg -> ssds\cgkccg_0af68236.jpg
+2026-06-24 19:42:04 | INFO     | ss_crawler | [fetch_missing_images] Found image for bpnicm: https://i.ss.com/gallery/7/1381/345233/computers-completing-pc-ssd-69046570.t.jpg
+2026-06-24 19:42:04 | INFO     | ss_crawler | [image_downloader] Downloaded image for bpnicm (stored as bpnicm_698f07eb.jpg)
+2026-06-24 19:42:04 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for bpnicm -> ssds\bpnicm_698f07eb.jpg
+2026-06-24 19:42:05 | INFO     | ss_crawler | [fetch_missing_images] Found image for bcngmo: https://i.ss.com/gallery/8/1506/376384/computers-completing-pc-ssd-75276660.t.jpg
+2026-06-24 19:42:05 | INFO     | ss_crawler | [image_downloader] Downloaded image for bcngmo (stored as bcngmo_e732f202.jpg)
+2026-06-24 19:42:05 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for bcngmo -> ssds\bcngmo_e732f202.jpg
+2026-06-24 19:42:05 | INFO     | ss_crawler | [fetch_missing_images] Found image for bdniph: https://i.ss.com/gallery/8/1463/365548/computers-completing-pc-ssd-73109454.t.jpg
+2026-06-24 19:42:06 | INFO     | ss_crawler | [image_downloader] Downloaded image for bdniph (stored as bdniph_5b85a078.jpg)
+2026-06-24 19:42:06 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for bdniph -> ssds\bdniph_5b85a078.jpg
+2026-06-24 19:42:06 | INFO     | ss_crawler | [fetch_missing_images] Found image for ccjmpg: https://i.ss.com/gallery/7/1321/330171/computers-completing-pc-ssd-66034030.t.jpg
+2026-06-24 19:42:06 | INFO     | ss_crawler | [image_downloader] Downloaded image for ccjmpg (stored as ccjmpg_f1bb2270.jpg)
+2026-06-24 19:42:06 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for ccjmpg -> ssds\ccjmpg_f1bb2270.jpg
+2026-06-24 19:42:07 | INFO     | ss_crawler | [fetch_missing_images] Found image for bolhcj: https://i.ss.com/gallery/8/1505/376098/computers-completing-pc-ssd-75219534.t.jpg
+2026-06-24 19:42:07 | INFO     | ss_crawler | [image_downloader] Downloaded image for bolhcj (stored as bolhcj_341738e8.jpg)
+2026-06-24 19:42:07 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for bolhcj -> ssds\bolhcj_341738e8.jpg
+2026-06-24 19:42:07 | INFO     | ss_crawler | [fetch_missing_images] Found image for cglopk: https://i.ss.com/gallery/8/1506/376416/computers-completing-pc-ssd-75283122.t.jpg
+2026-06-24 19:42:07 | INFO     | ss_crawler | [image_downloader] Downloaded image for cglopk (stored as cglopk_41aa53d4.jpg)
+2026-06-24 19:42:07 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for cglopk -> ssds\cglopk_41aa53d4.jpg
+2026-06-24 19:42:08 | INFO     | ss_crawler | [fetch_missing_images] Found image for odkpc: https://i.ss.com/gallery/8/1450/362254/computers-completing-pc-ssd-72450799.t.jpg
+2026-06-24 19:42:08 | INFO     | ss_crawler | [image_downloader] Downloaded image for odkpc (stored as odkpc_5203f044.jpg)
+2026-06-24 19:42:08 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for odkpc -> ssds\odkpc_5203f044.jpg
+2026-06-24 19:42:09 | INFO     | ss_crawler | [fetch_missing_images] Found image for cdodgm: https://i.ss.com/gallery/8/1507/376539/computers-completing-pc-ssd-75307726.t.jpg
+2026-06-24 19:42:09 | INFO     | ss_crawler | [image_downloader] Downloaded image for cdodgm (stored as cdodgm_bbef1356.jpg)
+2026-06-24 19:42:09 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for cdodgm -> ssds\cdodgm_bbef1356.jpg
+2026-06-24 19:42:09 | INFO     | ss_crawler | [fetch_missing_images] Found image for cgknmp: https://i.ss.com/gallery/8/1486/371375/computers-completing-pc-ssd-74274919.t.jpg
+2026-06-24 19:42:09 | INFO     | ss_crawler | [image_downloader] Downloaded image for cgknmp (stored as cgknmp_1c88de02.jpg)
+2026-06-24 19:42:09 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for cgknmp -> ssds\cgknmp_1c88de02.jpg
+2026-06-24 19:42:10 | INFO     | ss_crawler | [fetch_missing_images] Found image for cdlhoo: https://i.ss.com/gallery/8/1493/373062/computers-completing-pc-ssd-74612262.t.jpg
+2026-06-24 19:42:10 | INFO     | ss_crawler | [image_downloader] Downloaded image for cdlhoo (stored as cdlhoo_671042b5.jpg)
+2026-06-24 19:42:10 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for cdlhoo -> ssds\cdlhoo_671042b5.jpg
+2026-06-24 19:42:11 | INFO     | ss_crawler | [fetch_missing_images] Found image for bopogj: https://i.ss.com/gallery/8/1493/373062/computers-completing-pc-ssd-74612262.t.jpg
+2026-06-24 19:42:11 | INFO     | ss_crawler | [image_downloader] Downloaded image for bopogj (stored as bopogj_671042b5.jpg)
+2026-06-24 19:42:11 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for bopogj -> ssds\bopogj_671042b5.jpg
+2026-06-24 19:42:12 | INFO     | ss_crawler | [fetch_missing_images] Found image for cglpde: https://i.ss.com/gallery/8/1493/373062/computers-completing-pc-ssd-74612262.t.jpg
+2026-06-24 19:42:12 | INFO     | ss_crawler | [image_downloader] Downloaded image for cglpde (stored as cglpde_671042b5.jpg)
+2026-06-24 19:42:12 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for cglpde -> ssds\cglpde_671042b5.jpg
+2026-06-24 19:42:12 | INFO     | ss_crawler | [fetch_missing_images] Found image for bomngi: https://i.ss.com/gallery/8/1484/370865/computers-completing-pc-ssd-74172960.t.jpg
+2026-06-24 19:42:12 | INFO     | ss_crawler | [image_downloader] Downloaded image for bomngi (stored as bomngi_078ab12e.jpg)
+2026-06-24 19:42:12 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for bomngi -> ssds\bomngi_078ab12e.jpg
+2026-06-24 19:42:13 | INFO     | ss_crawler | [fetch_missing_images] Found image for bpmilc: https://i.ss.com/gallery/8/1456/363890/computers-completing-pc-ssd-72777839.t.jpg
+2026-06-24 19:42:13 | INFO     | ss_crawler | [image_downloader] Downloaded image for bpmilc (stored as bpmilc_40349d7f.jpg)
+2026-06-24 19:42:13 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for bpmilc -> ssds\bpmilc_40349d7f.jpg
+2026-06-24 19:42:13 | INFO     | ss_crawler | [fetch_missing_images] Found image for bdiggb: https://i.ss.com/gallery/8/1495/373601/computers-completing-pc-ssd-74720003.t.jpg
+2026-06-24 19:42:14 | INFO     | ss_crawler | [image_downloader] Downloaded image for bdiggb (stored as bdiggb_4bad8776.jpg)
+2026-06-24 19:42:14 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for bdiggb -> ssds\bdiggb_4bad8776.jpg
+2026-06-24 19:42:14 | INFO     | ss_crawler | [fetch_missing_images] Found image for bojpof: https://i.ss.com/gallery/8/1484/370865/computers-completing-pc-ssd-74172960.t.jpg
+2026-06-24 19:42:14 | INFO     | ss_crawler | [image_downloader] Downloaded image for bojpof (stored as bojpof_078ab12e.jpg)
+2026-06-24 19:42:14 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for bojpof -> ssds\bojpof_078ab12e.jpg
+2026-06-24 19:42:15 | INFO     | ss_crawler | [fetch_missing_images] Found image for ccgbox: https://i.ss.com/gallery/8/1507/376694/computers-completing-pc-ssd-75338674.t.jpg
+2026-06-24 19:42:15 | INFO     | ss_crawler | [image_downloader] Downloaded image for ccgbox (stored as ccgbox_9e3dc0b4.jpg)
+2026-06-24 19:42:15 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for ccgbox -> ssds\ccgbox_9e3dc0b4.jpg
+2026-06-24 19:42:15 | INFO     | ss_crawler | [fetch_missing_images] Found image for bbbffd: https://i.ss.com/gallery/7/1269/317243/computers-completing-pc-ssd-63448593.t.jpg
+2026-06-24 19:42:16 | INFO     | ss_crawler | [image_downloader] Downloaded image for bbbffd (stored as bbbffd_3f8d1e85.jpg)
+2026-06-24 19:42:16 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for bbbffd -> ssds\bbbffd_3f8d1e85.jpg
+2026-06-24 19:42:16 | INFO     | ss_crawler | [fetch_missing_images] No image found on page for cglfji (https://www.ss.com/msg/lv/electronics/computers/completing-pc/ssd/cglfji.html)
+2026-06-24 19:42:16 | INFO     | ss_crawler | [fetch_missing_images] No image found on page for cglpng (https://www.ss.com/msg/lv/electronics/computers/completing-pc/ssd/cglpng.html)
+2026-06-24 19:42:16 | INFO     | ss_crawler | [fetch_missing_images] Found image for bommeh: https://i.ss.com/gallery/8/1507/376711/computers-completing-pc-ssd-75342097.t.jpg
+2026-06-24 19:42:16 | INFO     | ss_crawler | [image_downloader] Downloaded image for bommeh (stored as bommeh_94367295.jpg)
+2026-06-24 19:42:16 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for bommeh -> ssds\bommeh_94367295.jpg
+2026-06-24 19:42:17 | INFO     | ss_crawler | [fetch_missing_images] Run complete: processed=48, image_url_found=46, downloaded=46, failed=0
+2026-06-24 19:52:36 | INFO     | ss_crawler | [database] Database connected: localhost:5433/ss_market
+2026-06-24 19:52:36 | INFO     | ss_crawler | [fetch_missing_images] Found 2 listings without image_url; processing 2 in this run.
+2026-06-24 19:52:36 | INFO     | ss_crawler | [fetch_missing_images] No image found on page for cglfji (https://www.ss.com/msg/lv/electronics/computers/completing-pc/ssd/cglfji.html)
+2026-06-24 19:52:36 | INFO     | ss_crawler | [fetch_missing_images] No image found on page for cglpng (https://www.ss.com/msg/lv/electronics/computers/completing-pc/ssd/cglpng.html)
+2026-06-24 19:52:36 | INFO     | ss_crawler | [fetch_missing_images] Run complete: processed=2, image_url_found=0, downloaded=0, failed=0
+2026-06-24 19:53:48 | INFO     | ss_crawler | [database] Database connected: localhost:5433/ss_market
+2026-06-24 19:53:48 | INFO     | ss_crawler | [fetch_missing_images] Found 2 listings without image_url and 46 thumbnail URLs to upgrade; processing 5 in this run.
+2026-06-24 19:53:48 | INFO     | ss_crawler | [fetch_missing_images] No image found on page for cglfji (https://www.ss.com/msg/lv/electronics/computers/completing-pc/ssd/cglfji.html)
+2026-06-24 19:53:48 | INFO     | ss_crawler | [fetch_missing_images] No image found on page for cglpng (https://www.ss.com/msg/lv/electronics/computers/completing-pc/ssd/cglpng.html)
+2026-06-24 19:53:48 | INFO     | ss_crawler | [fetch_missing_images] Upgrading thumbnail for cdpxic: https://i.ss.com/gallery/8/1509/377201/computers-completing-pc-ssd-75440179.t.jpg -> https://i.ss.com/gallery/8/1509/377201/computers-completing-pc-ssd-75440179.800.jpg
+2026-06-24 19:53:48 | INFO     | ss_crawler | [fetch_missing_images] Upgrading thumbnail for mhngk: https://i.ss.com/gallery/8/1451/362747/computers-completing-pc-ssd-72549208.t.jpg -> https://i.ss.com/gallery/8/1451/362747/computers-completing-pc-ssd-72549208.800.jpg
+2026-06-24 19:53:49 | INFO     | ss_crawler | [fetch_missing_images] Upgrading thumbnail for cebeif: https://i.ss.com/gallery/7/1327/331749/computers-completing-pc-ssd-66349675.t.jpg -> https://i.ss.com/gallery/7/1327/331749/computers-completing-pc-ssd-66349675.800.jpg
+2026-06-24 19:53:49 | INFO     | ss_crawler | [fetch_missing_images] Run complete: processed=5, image_url_found=0, upgraded=3, downloaded=0, failed=0
+2026-06-24 19:56:49 | INFO     | ss_crawler | [database] Database connected: localhost:5433/ss_market
+2026-06-24 19:56:49 | INFO     | ss_crawler | [fetch_missing_images] Found 2 listings without image_url and 46 thumbnail URLs to upgrade; processing 48 in this run.
+2026-06-24 19:56:49 | INFO     | ss_crawler | [fetch_missing_images] No image found on page for cglfji (https://www.ss.com/msg/lv/electronics/computers/completing-pc/ssd/cglfji.html)
+2026-06-24 19:56:49 | INFO     | ss_crawler | [fetch_missing_images] No image found on page for cglpng (https://www.ss.com/msg/lv/electronics/computers/completing-pc/ssd/cglpng.html)
+2026-06-24 19:56:49 | INFO     | ss_crawler | [fetch_missing_images] Upgrading thumbnail for cdpxic: https://i.ss.com/gallery/8/1509/377201/computers-completing-pc-ssd-75440179.t.jpg -> https://i.ss.com/gallery/8/1509/377201/computers-completing-pc-ssd-75440179.800.jpg
+2026-06-24 19:56:49 | INFO     | ss_crawler | [image_downloader] Downloaded image for cdpxic (stored as cdpxic_ba03332b.jpg)
+2026-06-24 19:56:49 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for cdpxic -> ssds\cdpxic_ba03332b.jpg
+2026-06-24 19:56:49 | INFO     | ss_crawler | [fetch_missing_images] Upgrading thumbnail for mhngk: https://i.ss.com/gallery/8/1451/362747/computers-completing-pc-ssd-72549208.t.jpg -> https://i.ss.com/gallery/8/1451/362747/computers-completing-pc-ssd-72549208.800.jpg
+2026-06-24 19:56:50 | INFO     | ss_crawler | [image_downloader] Downloaded image for mhngk (stored as mhngk_826e5e3c.jpg)
+2026-06-24 19:56:50 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for mhngk -> ssds\mhngk_826e5e3c.jpg
+2026-06-24 19:56:50 | INFO     | ss_crawler | [fetch_missing_images] Upgrading thumbnail for cebeif: https://i.ss.com/gallery/7/1327/331749/computers-completing-pc-ssd-66349675.t.jpg -> https://i.ss.com/gallery/7/1327/331749/computers-completing-pc-ssd-66349675.800.jpg
+2026-06-24 19:56:50 | INFO     | ss_crawler | [image_downloader] Downloaded image for cebeif (stored as cebeif_e8771657.jpg)
+2026-06-24 19:56:50 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for cebeif -> ssds\cebeif_e8771657.jpg
+2026-06-24 19:56:51 | INFO     | ss_crawler | [fetch_missing_images] Upgrading thumbnail for boeccm: https://i.ss.com/gallery/8/1484/370898/computers-completing-pc-ssd-74179498.t.jpg -> https://i.ss.com/gallery/8/1484/370898/computers-completing-pc-ssd-74179498.800.jpg
+2026-06-24 19:56:51 | INFO     | ss_crawler | [image_downloader] Downloaded image for boeccm (stored as boeccm_1b5bacc6.jpg)
+2026-06-24 19:56:51 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for boeccm -> ssds\boeccm_1b5bacc6.jpg
+2026-06-24 19:56:51 | INFO     | ss_crawler | [fetch_missing_images] Upgrading thumbnail for bdocnc: https://i.ss.com/gallery/8/1462/365410/computers-completing-pc-ssd-73081877.t.jpg -> https://i.ss.com/gallery/8/1462/365410/computers-completing-pc-ssd-73081877.800.jpg
+2026-06-24 19:56:51 | INFO     | ss_crawler | [image_downloader] Downloaded image for bdocnc (stored as bdocnc_fe7ca6f7.jpg)
+2026-06-24 19:56:51 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for bdocnc -> ssds\bdocnc_fe7ca6f7.jpg
+2026-06-24 19:56:52 | INFO     | ss_crawler | [fetch_missing_images] Upgrading thumbnail for cgkcie: https://i.ss.com/gallery/8/1473/368013/computers-completing-pc-ssd-73602568.t.jpg -> https://i.ss.com/gallery/8/1473/368013/computers-completing-pc-ssd-73602568.800.jpg
+2026-06-24 19:56:52 | INFO     | ss_crawler | [image_downloader] Downloaded image for cgkcie (stored as cgkcie_0feb54c1.jpg)
+2026-06-24 19:56:52 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for cgkcie -> ssds\cgkcie_0feb54c1.jpg
+2026-06-24 19:56:53 | INFO     | ss_crawler | [fetch_missing_images] Upgrading thumbnail for cgjgfg: https://i.ss.com/gallery/8/1461/365153/computers-completing-pc-ssd-73030519.t.jpg -> https://i.ss.com/gallery/8/1461/365153/computers-completing-pc-ssd-73030519.800.jpg
+2026-06-24 19:56:53 | INFO     | ss_crawler | [image_downloader] Downloaded image for cgjgfg (stored as cgjgfg_556530ff.jpg)
+2026-06-24 19:56:53 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for cgjgfg -> ssds\cgjgfg_556530ff.jpg
+2026-06-24 19:56:53 | INFO     | ss_crawler | [fetch_missing_images] Upgrading thumbnail for cgljid: https://i.ss.com/gallery/8/1490/372304/computers-completing-pc-ssd-74460674.t.jpg -> https://i.ss.com/gallery/8/1490/372304/computers-completing-pc-ssd-74460674.800.jpg
+2026-06-24 19:56:53 | INFO     | ss_crawler | [image_downloader] Downloaded image for cgljid (stored as cgljid_1b14aa39.jpg)
+2026-06-24 19:56:53 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for cgljid -> ssds\cgljid_1b14aa39.jpg
+2026-06-24 19:56:54 | INFO     | ss_crawler | [fetch_missing_images] Upgrading thumbnail for cckeii: https://i.ss.com/gallery/8/1469/367045/computers-completing-pc-ssd-73408874.t.jpg -> https://i.ss.com/gallery/8/1469/367045/computers-completing-pc-ssd-73408874.800.jpg
+2026-06-24 19:56:54 | INFO     | ss_crawler | [image_downloader] Downloaded image for cckeii (stored as cckeii_6a86a68a.jpg)
+2026-06-24 19:56:54 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for cckeii -> ssds\cckeii_6a86a68a.jpg
+2026-06-24 19:56:55 | INFO     | ss_crawler | [fetch_missing_images] Upgrading thumbnail for mecfg: https://i.ss.com/gallery/8/1500/374952/computers-completing-pc-ssd-74990277.t.jpg -> https://i.ss.com/gallery/8/1500/374952/computers-completing-pc-ssd-74990277.800.jpg
+2026-06-24 19:56:55 | INFO     | ss_crawler | [image_downloader] Downloaded image for mecfg (stored as mecfg_c8a36e65.jpg)
+2026-06-24 19:56:55 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for mecfg -> ssds\mecfg_c8a36e65.jpg
+2026-06-24 19:56:55 | INFO     | ss_crawler | [fetch_missing_images] Upgrading thumbnail for blcfpb: https://i.ss.com/gallery/8/1500/374953/computers-completing-pc-ssd-74990453.t.jpg -> https://i.ss.com/gallery/8/1500/374953/computers-completing-pc-ssd-74990453.800.jpg
+2026-06-24 19:56:55 | INFO     | ss_crawler | [image_downloader] Downloaded image for blcfpb (stored as blcfpb_5bffb025.jpg)
+2026-06-24 19:56:55 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for blcfpb -> ssds\blcfpb_5bffb025.jpg
+2026-06-24 19:56:56 | INFO     | ss_crawler | [fetch_missing_images] Upgrading thumbnail for lonie: https://i.ss.com/gallery/8/1501/375241/computers-completing-pc-ssd-75048138.t.jpg -> https://i.ss.com/gallery/8/1501/375241/computers-completing-pc-ssd-75048138.800.jpg
+2026-06-24 19:56:56 | INFO     | ss_crawler | [image_downloader] Downloaded image for lonie (stored as lonie_68c0d1dc.jpg)
+2026-06-24 19:56:56 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for lonie -> ssds\lonie_68c0d1dc.jpg
+2026-06-24 19:56:57 | INFO     | ss_crawler | [fetch_missing_images] Upgrading thumbnail for bcnmoh: https://i.ss.com/gallery/8/1501/375241/computers-completing-pc-ssd-75048141.t.jpg -> https://i.ss.com/gallery/8/1501/375241/computers-completing-pc-ssd-75048141.800.jpg
+2026-06-24 19:56:57 | INFO     | ss_crawler | [image_downloader] Downloaded image for bcnmoh (stored as bcnmoh_4c4b0d27.jpg)
+2026-06-24 19:56:57 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for bcnmoh -> ssds\bcnmoh_4c4b0d27.jpg
+2026-06-24 19:56:57 | INFO     | ss_crawler | [fetch_missing_images] Upgrading thumbnail for boljmh: https://i.ss.com/gallery/8/1502/375315/computers-completing-pc-ssd-75062998.t.jpg -> https://i.ss.com/gallery/8/1502/375315/computers-completing-pc-ssd-75062998.800.jpg
+2026-06-24 19:56:57 | INFO     | ss_crawler | [image_downloader] Downloaded image for boljmh (stored as boljmh_8a5f367f.jpg)
+2026-06-24 19:56:57 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for boljmh -> ssds\boljmh_8a5f367f.jpg
+2026-06-24 19:56:58 | INFO     | ss_crawler | [fetch_missing_images] Upgrading thumbnail for bedcbh: https://i.ss.com/gallery/8/1445/361005/computers-completing-pc-ssd-72200874.t.jpg -> https://i.ss.com/gallery/8/1445/361005/computers-completing-pc-ssd-72200874.800.jpg
+2026-06-24 19:56:58 | INFO     | ss_crawler | [image_downloader] Downloaded image for bedcbh (stored as bedcbh_b3184c66.jpg)
+2026-06-24 19:56:58 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for bedcbh -> ssds\bedcbh_b3184c66.jpg
+2026-06-24 19:56:59 | INFO     | ss_crawler | [fetch_missing_images] Upgrading thumbnail for bdkkjl: https://i.ss.com/gallery/7/1371/342564/computers-completing-pc-ssd-68512770.t.jpg -> https://i.ss.com/gallery/7/1371/342564/computers-completing-pc-ssd-68512770.800.jpg
+2026-06-24 19:56:59 | INFO     | ss_crawler | [image_downloader] Downloaded image for bdkkjl (stored as bdkkjl_d214229a.jpg)
+2026-06-24 19:56:59 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for bdkkjl -> ssds\bdkkjl_d214229a.jpg
+2026-06-24 19:56:59 | INFO     | ss_crawler | [fetch_missing_images] Upgrading thumbnail for bfhxex: https://i.ss.com/gallery/8/1490/372304/computers-completing-pc-ssd-74460674.t.jpg -> https://i.ss.com/gallery/8/1490/372304/computers-completing-pc-ssd-74460674.800.jpg
+2026-06-24 19:56:59 | INFO     | ss_crawler | [image_downloader] Downloaded image for bfhxex (stored as bfhxex_1b14aa39.jpg)
+2026-06-24 19:56:59 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for bfhxex -> ssds\bfhxex_1b14aa39.jpg
+2026-06-24 19:57:00 | INFO     | ss_crawler | [fetch_missing_images] Upgrading thumbnail for bompdg: https://i.ss.com/gallery/8/1490/372341/computers-completing-pc-ssd-74468065.t.jpg -> https://i.ss.com/gallery/8/1490/372341/computers-completing-pc-ssd-74468065.800.jpg
+2026-06-24 19:57:00 | INFO     | ss_crawler | [image_downloader] Downloaded image for bompdg (stored as bompdg_65bb0f7f.jpg)
+2026-06-24 19:57:00 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for bompdg -> ssds\bompdg_65bb0f7f.jpg
+2026-06-24 19:57:00 | INFO     | ss_crawler | [fetch_missing_images] Upgrading thumbnail for boncfe: https://i.ss.com/gallery/8/1490/372341/computers-completing-pc-ssd-74468065.t.jpg -> https://i.ss.com/gallery/8/1490/372341/computers-completing-pc-ssd-74468065.800.jpg
+2026-06-24 19:57:01 | INFO     | ss_crawler | [image_downloader] Downloaded image for boncfe (stored as boncfe_65bb0f7f.jpg)
+2026-06-24 19:57:01 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for boncfe -> ssds\boncfe_65bb0f7f.jpg
+2026-06-24 19:57:01 | INFO     | ss_crawler | [fetch_missing_images] Upgrading thumbnail for bokgxg: https://i.ss.com/gallery/8/1504/375834/computers-completing-pc-ssd-75166658.t.jpg -> https://i.ss.com/gallery/8/1504/375834/computers-completing-pc-ssd-75166658.800.jpg
+2026-06-24 19:57:01 | INFO     | ss_crawler | [image_downloader] Downloaded image for bokgxg (stored as bokgxg_e3577a55.jpg)
+2026-06-24 19:57:01 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for bokgxg -> ssds\bokgxg_e3577a55.jpg
+2026-06-24 19:57:02 | INFO     | ss_crawler | [fetch_missing_images] Upgrading thumbnail for ccpjxj: https://i.ss.com/gallery/8/1428/356997/computers-completing-pc-ssd-71399215.t.jpg -> https://i.ss.com/gallery/8/1428/356997/computers-completing-pc-ssd-71399215.800.jpg
+2026-06-24 19:57:02 | INFO     | ss_crawler | [image_downloader] Downloaded image for ccpjxj (stored as ccpjxj_e700bd00.jpg)
+2026-06-24 19:57:02 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for ccpjxj -> ssds\ccpjxj_e700bd00.jpg
+2026-06-24 19:57:02 | INFO     | ss_crawler | [fetch_missing_images] Upgrading thumbnail for bpnikk: https://i.ss.com/gallery/8/1504/375895/computers-completing-pc-ssd-75178893.t.jpg -> https://i.ss.com/gallery/8/1504/375895/computers-completing-pc-ssd-75178893.800.jpg
+2026-06-24 19:57:02 | INFO     | ss_crawler | [image_downloader] Downloaded image for bpnikk (stored as bpnikk_eee4f894.jpg)
+2026-06-24 19:57:02 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for bpnikk -> ssds\bpnikk_eee4f894.jpg
+2026-06-24 19:57:03 | INFO     | ss_crawler | [fetch_missing_images] Upgrading thumbnail for bommeg: https://i.ss.com/gallery/8/1411/352651/computers-completing-pc-ssd-70530164.t.jpg -> https://i.ss.com/gallery/8/1411/352651/computers-completing-pc-ssd-70530164.800.jpg
+2026-06-24 19:57:03 | INFO     | ss_crawler | [image_downloader] Downloaded image for bommeg (stored as bommeg_99dd6b0b.jpg)
+2026-06-24 19:57:03 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for bommeg -> ssds\bommeg_99dd6b0b.jpg
+2026-06-24 19:57:04 | INFO     | ss_crawler | [fetch_missing_images] Upgrading thumbnail for bebobc: https://i.ss.com/gallery/6/1137/284120/computers-completing-pc-ssd-56823949.t.jpg -> https://i.ss.com/gallery/6/1137/284120/computers-completing-pc-ssd-56823949.800.jpg
+2026-06-24 19:57:04 | INFO     | ss_crawler | [image_downloader] Downloaded image for bebobc (stored as bebobc_d99d126f.jpg)
+2026-06-24 19:57:04 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for bebobc -> ssds\bebobc_d99d126f.jpg
+2026-06-24 19:57:04 | INFO     | ss_crawler | [fetch_missing_images] Upgrading thumbnail for ccilhn: https://i.ss.com/gallery/8/1478/369452/computers-completing-pc-ssd-73890202.t.jpg -> https://i.ss.com/gallery/8/1478/369452/computers-completing-pc-ssd-73890202.800.jpg
+2026-06-24 19:57:04 | INFO     | ss_crawler | [image_downloader] Downloaded image for ccilhn (stored as ccilhn_2e508e98.jpg)
+2026-06-24 19:57:04 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for ccilhn -> ssds\ccilhn_2e508e98.jpg
+2026-06-24 19:57:05 | INFO     | ss_crawler | [fetch_missing_images] Upgrading thumbnail for mghco: https://i.ss.com/gallery/8/1493/373062/computers-completing-pc-ssd-74612262.t.jpg -> https://i.ss.com/gallery/8/1493/373062/computers-completing-pc-ssd-74612262.800.jpg
+2026-06-24 19:57:05 | INFO     | ss_crawler | [image_downloader] Downloaded image for mghco (stored as mghco_b42cb566.jpg)
+2026-06-24 19:57:05 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for mghco -> ssds\mghco_b42cb566.jpg
+2026-06-24 19:57:06 | INFO     | ss_crawler | [fetch_missing_images] Upgrading thumbnail for cgkccg: https://i.ss.com/gallery/8/1472/367875/computers-completing-pc-ssd-73574901.t.jpg -> https://i.ss.com/gallery/8/1472/367875/computers-completing-pc-ssd-73574901.800.jpg
+2026-06-24 19:57:06 | INFO     | ss_crawler | [image_downloader] Downloaded image for cgkccg (stored as cgkccg_87cdf14c.jpg)
+2026-06-24 19:57:06 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for cgkccg -> ssds\cgkccg_87cdf14c.jpg
+2026-06-24 19:57:06 | INFO     | ss_crawler | [fetch_missing_images] Upgrading thumbnail for bpnicm: https://i.ss.com/gallery/7/1381/345233/computers-completing-pc-ssd-69046570.t.jpg -> https://i.ss.com/gallery/7/1381/345233/computers-completing-pc-ssd-69046570.800.jpg
+2026-06-24 19:57:06 | INFO     | ss_crawler | [image_downloader] Downloaded image for bpnicm (stored as bpnicm_e3f519a1.jpg)
+2026-06-24 19:57:06 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for bpnicm -> ssds\bpnicm_e3f519a1.jpg
+2026-06-24 19:57:07 | INFO     | ss_crawler | [fetch_missing_images] Upgrading thumbnail for bcngmo: https://i.ss.com/gallery/8/1506/376384/computers-completing-pc-ssd-75276660.t.jpg -> https://i.ss.com/gallery/8/1506/376384/computers-completing-pc-ssd-75276660.800.jpg
+2026-06-24 19:57:07 | INFO     | ss_crawler | [image_downloader] Downloaded image for bcngmo (stored as bcngmo_d6403213.jpg)
+2026-06-24 19:57:07 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for bcngmo -> ssds\bcngmo_d6403213.jpg
+2026-06-24 19:57:08 | INFO     | ss_crawler | [fetch_missing_images] Upgrading thumbnail for bdniph: https://i.ss.com/gallery/8/1463/365548/computers-completing-pc-ssd-73109454.t.jpg -> https://i.ss.com/gallery/8/1463/365548/computers-completing-pc-ssd-73109454.800.jpg
+2026-06-24 19:57:08 | INFO     | ss_crawler | [image_downloader] Downloaded image for bdniph (stored as bdniph_d356a36d.jpg)
+2026-06-24 19:57:08 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for bdniph -> ssds\bdniph_d356a36d.jpg
+2026-06-24 19:57:08 | INFO     | ss_crawler | [fetch_missing_images] Upgrading thumbnail for ccjmpg: https://i.ss.com/gallery/7/1321/330171/computers-completing-pc-ssd-66034030.t.jpg -> https://i.ss.com/gallery/7/1321/330171/computers-completing-pc-ssd-66034030.800.jpg
+2026-06-24 19:57:08 | INFO     | ss_crawler | [image_downloader] Downloaded image for ccjmpg (stored as ccjmpg_f3b951d8.jpg)
+2026-06-24 19:57:08 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for ccjmpg -> ssds\ccjmpg_f3b951d8.jpg
+2026-06-24 19:57:09 | INFO     | ss_crawler | [fetch_missing_images] Upgrading thumbnail for bolhcj: https://i.ss.com/gallery/8/1505/376098/computers-completing-pc-ssd-75219534.t.jpg -> https://i.ss.com/gallery/8/1505/376098/computers-completing-pc-ssd-75219534.800.jpg
+2026-06-24 19:57:09 | INFO     | ss_crawler | [image_downloader] Downloaded image for bolhcj (stored as bolhcj_80ef0301.jpg)
+2026-06-24 19:57:09 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for bolhcj -> ssds\bolhcj_80ef0301.jpg
+2026-06-24 19:57:10 | INFO     | ss_crawler | [fetch_missing_images] Upgrading thumbnail for cglopk: https://i.ss.com/gallery/8/1506/376416/computers-completing-pc-ssd-75283122.t.jpg -> https://i.ss.com/gallery/8/1506/376416/computers-completing-pc-ssd-75283122.800.jpg
+2026-06-24 19:57:10 | INFO     | ss_crawler | [image_downloader] Downloaded image for cglopk (stored as cglopk_4803f31d.jpg)
+2026-06-24 19:57:10 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for cglopk -> ssds\cglopk_4803f31d.jpg
+2026-06-24 19:57:10 | INFO     | ss_crawler | [fetch_missing_images] Upgrading thumbnail for odkpc: https://i.ss.com/gallery/8/1450/362254/computers-completing-pc-ssd-72450799.t.jpg -> https://i.ss.com/gallery/8/1450/362254/computers-completing-pc-ssd-72450799.800.jpg
+2026-06-24 19:57:10 | INFO     | ss_crawler | [image_downloader] Downloaded image for odkpc (stored as odkpc_cea2f46e.jpg)
+2026-06-24 19:57:10 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for odkpc -> ssds\odkpc_cea2f46e.jpg
+2026-06-24 19:57:11 | INFO     | ss_crawler | [fetch_missing_images] Upgrading thumbnail for cdodgm: https://i.ss.com/gallery/8/1507/376539/computers-completing-pc-ssd-75307726.t.jpg -> https://i.ss.com/gallery/8/1507/376539/computers-completing-pc-ssd-75307726.800.jpg
+2026-06-24 19:57:11 | INFO     | ss_crawler | [image_downloader] Downloaded image for cdodgm (stored as cdodgm_fd4e4ff3.jpg)
+2026-06-24 19:57:11 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for cdodgm -> ssds\cdodgm_fd4e4ff3.jpg
+2026-06-24 19:57:12 | INFO     | ss_crawler | [fetch_missing_images] Upgrading thumbnail for cgknmp: https://i.ss.com/gallery/8/1486/371375/computers-completing-pc-ssd-74274919.t.jpg -> https://i.ss.com/gallery/8/1486/371375/computers-completing-pc-ssd-74274919.800.jpg
+2026-06-24 19:57:12 | INFO     | ss_crawler | [image_downloader] Downloaded image for cgknmp (stored as cgknmp_ed140f08.jpg)
+2026-06-24 19:57:12 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for cgknmp -> ssds\cgknmp_ed140f08.jpg
+2026-06-24 19:57:12 | INFO     | ss_crawler | [fetch_missing_images] Upgrading thumbnail for cdlhoo: https://i.ss.com/gallery/8/1493/373062/computers-completing-pc-ssd-74612262.t.jpg -> https://i.ss.com/gallery/8/1493/373062/computers-completing-pc-ssd-74612262.800.jpg
+2026-06-24 19:57:12 | INFO     | ss_crawler | [image_downloader] Downloaded image for cdlhoo (stored as cdlhoo_b42cb566.jpg)
+2026-06-24 19:57:12 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for cdlhoo -> ssds\cdlhoo_b42cb566.jpg
+2026-06-24 19:57:13 | INFO     | ss_crawler | [fetch_missing_images] Upgrading thumbnail for bopogj: https://i.ss.com/gallery/8/1493/373062/computers-completing-pc-ssd-74612262.t.jpg -> https://i.ss.com/gallery/8/1493/373062/computers-completing-pc-ssd-74612262.800.jpg
+2026-06-24 19:57:13 | INFO     | ss_crawler | [image_downloader] Downloaded image for bopogj (stored as bopogj_b42cb566.jpg)
+2026-06-24 19:57:13 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for bopogj -> ssds\bopogj_b42cb566.jpg
+2026-06-24 19:57:14 | INFO     | ss_crawler | [fetch_missing_images] Upgrading thumbnail for cglpde: https://i.ss.com/gallery/8/1493/373062/computers-completing-pc-ssd-74612262.t.jpg -> https://i.ss.com/gallery/8/1493/373062/computers-completing-pc-ssd-74612262.800.jpg
+2026-06-24 19:57:14 | INFO     | ss_crawler | [image_downloader] Downloaded image for cglpde (stored as cglpde_b42cb566.jpg)
+2026-06-24 19:57:14 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for cglpde -> ssds\cglpde_b42cb566.jpg
+2026-06-24 19:57:14 | INFO     | ss_crawler | [fetch_missing_images] Upgrading thumbnail for bomngi: https://i.ss.com/gallery/8/1484/370865/computers-completing-pc-ssd-74172960.t.jpg -> https://i.ss.com/gallery/8/1484/370865/computers-completing-pc-ssd-74172960.800.jpg
+2026-06-24 19:57:14 | INFO     | ss_crawler | [image_downloader] Downloaded image for bomngi (stored as bomngi_55bb81a4.jpg)
+2026-06-24 19:57:14 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for bomngi -> ssds\bomngi_55bb81a4.jpg
+2026-06-24 19:57:15 | INFO     | ss_crawler | [fetch_missing_images] Upgrading thumbnail for bpmilc: https://i.ss.com/gallery/8/1456/363890/computers-completing-pc-ssd-72777839.t.jpg -> https://i.ss.com/gallery/8/1456/363890/computers-completing-pc-ssd-72777839.800.jpg
+2026-06-24 19:57:15 | INFO     | ss_crawler | [image_downloader] Downloaded image for bpmilc (stored as bpmilc_3bb14356.jpg)
+2026-06-24 19:57:15 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for bpmilc -> ssds\bpmilc_3bb14356.jpg
+2026-06-24 19:57:16 | INFO     | ss_crawler | [fetch_missing_images] Upgrading thumbnail for bdiggb: https://i.ss.com/gallery/8/1495/373601/computers-completing-pc-ssd-74720003.t.jpg -> https://i.ss.com/gallery/8/1495/373601/computers-completing-pc-ssd-74720003.800.jpg
+2026-06-24 19:57:16 | INFO     | ss_crawler | [image_downloader] Downloaded image for bdiggb (stored as bdiggb_c34d3d57.jpg)
+2026-06-24 19:57:16 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for bdiggb -> ssds\bdiggb_c34d3d57.jpg
+2026-06-24 19:57:16 | INFO     | ss_crawler | [fetch_missing_images] Upgrading thumbnail for bojpof: https://i.ss.com/gallery/8/1484/370865/computers-completing-pc-ssd-74172960.t.jpg -> https://i.ss.com/gallery/8/1484/370865/computers-completing-pc-ssd-74172960.800.jpg
+2026-06-24 19:57:16 | INFO     | ss_crawler | [image_downloader] Downloaded image for bojpof (stored as bojpof_55bb81a4.jpg)
+2026-06-24 19:57:16 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for bojpof -> ssds\bojpof_55bb81a4.jpg
+2026-06-24 19:57:17 | INFO     | ss_crawler | [fetch_missing_images] Upgrading thumbnail for ccgbox: https://i.ss.com/gallery/8/1507/376694/computers-completing-pc-ssd-75338674.t.jpg -> https://i.ss.com/gallery/8/1507/376694/computers-completing-pc-ssd-75338674.800.jpg
+2026-06-24 19:57:17 | INFO     | ss_crawler | [image_downloader] Downloaded image for ccgbox (stored as ccgbox_f8d8584a.jpg)
+2026-06-24 19:57:17 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for ccgbox -> ssds\ccgbox_f8d8584a.jpg
+2026-06-24 19:57:18 | INFO     | ss_crawler | [fetch_missing_images] Upgrading thumbnail for bbbffd: https://i.ss.com/gallery/7/1269/317243/computers-completing-pc-ssd-63448593.t.jpg -> https://i.ss.com/gallery/7/1269/317243/computers-completing-pc-ssd-63448593.800.jpg
+2026-06-24 19:57:18 | INFO     | ss_crawler | [image_downloader] Downloaded image for bbbffd (stored as bbbffd_34aa581c.jpg)
+2026-06-24 19:57:18 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for bbbffd -> ssds\bbbffd_34aa581c.jpg
+2026-06-24 19:57:18 | INFO     | ss_crawler | [fetch_missing_images] Upgrading thumbnail for bommeh: https://i.ss.com/gallery/8/1507/376711/computers-completing-pc-ssd-75342097.t.jpg -> https://i.ss.com/gallery/8/1507/376711/computers-completing-pc-ssd-75342097.800.jpg
+2026-06-24 19:57:18 | INFO     | ss_crawler | [image_downloader] Downloaded image for bommeh (stored as bommeh_70b62dcd.jpg)
+2026-06-24 19:57:18 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for bommeh -> ssds\bommeh_70b62dcd.jpg
+2026-06-24 19:57:19 | INFO     | ss_crawler | [fetch_missing_images] Run complete: processed=48, image_url_found=0, upgraded=46, downloaded=46, failed=0
+2026-06-24 20:01:40 | INFO     | ss_crawler | [database] Database connected: localhost:5433/ss_market
+2026-06-24 20:01:41 | INFO     | ss_crawler | [fetch_missing_images] Found 2 listings without image_url and 0 thumbnail URLs to upgrade; processing 2 in this run.
+2026-06-24 20:01:41 | INFO     | ss_crawler | [fetch_missing_images] No image found on page for cglfji (https://www.ss.com/msg/lv/electronics/computers/completing-pc/ssd/cglfji.html)
+2026-06-24 20:01:41 | INFO     | ss_crawler | [fetch_missing_images] No image found on page for cglpng (https://www.ss.com/msg/lv/electronics/computers/completing-pc/ssd/cglpng.html)
+2026-06-24 20:01:41 | INFO     | ss_crawler | [fetch_missing_images] Run complete: processed=2, image_url_found=0, upgraded=0, downloaded=0, failed=0
+2026-06-24 20:01:52 | INFO     | ss_crawler | [database] Database connected: localhost:5433/ss_market
+2026-06-24 20:01:52 | INFO     | ss_crawler | [fetch_missing_images] No listings need image fetching/upgrading.
+2026-06-24 20:02:16 | INFO     | ss_crawler | [database] Database connected: localhost:5433/ss_market
+2026-06-24 20:02:16 | INFO     | ss_crawler | [fetch_missing_images] No listings need image fetching/upgrading.
+2026-06-24 20:02:19 | INFO     | ss_crawler | [database] Database connected: localhost:5433/ss_market
+2026-06-24 20:02:20 | INFO     | ss_crawler | [fetch_missing_images] Found 58 listings without image_url and 0 thumbnail URLs to upgrade; processing 58 in this run.
+2026-06-24 20:02:20 | INFO     | ss_crawler | [fetch_missing_images] Found image for depod: https://i.ss.com/gallery/8/1493/373220/computers-completing-pc-motherboards-74643930.800.jpg
+2026-06-24 20:02:20 | INFO     | ss_crawler | [image_downloader] Downloaded image for depod (stored as depod_6d97968f.jpg)
+2026-06-24 20:02:20 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for depod -> motherboards\depod_6d97968f.jpg
+2026-06-24 20:02:20 | INFO     | ss_crawler | [fetch_missing_images] Found image for fgnld: https://i.ss.com/gallery/8/1448/361843/computers-completing-pc-motherboards-72368556.800.jpg
+2026-06-24 20:02:20 | INFO     | ss_crawler | [image_downloader] Downloaded image for fgnld (stored as fgnld_8f90f84a.jpg)
+2026-06-24 20:02:20 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for fgnld -> motherboards\fgnld_8f90f84a.jpg
+2026-06-24 20:02:21 | INFO     | ss_crawler | [fetch_missing_images] Found image for deegp: https://i.ss.com/gallery/7/1388/346891/computers-completing-pc-motherboards-69378118.800.jpg
+2026-06-24 20:02:21 | INFO     | ss_crawler | [image_downloader] Downloaded image for deegp (stored as deegp_4e6595ce.jpg)
+2026-06-24 20:02:21 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for deegp -> motherboards\deegp_4e6595ce.jpg
+2026-06-24 20:02:22 | INFO     | ss_crawler | [fetch_missing_images] Found image for bjdlcd: https://i.ss.com/gallery/8/1468/366799/computers-completing-pc-motherboards-73359715.800.jpg
+2026-06-24 20:02:22 | INFO     | ss_crawler | [image_downloader] Downloaded image for bjdlcd (stored as bjdlcd_65364318.jpg)
+2026-06-24 20:02:22 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for bjdlcd -> motherboards\bjdlcd_65364318.jpg
+2026-06-24 20:02:22 | INFO     | ss_crawler | [fetch_missing_images] Found image for enjmm: https://i.ss.com/gallery/7/1359/339597/computers-completing-pc-motherboards-67919326.800.jpg
+2026-06-24 20:02:22 | INFO     | ss_crawler | [image_downloader] Downloaded image for enjmm (stored as enjmm_c38ff863.jpg)
+2026-06-24 20:02:22 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for enjmm -> motherboards\enjmm_c38ff863.jpg
+2026-06-24 20:02:23 | INFO     | ss_crawler | [fetch_missing_images] Found image for johhe: https://i.ss.com/gallery/8/1494/373398/computers-completing-pc-motherboards-74679426.800.jpg
+2026-06-24 20:02:23 | INFO     | ss_crawler | [image_downloader] Downloaded image for johhe (stored as johhe_cc063e70.jpg)
+2026-06-24 20:02:23 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for johhe -> motherboards\johhe_cc063e70.jpg
+2026-06-24 20:02:24 | INFO     | ss_crawler | [fetch_missing_images] Found image for bjxlpg: https://i.ss.com/gallery/8/1483/370517/computers-completing-pc-motherboards-74103400.800.jpg
+2026-06-24 20:02:24 | INFO     | ss_crawler | [image_downloader] Downloaded image for bjxlpg (stored as bjxlpg_7db05b7f.jpg)
+2026-06-24 20:02:24 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for bjxlpg -> motherboards\bjxlpg_7db05b7f.jpg
+2026-06-24 20:02:24 | INFO     | ss_crawler | [fetch_missing_images] Found image for pmklj: https://i.ss.com/gallery/8/1482/370500/computers-completing-pc-motherboards-74099972.800.jpg
+2026-06-24 20:02:24 | INFO     | ss_crawler | [image_downloader] Downloaded image for pmklj (stored as pmklj_18296675.jpg)
+2026-06-24 20:02:24 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for pmklj -> motherboards\pmklj_18296675.jpg
+2026-06-24 20:02:25 | INFO     | ss_crawler | [fetch_missing_images] Found image for jpfeb: https://i.ss.com/gallery/8/1429/357129/computers-completing-pc-motherboards-71425744.800.jpg
+2026-06-24 20:02:25 | INFO     | ss_crawler | [image_downloader] Downloaded image for jpfeb (stored as jpfeb_43700800.jpg)
+2026-06-24 20:02:25 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for jpfeb -> motherboards\jpfeb_43700800.jpg
+2026-06-24 20:02:26 | INFO     | ss_crawler | [fetch_missing_images] Found image for bkdcfx: https://i.ss.com/gallery/8/1458/364478/computers-completing-pc-motherboards-72895543.800.jpg
+2026-06-24 20:02:26 | INFO     | ss_crawler | [image_downloader] Downloaded image for bkdcfx (stored as bkdcfx_f83854ee.jpg)
+2026-06-24 20:02:26 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for bkdcfx -> motherboards\bkdcfx_f83854ee.jpg
+2026-06-24 20:02:26 | INFO     | ss_crawler | [fetch_missing_images] Found image for fkxdb: https://i.ss.com/gallery/7/1209/302143/computers-completing-pc-motherboards-60428549.800.jpg
+2026-06-24 20:02:26 | INFO     | ss_crawler | [image_downloader] Downloaded image for fkxdb (stored as fkxdb_3e4f203f.jpg)
+2026-06-24 20:02:26 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for fkxdb -> motherboards\fkxdb_3e4f203f.jpg
+2026-06-24 20:02:27 | INFO     | ss_crawler | [fetch_missing_images] Found image for jnpmc: https://i.ss.com/gallery/6/1105/276212/computers-completing-pc-motherboards-55242211.800.jpg
+2026-06-24 20:02:27 | INFO     | ss_crawler | [image_downloader] Downloaded image for jnpmc (stored as jnpmc_3e422df6.jpg)
+2026-06-24 20:02:27 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for jnpmc -> motherboards\jnpmc_3e422df6.jpg
+2026-06-24 20:02:28 | INFO     | ss_crawler | [fetch_missing_images] Found image for gdlgl: https://i.ss.com/gallery/8/1443/360506/computers-completing-pc-motherboards-72101058.800.jpg
+2026-06-24 20:02:28 | INFO     | ss_crawler | [image_downloader] Downloaded image for gdlgl (stored as gdlgl_91ec880e.jpg)
+2026-06-24 20:02:28 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for gdlgl -> motherboards\gdlgl_91ec880e.jpg
+2026-06-24 20:02:28 | INFO     | ss_crawler | [fetch_missing_images] Found image for jmcib: https://i.ss.com/gallery/8/1496/373794/computers-completing-pc-motherboards-74758767.800.jpg
+2026-06-24 20:02:29 | INFO     | ss_crawler | [image_downloader] Downloaded image for jmcib (stored as jmcib_49785737.jpg)
+2026-06-24 20:02:29 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for jmcib -> motherboards\jmcib_49785737.jpg
+2026-06-24 20:02:29 | INFO     | ss_crawler | [fetch_missing_images] Found image for pkgpj: https://i.ss.com/gallery/8/1484/370897/computers-completing-pc-motherboards-74179275.800.jpg
+2026-06-24 20:02:29 | INFO     | ss_crawler | [image_downloader] Downloaded image for pkgpj (stored as pkgpj_dcc44f05.jpg)
+2026-06-24 20:02:29 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for pkgpj -> motherboards\pkgpj_dcc44f05.jpg
+2026-06-24 20:02:30 | INFO     | ss_crawler | [fetch_missing_images] Found image for longh: https://i.ss.com/gallery/8/1483/370610/computers-completing-pc-motherboards-74121966.800.jpg
+2026-06-24 20:02:30 | INFO     | ss_crawler | [image_downloader] Downloaded image for longh (stored as longh_7d395e0f.jpg)
+2026-06-24 20:02:30 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for longh -> motherboards\longh_7d395e0f.jpg
+2026-06-24 20:02:30 | INFO     | ss_crawler | [fetch_missing_images] Found image for dnchn: https://i.ss.com/gallery/8/1496/373883/computers-completing-pc-motherboards-74776475.800.jpg
+2026-06-24 20:02:31 | INFO     | ss_crawler | [image_downloader] Downloaded image for dnchn (stored as dnchn_37ec2380.jpg)
+2026-06-24 20:02:31 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for dnchn -> motherboards\dnchn_37ec2380.jpg
+2026-06-24 20:02:31 | INFO     | ss_crawler | [fetch_missing_images] Found image for bmbhg: https://i.ss.com/gallery/8/1434/358460/computers-completing-pc-motherboards-71691904.800.jpg
+2026-06-24 20:02:31 | INFO     | ss_crawler | [image_downloader] Downloaded image for bmbhg (stored as bmbhg_ad4e36f6.jpg)
+2026-06-24 20:02:31 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for bmbhg -> motherboards\bmbhg_ad4e36f6.jpg
+2026-06-24 20:02:32 | INFO     | ss_crawler | [fetch_missing_images] Found image for jmgjp: https://i.ss.com/gallery/8/1486/371478/computers-completing-pc-motherboards-74295579.800.jpg
+2026-06-24 20:02:32 | INFO     | ss_crawler | [image_downloader] Downloaded image for jmgjp (stored as jmgjp_9a492ab2.jpg)
+2026-06-24 20:02:32 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for jmgjp -> motherboards\jmgjp_9a492ab2.jpg
+2026-06-24 20:02:33 | INFO     | ss_crawler | [fetch_missing_images] Found image for pmklh: https://i.ss.com/gallery/8/1497/374230/computers-completing-pc-motherboards-74845966.800.jpg
+2026-06-24 20:02:33 | INFO     | ss_crawler | [image_downloader] Downloaded image for pmklh (stored as pmklh_a53ad2b0.jpg)
+2026-06-24 20:02:33 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for pmklh -> motherboards\pmklh_a53ad2b0.jpg
+2026-06-24 20:02:33 | INFO     | ss_crawler | [fetch_missing_images] Found image for pkjej: https://i.ss.com/gallery/8/1498/374283/computers-completing-pc-motherboards-74856431.800.jpg
+2026-06-24 20:02:34 | INFO     | ss_crawler | [image_downloader] Downloaded image for pkjej (stored as pkjej_01ccde41.jpg)
+2026-06-24 20:02:34 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for pkjej -> motherboards\pkjej_01ccde41.jpg
+2026-06-24 20:02:34 | INFO     | ss_crawler | [fetch_missing_images] Found image for kbfon: https://i.ss.com/gallery/8/1498/374304/computers-completing-pc-motherboards-74860729.800.jpg
+2026-06-24 20:02:34 | INFO     | ss_crawler | [image_downloader] Downloaded image for kbfon (stored as kbfon_92d9641b.jpg)
+2026-06-24 20:02:34 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for kbfon -> motherboards\kbfon_92d9641b.jpg
+2026-06-24 20:02:35 | INFO     | ss_crawler | [fetch_missing_images] Found image for jpgjx: https://i.ss.com/gallery/8/1498/374390/computers-completing-pc-motherboards-74877930.800.jpg
+2026-06-24 20:02:35 | INFO     | ss_crawler | [image_downloader] Downloaded image for jpgjx (stored as jpgjx_9b02736d.jpg)
+2026-06-24 20:02:35 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for jpgjx -> motherboards\jpgjx_9b02736d.jpg
+2026-06-24 20:02:35 | INFO     | ss_crawler | [fetch_missing_images] Found image for jnplc: https://i.ss.com/gallery/8/1481/370248/computers-completing-pc-motherboards-74049461.800.jpg
+2026-06-24 20:02:36 | INFO     | ss_crawler | [image_downloader] Downloaded image for jnplc (stored as jnplc_0428ca32.jpg)
+2026-06-24 20:02:36 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for jnplc -> motherboards\jnplc_0428ca32.jpg
+2026-06-24 20:02:36 | INFO     | ss_crawler | [fetch_missing_images] Found image for fffdp: https://i.ss.com/gallery/8/1499/374530/computers-completing-pc-motherboards-74905866.800.jpg
+2026-06-24 20:02:36 | INFO     | ss_crawler | [image_downloader] Downloaded image for fffdp (stored as fffdp_214898c9.jpg)
+2026-06-24 20:02:36 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for fffdp -> motherboards\fffdp_214898c9.jpg
+2026-06-24 20:02:37 | INFO     | ss_crawler | [fetch_missing_images] Found image for hgegh: https://i.ss.com/gallery/7/1356/338813/computers-completing-pc-motherboards-67762430.800.jpg
+2026-06-24 20:02:37 | INFO     | ss_crawler | [image_downloader] Downloaded image for hgegh (stored as hgegh_4400c177.jpg)
+2026-06-24 20:02:37 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for hgegh -> motherboards\hgegh_4400c177.jpg
+2026-06-24 20:02:38 | INFO     | ss_crawler | [fetch_missing_images] Found image for mipmn: https://i.ss.com/gallery/8/1452/362982/computers-completing-pc-motherboards-72596353.800.jpg
+2026-06-24 20:02:38 | INFO     | ss_crawler | [image_downloader] Downloaded image for mipmn (stored as mipmn_d7d91133.jpg)
+2026-06-24 20:02:38 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for mipmn -> motherboards\mipmn_d7d91133.jpg
+2026-06-24 20:02:38 | INFO     | ss_crawler | [fetch_missing_images] Found image for mnggm: https://i.ss.com/gallery/6/1134/283361/computers-completing-pc-motherboards-56672139.800.jpg
+2026-06-24 20:02:38 | INFO     | ss_crawler | [image_downloader] Downloaded image for mnggm (stored as mnggm_3442564f.jpg)
+2026-06-24 20:02:38 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for mnggm -> motherboards\mnggm_3442564f.jpg
+2026-06-24 20:02:39 | INFO     | ss_crawler | [fetch_missing_images] Found image for fnkck: https://i.ss.com/gallery/6/1105/276212/computers-completing-pc-motherboards-55242211.800.jpg
+2026-06-24 20:02:39 | INFO     | ss_crawler | [image_downloader] Downloaded image for fnkck (stored as fnkck_3e422df6.jpg)
+2026-06-24 20:02:39 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for fnkck -> motherboards\fnkck_3e422df6.jpg
+2026-06-24 20:02:40 | INFO     | ss_crawler | [fetch_missing_images] Found image for bklglj: https://i.ss.com/gallery/8/1500/374915/computers-completing-pc-motherboards-74982858.800.jpg
+2026-06-24 20:02:40 | INFO     | ss_crawler | [image_downloader] Downloaded image for bklglj (stored as bklglj_f012babb.jpg)
+2026-06-24 20:02:40 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for bklglj -> motherboards\bklglj_f012babb.jpg
+2026-06-24 20:02:40 | INFO     | ss_crawler | [fetch_missing_images] Found image for bhphck: https://i.ss.com/gallery/8/1500/374916/computers-completing-pc-motherboards-74983147.800.jpg
+2026-06-24 20:02:41 | INFO     | ss_crawler | [image_downloader] Downloaded image for bhphck (stored as bhphck_16436bca.jpg)
+2026-06-24 20:02:41 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for bhphck -> motherboards\bhphck_16436bca.jpg
+2026-06-24 20:02:41 | INFO     | ss_crawler | [fetch_missing_images] Found image for jnhmi: https://i.ss.com/gallery/8/1461/365044/computers-completing-pc-motherboards-73008758.800.jpg
+2026-06-24 20:02:41 | INFO     | ss_crawler | [image_downloader] Downloaded image for jnhmi (stored as jnhmi_78b74e13.jpg)
+2026-06-24 20:02:41 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for jnhmi -> motherboards\jnhmi_78b74e13.jpg
+2026-06-24 20:02:42 | INFO     | ss_crawler | [fetch_missing_images] Found image for exxbx: https://i.ss.com/gallery/6/1168/291809/computers-completing-pc-motherboards-58361614.800.jpg
+2026-06-24 20:02:42 | INFO     | ss_crawler | [image_downloader] Downloaded image for exxbx (stored as exxbx_246b1d31.jpg)
+2026-06-24 20:02:42 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for exxbx -> motherboards\exxbx_246b1d31.jpg
+2026-06-24 20:02:42 | INFO     | ss_crawler | [fetch_missing_images] Found image for jogbf: https://i.ss.com/gallery/7/1342/335286/computers-completing-pc-motherboards-67057192.800.jpg
+2026-06-24 20:02:43 | INFO     | ss_crawler | [image_downloader] Downloaded image for jogbf (stored as jogbf_ccdfcc54.jpg)
+2026-06-24 20:02:43 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for jogbf -> motherboards\jogbf_ccdfcc54.jpg
+2026-06-24 20:02:43 | INFO     | ss_crawler | [fetch_missing_images] No image found on page for bjjclb (https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/bjjclb.html)
+2026-06-24 20:02:43 | INFO     | ss_crawler | [fetch_missing_images] Found image for jmxdg: https://i.ss.com/gallery/8/1487/371556/computers-completing-pc-motherboards-74311137.800.jpg
+2026-06-24 20:02:43 | INFO     | ss_crawler | [image_downloader] Downloaded image for jmxdg (stored as jmxdg_a074c6e9.jpg)
+2026-06-24 20:02:43 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for jmxdg -> motherboards\jmxdg_a074c6e9.jpg
+2026-06-24 20:02:44 | INFO     | ss_crawler | [fetch_missing_images] Found image for ahbhx: https://i.ss.com/gallery/8/1493/373156/computers-completing-pc-motherboards-74631086.800.jpg
+2026-06-24 20:02:44 | INFO     | ss_crawler | [image_downloader] Downloaded image for ahbhx (stored as ahbhx_569181d1.jpg)
+2026-06-24 20:02:44 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for ahbhx -> motherboards\ahbhx_569181d1.jpg
+2026-06-24 20:02:45 | INFO     | ss_crawler | [fetch_missing_images] Found image for jofhb: https://i.ss.com/gallery/7/1345/336039/computers-completing-pc-motherboards-67207755.800.jpg
+2026-06-24 20:02:45 | INFO     | ss_crawler | [image_downloader] Downloaded image for jofhb (stored as jofhb_a824e3df.jpg)
+2026-06-24 20:02:45 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for jofhb -> motherboards\jofhb_a824e3df.jpg
+2026-06-24 20:02:45 | INFO     | ss_crawler | [fetch_missing_images] Found image for cgmxb: https://i.ss.com/gallery/8/1410/352393/computers-completing-pc-motherboards-70478534.800.jpg
+2026-06-24 20:02:45 | INFO     | ss_crawler | [image_downloader] Downloaded image for cgmxb (stored as cgmxb_ef9c92cf.jpg)
+2026-06-24 20:02:45 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for cgmxb -> motherboards\cgmxb_ef9c92cf.jpg
+2026-06-24 20:02:46 | INFO     | ss_crawler | [fetch_missing_images] Found image for cgxbjk: https://i.ss.com/gallery/8/1512/377969/computers-completing-pc-motherboards-75593752.800.jpg
+2026-06-24 20:02:46 | INFO     | ss_crawler | [image_downloader] Downloaded image for cgxbjk (stored as cgxbjk_0c41eb9a.jpg)
+2026-06-24 20:02:46 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for cgxbjk -> motherboards\cgxbjk_0c41eb9a.jpg
+2026-06-24 20:02:47 | INFO     | ss_crawler | [fetch_missing_images] Found image for afxeg: https://i.ss.com/gallery/8/1503/375505/computers-completing-pc-motherboards-75100965.800.jpg
+2026-06-24 20:02:47 | INFO     | ss_crawler | [image_downloader] Downloaded image for afxeg (stored as afxeg_48f29ef8.jpg)
+2026-06-24 20:02:47 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for afxeg -> motherboards\afxeg_48f29ef8.jpg
+2026-06-24 20:02:47 | INFO     | ss_crawler | [fetch_missing_images] Found image for hxlhc: https://i.ss.com/gallery/8/1503/375509/computers-completing-pc-motherboards-75101764.800.jpg
+2026-06-24 20:02:48 | INFO     | ss_crawler | [image_downloader] Downloaded image for hxlhc (stored as hxlhc_faa8c5b5.jpg)
+2026-06-24 20:02:48 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for hxlhc -> motherboards\hxlhc_faa8c5b5.jpg
+2026-06-24 20:02:48 | INFO     | ss_crawler | [fetch_missing_images] Found image for eohnm: https://i.ss.com/gallery/8/1503/375641/computers-completing-pc-motherboards-75128120.800.jpg
+2026-06-24 20:02:48 | INFO     | ss_crawler | [image_downloader] Downloaded image for eohnm (stored as eohnm_c5c096b2.jpg)
+2026-06-24 20:02:48 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for eohnm -> motherboards\eohnm_c5c096b2.jpg
+2026-06-24 20:02:49 | INFO     | ss_crawler | [fetch_missing_images] Found image for jnknl: https://i.ss.com/gallery/8/1481/370250/computers-completing-pc-motherboards-74049897.800.jpg
+2026-06-24 20:02:49 | INFO     | ss_crawler | [image_downloader] Downloaded image for jnknl (stored as jnknl_d6512bda.jpg)
+2026-06-24 20:02:49 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for jnknl -> motherboards\jnknl_d6512bda.jpg
+2026-06-24 20:02:50 | INFO     | ss_crawler | [fetch_missing_images] Found image for kxmep: https://i.ss.com/gallery/8/1431/357691/computers-completing-pc-motherboards-71538062.800.jpg
+2026-06-24 20:02:50 | INFO     | ss_crawler | [image_downloader] Downloaded image for kxmep (stored as kxmep_ae80c3b1.jpg)
+2026-06-24 20:02:50 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for kxmep -> motherboards\kxmep_ae80c3b1.jpg
+2026-06-24 20:02:50 | INFO     | ss_crawler | [fetch_missing_images] Found image for miemp: https://i.ss.com/gallery/6/1105/276212/computers-completing-pc-motherboards-55242211.800.jpg
+2026-06-24 20:02:50 | INFO     | ss_crawler | [image_downloader] Downloaded image for miemp (stored as miemp_3e422df6.jpg)
+2026-06-24 20:02:50 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for miemp -> motherboards\miemp_3e422df6.jpg
+2026-06-24 20:02:51 | INFO     | ss_crawler | [fetch_missing_images] Found image for gfpco: https://i.ss.com/gallery/8/1448/361942/computers-completing-pc-motherboards-72388384.800.jpg
+2026-06-24 20:02:51 | INFO     | ss_crawler | [image_downloader] Downloaded image for gfpco (stored as gfpco_300f3315.jpg)
+2026-06-24 20:02:51 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for gfpco -> motherboards\gfpco_300f3315.jpg
+2026-06-24 20:02:52 | INFO     | ss_crawler | [fetch_missing_images] Found image for biijn: https://i.ss.com/gallery/6/1105/276212/computers-completing-pc-motherboards-55242211.800.jpg
+2026-06-24 20:02:52 | INFO     | ss_crawler | [image_downloader] Downloaded image for biijn (stored as biijn_3e422df6.jpg)
+2026-06-24 20:02:52 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for biijn -> motherboards\biijn_3e422df6.jpg
+2026-06-24 20:02:52 | INFO     | ss_crawler | [fetch_missing_images] Found image for bixleo: https://i.ss.com/gallery/8/1483/370704/computers-completing-pc-motherboards-74140608.800.jpg
+2026-06-24 20:02:52 | INFO     | ss_crawler | [image_downloader] Downloaded image for bixleo (stored as bixleo_4f6a210d.jpg)
+2026-06-24 20:02:52 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for bixleo -> motherboards\bixleo_4f6a210d.jpg
+2026-06-24 20:02:53 | INFO     | ss_crawler | [fetch_missing_images] Found image for mbdfx: https://i.ss.com/gallery/8/1464/365983/computers-completing-pc-motherboards-73196470.800.jpg
+2026-06-24 20:02:53 | INFO     | ss_crawler | [image_downloader] Downloaded image for mbdfx (stored as mbdfx_e0a273f3.jpg)
+2026-06-24 20:02:53 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for mbdfx -> motherboards\mbdfx_e0a273f3.jpg
+2026-06-24 20:02:54 | INFO     | ss_crawler | [fetch_missing_images] Found image for geiii: https://i.ss.com/gallery/8/1455/363532/computers-completing-pc-motherboards-72706228.800.jpg
+2026-06-24 20:02:54 | INFO     | ss_crawler | [image_downloader] Downloaded image for geiii (stored as geiii_61e384b8.jpg)
+2026-06-24 20:02:54 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for geiii -> motherboards\geiii_61e384b8.jpg
+2026-06-24 20:02:54 | INFO     | ss_crawler | [fetch_missing_images] Found image for jmomx: https://i.ss.com/gallery/8/1504/375904/computers-completing-pc-motherboards-75180693.800.jpg
+2026-06-24 20:02:55 | INFO     | ss_crawler | [image_downloader] Downloaded image for jmomx (stored as jmomx_05c10096.jpg)
+2026-06-24 20:02:55 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for jmomx -> motherboards\jmomx_05c10096.jpg
+2026-06-24 20:02:55 | INFO     | ss_crawler | [fetch_missing_images] Found image for dniix: https://i.ss.com/gallery/8/1501/375214/computers-completing-pc-motherboards-75042724.800.jpg
+2026-06-24 20:02:55 | INFO     | ss_crawler | [image_downloader] Downloaded image for dniix (stored as dniix_4a6c5c41.jpg)
+2026-06-24 20:02:55 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for dniix -> motherboards\dniix_4a6c5c41.jpg
+2026-06-24 20:02:56 | INFO     | ss_crawler | [fetch_missing_images] Found image for kxcnj: https://i.ss.com/gallery/6/1105/276212/computers-completing-pc-motherboards-55242211.800.jpg
+2026-06-24 20:02:56 | INFO     | ss_crawler | [image_downloader] Downloaded image for kxcnj (stored as kxcnj_3e422df6.jpg)
+2026-06-24 20:02:56 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for kxcnj -> motherboards\kxcnj_3e422df6.jpg
+2026-06-24 20:02:57 | INFO     | ss_crawler | [fetch_missing_images] Found image for jnpkn: https://i.ss.com/gallery/8/1504/375987/computers-completing-pc-motherboards-75197364.800.jpg
+2026-06-24 20:02:57 | INFO     | ss_crawler | [image_downloader] Downloaded image for jnpkn (stored as jnpkn_8246afdf.jpg)
+2026-06-24 20:02:57 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for jnpkn -> motherboards\jnpkn_8246afdf.jpg
+2026-06-24 20:02:57 | INFO     | ss_crawler | [fetch_missing_images] Found image for pmlcj: https://i.ss.com/gallery/8/1504/375988/computers-completing-pc-motherboards-75197427.800.jpg
+2026-06-24 20:02:57 | INFO     | ss_crawler | [image_downloader] Downloaded image for pmlcj (stored as pmlcj_697410e1.jpg)
+2026-06-24 20:02:57 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for pmlcj -> motherboards\pmlcj_697410e1.jpg
+2026-06-24 20:02:58 | INFO     | ss_crawler | [fetch_missing_images] Found image for cgxcpo: https://i.ss.com/gallery/8/1501/375125/computers-completing-pc-motherboards-75024847.800.jpg
+2026-06-24 20:02:58 | INFO     | ss_crawler | [image_downloader] Downloaded image for cgxcpo (stored as cgxcpo_95f285ea.jpg)
+2026-06-24 20:02:58 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for cgxcpo -> motherboards\cgxcpo_95f285ea.jpg
+2026-06-24 20:02:59 | INFO     | ss_crawler | [fetch_missing_images] Found image for cgxxoh: https://i.ss.com/gallery/8/1504/375988/computers-completing-pc-motherboards-75197501.800.jpg
+2026-06-24 20:02:59 | INFO     | ss_crawler | [image_downloader] Downloaded image for cgxxoh (stored as cgxxoh_4c6b9c76.jpg)
+2026-06-24 20:02:59 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for cgxxoh -> motherboards\cgxxoh_4c6b9c76.jpg
+2026-06-24 20:02:59 | INFO     | ss_crawler | [fetch_missing_images] Run complete: processed=58, image_url_found=57, upgraded=0, downloaded=57, failed=0
+2026-06-24 22:20:10 | INFO     | ss_crawler | [database] Database connected: localhost:5433/ss_market
+2026-06-24 22:20:10 | INFO     | ss_crawler | [fetch_missing_images] Found 1 listings without image_url and 0 thumbnail URLs to upgrade; processing 1 in this run.
+2026-06-24 22:20:10 | INFO     | ss_crawler | [fetch_missing_images] No image found on page for bjjclb (https://www.ss.com/msg/lv/electronics/computers/completing-pc/motherboards/bjjclb.html)
+2026-06-24 22:20:10 | INFO     | ss_crawler | [fetch_missing_images] Run complete: processed=1, image_url_found=0, upgraded=0, downloaded=0, failed=0
+2026-06-24 23:28:52 | INFO     | ss_crawler | [database] Database connected: localhost:5433/ss_market
+2026-06-24 23:28:52 | INFO     | ss_crawler | [fetch_missing_images] No listings need image fetching/upgrading.
+2026-06-24 23:29:02 | INFO     | ss_crawler | [database] Database connected: localhost:5433/ss_market
+2026-06-24 23:29:02 | INFO     | ss_crawler | [fetch_missing_images] Found 50 listings without image_url and 0 thumbnail URLs to upgrade; processing 50 in this run.
+2026-06-24 23:29:02 | INFO     | ss_crawler | [fetch_missing_images] Found image for ekdfi: https://i.ss.com/gallery/8/1496/373916/computers-completing-pc-ram-74783173.800.jpg
+2026-06-24 23:29:02 | INFO     | ss_crawler | [image_downloader] Downloaded image for ekdfi (stored as ekdfi_509f1741.jpg)
+2026-06-24 23:29:02 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for ekdfi -> rams\ekdfi_509f1741.jpg
+2026-06-24 23:29:03 | INFO     | ss_crawler | [fetch_missing_images] Found image for mighh: https://i.ss.com/gallery/8/1450/362373/computers-completing-pc-ram-72474594.800.jpg
+2026-06-24 23:29:03 | INFO     | ss_crawler | [image_downloader] Downloaded image for mighh (stored as mighh_0d394548.jpg)
+2026-06-24 23:29:03 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for mighh -> rams\mighh_0d394548.jpg
+2026-06-24 23:29:04 | INFO     | ss_crawler | [fetch_missing_images] Found image for cglhbo: https://i.ss.com/gallery/8/1497/374025/computers-completing-pc-ram-74804874.800.jpg
+2026-06-24 23:29:04 | INFO     | ss_crawler | [image_downloader] Downloaded image for cglhbo (stored as cglhbo_59ce4f19.jpg)
+2026-06-24 23:29:04 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for cglhbo -> rams\cglhbo_59ce4f19.jpg
+2026-06-24 23:29:04 | INFO     | ss_crawler | [fetch_missing_images] Found image for mbche: https://i.ss.com/gallery/8/1485/371070/computers-completing-pc-ram-74213881.800.jpg
+2026-06-24 23:29:04 | INFO     | ss_crawler | [image_downloader] Downloaded image for mbche (stored as mbche_ccd18c17.jpg)
+2026-06-24 23:29:04 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for mbche -> rams\mbche_ccd18c17.jpg
+2026-06-24 23:29:05 | INFO     | ss_crawler | [fetch_missing_images] Found image for mofxd: https://i.ss.com/gallery/8/1486/371253/computers-completing-pc-ram-74250505.800.jpg
+2026-06-24 23:29:05 | INFO     | ss_crawler | [image_downloader] Downloaded image for mofxd (stored as mofxd_fd96cbd8.jpg)
+2026-06-24 23:29:05 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for mofxd -> rams\mofxd_fd96cbd8.jpg
+2026-06-24 23:29:06 | INFO     | ss_crawler | [fetch_missing_images] Found image for eelde: https://i.ss.com/gallery/8/1426/356338/computers-completing-pc-ram-71267484.800.jpg
+2026-06-24 23:29:06 | INFO     | ss_crawler | [image_downloader] Downloaded image for eelde (stored as eelde_5cff496b.jpg)
+2026-06-24 23:29:06 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for eelde -> rams\eelde_5cff496b.jpg
+2026-06-24 23:29:06 | INFO     | ss_crawler | [fetch_missing_images] Found image for opiic: https://i.ss.com/gallery/8/1466/366259/computers-completing-pc-ram-73251773.800.jpg
+2026-06-24 23:29:06 | INFO     | ss_crawler | [image_downloader] Downloaded image for opiic (stored as opiic_466b1886.jpg)
+2026-06-24 23:29:06 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for opiic -> rams\opiic_466b1886.jpg
+2026-06-24 23:29:07 | INFO     | ss_crawler | [fetch_missing_images] Found image for mffch: https://i.ss.com/gallery/8/1414/353471/computers-completing-pc-ram-70694081.800.jpg
+2026-06-24 23:29:07 | INFO     | ss_crawler | [image_downloader] Downloaded image for mffch (stored as mffch_07604af9.jpg)
+2026-06-24 23:29:07 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for mffch -> rams\mffch_07604af9.jpg
+2026-06-24 23:29:08 | INFO     | ss_crawler | [fetch_missing_images] Found image for cglhgl: https://i.ss.com/gallery/8/1497/374134/computers-completing-pc-ram-74826696.800.jpg
+2026-06-24 23:29:08 | INFO     | ss_crawler | [image_downloader] Downloaded image for cglhgl (stored as cglhgl_97375333.jpg)
+2026-06-24 23:29:08 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for cglhgl -> rams\cglhgl_97375333.jpg
+2026-06-24 23:29:08 | INFO     | ss_crawler | [fetch_missing_images] Found image for hbjdm: https://i.ss.com/gallery/6/1149/287047/computers-completing-pc-ram-57409341.800.jpg
+2026-06-24 23:29:08 | INFO     | ss_crawler | [image_downloader] Downloaded image for hbjdm (stored as hbjdm_4a6b39e9.jpg)
+2026-06-24 23:29:08 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for hbjdm -> rams\hbjdm_4a6b39e9.jpg
+2026-06-24 23:29:09 | INFO     | ss_crawler | [fetch_missing_images] Found image for cmkcx: https://i.ss.com/gallery/4/680/169970/computers-completing-pc-ram-33993932.800.jpg
+2026-06-24 23:29:09 | INFO     | ss_crawler | [image_downloader] Downloaded image for cmkcx (stored as cmkcx_881e34d8.jpg)
+2026-06-24 23:29:09 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for cmkcx -> rams\cmkcx_881e34d8.jpg
+2026-06-24 23:29:10 | INFO     | ss_crawler | [fetch_missing_images] Found image for cglhnh: https://i.ss.com/gallery/8/1498/374298/computers-completing-pc-ram-74859438.800.jpg
+2026-06-24 23:29:10 | INFO     | ss_crawler | [image_downloader] Downloaded image for cglhnh (stored as cglhnh_87e946d9.jpg)
+2026-06-24 23:29:10 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for cglhnh -> rams\cglhnh_87e946d9.jpg
+2026-06-24 23:29:10 | INFO     | ss_crawler | [fetch_missing_images] Found image for cglhng: https://i.ss.com/gallery/8/1498/374297/computers-completing-pc-ram-74859361.800.jpg
+2026-06-24 23:29:11 | INFO     | ss_crawler | [image_downloader] Downloaded image for cglhng (stored as cglhng_4f0289b0.jpg)
+2026-06-24 23:29:11 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for cglhng -> rams\cglhng_4f0289b0.jpg
+2026-06-24 23:29:11 | INFO     | ss_crawler | [fetch_missing_images] Found image for cglhop: https://i.ss.com/gallery/8/1490/372416/computers-completing-pc-ram-74483192.800.jpg
+2026-06-24 23:29:11 | INFO     | ss_crawler | [image_downloader] Downloaded image for cglhop (stored as cglhop_dba993ac.jpg)
+2026-06-24 23:29:11 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for cglhop -> rams\cglhop_dba993ac.jpg
+2026-06-24 23:29:12 | INFO     | ss_crawler | [fetch_missing_images] Found image for cglidn: https://i.ss.com/gallery/4/680/169970/computers-completing-pc-ram-33993932.800.jpg
+2026-06-24 23:29:12 | INFO     | ss_crawler | [image_downloader] Downloaded image for cglidn (stored as cglidn_881e34d8.jpg)
+2026-06-24 23:29:12 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for cglidn -> rams\cglidn_881e34d8.jpg
+2026-06-24 23:29:13 | INFO     | ss_crawler | [fetch_missing_images] Found image for bxxlep: https://i.ss.com/gallery/8/1498/374494/computers-completing-pc-ram-74898774.800.jpg
+2026-06-24 23:29:13 | INFO     | ss_crawler | [image_downloader] Downloaded image for bxxlep (stored as bxxlep_43fcba8b.jpg)
+2026-06-24 23:29:13 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for bxxlep -> rams\bxxlep_43fcba8b.jpg
+2026-06-24 23:29:13 | INFO     | ss_crawler | [fetch_missing_images] Found image for hfngn: https://i.ss.com/gallery/8/1497/374228/computers-completing-pc-ram-74845470.800.jpg
+2026-06-24 23:29:13 | INFO     | ss_crawler | [image_downloader] Downloaded image for hfngn (stored as hfngn_0c529219.jpg)
+2026-06-24 23:29:13 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for hfngn -> rams\hfngn_0c529219.jpg
+2026-06-24 23:29:14 | INFO     | ss_crawler | [fetch_missing_images] Found image for gbebc: https://i.ss.com/gallery/8/1487/371618/computers-completing-pc-ram-74323408.800.jpg
+2026-06-24 23:29:14 | INFO     | ss_crawler | [image_downloader] Downloaded image for gbebc (stored as gbebc_5b0a1013.jpg)
+2026-06-24 23:29:14 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for gbebc -> rams\gbebc_5b0a1013.jpg
+2026-06-24 23:29:15 | INFO     | ss_crawler | [fetch_missing_images] Found image for bknxjn: https://i.ss.com/gallery/8/1462/365372/computers-completing-pc-ram-73074233.800.jpg
+2026-06-24 23:29:15 | INFO     | ss_crawler | [image_downloader] Downloaded image for bknxjn (stored as bknxjn_c256ca8f.jpg)
+2026-06-24 23:29:15 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for bknxjn -> rams\bknxjn_c256ca8f.jpg
+2026-06-24 23:29:15 | INFO     | ss_crawler | [fetch_missing_images] Found image for gpgfx: https://i.ss.com/gallery/8/1505/376166/computers-completing-pc-ram-75233070.800.jpg
+2026-06-24 23:29:15 | INFO     | ss_crawler | [image_downloader] Downloaded image for gpgfx (stored as gpgfx_93c17a0b.jpg)
+2026-06-24 23:29:15 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for gpgfx -> rams\gpgfx_93c17a0b.jpg
+2026-06-24 23:29:16 | INFO     | ss_crawler | [fetch_missing_images] Found image for piddi: https://i.ss.com/gallery/8/1444/360917/computers-completing-pc-ram-72183358.800.jpg
+2026-06-24 23:29:16 | INFO     | ss_crawler | [image_downloader] Downloaded image for piddi (stored as piddi_a00d023b.jpg)
+2026-06-24 23:29:16 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for piddi -> rams\piddi_a00d023b.jpg
+2026-06-24 23:29:17 | INFO     | ss_crawler | [fetch_missing_images] Found image for dnlmk: https://i.ss.com/gallery/4/680/169970/computers-completing-pc-ram-33993932.800.jpg
+2026-06-24 23:29:17 | INFO     | ss_crawler | [image_downloader] Downloaded image for dnlmk (stored as dnlmk_881e34d8.jpg)
+2026-06-24 23:29:17 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for dnlmk -> rams\dnlmk_881e34d8.jpg
+2026-06-24 23:29:17 | INFO     | ss_crawler | [fetch_missing_images] Found image for dpmnf: https://i.ss.com/gallery/8/1494/373439/computers-completing-pc-ram-74687665.800.jpg
+2026-06-24 23:29:17 | INFO     | ss_crawler | [image_downloader] Downloaded image for dpmnf (stored as dpmnf_6ebe3a17.jpg)
+2026-06-24 23:29:17 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for dpmnf -> rams\dpmnf_6ebe3a17.jpg
+2026-06-24 23:29:18 | INFO     | ss_crawler | [fetch_missing_images] Found image for fcbce: https://i.ss.com/gallery/4/728/181811/computers-completing-pc-ram-36362058.800.jpg
+2026-06-24 23:29:18 | INFO     | ss_crawler | [image_downloader] Downloaded image for fcbce (stored as fcbce_7a6ef93b.jpg)
+2026-06-24 23:29:18 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for fcbce -> rams\fcbce_7a6ef93b.jpg
+2026-06-24 23:29:19 | INFO     | ss_crawler | [fetch_missing_images] Found image for opjll: https://i.ss.com/gallery/8/1467/366631/computers-completing-pc-ram-73326131.800.jpg
+2026-06-24 23:29:19 | INFO     | ss_crawler | [image_downloader] Downloaded image for opjll (stored as opjll_ebf8ecd9.jpg)
+2026-06-24 23:29:19 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for opjll -> rams\opjll_ebf8ecd9.jpg
+2026-06-24 23:29:19 | INFO     | ss_crawler | [fetch_missing_images] Found image for bxcmgk: https://i.ss.com/gallery/8/1494/373277/computers-completing-pc-ram-74655355.800.jpg
+2026-06-24 23:29:19 | INFO     | ss_crawler | [image_downloader] Downloaded image for bxcmgk (stored as bxcmgk_a61def44.jpg)
+2026-06-24 23:29:19 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for bxcmgk -> rams\bxcmgk_a61def44.jpg
+2026-06-24 23:29:20 | INFO     | ss_crawler | [fetch_missing_images] Found image for elimx: https://i.ss.com/gallery/8/1506/376447/computers-completing-pc-ram-75289284.800.jpg
+2026-06-24 23:29:20 | INFO     | ss_crawler | [image_downloader] Downloaded image for elimx (stored as elimx_924328fc.jpg)
+2026-06-24 23:29:20 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for elimx -> rams\elimx_924328fc.jpg
+2026-06-24 23:29:21 | INFO     | ss_crawler | [fetch_missing_images] Found image for dihnh: https://i.ss.com/gallery/8/1504/375797/computers-completing-pc-ram-75159238.800.jpg
+2026-06-24 23:29:21 | INFO     | ss_crawler | [image_downloader] Downloaded image for dihnh (stored as dihnh_0667599f.jpg)
+2026-06-24 23:29:21 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for dihnh -> rams\dihnh_0667599f.jpg
+2026-06-24 23:29:21 | INFO     | ss_crawler | [fetch_missing_images] Found image for fkneo: https://i.ss.com/gallery/8/1506/376276/computers-completing-pc-ram-75255172.800.jpg
+2026-06-24 23:29:22 | INFO     | ss_crawler | [image_downloader] Downloaded image for fkneo (stored as fkneo_0465d66f.jpg)
+2026-06-24 23:29:22 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for fkneo -> rams\fkneo_0465d66f.jpg
+2026-06-24 23:29:22 | INFO     | ss_crawler | [fetch_missing_images] Found image for bkchfc: https://i.ss.com/gallery/8/1468/366867/computers-completing-pc-ram-73373303.800.jpg
+2026-06-24 23:29:22 | INFO     | ss_crawler | [image_downloader] Downloaded image for bkchfc (stored as bkchfc_d8f60304.jpg)
+2026-06-24 23:29:22 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for bkchfc -> rams\bkchfc_d8f60304.jpg
+2026-06-24 23:29:23 | INFO     | ss_crawler | [fetch_missing_images] Found image for djcho: https://i.ss.com/gallery/4/680/169970/computers-completing-pc-ram-33993932.800.jpg
+2026-06-24 23:29:23 | INFO     | ss_crawler | [image_downloader] Downloaded image for djcho (stored as djcho_881e34d8.jpg)
+2026-06-24 23:29:23 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for djcho -> rams\djcho_881e34d8.jpg
+2026-06-24 23:29:24 | INFO     | ss_crawler | [fetch_missing_images] Found image for didxx: https://i.ss.com/gallery/8/1507/376553/computers-completing-pc-ram-75310588.800.jpg
+2026-06-24 23:29:24 | INFO     | ss_crawler | [image_downloader] Downloaded image for didxx (stored as didxx_0a3d0dc7.jpg)
+2026-06-24 23:29:24 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for didxx -> rams\didxx_0a3d0dc7.jpg
+2026-06-24 23:29:24 | INFO     | ss_crawler | [fetch_missing_images] Found image for lnnfo: https://i.ss.com/gallery/4/680/169970/computers-completing-pc-ram-33993932.800.jpg
+2026-06-24 23:29:24 | INFO     | ss_crawler | [image_downloader] Downloaded image for lnnfo (stored as lnnfo_881e34d8.jpg)
+2026-06-24 23:29:24 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for lnnfo -> rams\lnnfo_881e34d8.jpg
+2026-06-24 23:29:25 | INFO     | ss_crawler | [fetch_missing_images] Found image for bxccnk: https://i.ss.com/gallery/8/1491/372736/computers-completing-pc-ram-74547009.800.jpg
+2026-06-24 23:29:25 | INFO     | ss_crawler | [image_downloader] Downloaded image for bxccnk (stored as bxccnk_f0c1574c.jpg)
+2026-06-24 23:29:25 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for bxccnk -> rams\bxccnk_f0c1574c.jpg
+2026-06-24 23:29:26 | INFO     | ss_crawler | [fetch_missing_images] Found image for bxccni: https://i.ss.com/gallery/8/1491/372734/computers-completing-pc-ram-74546779.800.jpg
+2026-06-24 23:29:26 | INFO     | ss_crawler | [image_downloader] Downloaded image for bxccni (stored as bxccni_64bb872b.jpg)
+2026-06-24 23:29:26 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for bxccni -> rams\bxccni_64bb872b.jpg
+2026-06-24 23:29:26 | INFO     | ss_crawler | [fetch_missing_images] Found image for fclff: https://i.ss.com/gallery/8/1491/372733/computers-completing-pc-ram-74546517.800.jpg
+2026-06-24 23:29:27 | INFO     | ss_crawler | [image_downloader] Downloaded image for fclff (stored as fclff_05c644ad.jpg)
+2026-06-24 23:29:27 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for fclff -> rams\fclff_05c644ad.jpg
+2026-06-24 23:29:27 | INFO     | ss_crawler | [fetch_missing_images] Found image for gfhpj: https://i.ss.com/gallery/8/1507/376573/computers-completing-pc-ram-75314448.800.jpg
+2026-06-24 23:29:27 | INFO     | ss_crawler | [image_downloader] Downloaded image for gfhpj (stored as gfhpj_80ab5ec0.jpg)
+2026-06-24 23:29:27 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for gfhpj -> rams\gfhpj_80ab5ec0.jpg
+2026-06-24 23:29:28 | INFO     | ss_crawler | [fetch_missing_images] Found image for hgchm: https://i.ss.com/gallery/8/1426/356338/computers-completing-pc-ram-71267502.800.jpg
+2026-06-24 23:29:28 | INFO     | ss_crawler | [image_downloader] Downloaded image for hgchm (stored as hgchm_ab570e4b.jpg)
+2026-06-24 23:29:28 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for hgchm -> rams\hgchm_ab570e4b.jpg
+2026-06-24 23:29:28 | INFO     | ss_crawler | [fetch_missing_images] Found image for bxbidg: https://i.ss.com/gallery/4/680/169970/computers-completing-pc-ram-33993932.800.jpg
+2026-06-24 23:29:29 | INFO     | ss_crawler | [image_downloader] Downloaded image for bxbidg (stored as bxbidg_881e34d8.jpg)
+2026-06-24 23:29:29 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for bxbidg -> rams\bxbidg_881e34d8.jpg
+2026-06-24 23:29:29 | INFO     | ss_crawler | [fetch_missing_images] Found image for fnlfe: https://i.ss.com/gallery/8/1469/367098/computers-completing-pc-ram-73419483.800.jpg
+2026-06-24 23:29:29 | INFO     | ss_crawler | [image_downloader] Downloaded image for fnlfe (stored as fnlfe_ae2740d9.jpg)
+2026-06-24 23:29:29 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for fnlfe -> rams\fnlfe_ae2740d9.jpg
+2026-06-24 23:29:30 | INFO     | ss_crawler | [fetch_missing_images] Found image for lmool: https://i.ss.com/gallery/8/1507/376624/computers-completing-pc-ram-75324642.800.jpg
+2026-06-24 23:29:30 | INFO     | ss_crawler | [image_downloader] Downloaded image for lmool (stored as lmool_7b303a33.jpg)
+2026-06-24 23:29:30 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for lmool -> rams\lmool_7b303a33.jpg
+2026-06-24 23:29:31 | INFO     | ss_crawler | [fetch_missing_images] Found image for gncij: https://i.ss.com/gallery/8/1507/376624/computers-completing-pc-ram-75324660.800.jpg
+2026-06-24 23:29:31 | INFO     | ss_crawler | [image_downloader] Downloaded image for gncij (stored as gncij_8da12777.jpg)
+2026-06-24 23:29:31 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for gncij -> rams\gncij_8da12777.jpg
+2026-06-24 23:29:31 | INFO     | ss_crawler | [fetch_missing_images] Found image for eiife: https://i.ss.com/gallery/7/1203/300518/computers-completing-pc-ram-60103410.800.jpg
+2026-06-24 23:29:31 | INFO     | ss_crawler | [image_downloader] Downloaded image for eiife (stored as eiife_ad1cedeb.jpg)
+2026-06-24 23:29:31 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for eiife -> rams\eiife_ad1cedeb.jpg
+2026-06-24 23:29:32 | INFO     | ss_crawler | [fetch_missing_images] Found image for dnkhg: https://i.ss.com/gallery/8/1507/376652/computers-completing-pc-ram-75330313.800.jpg
+2026-06-24 23:29:32 | INFO     | ss_crawler | [image_downloader] Downloaded image for dnkhg (stored as dnkhg_7689ad32.jpg)
+2026-06-24 23:29:32 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for dnkhg -> rams\dnkhg_7689ad32.jpg
+2026-06-24 23:29:32 | INFO     | ss_crawler | [fetch_missing_images] Found image for eogkn: https://i.ss.com/gallery/8/1507/376687/computers-completing-pc-ram-75337337.800.jpg
+2026-06-24 23:29:33 | INFO     | ss_crawler | [image_downloader] Downloaded image for eogkn (stored as eogkn_dd53a32b.jpg)
+2026-06-24 23:29:33 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for eogkn -> rams\eogkn_dd53a32b.jpg
+2026-06-24 23:29:33 | INFO     | ss_crawler | [fetch_missing_images] Found image for dgedj: https://i.ss.com/gallery/8/1507/376697/computers-completing-pc-ram-75339399.800.jpg
+2026-06-24 23:29:33 | INFO     | ss_crawler | [image_downloader] Downloaded image for dgedj (stored as dgedj_743dbf8f.jpg)
+2026-06-24 23:29:33 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for dgedj -> rams\dgedj_743dbf8f.jpg
+2026-06-24 23:29:34 | INFO     | ss_crawler | [fetch_missing_images] Found image for mbbpn: https://i.ss.com/gallery/8/1507/376707/computers-completing-pc-ram-75341204.800.jpg
+2026-06-24 23:29:34 | INFO     | ss_crawler | [image_downloader] Downloaded image for mbbpn (stored as mbbpn_11fc7429.jpg)
+2026-06-24 23:29:34 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for mbbpn -> rams\mbbpn_11fc7429.jpg
+2026-06-24 23:29:34 | INFO     | ss_crawler | [fetch_missing_images] Found image for mxcmc: https://i.ss.com/gallery/8/1507/376717/computers-completing-pc-ram-75343203.800.jpg
+2026-06-24 23:29:35 | INFO     | ss_crawler | [image_downloader] Downloaded image for mxcmc (stored as mxcmc_4f368035.jpg)
+2026-06-24 23:29:35 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for mxcmc -> rams\mxcmc_4f368035.jpg
+2026-06-24 23:29:35 | INFO     | ss_crawler | [fetch_missing_images] Found image for phjxp: https://i.ss.com/gallery/8/1454/363438/computers-completing-pc-ram-72687567.800.jpg
+2026-06-24 23:29:35 | INFO     | ss_crawler | [image_downloader] Downloaded image for phjxp (stored as phjxp_21a68db0.jpg)
+2026-06-24 23:29:35 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for phjxp -> rams\phjxp_21a68db0.jpg
+2026-06-24 23:29:36 | INFO     | ss_crawler | [fetch_missing_images] Found image for lobpp: https://i.ss.com/gallery/8/1494/373262/computers-completing-pc-ram-74652260.800.jpg
+2026-06-24 23:29:36 | INFO     | ss_crawler | [image_downloader] Downloaded image for lobpp (stored as lobpp_ab67e645.jpg)
+2026-06-24 23:29:36 | INFO     | ss_crawler | [fetch_missing_images] Downloaded image for lobpp -> rams\lobpp_ab67e645.jpg
+2026-06-24 23:29:36 | INFO     | ss_crawler | [fetch_missing_images] Run complete: processed=50, image_url_found=50, upgraded=0, downloaded=50, failed=0

@@ -2,16 +2,74 @@
 
 {% block title %}Unmatched Listings - SS-Crawler{% endblock %}
 
-{% block content %}<div class="section">
+{% block extra_css %}
+.category-filter {
+    display: inline-flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.category-btn {
+    padding: 0.375rem 0.75rem;
+    border: 1px solid #ddd;
+    background: white;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.875rem;
+    transition: all 0.2s;
+}
+
+.category-btn:hover {
+    background: #f5f5f5;
+}
+
+.category-btn.active {
+    background: #667eea;
+    color: white;
+    border-color: #667eea;
+}
+
+.badge-ram { background: #d1ecf1; color: #0c5460; }
+.badge-psu { background: #d4edda; color: #155724; }
+.badge-case { background: #f8d7da; color: #721c24; }
+
+.model-select-section {
+    margin-bottom: 1rem;
+}
+
+.model-select-section label {
+    display: block;
+    margin-bottom: 0.25rem;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    color: #666;
+}
+
+.model-select-section select {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 0.875rem;
+}
+
+{% endblock %}
+
+{% block content %}
+<div class="section">
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
         <h2>Unmatched Listings</h2>
         <div class="filters" style="margin: 0;">
             <label>
                 Category:
                 <select id="category-filter" onchange="loadUnmatched()">
-                    <option value="all">All</option>
-                    <option value="gpu">GPU</option>
-                    <option value="cpu">CPU</option>
+                    <option value="all">{{ t('All') }}</option>
+                    <option value="gpu">{{ t('GPU') }}</option>
+                    <option value="cpu">{{ t('CPU') }}</option>
+                    <option value="ssd">{{ t('SSD') }}</option>
+                    <option value="ram">{{ t('RAM') }}</option>
+                    <option value="psu">{{ t('PSU') }}</option>
+                    <option value="case">Case</option>
                 </select>
             </label>
         </div>
@@ -36,27 +94,80 @@
                 <p id="match-listing-title" style="background: #f5f5f5; padding: 0.75rem; border-radius: 6px;"></p>
             </div>
             
-            <div class="form-group">
-                <label>Select Model:</label>
-                <select id="model-select" size="10" style="max-height: 300px;">
-                    <!-- Populated by JavaScript -->
-                </select>
+            <div id="model-select-container">
+                <div class="form-group">
+                    <label>Select Model:</label>
+                    <select id="model-select" size="10" style="max-height: 300px; width: 100%;">
+                        <!-- Populated by JavaScript -->
+                    </select>
+                </div>
             </div>
             
             <div style="display: flex; gap: 1rem; margin-top: 1.5rem;">
                 <button class="btn btn-success" onclick="submitMatch()">Assign Model</button>
                 <button class="btn btn-danger" onclick="submitIgnore()">Ignore Listing</button>
-                <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+                <button class="btn btn-secondary" onclick="closeModal()">{{ t('Cancel') }}</button>
             </div>
         </div>
     </div>
 </div>
 {% endblock %}
 
-{% block scripts %}<script>
+{% block scripts %}
+<script>
 let currentListing = null;
 let gpuModels = [];
 let cpuModels = [];
+let ssdModels = [];
+let ramModels = [];
+let psuModels = [];
+let caseModels = [];
+
+function getCategoryModels(category) {
+    switch(category) {
+        case 'gpu': return gpuModels;
+        case 'cpu': return cpuModels;
+        case 'ssd': return ssdModels;
+        case 'ram': return ramModels;
+        case 'psu': return psuModels;
+        case 'case': return caseModels;
+        default: return [];
+    }
+}
+
+function getMatchAction(category) {
+    switch(category) {
+        case 'gpu': return 'match_gpu';
+        case 'cpu': return 'match_cpu';
+        case 'ssd': return 'match_ssd';
+        case 'ram': return 'match_ram';
+        case 'psu': return 'match_psu';
+        case 'case': return 'match_case';
+        default: return 'match';
+    }
+}
+
+function getCategoryBadgeClass(category) {
+    switch(category) {
+        case 'gpu': return 'badge-success';
+        case 'cpu': return 'badge-warning';
+        case 'ssd': return 'badge-danger';
+        case 'ram': return 'badge-ram';
+        case 'psu': return 'badge-psu';
+        case 'case': return 'badge-case';
+        default: return 'badge-secondary';
+    }
+}
+
+function formatModelDisplay(model, category) {
+    if (category === 'gpu') return `${model.vendor} ${model.model}`;
+    if (category === 'cpu') return `${model.producer} ${model.cpu_name}`;
+    if (category === 'ssd') return `${model.brand} ${model.model} (${model.capacity_gb}GB)`;
+    if (category === 'ram') return `${model.speed} ${model.capacity_gb}GB`;
+    if (category === 'psu') return `${model.name} ${model.wattage || ''}W`;
+    if (category === 'case') return model.name;
+    return JSON.stringify(model);
+}
 
 async function loadUnmatched() {
     const category = document.getElementById('category-filter').value;
@@ -65,8 +176,12 @@ async function loadUnmatched() {
         const response = await fetch(`/api/unmatched?category=${category}`);
         const data = await response.json();
         
-        gpuModels = data.gpu_models;
-        cpuModels = data.cpu_models;
+        gpuModels = data.gpu_models || [];
+        cpuModels = data.cpu_models || [];
+        ssdModels = data.ssd_models || [];
+        ramModels = data.ram_models || [];
+        psuModels = data.psu_models || [];
+        caseModels = data.case_models || [];
         
         const container = document.getElementById('unmatched-container');
         const listings = data.listings;
@@ -83,7 +198,7 @@ async function loadUnmatched() {
                     <tr>
                         <th>Title</th>
                         <th>Category</th>
-                        <th>Price</th>
+                        <th>{{ t('Price') }}</th>
                         <th>Location</th>
                         <th>Date</th>
                         <th>Actions</th>
@@ -93,15 +208,16 @@ async function loadUnmatched() {
         `;
         
         listings.forEach(item => {
+            const badgeClass = getCategoryBadgeClass(item.category);
             html += `
                 <tr>
-                    <td><strong>${item.title}</strong></td>
-                    <td><span class="badge ${item.category === 'gpu' ? 'badge-success' : 'badge-warning'}">${item.category.toUpperCase()}</span></td>
+                    <td><strong>${escapeHtml(item.title)}</strong></td>
+                    <td><span class="badge ${badgeClass}">${item.category.toUpperCase()}</span></td>
                     <td class="price">€${item.price_eur}</td>
                     <td>${item.seller_location || 'N/A'}</td>
                     <td>${item.date_posted ? new Date(item.date_posted).toLocaleDateString() : 'N/A'}</td>
                     <td>
-                        <button class="btn btn-small" onclick="openMatchModal('${item.listing_id}', '${item.category}', '${item.title.replace(/'/g, "\\'")}')">
+                        <button class="btn btn-small" onclick="openMatchModal('${item.listing_id}', '${item.category}', '${escapeHtml(item.title)}')">
                             Match
                         </button>
                         <a href="${item.listing_url}" target="_blank" class="btn btn-small">View →</a>
@@ -119,6 +235,16 @@ async function loadUnmatched() {
     }
 }
 
+function escapeHtml(text) {
+    if (!text) return '';
+    return text
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+}
+
 function openMatchModal(listingId, category, title) {
     currentListing = { listingId, category, title };
     
@@ -127,16 +253,12 @@ function openMatchModal(listingId, category, title) {
     const select = document.getElementById('model-select');
     select.innerHTML = '';
     
-    const models = category === 'gpu' ? gpuModels : cpuModels;
+    const models = getCategoryModels(category);
     
     models.forEach(model => {
         const option = document.createElement('option');
         option.value = model.id;
-        if (category === 'gpu') {
-            option.textContent = `${model.vendor} ${model.model}`;
-        } else {
-            option.textContent = `${model.producer} ${model.cpu_name}`;
-        }
+        option.textContent = formatModelDisplay(model, category);
         select.appendChild(option);
     });
     
@@ -157,7 +279,7 @@ async function submitMatch() {
         return;
     }
     
-    const action = currentListing.category === 'gpu' ? 'match_gpu' : 'match_cpu';
+    const action = getMatchAction(currentListing.category);
     
     try {
         const response = await fetch('/api/update-match', {

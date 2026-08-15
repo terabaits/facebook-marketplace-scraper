@@ -1,0 +1,17 @@
+Title: SS.COM Komplektējošie datoriem - RAM, Cena 5 €. Продается модуль ddr3 kingstonhiperx частота Плявниеки, талавы. - Sludinājumi
+
+Description: Продается модуль ddr3 kingstonhiperx khx1866c10d3/4g 4gb частота 1866mhz. Плявниеки, р-он талавы.
+Manufacturer: Kingstone
+RAM Type: DDR3
+Frequency: 1866 MHz
+Condition: lietota
+
+Capacity: 4
+RAM Type: DDR3
+RAM Frequency: 1866
+RAM Manufacturer: Kingstone
+RAM Model: None
+
+Frequency from desc: 1866
+
+Found HyperX in description

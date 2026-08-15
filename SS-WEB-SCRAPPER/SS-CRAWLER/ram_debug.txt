@@ -1,0 +1,18 @@
+Parsing HTML...
+Title: SS.COM Komplektējošie datoriem - RAM, Cena 370 €. Pārdodu jaunu operatīvo atmiņu G. Skill 48GB CL   Продаю SMS/WhatsApp. - Sludinājumi
+
+Description: Pārdodu jaunu operatīvo atmiņu G. Skill Trident Z5 Rgb, 48Gb, 8000Mhz, Cl40. Modelis: F5-8000J4048F24Gx2-TZ 5RS Atmiņas apjoms: 48GB CL aizture: CL40 Krāsa: Sudraba Atrodas Rīgā, Ķengaragā. Rakstiet SMS/WhatsApp. Продаю новую оперативную память G. Skill Trident Z5 RGB Модель: F5-8000J4048F24GX2-TZ 5RS Объём памяти: 48ГБ Задержка CL: CL40 Цвет: Серебристый Находится в Риге, Кенгарагс. Пишите SMS/WhatsApp.
+Manufacturer: G. Skill
+RAM Type: DDR
+Frequency: 8000 MHz
+Condition: jaun.
+
+Capacity: 48
+
+Extracted fields:
+  ram_type: DDR
+  ram_frequency_mhz: 8000
+  ram_manufacturer: G. Skill
+  ram_model: None
+
+Extracted speed string: DDR-8000

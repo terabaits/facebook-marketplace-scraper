@@ -1,0 +1,2 @@
+﻿listings 100 missing []
+new 65 steal 7 buy 0

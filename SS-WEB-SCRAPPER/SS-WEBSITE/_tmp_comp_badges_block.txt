@@ -1,0 +1,36 @@
+﻿540:     }
+541: }
+542: 
+543: // Compute NEW / STEAL / BUY deal badges for a computer listing (mirrors GPU/CPU pages)
+544: function computeComputerDealBadges(item) {
+545:     let badges = [];
+546: 
+547:     const isNewListing = item.is_new === true;
+548:     if (isNewListing) {
+549:         badges.push(`<span class="badge" style="background: #3b82f6; color: white; font-weight: bold;" title="New listing from current import!">🆕 NEW</span>`);
+550:     }
+551: 
+552:     if (!isNewListing && item.price_stats && item.price_stats.below_avg) {
+553:         const avgPrice = parseFloat(item.price_stats.avg);
+554:         const currentPrice = item.price_eur;
+555:         const savingsPct = ((avgPrice - currentPrice) / avgPrice * 100);
+556:         if (savingsPct >= 15) {
+557:             badges.push(`<span class="badge" style="background: #dc2626; color: white; font-weight: bold;" title="Price is ${savingsPct.toFixed(0)}% below peer average!">🔥 STEAL</span>`);
+558:         }
+559:     }
+560: 
+561:     if (item.is_buy === true) {
+562:         badges.push(`<span class="badge" style="background: #16a34a; color: white; font-weight: bold;" title="All-time lowest recorded price for this listing!">✅ BUY</span>`);
+563:     }
+564: 
+565:     if (badges.length === 0) return '';
+566:     return `<div style="position: absolute; top: 4px; right: 4px; display: flex; flex-direction: column; gap: 4px; z-index: 10;">${badges.join('')}</div>`;
+567: }
+568: 
+569: async function loadComputers() {
+570:     const activeOnly = document.getElementById('active-only').checked;
+571:     const prebuiltOnly = document.getElementById('prebuilt-only').checked;
+572:     const hidePrebuilt = document.getElementById('hide-prebuilt').checked;
+573:     const sortBy = document.getElementById('sort-by').value;
+574:     const sortOrder = document.getElementById('sort-order').value;
+575:     

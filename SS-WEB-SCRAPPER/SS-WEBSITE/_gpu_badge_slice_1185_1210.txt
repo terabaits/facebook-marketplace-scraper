@@ -1,0 +1,26 @@
+                            <span class="${priceClass}" style="font-size: 1.15rem; font-weight: 700; ${item.price_stats ? (item.price_stats.below_avg ? 'color: #16a34a;' : 'color: #000000;') : ''}">€${item.price_eur}</span>
+                            ${priceIndicator ? priceIndicator : ''}
+                            ${showAvgPrice && item.price_stats ? `<span style="color: #888; font-size: 0.75rem;">avg €${item.price_stats.avg}</span>` : ''}
+                        </div>
+                    </td>
+                    <td style="text-align: center;">
+                        ${item.msrp_usd ? `<div style="font-size: 1rem; color: #ffffff; font-weight: 600; text-shadow: 0 1px 2px rgba(0,0,0,0.3);">€${(item.msrp_usd * 0.92).toFixed(0)}</div><div style="font-size: 0.7rem; color: #888;">MSRP</div>` : '<span style="color: #888; font-size: 0.85rem;">-</span>'}
+                    </td>
+                    <td title="${item.g3d_mark ? 'PassMark G3D Mark: ' + item.g3d_mark : 'No G3D score'}" style="text-align: center;">${item.g3d_mark ? Number(item.g3d_mark).toLocaleString() : '-'}</td>
+                    <td title="${item.g2d_mark ? 'PassMark G2D Mark: ' + item.g2d_mark : 'No G2D score'}" style="text-align: center;">${item.g2d_mark ? Number(item.g2d_mark).toLocaleString() : '-'}</td>
+                    <td title="${item.performance_tier || 'No rank'}" style="text-align: center;">${item.g3d_rank ? '#' + Number(item.g3d_rank).toLocaleString() : '-'}</td>
+                    <td style="text-align: center;">
+                        ${item.is_unicorn ? `
+                            <span class="unicorn-badge" title="Only one listing of this model in all history!">🦄 UNICORN</span>
+                        ` : (item.price_stats ? `
+                            <div style="font-size: 0.875rem;">
+                                Avg: €${item.price_stats.avg}<br>
+                                Range: €${item.price_stats.min} - €${item.price_stats.max}
+                            </div>
+                            <div class="price-bar" title="Price percentile: ${item.price_stats.percentile}%">
+                                <div class="price-bar-fill" style="width: ${item.price_stats.percentile}%"></div>
+                            </div>
+                        ` : (item.gpu_model ? '<small>No price data</small>' : '<small>No price data</small>'))}
+                    </td>
+                    <td>${item.source === 'andelemandele' ? 'Latvia' : (item.source === 'facebook_extension' ? (item.seller_location || 'Unknown') : (item.seller_location || 'N/A'))}</td>
+                    <td>${item.date_posted ? new Date(item.date_posted).toLocaleDateString() : 'N/A'}</td>

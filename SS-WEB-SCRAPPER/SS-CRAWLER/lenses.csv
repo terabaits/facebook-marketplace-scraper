@@ -1,0 +1,480 @@
+System,Brand,Range,,Type,Mount,Lens,,FL (mm),Max FL (mm),Max. Aper.,Filter (mm),MFD (cm),Diam. (mm),Diam. (in.),Length (mm),Length (in.),Weight (g),Weight (oz),IS,WR,Elements,Blades,Price (new),,Notes
+Canon,Sigma,Prime,,AF,EF,8mm F3.5 EX DG Circular Fisheye,,8,,3.5,rear,14,74,2.89,69,2.70,400,14.1,,,,,$900,,"Good optics, very sharp by f/8. Fast/accurate AF. Popular for Virtual Tours and panoramas"
+Canon,Rokinon,Prime,,MF,EF,10mm F3.5 SP,,10,,3.5,-,26,95,3.74,98,3.86,731,25.8,,,,,"$1,200",,"Rectilinear design, perfect for wide interiors/architecture. Quality construction and great optics. MF"
+Canon,Rokinon,Prime,,MF,EF,12mm F2.8 ED AS IF NCS UMC Fisheye,,12,,2.8,-,20,77,3.04,73,2.86,515,18.2,,,,,$500,,Very sharp and lots of fun (180º FOV). Great for astrophotography / landscapes / sports 
+Canon,Sigma,Prime,,AF,EF,14mm F1.8 DG HSM Art,,14,,1.8,-,27,95,3.76,126,4.96,1170,41.3,,,,,"$1,600",,"Very sharp, great CA and coma control. Best used with MF (AF is inconsistent). Popular for astro"
+Canon,Rokinon,Prime,,MF,EF,14mm F2.8 IF ED UMC,,14,,2.8,-,27,87,3.43,96,3.78,550,19.4,,,,,$340,,"Lots of sample variation, great if you get a good one. Very popular for astrophotography"
+Canon,Canon,Prime,,AF,EF,14mm F2.8L II USM,,14,,2.8,rear,20,80,3.15,94,3.70,645,22.8,,,,,"$2,100",,Superb optics - sharp across all apertures. Great for pro interior work / architecture
+Canon,Zeiss,Prime,,MF,EF,15mm F2.8 Distagon T* ZE,,15,,2.8,95,25,103,4.06,116,4.57,820,28.9,,,,,"$2,950",,"Optically, the best ultrawide there is (alongside 17mm TS-E). Sharp edge to edge. MF only"
+Canon,Sigma,Prime,,AF,EF,15mm F2.8 EX DG Diagonal Fisheye,,15,,2.8,rear,15,74,2.89,69,2.72,370,13.1,,,,,$610,,"Bit soft wide open, but very sharp by f/4 (best at f/8). Solid build quality. Lots of fun with 180° AOV"
+Canon,Canon,Prime,,TS-E,EF,17mm F4L TS-E,,17,,4,-,25,89,3.50,107,4.21,820,28.9,,YES,,,"$2,150",,"Superb glass, optically great. Caveat: when tilted >2º, edge quality suffers (CA, fuzziness)"
+Canon,Zeiss,Prime,,MF,EF,18mm F3.5 Distagon T* ZE,,18,,3.5,82,30,86,3.40,59,2.31,470,16.6,,,,,"$1,400",,Noticeably sharper (esp. in edges) than Canon's 16-35. Great colors and contrast. MF only
+Canon,Canon,Prime,,AF,EF,20mm F2.8 USM,,20,,2.8,72,25,77,3.03,71,2.80,405,14.3,,,,,$540,,"Good optics, sharp (even wide open). Some vignetting. Lightweight, and great value for $"
+Canon,Canon,Prime,,AF,EF,24mm F1.4L II USM,,24,,1.4,77,25,94,3.70,87,3.43,650,22.9,,YES,,,"$1,550",,"Excellent glass. Sharp, great construction. A favorite for weddings/documentaries/landscape"
+Canon,Sigma,Prime,,AF,EF,24mm F1.4 DG HSM Art,,24,,1.4,77,25,85,3.35,90,3.55,665,23.5,,,,,$850,,"Not weather sealed, but just as sharp as the Canon 24 1.4L. Some sample variation (re: AF)"
+Canon,Canon,Prime,,AF,EF,24mm F2.8 IS USM,,24,,2.8,58,20,68,2.68,56,2.20,280,9.9,YES,,,,$600,,Good optics (sharp even wide open). Some vignetting wide open. 2-3 stop IS. Very light!
+Canon,Canon,Prime,,TS-E,EF,24mm F3.5L II TS-E,,24,,3.5,82,21,89,3.50,106,4.17,790,27.9,,YES,,,"$1,900",,"Legend glass for arch./landscape. Much better than v1. Very sharp. Smooth dials, solid build"
+Canon,Zeiss,Prime,,MF,EF,25mm F2 Distagon T* ZE,,25,,2,67,25,73,2.87,74,2.91,600,21.2,,,,,"$1,700",,"One of the best. Sharp, great colors/contrast. Smooth bokeh. Great build. Small amount of CA"
+Canon,Canon,Prime,,AF,EF,28mm F1.8 USM,,28,,1.8,58,25,74,2.91,56,2.20,310,10.9,,,,,$510,,"Good optics. Not as sharp as L lenses wide open, but acceptable. Sharp edge to edge by f/4"
+Canon,Zeiss,Prime,,MF,EF,28mm F2 Distagon T*  ZE,,28,,2,58,24,72,2.83,72,2.83,580,20.5,,,,,$800,,"Superb sharpness, colors, and Zeiss microcontrast. Built like a tank. MF only, a bit heavy"
+Canon,Canon,Prime,,AF,EF,28mm F2.8 IS USM,,28,,2.8,58,23,68,2.68,52,2.05,260,9.2,YES,,,,$550,,"An excellent 28mm. Sharp, 3 stops of IS, and very compact/light. "
+Canon,Rokinon,Prime,,MF,EF,35mm F1.4 AS UMC,,35,,1.4,77,30,83,3.27,112,4.39,710,25.0,,,,,$500,,"Very sharp (if you get a good copy), but average build quality. Works on both FF and APS-C"
+Canon,Canon,Prime,,AF,EF,35mm F1.4L II USM,,35,,1.4,72,28,80,3.15,106,4.17,760,26.8,,YES,,,"$1,800",,"A favorite of wedding pros. Sharp even wide open, fast AF, great colors/contrast. Corner CA"
+Canon,Tamron,Prime,,SP,EF,35mm F1.4 Di USD,,35,,1.4,72,30,81,3.19,105,4.13,815,28.7,,YES,,,$900,,Exceptional optics. Very sharp. Fast AF. One of the best 35mm lenses out there
+Canon,Sigma,Prime,,AF,EF,35mm F1.4 DG HSM Art,,35,,1.4,67,30,77,3.03,94,3.70,665,23.5,,,,,$900,,"Incredible sharpness, colors, and contrast. If you get a copy with no AF issues, it's a legend"
+Canon,Tamron,Prime,,AF,EF,35mm F1.8 Di VC USD,,35,,1.8,67,20,80,3.17,81,3.20,479,16.9,YES,YES,,,$600,,Good optics and build. Effective IS. Noticeable CA (more than Canon 35 F2). Weather-sealed.
+Canon,Canon,Prime,,AF,EF,35mm F2 IS USM,,35,,2,67,24,78,3.07,63,2.48,335,11.8,YES,,,,$600,,Optically at L level (but with plastic build). Sharp. Vignetting wide open. IS useful for video
+Canon,Canon,Prime,,AF,EF,40mm F2.8 STM,,40,,2.8,52,30,68,2.68,22,0.87,130,4.6,,,,,$200,,"Very sharp, fast AF, light and tiny (very discreet). Perfect for street / general / walkaround"
+Canon,Tamron,Prime,,AF,EF,45mm F1.8 Di VC USD,,45,,1.8,67,29,80,3.17,91,3.60,544,19.2,YES,YES,,,$600,,Great optics (as sharp as Canon and Sigma 50's). Solid build w/ WR. Sample variation (re: AF)
+Canon,Canon,Prime,,TS-E,EF,45mm F2.8 TS-E,,45,,2.8,72,40,90,3.54,81,3.19,645,22.8,,,,,"$1,400",,"Not as sharp as the other TS lenses (and not as much movement), but decent optics & build"
+Canon,Canon,Prime,,AF,EF,50mm F1.2L USM,,50,,1.2,72,45,86,3.39,66,2.60,580,20.5,,YES,,,"$1,450",,Great in the right hands (f/1.2 DOF is not easy). Creamy bokeh. Some CA and focus shift
+Canon,Canon,Prime,,AF,EF,50mm F1.4 USM,,50,,1.4,58,45,74,2.91,50,1.97,290,10.2,,,,,$400,,"Almost as good as the 1.2 - sharp, great bokeh, much better focus ring than the 1.8 version"
+Canon,Zeiss,Prime,,MF,EF,50mm F1.4 ZE Milvus,,50,,1.4,67,45,83,3.27,98,3.86,922,32.5,,YES,,,"$1,200",,"Excellent optics and construction (great haptics). Sharp, clean, beautiful colors, contrast, bokeh. "
+Canon,Zeiss,Prime,,MF,EF,50mm F1.4 Planar T* ZE,,50,,1.4,58,45,71,2.80,48,1.89,380,13.4,,,,,$725,,"Very sharp after f/4 (not so good wide open). Excellent colors, contrast, rendition. Built to last."
+Canon,Sigma,Prime,,AF,EF,50mm F1.4 DG HSM Art,,50,,1.4,77,40,85,3.36,100,3.93,815,28.7,,,,,$950,,"Superb glass: beautiful colors, rendition, bokeh, no CA. Very sharp once calibrated properly"
+Canon,Canon,Prime,,AF,EF,50mm F1.8 STM,,50,,1.8,49,35,69,2.72,39,1.54,159,5.6,,,,,$125,,"The Nifty Fifty (or plastic fantastic). Sharp, light,  fast AF, great bokeh... great value for money"
+Canon,Zeiss,Prime,,MF,EF,55mm F1.4 Otus ZE,,55,,1.4,77,50,92,3.64,127,5.01,1030,36.3,,,,,"$4,000",,"The last word in lens engineering. Optical marvel. MF only, heavy and large, but legendary glass"
+Canon,Canon,Prime,,MP-E,EF,65mm F2.5 1-5x Macro,,65,,2.5,58,24,81,3.19,98,3.86,710,25.0,,,,,"$1,050",,Specialized macro lens (not for beginners). Excellent optics and build. 1x to 5x magnification range 
+Canon,Sigma,Prime,,AF,EF,70mm F2.8 DG Macro Art,,70,,2.8,49,26,71,2.79,106,4.17,515,18.2,,,,,$570,,
+Canon,Rokinon,Prime,,MF,EF,85mm F1.2 SP ,,85,,1.2,86,80,93,3.66,98,3.87,1050,37.0,,,,,"$1,000",,"Excellent glass. Very sharp, built to last, great colors/rendition. Optics rival 85L. Great for portraits!"
+Canon,Canon,Prime,,AF,EF,85mm F1.2L II USM,,85,,1.2,72,95,91,3.58,84,3.31,1025,36.2,,YES,,,"$2,000",,"A portrait/wedding legend. Sharp, razor thin DOF, beautiful bokeh. Caveats: some CA, slow AF"
+Canon,Canon,Prime,,AF,EF,85mm F1.4L IS USM,,85,,1.4,77,85,89,3.50,105,4.13,950,33.5,YES,YES,,,"$1,600",,"More versatile than the 1.2L. Faster AF, just as sharp, great bokeh, better CA control. A winner."
+Canon,Zeiss,Prime,,MF,EF,85mm F1.4 Planar T* ZE,,85,,1.4,72,100,78,3.07,65,2.56,670,23.6,,,,,"$1,280",,"If you don't need AF, this lens will impress. Very sharp, great colors, rendering, and bokeh"
+Canon,Zeiss,Prime,,MF,EF,85mm F1.4 Otus ZE,,85,,1.4,86,80,101,3.98,124,4.88,1200,42.3,,,,,"$4,500",,"The best 85mm there is. Sharp, beautiful bokeh, legendary Zeiss rendering/contrast. MF only"
+Canon,Sigma,Prime,,AF,EF,85mm F1.4 DG HSM Art,,85,,1.4,86,85,95,3.73,126,4.97,1130,39.9,,,,,"$1,200",,"Excellent optics: very sharp, beautiful bokeh, fast AF. Solid build. Produces stunning portraits"
+Canon,Rokinon,Prime,,MF,EF,85mm F1.4 AS IF UMC,,85,,1.4,72,100,78,3.07,75,2.94,540,19.0,,,,,$300,,"Soft wide open, sharpens up by f/2. Great bokeh, solid build. Good portrait/video lens on a budget"
+Canon,Canon,Prime,,AF,EF,85mm F1.8 USM,,85,,1.8,58,85,75,2.95,71,2.80,425,15.0,,,,,$420,,"Excellent value for money: sharp, lightweight, great bokeh. Some CA/fringing at wide apertures"
+Canon,Tamron,Prime,,AF,EF,85mm F1.8 Di VC USD,,85,,1.8,67,80,85,3.34,91,3.59,700,24.7,YES,YES,,,$750,,"Good optics, very sharp by f/4. AF may require calibration. VC noisy but effective. Solid build"
+Canon,Tamron,Prime,,AF,EF,90mm F2.8 Di Macro,,90,,2.8,55,29,71,2.80,97,3.80,405,14.3,,,,,$500,,An oldie but a goodie. Great macro lens. AF a bit slower than modern lenses. Great value
+Canon,Tamron,Prime,,AF,EF,90mm F2.8 Di Macro 1:1 VC USD,,90,,2.8,62,30,69,2.72,117,4.61,610,21.5,YES,YES,,,$650,,"Sharp, great bokeh. VC very fast (less so in low light). Great for macro and portraits. 1x mag."
+Canon,Zeiss,Prime,,MF,EF,100mm F1.4 ZE Otus,,100,,1.4,86,100,101,3.98,129,5.08,1405,49.6,,,,,"$5,000",,"World-class optics, sharp wide open (@1.4). Otus quality and construction. The lens to beat!"
+Canon,Zeiss,Prime,,MF,EF,100mm F2M Milvus ZE Macro,,100,,2,67,44,81,3.19,104,4.09,843,29.7,,,,,"$1,840",,"If you have the skills/time to nail focus, this is the one. Superb Zeiss optics. Macro: 0.5x mag."
+Canon,Canon,Prime,,AF,EF,100mm F2 USM,,100,,2,58,90,75,2.95,73,2.87,460,16.2,,,,,$500,,"Compared to 85mm 1.8: this has slower AF, but way less CA. Sharp, great bokeh/colors. A+"
+Canon,Canon,Prime,,AF,EF,100mm F2.8 Macro USM,,100,,2.8,58,31,79,3.11,119,4.69,600,21.2,,,,,$600,,"Great lens for macro and portraits. Very sharp, fast AF, solid build. Perfect if you don't need IS"
+Canon,Canon,Prime,,AF,EF,100mm F2.8L Macro IS USM,,100,,2.8,67,30,78,3.07,123,4.84,625,22.0,YES,YES,,,$900,,"Excellent glass. Advantage over non-L is the IS. Sharp, creamy bokeh. MF better on Zeiss. 1x mag."
+Canon,Tokina,Prime,,AF,EF,100mm F2.8 atx-i Macro,,100,,2.8,55,30,73,2.87,95,3.74,490,17.3,,,,,$430,,An excellent performer for macro and portraits. Quality telephoto on a budget! 1:1 max repro. ratio
+Canon,Venus Optics,Prime,,MF,EF,100mm F2.8 2X Ultra Macro APO,,100,,2.8,67,25,72,2.83,125,4.92,638,22.5,,,,,$450,,"Excellent macro lens, very sharp with beautiful bokeh. 2:1 max repro. ratio"
+Canon,Sigma,Prime,,AF,EF,105mm F1.4 DG HSM Art,,105,,1.4,105,100,116,4.56,132,5.18,1640,57.8,,YES,,,"$1,600",,"Exceptional glass. Sharp edge to edge, no CA. Creamy background blur. great for portraiture"
+Canon,Sigma,Prime,,AF,EF,105mm F2.8 EX DG OS HSM Macro,,105,,2.8,62,31,79,3.10,127,5.00,726,25.6,YES,,,,$970,,"Good optics. Fast AF, excellent build quality. Great value when on sale. Macro: 1x mag. "
+Canon,Canon,Prime,,AF,EF,135mm F2L USM,,180,,2,72,90,83,3.27,112,4.41,750,26.5,,YES,,,"$1,000",,"Superb glass. very sharp, gorgeous bokeh. World-class for portraits, indoor concerts/sports"
+Canon,Sigma,Prime,,AF,EF,150mm F2.8 EX DG OS HSM APO Macro,,150,,2.8,72,38,79,3.10,150,5.90,1180,41.6,YES,,,,"$1,100",,"Great macro, as sharp as 100mm 2.8L. Solid build. Sample variation (AF issues). 1x mag."
+Canon,Sigma,Prime,,AF,EF,180mm F2.8 APO Macro EX DG OS HSM,,180,,2.8,86,47,95,3.74,204,8.03,1630,57.5,YES,,,,"$1,700",,"Superb macro / portrait lens. As sharp as L glass, beautiful colors and bokeh. A bit heavy"
+Canon,Canon,Prime,,AF,EF,180mm F3.5L Macro USM,,200,,3.5,72,48,82,3.23,187,7.36,1090,38.4,,YES,,,"$1,400",,Excellent. Sharper than the 100mm (but with slower AF). Great for product shots and wildlife macro
+Canon,Canon,Prime,,AF,EF,200mm F2L IS USM,,200,,2,drop-in (52),190,128,5.04,208,8.19,2520,88.9,YES,YES,,,"$5,700",,Superb glass. Produces some of the best portrait and indoor sports photos out there. Sublime
+Canon,Canon,Prime,,AF,EF,200mm F2.8L II USM,,200,,2.8,72,150,83,3.27,136,5.35,765,27.0,,YES,,,$750,,"Excellent in the right hands (no IS). Very sharp, fast AF. Popular for sports/concerts/astro/portraits"
+Canon,Canon,Prime,,AF,EF,300mm F2.8L IS II USM,,300,,2.8,drop-in (52),200,128,5.04,249,9.80,2400,84.7,YES,YES,,,"$6,100",,Optical and build perfection. Very versatile paired with 1.4x / 2x TC. Note: v1 is still a superb lens
+Canon,Canon,Prime,,AF,EF,300mm F4L IS USM,,300,,4,77,150,90,3.54,221,8.70,1190,42.0,YES,YES,,,"$1,350",,"Outstanding optics and build quality. Sharp, fast AF. Great for handheld birding / wildlife / sports"
+Canon,Canon,Prime,,AF,EF,400mm F2.8L IS II USM,,400,,2.8,drop-in (52),270,163,6.42,343,13.50,3850,135.8,YES,YES,,,"$10,000",,"A Canon supertele legend gets even better. Compared to v1: faster AF, sharper, and much lighter"
+Canon,Canon,Prime,,AF,EF,400mm F2.8L IS III USM,,400,,2.8,drop-in (52),250,163,6.42,343,13.50,2840,100.2,YES,YES,,,"$12,000",,"Compared to v2: revised optics (even better image quality), lighter, center of gravity closer to rear"
+Canon,Canon,Prime,,AF,EF,400mm F4 DO IS II USM,,400,,4,drop-in (52),330,128,5.04,233,9.17,1200,42.3,YES,YES,,,"$6,900",,"DO allows for portability with almost no downsides. Sharp, fast AF, great contrast. Better than v1"
+Canon,Canon,Prime,,AF,EF,400mm F5.6L USM,,400,,5.6,77,350,90,3.54,257,10.12,1250,44.1, ,YES,,,"$1,250",,You won't find better/sharper optics for the $. Solid build. No IS. 11.5' / 3.5 m minimum distance
+Canon,Canon,Prime,,AF,EF,500mm F4L IS II USM,,500,,4,drop-in (52),370,146,5.75,383,15.08,3190,112.5,YES,YES,,,"$9,000",,Superb glass for wildlife or sports
+Canon,Sigma,Prime,,AF,EF,500mm F4 DG OS HSM Sports,,500,,4,drop-in (46),350,145,5.70,380,14.97,3310,116.8,YES,YES,,,"$6,000",,Takes direct aim at Canon's offering. Superb optics and performance for 50% of the cost.
+Canon,Canon,Prime,,AF,EF,600mm F4L IS II USM,,600,,4,drop-in (52),450,168,6.61,449,17.68,3920,138.3,YES,YES,,,"$11,500",,Superb glass for wildlife or sports.
+Canon,Canon,Prime,,AF,EF,600mm F4L IS III USM,,600,,4,drop-in (52),420,168,6.61,448,17.64,3050,107.6,YES,YES,,,"$13,000",,Superb glass for wildlife or sports. Considerably lighter than predecessor. 
+Canon,Canon,Prime,,AF,EF,800mm F5.6L IS USM,,800,,5.6,drop-in (52),600,163,6.42,461,18.15,4500,158.7,YES,YES,,,"$13,000",,Superb glass for wildlife or sports
+Canon,Sigma,Prime,,AF,EF,800mm F5.6 EX DG HSM APO,,800,,5.6,drop-in (46),700,157,6.16,521,20.51,4900,172.8,YES,YES,,,"$6,600",,"Excellent glass. Tradeoffs vs. Canon's 800mm 5.6L: longer, heavier, and doesn't have IS"
+Canon,Canon,Zoom,,AF,EF,8-15mm F4L Fisheye USM,,8,15,4,rear,15,79,83,3.11,3.27,540,19.0,,YES,,,"$1,250",,"Good optics (sharp), 180° AOV @ 8mm. Edge CA at wide end. Popular for action sports / scuba "
+Canon,Canon,Zoom,,AF,EF,11-24mm F4L USM,,11,24,4,rear,28,108,132,4.25,5.20,1180,41.6,,YES,,,"$3,000",,"Superb. Sharp, minimal distortion or vignetting. Popular with RE / arch. / landscape pros"
+Canon,Sigma,Zoom,,AF,EF,12-24mm F4 DG HSM Art,,12,24,4,-,24,102,131.5,4.02,5.18,1150,40.6,,YES,,,"$1,600",,"Excellent optics, much better than older versions. Minimal distortion. Delivers pro results"
+Canon,Sigma,Zoom,,AF,EF,14-24mm F2.8 DG HSM Art,,14,24,2.8,-,26,96.4,135.1,3.80,5.32,1150,40.6,,YES,,,"$1,300",,"Excellent optics, center sharp wide open, corners by f/4. Great contrast, solid construction"
+Canon,Tamron,Zoom,,AF,EF,15-30mm F2.8 Di VC USD,,15,30,2.8,-,28,98.4,145,3.87,5.71,1100,38.8,YES,,,,"$1,200",,"Good optics (sharp!), performance, and construction. VC (IS) very useful on the go. Some CA"
+Canon,Canon,Zoom,,AF,EF,16-35mm F2.8L II USM,,16,35,2.8,82,28,89,112,3.50,4.41,635,22.4,,YES,,,"$1,600",,"A Canon legend. Excellent optics, a reliable workhorse for landscape / general. Very versatile"
+Canon,Canon,Zoom,,AF,EF,16-35mm F2.8L III USM,,16,35,2.8,82,28,89,128,3.50,5.04,790,27.9,,YES,,,"$2,200",,"Even better than v2 (corners sharp wide open, less distortion). Great contrast and colors. A+"
+Canon,Canon,Zoom,,AF,EF,16-35mm F4L IS USM,,16,35,4,77,28,83,113,3.27,4.45,615,21.7,YES,YES,,,"$1,100",,"If you don't need f/2.8, this is the one. Excellent optics (sharp, great colors/contrast). Good value"
+Canon,Tokina,Zoom,,AF,EF,16-28mm F2.8 Pro,,16,28,2.8,-,28,89.9,133.4,3.54,5.25,950,33.5,,,,,$630,,"Good optics, with some caveats: significant flaring, stiff zoom/focus rings, doesn't take filters"
+Canon,Tokina,Zoom,,AF,EF,16-28mm F2.8 Opera,,16,28,2.8,-,28,89,136,3.50,5.35,950,33.5,,,,,$700,,"Excellent optics, very sturdy construction. Overall great performer"
+Canon,Tamron,Zoom,,AF,EF,17-35mm F2.8-4 DI OSD,,17,35,2.8,77,28,83.6,92.5,3.29,3.64,459,16.2,,YES,,,$600,,"Light and very sharp, with minimal CA/flaring. Some distortion (easily correctable). Perfect for travel!"
+Canon,Tokina,Zoom,,AF,EF,17-35mm F4 Pro FX,,17,35,4,82,28,88.9,94,3.50,3.70,600,21.2,,,,,$450,,"Good optics (sharp everywhere by f/5.6, good contrast), lightweight. Great value (esp. used)"
+Canon,Canon,Zoom,,AF,EF,17-40mm F4L USM,,17,40,4,77,28,84,97,3.31,3.82,500,17.6,,YES,,,$800,,"Popular for a reason: excellent optics (very sharp by f/5.6) for the $. Light, solid build, compact"
+Canon,Sigma,Zoom,,AF,EF,24-35mm F2 DG HSM Art,,24,35,2,82,28,86.4,121.9,3.40,4.80,941,33.2,,,,,"$1,000",,"Sharp, beautiful colors/contrast, essentially ""replaces"" a whole bag of primes (24, 28, 35). Excellent!"
+Canon,Canon,Zoom,,AF,EF,24-70mm F2.8L II USM,,24,70,2.8,82,38,89,113,3.50,4.45,805,28.4,,YES,,,"$1,900",,"King of standard zooms: sharp, with great bokeh/contrast. Very solid build. Note: v1 is still great."
+Canon,Sigma,Zoom,,AF,EF,24-70mm F2.8 DG OS HSM Art,,24,70,2.8,82,37,88,107.6,3.46,4.24,1020,36.0,YES,,,,"$1,300",,"Good optics, but not on par with other ""Art"" lenses. Corners soft at wide end. May need AF calib."
+Canon,Tamron,Zoom,,AF,EF,24-70mm F2.8 Di VC USD G2,,24,70,2.8,82,38.1,88.4,111.8,3.48,4.40,904.3,31.9,YES,YES,,,"$1,200",,"Good optics, but AF a bit slow and tends to hunt. VC (IS) very helpful hand-held and in low light"
+Canon,Tokina,Zoom,,AF,EF,24-70mm F2.8 PRO FX,,24,70,2.8,82,38,89.6,107.5,3.53,4.23,1000,35.3,,,,,$950,,"Very sharp, great colors/contrast. AF a bit slow. An excellent standard zoom at a compelling price."
+Canon,Canon,Zoom,,AF,EF,24-70mm F4L IS USM,,24,70,4,77,20,83,93,3.27,3.66,600,21.2,YES,YES,,,$900,,"Great all-around: sharp, fast AF, solid build, even has macro mode (0.7x mag). Great value"
+Canon,Canon,Zoom,,AF,EF,24-105mm F3.5-5.6 IS STM,,24,105,3.5,77,40,83,104,3.27,4.09,525,18.5,YES,,,,$600,,"Smaller, lighter, quieter than L lenses (but just as sharp!) Excellent walkaround lens; great for video"
+Canon,Canon,Zoom,,AF,EF,24-105mm F4L IS USM,,24,105,4,77,45,84,107,3.31,4.21,670,23.6,YES,YES,,,"$1,000",,"There's very little this lens can't do: excellent optics, versatile range. Great ""1 lens"" travel solution"
+Canon,Canon,Zoom,,AF,EF,24-105mm F4L IS USM II,,24,105,4,77,45,84,118,3.31,4.65,795,28.0,YES,YES,,,"$1,100",,"Just as versatile as v1 (though not as sharp), but lens creep is fixed. The Canon walkaround king"
+Canon,Sigma,Zoom,,AF,EF,24-105mm F4 DG OS HSM Art,,24,105,4,82,45,88.9,109.2,3.50,4.30,885,31.2,YES,,,,$900,,"Sharp, with creamy bokeh and great colors/contrast. On par with 24-105L, just no weather sealing"
+Canon,Tamron,Zoom,,AF,EF,28-75mm F2.8 XR Di LD Aspherical (IF) ,,28,75,2.8,67,33,72.9,91.9,2.87,3.62,508,17.9,,,,,$500,,Good optics and performance. Very sharp by f/4. AF slower than Canon's 24-70 2.8. A bargain!
+Canon,Tamron,Zoom,,AF,EF,35-150mm F2.8-4 Di VC OSD,,35,150,2.8,77,45,84,126.8,3.31,4.99,796,28.1,YES,,,,$800,,"Great optics, but a bit slow to focus. Good walk-around lens. May require calibration with TAP console"
+Canon,Canon,Zoom,,AF,EF,28-300mm F3.5-5.6L IS USM,,28,300,3.5,77,70,92,184,3.62,7.24,1670,58.9,YES,YES,,,"$2,500",,"Big and heavy, but very versatile and does it all (sharp!) Built to last and sealed. Push/pull zoom. "
+Canon,Tamron,Zoom,,AF,EF,28-300mm F3.5-6.3 Di VC PZD,,28,300,3.5,67,49,74.4,96,2.93,3.78,540,19.0,YES,,,,$700,,"An all-in-one solution: good optics, solid build, in a lightweight package. Perfect for casual / travel"
+Canon,Sigma,Zoom,,AF,EF,60-600mm F4.5-6.3 DG OS HSM Sports ,,60,600,4.5,105,60,120.4,268.9,4.74,10.59,2700,95.2,YES,YES,,,"$2,000",,Early reports indicate superb optics (on par or better than 100-400L). Great for wildlife/sports/etc.
+Canon,Canon,Zoom,,AF,EF,70-200mm F2.8L USM,,70,200,2.8,77,150,85,194,3.35,7.64,1310,46.2,,YES,,,"$1,350",,"A Canon legend. No IS, but stellar optics and excellent performance/build. Very useful focal range"
+Canon,Canon,Zoom,,AF,EF,70-200mm F2.8L IS II USM,,70,200,2.8,77,120,89,199,3.50,7.83,1490,52.6,YES,YES,,,"$2,100",,"Even better than v1 (faster AF, better contrast, IS). Creamy bokeh. 1000's of pros rely on it daily. "
+Canon,Canon,Zoom,,AF,EF,70-200mm F2.8L IS III USM,,70,200,2.8,77,120,89,199,3.50,7.83,1480,52.2,YES,YES,,,"$2,100",,"The new 70-200 king. Updates: improved coating, better back-lit focusing. v2 is almost as good."
+Canon,Sigma,Zoom,,AF,EF,70-200mm F2.8 EX DG APO OS HSM,,70,200,2.8,77,140,86.4,198.1,3.40,7.80,1430,50.4,YES,,,,"$1,400",,90% of the optics/performance of the Canons for half the price. Recommendation: try both first 
+Canon,Sigma,Zoom,,AF,EF,70-200mm F2.8 DG OS HSM Sports,,70,200,2.8,82,120,94.2,202.9,3.71,7.99,1800,63.5,YES,YES,,,"$1,500",,"Superb optical performance. Fast autofocus, very sharp. Great bokeh. On par with Canon's 70-200"
+Canon,Tamron,Zoom,,AF,EF,70-200mm F2.8 Di LD (IF) Macro AF,,70,200,2.8,77,95,88.9,193,3.50,7.60,1150,40.6,,,,,$770,,Good optics (sharp!). Slower AF than Canon L's. Great value! Macro: 0.32x mag. @ 200mm
+Canon,Tamron,Zoom,,AF,EF,70-200mm F2.8 Di VC USD G2,,70,200,2.8,77,95,87.9,193,3.46,7.60,1500,52.9,YES,YES,,,"$1,300",,Image quality on par with L's. Even better VC than Canons. Has Arca-Swiss plate on tripod collar
+Canon,Canon,Zoom,,AF,EF,70-200mm F4L USM,,70,200,4,67,120,76,172,2.99,6.77,710,25.0,,YES,,,$650,,Older design but still one of the best you can get. Good optics and performance. Great value
+Canon,Canon,Zoom,,AF,EF,70-200mm F4L IS USM,,70,200,4,67,120,76,172,2.99,6.77,760,26.8,YES,YES,,,"$1,200",,"Even better than the v1. Sharp, fast AF and IS. Half the weight of the 2.8. Pro-level performance"
+Canon,Canon,Zoom,,AF,EF,70-200mm F4L IS II USM,,70,200,4,72,100,80,176,3.15,6.93,780,27.5,YES,YES,,,"$1,300",,"The newest version - and the best. Tack sharp, great colors/contrast, fast AF, beautiful bokeh. A+"
+Canon,Tamron,Zoom,,AF,EF,70-210mm F4 Di VC USD,,70,210,4,67,95,76,175.3,2.99,6.90,859,30.3,YES,YES,,,$800,,Great optics at an acceptable price point. Solid all-around zoom. Upgrade firmware for best results
+Canon,Canon,Zoom,,AF,EF,70-300mm F4-5.6 IS USM,,70,300,4,58,150,77,143,3.03,5.63,630,22.2,YES,,,,$380,,"Decent in mid ranges, softer at long end. Fast/accurate AF. Great value for money."
+Canon,Canon,Zoom,,AF,EF,70-300mm F4-5.6 IS II USM,,70,300,4,67,120,79,145,3.11,5.71,708,25.0,YES,,,,$550,,"Good optics (sharp), with fast and accurate AF. Noticeable vignetting wide open. Great value!"
+Canon,Canon,Zoom,,AF,EF,70-300mm F4-5.6L IS USM,,70,300,4,67,120,89,143,3.50,5.63,1050,37.0,YES,YES,,,"$1,350",,"Excellent optics, new design, just as good (if not better) than 70-200L's. One of the best Canon zooms"
+Canon,Sigma,Zoom,,AF,EF,70-300mm F4-5.6 DG Macro,,70,300,4,58,150,76.2,119.5,3.00,4.70,530,18.7,,,,,$170,,"Decent optics (soft at longer end, must be stopped down), but a true bargain! Macro: 1 to 2x mag."
+Canon,Tamron,Zoom,,AF,EF,70-300mm F4-5.6 Di VC USD ,,70,300,4,62,95,81.5,149.9,3.21,5.90,765,27.0,YES,,,,$450,,"Sharp from 70-200, softens after that (sharp after f/8). Average AF. Subpar VC. Decent value"
+Canon,Canon,Zoom,,AF,EF,75-300mm F4-5.6 III,,75,300,4,58,150,71,122,2.80,4.80,1480,52.2,,,,,$200,,"OK optics, soft at long end. Average AF performance. No IS. USM version performs similarly."
+Canon,Canon,Zoom,,AF,EF,100-400mm F4.5-5.6L IS USM,,100,400,4.5,77,98,92,189,3.62,7.44,1380,48.7,YES,,,,"$1,691",,"Excellent optics. Caveats: older IS (~1-2 stops), not weather sealed. Available used for $700-1000"
+Canon,Canon,Zoom,,AF,EF,100-400mm F4.5-5.6L IS II USM,,100,400,4.5,77,98,94,193,3.70,7.60,1570,55.4,YES,YES,,,"$2,200",,"Much sharper than v1, beautiful bokeh and fast/accurate AF, 4 stop IS, Superb wildlife lens. A+"
+Canon,Tamron,Zoom,,AF,EF,100-400mm F4.5-6.3 Di VC USD,,100,400,4.5,67,150,86.2,199,3.39,7.83,1135,40.0,YES,YES,,,$800,,"Good optics, sharp with fast AF and great VC. Great value for money. Birding on a budget"
+Canon,Sigma,Zoom,,AF,EF,100-400mm F5-6.3 DG OS HSM ,,100,400,5,67,160,86.4,182.3,3.40,7.18,1160,40.9,YES,,,,$800,,"Good optics, sharp. Great value for $. Like Tamron, no tripod collar. AF may require calibration"
+Canon,Sigma,Zoom,,AF,EF,120-300mm F2.8 DG OS HSM,,120,300,2.8,105,150,121.4,291,4.78,11.46,3390,119.6,YES,YES,,,"$3,600",,Excellent optics. AF may require fine-tuning with USB dock. Great for sports. Actual range: 120-280mm
+Canon,Sigma,Zoom,,AF,EF,150-600mm F5-6.3 DG OS HSM Contemporary,,150,600,5,95,280,104.1,259.1,4.10,10.20,1950,68.8,YES,YES,,,"$1,100",,"Excellent optics - sharp, great colors and contrast. May require AF calibration with dock (sold sep.)"
+Canon,Sigma,Zoom,,AF,EF,150-600mm F5-6.3 DG OS HSM Sports,,150,600,5,105,260,121.9,289.6,4.80,11.40,2860,100.9,YES,YES,,,"$2,000",,Optically identical to 'Contemporary' but with improved weather sealing and construction. Heavier!
+Canon,Tamron,Zoom,,AF,EF,150-600mm F5-6.3 Di VC USD ,,150,600,5,95,270,105.6,257.8,4.16,10.15,1950,68.8,YES,,,,"$1,070",,Excellent optics for the price. Softens up after 500mm. Performs best at f/8. Best for still subjects
+Canon,Tamron,Zoom,,AF,EF,150-600mm F5-6.3 Di VC USD G2 ,,150,600,5,95,220,108.4,260.2,4.27,10.24,2010,70.9,YES,YES,,,"$1,400",,"Massive improvement over v1: sharper, better VR and tracking. Excellent optics, and great value!"
+Canon,Canon,Zoom,,AF,EF,200-400mm F4L IS USM Extender 1.4x,,200,400,4,drop-in (52),200,128,366,5.04,14.41,3620,127.7,YES,YES,,,"$11,000",,"Superb glass. Sharp throughout, very fast AF. Effectively 200-560mm. Nature/wildlife/sports king"
+Canon,Sigma,Zoom,,AF,EF,300-800mm F5.6 APO EX DG HSM,,300,800,5.6,drop-in (46),600,156.5,544,6.16,21.42,5880,207.4,,,,,"$8,000",,"Excellent optics, very sharp. Heavy, no IS - a demanding lens, not for beginners. Bring a tripod! "
+Canon,Sigma,Prime,APS-C,AF,EF-S,4.5mm F2.8 EX DC HSM Circular Fisheye,,4.5,,2.8,rear,13.5,76.2,3.00,77.8,3.06,470,16.6,,,,,$950.00,,"Good optics, unique/creative results (180° angle of view, circular fisheye)"
+Canon,Lensbaby,Prime,APS-C,MF,EF-S,5.8mm F3.5 Circular Fisheye,,5.8,,3.5,-,0.64,70,2.76,76,2.99,298,10.5,,,,,$300.00,,"Not very sharp, lots of flare, but it's a 185° circular fisheye for not that much $"
+Canon,Opteka,Prime,APS-C,MF,EF-S,6.5mm F3.5 Circular Fisheye,,6.5,,3.5,-,30,,0.00,100,3.94,414,14.6,,,,,$220.00,,"Decent optics, a cheap way to experiment with the fisheye perspective"
+Canon,Bower,Prime,APS-C,MF,EF-S,8mm F3.5 Fisheye,,8,,3.5,-,30.5,74.7,2.94,74.9,2.95,220,7.8,,,,,$220.00,,"Decent optics, a bit soft wide open, lots of sample variation, very light"
+Canon,Rokinon,Prime,APS-C,MF,EF-S,8mm F3.5 HD Fisheye,,8,,3.5,-,30.5,75,2.95,77.3,3.04,428,15.1,,,,,$200.00,,"Good optics, average build, it's probably the fisheye to get if starting out"
+Canon,Rokinon,Prime,APS-C,MF,EF-S,10mm F2.8 ED AS NCS CS,,10,,2.8,-,24,87,3.43,106.1,4.18,590,20.8,,,,,$350.00,,"Good optics (sharp!), very popular for nightscapes / astrophotography"
+Canon,Rokinon,Prime,APS-C,MF,EF-S,16mm F2 ED AS UMC CS,,16,,2,77,20,83,3.27,89.4,3.52,583,20.6,,,,,$350.00,,"Good optics (very sharp from f/4), popular for landscapes / astro"
+Canon,Canon,Prime,APS-C,AF,EF-S,24mm F2.8 STM,,24,,2.8,52,16,68,2.68,23,0.91,125,4.4,,,,,$150.00,,"Sharp, snappy AF, good build, versatile FL, tiny. A winner and a bargain!"
+Canon,Sigma,Prime,APS-C,AF,EF-S,30mm F1.4 DC HSM Art,,30,,1.4,62,30,74,2.91,63,2.48,435,15.3,,,,,$500.00,,"Sharp, great bokeh, solid build, wonderful if you get a copy with no AF issues"
+Canon,Canon,Prime,APS-C,AF,EF-S,35mm F2.8 Macro IS STM,,35,,2.8,49,13,69,2.72,56,2.20,190,6.7,YES,,,,$350.00,,"Exceptional value. Good optics, versatile, front LED fill light. 1x magnific."
+Canon,Tamron,Prime,APS-C,AF,EF-S,60mm F2 Di II 1:1 Macro,,60,,2,55,23,73,2.87,80,3.15,390,13.8,,,,,$524.00,,AF slow and tends to hunt (esp. in low light). Good optics. 1x magnific.
+Canon,Canon,Prime,APS-C,AF,EF-S,60mm F2.8 Macro USM,,60,,2.8,52,20,73,2.87,70,2.76,335,11.8,,,,,$470.00,,"Great value. Good optics, beautiful bokeh, AF a tad slow. 1x magnific."
+Canon,Venus Optics,Prime,APS-C,MF,EF-S,60mm F2.8 2X Ultra-Macro,,60,,2.8,62,6,95,3.74,77,3.03,800,28.2,,,,,$400.00,,"Heavy, MF only, but an excellent macro performer with 2x magnification"
+Canon,Sigma,Zoom,APS-C,AF,EF-S,8-16mm F4.5-5.6 DC HSM,,8,16,4.5,-,24,105.7,4.16,75,2.95,555,19.6,,,,,$570.00,,"The ultimate APS-C ultrawide: excellent optics (as good as Canon 10-22), fast and accurate AF"
+Canon,Tokina,Zoom,APS-C,AF,EF-S,10-17mm F3.5-4.5 AT-X AF DX Fisheye,,10,17,3.5,-,14,69.9,2.75,70.9,2.79,350,12.3,,,,,$470.00,,"Good optics, sharp, popular for underwater / surfing / BMX / skate / unique landscape shots"
+Canon,Tokina,Zoom,APS-C,AF,EF-S,10-17mm F3.5-4.5 AT-X AF DX Fisheye NH,,10,17,3.5,-,14,69.9,2.75,70.9,2.79,350,12.3,,,,,$460.00,,"Same as above, but this one doesn't have a built-in lens hood (""NH"")"
+Canon,Canon,Zoom,APS-C,AF,EF-S,10-18mm F4.5-5.6 IS STM,,10,18,4.5,67,22,74.6,2.94,72,2.83,240,8.5,YES,,,,$300.00,,"Great lens for real estate / landscapes. Sharp, fast AF. Some barrel distortion / flaring"
+Canon,Sigma,Zoom,APS-C,AF,EF-S,10-20mm F3.5 EX DC HSM,,10,20,3.5,82,24,86.4,3.40,88.9,3.50,520,18.3,,,,,$330.00,,"Good optics, popular for landscapes / real estate. Good value when on sale. Noticeable CA."
+Canon,Canon,Zoom,APS-C,AF,EF-S,10-22mm F3.5-4.5 USM,,10,22,3.5,77,24,83.5,3.29,89.8,3.54,385,13.6,,,,,$650.00,,"Plastic build, but lighter and sharper than third party options, better flare control. Fast, quiet AF. "
+Canon,Tamron,Zoom,APS-C,AF,EF-S,10-24mm F3.5-4.5 Di II VC HLD,,10,24,3.5,77,24,83.6,3.29,83.8,3.30,439,15.5,YES,YES,,,$500.00,,"Good optics and performance. Sharp, fast AF. VC useful for handheld landscapes / real estate"
+Canon,Tokina,Zoom,APS-C,AF,EF-S,11-16mm F2.8 AT-X 116 PRO DX-II ,,11,16,2.8,77,30,84,3.31,89.2,3.51,550,19.4,,,,,$380.00,,"Very sharp, solid build, great for astro / low light. Noticeable CA. Some sample variation with AF"
+Canon,Tokina,Zoom,APS-C,AF,EF-S,11-16mm F2.8 CF atx-i,,11,16,2.8,77,30,84,3.31,91.7,3.61,555,19.6,,,,,$450.00,,New release
+Canon,Tokina,Zoom,APS-C,AF,EF-S,11-20mm F2.8 AT-X PRO DX,,11,20,2.8,82,28,89,3.50,92,3.62,560,19.8,,,,,$470.00,,"Good optics, solid build, AF sometimes hunts in low light. Some edge CA. Popular for astro"
+Canon,Tokina,Zoom,APS-C,AF,EF-S,12-28mm F4 AT-X Pro,,12,28,4,77,25,84,3.31,90.2,3.55,530,18.7,,,,,$450.00,,"Good optics, sharp wide open (at f/4), versatile range, solid construction. Great value."
+Canon,Canon,Zoom,APS-C,AF,EF-S,15-85mm F3.5-5.6 IS USM,,15,85,3.5,72,35,82,3.23,88,3.46,575,20.3,YES,,,,$800.00,,"Sharp, good AF, excellent walkaround lens. Some CA (correctable in post). Good value"
+Canon,Tamron,Zoom,APS-C,AF,EF-S,16-300mm F3.5-6.3 Di II VC PZD MACRO,,16,300,3.5,67,39,75,2.95,99.5,3.92,539,19.0,YES,,,,$630.00,,"Not the sharpest, but fast AF, solid build, and VERY versatile range. 1:2.9 max reproduction ratio"
+Canon,Sigma,Zoom,APS-C,AF,EF-S,17-50mm F2.8 EX DC OS HSM,,17,50,2.8,77,28,83.8,3.30,91.4,3.60,565,19.9,,,,,$340.00,,"Good optics (good contrast, very sharp by f/4). Many reports of AF issues (sample variation)"
+Canon,Tamron,Zoom,APS-C,AF,EF-S,17-50mm F2.8 SP AF XR Di II LD Aspherical,,17,50,2.8,67,27,73.7,2.90,81.3,3.20,430,15.2,,,,,$300.00,,"Good optics (sharp) at a fair price. Caveats: Noisy/slow AF, sample variation (lots of AF issues)"
+Canon,Tamron,Zoom,APS-C,AF,EF-S,17-50mm F2.8 SP AF XR Di-II VC LD,,17,50,2.8,72,29,79.5,3.13,94,3.70,570,20.1,YES,,,,$650.00,,"Acceptable optics, subpar VC (IS) mechanism, slow AF. Worth it on deep sale / good copy used"
+Canon,Canon,Zoom,APS-C,AF,EF-S,17-55mm F2.8 IS USM,,17,55,2.8,77,35,84,3.31,111,4.37,645,22.8,YES,,,,$880.00,,"Good optics (sharp, good contrast), fast AF and IS, versatile. One of the best for APS-C."
+Canon,Sigma,Zoom,APS-C,AF,EF-S,17-70mm F2.8-4 DC Macro OS HSM ,,17,70,2.8,72,22,79,3.11,82,3.23,465,16.4,YES,,,,$500.00,,"Good optics, very sharp f/8. Rreports of sample variation (focusing issues). 1:3 max repro ratio"
+Canon,Canon,Zoom,APS-C,AF,EF-S,17-85mm F4-5.6 IS USM,,17,85,4,67,35,79,3.11,92,3.62,475,16.8,YES,,,,$300.00,,"Acceptable optics, decent walkaround lens. Durability issues. Worth it at used prices (good copy)"
+Canon,Sigma,Zoom,APS-C,AF,EF-S,18-35mm F1.8 DC HSM Art,,18,35,1.8,72,28,78,3.07,121,4.76,811,28.6,,,,,$800.00,,"Excellent optics (very sharp). Popular for video, esp. in low light. May require AF calibration"
+Canon,Canon,Zoom,APS-C,AF,EF-S,18-55mm F3.5-5.6 IS II,,18,55,3.5,58,25,69,2.72,70,2.76,200,7.1,YES,,,,$200.00,,An average lens at a fair price. Decently sharp by f/8. Does the job - get it used for < $100!
+Canon,Canon,Zoom,APS-C,AF,EF-S,18-55mm F3.5-5.6 IS STM,,18,55,3.5,58,25,69,2.72,75,2.95,205,7.2,YES,,,,$250.00,,"Good optics, a definite upgrade over non-IS kit lenses. Some corner softness. Good value used"
+Canon,Canon,Zoom,APS-C,AF,EF-S,18-55mm F4-5.6 IS STM,,18,55,4,58,25,67,2.64,62,2.44,215,7.6,YES,,,,$250.00,,"Good optics, a definite upgrade over non-IS kit lenses. Good value used"
+Canon,Canon,Zoom,APS-C,AF,EF-S,18-135mm F3.5-5.6 IS,,18,135,3.5,67,45,75,2.95,101,3.98,455,16.0,YES,,,,$500.00,,Decent optics. AF is loud but fast. Softness/vignetting in corners. Good for general / walkaround
+Canon,Canon,Zoom,APS-C,AF,EF-S,18-135mm F3.5-5.6 IS USM,,18,135,3.5,67,39,77,3.03,96,3.78,515,18.2,YES,,,,$600.00,,"Good optics and performance. Sharp, focuses fast. Great value and versatility for APS-C"
+Canon,Canon,Zoom,APS-C,AF,EF-S,18-135mm F3.5-5.6 IS STM,,18,135,3.5,67,39,77,3.03,96,3.78,480,16.9,YES,,,,$275.00,,"Good optics, very versatile (great for travel). A very capable kit lens. Noticeable corner CA. "
+Canon,Canon,Zoom,APS-C,AF,EF-S,18-200mm F3.5-5.6 IS,,18,200,3.5,72,45,79,3.11,102,4.02,595,21.0,YES,,,,$700.00,,"Good optics, with fast/reliable AF. Decently sharp by f/8. Great if you don't want to switch lenses"
+Canon,Sigma,Zoom,APS-C,AF,EF-S,18-200mm F3.5-6.3 DC Macro OS HSM ,,18,200,3.5,62,39,71.1,2.80,86.4,3.40,431,15.2,YES,,,,$400.00,,"Good optics, fast AF, minimal CA. One of the better ""do it all"" lenses out there. Excellent value."
+Canon,Tamron,Zoom,APS-C,AF,EF-S,18-200mm F3.5-6.3 Di II VC ,,18,200,3.5,62,49,75,2.95,96.6,3.80,400,14.1,YES,YES,,,$200.00,,Good optics (noticeable vignetting). Average build. A versatile do-it-all lens for a bargain price
+Canon,Sigma,Zoom,APS-C,AF,EF-S,18-250mm F3.5-6.3 DC Macro OS HSM ,,18,250,3.5,62,35,73.7,2.90,88.9,3.50,470,16.6,YES, ,,,$550.00,,"Decent optics, sharp and good contrast. In reality closer to 24-165mm equiv. 1:3 max repro ratio"
+Canon,Tamron,Zoom,APS-C,AF,EF-S,18-270mm F3.5-6.3 Di II VC PZD,,18,270,3.5,62,49,74.4,2.93,90.5,3.56,450,15.9,YES,,,,$350.00,,"Average optics, average build quality, slow/noisy autofocus"
+Canon,Sigma,Zoom,APS-C,AF,EF-S,18-300mm F3.5-6.3 DC MACRO OS HSM,,18,300,3.5,72,39,79,3.11,101.5,4.00,584,20.6,YES,,,,$400.00,,Decent optics (though not as sharp as Canon 18-200). AF may require calibration. 1:3 max repro
+Canon,Tamron,Zoom,APS-C,AF,EF-S,18-400mm F3.5-6.3 Di II VC HLD,,18,400,3.5,72,45,79,3.11,123.9,4.88,710,25.0,YES,YES,,,$650.00,,"Great (when considering the range). Caveats: soft at wide end, slow AF. Walkaround king?"
+Canon,Sigma,Zoom,APS-C,AF,EF-S,50-100mm F1.8 DC HSM Art,,50,100,1.8,82,95,93.5,3.68,170.7,6.72,1490,52.6,,,,,"$1,100.00",,"Excellent optics, delivers stunning portraits. Great for video. Caveat: many reports of AF issues"
+Canon,Canon,Zoom,APS-C,AF,EF-S,55-250mm F4-5.6 IS II,,55,250,4,58,110,70,2.76,108,4.25,390,13.8,YES,,,,$250.00,,"Good optics, sharp and with fast AF. Pairs very well with 18-55mm kit zooms. Great value."
+Canon,Canon,Zoom,APS-C,AF,EF-S,55-250mm F4-5.6 IS STM,,55,250,4,58,85,70,2.76,111,4.37,375,13.2,YES,,,,$300.00,,"Even faster and quieter AF than non-STM version. Very versatile, a ""must own"" lens for APS-C"
+Canon,Canon,Prime,APS-C,AF,RF-S,3.9mm f/3.5 STM Dual Fisheye,144°,3.9,,3.5,,20.7,112,4.4,53,2.1,289,10.194186,No,,11 Elements in 8 Groups,7,"$1,099.00",06/10/2024,
+Canon,Canon,Prime,APS-C,AF,RF-S,7.8mm f/4 STM Dual Lens,60°,7.8,,4,58,15,69.2,2.7,41.5,1.6,131,4.620894,No,,9 Elements in 7 Groups,7,$449.99,10/30/2024,
+Canon,Canon,Prime,Full-Frame,AF,RF,5.2mm f/2.8 L Dual Fisheye 3D VR,190°,5.2,,2.8,,20.7,122,4.8,53,2.1,352,12.416448,No,,12 Elements in 10 Groups,7,"$1,999.00",10/06/2021,
+Canon,Canon,Zoom,APS-C,AF,RF-S,10-18mm f/4.5-6.3 IS STM,107° 30' to 74° 20',10,18,4.5,49,14,69,2.7,44.9,1.8,150,5.2911,Yes,,12 Elements in 10 Groups,7,$329.99,11/02/2023,
+Canon,Canon,Zoom,Full-Frame,AF,RF,10-20mm f/4 L IS STM,130° 25' to 94°,10,20,4,,25,83.7,3.3,112,4.4,570,20.10618,Yes,,16 Elements in 12 Groups,9,"$2,299.00",10/11/2023,
+Canon,Canon,Zoom,Full-Frame,AF,RF,14-35mm f/4 L IS USM,114° to 63°,14,35,4,77,20.1,64,3.3,99,3.9,544,19.189056,Yes,,16 Elements in 12 Groups,9,"$1,699.00",06/29/2021,
+Canon,Canon,Zoom,Full-Frame,AF,RF,15-30mm f/4.5-6.3 IS STM,110° 30' to 71° 35',15,30,4.5,67,13,76.6,3,88.4,3.5,390,13.75686,Yes,,13 Elements in 11 Groups,7,$549.99,07/12/2022,
+Canon,Canon,Zoom,Full-Frame,AF,RF,15-35mm f/2.8 L IS USM,110° 30' to 63°,15,35,2.8,82,28,88.5,3.48,126.8,4.99,840,29.63016,Yes,,16 Elements in 12 Groups,9,"$2,299.00",08/28/2019,
+Canon,Canon,Zoom,Full-Frame,AF,RF,16-28mm f/2.8 IS STM,108°,16,28,2.8,67,24.99,76,3,91,3.6,454,16.014396,Yes,,16 Elements in 13 Groups,9,"$1,149.00",01/22/2025,
+Canon,Canon,Prime,Full-Frame,AF,RF,16mm f/2.8 STM,108° 10',16,,2.8,43,13,40.1,1.6,69.2,12.7,165,5.82021,No,,9 Elements in 7 Groups,7,$299.00,09/14/2021,
+Canon,Canon,Zoom,APS-C,AF,RF-S,18-45mm f/4.5-6.3 IS STM,74° 20' to 33° 40',18,45,4.5,49,20,68.9,2.7,44.3,1.7,130,4.58562,No,,7 Elements in 7 Groups,7,$299.99,05/24/2022,
+Canon,Canon,Zoom,APS-C,AF,RF-S,18-150mm f/3.5-6.3 IS STM,74° 20' to 10° 25'17',18,150,4.5,55,17,69,2.7,126.7,5,310,10.93494,No,,17 Elements in 13 Groups,7,$499.99,05/24/2022,
+Canon,Canon,Prime,Full-Frame,AF,RF,24mm f/1.8 Macro IS STM,84°,24,,1.8,52,14,74.4,2.9,63.1,2.5,270,9.52398,Yes,,11 Elements in 9 Groups,9,$599.99,07/12/2022,
+Canon,Canon,Prime,Full-Frame,AF,RF,24mm f/1.4 L VCM,84°,24,,1.4,67,23.9,76.2,3,99.1,3.9,515,18.16611,No,,15 Elements in 11 Groups,11,"$1,499.00",10/30/2024,
+Canon,Canon,Zoom,Full-Frame,AF,RF,24-70mm f/2.8 L IS USM,84° to 34°,24,70,2.8,82,21,88.5,3.48,125.7,4.95,900,31.7466,Yes,,21 Elements in 15 Groups,9,"$2,299.00",08/28/2019,
+Canon,Canon,Zoom,Full-Frame,AF,RF,24-105mm f/2.8 L IS USM Z,84° to 23° 20',24,105,2.8,82,45,88.5,3.5,199,7.8,1300,45.8562,Yes,,23 Elements in 18 Groups,11,"$2,999.00",11/02/2023,
+Canon,Canon,Zoom,Full-Frame,AF,RF,24-105mm f/4 L IS USM,84° to 23° 20',24,105,4,77,45,83.5,3.29,07.3,4.22,700,24.6918,Yes,,18 Elements in 14 Groups,9,"$1,099.00",09/05/2018,
+Canon,Canon,Zoom,Full-Frame,AF,RF,24-105mm f/4-7.1 IS STM,84° to 23° 20',24,105,4,67,13.1,76.6,3.02,88.8,3.5,395,13.93323,No,,13 Elements in 11 Groups,7,$399.99,02/12/2020,
+Canon,Canon,Zoom,Full-Frame,AF,RF,24-240mm f/4-6.3 IS USM,84° to 10.3°,24,240,(4,72,50,81.28,3.2,121.92,4.8,751.26,26.49994524,Yes,,21 Elements in 15 Groups,7,$899.99,08/28/2019,
+Canon,Canon,Zoom,Full-Frame,AF,RF,24-50mm f/4.5-6.3 IS STM,84°,24,50,4.5,58,30,68.6,2.7,94,3.7,210,7.40754,Yes,,8 Elements in 8 Groups,7,$299.99,02/08/2023,
+Canon,Canon,Prime,Full-Frame,AF,RF,28mm f/2.8 STM,75°,28,,2.8,55,23,69.2,2.7,24.7,1,120,4.23288,No,,8 Elements in 6 Groups,7,$299.99,05/24/2023,
+Canon,Canon,Zoom,Full-Frame,AF,RF,28-70mm f/2 L USM,75° to 34°,28,70,2,95,39,103.8,4.09,139.8,5.5,1430,50.44182,No,,19 Elements in 13 Groups,9,"$2,849.99",09/05/2018,
+Canon,Canon,Prime,Full-Frame,AF,RF,35mm f/1.8 IS Macro STM,63°,35,,1.8,52,17,74.4,2.93,62.8,2.47,305,10.75857,Yes,,11 Elements in 9 Groups,9,$499.00,09/05/2018,
+Canon,Canon,Prime,Full-Frame,AF,RF,35mm f/1.4 L VCM,63°,35,,1.4,67,28,76.5,3,99.3,3.9,555,19.57707,No,,14 Elements in 11 Groups,11,"$1,499.00",06/06/2024,
+Canon,Canon,Prime,Full-Frame,AF,RF,50mm f/1.8 STM,46°,50,,1.8,43,30,69,2.7,40,1.6,160,5.64384,No,,6 Elements in 5 Groups,7,$129.99,04/10/2020,
+Canon,Canon,Prime,Full-Frame,AF,RF,50mm f/1.4 L VCM,46°,50,,1.4,67,39.9,76.2,3,99.1,3.9,580,20.45892,No,,14 Elements in 11 Groups,11,"$1,399.00",10/30/2024,
+Canon,Canon,Prime,Full-Frame,AF,RF,50mm f/1.2 L USM,46°,50,,1.2,77,40,89.8,3.54,108,4.25,950,33.5103,No,,15 Elements in 9 Groups,8,"$2,299.00",09/05/2018,
+Canon,Canon,Zoom,APS-C,AF,RF,55-210mm F5-7.1 IS STM,27° 50' to 7° 25',55,210,5,55,70,69,2.7,94,3.7,270,9.52398,Yes,,11 Elements in 8 Groups,7,$349.00,02/08/2023,
+Canon,Canon,Zoom,Full-Frame,AF,RF,70-200mm f/4 L IS USM,34° to 12°,70,200,4,77,60,83,3.3,120,4.7,695,24.51543,Yes,,16 Elements in 11 Groups,9,"$1,599.00",04/10/2020,
+Canon,Canon,Zoom,Full-Frame,AF,RF,70-200mm f/2.8 L IS USM Z,34° to 12°,70,200,2.8,82,49,88.5,3.5,199,7.8,1115,39.33051,Yes,,18 Elements in 15 Groups,11,"$1,499.00",10/30/2024,
+Canon,Canon,Zoom,Full-Frame,AF,RF,70-200mm f/2.8 L IS USM,34° to 12°,70,200,2.8,77,70,89.9,3.54,146,5.75,1070,37.74318,Yes,,17 Elements in 13 Groups,9,"$2,700.00",10/24/2019,
+Canon,Canon,Prime,Full-Frame,AF,RF,85mm f/1.2 L USM,28° 30',85,,1.2,82,85,103.2,4.06,117.3,4.62,1195,42.15243,No,,13 Elements in 9 Groups,9,"$2,700.00",05/08/2019,
+Canon,Canon,Prime,Full-Frame,AF,RF,85mm f/1.2 L USM DS,28° 30',85,,1.2,82,85,103.2,4.06,117.3,4.62,1195,42.15243,No,,13 Elements in 9 Groups,9,"$2,999.00",10/24/2019,
+Canon,Canon,Prime,Full-Frame,AF,RF,85mm f/2 Macro IS STM,28° 30',85,,2,67,35.05,78,3.07,90.5,3.56,500,17.637,Yes,,12 Elements in 11 Groups,9,$599.99,07/09/2020,
+Canon,Canon,Prime,Full-Frame,AF,RF,100mm f/2.8 L IS Macro USM,24°,100,,2.8,67,26,81.5,3.2,148,5.8,730,25.75002,Yes,,17 Elements in 13 Groups,9,"$1,399.00",04/14/2021,
+Canon,Canon,Zoom,Full-Frame,AF,RF,100-400mm f/5.6-8 IS USM,24° to 6° 10',100,400,(5.6,67,88,79.5,3.1,164.7,6.5,635,22.39899,Yes,,12 Elements in 9 Groups,8,$649.00,09/14/2021,
+Canon,Canon,Zoom,Full-Frame,AF,RF,100-500mm f/4.5-7.1 L IS USM,24° to 5°,100,500,4.5,77,90,93.8,3.69,207.6,8.17,1365,48.14901,Yes,,20 Elements in 14 Groups,9,"$2,699.00",07/09/2020,
+Canon,Canon,Zoom,Full-Frame,AF,RF,100-300mm f/2.8 L IS USM,24° to 8° 15',100,300,2.8,112,180,128,5,323.4,12.7,2590,91.35966,Yes,,23 Elements in 18 Groups,9,"$9,499.00",04/20/2023,
+Canon,Canon,Prime,Full-Frame,AF,RF,135mm f/1.8 L IS USM,18°,135,,1.8,82,70,89.2,3.5,130.3,5.1,935,32.98119,Yes,,17 Elements in 12 Groups,9,"$2,099.00",11/02/2022,
+Canon,Canon,Zoom,Full-Frame,AF,RF,200-800mm F6.3-9 IS USM,12° to 3° 5',200,800,6.3,96,80,102.3,4,314.1,12.4,2000,70.548,Yes,,17 Elements in 11 Groups,9,"$1,900.00",11/02/2023,
+Canon,Canon,Prime,Full-Frame,AF,RF,400mm f/2.8 L IS USM,6°,400,,2.8,Drop-In 52,250,163,6.4,367,14.4,2900,102.2946,Yes,,17 Elements in 13 Groups,9,"$12,000.00",04/14/2021,
+Canon,Canon,Prime,Full-Frame,AF,RF,600mm f/11 IS STM,4° 10',600,,11,82,450,93,3.66,269.5,10.61,930,32.80482,Yes,,10 Elements in 7 Groups,unknown,$600.00,07/09/2020,
+Canon,Canon,Prime,Full-Frame,AF,RF,600mm f/4 L IS USM,4° 10',600,,4,Drop-In 52,420,168,6.6,472,18.6,3100,109.3494,Yes,,17 Elements in 13 Groups,9,"$12,999.00",04/14/2021,
+Canon,Canon,Prime,Full-Frame,AF,RF,800mm f/11 IS STM,3° 5',800,,11,95,600,101.6,4,351.8,13.85,1260,44.44524,Yes,,11 Elements in 8 Groups,unknown,$599.00,07/09/2020,
+Canon,Canon,Prime,Full-Frame,AF,RF,800mm f/5.6 L IS USM Lens,3° 5',800,,5.6,Drop-In 52,260,163,6.4,432,17,3140,110.76036,Yes,,26 Elements in 18 Groups,9,"$16,999.00",02/24/2022,
+Canon,Canon,Prime,Full-Frame,AF,RF,1200mm f/8 L IS USM Lens,2° 5',1200,,8,Drop-In 52,430,168,6.6,537,21.1,3340,117.81516,Yes,,26 Elements in 18 Groups,9,"$19,999.00",02/24/2022,
+Canon,Canon,Prime,Full-Frame,AF,RF,1.4x Extender,N/A,0,,,N/A,,71.12,2.8,20.32,0.8,224,7.901376,No,,7 elements in 4 groups,N/A,$499.99,07/09/2020,
+Canon,Canon,Prime,Full-Frame,AF,RF,2.0x Extender,N/A,0,,,N/A,,71.12,2.8,38.1,1.5,340,11.99316,No,,9 elements in 5 groups,N/A,$599.00,07/09/2020,
+Sony,Sony,APS-C,Zoom,,E,Sony E 10-18mm F4 OSS,,10,18,4,62,25,70,2.76,63.5,2.5,225,7.94,Yes,,,,698,2012,
+Sony,Sony,APS-C,Zoom,,E,Sony E PZ 10-20mm F4 G,,10,20,4,62,13,69.8,2.75,55,2.17,178,6.28,No,,,,898,2022,
+Sony,Sony,APS-C,Zoom,,E,Sony E PZ 16-50mm F3.5-5.6 OSS,,16,50,3.5,40.5,25,64.7,2.55,29.9,1.18,116,4.09,Yes,,,,349,2023,
+Sony,Sony,APS-C,Zoom,,E,Sony E PZ 16-50mm F3.5-5.6 OSS II,,16,50,3.5,40.5,25,66,2.6,31.3,1.23,107,3.77,Yes,,,,399,2024,
+Sony,Sony,APS-C,Zoom,,E,Sony E 16-55mm F2.8 G,,16,55,2.8,67,33,73,2.87,100,3.94,494,17.43,No,,,,1398,2019,
+Sony,Sony,APS-C,Zoom,,E,Sony Zeiss Vario-Tessar T* E 16-70mm F4 ZA OSS,,16,70,4,55,35,66.6,2.62,75,2.95,308,10.87,Yes,,,,1098,2013,
+Sony,Sony,APS-C,Zoom,,E,Sony E 18-50mm F4-5.6,,18,50,4,55,40,68.5,2.7,59,2.32,116,4.09,No,,,,,2014,
+Sony,Sony,APS-C,Zoom,,E,Sony E 18-55mm F3.5-5.6 OSS,,18,55,3.5,49,25,62,2.44,60,2.36,194,6.84,Yes,,,,,,
+Sony,Sony,APS-C,Zoom,,E,Sony E PZ 18-105mm F4 G OSS,,18,105,4,72,45,78,3.07,110,4.33,427,15.06,Yes,,,,698,2013,
+Sony,Sony,APS-C,Zoom,,E,Sony E PZ 18-110mm F4 G OSS,,18,110,4,95,40,110,4.33,167.5,6.59,1105,38.98,Yes,,,,1198,2016,
+Sony,Sony,APS-C,Zoom,,E,Sony E 18-135mm F3.5-5.6 OSS,,18,135,3.5,55,45,67.2,2.65,88,3.46,325,11.46,Yes,,,,798,2018,
+Sony,Sony,APS-C,Zoom,,E,Sony E 18-200mm F3.5-6.3 OSS,,18,200,3.5,67,30,75.5,2.97,99,3.9,524,18.49,Yes,,,,898,2010,
+Sony,Sony,APS-C,Zoom,,E,Sony E 18-200mm F3.5-6.3 OSS LE,,18,200,3.5,62,50,68,2.68,97.1,3.82,460,16.23,Yes,,,,798,2012,
+Sony,Sony,APS-C,Zoom,,E,Sony E PZ 18-200mm F3.5-6.3 OSS,,18,200,3.5,67,30,93.2,3.67,99,3.9,649,22.89,Yes,,,,998,2012,
+Sony,Sony,APS-C,Zoom,,E,Sony E 55-210mm F4.5-6.3 OSS,,55,210,4.5,49,100,63.8,2.51,108,4.25,345,12.17,Yes,,,,349,2011,
+Sony,Sony,APS-C,Zoom,,E,Sony E 70-350mm F4.5-6.3 G OSS,,70,350,4.5,67,110,77,3.03,142,5.59,625,22.05,Yes,,,,998,2019,
+Sony,Sony,APS-C,Prime,,E,Sony E 11mm F1.8,,11,11,1.8,55,15,66,2.6,57.5,2.26,181,6.39,No,,,,548,2022,
+Sony,Sony,APS-C,Prime,,E,Sony E 15mm F1.4 G,,15,15,1.4,55,17,66.6,2.62,69.5,2.74,219,7.73,No,,,,798,2022,
+Sony,Sony,APS-C,Prime,,E,Sony E 16mm F2.8,,16,16,2.8,49,24,62,2.44,22.5,0.89,67,2.36,No,,,,299,2010,
+Sony,Sony,APS-C,Prime,,E,Sony E 20mm F2.8,,20,20,2.8,49,20,62.6,2.46,20.4,0.8,69,2.43,No,,,,349,2013,
+Sony,Sony,APS-C,Prime,,E,Sony Zeiss Sonnar T* E 24mm F1.8 ZA,,24,24,1.8,49,16,63,2.48,65.5,2.58,225,7.94,No,,,,1198,2011,
+Sony,Sony,APS-C,Prime,,E,Sony E 30mm F3.5 Macro,,30,30,3.5,49,9.5,62,2.44,55.5,2.18,138,4.87,No,,,,298,2011,
+Sony,Sony,APS-C,Prime,,E,Sony E 35mm F1.8 OSS,,35,35,1.8,49,30,63,2.48,45,1.77,154,5.43,Yes,,,,448,2012,
+Sony,Sony,APS-C,Prime,,E,Sony E 50mm F1.8 OSS,,50,50,1.8,49,39,62,2.44,62,2.44,202,7.13,Yes,,,,349,2011,
+Sony,Sony,Full frame,Zoom,,E,Sony FE 12-24mm F2.8 GM,,12,24,2.8,N/A,28,97.6,3.84,137,5.39,847,29.88,No,,,,2898,2020,
+Sony,Sony,Full frame,Zoom,,E,Sony FE 12-24mm F4 G,,12,24,4,N/A,28,87,3.43,117,4.61,565,19.93,No,,,,1498,2017,
+Sony,Sony,Full frame,Zoom,,E,Sony FE 16-25mm F2.8 G,,16,25,2.8,67,18,74.8,2.94,91.4,3.6,409,14.43,No,,,,1198,2024,
+Sony,Sony,Full frame,Zoom,,E,Sony FE 16-35mm F2.8 GM,,16,35,2.8,82,28,88.5,3.48,121.6,4.79,680,23.99,No,,,,2198,2017,
+Sony,Sony,Full frame,Zoom,,E,Sony FE 16-35mm F2.8 GM II,,16,35,2.8,82,22,87.8,3.46,111.5,4.39,547,19.29,No,,,,2298,2023,
+Sony,Sony,Full frame,Zoom,,E,Sony FE PZ 16-35mm F4 G,,16,35,4,72,24,80.5,3.17,88.1,3.47,353,12.45,No,,,,1398,2022,
+Sony,Sony,Full frame,Zoom,,E,Sony Zeiss Vario-Tessar T* FE 16-35mm F4 ZA OSS,,16,35,4,72,28,78,3.07,98.5,3.88,518,18.27,Yes,,,,1348,2014,
+Sony,Sony,Full frame,Zoom,,E,Sony FE C 16-35mm T3.1 G,,16,35,T3.1,N/A,28,118.4,4.66,190,7.48,1390,49.03,No,,,,5499,2019,
+Sony,Sony,Full frame,Zoom,,E,Sony FE 20-70mm F4 G,,20,70,4,72,25,78.7,3.1,99,3.9,488,17.21,No,,,,1098,2023,
+Sony,Sony,Full frame,Zoom,,E,Sony FE 24-50mm F2.8 G,,24,50,2.8,67,18,74.8,2.94,92.3,3.63,440,15.52,No,,,,1098,2024,
+Sony,Sony,Full frame,Zoom,,E,Sony Zeiss Vario-Tessar T* FE 24-70mm F4 ZA OSS,,24,70,4,67,40,73,2.87,94.5,3.72,426,15.03,Yes,,,,1198,2014,
+Sony,Sony,Full frame,Zoom,,E,Sony FE 24-70mm F2.8 GM,,24,70,2.8,82,38,87.6,3.45,136,5.35,886,31.25,No,,,,2198,2016,
+Sony,Sony,Full frame,Zoom,,E,Sony FE 24-70mm F2.8 GM II,,24,70,2.8,82,21,87.8,3.46,120,4.72,695,24.51,No,,,,2298,2022,
+Sony,Sony,Full frame,Zoom,,E,Sony FE 24-105mm F4 G OSS,,24,105,4,77,38,83.4,3.28,113.3,4.46,663,23.39,Yes,,,,1398,2017,
+Sony,Sony,Full frame,Zoom,,E,Sony FE 24-240mm F3.5-6.3 OSS,,24,240,3.5,72,50,80.5,3.17,119,4.69,780,27.51,Yes,,,,998,2015,
+Sony,Sony,Full frame,Zoom,,E,Sony FE 28-60mm F4-5.6,,28,60,4,40.5,30,66.6,2.62,45,1.77,167,5.89,No,,,,498,2020,
+Sony,Sony,Full frame,Zoom,,E,Sony FE 28-70mm F2 GM,,28,70,2,86,38,92.9,3.66,139.8,5.5,918,32.38,No,,,,2998,2024,
+Sony,Sony,Full frame,Zoom,,E,Sony FE 28-70mm F3.5-5.6 OSS II,,28,70,3.5,55,30,72.5,2.85,83,3.27,293,10.34,Yes,,,,599,2025,
+Sony,Sony,Full frame,Zoom,,E,Sony FE 28-70mm F3.5-5.6 OSS,,28,70,3.5,55,30,72.5,2.85,83,3.27,295,10.41,Yes,,,,398,2013,
+Sony,Sony,Full frame,Zoom,,E,Sony FE PZ 28-135mm F4 G OSS,,28,135,4,95,40,105,4.13,162.5,6.4,1215,42.86,Yes,,,,2499,2014,
+Sony,Sony,Full frame,Zoom,,E,Sony FE 50-150mm F2 GM,,50,150,2,95,40,102.8,4.05,200,7.87,1340,47.27,No,,,,2999,2025,
+Sony,Sony,Full frame,Zoom,,E,Sony FE 70-200mm F4 G OSS,,70,200,4,72,100,80,3.15,175,6.89,840,29.63,Yes,,,,1498,2014,
+Sony,Sony,Full frame,Zoom,,E,Sony FE 70-200mm F4 Macro G OSS II,,70,200,4,72,26,82.2,3.24,149,5.87,794,28.01,Yes,,,,1698,2023,
+Sony,Sony,Full frame,Zoom,,E,Sony FE 70-200mm F2.8 GM OSS,,70,200,2.8,77,96,88,3.46,205.3,8.08,1480,52.21,Yes,,,,2598,2016,
+Sony,Sony,Full frame,Zoom,,E,Sony FE 70-200mm F2.8 GM OSS II,,70,200,2.8,77,40,88,3.46,200,7.87,1045,36.86,Yes,,,,2798,2021,
+Sony,Sony,Full frame,Zoom,,E,Sony FE 70-300mm F4.5-5.6 G OSS,,70,300,4.5,72,90,84,3.31,143.5,5.65,854,30.12,Yes,,,,1198,2016,
+Sony,Sony,Full frame,Zoom,,E,Sony FE 100-400mm F4.5-5.6 GM OSS,,100,400,4.5,77,98,93.9,3.7,205,8.07,1398,49.31,Yes,,,,2498,2017,
+Sony,Sony,Full frame,Zoom,,E,Sony FE 200-600mm F5.6-6.3 G OSS,,200,600,5.6,95,240,111.5,4.39,318,12.52,2115,74.61,Yes,,,,1998,2019,
+Sony,Sony,Full frame,Zoom,,E,Sony FE 400-800mm F6.3-8 G OSS,,400,800,6.3,105,170,119.8,4.72,346,13.62,2475,87.3,Yes,,,,2499,2025,
+Sony,Sony,Full frame,Prime,,E,Sony FE 14mm F1.8 GM,,14,14,1.8,N/A,25,83,3.27,99.8,3.93,460,16.23,No,,,,1598,2021,
+Sony,Sony,Full frame,Prime,,E,Sony FE 16mm F1.8 G,,16,16,1.8,67,15,73.8,2.91,75,2.95,304,10.72,No,,,,899,2025,
+Sony,Sony,Full frame,Prime,,E,Sony FE 20mm F1.8 G,,20,20,1.8,67,18,73.5,2.89,84.7,3.33,373,13.16,No,,,,899,2020,
+Sony,Sony,Full frame,Prime,,E,Sony FE 24mm F1.4 GM,,24,24,1.4,67,24,75.4,2.97,92.4,3.64,445,15.7,No,,,,1398,2018,
+Sony,Sony,Full frame,Prime,,E,Sony FE 24mm F2.8 G,,24,24,2.8,49,18,68,2.68,45,1.77,162,5.71,No,,,,598,2021,
+Sony,Sony,Full frame,Prime,,E,Sony FE 28mm F2,,28,28,2,49,25,60,2.36,64,2.52,200,7.05,No,,,,448,2015,
+Sony,Sony,Full frame,Prime,,E,Sony FE 35mm F1.4 GM,,35,35,1.4,67,25,76,2.99,96,3.78,524,18.48,No,,,,1398,2021,
+Sony,Sony,Full frame,Prime,,E,Sony Zeiss Distagon T* FE 35mm F1.4 ZA,,35,35,1.4,72,30,78.5,3.09,112,4.41,630,22.22,No,,,,1598,2015,
+Sony,Sony,Full frame,Prime,,E,Sony Zeiss Sonnar T* FE 35mm F2.8 ZA,,35,35,2.8,49,35,61.5,2.42,36.5,1.44,120,4.23,No,,,,798,2013,
+Sony,Sony,Full frame,Prime,,E,Sony FE 35mm F1.8,,35,35,1.8,55,22,65.6,2.58,73,2.87,280,9.88,No,,,,749,2019,
+Sony,Sony,Full frame,Prime,,E,Sony FE 40mm F2.5 G,,40,40,2.5,49,25,68,2.68,45,1.77,173,6.1,No,,,,598,2021,
+Sony,Sony,Full frame,Prime,,E,Sony FE 50mm F1.2 GM,,50,50,1.2,72,40,87,3.43,109.2,4.3,778,27.44,No,,,,1998,2021,
+Sony,Sony,Full frame,Prime,,E,Sony FE 50mm F1.4 GM,,50,50,1.4,67,41,80.6,3.17,96,3.78,516,18.2,No,,,,1298,2023,
+Sony,Sony,Full frame,Prime,,E,Sony Zeiss Planar T* FE 50mm F1.4 ZA,,50,50,1.4,72,45,83.5,3.29,108,4.25,778,27.44,No,,,,1498,2016,
+Sony,Sony,Full frame,Prime,,E,Sony FE 50mm F1.8,,50,50,1.8,49,45,68.6,2.7,59.5,2.34,186,6.56,No,,,,248,2016,
+Sony,Sony,Full frame,Prime,,E,Sony FE 50mm F2.5 G,,50,50,2.5,49,31,68,2.68,45,1.77,174,6.14,No,,,,598,2021,
+Sony,Sony,Full frame,Prime,,E,Sony FE 50mm F2.8 Macro,,50,50,2.8,55,16,70.8,2.79,71,2.8,236,8.33,No,,,,498,2016,
+Sony,Sony,Full frame,Prime,,E,Sony Zeiss Sonnar T* FE 55mm F1.8 ZA,,55,55,1.8,49,50,64.4,2.54,71,2.8,281,9.91,No,,,,998,2013,
+Sony,Sony,Full frame,Prime,,E,Sony FE 85mm F1.4 GM II,,85,85,1.4,77,85,84.7,3.33,107.3,4.22,642,22.65,No,,,,1798,2024,
+Sony,Sony,Full frame,Prime,,E,Sony FE 85mm F1.4 GM,,85,85,1.4,77,85,89.5,3.52,107.5,4.23,848,29.91,No,,,,1798,2016,
+Sony,Sony,Full frame,Prime,,E,Sony FE 85mm F1.8,,85,85,1.8,67,80,78,3.07,82,3.23,371,13.09,No,,,,598,2017,
+Sony,Sony,Full frame,Prime,,E,Sony FE 90mm F2.8 Macro G OSS,,90,90,2.8,62,28,79,3.11,130.5,5.14,602,21.24,Yes,,,,1098,2015,
+Sony,Sony,Full frame,Prime,,E,Sony FE 100mm F2.8 Macro GM OSS,,100,100,2.8,67,26,81.4,3.2,147.9,5.82,646,22.79,Yes,,,,1098,2025,
+Sony,Sony,Full frame,Prime,,E,Sony FE 100mm F2.8 STF GM OSS,,100,100,2.8,72,57,85.2,3.35,118.1,4.65,700,24.69,Yes,,,,1498,2017,
+Sony,Sony,Full frame,Prime,,E,Sony FE 135mm F1.8 GM,,135,135,1.8,82,70,89.5,3.52,127,5,953,33.62,No,,,,1898,2019,
+Sony,Sony,Full frame,Prime,,E,Sony FE 300mm F2.8 GM OSS,,300,300,2.8,40.5,200,124,4.88,265,10.43,1470,51.85,Yes,,,,5998,2023,
+Sony,Sony,Full frame,Prime,,E,Sony FE 400mm F2.8 GM OSS,,400,400,2.8,40.5,270,158.1,6.22,359,14.13,2895,102.12,Yes,,,,11998,2018,
+Sony,Sony,Full frame,Prime,,E,Sony FE 600mm F4 GM OSS,,600,600,4,40.5,450,163.6,6.44,449,17.68,3040,107.23,Yes,,,,12998,2019,
+Third-Party,Samyang/Rokinon,APS-C,Prime,,E,Samyang AF 12mm F2 E,,12,12,2,62,19,70,2.76,59.2,2.33,213,7.51,No,,,,499,2021,
+Third-Party,Sigma,APS-C,Prime,,E,Sigma 12mm F1.4 DC | Contemporary,,12,12,1.4,62,17.2,68,2.68,69.4,2.73,225,7.94,No,,,,549,2025,
+Third-Party,Sigma,APS-C,Prime,,E,Sigma 15mm F1.4 DC DN | Contemporary,,15,15,1.4,58,17.7,64,2.52,64.8,2.55,220,7.76,No,,,,599,2026,
+Third-Party,Sigma,APS-C,Prime,,E,Sigma 16mm F1.4 DC DN | Contemporary,,16,16,1.4,67,25,72.2,2.84,92.3,3.63,405,14.29,No,,,,399,2017,
+Third-Party,Sigma,APS-C,Prime,,E,Sigma 19mm F2.8 EX DN,,19,19,2.8,46,20,60.6,2.39,45.7,1.8,140,4.94,No,,,,,,
+Third-Party,Sigma,APS-C,Prime,,E,Sigma 19mm F2.8 DN | Art,,19,19,2.8,46,20,60.8,2.39,45.7,1.8,160,5.64,No,,,,199,2013,
+Third-Party,Sigma,APS-C,Prime,,E,Sigma 23mm F1.4 DC DN | Contemporary,,23,23,1.4,52,25,65.8,2.59,78.9,3.11,330,11.64,No,,,,449,2023,
+Third-Party,Sigma,APS-C,Prime,,E,Sigma 30mm F2.8 EX DN,,30,30,2.8,46,30,60.6,2.39,38.6,1.52,130,4.59,No,,,,,,
+Third-Party,Sigma,APS-C,Prime,,E,Sigma 30mm F2.8 DN | Art,,30,30,2.8,46,30,60.8,2.39,40.5,1.59,140,4.94,No,,,,199,2013,
+Third-Party,Sigma,APS-C,Prime,,E,Sigma 30mm F1.4 DC DN | Contemporary,,30,30,1.4,52,30,64.8,2.55,73.3,2.89,265,9.35,No,,,,339,2016,
+Third-Party,Sigma,APS-C,Prime,,E,Sigma 56mm F1.4 DC DN | Contemporary,,56,56,1.4,55,50,66.5,2.62,59.5,2.34,280,9.88,No,,,,479,2018,
+Third-Party,Sigma,APS-C,Prime,,E,Sigma 60mm F2.8 DN | Art,,60,60,2.8,46,50,60.8,2.39,55.5,2.19,190,6.7,No,,,,239,2019,
+Third-Party,Sirui,APS-C,Prime,,E,Sirui 16mm F1.2,,16,16,1.2,58,30,,,94,3.7,384,13.55,No,,,,429,2024,
+Third-Party,Sirui,APS-C,Prime,,E,Sirui 20mm T1.8 1.33x Anamorphic,,20,20,T1.8,77,40,86.4,3.4,90.95,3.58,489,17.25,No,,,,699,2025,
+Third-Party,Sirui,APS-C,Prime,,E,Sirui 23mm F1.2,,23,23,1.2,58,30,,,92.5,3.64,381,13.44,No,,,,349,2023,
+Third-Party,Sirui,APS-C,Prime,,E,Sirui 33mm F1.2,,33,33,1.2,58,40,,,92.5,3.64,400,14.11,No,,,,349,2023,
+Third-Party,Sirui,APS-C,Prime,,E,Sirui 40mm T1.8 1.33x Anamorphic,,40,40,T1.8,77,60,86.4,3.4,128.2,5.05,633,22.33,No,,,,899,2024,
+Third-Party,Sirui,APS-C,Prime,,E,Sirui 56mm F1.2,,56,56,1.2,58,60,,,92.5,3.64,422,14.89,No,,,,349,2023,
+Third-Party,Sirui,APS-C,Prime,,E,Sirui 75mm F1.2,,75,75,1.2,67,70,,,94,3.7,466,16.43,No,,,,439,2024,
+Third-Party,Tokina,APS-C,Prime,,E,Tokina atx-m 23mm F1.4 E,,23,23,1.4,52,30,65,2.56,72,2.83,276,9.74,No,,,,449,2021,
+Third-Party,Tokina,APS-C,Prime,,E,Tokina atx-m 33mm F1.4 E,,33,33,1.4,52,40,65,2.56,72,2.83,285,10.05,No,,,,449,2021,
+Third-Party,Tokina,APS-C,Prime,,E,Tokina atx-m 56mm F1.4 E,,56,56,1.4,52,60,65,2.56,72,2.83,315,11.11,No,,,,479,2021,
+Third-Party,TTArtisan,APS-C,Prime,,E,TTArtisan AF 17mm f1.8 Air,,17,17,1.8,52,18,60,2.36,47,1.85,170,6,No,,,,129,2026,
+Third-Party,TTArtisan,APS-C,Prime,,E,TTArtisan AF 27mm F2.8,,27,27,2.8,39,35,61,2.4,29,1.14,88,3.1,No,,,,149,2023,
+Third-Party,TTArtisan,APS-C,Prime,,E,TTArtisan AF 35mm F1.8,,35,35,1.8,52,35,65,2.56,60,2.36,199,7.02,No,,,,199,2023,
+Third-Party,TTArtisan,APS-C,Prime,,E,TTArtisan AF 56mm F1.8,,56,56,1.8,52,50,65,2.56,62,2.44,233,8.22,No,,,,199,2023,
+Third-Party,Viltrox,APS-C,Prime,,E,Viltrox AF 9mm F2.8 Air,,9,9,2.8,58,13,65,2.56,56.4,2.22,175,6.17,No,,,,279,2025,
+Third-Party,Viltrox,APS-C,Prime,,E,Viltrox AF 13mm F1.4,,13,13,1.4,67,22,74,2.91,90,3.54,420,14.82,No,,,,429,2022,
+Third-Party,Viltrox,APS-C,Prime,,E,Viltrox AF 15mm F1.7 Air,,15,15,1.7,58,23,65,2.56,56.4,2.22,180,6.35,No,,,,249,2025,
+Third-Party,Viltrox,APS-C,Prime,,E,Viltrox AF 23mm F1.4,,23,23,1.4,52,30,65,2.56,72,2.83,260,9.17,No,,,,329,2019,
+Third-Party,Viltrox,APS-C,Prime,,E,Viltrox AF 25mm F1.7 Air,,25,25,1.7,52,30,64,2.52,56.4,2.22,170,6,No,,,,249,2025,
+Third-Party,Viltrox,APS-C,Prime,,E,Viltrox AF 27mm F1.2 Pro,,27,27,1.2,67,28,82,3.23,92,3.62,565,19.93,No,,,,545,2024,
+Third-Party,Viltrox,APS-C,Prime,,E,Viltrox AF 33mm F1.4,,33,33,1.4,52,40,65,2.56,72,2.83,270,9.52,No,,,,329,2019,
+Third-Party,Viltrox,APS-C,Prime,,E,Viltrox AF 35mm F1.7 Air,,35,35,1.7,52,33,64,2.52,56.4,2.22,170,6,No,,,,249,2024,
+Third-Party,Viltrox,APS-C,Prime,,E,Viltrox AF 56mm F1.2 Pro,,56,56,1.2,67,50,78.4,3.09,91.7,3.61,570,20.11,No,,,,545,2025,
+Third-Party,Viltrox,APS-C,Prime,,E,Viltrox AF 56mm F1.4,,56,56,1.4,52,60,65,2.56,72,2.83,290,10.23,No,,,,329,2019,
+Third-Party,Viltrox,APS-C,Prime,,E,Viltrox AF 56mm F1.7 Air,,56,56,1.7,52,55,65,2.56,54.3,2.14,170,6,No,,,,229,2024,
+Third-Party,Viltrox,APS-C,Prime,,E,Viltrox AF 75mm F1.2 Pro,,75,75,1.2,77,88,87,3.43,101,3.98,675,23.81,No,,,,549,2023,
+Third-Party,Yongnuo,APS-C,Prime,,E,Yongnuo YN11mm F1.8S DA DSM WL,,11,11,1.8,58,15,66,2.6,69,2.72,260,9.17,No,,,,319,2024,
+Third-Party,Yongnuo,APS-C,Prime,,E,Yongnuo YN16mm F1.8S DA DSM,,16,16,1.8,58,17,64,2.52,69,2.72,274,9.67,No,,,,298,2022,
+Third-Party,Yongnuo,APS-C,Prime,,E,Yongnuo YN50mm F1.8S DA DSM,,50,50,1.8,49,45,64,2.52,58,2.28,146,5.15,No,,,,129,2020,
+Third-Party,Zeiss,APS-C,Prime,,E,Zeiss Touit 2.8/12,,12,12,2.8,67,18,88,3.46,68,2.68,260,9.17,No,,,,999,2013,
+Third-Party,Zeiss,APS-C,Prime,,E,Zeiss Touit 1.8/32,,32,32,1.8,52,30,75,2.95,60,2.36,200,7.05,No,,,,719,2013,
+Third-Party,Zeiss,APS-C,Prime,,E,Zeiss Touit 2.8/50M,,50,50,2.8,52,15,75,2.95,91,3.58,290,10.23,No,,,,999,2014,
+Third-Party,Sigma,APS-C,Zoom,,E,Sigma 10-18mm F2.8 DC DN | Contemporary,,10,18,2.8,67,11.6,72.2,2.84,64,2.52,255,8.99,No,,,,599,2023,
+Third-Party,Sigma,APS-C,Zoom,,E,Sigma 17-40mm F1.8 DC | Art,,17,40,1.8,67,28,72.9,2.87,117.9,4.64,525,18.52,No,,,,1099,2025,
+Third-Party,Sigma,APS-C,Zoom,,E,Sigma 18-50mm F2.8 DC DN | Contemporary,,18,50,2.8,55,12.1,61.6,2.43,76.5,3.01,290,10.23,No,,,,549,2021,
+Third-Party,Sigma,APS-C,Zoom,,E,Sigma 16-300mm F3.5-6.7 DC OS | Contemporary,,16,300,3.5,67,17,73.8,2.91,123.4,4.86,615,21.69,Yes,,,,899,2025,
+Third-Party,Tamron,APS-C,Zoom,,E,Tamron 11-20mm F/2.8 Di III-A RXD,,11,20,2.8,67,15,73,2.87,86.2,3.39,335,11.82,No,,,,829,2021,
+Third-Party,Tamron,APS-C,Zoom,,E,Tamron 17-70mm F/2.8 Di III-A VC RXD,,17,70,2.8,67,19,74.6,2.94,119.3,4.7,525,18.52,Yes,,,,799,2020,
+Third-Party,Tamron,APS-C,Zoom,,E,Tamron 18-200mm F/3.5-6.3 Di III VC,,18,200,3.5,62,50,68,2.68,96.7,3.81,460,16.23,Yes,,,,199,2011,
+Third-Party,Tamron,APS-C,Zoom,,E,Tamron 18-300mm F/3.5-6.3 Di III-A VC VXD,,18,300,3.5,67,15,75.5,2.97,125.6,4.94,620,21.87,Yes,,,,699,2021,
+Third-Party,Tokina,APS-C,Zoom,,E,Tokina atx-m 11-18mm F2.8 E,,11,18,2.8,67,19,74.4,2.93,74.1,2.92,335,11.82,No,,,,599,2022,
+Third-Party,7Artisans,Full frame,Prime,,E,7Artisans AF 50mm F1.8,,50,50,1.8,62,50,72,2.83,104,4.09,421,14.85,No,,,,199,2023,
+Third-Party,AstrHori,Full frame,Prime,,E,AstrHori 85mm F1.8 AF,,85,85,1.8,72,79,80,3.15,93.5,3.68,626,22.08,No,,,,349,2022,
+Third-Party,Laowa,Full frame,Prime,,E,Laowa 10mm f/2.8 Zero-D FF,,10,10,2.8,77,12,82,3.23,72.8,2.87,420,14.82,No,,,,699,2024,
+Third-Party,Laowa,Full frame,Prime,,E,Laowa 12mm f/2.8 Lite Zero-D FF,,12,12,2.8,72,14,77,3.03,76.5,3.01,377,13.3,No,,,,549,2025,
+Third-Party,Laowa,Full frame,Prime,,E,Laowa 180mm f/4.5 1.5X Ultra Macro APO,,180,180,4.5,62,30,67.6,2.66,134.4,5.29,522,18.41,No,,,,599,2025,
+Third-Party,Laowa,Full frame,Prime,,E,Laowa 200mm f/2 AF FF,,200,200,2,105,150,118,4.65,174.8,6.88,1588,56.01,No,,,,2999,2025,
+Third-Party,Meike,Full frame,Prime,,E,Meike 85mm F1.4 AF,,85,85,1.4,77,98,87,3.43,114,4.49,735,25.93,No,,,,549,2023,
+Third-Party,Meike,Full frame,Prime,,E,Meike 85mm f1.8 Pro FF AF STM,,85,85,1.8,62,85,76,2.99,95,3.74,389,13.72,No,,,,199,2024,
+Third-Party,Meike,Full frame,Prime,,E,Meike 85mm F1.8 SE Mark II,,85,85,1.8,62,65,76,2.99,100.2,3.94,369,13.02,No,,,,179,2025,
+Third-Party,Meike,Full frame,Prime,,E,Meike 85mm F1.8 FF STM,,85,85,1.8,67,90,79.5,3.13,,,386,13.62,No,,,,169,2022,
+Third-Party,Samyang/Rokinon,Full frame,Prime,,E,Samyang AF 14mm F2.8 FE,,14,14,2.8,N/A,20,86,3.39,97.5,3.84,500,17.64,No,,,,699,2016,
+Third-Party,Samyang/Rokinon,Full frame,Prime,,E,Samyang AF 16mm F2.8 P FE,,16,16,2.8,62,12,69.8,2.75,70.5,2.78,207,7.3,No,,,,399,2025,
+Third-Party,Samyang/Rokinon,Full frame,Prime,,E,Samyang AF 18mm F2.8 FE,,18,18,2.8,58,25,63.5,2.5,60.5,2.38,145,5.11,No,,,,499,2019,
+Third-Party,Samyang/Rokinon,Full frame,Prime,,E,Samyang AF 24mm F1.8 FE,,24,24,1.8,58,19,65,2.56,71.5,2.81,230,8.11,No,,,,599,2021,
+Third-Party,Samyang/Rokinon,Full frame,Prime,,E,Samyang AF 24mm F2.8 FE,,24,24,2.8,49,24,61.8,2.43,37,1.46,120,4.23,No,,,,349,2018,
+Third-Party,Samyang/Rokinon,Full frame,Prime,,E,Samyang AF 35mm F1.4 FE,,35,35,1.4,67,30,75.9,2.99,115,4.53,645,22.75,No,,,,799,2017,
+Third-Party,Samyang/Rokinon,Full frame,Prime,,E,Samyang AF 35mm F1.4 FE II,,35,35,1.4,67,29,75,2.95,115,4.53,659,23.25,No,,,,899,2022,
+Third-Party,Samyang/Rokinon,Full frame,Prime,,E,Samyang AF 35mm F1.4 P FE,,35,35,1.4,67,30,75,2.95,99.2,3.91,470,16.58,No,,,,699,2024,
+Third-Party,Samyang/Rokinon,Full frame,Prime,,E,Samyang AF 35mm F1.8 FE,,35,35,1.8,58,29,65,2.56,63.5,2.5,210,7.41,No,,,,399,2020,
+Third-Party,Samyang/Rokinon,Full frame,Prime,,E,Samyang AF 35mm F1.8 P FE,,35,35,1.8,62,27,69.8,2.75,71.5,2.81,216,7.62,No,,,,449,2026,
+Third-Party,Samyang/Rokinon,Full frame,Prime,,E,Samyang AF 35mm F2.8 FE,,35,35,2.8,49,35,61.8,2.43,33,1.3,108,3.81,No,,,,349,2017,
+Third-Party,Samyang/Rokinon,Full frame,Prime,,E,Samyang AF 45mm F1.8 FE,,45,45,1.8,49,45,61.8,2.43,56.1,2.21,162,5.71,No,,,,499,2019,
+Third-Party,Samyang/Rokinon,Full frame,Prime,,E,Samyang AF 50mm F1.4 FE,,50,50,1.4,67,45,73.5,2.89,97.7,3.85,585,20.64,No,,,,699,2016,
+Third-Party,Samyang/Rokinon,Full frame,Prime,,E,Samyang AF 50mm F1.4 FE II,,50,50,1.4,72,40,80.1,3.15,88.9,3.5,420,14.82,No,,,,899,2021,
+Third-Party,Samyang/Rokinon,Full frame,Prime,,E,Samyang AF 75mm F1.8 FE,,75,75,1.8,58,69,65,2.56,69,2.72,230,8.11,No,,,,399,2020,
+Third-Party,Samyang/Rokinon,Full frame,Prime,,E,Samyang AF 85mm F1.4 FE,,85,85,1.4,77,90,88,3.46,99.5,3.92,568,20.04,No,,,,699,2019,
+Third-Party,Samyang/Rokinon,Full frame,Prime,,E,Samyang AF 85mm F1.4 FE II,,85,85,1.4,72,85,83.4,3.28,99.5,3.92,509,17.96,No,,,,799,2022,
+Third-Party,Samyang/Rokinon,Full frame,Prime,,E,Samyang AF 85mm F1.8 P FE,,85,85,1.8,62,80,69.8,2.75,71.5,2.81,272,9.6,No,,,,449,2025,
+Third-Party,Samyang/Rokinon,Full frame,Prime,,E,Samyang AF 135mm F1.8 FE,,135,135,1.8,82,69,93.4,3.68,129.6,5.1,772,27.23,No,,,,1399,2022,
+Third-Party,Sigma,Full frame,Prime,,E,Sigma 14mm F1.4 DG DN | Art,,14,14,1.4,N/A,30,101.4,3.99,151.9,5.98,1160,40.92,No,,,,1599,2023,
+Third-Party,Sigma,Full frame,Prime,,E,Sigma 14mm F1.8 DG HSM | Art,,14,14,1.8,N/A,27,95.4,3.76,152,5.98,1170,41.27,No,,,,1599,2017,
+Third-Party,Sigma,Full frame,Prime,,E,Sigma 15mm F1.4 DG DN Diagonal Fisheye | Art,,15,15,1.4,N/A,38.5,104,4.09,159.9,6.3,1360,47.97,No,,,,1999,2024,
+Third-Party,Sigma,Full frame,Prime,,E,Sigma 17mm F4 DG DN | Contemporary (I series),,17,17,4,55,12,64,2.52,50.8,2,220,7.76,No,,,,599,2023,
+Third-Party,Sigma,Full frame,Prime,,E,Sigma 20mm F1.4 DG DN | Art,,20,20,1.4,82,23,87.8,3.46,113.2,4.46,630,22.22,No,,,,899,2022,
+Third-Party,Sigma,Full frame,Prime,,E,Sigma 20mm F1.4 DG HSM | Art,,20,20,1.4,N/A,27.6,90.7,3.57,155.8,6.13,1015,35.8,No,,,,899,2018,
+Third-Party,Sigma,Full frame,Prime,,E,Sigma 20mm F2 DG DN | Contemporary (I series),,20,20,2,62,22,70,2.76,74.4,2.93,370,13.05,No,,,,699,2022,
+Third-Party,Sigma,Full frame,Prime,,E,Sigma 24mm F1.4 DG DN | Art,,24,24,1.4,72,25,75.7,2.98,97.5,3.84,510,17.99,No,,,,799,2022,
+Third-Party,Sigma,Full frame,Prime,,E,Sigma 24mm F1.4 DG HSM | Art,,24,24,1.4,77,25,85.4,3.36,116.2,4.57,740,26.1,No,,,,799,2018,
+Third-Party,Sigma,Full frame,Prime,,E,Sigma 24mm F2 DG DN | Contemporary (I series),,24,24,2,62,24.5,70,2.76,74,2.91,360,12.7,No,,,,639,2021,
+Third-Party,Sigma,Full frame,Prime,,E,Sigma 24mm F3.5 DG DN | Contemporary (I series),,24,24,3.5,55,10.8,64,2.52,50.8,2,230,8.11,No,,,,549,2020,
+Third-Party,Sigma,Full frame,Prime,,E,Sigma 28mm F1.4 DG HSM | Art,,28,28,1.4,77,28,82.8,3.26,133.7,5.26,925,32.63,No,,,,799,2018,
+Third-Party,Sigma,Full frame,Prime,,E,Sigma 35mm F1.2 DG DN | Art,,35,35,1.2,82,30,87.8,3.46,138.2,5.44,1080,38.1,No,,,,1499,2019,
+Third-Party,Sigma,Full frame,Prime,,E,Sigma 35mm F1.4 DG HSM | Art,,35,35,1.4,67,30,77,3.03,120,4.72,755,26.63,No,,,,899,,
+Third-Party,Sigma,Full frame,Prime,,E,Sigma 35mm F1.4 DG DN | Art,,35,35,1.4,67,30,75.5,2.97,111.5,4.39,640,22.58,No,,,,899,2021,
+Third-Party,Sigma,Full frame,Prime,,E,Sigma 35mm F2 DG DN | Contemporary (I series),,35,35,2,58,27,70,2.76,67.4,2.65,325,11.46,No,,,,639,2020,
+Third-Party,Sigma,Full frame,Prime,,E,Sigma 40mm F1.4 DG HSM | Art,,40,40,1.4,82,40,87.8,3.46,157,6.18,1260,44.45,No,,,,1399,2018,
+Third-Party,Sigma,Full frame,Prime,,E,Sigma 45mm F2.8 DG DN | Contemporary (I series),,45,45,2.8,55,24,64,2.52,48.2,1.9,230,8.11,No,,,,549,2019,
+Third-Party,Sigma,Full frame,Prime,,E,Sigma 50mm F1.2 DG DN | Art,,50,50,1.2,72,40,81,3.19,110.8,4.36,740,26.1,No,,,,1399,2024,
+Third-Party,Sigma,Full frame,Prime,,E,Sigma 50mm F1.4 DG HSM | Art,,50,50,1.4,77,40,85.4,3.36,149.5,5.89,815,28.75,No,,,,949,2018,
+Third-Party,Sigma,Full frame,Prime,,E,Sigma 50mm F1.4 DG DN | Art,,50,50,1.4,72,45,81,3.19,109.8,4.32,670,23.63,No,,,,849,2023,
+Third-Party,Sigma,Full frame,Prime,,E,Sigma 50mm F2 DG DN | Contemporary (I series),,50,50,2,58,45,70,2.76,68,2.68,350,12.35,No,,,,639,2023,
+Third-Party,Sigma,Full frame,Prime,,E,Sigma 65mm F2 DG DN | Contemporary (I series),,65,65,2,62,55,72,2.83,74.7,2.94,405,14.29,No,,,,699,2020,
+Third-Party,Sigma,Full frame,Prime,,E,Sigma 85mm F1.4 DG HSM | Art,,85,85,1.4,86,85,94.7,3.73,126.2,4.97,1130,39.86,No,,,,1199,2018,
+Third-Party,Sigma,Full frame,Prime,,E,Sigma 85mm F1.4 DG DN | Art,,85,85,1.4,77,85,82.8,3.26,96.1,3.78,630,22.22,No,,,,1099,2020,
+Third-Party,Sigma,Full frame,Prime,,E,Sigma 90mm F2.8 DG DN | Contemporary (I series),,90,90,2.8,55,50,64,2.52,59.7,2.35,295,10.41,No,,,,699,2021,
+Third-Party,Sigma,Full frame,Prime,,E,Sigma 105mm F2.8 DG DN Macro | Art,,105,105,2.8,62,29.5,74,2.91,133.9,5.27,710,25.04,No,,,,799,2020,
+Third-Party,Sigma,Full frame,Prime,,E,Sigma 135mm F1.8 DG HSM | Art,,135,135,1.8,N/A,87.5,91.4,3.6,114.9,4.52,1130,39.86,No,,,,1399,2017,
+Third-Party,Sigma,Full frame,Zoom,,E,Sigma 14-24mm F2.8 DG DN | Art,,14,24,2.8,N/A,28,85,3.35,133,5.24,1150,40.57,No,,,,1499,2021,
+Third-Party,Sigma,Full frame,Zoom,,E,Sigma 16-28mm F2.8 DG DN | Contemporary,,16,28,2.8,72,25,77.2,3.04,100.6,3.96,450,15.87,No,,,,1099,2022,
+Third-Party,Sigma,Full frame,Zoom,,E,Sigma 24-35mm F2 DG HSM | Art,,24,35,2,82,28,87.6,3.45,122.7,4.83,940,33.16,No,,,,999,2015,
+Third-Party,Sigma,Full frame,Zoom,,E,Sigma 24-70mm F2.8 DG DN | Art,,24,70,2.8,82,18,87.8,3.46,122.9,4.84,830,29.28,No,,,,1099,2022,
+Third-Party,Sigma,Full frame,Zoom,,E,Sigma 24-70mm F2.8 DG OS HSM | Art,,24,70,2.8,82,37,88,3.46,107.6,4.24,1020,35.98,Yes,,,,1299,,
+Third-Party,Sigma,Full frame,Zoom,,E,Sigma 28-45mm F1.8 DG DN | Art,,28,45,1.8,82,30,87.8,3.46,153.4,6.04,960,33.86,No,,,,1349,2024,
+Third-Party,Sigma,Full frame,Zoom,,E,Sigma 28-70mm F2.8 DG DN | Contemporary,,28,70,2.8,67,19,72.2,2.84,103.5,4.07,470,16.58,No,,,,799,2021,
+Third-Party,Sigma,Full frame,Zoom,,E,Sigma 60-600mm F4.5-6.3 DG DN OS | Sports,,60,600,4.5,105,45,105.4,4.15,268.9,10.59,2485,87.69,Yes,,,,2499,2023,
+Third-Party,Sigma,Full frame,Zoom,,E,Sigma 100-400mm F5-6.3 DG DN OS | Contemporary,,100,400,5,67,112,86,3.39,197.2,7.76,1140,40.21,Yes,,,,949,2020,
+Third-Party,Sigma,Full frame,Zoom,,E,Sigma 150-600mm F5-6.3 DG DN OS | Sports,,150,600,5,N/A,280,107.2,4.22,263.6,10.38,2100,74.08,Yes,,,,1499,2021,
+Third-Party,Tamron,Full frame,Prime,,E,Tamron 35mm F/2.8 Di III OSD M1:2,,35,35,2.8,67,15,73,2.87,64,2.52,210,7.41,No,,,,349,2019,
+Third-Party,Tamron,Full frame,Prime,,E,Tamron SP 35mm F/1.4 Di USD,,35,35,1.4,72,30,80.9,3.19,104.4,4.11,815,28.75,No,,,,899,2019,
+Third-Party,Tamron,Full frame,Prime,,E,Tamron 70-210mm F/4 Di VC USD,,70,210,4,67,95,76.6,3.02,174,6.85,860,30.34,Yes,,,,799,2018,
+Third-Party,Tamron,Full frame,Zoom,,E,Tamron 17-28mm F/2.8 Di III RXD,,17,28,2.8,67,19,73,2.87,99,3.9,420,14.82,No,,,,799,2019,
+Third-Party,Tamron,Full frame,Zoom,,E,Tamron 20-40mm F/2.8 Di III VXD,,20,40,2.8,67,17,74.4,2.93,86.5,3.4,365,12.87,No,,,,699,2022,
+Third-Party,Tamron,Full frame,Zoom,,E,Tamron 28-200mm F/2.8-5.6 Di III RXD,,28,200,2.8,67,19,74,2.91,117,4.61,575,20.28,No,,,,729,2020,
+Third-Party,Tamron,Full frame,Zoom,,E,Tamron 28-300mm F/4-7.1 Di III VC VXD,,28,300,4,67,19,78,3.07,126,4.96,610,21.52,Yes,,,,899,2024,
+Third-Party,Tamron,Full frame,Zoom,,E,Tamron 35-150mm F/2-2.8 Di III VXD,,35,150,2,82,33,89.2,3.51,158,6.22,1165,41.1,No,,,,1899,2021,
+Third-Party,Tamron,Full frame,Zoom,,E,Tamron 50-300mm F/4.5-6.3 Di III VC VXD,,50,300,4.5,67,22,78,3.07,156,6.14,665,23.46,Yes,,,,799,2024,
+Third-Party,Tamron,Full frame,Zoom,,E,Tamron 50-400mm F/4.5-6.3 Di III VC VXD,,50,400,4.5,67,25,88.5,3.48,183.4,7.22,1155,40.74,Yes,,,,1299,2022,
+Third-Party,Tamron,Full frame,Zoom,,E,Tamron 70-180mm F/2.8 Di III VXD,,70,180,2.8,67,85,81,3.19,149,5.87,810,28.57,No,,,,1199,2020,
+Third-Party,Tamron,Full frame,Zoom,,E,Tamron 70-180mm F/2.8 Di III VC VXD G2,,70,180,2.8,67,85,83,3.27,156.5,6.16,855,30.16,Yes,,,,1299,2023,
+Third-Party,Tamron,Full frame,Zoom,,E,Tamron 70-200mm F/2.8 Di III RXD,,70,200,2.8,77,95,88.4,3.48,193.3,7.61,1505,53.09,No,,,,1799,,
+Third-Party,Tamron,Full frame,Zoom,,E,Tamron 70-300mm F/4.5-6.3 Di III RXD,,70,300,4.5,67,80,77,3.03,148,5.83,545,19.22,No,,,,549,2020,
+Third-Party,Tamron,Full frame,Zoom,,E,Tamron 150-500mm F/5-6.7 Di III VC VXD,,150,500,5,82,60,93,3.66,209.6,8.25,1725,60.85,Yes,,,,1399,2021,
+Third-Party,Tamron,Full frame,Zoom,,E,Tamron 300mm F/2.8 Di III VC VXD,,300,300,2.8,112,270,116,4.57,236,9.29,1470,51.85,Yes,,,,2999,2024,
+Third-Party,TTArtisan,Full frame,Prime,,E,TTArtisan AF 75mm F2,,75,75,2,62,75,,,82,3.23,340,11.99,No,,,,199,2024,
+Third-Party,Viltrox,Full frame,Prime,,E,Viltrox AF 16mm F1.8 FE,,16,16,1.8,N/A,27,85.2,3.35,103,4.06,550,19.4,No,,,,549,2023,
+Third-Party,Viltrox,Full frame,Prime,,E,Viltrox AF 20mm F2.8 FE,,20,20,2.8,52,19,65,2.56,60.5,2.38,157,5.54,No,,,,158,2024,
+Third-Party,Viltrox,Full frame,Prime,,E,Viltrox AF 28mm F1.8 FE,,28,28,1.8,55,35,70,2.76,101,3.98,367,12.95,No,,,,379,2023,
+Third-Party,Viltrox,Full frame,Prime,,E,Viltrox AF 35mm F1.4 LAB FE,,35,35,1.4,77,42,92.2,3.63,109.4,4.31,665,23.46,No,,,,899,2024,
+Third-Party,Viltrox,Full frame,Prime,,E,Viltrox AF 35mm F1.8 FE,,35,35,1.8,55,40,70,2.76,91,3.58,310,10.93,No,,,,379,2023,
+Third-Party,Viltrox,Full frame,Prime,,E,Viltrox AF 50mm F1.4 Air FE,,50,50,1.4,67,45,74,2.91,93.2,3.67,425,14.99,No,,,,329,2024,
+Third-Party,Viltrox,Full frame,Prime,,E,Viltrox AF 85mm F1.8 Mark II FE,,85,85,1.8,72,80,80,3.15,92,3.62,545,19.22,No,,,,448,2023,
+Third-Party,Viltrox,Full frame,Prime,,E,Viltrox AF 135mm F1.8 LAB FE,,135,135,1.8,82,70,93.4,3.68,131,5.16,1050,37.04,No,,,,1399,2024,
+Third-Party,Zeiss,Full frame,Prime,,E,Zeiss Batis 2/25,,25,25,2,67,20,92,3.62,81,3.19,335,11.82,No,,,,1299,2015,
+Third-Party,Zeiss,Full frame,Prime,,E,Zeiss Batis 2.8/18,,18,18,2.8,77,25,95,3.74,99,3.9,330,11.64,No,,,,1499,2016,
+Third-Party,Zeiss,Full frame,Prime,,E,Zeiss Batis 2.8/135,,135,135,2.8,77,87,98,3.86,120,4.72,614,21.66,Yes,,,,1999,2017,
+Third-Party,Zeiss,Full frame,Prime,,E,Zeiss Batis 1.8/85,,85,85,1.8,67,80,92,3.62,82,3.23,475,16.76,No,,,,1199,2015,
+Third-Party,Zeiss,Full frame,Prime,,E,Zeiss Batis 2.8/40 CF,,40,40,2.8,67,24,87,3.43,92,3.62,361,12.73,No,,,,1299,2018,
+Third-Party,Zeiss,Full frame,Prime,,E,Zeiss Loxia 2.8/21,,21,21,2.8,52,25,62.4,2.46,87,3.43,394,13.9,No,,,,1499,2015,
+Third-Party,Zeiss,Full frame,Prime,,E,Zeiss Loxia 2.4/25,,25,25,2.4,52,30,62.4,2.46,75,2.95,393,13.86,No,,,,1299,2016,
+Third-Party,Zeiss,Full frame,Prime,,E,Zeiss Loxia 2/35,,35,35,2,52,30,62.4,2.46,89,3.5,280,9.88,No,,,,1199,2014,
+Third-Party,Zeiss,Full frame,Prime,,E,Zeiss Loxia 2/50,,50,50,2,52,45,62.4,2.46,66,2.6,320,11.29,No,,,,949,2014,
+Third-Party,Zeiss,Full frame,Prime,,E,Zeiss Loxia 2.4/85,,85,85,2.4,52,80,62.4,2.46,94,3.7,428,15.1,No,,,,1449,2016,
+Third-Party,Voigtlander,Full frame,Prime,,E,Voigtlander 10mm F5.6 Hyper Wide Heliar Asph III,,10,10,5.6,,,70.1,2.76,68.1,2.68,362,12.77,No,,,,799,,
+Third-Party,Voigtlander,Full frame,Prime,,E,Voigtlander 12mm F5.6 Ultra Wide Heliar Asph III,,12,12,5.6,,,74.6,2.94,58.2,2.29,287,10.12,No,,,,649,,
+Third-Party,Voigtlander,Full frame,Prime,,E,Voigtlander 15mm F4.5 Super Wide Heliar Asph III,,15,15,4.5,,,74.6,2.94,62.3,2.45,247,8.71,No,,,,649,,
+Third-Party,Voigtlander,Full frame,Prime,,E,Voigtlander 21mm F3.5 Color-Skopar Asph,,21,21,3.5,,,74.6,2.94,40.9,1.61,230,8.11,No,,,,549,,
+Third-Party,Voigtlander,Full frame,Prime,,E,Voigtlander 35mm F1.7 Ultron,,35,35,1.7,,,63.3,2.49,55.2,2.17,260,9.17,No,,,,649,,
+Third-Party,Voigtlander,Full frame,Prime,,E,Voigtlander 40mm F1.2 Nokton Asph,,40,40,1.2,,,70.1,2.76,59.3,2.33,315,11.11,No,,,,799,,
+Third-Party,Voigtlander,Full frame,Prime,,E,Voigtlander 50mm F1.0 Nokton,,50,50,1.0,,,79.4,3.13,66.6,2.62,650,22.93,No,,,,1799,,
+Third-Party,Voigtlander,Full frame,Prime,,E,Voigtlander 50mm F1.2 Nokton Asph,,50,50,1.2,,,70.1,2.76,68.2,2.69,352,12.42,No,,,,999,,
+Third-Party,Voigtlander,Full frame,Prime,,E,Voigtlander 50mm F2.0 APO-Lanthar Asph,,50,50,2.0,,,63.3,2.49,51.9,2.04,288,10.16,No,,,,1049,,
+Third-Party,Voigtlander,Full frame,Prime,,E,Voigtlander 65mm F2.0 Macro APO-Lanthar,,65,65,2.0,,,76.8,3.02,91.3,3.6,340,11.99,No,,,,799,,
+Third-Party,Voigtlander,Full frame,Prime,,E,Voigtlander 75mm F1.5 Nokton,,75,75,1.5,,,74.6,2.94,73.1,2.88,525,18.52,No,,,,899,,
+Third-Party,Voigtlander,Full frame,Prime,,E,Voigtlander 90mm F2.8 Macro APO-Lanthar,,90,90,2.8,,,74.6,2.94,74.3,2.93,346,12.21,No,,,,799,,
+Third-Party,Voigtlander,Full frame,Prime,,E,Voigtlander 110mm F2.5 Macro APO-Lanthar,,110,110,2.5,,,78.4,3.09,100.3,3.95,770,27.16,No,,,,1099,,
+Third-Party,Laowa,Full frame,Zoom,,E,Laowa 12-24mm F5.6 Zoom Shift,,12,24,5.6,77,20,100,3.94,91,3.58,575,20.28,No,,,,649,2021,
+Third-Party,Tokina,Full frame,Zoom,,E,Tokina SZX SUPER TELE 400mm F8 Reflex MF,,400,400,8,77,1.15,74,2.91,77,3.03,330,11.64,No,,,,249,,

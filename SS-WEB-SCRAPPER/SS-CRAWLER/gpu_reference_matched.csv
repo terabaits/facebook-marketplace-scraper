@@ -1,0 +1,318 @@
+passmark_name,gpu_reference_id,ref_vendor,ref_model,match_method,match_score
+Radeon RX Vega 56,292,AMD,Radeon RX Vega 56,fuzzy,78.06
+Radeon RX Vega 64,293,AMD,Radeon RX Vega 64,fuzzy,78.06
+NVIDIA GeForce3 Ti200,337,NVIDIA,GeForce3 Ti 200,fuzzy,95.00
+RADEON 7500,8,AMD,Radeon 7500,strong_name,100.00
+RADEON 7500 Family,8,AMD,Radeon 7500,strong_name,95.00
+RADEON 8500 Family,12,AMD,Radeon 8500,strong_name,95.00
+RADEON 9000,17,AMD,Radeon 9000,strong_name,100.00
+RADEON 9000 Family,16,AMD,Radeon 9000,strong_name,95.00
+SAPPHIRE RADEON 9000 ATLANTIS PRO,18,AMD,Radeon 9000 Pro,strong_name,95.00
+RADEON 9100 Family,20,AMD,Radeon 9100,strong_name,95.00
+RADEON 9100 IGP,20,AMD,Radeon 9100,strong_name,95.00
+RADEON 9200,26,AMD,Radeon 9200,strong_name,100.00
+RADEON 9200 PRO Family,31,AMD,Radeon 9200 Pro,strong_name,95.00
+RADEON 9250,33,AMD,Radeon 9250,strong_name,100.00
+RADEON 9500,35,AMD,Radeon 9500,strong_name,100.00
+RADEON 9500 PRO / 9700,36,AMD,Radeon 9500 Pro,strong_name,95.00
+RADEON 9550,38,AMD,Radeon 9550,strong_name,100.00
+Radeon 9550 / X1050,37,AMD,Radeon 9550,strong_name,95.00
+RADEON 9600 Family,41,AMD,Radeon 9600,strong_name,95.00
+RADEON 9600 TX Family,41,AMD,Radeon 9600,strong_name,95.00
+SAPPHIRE RADEON 9600 ATLANTIS,41,AMD,Radeon 9600,strong_name,95.00
+RADEON 9600 PRO,49,AMD,Radeon 9600 Pro,strong_name,100.00
+RADEON 9600 PRO Family,48,AMD,Radeon 9600 Pro,strong_name,95.00
+Radeon 9700 TX with TV-Out,52,AMD,Radeon 9700,strong_name,95.00
+RADEON 9700 PRO,53,AMD,Radeon 9700 Pro,strong_name,100.00
+MEDION RADEON 9800 XXL,55,AMD,Radeon 9800,strong_name,95.00
+RADEON 9800,55,AMD,Radeon 9800,strong_name,100.00
+RADEON 9800 PRO,60,AMD,Radeon 9800 Pro,strong_name,100.00
+Radeon HD 2400 XT,141,AMD,Radeon HD 2400XT,strong_name,100.00
+Radeon HD 2600 PRO,143,AMD,Radeon HD 2600 Pro,strong_name,100.00
+Radeon HD 2600 Pro AGP,142,AMD,Radeon HD 2600 Pro,strong_name,95.00
+Radeon HD 2600 XT,145,AMD,Radeon HD 2600XT,strong_name,100.00
+Radeon HD 2900 PRO,148,AMD,Radeon HD 2900 Pro,strong_name,100.00
+Radeon HD 2900 XT,150,AMD,Radeon HD 2900XT,strong_name,100.00
+Radeon HD 3470,153,AMD,Radeon HD 3470,strong_name,100.00
+Radeon HD 3850,159,AMD,Radeon HD 3850,strong_name,100.00
+Radeon HD 3870,161,AMD,Radeon HD 3870,strong_name,100.00
+Radeon HD 3870 X2,162,AMD,Radeon HD 3870X2,strong_name,100.00
+Radeon HD 4670,168,AMD,Radeon HD 4670,strong_name,100.00
+Radeon HD 4770,169,AMD,Radeon HD 4770,strong_name,100.00
+Radeon HD 4850 X2,173,AMD,Radeon HD 4850X2,strong_name,100.00
+Radeon HD 4870 X2,178,AMD,Radeon HD 4870X2,strong_name,100.00
+Radeon HD 5750,190,AMD,Radeon HD 5750,strong_name,100.00
+Radeon HD 5830,192,AMD,Radeon HD 5830,strong_name,100.00
+Radeon HD 5870,195,AMD,Radeon HD 5870,strong_name,100.00
+RADEON HD 6350,198,AMD,Radeon HD 6350,strong_name,100.00
+Radeon HD 6450,200,AMD,Radeon HD 6450,strong_name,100.00
+Radeon HD 6570,203,AMD,Radeon HD 6570,strong_name,100.00
+Radeon HD 6670/7670,204,AMD,Radeon HD 6670,strong_name,95.00
+Radeon HD 6750,206,AMD,Radeon HD 6750,strong_name,100.00
+Radeon HD 6770,207,AMD,Radeon HD 6770,strong_name,100.00
+Radeon HD 6790,208,AMD,Radeon HD 6790,strong_name,100.00
+Radeon HD 6850,209,AMD,Radeon HD 6850,strong_name,100.00
+Radeon HD 6950,213,AMD,Radeon HD 6950,strong_name,100.00
+Radeon HD 6970,216,AMD,Radeon HD 6970,strong_name,100.00
+Radeon HD 6990,217,AMD,Radeon HD 6990,strong_name,100.00
+Radeon HD 7350,218,AMD,Radeon HD 7350,strong_name,100.00
+Radeon HD 7450,221,AMD,Radeon HD 7450,strong_name,100.00
+Radeon HD 7470,223,AMD,Radeon HD 7470,strong_name,100.00
+Radeon HD 7570,225,AMD,Radeon HD 7570,strong_name,100.00
+Radeon HD 7670,227,AMD,Radeon HD 7670,strong_name,100.00
+Radeon HD 7790,232,AMD,Radeon HD 7790,strong_name,100.00
+Radeon HD 7850,233,AMD,Radeon HD 7850,strong_name,100.00
+Radeon HD 7870,234,AMD,Radeon HD 7870 GHz Ed.,strong_name,100.00
+Radeon HD 7870 XT,235,AMD,Radeon HD 7870 XT,strong_name,100.00
+Radeon HD 7970 / R9 280X,238,AMD,Radeon HD 7970,strong_name,100.00
+Radeon HD 7990,240,AMD,Radeon HD 7990,strong_name,100.00
+Radeon R7 240,242,AMD,Radeon R7 240,strong_name,100.00
+Radeon R7 250,244,AMD,Radeon R7 250,strong_name,100.00
+Radeon R7 260,249,AMD,Radeon R7 260,strong_name,100.00
+Radeon R7 360,263,AMD,Radeon R7 360,strong_name,100.00
+Radeon R7 370,264,AMD,Radeon R7 370,strong_name,95.00
+Radeon R9 270,253,AMD,Radeon R9 270,strong_name,95.00
+Radeon R9 270 / R7 370,253,AMD,Radeon R9 270,strong_name,100.00
+Radeon HD 7950 / R9 280,256,AMD,Radeon R9 280,strong_name,100.00
+Radeon R9 280,256,AMD,Radeon R9 280,strong_name,100.00
+Radeon R9 285,258,AMD,Radeon R9 285,strong_name,95.00
+Radeon R9 285 / 380,258,AMD,Radeon R9 285,strong_name,100.00
+Radeon R9 290,259,AMD,Radeon R9 290,strong_name,95.00
+Radeon R9 290 / 390,259,AMD,Radeon R9 290,strong_name,100.00
+Radeon R9 380,267,AMD,Radeon R9 380,strong_name,100.00
+Radeon R9 390,269,AMD,Radeon R9 390,strong_name,100.00
+Radeon RX 460,276,AMD,Radeon RX 460,strong_name,100.00
+Radeon RX 470/570,278,AMD,Radeon RX 470,strong_name,100.00
+Radeon RX 480,280,AMD,Radeon RX 480,strong_name,100.00
+Radeon RX 5300,295,AMD,Radeon RX 5300,strong_name,100.00
+Radeon RX 540,282,AMD,Radeon RX 540,strong_name,100.00
+Radeon RX 550,284,AMD,Radeon RX 550,strong_name,100.00
+Radeon RX 5500,296,AMD,Radeon RX 5500,strong_name,100.00
+Radeon RX 5500 XT,299,AMD,Radeon RX 5500 XT,strong_name,100.00
+Radeon RX 560,286,AMD,Radeon RX 560,strong_name,100.00
+Radeon RX 5600,300,AMD,Radeon RX 5600,strong_name,100.00
+Radeon RX 5600 OEM,300,AMD,Radeon RX 5600,strong_name,95.00
+Radeon RX 5600 XT,301,AMD,Radeon RX 5600 XT,strong_name,100.00
+Radeon RX 5700,302,AMD,Radeon RX 5700,strong_name,100.00
+Radeon RX 5700 XT,303,AMD,Radeon RX 5700 XT,strong_name,100.00
+Radeon RX 5700 XT 50th Anniversary,303,AMD,Radeon RX 5700 XT,strong_name,100.00
+Radeon RX 580,290,AMD,Radeon RX 580,strong_name,100.00
+Radeon RX 590,291,AMD,Radeon RX 590,strong_name,100.00
+Radeon RX 6400,305,AMD,Radeon RX 6400,strong_name,100.00
+Radeon RX 6500 XT,306,AMD,Radeon RX 6500 XT,strong_name,100.00
+Radeon RX 6600,308,AMD,Radeon RX 6600,strong_name,100.00
+Radeon RX 6600 XT,309,AMD,Radeon RX 6600 XT,strong_name,100.00
+Radeon RX 6650 XT,310,AMD,Radeon RX 6650 XT,strong_name,100.00
+Radeon RX 6700,311,AMD,Radeon RX 6700,strong_name,100.00
+Radeon RX 6700 XT,312,AMD,Radeon RX 6700 XT,strong_name,100.00
+Radeon RX 6750 XT,313,AMD,Radeon RX 6750 XT,strong_name,100.00
+Radeon RX 6800,314,AMD,Radeon RX 6800,strong_name,100.00
+Radeon RX 6800 XT,315,AMD,Radeon RX 6800 XT,strong_name,100.00
+Radeon RX 6900 XT,316,AMD,Radeon RX 6900 XT,strong_name,100.00
+Radeon RX 6950 XT,317,AMD,Radeon RX 6950 XT,strong_name,100.00
+Radeon RX 7600,318,AMD,Radeon RX 7600,strong_name,100.00
+Radeon RX 7600 XT,319,AMD,Radeon RX 7600 XT,strong_name,100.00
+Radeon RX 7700 XT,320,AMD,Radeon RX 7700 XT,strong_name,100.00
+Radeon RX 7800 XT,321,AMD,Radeon RX 7800 XT,strong_name,100.00
+Radeon RX 7900 GRE,322,AMD,Radeon RX 7900 GRE,strong_name,100.00
+Radeon RX 7900 XT,323,AMD,Radeon RX 7900 XT,strong_name,100.00
+Radeon RX 7900 XTX,324,AMD,Radeon RX 7900 XTX,strong_name,100.00
+Radeon RX 9060 XT 16GB,628,AMD,Radeon RX 9060 XT,strong_name,100.00
+Radeon RX 9070,630,AMD,Radeon RX 9070,strong_name,100.00
+Radeon RX 9070 GRE,629,AMD,Radeon RX 9070 GRE,strong_name,100.00
+Radeon RX 9070 XT,631,AMD,Radeon RX 9070 XT,strong_name,100.00
+Radeon X1050,100,AMD,Radeon X1050,strong_name,100.00
+Radeon X1300,102,AMD,Radeon X1300,strong_name,100.00
+Radeon X1300 PRO,104,AMD,Radeon X1300 Pro,strong_name,95.00
+Radeon X1550,109,AMD,Radeon X1550,strong_name,100.00
+Radeon X1550 64-bit,108,AMD,Radeon X1550,strong_name,95.00
+SAPPHIRE Radeon X1550,108,AMD,Radeon X1550,strong_name,95.00
+Radeon X1600 Pro,111,AMD,Radeon X1600 Pro,strong_name,100.00
+Radeon X1600 Pro / X1300XT,110,AMD,Radeon X1600 Pro,strong_name,95.00
+Radeon X1650 GTO,114,AMD,Radeon X1650,strong_name,95.00
+Radeon X1650 Pro,119,AMD,Radeon X1650 Pro,strong_name,100.00
+Radeon X1950 Pro,136,AMD,Radeon X1950 Pro,strong_name,100.00
+CONNECT 3D RADEON X300,62,AMD,Radeon X300,strong_name,95.00
+RADEON X550,69,AMD,Radeon X550,strong_name,100.00
+RADEON X600 PRO,70,AMD,Radeon X600 Pro,strong_name,95.00
+RADEON X700,75,AMD,Radeon X700,strong_name,100.00
+RADEON X700 PRO,79,AMD,Radeon X700 Pro,strong_name,100.00
+RADEON X800 GTO,83,AMD,Radeon X800,strong_name,100.00
+RADEON X800 XL,83,AMD,Radeon X800,strong_name,100.00
+RADEON X800 PRO,91,AMD,Radeon X800 Pro,strong_name,100.00
+RADEON X800 PRO/GTO,91,AMD,Radeon X800 Pro,strong_name,100.00
+RADEON X850 PRO,94,AMD,Radeon X850 Pro,strong_name,100.00
+Intel Arc A310,620,INTEL,Intel Arc A310,strong_name,100.00
+Intel Arc A310 LP,620,INTEL,Intel Arc A310,strong_name,100.00
+Intel Arc A380,621,INTEL,Intel Arc A380,strong_name,100.00
+Intel Arc A580,622,INTEL,Intel Arc A580,strong_name,100.00
+Intel Arc A750,623,INTEL,Intel Arc A750,strong_name,100.00
+Intel Arc A770,625,INTEL,Intel Arc A770,strong_name,100.00
+Intel Arc B570,627,INTEL,Intel Arc B570,strong_name,100.00
+Intel Arc B580,626,INTEL,Intel Arc B580,strong_name,100.00
+GeForce 210,464,NVIDIA,GeForce 210,strong_name,100.00
+GeForce 256,326,NVIDIA,GeForce 256,strong_name,95.00
+GeForce 605,512,NVIDIA,GeForce 605,strong_name,95.00
+GeForce 6200,380,NVIDIA,GeForce 6200,strong_name,100.00
+GeForce 6200 TurboCache,379,NVIDIA,GeForce 6200,strong_name,95.00
+GeForce 6500,385,NVIDIA,GeForce 6500,strong_name,100.00
+GeForce 6600,387,NVIDIA,GeForce 6600,strong_name,100.00
+GeForce 6600 GT,389,NVIDIA,GeForce 6600GT,strong_name,100.00
+GeForce 6800,391,NVIDIA,GeForce 6800,strong_name,100.00
+GeForce 6800 XE,390,NVIDIA,GeForce 6800,strong_name,95.00
+GeForce 6800 Ultra,395,NVIDIA,GeForce 6800 Ultra,strong_name,100.00
+GeForce 6800 GS,392,NVIDIA,GeForce 6800GS,strong_name,100.00
+GeForce 6800 GS/XT,392,NVIDIA,GeForce 6800GS,strong_name,100.00
+GeForce 6800 GT,393,NVIDIA,GeForce 6800GT,strong_name,100.00
+GeForce 7200 GS,398,NVIDIA,GeForce 7200GS,strong_name,100.00
+GeForce 7300 GS,402,NVIDIA,GeForce 7300GS,strong_name,100.00
+GeForce 7300 GT,403,NVIDIA,GeForce 7300GT,strong_name,100.00
+GeForce 7300 LE,399,NVIDIA,GeForce 7300LE,strong_name,100.00
+GeForce 7600 GS,405,NVIDIA,GeForce 7600GS,strong_name,100.00
+GeForce 7600 GT,407,NVIDIA,GeForce 7600GT,strong_name,100.00
+GeForce 7800 GS,408,NVIDIA,GeForce 7800GS,strong_name,100.00
+GeForce 7800 GT,409,NVIDIA,GeForce 7800GT,strong_name,100.00
+GeForce 7800 GTX,411,NVIDIA,GeForce 7800GTX,strong_name,100.00
+GeForce 7900 GS,412,NVIDIA,GeForce 7900GS,strong_name,100.00
+GeForce 7900 GT,413,NVIDIA,GeForce 7900GT,strong_name,100.00
+GeForce 7900 GT/GTO,413,NVIDIA,GeForce 7900GT,strong_name,100.00
+GeForce 7900 GTX,415,NVIDIA,GeForce 7900GTX,strong_name,100.00
+GeForce 7950 GT,419,NVIDIA,GeForce 7950GT,strong_name,100.00
+GeForce 8400 GS,424,NVIDIA,GeForce 8400GS,strong_name,100.00
+GeForce 8600 GS,428,NVIDIA,GeForce 8600GS,strong_name,100.00
+GeForce 8800 Ultra,442,NVIDIA,GeForce 8800 Ultra,strong_name,100.00
+GeForce 8800 GS,434,NVIDIA,GeForce 8800GS,strong_name,100.00
+GeForce 8800 GT,437,NVIDIA,GeForce 8800GT,strong_name,100.00
+GeForce 8800 GTX,441,NVIDIA,GeForce 8800GTX,strong_name,100.00
+GeForce 9300 GS,443,NVIDIA,GeForce 9300GS,strong_name,100.00
+GeForce 9500 GS,447,NVIDIA,GeForce 9500GS,strong_name,95.00
+GeForce 9600 GT,453,NVIDIA,GeForce 9600GT,strong_name,100.00
+GeForce 9800 GT,455,NVIDIA,GeForce 9800GT,strong_name,100.00
+GeForce 9800 GT 1024MB,454,NVIDIA,GeForce 9800GT,strong_name,95.00
+GeForce 9800 GTX,456,NVIDIA,GeForce 9800GTX,strong_name,100.00
+GeForce 9800 GTX/9800 GTX+,456,NVIDIA,GeForce 9800GTX,strong_name,95.00
+GeForce FX 5200,354,NVIDIA,GeForce FX 5200,strong_name,100.00
+GeForce FX 5200 Ultra,355,NVIDIA,GeForce FX 5200 Ultra,strong_name,100.00
+GeForce FX 5500,357,NVIDIA,GeForce FX 5500,strong_name,100.00
+GeForce FX 5600,359,NVIDIA,GeForce FX 5600,strong_name,100.00
+Quadro FX 5600,358,NVIDIA,GeForce FX 5600,strong_name,95.00
+GeForce FX 5600 Ultra,362,NVIDIA,GeForce FX 5600 Ultra,strong_name,100.00
+GeForce FX 5700,365,NVIDIA,GeForce FX 5700,strong_name,100.00
+GeForce FX 5700 Ultra,369,NVIDIA,GeForce FX 5700 Ultra,strong_name,100.00
+GeForce FX 5700LE,367,NVIDIA,GeForce FX 5700LE,strong_name,100.00
+GeForce FX 5900,372,NVIDIA,GeForce FX 5900,strong_name,100.00
+GeForce FX 5900 Ultra,374,NVIDIA,GeForce FX 5900 Ultra,strong_name,100.00
+GeForce FX 5900XT,373,NVIDIA,GeForce FX 5900XT,strong_name,100.00
+GeForce FX 5950 Ultra,375,NVIDIA,GeForce FX 5950 Ultra,strong_name,100.00
+GeForce GT 1030,563,NVIDIA,GeForce GT 1030,strong_name,100.00
+GeForce GT 120,460,NVIDIA,GeForce GT 120,strong_name,100.00
+GeForce GT 120 / 9500 GT,460,NVIDIA,GeForce GT 120,strong_name,95.00
+GeForce GT 220,466,NVIDIA,GeForce GT 220,strong_name,100.00
+GeForce GT 240,468,NVIDIA,GeForce GT 240,strong_name,100.00
+GeForce GT 320,480,NVIDIA,GeForce GT 320,strong_name,100.00
+GeForce GT 330,481,NVIDIA,GeForce GT 330,strong_name,95.00
+GeForce GT 420,484,NVIDIA,GeForce GT 420,strong_name,100.00
+GT 430,485,NVIDIA,GeForce GT 430,strong_name,95.00
+GeForce GT 430,486,NVIDIA,GeForce GT 430,strong_name,100.00
+GeForce GT 530,499,NVIDIA,GeForce GT 530,strong_name,100.00
+GeForce GT 545,500,NVIDIA,GeForce GT 545,strong_name,95.00
+GeForce GT 610,516,NVIDIA,GeForce GT 610,strong_name,100.00
+GeForce GT 630,520,NVIDIA,GeForce GT 630,strong_name,100.00
+GeForce GT 710,538,NVIDIA,GeForce GT 710,strong_name,100.00
+GeForce GT 720,540,NVIDIA,GeForce GT 720,strong_name,100.00
+GeForce GT 730,542,NVIDIA,GeForce GT 730,strong_name,100.00
+GeForce GT 740,543,NVIDIA,GeForce GT 740,strong_name,100.00
+GeForce GTS 240,469,NVIDIA,GeForce GTS 240,strong_name,100.00
+GeForce GTS 250,471,NVIDIA,GeForce GTS 250,strong_name,100.00
+GeForce GTS 450,489,NVIDIA,GeForce GTS 450,strong_name,100.00
+GeForce GTX 1050,564,NVIDIA,GeForce GTX 1050,strong_name,100.00
+GeForce GTX 1050 3GB,565,NVIDIA,GeForce GTX 1050,strong_name,100.00
+GeForce GTX 1050 Ti,566,NVIDIA,GeForce GTX 1050 Ti,strong_name,100.00
+GeForce GTX 1060 3GB,567,NVIDIA,GeForce GTX 1060 3GB,strong_name,100.00
+GeForce GTX 1060,568,NVIDIA,GeForce GTX 1060 6GB,strong_name,100.00
+GeForce GTX 1070,569,NVIDIA,GeForce GTX 1070,strong_name,100.00
+GeForce GTX 1070 Ti,570,NVIDIA,GeForce GTX 1070 Ti,strong_name,100.00
+GeForce GTX 1080,571,NVIDIA,GeForce GTX 1080,strong_name,100.00
+GeForce GTX 1080 Ti,572,NVIDIA,GeForce GTX 1080 Ti,strong_name,100.00
+GeForce GTX 1630,575,NVIDIA,GeForce GTX 1630,strong_name,100.00
+GeForce GTX 1650,576,NVIDIA,GeForce GTX 1650,strong_name,100.00
+GeForce GTX 1650 SUPER,578,NVIDIA,GeForce GTX 1650 Super,strong_name,100.00
+GeForce GTX 1660,579,NVIDIA,GeForce GTX 1660,strong_name,100.00
+GeForce GTX 1660 SUPER,580,NVIDIA,GeForce GTX 1660 Super,strong_name,100.00
+GeForce GTX 1660 Ti,581,NVIDIA,GeForce GTX 1660 Ti,strong_name,100.00
+GeForce GTX 260,472,NVIDIA,GeForce GTX 260,strong_name,100.00
+GeForce GTX 275,474,NVIDIA,GeForce GTX 275,strong_name,100.00
+GeForce GTX 280,476,NVIDIA,GeForce GTX 280,strong_name,100.00
+GeForce GTX 285,477,NVIDIA,GeForce GTX 285,strong_name,100.00
+GeForce GTX 460,490,NVIDIA,GeForce GTX 460,strong_name,100.00
+GeForce GTX 460 v2,491,NVIDIA,GeForce GTX 460,strong_name,100.00
+GeForce GTX 460 SE,492,NVIDIA,GeForce GTX 460 SE,strong_name,100.00
+GeForce GTX 465,493,NVIDIA,GeForce GTX 465,strong_name,100.00
+GeForce GTX 470,494,NVIDIA,GeForce GTX 470,strong_name,100.00
+GeForce GTX 480,495,NVIDIA,GeForce GTX 480,strong_name,100.00
+GeForce GTX 560,503,NVIDIA,GeForce GTX 560,strong_name,100.00
+GeForce GTX 560 Ti,506,NVIDIA,GeForce GTX 560 Ti,strong_name,100.00
+GeForce GTX 580,510,NVIDIA,GeForce GTX 580,strong_name,100.00
+Asus GTX 650 FML II EC-EGPU,523,NVIDIA,GeForce GTX 650,strong_name,95.00
+GeForce GTX 650,524,NVIDIA,GeForce GTX 650,strong_name,100.00
+GeForce GTX 650 Ti,526,NVIDIA,GeForce GTX 650 Ti,strong_name,100.00
+GeForce GTX 650 Ti BOOST,526,NVIDIA,GeForce GTX 650 Ti,strong_name,100.00
+GeForce GTX 660 Ti,531,NVIDIA,GeForce GTX 660 Ti,strong_name,100.00
+GeForce GTX 670,533,NVIDIA,GeForce GTX 670,strong_name,100.00
+GeForce GTX 680,535,NVIDIA,GeForce GTX 680,strong_name,100.00
+GeForce GTX 690,536,NVIDIA,GeForce GTX 690,strong_name,100.00
+GeForce GTX 760,548,NVIDIA,GeForce GTX 760,strong_name,100.00
+GeForce GTX 770,550,NVIDIA,GeForce GTX 770,strong_name,100.00
+GeForce GTX 780 Ti,552,NVIDIA,GeForce GTX 780 Ti,strong_name,100.00
+GeForce GTX 950,556,NVIDIA,GeForce GTX 950,strong_name,100.00
+GeForce GTX 960,558,NVIDIA,GeForce GTX 960,strong_name,100.00
+GeForce GTX 970,559,NVIDIA,GeForce GTX 970,strong_name,100.00
+GeForce GTX 980,560,NVIDIA,GeForce GTX 980,strong_name,100.00
+GeForce GTX 980 Ti,561,NVIDIA,GeForce GTX 980 Ti,strong_name,100.00
+GeForce GTX Titan,553,NVIDIA,GeForce GTX Titan,strong_name,95.00
+GeForce GTX TITAN Black,554,NVIDIA,GeForce GTX Titan Black,strong_name,95.00
+GeForce GTX TITAN X,562,NVIDIA,GeForce GTX Titan X,strong_name,95.00
+GeForce PCX 5300,376,NVIDIA,GeForce PCX 5300,strong_name,100.00
+GeForce PCX 5750,377,NVIDIA,GeForce PCX 5750,strong_name,100.00
+GeForce RTX 2060,582,NVIDIA,GeForce RTX 2060,strong_name,100.00
+GeForce RTX 2060 12GB,583,NVIDIA,GeForce RTX 2060,strong_name,100.00
+GeForce RTX 2060 SUPER,584,NVIDIA,GeForce RTX 2060 Super,strong_name,100.00
+GeForce RTX 2070,585,NVIDIA,GeForce RTX 2070,strong_name,100.00
+GeForce RTX 2070 SUPER,586,NVIDIA,GeForce RTX 2070 Super,strong_name,100.00
+GeForce RTX 2080,587,NVIDIA,GeForce RTX 2080,strong_name,95.00
+GeForce RTX 2080 SUPER,588,NVIDIA,GeForce RTX 2080 Super,strong_name,100.00
+GeForce RTX 2080 Ti,589,NVIDIA,GeForce RTX 2080 Ti,strong_name,100.00
+GeForce RTX 3050 6GB,591,NVIDIA,GeForce RTX 3050 6GB,strong_name,100.00
+GeForce RTX 3050 8GB,592,NVIDIA,GeForce RTX 3050 8GB,strong_name,100.00
+GeForce RTX 3050 OEM,592,NVIDIA,GeForce RTX 3050 8GB,strong_name,100.00
+GeForce RTX 3060,593,NVIDIA,GeForce RTX 3060,strong_name,95.00
+GeForce RTX 3060 12GB,594,NVIDIA,GeForce RTX 3060,strong_name,100.00
+GeForce RTX 3060 8GB,593,NVIDIA,GeForce RTX 3060,strong_name,100.00
+GeForce RTX 3060 Ti,595,NVIDIA,GeForce RTX 3060 Ti,strong_name,100.00
+GeForce RTX 3070,596,NVIDIA,GeForce RTX 3070,strong_name,100.00
+GeForce RTX 3070 Ti,597,NVIDIA,GeForce RTX 3070 Ti,strong_name,100.00
+GeForce RTX 3080,598,NVIDIA,GeForce RTX 3080,strong_name,100.00
+GeForce RTX 3080 12GB,599,NVIDIA,GeForce RTX 3080,strong_name,100.00
+GeForce RTX 3080 Ti,600,NVIDIA,GeForce RTX 3080 Ti,strong_name,100.00
+GeForce RTX 3090,601,NVIDIA,GeForce RTX 3090,strong_name,100.00
+GeForce RTX 3090 Ti,602,NVIDIA,GeForce RTX 3090 Ti,strong_name,100.00
+GeForce RTX 4060,603,NVIDIA,GeForce RTX 4060,strong_name,100.00
+GeForce RTX 4060 Ti,604,NVIDIA,GeForce RTX 4060 Ti,strong_name,100.00
+GeForce RTX 4060 Ti 16GB,605,NVIDIA,GeForce RTX 4060 Ti,strong_name,100.00
+GeForce RTX 4070,606,NVIDIA,GeForce RTX 4070,strong_name,100.00
+GeForce RTX 4070 SUPER,607,NVIDIA,GeForce RTX 4070 Super,strong_name,100.00
+GeForce RTX 4070 Ti,608,NVIDIA,GeForce RTX 4070 Ti,strong_name,100.00
+GeForce RTX 4070 Ti SUPER,609,NVIDIA,GeForce RTX 4070 Ti Super,strong_name,100.00
+GeForce RTX 4080,610,NVIDIA,GeForce RTX 4080,strong_name,100.00
+GeForce RTX 4080 SUPER,611,NVIDIA,GeForce RTX 4080 SUPER,strong_name,100.00
+GeForce RTX 4090,612,NVIDIA,GeForce RTX 4090,strong_name,100.00
+GeForce RTX 4090 D,612,NVIDIA,GeForce RTX 4090,strong_name,95.00
+GeForce RTX 5060,613,NVIDIA,GeForce RTX 5060,strong_name,100.00
+GeForce RTX 5060 Ti 16GB,615,NVIDIA,GeForce RTX 5060 Ti,strong_name,100.00
+GeForce RTX 5060 Ti 8GB,614,NVIDIA,GeForce RTX 5060 Ti,strong_name,100.00
+GeForce RTX 5070,616,NVIDIA,GeForce RTX 5070,strong_name,100.00
+GeForce RTX 5070 Ti,617,NVIDIA,GeForce RTX 5070 Ti,strong_name,100.00
+GeForce RTX 5080,618,NVIDIA,GeForce RTX 5080,strong_name,100.00
+GeForce RTX 5090,619,NVIDIA,GeForce RTX 5090,strong_name,100.00
+GeForce RTX 5090 D,619,NVIDIA,GeForce RTX 5090,strong_name,100.00
+GeForce RTX 5090 D v2,619,NVIDIA,GeForce RTX 5090,strong_name,95.00

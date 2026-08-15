@@ -1,0 +1,66 @@
+2026-05-25 20:21:45 | INFO     | ss_crawler | [computer_scraper] Initializing computer scraper...
+2026-05-25 20:21:45 | INFO     | ss_crawler | [database] Database connected: localhost:5433/ss_market
+2026-05-25 20:21:45 | INFO     | ss_crawler | [computer_scraper] Database: postgresql+psycopg2://crawler:crawler_pass@localhost:5433/ss_market
+2026-05-25 20:21:48 | INFO     | ss_crawler | [cpu_matcher] CPUMatcher initialized with 5320 CPUs
+2026-05-25 20:21:48 | INFO     | ss_crawler | [matcher] GPUMatcher initialized with 631 GPUs
+2026-05-25 20:21:49 | INFO     | ss_crawler | [ram_matcher] RAMMatcher initialized with 5284 RAM references
+2026-05-25 20:21:49 | INFO     | ss_crawler | [ssd_matcher] SSDMatcher initialized with 2451 SSDs
+2026-05-25 20:21:50 | INFO     | ss_crawler | [psu_matcher] PSUMatcher initialized with 2895 PSU references
+2026-05-25 20:21:50 | INFO     | ss_crawler | [case_matcher] CaseMatcher initialized with 5742 case references
+2026-05-25 20:21:54 | INFO     | ss_crawler | [motherboard_matcher] MotherboardMatcher initialized with 5732 motherboards
+2026-05-25 20:21:55 | INFO     | ss_crawler | [computer_monitor_matcher] ComputerMonitorMatcher initialized with 20272 monitors
+2026-05-25 20:21:55 | INFO     | ss_crawler | [computer_matcher] ComputerMatcher initialized: 5320 CPUs, 631 GPUs, 5284 RAMs, 2451 SSDs, 2895 PSUs, 5742 Cases, 5732 Motherboards, 20272 Monitors
+2026-05-25 20:21:55 | INFO     | ss_crawler | [computer_scraper] Loaded references: 5320 CPUs, 631 GPUs, 5284 RAMs, 2451 SSDs, 2895 PSUs, 5742 Cases, 5732 Motherboards, 20272 Monitors
+2026-05-25 20:21:55 | INFO     | ss_crawler | [computer_scraper] Initializing computer scraper...
+2026-05-25 20:21:55 | INFO     | ss_crawler | [database] Database connected: localhost:5433/ss_market
+2026-05-25 20:21:55 | INFO     | ss_crawler | [computer_scraper] Database: postgresql+psycopg2://crawler:crawler_pass@localhost:5433/ss_market
+2026-05-25 20:21:57 | INFO     | ss_crawler | [cpu_matcher] CPUMatcher initialized with 5320 CPUs
+2026-05-25 20:21:57 | INFO     | ss_crawler | [matcher] GPUMatcher initialized with 631 GPUs
+2026-05-25 20:21:58 | INFO     | ss_crawler | [ram_matcher] RAMMatcher initialized with 5284 RAM references
+2026-05-25 20:21:58 | INFO     | ss_crawler | [ssd_matcher] SSDMatcher initialized with 2451 SSDs
+2026-05-25 20:21:59 | INFO     | ss_crawler | [psu_matcher] PSUMatcher initialized with 2895 PSU references
+2026-05-25 20:21:59 | INFO     | ss_crawler | [case_matcher] CaseMatcher initialized with 5742 case references
+2026-05-25 20:22:02 | INFO     | ss_crawler | [motherboard_matcher] MotherboardMatcher initialized with 5732 motherboards
+2026-05-25 20:22:03 | INFO     | ss_crawler | [computer_monitor_matcher] ComputerMonitorMatcher initialized with 20272 monitors
+2026-05-25 20:22:03 | INFO     | ss_crawler | [computer_matcher] ComputerMatcher initialized: 5320 CPUs, 631 GPUs, 5284 RAMs, 2451 SSDs, 2895 PSUs, 5742 Cases, 5732 Motherboards, 20272 Monitors
+2026-05-25 20:22:03 | INFO     | ss_crawler | [computer_scraper] Loaded references: 5320 CPUs, 631 GPUs, 5284 RAMs, 2451 SSDs, 2895 PSUs, 5742 Cases, 5732 Motherboards, 20272 Monitors
+2026-05-25 20:22:03 | INFO     | ss_crawler | [crawler] Fetching single computer listing: https://www.ss.com/msg/lv/electronics/computers/pc/pbdhn.html
+2026-05-25 20:22:07 | INFO     | ss_crawler | [ssd_matcher] SSDMatcher initialized with 95 SSDs
+2026-05-25 20:22:07 | INFO     | ss_crawler | [computer_matcher] [SSD DEBUG] Set result.ssd: {'id': 443, 'brand': 'Crucial', 'model': 'BX500', 'interface': 'SATA/AHCI', 'form_factor': '2.5"', 'capacity_gb': 480, 'controller': 'SMI SM2258/59XT', 'configuration': 'Single-core, 4-ch, 4-CE/ch', 'has_dram': False, 'hmb': None, 'nand_brand': 'Micron', 'nand_type': 'TLC/QLC', 'layers': '64/96', 'read_speed_mb': 540, 'write_speed_mb': 500, 'category': 'Entry-Level SATA', 'notes': '1/2TB: SM2259XT + 96L QLC', 'search_keywords': ['500', 'crucial 500', 'crucial bx500', 'bx500', 'crucial'], 'normalized_name': 'crucial bx500', 'name': 'Crucial BX500'}
+2026-05-25 20:22:11 | INFO     | ss_crawler | [computer_monitor_matcher] Generic monitor detected: 24" 1920x1080 (50%)
+2026-05-25 20:22:11 | INFO     | ss_crawler | [computer_scraper] Single scrape result: unchanged - Unchanged: Datori un orgtehnika/Datori/ Pārdod...
+2026-05-25 20:22:11 | INFO     | ss_crawler | [ssd_matcher] SSDMatcher initialized with 95 SSDs
+2026-05-25 20:22:11 | INFO     | ss_crawler | [computer_matcher] [SSD DEBUG] Set result.ssd: {'id': 443, 'brand': 'Crucial', 'model': 'BX500', 'interface': 'SATA/AHCI', 'form_factor': '2.5"', 'capacity_gb': 480, 'controller': 'SMI SM2258/59XT', 'configuration': 'Single-core, 4-ch, 4-CE/ch', 'has_dram': False, 'hmb': None, 'nand_brand': 'Micron', 'nand_type': 'TLC/QLC', 'layers': '64/96', 'read_speed_mb': 540, 'write_speed_mb': 500, 'category': 'Entry-Level SATA', 'notes': '1/2TB: SM2259XT + 96L QLC', 'search_keywords': ['500', 'crucial 500', 'crucial bx500', 'bx500', 'crucial'], 'normalized_name': 'crucial bx500', 'name': 'Crucial BX500'}
+2026-05-25 20:22:15 | INFO     | ss_crawler | [computer_monitor_matcher] Generic monitor detected: 24" 1920x1080 (50%)
+2026-05-25 20:23:38 | INFO     | ss_crawler | [computer_scraper] Initializing computer scraper...
+2026-05-25 20:23:38 | INFO     | ss_crawler | [database] Database connected: localhost:5433/ss_market
+2026-05-25 20:23:38 | INFO     | ss_crawler | [computer_scraper] Database: postgresql+psycopg2://crawler:crawler_pass@localhost:5433/ss_market
+2026-05-25 20:23:40 | INFO     | ss_crawler | [cpu_matcher] CPUMatcher initialized with 5320 CPUs
+2026-05-25 20:23:40 | INFO     | ss_crawler | [matcher] GPUMatcher initialized with 631 GPUs
+2026-05-25 20:23:41 | INFO     | ss_crawler | [ram_matcher] RAMMatcher initialized with 5284 RAM references
+2026-05-25 20:23:41 | INFO     | ss_crawler | [ssd_matcher] SSDMatcher initialized with 2451 SSDs
+2026-05-25 20:23:41 | INFO     | ss_crawler | [psu_matcher] PSUMatcher initialized with 2895 PSU references
+2026-05-25 20:23:42 | INFO     | ss_crawler | [case_matcher] CaseMatcher initialized with 5742 case references
+2026-05-25 20:23:45 | INFO     | ss_crawler | [motherboard_matcher] MotherboardMatcher initialized with 5732 motherboards
+2026-05-25 20:23:45 | INFO     | ss_crawler | [computer_monitor_matcher] ComputerMonitorMatcher initialized with 20272 monitors
+2026-05-25 20:23:45 | INFO     | ss_crawler | [computer_matcher] ComputerMatcher initialized: 5320 CPUs, 631 GPUs, 5284 RAMs, 2451 SSDs, 2895 PSUs, 5742 Cases, 5732 Motherboards, 20272 Monitors
+2026-05-25 20:23:45 | INFO     | ss_crawler | [computer_scraper] Loaded references: 5320 CPUs, 631 GPUs, 5284 RAMs, 2451 SSDs, 2895 PSUs, 5742 Cases, 5732 Motherboards, 20272 Monitors
+2026-05-25 20:23:45 | INFO     | ss_crawler | [computer_scraper] Initializing computer scraper...
+2026-05-25 20:23:45 | INFO     | ss_crawler | [database] Database connected: localhost:5433/ss_market
+2026-05-25 20:23:45 | INFO     | ss_crawler | [computer_scraper] Database: postgresql+psycopg2://crawler:crawler_pass@localhost:5433/ss_market
+2026-05-25 20:23:48 | INFO     | ss_crawler | [cpu_matcher] CPUMatcher initialized with 5320 CPUs
+2026-05-25 20:23:48 | INFO     | ss_crawler | [matcher] GPUMatcher initialized with 631 GPUs
+2026-05-25 20:23:49 | INFO     | ss_crawler | [ram_matcher] RAMMatcher initialized with 5284 RAM references
+2026-05-25 20:23:49 | INFO     | ss_crawler | [ssd_matcher] SSDMatcher initialized with 2451 SSDs
+2026-05-25 20:23:49 | INFO     | ss_crawler | [psu_matcher] PSUMatcher initialized with 2895 PSU references
+2026-05-25 20:23:50 | INFO     | ss_crawler | [case_matcher] CaseMatcher initialized with 5742 case references
+2026-05-25 20:23:53 | INFO     | ss_crawler | [motherboard_matcher] MotherboardMatcher initialized with 5732 motherboards
+2026-05-25 20:23:54 | INFO     | ss_crawler | [computer_monitor_matcher] ComputerMonitorMatcher initialized with 20272 monitors
+2026-05-25 20:23:54 | INFO     | ss_crawler | [computer_matcher] ComputerMatcher initialized: 5320 CPUs, 631 GPUs, 5284 RAMs, 2451 SSDs, 2895 PSUs, 5742 Cases, 5732 Motherboards, 20272 Monitors
+2026-05-25 20:23:54 | INFO     | ss_crawler | [computer_scraper] Loaded references: 5320 CPUs, 631 GPUs, 5284 RAMs, 2451 SSDs, 2895 PSUs, 5742 Cases, 5732 Motherboards, 20272 Monitors
+2026-05-25 20:23:54 | INFO     | ss_crawler | [crawler] Fetching single computer listing: https://www.ss.com/msg/lv/electronics/computers/pc/dpfex.html
+2026-05-25 20:24:02 | INFO     | ss_crawler | [computer_monitor_matcher] Brand+size match for monitor-only brand: HP 24uh
+2026-05-25 20:24:02 | INFO     | ss_crawler | [computer_monitor_matcher] Monitor matched: HP 24uh (45%)
+2026-05-25 20:24:02 | INFO     | ss_crawler | [computer_scraper] Single scrape result: unchanged - Unchanged: Datori un orgtehnika/Datori/ Pārdod...
+2026-05-25 20:24:07 | INFO     | ss_crawler | [computer_monitor_matcher] Brand+size match for monitor-only brand: HP 24uh
+2026-05-25 20:24:07 | INFO     | ss_crawler | [computer_monitor_matcher] Monitor matched: HP 24uh (45%)

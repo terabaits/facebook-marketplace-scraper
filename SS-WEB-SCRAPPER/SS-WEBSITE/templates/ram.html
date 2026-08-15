@@ -3,752 +3,1048 @@
 {% block title %}RAM Listings - SS-Crawler{% endblock %}
 
 {% block extra_css %}
-<style>
+:root {
+    --ram-primary: #6366f1;
+    --ram-primary-soft: #818cf8;
+    --ram-success: #10b981;
+    --ram-warning: #f59e0b;
+    --ram-error: #ef4444;
+    --ram-text: var(--text-color, #1e293b);
+    --ram-text-dim: var(--text-dim, #64748b);
+    --ram-border: var(--card-border, rgba(255,255,255,0.08));
+    --ram-bg: var(--card-bg, #ffffff);
+    --ram-bg-soft: #f8fafc;
+    --ram-shadow: 0 1px 2px rgba(0,0,0,0.04), 0 1px 3px rgba(0,0,0,0.06);
+    --ram-shadow-lg: 0 4px 6px -1px rgba(0,0,0,0.08), 0 2px 4px -2px rgba(0,0,0,0.05);
+    --ram-radius: 10px;
+    --ram-radius-sm: 6px;
+}
+
+[data-theme="dark"] {
+    --ram-bg: #1e293b;
+    --ram-bg-soft: #0f172a;
+    --ram-text: #e2e8f0;
+    --ram-text-dim: #94a3b8;
+    --ram-border: rgba(255,255,255,0.08);
+    --ram-shadow: 0 1px 2px rgba(0,0,0,0.3), 0 1px 3px rgba(0,0,0,0.2);
+    --ram-shadow-lg: 0 4px 6px -1px rgba(0,0,0,0.4), 0 2px 4px -2px rgba(0,0,0,0.3);
+}
+
+/* ============ Stats cards (compact, monochrome) ============ */
+.ram-stats-row {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr 1fr 1fr;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+}
+.ram-stat-card {
+    background: var(--ram-bg);
+    border: 1px solid var(--ram-border);
+    border-radius: var(--ram-radius);
+    padding: 0.85rem 1rem;
+    box-shadow: var(--ram-shadow);
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    position: relative;
+    overflow: hidden;
+}
+.ram-stat-card::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 3px;
+    background: var(--accent, var(--ram-primary));
+}
+.ram-stat-card.ddr3::before { background: #ef4444; }
+.ram-stat-card.ddr4::before { background: #3b82f6; }
+.ram-stat-card.ddr5::before { background: #8b5cf6; }
+.ram-stat-card .stat-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--ram-text-dim);
+}
+.ram-stat-card .stat-head .dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 6px currentColor;
+}
+.ram-stat-card.ddr3 .dot { background: #ef4444; color: #ef4444; }
+.ram-stat-card.ddr4 .dot { background: #3b82f6; color: #3b82f6; }
+.ram-stat-card.ddr5 .dot { background: #8b5cf6; color: #8b5cf6; }
+.ram-stat-card .stat-main {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--ram-text);
+    line-height: 1.1;
+    margin-top: 0.15rem;
+}
+.ram-stat-card .stat-sub {
+    font-size: 0.75rem;
+    color: var(--ram-text-dim);
+}
+.ram-stat-card .stat-bar {
+    height: 4px;
+    background: rgba(0,0,0,0.06);
+    border-radius: 2px;
+    margin-top: 0.4rem;
+    overflow: hidden;
+}
+.ram-stat-card .stat-bar > div {
+    height: 100%;
+    border-radius: 2px;
+    transition: width 0.3s;
+}
+.ram-stat-card.ddr3 .stat-bar > div { background: #ef4444; }
+.ram-stat-card.ddr4 .stat-bar > div { background: #3b82f6; }
+.ram-stat-card.ddr5 .stat-bar > div { background: #8b5cf6; }
+
+/* ============ Capacity mini-grid ============ */
+.ram-cap-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+.ram-cap-card {
+    background: var(--ram-bg);
+    border: 1px solid var(--ram-border);
+    border-radius: var(--ram-radius-sm);
+    padding: 0.6rem 0.7rem;
+    box-shadow: var(--ram-shadow);
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    cursor: pointer;
+    transition: all 0.15s;
+}
+.ram-cap-card:hover {
+    transform: translateY(-1px);
+    box-shadow: var(--ram-shadow-lg);
+    border-color: var(--ram-primary-soft);
+}
+.ram-cap-card .cap-label {
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: var(--ram-text-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+.ram-cap-card .cap-prices {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    font-size: 0.75rem;
+}
+.ram-cap-card .cap-ddr {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-weight: 600;
+    color: var(--ram-text);
+}
+.ram-cap-card .cap-ddr .ddr-dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    flex-shrink: 0;
+}
+.ram-cap-card .cap-ddr .ddr-dot.d3 { background: #ef4444; }
+.ram-cap-card .cap-ddr .ddr-dot.d4 { background: #3b82f6; }
+.ram-cap-card .cap-ddr .ddr-dot.d5 { background: #8b5cf6; }
+.ram-cap-card .cap-ddr .count { color: var(--ram-text-dim); font-weight: 400; font-size: 0.7rem; }
+
+/* ============ Filter bar (modern) ============ */
+.ram-filterbar {
+    background: var(--ram-bg);
+    border: 1px solid var(--ram-border);
+    border-radius: var(--ram-radius);
+    padding: 0.75rem 1rem;
+    box-shadow: var(--ram-shadow);
+    margin-bottom: 1rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    align-items: center;
+}
+.ram-filterbar .filter-group {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+.ram-filterbar .filter-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--ram-text-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+.ram-filterbar .filter-chips {
+    display: flex;
+    gap: 0.25rem;
+    border: 1px solid var(--ram-border);
+    border-radius: 8px;
+    padding: 2px;
+    background: var(--ram-bg-soft);
+}
+.ram-filterbar .filter-chips button {
+    background: transparent;
+    border: none;
+    color: var(--ram-text-dim);
+    padding: 0.3rem 0.65rem;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s;
+}
+.ram-filterbar .filter-chips button:hover {
+    background: var(--ram-bg);
+    color: var(--ram-text);
+}
+.ram-filterbar .filter-chips button.active,
+.ram-filterbar .filter-chips button.on {
+    background: var(--ram-primary);
+    color: white;
+}
+.ram-filterbar .filter-chips button.active:hover,
+.ram-filterbar .filter-chips button.on:hover {
+    background: #4f46e5;
+}
+.ram-filterbar select, .ram-filterbar input[type="text"] {
+    background: var(--ram-bg-soft);
+    border: 1px solid var(--ram-border);
+    color: var(--ram-text);
+    border-radius: 6px;
+    padding: 0.35rem 0.6rem;
+    font-size: 0.85rem;
+    font-weight: 500;
+    cursor: pointer;
+}
+.ram-filterbar select:focus, .ram-filterbar input:focus {
+    outline: none;
+    border-color: var(--ram-primary);
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+}
+.ram-filterbar .check-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.3rem 0.7rem;
+    background: var(--ram-bg-soft);
+    border: 1px solid var(--ram-border);
+    border-radius: 999px;
+    font-size: 0.8rem;
+    color: var(--ram-text);
+    cursor: pointer;
+    user-select: none;
+    transition: all 0.15s;
+}
+.ram-filterbar .check-pill:hover { border-color: var(--ram-primary-soft); }
+.ram-filterbar .check-pill input { margin: 0; }
+.ram-filterbar .check-pill.on { background: var(--ram-primary); color: white; border-color: var(--ram-primary); }
+.ram-filterbar .check-pill.on input { filter: invert(1); }
+.ram-filterbar .ram-id-input {
+    width: 90px;
+}
+.ram-filterbar .export-btn {
+    margin-left: auto;
+    background: var(--ram-primary);
+    color: white;
+    border: none;
+    padding: 0.45rem 0.95rem;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    transition: all 0.15s;
+}
+.ram-filterbar .export-btn:hover {
+    background: #4f46e5;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(99, 102, 241, 0.25);
+}
+.ram-filterbar .divider {
+    width: 1px;
+    height: 22px;
+    background: var(--ram-border);
+    margin: 0 0.25rem;
+}
+
+/* ============ Deal strip (top deals) ============ */
+.ram-deals-strip {
+    background: linear-gradient(135deg, rgba(239,68,68,0.05) 0%, rgba(245,158,11,0.05) 100%);
+    border: 1px solid rgba(239,68,68,0.15);
+    border-radius: var(--ram-radius);
+    padding: 0.75rem 1rem;
+    margin-bottom: 1rem;
+}
+.ram-deals-strip h3 {
+    margin: 0 0 0.5rem 0;
+    font-size: 0.9rem;
+    color: var(--ram-text);
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+.ram-deals-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 0.5rem;
+}
+.ram-deal-card {
+    display: flex;
+    gap: 0.65rem;
+    align-items: center;
+    padding: 0.6rem;
+    background: var(--ram-bg);
+    border: 1px solid var(--ram-border);
+    border-radius: var(--ram-radius-sm);
+    cursor: pointer;
+    transition: all 0.15s;
+}
+.ram-deal-card:hover {
+    border-color: var(--ram-error);
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(239,68,68,0.15);
+}
+.ram-deal-card .deal-img {
+    width: 44px; height: 44px;
+    border-radius: 6px;
+    object-fit: cover;
+    border: 1px solid var(--ram-border);
+    flex-shrink: 0;
+    background: var(--ram-bg-soft);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--ram-text-dim);
+    font-size: 1.1rem;
+}
+.ram-deal-card .deal-info {
+    flex: 1;
+    min-width: 0;
+}
+.ram-deal-card .deal-name {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--ram-text);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.ram-deal-card .deal-meta {
+    font-size: 0.7rem;
+    color: var(--ram-text-dim);
+    margin-top: 0.1rem;
+}
+.ram-deal-card .deal-price {
+    text-align: right;
+    flex-shrink: 0;
+}
+.ram-deal-card .deal-price-main {
+    font-size: 0.95rem;
+    font-weight: 800;
+    color: var(--ram-error);
+    line-height: 1.1;
+}
+.ram-deal-card .deal-save {
+    font-size: 0.7rem;
+    color: var(--ram-success);
+    font-weight: 700;
+}
+.ram-deal-card .deal-avg {
+    font-size: 0.65rem;
+    color: var(--ram-text-dim);
+    text-decoration: line-through;
+}
+
+/* ============ Listings table (modernized) ============ */
+.ram-listings {
+    background: var(--ram-bg);
+    border: 1px solid var(--ram-border);
+    border-radius: var(--ram-radius);
+    overflow: hidden;
+    box-shadow: var(--ram-shadow);
+}
+.ram-listings table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: auto;
+}
+.ram-listings thead {
+    background: var(--ram-bg-soft);
+    border-bottom: 1px solid var(--ram-border);
+}
+.ram-listings thead th {
+    text-align: left;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--ram-text-dim);
+    padding: 0.65rem 0.85rem;
+    white-space: nowrap;
+}
+.ram-listings tbody tr {
+    border-bottom: 1px solid var(--ram-border);
+    transition: background 0.1s;
+}
+.ram-listings tbody tr:last-child { border-bottom: none; }
+.ram-listings tbody tr.clickable { cursor: pointer; }
+.ram-listings tbody tr:hover {
+    background: rgba(99, 102, 241, 0.04);
+}
+.ram-listings tbody td {
+    padding: 0.7rem 0.85rem;
+    font-size: 0.85rem;
+    color: var(--ram-text);
+    vertical-align: middle;
+}
+
+/* Image cell */
+.ram-cell-image {
+    position: relative;
+    width: 72px;
+    padding: 0.4rem 0.6rem !important;
+}
+.ram-cell-image img {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 6px;
+    border: 1px solid var(--ram-border);
+    background: var(--ram-bg-soft);
+    cursor: zoom-in;
+}
+.ram-cell-image .deal-badge-stack {
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    z-index: 2;
+}
+.ram-cell-image .deal-badge-stack .badge {
+    font-size: 0.6rem;
+    font-weight: 700;
+    padding: 1px 5px;
+    border-radius: 3px;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    line-height: 1.4;
+}
+.ram-cell-image .deal-badge-stack .badge.steal {
+    background: var(--ram-error);
+    color: white;
+    box-shadow: 0 0 6px rgba(239,68,68,0.5);
+}
+.ram-cell-image .deal-badge-stack .badge.is-new {
+    background: var(--ram-success);
+    color: white;
+}
+.ram-cell-image .deal-badge-stack .badge.unicorn {
+    background: linear-gradient(135deg, #a855f7, #ec4899);
+    color: white;
+}
+.badge-unicorn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 3px 8px;
+    border-radius: 6px;
+    background: linear-gradient(135deg, #a855f7, #ec4899);
+    color: white;
+    font-weight: 700;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    white-space: nowrap;
+}
+.ram-cell-image .placeholder-img {
+    width: 60px;
+    height: 60px;
+    border-radius: 6px;
+    background: var(--ram-bg-soft);
+    border: 1px solid var(--ram-border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--ram-text-dim);
+    font-size: 1.2rem;
+}
+
+/* RAM name cell */
+.ram-cell-name .ram-title {
+    font-weight: 600;
+    color: var(--ram-text);
+    font-size: 0.9rem;
+    line-height: 1.3;
+    margin-bottom: 0.25rem;
+}
+.ram-cell-name .ram-attrs {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.3rem;
+    margin-bottom: 0.3rem;
+}
+.ram-cell-name .ddr-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.2rem;
+    font-size: 0.65rem;
+    font-weight: 700;
+    padding: 2px 6px;
+    border-radius: 4px;
+    color: white;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+}
+.ram-cell-name .ddr-chip.d3 { background: #ef4444; }
+.ram-cell-name .ddr-chip.d4 { background: #3b82f6; }
+.ram-cell-name .ddr-chip.d5 { background: #8b5cf6; }
+.ram-cell-name .cap-chip {
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: var(--ram-text);
+    background: var(--ram-bg-soft);
+    padding: 2px 6px;
+    border-radius: 4px;
+    border: 1px solid var(--ram-border);
+}
+.ram-cell-name .speed-text {
+    font-size: 0.7rem;
+    color: var(--ram-text-dim);
+}
+.ram-cell-name .conf-bar {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.7rem;
+}
+.ram-cell-name .conf-bar-track {
+    flex: 1;
+    height: 3px;
+    background: rgba(0,0,0,0.06);
+    border-radius: 2px;
+    overflow: hidden;
+    max-width: 60px;
+}
+.ram-cell-name .conf-bar-fill {
+    height: 100%;
+    border-radius: 2px;
+}
+.ram-cell-name .conf-bar-fill.high { background: var(--ram-success); }
+.ram-cell-name .conf-bar-fill.medium { background: var(--ram-warning); }
+.ram-cell-name .conf-bar-fill.low { background: var(--ram-error); }
+.ram-cell-name .conf-label { color: var(--ram-text-dim); font-weight: 600; }
+
+/* Price cell */
+.ram-cell-price .price-main {
+    font-size: 1.05rem;
+    font-weight: 800;
+    color: var(--ram-text);
+    line-height: 1.2;
+}
+.ram-cell-price .price-main.below { color: var(--ram-success); }
+.ram-cell-price .price-main.above { color: var(--ram-error); }
+.ram-cell-price .price-meta {
+    font-size: 0.72rem;
+    color: var(--ram-text-dim);
+    margin-top: 0.15rem;
+}
+.ram-cell-price .price-pg {
+    font-weight: 600;
+    color: var(--ram-text);
+}
+.ram-cell-price .price-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.2rem;
+    font-size: 0.65rem;
+    font-weight: 700;
+    padding: 1px 6px;
+    border-radius: 4px;
+    margin-top: 0.3rem;
+    text-transform: uppercase;
+}
+.ram-cell-price .price-tag.below { background: rgba(16,185,129,0.1); color: var(--ram-success); }
+.ram-cell-price .price-tag.above { background: rgba(239,68,68,0.1); color: var(--ram-error); }
+
+/* Latency cell */
+.ram-cell-latency {
+    font-weight: 600;
+    color: var(--ram-text);
+    font-family: 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 0.85rem;
+}
+.ram-cell-latency.empty { color: var(--ram-text-dim); font-weight: 400; }
+
+/* Stat block cell (Model/Market Position) */
+.ram-cell-stat {
+    min-width: 130px;
+}
+.ram-cell-stat .stat-head {
+    font-size: 0.7rem;
+    color: var(--ram-text-dim);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    margin-bottom: 0.2rem;
+}
+.ram-cell-stat .stat-value {
+    font-size: 0.85rem;
+    color: var(--ram-text);
+    font-weight: 700;
+    margin-bottom: 0.1rem;
+}
+.ram-cell-stat .stat-range {
+    font-size: 0.7rem;
+    color: var(--ram-text-dim);
+    margin-bottom: 0.3rem;
+}
+.ram-cell-stat .stat-bar {
+    height: 4px;
+    background: rgba(0,0,0,0.06);
+    border-radius: 2px;
+    overflow: hidden;
+    margin-bottom: 0.2rem;
+}
+.ram-cell-stat .stat-bar > div {
+    height: 100%;
+    background: var(--ram-primary);
+    border-radius: 2px;
+}
+.ram-cell-stat .stat-pct {
+    font-size: 0.7rem;
+    color: var(--ram-text-dim);
+    font-weight: 600;
+}
+.ram-cell-stat .stat-pct .pct-num { color: var(--ram-text); }
+
+/* Location + Date */
+.ram-cell-meta {
+    font-size: 0.8rem;
+    color: var(--ram-text);
+    line-height: 1.4;
+}
+.ram-cell-meta .meta-line {
+    color: var(--ram-text-dim);
+    font-size: 0.7rem;
+}
+
+/* Action cell */
+.ram-cell-actions {
+    white-space: nowrap;
+    text-align: right;
+}
+.ram-action-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border: 1px solid var(--ram-border);
+    background: var(--ram-bg-soft);
+    color: var(--ram-text-dim);
+    border-radius: 6px;
+    cursor: pointer;
+    margin-left: 0.2rem;
+    transition: all 0.15s;
+    font-size: 0.85rem;
+}
+.ram-action-btn:hover {
+    background: var(--ram-primary);
+    color: white;
+    border-color: var(--ram-primary);
+}
+.ram-action-btn.flag:hover {
+    background: var(--ram-error);
+    border-color: var(--ram-error);
+}
+
+/* ============ Charts (slim) ============ */
+.ram-charts-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+}
+.ram-chart-card {
+    background: var(--ram-bg);
+    border: 1px solid var(--ram-border);
+    border-radius: var(--ram-radius);
+    padding: 0.85rem 1rem;
+    box-shadow: var(--ram-shadow);
+}
+.ram-chart-card h3 {
+    margin: 0 0 0.5rem 0;
+    font-size: 0.85rem;
+    color: var(--ram-text);
+}
+.ram-chart-card .chart-container {
+    height: 200px;
+    position: relative;
+}
+.ram-chart-card.full {
+    grid-column: 1 / -1;
+}
+
+/* ============ Trends section ============ */
+.ram-trends {
+    background: var(--ram-bg);
+    border: 1px solid var(--ram-border);
+    border-radius: var(--ram-radius);
+    padding: 0.85rem 1rem;
+    box-shadow: var(--ram-shadow);
+    margin-top: 1rem;
+}
+.ram-trends h3 {
+    margin: 0 0 0.5rem 0;
+    font-size: 0.9rem;
+    color: var(--ram-text);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+.ram-trends .period-btns,
+.period-btns {
+    display: inline-flex;
+    gap: 0.25rem;
+    border: 1px solid var(--ram-border);
+    border-radius: 6px;
+    padding: 2px;
+    background: var(--ram-bg-soft);
+}
+.ram-trends .period-btns button,
+.period-btns button {
+    background: transparent;
+    border: none;
+    color: var(--ram-text-dim);
+    padding: 0.25rem 0.6rem;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+.ram-trends .period-btns button.active,
+.period-btns button.active {
+    background: var(--ram-primary);
+    color: white;
+}
+
+/* ============ Misc ============ */
+.ram-loading, .ram-empty {
+    text-align: center;
+    padding: 2.5rem 1rem;
+    color: var(--ram-text-dim);
+    font-size: 0.9rem;
+}
+.ram-empty { font-style: italic; }
+
+.ram-summary-row {
+    background: var(--ram-bg-soft);
+    border-top: 2px solid var(--ram-border);
+    font-weight: 700;
+}
+.ram-summary-row td {
+    padding: 0.65rem 0.85rem !important;
+    font-size: 0.85rem;
+}
+.ram-summary-row .summary-label {
+    text-align: right;
+    color: var(--ram-text-dim);
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.7rem;
+    letter-spacing: 0.5px;
+}
+.ram-summary-row .summary-amount {
+    color: var(--ram-text);
+    font-weight: 800;
+    font-size: 1rem;
+}
+.ram-summary-row .summary-count {
+    color: var(--ram-text-dim);
+    font-size: 0.75rem;
+}
+
+/* Popup */
+#model-history-popup {
+    position: absolute;
+    background: var(--ram-bg);
+    border: 1px solid var(--ram-border);
+    border-radius: var(--ram-radius);
+    padding: 0.85rem 1rem;
+    z-index: 1000;
+    box-shadow: var(--ram-shadow-lg);
+    min-width: 280px;
+    max-width: 360px;
+    font-size: 0.85rem;
+}
+#model-history-popup h4 {
+    margin: 0 0 0.5rem 0;
+    font-size: 0.85rem;
+    color: var(--ram-text);
+}
+#model-history-popup .seen-badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+#model-history-popup .seen-badge.seen { background: var(--ram-success); color: white; }
+#model-history-popup .seen-badge.new { background: var(--ram-warning); color: white; }
+#model-history-popup .price-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.25rem 0;
+    border-bottom: 1px dashed var(--ram-border);
+}
+#model-history-popup .price-row:last-child { border: none; }
+#model-history-popup .price-row .label { color: var(--ram-text-dim); font-size: 0.8rem; }
+#model-history-popup .price-row .value { font-weight: 700; }
+#model-history-popup .price-row .value.better { color: var(--ram-success); }
+#model-history-popup .price-row .value.worse { color: var(--ram-error); }
+
 @keyframes spin {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
 }
-
-/* Column Settings Button - inline with table headers */
-.column-settings-btn {
-    background: none;
-    border: none;
-    cursor: pointer;
-    font-size: 1rem;
-    padding: 0.5rem;
-    opacity: 0.6;
-    transition: opacity 0.2s;
-}
-
-.column-settings-btn:hover {
-    opacity: 1;
-}
-
-.column-settings-dropdown {
-    position: fixed;
-    background: white;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-    padding: 0.75rem;
-    min-width: 220px;
-    z-index: 10000;
-    display: none;
-}
-
-.column-settings-dropdown.active {
-    display: block;
-}
-
-.column-settings-dropdown h4 {
-    margin: 0 0 0.75rem 0;
-    font-size: 0.9rem;
-    color: #333;
-}
-
-.column-option {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.5rem;
-    border-radius: 4px;
-    cursor: move;
-    transition: background 0.2s;
-}
-
-.column-option:hover {
-    background: #f5f5f5;
-}
-
-.column-option.dragging {
-    opacity: 0.5;
-    background: #e3f2fd;
-}
-
-.drag-handle {
-    color: #999;
-    cursor: move;
-    font-size: 1.2rem;
-}
-
-.column-option input[type="checkbox"] {
-    cursor: pointer;
-}
-
-.column-option label {
-    flex: 1;
-    cursor: pointer;
-    font-size: 0.875rem;
-    margin: 0;
-}
-
-.column-option input:disabled + label {
-    opacity: 0.5;
-    cursor: not-allowed;
-}
-
-.column-settings-footer {
-    display: flex;
-    gap: 0.5rem;
-    margin-top: 0.75rem;
-    padding-top: 0.75rem;
-    border-top: 1px solid #eee;
-}
-
-.column-settings-footer button {
-    flex: 1;
-    padding: 0.4rem;
-    font-size: 0.8rem;
-    border: 1px solid #ddd;
-    background: #f5f5f5;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: all 0.2s;
-}
-
-.column-settings-footer button:hover {
-    background: #e0e0e0;
-}
-
-/* Chart containers */
-.chart-container {
-    position: relative;
-    height: 300px;
-    width: 100%;
-    margin: 1rem 0;
-}
-
-.trends-section {
-    margin-top: 2rem;
-    padding: 1.5rem;
-    background: var(--card-bg);
-    border-radius: 8px;
-    border: 1px solid var(--card-border);
-}
-
-.trends-controls {
-    display: flex;
-    gap: 1rem;
-    margin-bottom: 1rem;
-    flex-wrap: wrap;
-    align-items: center;
-}
-
-.trend-value {
-    font-weight: bold;
-    color: #667eea;
-}
-
-.trend-up { color: #27ae60; }
-.trend-down { color: #e74c3c; }
-
-/* Stats bar */
-.stats-bar {
-    display: flex;
-    gap: 2rem;
-    margin-bottom: 1.5rem;
-    flex-wrap: wrap;
-}
-
-.stat {
-    text-align: center;
-}
-
-.stat-value {
-    font-size: 1.75rem;
-    font-weight: 700;
-    color: #667eea;
-}
-
-.stat-label {
-    font-size: 0.875rem;
-    color: #888;
-}
-
-/* Price below/above average */
-.price-below-avg { color: #27ae60; font-weight: 600; }
-.price-above-avg { color: #e74c3c; font-weight: 600; }
-
-/* Loading animation */
-.loading {
-    text-align: center;
-    padding: 2rem;
-    color: #666;
-}
-
-.loading::after {
+.ram-loading::after {
     content: '';
     display: inline-block;
-    width: 20px;
-    height: 20px;
-    border: 2px solid #667eea;
+    width: 14px; height: 14px;
+    border: 2px solid var(--ram-primary);
     border-top-color: transparent;
     border-radius: 50%;
     margin-left: 0.5rem;
     animation: spin 1s linear infinite;
+    vertical-align: middle;
 }
 
-/* DDR type badges */
-.badge-ddr3 { background: #e74c3c; }
-.badge-ddr4 { background: #3498db; }
-.badge-ddr5 { background: #9b59b6; }
-
-/* Price stats */
-.price-bar {
-    height: 6px;
-    background: #e0e0e0;
-    border-radius: 3px;
-    margin: 0.5rem 0;
-    overflow: hidden;
+/* Responsive */
+@media (max-width: 900px) {
+    .ram-stats-row { grid-template-columns: 1fr 1fr; }
+    .ram-charts-row { grid-template-columns: 1fr; }
 }
-
-.price-bar-fill {
-    height: 100%;
-    background: linear-gradient(90deg, #667eea, #764ba2);
-    border-radius: 3px;
-    transition: width 0.3s ease;
+@media (max-width: 600px) {
+    .ram-stats-row { grid-template-columns: 1fr; }
+    .ram-filterbar { flex-direction: column; align-items: stretch; }
+    .ram-filterbar .export-btn { margin-left: 0; width: 100%; justify-content: center; }
+    .ram-deals-grid { grid-template-columns: 1fr; }
 }
-
-/* Filter buttons */
-.filter-buttons {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    margin: 1rem 0;
-}
-
-.filter-btn {
-    padding: 0.4rem 0.8rem;
-    border: 1px solid #ddd;
-    background: #f5f5f5;
-    border-radius: 20px;
-    cursor: pointer;
-    transition: all 0.2s;
-    font-size: 0.875rem;
-}
-
-.filter-btn:hover {
-    background: #e0e0e0;
-}
-
-.filter-btn.active {
-    background: #667eea;
-    color: white;
-    border-color: #667eea;
-}
-
-/* Dark mode compatibility */
-[data-theme="dark"] .column-settings-dropdown {
-    background: #2d2d2d;
-    border-color: #444;
-}
-
-[data-theme="dark"] .column-settings-dropdown h4 {
-    color: #e0e0e0;
-}
-
-[data-theme="dark"] .column-option:hover {
-    background: #3a3a3a;
-}
-
-[data-theme="dark"] .column-settings-footer button {
-    background: #3a3a3a;
-    border-color: #444;
-    color: #e0e0e0;
-}
-
-[data-theme="dark"] .column-settings-footer button:hover {
-    background: #4a4a4a;
-}
-
-[data-theme="dark"] .filter-btn {
-    background: #3a3a3a;
-    border-color: #444;
-    color: #e0e0e0;
-}
-
-[data-theme="dark"] .filter-btn:hover {
-    background: #4a4a4a;
-}
-
-[data-theme="dark"] .price-bar {
-    background: #444;
-}
-
-/* Model history popup styles */
-.model-history-popup {
-    position: absolute;
-    background: var(--card-bg);
-    border: 2px solid #667eea;
-    border-radius: 8px;
-    padding: 1rem;
-    z-index: 1000;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-    min-width: 280px;
-    max-width: 350px;
-}
-
-.model-history-popup h4 {
-    margin: 0 0 0.5rem 0;
-    font-size: 0.9rem;
-    color: var(--text-color);
-    border-bottom: 1px solid var(--card-border);
-    padding-bottom: 0.5rem;
-}
-
-.model-history-popup .seen-badge {
-    display: inline-block;
-    padding: 0.25rem 0.5rem;
-    border-radius: 4px;
-    font-size: 0.75rem;
-    font-weight: 600;
-    margin-bottom: 0.5rem;
-}
-
-.model-history-popup .seen-badge.seen {
-    background: #27ae60;
-    color: white;
-}
-
-.model-history-popup .seen-badge.new {
-    background: #f39c12;
-    color: white;
-}
-
-.model-history-popup .price-comparison {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-}
-
-.model-history-popup .price-row {
-    display: flex;
-    justify-content: space-between;
-    font-size: 0.875rem;
-}
-
-.model-history-popup .price-row .label {
-    color: #888;
-}
-
-.model-history-popup .price-row .value {
-    font-weight: 600;
-}
-
-.model-history-popup .price-row .value.better {
-    color: #27ae60;
-}
-
-.model-history-popup .price-row .value.worse {
-    color: #e74c3c;
-}
-</style>
 {% endblock %}
 
 {% block content %}
-<div class="section">
-    <h2>RAM Listings</h2>
-    
-    <div class="stats-bar">
-        <div class="stat">
-            <span class="stat-value" id="stat-total">-</span>
-            <span class="stat-label">Total Listings</span>
+<div class="ram-page">
+
+    <!-- ========== TOP STATS: 4 compact cards ========== -->
+    <div class="ram-stats-row">
+        <div class="ram-stat-card ddr4">
+            <div class="stat-head">
+                <span>DDR4 — Active market</span>
+                <span class="dot"></span>
+            </div>
+            <div class="stat-main"><span id="stat-ddr4-active">—</span></div>
+            <div class="stat-sub"><span id="stat-ddr4-avg">€— avg</span> · <span id="stat-ddr4-median">€— median</span></div>
+            <div class="stat-bar"><div id="stat-ddr4-bar" style="width: 0%"></div></div>
         </div>
-        <div class="stat">
-            <span class="stat-value" id="stat-active">-</span>
-            <span class="stat-label">Active</span>
+        <div class="ram-stat-card ddr3">
+            <div class="stat-head"><span>DDR3</span><span class="dot"></span></div>
+            <div class="stat-main"><span id="stat-ddr3-active">—</span></div>
+            <div class="stat-sub"><span id="stat-ddr3-avg">€— avg</span></div>
+            <div class="stat-bar"><div id="stat-ddr3-bar" style="width: 0%"></div></div>
         </div>
-        <div class="stat">
-            <span class="stat-value" id="stat-avg-price">-</span>
-            <span class="stat-label">Avg Price</span>
+        <div class="ram-stat-card ddr5">
+            <div class="stat-head"><span>DDR5</span><span class="dot"></span></div>
+            <div class="stat-main"><span id="stat-ddr5-active">—</span></div>
+            <div class="stat-sub"><span id="stat-ddr5-avg">€— avg</span></div>
+            <div class="stat-bar"><div id="stat-ddr5-bar" style="width: 0%"></div></div>
+        </div>
+        <div class="ram-stat-card" style="--accent: var(--ram-text-dim);">
+            <div class="stat-head"><span>Total</span><span class="dot" style="background: var(--ram-text-dim);"></span></div>
+            <div class="stat-main"><span id="stat-total">—</span></div>
+            <div class="stat-sub"><span id="stat-active">—</span> listings · avg <span id="stat-avg-price">€—</span></div>
         </div>
     </div>
-    
-    <!-- DDR Type Stats Cards -->
-    <div class="ddr-stats-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin: 1.5rem 0;">
-        <div class="ddr-card ddr3-card">
-            <div class="ddr-icon">🟥</div>
-            <div class="ddr-info">
-                <div class="ddr-type">DDR3</div>
-                <div class="ddr-stat" id="ddr3-count">-</div>
-                <div class="ddr-label">listings</div>
-                <div class="ddr-prices" id="ddr3-prices">-</div>
+
+    <!-- ========== CAPACITY MINI-GRID ========== -->
+    <div class="ram-cap-grid" id="ram-cap-grid">
+        <!-- Filled by JS, but with skeleton placeholders for layout -->
+        <div class="ram-cap-card" data-cap="4">
+            <div class="cap-label">4 GB</div>
+            <div class="cap-prices" id="cap-4-prices">
+                <div class="cap-ddr"><span class="ddr-dot d3"></span>DDR3 <span class="count" id="cap-4-d3">—</span></div>
+                <div class="cap-ddr"><span class="ddr-dot d4"></span>DDR4 <span class="count" id="cap-4-d4">—</span></div>
+                <div class="cap-ddr"><span class="ddr-dot d5"></span>DDR5 <span class="count" id="cap-4-d5">—</span></div>
             </div>
         </div>
-        
-        <div class="ddr-card ddr4-card">
-            <div class="ddr-icon">🟦</div>
-            <div class="ddr-info">
-                <div class="ddr-type">DDR4</div>
-                <div class="ddr-stat" id="ddr4-count">-</div>
-                <div class="ddr-label">listings</div>
-                <div class="ddr-prices" id="ddr4-prices">-</div>
+        <div class="ram-cap-card" data-cap="8">
+            <div class="cap-label">8 GB</div>
+            <div class="cap-prices">
+                <div class="cap-ddr"><span class="ddr-dot d3"></span>DDR3 <span class="count" id="cap-8-d3">—</span></div>
+                <div class="cap-ddr"><span class="ddr-dot d4"></span>DDR4 <span class="count" id="cap-8-d4">—</span></div>
+                <div class="cap-ddr"><span class="ddr-dot d5"></span>DDR5 <span class="count" id="cap-8-d5">—</span></div>
             </div>
         </div>
-        
-        <div class="ddr-card ddr5-card">
-            <div class="ddr-icon">🟪</div>
-            <div class="ddr-info">
-                <div class="ddr-type">DDR5</div>
-                <div class="ddr-stat" id="ddr5-count">-</div>
-                <div class="ddr-label">listings</div>
-                <div class="ddr-prices" id="ddr5-prices">-</div>
+        <div class="ram-cap-card" data-cap="16">
+            <div class="cap-label">16 GB</div>
+            <div class="cap-prices">
+                <div class="cap-ddr"><span class="ddr-dot d3"></span>DDR3 <span class="count" id="cap-16-d3">—</span></div>
+                <div class="cap-ddr"><span class="ddr-dot d4"></span>DDR4 <span class="count" id="cap-16-d4">—</span></div>
+                <div class="cap-ddr"><span class="ddr-dot d5"></span>DDR5 <span class="count" id="cap-16-d5">—</span></div>
             </div>
         </div>
-        
-    </div>
-    
-    <style>
-    .ddr-card {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        border-radius: 12px;
-        padding: 1.25rem;
-        color: white;
-        display: flex;
-        align-items: center;
-        gap: 1rem;
-        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
-        transition: transform 0.2s, box-shadow 0.2s;
-    }
-    
-    .ddr-card:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
-    }
-    
-    .ddr3-card {
-        background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
-        box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);
-    }
-    
-    .ddr3-card:hover {
-        box-shadow: 0 8px 25px rgba(231, 76, 60, 0.4);
-    }
-    
-    .ddr4-card {
-        background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
-        box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
-    }
-    
-    .ddr4-card:hover {
-        box-shadow: 0 8px 25px rgba(52, 152, 219, 0.4);
-    }
-    
-    .ddr5-card {
-        background: linear-gradient(135deg, #9b59b6 0%, #8e44ad 100%);
-        box-shadow: 0 4px 15px rgba(155, 89, 182, 0.3);
-    }
-    
-    .ddr5-card:hover {
-        box-shadow: 0 8px 25px rgba(155, 89, 182, 0.4);
-    }
-    
-    .ddr-icon {
-        font-size: 2.5rem;
-        filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
-    }
-    
-    .ddr-info {
-        flex: 1;
-    }
-    
-    .ddr-type {
-        font-size: 1.1rem;
-        font-weight: 700;
-        margin-bottom: 0.25rem;
-        letter-spacing: 0.5px;
-    }
-    
-    .ddr-stat {
-        font-size: 1.75rem;
-        font-weight: 800;
-        line-height: 1;
-    }
-    
-    .ddr-label {
-        font-size: 0.75rem;
-        opacity: 0.9;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-        margin-bottom: 0.5rem;
-    }
-    
-    .ddr-prices {
-        font-size: 0.85rem;
-        opacity: 0.95;
-        line-height: 1.4;
-    }
-    
-    @media (max-width: 768px) {
-        .ddr-stats-grid {
-            grid-template-columns: 1fr !important;
-        }
-    }
-    </style>
-    
-    <!-- Capacity-based Price Cards -->
-    <div class="capacity-stats-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; margin: 1.5rem 0;">
-        <div class="capacity-card capacity-4gb">
-            <div class="capacity-icon">🟡</div>
-            <div class="capacity-info">
-                <div class="capacity-size">4GB</div>
-                <div class="ddr3-price" id="ddr3-4gb-price">-</div>
-                <div class="ddr4-price" id="ddr4-4gb-price">-</div>
-                <div class="ddr5-price" id="ddr5-4gb-price">-</div>
+        <div class="ram-cap-card" data-cap="32">
+            <div class="cap-label">32 GB</div>
+            <div class="cap-prices">
+                <div class="cap-ddr"><span class="ddr-dot d3"></span>DDR3 <span class="count" id="cap-32-d3">—</span></div>
+                <div class="cap-ddr"><span class="ddr-dot d4"></span>DDR4 <span class="count" id="cap-32-d4">—</span></div>
+                <div class="cap-ddr"><span class="ddr-dot d5"></span>DDR5 <span class="count" id="cap-32-d5">—</span></div>
             </div>
         </div>
-        
-        <div class="capacity-card capacity-8gb">
-            <div class="capacity-icon">🟢</div>
-            <div class="capacity-info">
-                <div class="capacity-size">8GB</div>
-                <div class="ddr3-price" id="ddr3-8gb-price">-</div>
-                <div class="ddr4-price" id="ddr4-8gb-price">-</div>
-                <div class="ddr5-price" id="ddr5-8gb-price">-</div>
-            </div>
-        </div>
-        
-        <div class="capacity-card capacity-16gb">
-            <div class="capacity-icon">🔵</div>
-            <div class="capacity-info">
-                <div class="capacity-size">16GB</div>
-                <div class="ddr3-price" id="ddr3-16gb-price">-</div>
-                <div class="ddr4-price" id="ddr4-16gb-price">-</div>
-                <div class="ddr5-price" id="ddr5-16gb-price">-</div>
-            </div>
-        </div>
-        
-        <div class="capacity-card capacity-32gb">
-            <div class="capacity-icon">🟣</div>
-            <div class="capacity-info">
-                <div class="capacity-size">32GB</div>
-                <div class="ddr3-price" id="ddr3-32gb-price">-</div>
-                <div class="ddr4-price" id="ddr4-32gb-price">-</div>
-                <div class="ddr5-price" id="ddr5-32gb-price">-</div>
-            </div>
-        </div>
-        
-        <div class="capacity-card capacity-64gb">
-            <div class="capacity-icon">⚫</div>
-            <div class="capacity-info">
-                <div class="capacity-size">64GB</div>
-                <div class="ddr3-price" id="ddr3-64gb-price">-</div>
-                <div class="ddr4-price" id="ddr4-64gb-price">-</div>
-                <div class="ddr5-price" id="ddr5-64gb-price">-</div>
+        <div class="ram-cap-card" data-cap="64">
+            <div class="cap-label">64 GB+</div>
+            <div class="cap-prices">
+                <div class="cap-ddr"><span class="ddr-dot d3"></span>DDR3 <span class="count" id="cap-64-d3">—</span></div>
+                <div class="cap-ddr"><span class="ddr-dot d4"></span>DDR4 <span class="count" id="cap-64-d4">—</span></div>
+                <div class="cap-ddr"><span class="ddr-dot d5"></span>DDR5 <span class="count" id="cap-64-d5">—</span></div>
             </div>
         </div>
     </div>
-    
-    <style>
-    .capacity-stats-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-        gap: 1rem;
-        margin: 1.5rem 0;
-    }
-    
-    .capacity-card {
-        border-radius: 12px;
-        padding: 1rem;
-        color: white;
-        text-align: center;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-        transition: transform 0.2s, box-shadow 0.2s;
-    }
-    
-    .capacity-card:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
-    }
-    
-    .capacity-4gb { background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%); }
-    .capacity-8gb { background: linear-gradient(135deg, #27ae60 0%, #229954 100%); }
-    .capacity-16gb { background: linear-gradient(135deg, #3498db 0%, #2980b9 100%); }
-    .capacity-32gb { background: linear-gradient(135deg, #9b59b6 0%, #8e44ad 100%); }
-    .capacity-64gb { background: linear-gradient(135deg, #34495e 0%, #2c3e50 100%); }
-    
-    .capacity-icon {
-        font-size: 28px;
-        margin-bottom: 8px;
-        filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
-    }
-    
-    .capacity-size {
-        font-size: 20px;
-        font-weight: 800;
-        margin-bottom: 10px;
-        text-shadow: 0 2px 4px rgba(0,0,0,0.3);
-        letter-spacing: 1px;
-    }
-    
-    .ddr3-price, .ddr4-price, .ddr5-price {
-        font-size: 14px;
-        font-weight: 700;
-        padding: 6px 12px;
-        margin: 5px 0;
-        border-radius: 8px;
-        background: rgba(255, 255, 255, 0.25);
-        border: 2px solid rgba(255, 255, 255, 0.4);
-        box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
-        text-shadow: 0 1px 2px rgba(0,0,0,0.3);
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        transition: transform 0.2s, box-shadow 0.2s;
-    }
-    
-    .ddr3-price:hover, .ddr4-price:hover, .ddr5-price:hover {
-        transform: scale(1.02);
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-    }
-    
-    .ddr3-price {
-        background: linear-gradient(135deg, rgba(231, 76, 60, 0.3) 0%, rgba(192, 57, 43, 0.3) 100%);
-        border-color: rgba(231, 76, 60, 0.6);
-    }
-    
-    .ddr4-price {
-        background: linear-gradient(135deg, rgba(52, 152, 219, 0.3) 0%, rgba(41, 128, 185, 0.3) 100%);
-        border-color: rgba(52, 152, 219, 0.6);
-    }
-    
-    .ddr5-price {
-        background: linear-gradient(135deg, rgba(155, 89, 182, 0.3) 0%, rgba(142, 68, 173, 0.3) 100%);
-        border-color: rgba(155, 89, 182, 0.6);
-    }
-    
-    .ddr3-price::before { 
-        content: "🟥 DDR3"; 
-        margin-right: 8px;
-        font-size: 11px;
-    }
-    .ddr4-price::before { 
-        content: "🟦 DDR4"; 
-        margin-right: 8px;
-        font-size: 11px;
-    }
-    .ddr5-price::before { 
-        content: "🟪 DDR5"; 
-        margin-right: 8px;
-        font-size: 11px;
-    }
-    
-    @media (max-width: 768px) {
-        .capacity-stats-grid {
-            grid-template-columns: repeat(2, 1fr);
-        }
-    }
-    </style>
-    
-    <!-- Charts Section - At the top (moved above filters) -->
-    <div class="section" style="margin-top: 1.5rem;">    
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 1.5rem;">
-            <!-- Average Price by DDR Type - Changed to line chart -->
-            <div class="chart-wrapper">
-                <h3 style="margin-bottom: 0.5rem;">📊 Avg Price by DDR Type</h3>
-                <div class="chart-container" style="height: 250px;">
-                    <canvas id="avgPriceByDDRChart"></canvas>
-                </div>
-            </div>
-            
-            <!-- Capacity Distribution -->
-            <div class="chart-wrapper">
-                <h3 style="margin-bottom: 0.5rem;">📊 Capacity Distribution</h3>
-                <div class="chart-container" style="height: 250px;">
-                    <canvas id="capacityDistChart"></canvas>
-                </div>
-            </div>
+
+    <!-- ========== CHARTS ROW ========== -->
+    <div class="ram-charts-row">
+        <div class="ram-chart-card">
+            <h3>Avg Price by DDR Type</h3>
+            <div class="chart-container"><canvas id="avgPriceByDDRChart"></canvas></div>
+        </div>
+        <div class="ram-chart-card">
+            <h3>Capacity Distribution</h3>
+            <div class="chart-container"><canvas id="capacityDistChart"></canvas></div>
         </div>
     </div>
-    
-    <!-- Filters - Moved below charts -->
-    <div class="filters">
-        <label>
-            <input type="checkbox" id="active-only" checked onchange="loadListings()">
-            Active only
-        </label>
-        <label>
-            <input type="checkbox" id="high-confidence" onchange="loadListings()">
-            High confidence (≥70%)
-        </label>
-        <label>
-            DDR:
-            <select id="ddr-filter" onchange="filterByDDR(this.value)">
-                <option value="all">All Types</option>
-                <option value="DDR3">DDR3</option>
-                <option value="DDR4">DDR4</option>
-                <option value="DDR5">DDR5</option>
-            </select>
-        </label>
-        <label>
-            Capacity:
+
+    <!-- ========== TOP DEALS STRIP ========== -->
+    <div class="ram-deals-strip" id="top-deals-section" style="display: none;">
+        <h3>🔥 Top deals — price ≥ 15% below model average</h3>
+        <div class="ram-deals-grid" id="top-deals-container"></div>
+    </div>
+
+    <!-- ========== AVG PRICE OVER TIME ========== -->
+    <div class="ram-chart-card full" style="margin-bottom: 1rem;">
+        <h3 style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.5rem;">
+            <span>Avg RAM Price by Capacity &amp; Type over Time</span>
+            <span class="period-btns">
+                <button id="ram-avg-week" class="active" onclick="setRAMAvgPeriod('week')">Week</button>
+                <button id="ram-avg-month" onclick="setRAMAvgPeriod('month')">Month</button>
+            </span>
+        </h3>
+        <div class="chart-container" style="height: 260px;">
+            <canvas id="ramAvgPriceChart"></canvas>
+        </div>
+    </div>
+
+    <!-- ========== FILTER BAR ========== -->
+    <div class="ram-filterbar">
+        <div class="filter-chips" role="group" aria-label="Toggles">
+            <button data-toggle="active" onclick="toggleFilterPill(this, 'active')">Active only</button>
+            <button data-toggle="conf" onclick="toggleFilterPill(this, 'conf')">High conf ≥70%</button>
+            <button data-toggle="allavg" onclick="toggleFilterPill(this, 'allavg')">All RAM avgs</button>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="filter-group">
+            <span class="filter-label">DDR</span>
+            <div class="filter-chips" id="ddr-filter-chips">
+                <button class="active" data-ddr="all" onclick="filterByDDR('all', this)">All</button>
+                <button data-ddr="DDR3" onclick="filterByDDR('DDR3', this)">DDR3</button>
+                <button data-ddr="DDR4" onclick="filterByDDR('DDR4', this)">DDR4</button>
+                <button data-ddr="DDR5" onclick="filterByDDR('DDR5', this)">DDR5</button>
+            </div>
+        </div>
+
+        <div class="filter-group">
+            <span class="filter-label">Capacity</span>
             <select id="capacity-filter" onchange="loadListings()">
                 <option value="all">All</option>
-                <option value="4">4GB</option>
-                <option value="8">8GB</option>
-                <option value="16">16GB</option>
-                <option value="32">32GB</option>
-                <option value="64">64GB+</option>
+                <option value="4">4 GB</option>
+                <option value="8">8 GB</option>
+                <option value="16">16 GB</option>
+                <option value="32">32 GB</option>
+                <option value="64">64 GB+</option>
             </select>
-        </label>
-        <label>
-            Sort:
+        </div>
+
+        <div class="filter-group">
+            <span class="filter-label">Sort</span>
             <select id="sort-by" onchange="loadListings()">
-                <option value="date_posted">Date Posted</option>
+                <option value="date_posted">Date</option>
                 <option value="price">Price</option>
             </select>
-        </label>
-        <label>
-            RAM ID:
-            <input type="text" id="ram-id-filter" placeholder="e.g. 189" style="width: 80px; padding: 0.25rem;" onchange="loadListings()" onkeyup="if(event.key==='Enter') loadListings()">
-        </label>
-        <label>
-            Order:
             <select id="sort-order" onchange="loadListings()">
-                <option value="desc">Descending</option>
-                <option value="asc">Ascending</option>
+                <option value="desc">Desc</option>
+                <option value="asc">Asc</option>
             </select>
-        </label>
-        <label title="Calculate average prices from all RAM model listings instead of only the filtered ones">
-            <input type="checkbox" id="all-ram-avg" onchange="toggleAllRAMAvg()">
-            Use all RAM models for averages
-        </label>
-        <button class="btn btn-small" onclick="exportToCSV()">📥 Export CSV</button>
-    </div>
-    
-    <div id="listings-container">
-        <div class="loading">Loading RAM listings...</div>
-    </div>
-</div>
+        </div>
 
-<!-- Price Trends Section -->
-<div class="section trends-section">
-    <h3>📊 Price Trends</h3>
-    <div class="trends-controls">
-        <label>
-            Capacity:
-            <select id="trend-capacity" onchange="updatePriceTrends()">
-                <option value="8">8GB</option>
-                <option value="16" selected>16GB</option>
-                <option value="32">32GB</option>
-            </select>
-        </label>
-        <label>
-            DDR:
-            <select id="trend-ddr" onchange="updatePriceTrends()">
-                <option value="all">All Types</option>
-                <option value="DDR4" selected>DDR4</option>
-                <option value="DDR5">DDR5</option>
-            </select>
-        </label>
+        <div class="filter-group">
+            <span class="filter-label">RAM ID</span>
+            <input type="text" id="ram-id-filter" class="ram-id-input" placeholder="e.g. 189"
+                   onchange="loadListings()" onkeyup="if(event.key==='Enter') loadListings()">
+        </div>
+
+        <button class="export-btn" onclick="exportToCSV()">📥 Export CSV</button>
     </div>
-    <div class="chart-container" style="height: 300px;">
-        <canvas id="priceTrendChart"></canvas>
+
+    <!-- ========== LISTINGS TABLE ========== -->
+    <div class="ram-listings" id="listings-container">
+        <div class="ram-loading">Loading RAM listings…</div>
     </div>
+
+    <!-- ========== PRICE TRENDS ========== -->
+    <div class="ram-trends">
+        <h3>
+            <span>📈 Price trends</span>
+            <span style="display: inline-flex; gap: 0.5rem; align-items: center;">
+                <span class="filter-label">Capacity</span>
+                <select id="trend-capacity" onchange="updatePriceTrends()">
+                    <option value="8">8 GB</option>
+                    <option value="16" selected>16 GB</option>
+                    <option value="32">32 GB</option>
+                </select>
+                <span class="filter-label">DDR</span>
+                <select id="trend-ddr" onchange="updatePriceTrends()">
+                    <option value="all">All</option>
+                    <option value="DDR4" selected>DDR4</option>
+                    <option value="DDR5">DDR5</option>
+                </select>
+            </span>
+        </h3>
+        <div class="chart-container" style="height: 260px;">
+            <canvas id="priceTrendChart"></canvas>
+        </div>
+    </div>
+
 </div>
 
 <!-- Model History Popup Container -->
-<div id="model-history-popup" class="model-history-popup" style="display: none;"></div>
+<div id="model-history-popup" style="display: none;"></div>
 {% endblock %}
 
 {% block scripts %}
@@ -756,10 +1052,107 @@
 let allRAMs = [];
 let allRAMsForStats = [];
 let useAllRAMsForStats = false;
+let useActiveOnly = false;      // toggled by filter pill (default OFF so all RAM listings show on load)
+let useHighConfidence = false;   // toggled by filter pill
 let currentDDRFilter = 'all';
 let priceTrendChart = null;
 let avgPriceByDDRChart = null;
 let capacityDistChart = null;
+let ramAvgPriceChart = null;
+let ramAvgPeriod = 'week'; // 'week' or 'month'
+
+// Helpers for deal badges (NEW, STEAL)
+function buildRamDealBadges(item) {
+    let badges = '';
+
+    // STEAL: price >= 15% below model avg (highest priority)
+    if (item.price_stats && item.price_stats.below_avg) {
+        const avgPrice = parseFloat(item.price_stats.avg);
+        const currentPrice = item.price_eur;
+        if (avgPrice > 0) {
+            const savingsPct = ((avgPrice - currentPrice) / avgPrice * 100);
+            if (savingsPct >= 15) {
+                badges += `<span class="badge" style="background: #dc2626; color: white; font-weight: bold; font-size: 0.85rem; padding: 0.35rem 0.75rem; box-shadow: 0 0 10px rgba(220,38,38,0.6);" title="Price is ${savingsPct.toFixed(0)}% below average!">🔥 STEAL</span><br>`;
+            }
+        }
+    }
+
+    // NEW: first seen in latest import (shown only if not a STEAL)
+    if (!badges.includes('STEAL') && item.is_new === true) {
+        badges += `<span class="badge" style="background: #22c55e; color: white; font-weight: normal; font-size: 0.75rem; opacity: 0.9;" title="New listing from current import!">🆕 NEW</span><br>`;
+    }
+
+    return badges;
+}
+
+// Calculate top deals from a listings array
+function calculateTopDeals(listings, minSavingsPct = 15, maxDeals = 10) {
+    const deals = [];
+
+    listings.forEach(item => {
+        if (!item.is_active || item.is_unicorn || !item.price_stats) return;
+        const avgPrice = parseFloat(item.price_stats.avg);
+        const currentPrice = parseFloat(item.price_eur);
+        if (avgPrice <= 0 || currentPrice <= 0) return;
+        const savingsPct = ((avgPrice - currentPrice) / avgPrice) * 100;
+        if (savingsPct >= minSavingsPct) {
+            deals.push({ ...item, savingsPct });
+        }
+    });
+
+    // Sort by savings % descending, then by absolute savings
+    deals.sort((a, b) => {
+        if (b.savingsPct !== a.savingsPct) return b.savingsPct - a.savingsPct;
+        const absA = (parseFloat(a.price_stats.avg) - parseFloat(a.price_eur));
+        const absB = (parseFloat(b.price_stats.avg) - parseFloat(b.price_eur));
+        return absB - absA;
+    });
+
+    return deals.slice(0, maxDeals);
+}
+
+// Render top deals into the top-deals section
+function renderTopDeals() {
+    const container = document.getElementById('top-deals-container');
+    const section = document.getElementById('top-deals-section');
+    if (!container || !section) return;
+
+    const deals = calculateTopDeals(allRAMs, 15, 10);
+
+    if (deals.length === 0) {
+        section.style.display = 'none';
+        container.innerHTML = '';
+        return;
+    }
+
+    section.style.display = 'block';
+
+    const html = deals.map(item => {
+        const imageUrl = item.local_image_path ? `/images/${item.local_image_path}` : item.image_url;
+        const savingsAbs = (parseFloat(item.price_stats.avg) - parseFloat(item.price_eur)).toFixed(0);
+        const pricePerGB = item.capacity_gb ? (item.price_eur / item.capacity_gb).toFixed(2) : '0.00';
+        return `
+            <div class="ram-deal-card" onclick="showSharedListingDetail('${item.listing_id}', true)">
+                ${imageUrl
+                    ? `<img class="deal-img" src="${imageUrl}" alt="RAM">`
+                    : `<div class="deal-img">📷</div>`}
+                <div class="deal-info">
+                    <div class="deal-name">${item.ram_name || 'Unknown RAM'}</div>
+                    <div class="deal-meta">${item.ddr_type || item.ram_type || 'Unknown'} · ${item.capacity_gb || '?'}GB · ${item.speed || ''}</div>
+                    <div class="deal-meta">${item.seller_location || 'N/A'} · ${item.date_posted ? new Date(item.date_posted).toLocaleDateString() : 'N/A'}</div>
+                </div>
+                <div class="deal-price">
+                    <div class="deal-price-main">€${Number(item.price_eur).toFixed(0)}</div>
+                    <div class="deal-avg">avg €${item.price_stats.avg}</div>
+                    <div class="deal-save">−€${savingsAbs} (${item.savingsPct.toFixed(0)}%)</div>
+                    <div class="deal-meta">€${pricePerGB}/GB</div>
+                </div>
+            </div>
+        `;
+    }).join('');
+
+    container.innerHTML = html;
+}
 
 // Column customization - now enabled by default
 let columnOrder = [
@@ -838,25 +1231,56 @@ async function loadStats() {
     try {
         const response = await fetch('/api/rams/stats');
         const data = await response.json();
-        
-        // Handle both formats: {success: true, stats: {...}} and direct stats object
         const stats = data.success ? data.stats : (data.total_listings !== undefined ? data : null);
-        
-        if (stats) {
-            document.getElementById('stat-total').textContent = stats.total_listings || 0;
-            document.getElementById('stat-active').textContent = stats.active_listings || 0;
-            document.getElementById('stat-avg-price').textContent = '€' + (parseFloat(stats.avg_price) || 0).toFixed(2);
-        } else {
+        if (!stats) {
             console.error('Stats response format:', data);
+            return;
+        }
+        // Top-level totals
+        const totalEl = document.getElementById('stat-total');
+        const activeEl = document.getElementById('stat-active');
+        const avgEl = document.getElementById('stat-avg-price');
+        if (totalEl) totalEl.textContent = stats.total_listings || 0;
+        if (activeEl) activeEl.textContent = stats.active_listings || 0;
+        if (avgEl) avgEl.textContent = '€' + (parseFloat(stats.avg_price) || 0).toFixed(2);
+
+        // Per-DDR cards (if backend returns by_ddr)
+        if (stats.by_ddr) {
+            ['DDR3', 'DDR4', 'DDR5'].forEach(type => {
+                const d = stats.by_ddr[type] || {};
+                const key = type.toLowerCase();
+                const activeEl = document.getElementById('stat-' + key + '-active');
+                const avgEl = document.getElementById('stat-' + key + '-avg');
+                const medEl = document.getElementById('stat-' + key + '-median');
+                const barEl = document.getElementById('stat-' + key + '-bar');
+                if (activeEl) activeEl.textContent = d.active || 0;
+                if (avgEl) avgEl.textContent = '€' + (parseFloat(d.avg) || 0).toFixed(0) + ' avg';
+                if (medEl) medEl.textContent = '€' + (parseFloat(d.median) || 0).toFixed(0) + ' median';
+                if (barEl && stats.total_active) {
+                    const pct = Math.min(100, ((d.active || 0) / stats.total_active) * 100);
+                    barEl.style.width = pct.toFixed(1) + '%';
+                }
+            });
         }
     } catch (error) {
         console.error('Error loading stats:', error);
     }
 }
 
-function filterByDDR(ddrType) {
+function filterByDDR(ddrType, btn) {
     currentDDRFilter = ddrType;
+    // Update chip active state
+    document.querySelectorAll('#ddr-filter-chips button').forEach(b => b.classList.remove('active'));
+    if (btn) btn.classList.add('active');
     loadListings();
+}
+
+function clearRAMIdFilter() {
+    const input = document.getElementById('ram-id-filter');
+    if (input) {
+        input.value = '';
+        loadListings();
+    }
 }
 
 // Calculate market averages for popup
@@ -922,7 +1346,7 @@ async function showModelHistoryPopup(event, listingId) {
     const key = `${item.ddr_type || 'Unknown'}-${item.capacity_gb || 0}`;
     const marketAvg = marketAverages[key];
     const wasSeen = historyData.previous_listings && historyData.previous_listings.length > 0;
-    const prevPrice = wasSeen ? historyData.previous_listings[0].price_eur : null;
+    const prevPrice = wasSeen ? Number(historyData.previous_listings[0].price_eur) : null;
     
     let html = `
         <h4>📋 Model History</h4>
@@ -951,12 +1375,14 @@ async function showModelHistoryPopup(event, listingId) {
     
     if (marketAvg) {
         const vsMarket = item.price_eur - marketAvg;
+        const pct = marketAvg > 0 ? (vsMarket / marketAvg) * 100 : 0;
         const marketClass = vsMarket < 0 ? 'better' : 'worse';
+        const cheaperOrHigher = vsMarket < 0 ? 'cheaper' : 'more expensive';
         html += `
             <div class="price-row">
                 <span class="label">Market Avg (${item.ddr_type} ${item.capacity_gb}GB):</span>
                 <span class="value ${marketClass}">
-                    €${marketAvg.toFixed(2)} (${vsMarket < 0 ? '↓' : '↑'} €${Math.abs(vsMarket).toFixed(2)})
+                    €${marketAvg.toFixed(2)} (${vsMarket < 0 ? '↓' : '↑'} €${Math.abs(vsMarket).toFixed(2)} / ${Math.abs(pct).toFixed(0)}% ${cheaperOrHigher})
                 </span>
             </div>
         `;
@@ -973,30 +1399,74 @@ async function showModelHistoryPopup(event, listingId) {
     popup.style.top = (rect.bottom + 5) + 'px';
 }
 
+function showSharedListingDetail(listingId, hasHistory) {
+    const modal = document.getElementById('shared-listing-modal');
+    const content = document.getElementById('shared-listing-content');
+    const title = document.getElementById('shared-listing-title');
+    title.textContent = t('Listing Details');
+    content.innerHTML = '<div class="loading">' + t('Loading...') + '</div>';
+    modal.classList.add('active');
+
+    fetch(`/api/listing-details/${listingId}`)
+        .then(response => {
+            if (!response.ok) throw new Error(t('Failed to load listing details'));
+            return response.json();
+        })
+        .then(data => {
+            const item = data.current || data;
+            const thumbUrl = item.local_image_path
+                ? `/images/${item.local_image_path.replace(/\\/g, '/')}`
+                : item.image_url;
+            const dateStr = item.date_posted
+                ? new Date(item.date_posted).toLocaleDateString()
+                : 'N/A';
+            let html = '<div class="listing-detail-body">';
+            if (thumbUrl) {
+                html += `<div class="listing-detail-images"><img src="${thumbUrl}" alt="${(item.title || '').replace(/'/g, "\\'")}" loading="lazy" onerror="this.style.display='none'"></div>`;
+            }
+            html += `<h2>${item.title || ''}</h2>`;
+            html += `<p style="font-size: 1.25rem; font-weight: 700; color: #667eea;">€${item.price_eur || item.price || 0}</p>`;
+            if (item.seller_location) html += `<p><strong>${t('Location')}:</strong> ${item.seller_location}</p>`;
+            if (item.date_posted) html += `<p><strong>${t('Posted')}:</strong> ${dateStr}</p>`;
+            if (item.listing_url) html += `<p><a href="${item.listing_url}" target="_blank" rel="noopener">${t('View on ss.com')} →</a></p>`;
+            if (item.description) {
+                html += `<div><strong>${t('Description')}:</strong></div>`;
+                html += `<p>${item.description}</p>`;
+            }
+            html += '</div>';
+            content.innerHTML = html;
+        })
+        .catch(error => {
+            content.innerHTML = '<div class="error">' + (error.message || t('Error loading listing')) + '</div>';
+        });
+}
+
 // Hide model history popup
 function hideModelHistoryPopup() {
     const popup = document.getElementById('model-history-popup');
     popup.style.display = 'none';
 }
 
-// Render table header with gear icon
+// Render table header with gear icon inside Actions column
 function renderTableHeader() {
     // Build header cells
     const cells = columnOrder.map(col => {
         const isVisible = columnVisibility[col.id];
         const style = isVisible ? '' : 'style="display: none;"';
+        if (col.id === 'col-actions') {
+            return `<th data-col="${col.id}" ${style}>
+                <div style="display: flex; align-items: center; justify-content: space-between; gap: 0.5rem;">
+                    <span>${col.label}</span>
+                    <button id="column-settings-btn" class="column-settings-btn" onclick="toggleColumnSettings(event)" title="Column Settings">⚙️</button>
+                </div>
+            </th>`;
+        }
         return `<th data-col="${col.id}" ${style}>${col.label}</th>`;
     }).join('');
     
-    // Add gear icon as last header cell
     return `
         <thead>
-            <tr>
-                ${cells}
-                <th style="width: 40px; text-align: center;">
-                    <button id="column-settings-btn" class="column-settings-btn" onclick="toggleColumnSettings(event)" title="Column Settings">⚙️</button>
-                </th>
-            </tr>
+            <tr>${cells}</tr>
         </thead>
     `;
 }
@@ -1009,7 +1479,7 @@ function renderTableRow(item) {
         if (confidence < 0.70) confidenceClass = 'confidence-medium';
         if (confidence < 0.50) confidenceClass = 'confidence-low';
         
-        // DDR badge - handle null/undefined safely
+        // DDR detection
         let ddrType = item.ddr_type || item.ram_type || 'DDR4';
         if (!ddrType && item.speed) {
             const speedStr = String(item.speed);
@@ -1018,8 +1488,7 @@ function renderTableRow(item) {
             else ddrType = 'DDR4';
         }
         ddrType = ddrType || 'DDR4';
-        const ddrColors = { 'DDR2': '#95a5a6', 'DDR3': '#e74c3c', 'DDR4': '#3498db', 'DDR5': '#9b59b6' };
-        const ddrBadge = `<span class="badge" style="background: ${ddrColors[ddrType] || '#667eea'}; color: white;">${ddrType}</span>`;
+        const ddrCls = ddrType === 'DDR3' ? 'd3' : ddrType === 'DDR4' ? 'd4' : ddrType === 'DDR5' ? 'd5' : '';
         
         // Price per GB
         const pricePerGB = item.capacity_gb && item.price_eur ? (item.price_eur / item.capacity_gb).toFixed(2) : '?';
@@ -1057,31 +1526,111 @@ function renderTableRow(item) {
             const style = isHidden ? 'style="display: none;"' : '';
             
             switch (col.id) {
-            case 'col-image':
-                return `<td data-col="col-image" ${style}>${imageUrl ? `<img src="${imageUrl}" alt="RAM" class="listing-thumb" loading="lazy" onclick="event.stopPropagation(); showImageModal('${imageClickUrl}', 'RAM')">` : '<div class="listing-thumb-placeholder">📷</div>'}</td>`;
-            case 'col-ram':
-                return `<td data-col="col-ram" ${style}><strong>${item.ram_name || 'Unknown RAM'}</strong><br>${ddrBadge} ${item.capacity_gb}GB ${item.speed ? `<br><small>${item.speed}</small>` : ''}<br><small class="${confidenceClass}">${(confidence*100).toFixed(0)}% confidence</small></td>`;
-            case 'col-price':
-                return `<td data-col="col-price" ${style}><span class="${priceClass}">€${Number(item.price_eur).toFixed(2)}</span><br><small>€${pricePerGB}/GB</small>${priceIndicator ? `<br><small>${priceIndicator}</small>` : ''}</td>`;
-            case 'col-latency':
-                return `<td data-col="col-latency" ${style}>${item.cas_latency || 'N/A'}</td>`;
+            case 'col-image': {
+                const isSteal = item.price_stats && item.price_stats.below_avg
+                    && ((parseFloat(item.price_stats.avg) - item.price_eur) / parseFloat(item.price_stats.avg)) >= 0.15;
+                const isNew = item.is_new === true;
+                const isUnicorn = item.is_unicorn;
+                const badgeStack = (isSteal || isNew || isUnicorn) ? `
+                    <div class="deal-badge-stack">
+                        ${isSteal ? '<span class="badge steal" title="Price ≥15% below model average">🔥 STEAL</span>' : ''}
+                        ${isUnicorn ? '<span class="badge unicorn" title="Only one listing of this model in all history">🦄</span>' : ''}
+                        ${isNew && !isSteal ? '<span class="badge is-new" title="New in latest import">🆕 NEW</span>' : ''}
+                    </div>` : '';
+                const imgContent = imageUrl
+                    ? `<img src="${imageUrl}" alt="RAM" loading="lazy" onclick="event.stopPropagation(); showImageModal('${imageClickUrl}', 'RAM')">`
+                    : '<div class="placeholder-img">📷</div>';
+                return `<td data-col="col-image" class="ram-cell-image" ${style}>${badgeStack}${imgContent}</td>`;
+            }
+            case 'col-ram': {
+                const confPct = Math.round(confidence * 100);
+                const confCls = confPct >= 70 ? 'high' : confPct >= 50 ? 'medium' : 'low';
+                return `<td data-col="col-ram" ${style}>
+                    <div class="ram-cell-name">
+                        <div class="ram-title">${item.ram_name || 'Unknown RAM'}</div>
+                        <div class="ram-attrs">
+                            <span class="ddr-chip ${ddrCls}">${ddrType}</span>
+                            <span class="cap-chip">${item.capacity_gb || '?'} GB</span>
+                            ${item.speed ? `<span class="speed-text">${item.speed}</span>` : ''}
+                        </div>
+                        <div class="conf-bar">
+                            <div class="conf-bar-track"><div class="conf-bar-fill ${confCls}" style="width: ${confPct}%"></div></div>
+                            <span class="conf-label">${confPct}%</span>
+                        </div>
+                    </div>
+                </td>`;
+            }
+            case 'col-price': {
+                const belowClass = item.price_stats && item.price_stats.below_avg ? 'below' : (item.price_stats ? 'above' : '');
+                const tag = item.price_stats && item.price_stats.below_avg
+                    ? '<span class="price-tag below">↓ below avg</span>'
+                    : (item.price_stats ? '<span class="price-tag above">↑ above avg</span>' : '');
+                return `<td data-col="col-price" ${style}>
+                    <div class="ram-cell-price">
+                        <div class="price-main ${belowClass}">€${Number(item.price_eur).toFixed(0)}</div>
+                        <div class="price-meta"><span class="price-pg">€${pricePerGB}/GB</span>${tag}</div>
+                    </div>
+                </td>`;
+            }
+            case 'col-latency': {
+                const lat = item.cas_latency;
+                if (!lat || lat === 'N/A') {
+                    return `<td data-col="col-latency" ${style}><span class="ram-cell-latency empty">—</span></td>`;
+                }
+                return `<td data-col="col-latency" ${style}><span class="ram-cell-latency">CL${lat}</span></td>`;
+            }
             case 'col-model':
-                return `<td data-col="col-model" ${style}>${item.price_stats ? `<div style="font-size: 0.875rem;">Avg: €${item.price_stats.avg}<br>Range: €${item.price_stats.min} - €${item.price_stats.max}</div><div class="price-bar"><div class="price-bar-fill" style="width: ${item.price_stats.percentile}%"></div></div><small>${item.price_stats.percentile}% percentile</small>` : 'N/A'}</td>`;
+                if (item.is_unicorn) {
+                    return `<td data-col="col-model" ${style}><span class="badge-unicorn">🦄 UNICORN</span></td>`;
+                }
+                if (!item.price_stats) return `<td data-col="col-model" ${style}><span class="ram-cell-meta">—</span></td>`;
+                return `<td data-col="col-model" ${style}>
+                    <div class="ram-cell-stat">
+                        <div class="stat-head">Model avg</div>
+                        <div class="stat-value">€${item.price_stats.avg}</div>
+                        <div class="stat-range">€${item.price_stats.min}–€${item.price_stats.max}</div>
+                        <div class="stat-bar"><div style="width: ${item.price_stats.percentile}%"></div></div>
+                        <div class="stat-pct"><span class="pct-num">${item.price_stats.percentile}%</span> percentile</div>
+                    </div>
+                </td>`;
             case 'col-market':
-                return `<td data-col="col-market" ${style}>${item.ddr_stats ? `<div style="font-size: 0.875rem;">${item.ddr_stats.ddr_type} ${item.ddr_stats.capacity_gb}GB<br>Avg: €${item.ddr_stats.avg}<br>Range: €${item.ddr_stats.min} - €${item.ddr_stats.max}</div><div class="price-bar"><div class="price-bar-fill" style="width: ${item.ddr_stats.percentile}%"></div></div><small>${item.ddr_stats.percentile}% percentile</small>` : 'N/A'}</td>`;
-            case 'col-location':
-                return `<td data-col="col-location" ${style}>${item.seller_location || 'N/A'}</td>`;
-            case 'col-date':
-                return `<td data-col="col-date" ${style}>${dateStr}</td>`;
-            case 'col-actions':
-                return `<td data-col="col-actions" ${style}><button class="btn btn-small btn-secondary" onclick="event.stopPropagation(); showSharedListingDetail('${item.listing_id}', true)">History</button><button class="btn btn-small" style="background: #9b59b6; margin-left: 0.25rem;" onmouseover="showModelHistoryPopup(event, '${item.listing_id}')" onmouseout="hideModelHistoryPopup()" onclick="event.stopPropagation(); showSharedListingDetail('${item.listing_id}', true)">ℹ️ Info</button><button class="btn btn-small" style="background: #dc3545; color: white; margin-left: 0.25rem;" onclick="event.stopPropagation(); showFlagModalWithCategories('${item.listing_id.replace(/'/g, "\\'").replace(/"/g, '&quot;')}', '${(item.ram_name || item.name || 'Unknown RAM').replace(/'/g, "\\'").replace(/"/g, '&quot;')}')">🚩 Flag</button><a href="${item.listing_url}" target="_blank" class="btn btn-small" onclick="event.stopPropagation()" style="margin-left: 0.25rem;">View →</a></td>`;
+                if (!item.ddr_stats) return `<td data-col="col-market" ${style}><span class="ram-cell-meta">—</span></td>`;
+                return `<td data-col="col-market" ${style}>
+                    <div class="ram-cell-stat">
+                        <div class="stat-head">${item.ddr_stats.ddr_type || ''} ${item.ddr_stats.capacity_gb || '?'}GB market</div>
+                        <div class="stat-value">€${item.ddr_stats.avg}</div>
+                        <div class="stat-range">€${item.ddr_stats.min}–€${item.ddr_stats.max}</div>
+                        <div class="stat-bar"><div style="width: ${item.ddr_stats.percentile}%"></div></div>
+                        <div class="stat-pct"><span class="pct-num">${item.ddr_stats.percentile}%</span> percentile</div>
+                    </div>
+                </td>`;
+            case 'col-location': {
+                const loc = item.seller_location || '—';
+                return `<td data-col="col-location" ${style}><span class="ram-cell-meta">${loc}</span></td>`;
+            }
+            case 'col-date': {
+                const d = new Date(item.date_posted);
+                const dStr = !isNaN(d.getTime()) && d.getFullYear() > 2000
+                    ? d.toLocaleDateString('en-GB', {day: '2-digit', month: 'short'})
+                    : '—';
+                return `<td data-col="col-date" ${style}><span class="ram-cell-meta">${dStr}</span></td>`;
+            }
+            case 'col-actions': {
+                const safeId = (item.listing_id || '').replace(/'/g, "\\'").replace(/"/g, '&quot;');
+                const safeName = (item.ram_name || 'Unknown RAM').replace(/'/g, "\\'").replace(/"/g, '&quot;');
+                return `<td data-col="col-actions" class="ram-cell-actions" ${style}>
+                    <button class="ram-action-btn" title="View history" onclick="event.stopPropagation(); showSharedListingDetail('${item.listing_id}', true)">📋</button>
+                    <button class="ram-action-btn" title="Model info" onmouseover="showModelHistoryPopup(event, '${item.listing_id}')" onmouseout="hideModelHistoryPopup()" onclick="event.stopPropagation(); showSharedListingDetail('${item.listing_id}', true)">ℹ️</button>
+                    <button class="ram-action-btn flag" title="Flag listing" onclick="event.stopPropagation(); showFlagModalWithCategories('${safeId}', '${safeName}')">🚩</button>
+                    <a href="${item.listing_url}" target="_blank" class="ram-action-btn" title="Open listing" onclick="event.stopPropagation()">↗</a>
+                </td>`;
+            }
             default:
                 return `<td ${style}></td>`;
         }
     }).join('');
     
-    // Add empty cell for gear column
-    return `<tr class="clickable" onclick="showSharedListingDetail('${item.listing_id}', true)" title="Click to view listing details">${cells}<td style="width: 40px;"></td></tr>`;
+    return `<tr class="clickable" onclick="showSharedListingDetail('${item.listing_id}', true)" title="Click to view listing details">${cells}</tr>`;
     } catch (e) {
         console.error('[RAM Debug] Error in renderTableRow:', e);
         return `<tr><td colspan="9" style="color: red;">Error: ${e.message}</td></tr>`;
@@ -1124,8 +1673,8 @@ function closeImageModal() {
 
 async function loadListings() {
     console.log('[RAM Debug] loadListings called');
-    const activeOnly = document.getElementById('active-only').checked;
-    const highConfidence = document.getElementById('high-confidence').checked;
+    const activeOnly = useActiveOnly;
+    const highConfidence = useHighConfidence;
     const capacityFilter = document.getElementById('capacity-filter').value;
     const sortBy = document.getElementById('sort-by').value;
     const sortOrder = document.getElementById('sort-order').value;
@@ -1204,24 +1753,28 @@ async function loadListings() {
         const summaryColspan = Math.floor(visibleCols / 2);
         
         html += `
-            <tfoot id="summary-row" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; font-weight: bold;">
+            <tfoot class="ram-summary-row">
                 <tr>
-                    <td colspan="${summaryColspan}" style="text-align: right; padding: 0.75rem;">Summary:</td>
-                    <td style="padding: 0.75rem;">€${totalPrice.toFixed(2)} total</td>
-                    <td style="padding: 0.75rem; font-size: 0.85rem;">avg: €${avgPrice.toFixed(2)}</td>
-                    <td style="padding: 0.75rem;" colspan="${visibleCols - summaryColspan - 2}">${listings.length} listings shown</td>
+                    <td class="summary-label">Summary</td>
+                    <td class="summary-amount">€${totalPrice.toFixed(0)}</td>
+                    <td class="summary-count">avg €${avgPrice.toFixed(2)}</td>
+                    <td class="summary-count" colspan="${Math.max(1, visibleCols - 3)}">${listings.length} listings</td>
                 </tr>
             </tfoot>`;
         
         html += '</table>';
         
         container.innerHTML = html;
-        
+
         // Update charts and DDR stats
         const statsSource = (useAllRAMsForStats && allRAMsForStats.length > 0) ? allRAMsForStats : listings;
         updateAvgPriceByDDR(statsSource);
         updateCapacityDistribution(statsSource);
+        updateRAMAvgPriceChart(statsSource);
         updateDDRStats(statsSource);
+
+        // Update top deals (based on currently visible listings)
+        renderTopDeals();
         
     } catch (error) {
         console.error('Error loading listings:', error);
@@ -1243,110 +1796,89 @@ async function loadAllRAMsForStats() {
     }
 }
 
-function toggleAllRAMAvg() {
-    const checkbox = document.getElementById('all-ram-avg');
-    useAllRAMsForStats = checkbox?.checked || false;
-    if (useAllRAMsForStats) {
-        loadAllRAMsForStats().then(() => loadListings());
-    } else {
-        loadListings();
+// New pill toggle handler: toggles "on" class on the pill and updates state
+function toggleFilterPill(btn, key) {
+    const isOn = btn.classList.toggle('on');
+    // Also keep the .active class in sync for CSS compatibility
+    btn.classList.toggle('active', isOn);
+    if (key === 'active') useActiveOnly = isOn;
+    else if (key === 'conf') useHighConfidence = isOn;
+    else if (key === 'allavg') {
+        useAllRAMsForStats = isOn;
+        if (useAllRAMsForStats) {
+            loadAllRAMsForStats().then(() => loadListings());
+            return;
+        }
     }
+    loadListings();
 }
 
-// Update DDR type stats cards
+// Legacy shim for any remaining code that still calls toggleAllRAMAvg
+function toggleAllRAMAvg() {
+    useAllRAMsForStats = !useAllRAMsForStats;
+    const btn = document.querySelector('[data-toggle="allavg"]');
+    if (btn) btn.classList.toggle('on', useAllRAMsForStats);
+    if (useAllRAMsForStats) loadAllRAMsForStats().then(() => loadListings());
+    else loadListings();
+}
+
+// Update DDR-specific top stats (active count, avg, median, bar)
 function updateDDRStats(listings) {
-    // Group by DDR type
-    const ddrData = {
-        'DDR3': { count: 0, prices: [], sizes: {} },
-        'DDR4': { count: 0, prices: [], sizes: {} },
-        'DDR5': { count: 0, prices: [], sizes: {} }
-    };
-    
+    const ddrData = { 'DDR3': { count: 0, prices: [] }, 'DDR4': { count: 0, prices: [] }, 'DDR5': { count: 0, prices: [] } };
     listings.forEach(item => {
-        const ddrType = item.ddr_type || item.ram_type || 'DDR4';
-        if (!ddrData[ddrType]) return;
-        
-        ddrData[ddrType].count++;
-        ddrData[ddrType].prices.push(item.price_eur || 0);
-        
-        // Track sizes
-        const capacity = item.capacity_gb || 0;
-        if (capacity > 0) {
-            if (!ddrData[ddrType].sizes[capacity]) {
-                ddrData[ddrType].sizes[capacity] = [];
-            }
-            ddrData[ddrType].sizes[capacity].push(item.price_eur || 0);
-        }
+        const t = item.ddr_type || item.ram_type;
+        if (!ddrData[t]) return;
+        ddrData[t].count++;
+        if (item.price_eur > 0) ddrData[t].prices.push(item.price_eur);
     });
-    
-    // Update each card
+    const totalActive = listings.filter(i => i.is_active !== false).length || 1;
     ['DDR3', 'DDR4', 'DDR5'].forEach(type => {
-        const data = ddrData[type];
-        const countEl = document.getElementById(type.toLowerCase() + '-count');
-        const pricesEl = document.getElementById(type.toLowerCase() + '-prices');
-        
-        if (countEl) {
-            countEl.textContent = data.count;
+        const d = ddrData[type];
+        const key = type.toLowerCase();
+        const activeEl = document.getElementById('stat-' + key + '-active');
+        const avgEl = document.getElementById('stat-' + key + '-avg');
+        const medEl = document.getElementById('stat-' + key + '-median');
+        const barEl = document.getElementById('stat-' + key + '-bar');
+        if (activeEl) activeEl.textContent = d.count;
+        if (avgEl) avgEl.textContent = d.prices.length ? '€' + (d.prices.reduce((a,b)=>a+b,0)/d.prices.length).toFixed(0) + ' avg' : '€— avg';
+        if (medEl) {
+            const sorted = [...d.prices].sort((a,b)=>a-b);
+            const med = sorted.length ? sorted[Math.floor(sorted.length/2)] : 0;
+            medEl.textContent = sorted.length ? '€' + med.toFixed(0) + ' median' : '€— median';
         }
-        
-        if (pricesEl) {
-            if (data.count === 0) {
-                pricesEl.innerHTML = '<div style="opacity: 0.7;">No data</div>';
-            } else {
-                // Calculate avg price per size (e.g., "32GB - €90")
-                const sizePrices = Object.entries(data.sizes).map(([size, prices]) => {
-                    const sizeAvg = prices.reduce((a, b) => a + b, 0) / prices.length;
-                    return { size: parseInt(size), avgPrice: sizeAvg, count: prices.length };
-                }).sort((a, b) => a.size - b.size);
-                
-                // Format: "4GB - €45, 8GB - €60, 16GB - €85, 32GB - €150"
-                const priceList = sizePrices.map(s => 
-                    `${s.size}GB - €${s.avgPrice.toFixed(0)}`
-                ).join('<br>');
-                
-                pricesEl.innerHTML = priceList || 'No size data';
-            }
-        }
+        if (barEl) barEl.style.width = Math.min(100, (d.count / totalActive) * 100).toFixed(1) + '%';
     });
-    
-    // Update capacity cards (DDR type x size breakdown)
-    updateCapacityCards(listings);
+    updateCapacityGrid(listings);
 }
 
-// Update capacity cards with DDR type x size breakdown
-function updateCapacityCards(listings) {
-    // Structure: { size: { DDR3: avgPrice, DDR4: avgPrice, DDR5: avgPrice } }
-    const capacityData = {
-        4: {}, 8: {}, 16: {}, 32: {}, 64: {}
-    };
-    
+// Update capacity grid: per-capacity card shows count per DDR type
+function updateCapacityGrid(listings) {
+    // bucket: { cap: { ddr: count } }
+    const buckets = {};
     listings.forEach(item => {
-        const capacity = item.capacity_gb || 0;
-        const ddrType = item.ddr_type || item.ram_type || 'DDR4';
-        
-        if (capacityData[capacity] && item.price_eur > 0) {
-            if (!capacityData[capacity][ddrType]) {
-                capacityData[capacity][ddrType] = [];
-            }
-            capacityData[capacity][ddrType].push(item.price_eur);
-        }
+        let cap = item.capacity_gb || 0;
+        if (cap >= 64) cap = 64;
+        const t = item.ddr_type || item.ram_type;
+        if (!buckets[cap]) buckets[cap] = {};
+        if (t) buckets[cap][t] = (buckets[cap][t] || 0) + 1;
     });
-    
-    // Update each capacity card
-    [4, 8, 16, 32, 64].forEach(size => {
-        ['DDR3', 'DDR4', 'DDR5'].forEach(ddrType => {
-            const el = document.getElementById(`${ddrType.toLowerCase()}-${size}gb-price`);
-            if (el) {
-                const prices = capacityData[size][ddrType];
-                if (prices && prices.length > 0) {
-                    const avg = prices.reduce((a, b) => a + b, 0) / prices.length;
-                    el.innerHTML = `€${avg.toFixed(0)} (${prices.length})`;
-                } else {
-                    el.innerHTML = '-';
-                    el.style.opacity = '0.5';
-                }
-            }
+    [4, 8, 16, 32, 64].forEach(cap => {
+        ['d3', 'd4', 'd5'].forEach((dk, i) => {
+            const type = ['DDR3', 'DDR4', 'DDR5'][i];
+            const el = document.getElementById('cap-' + cap + '-' + dk);
+            if (el) el.textContent = buckets[cap] && buckets[cap][type] ? buckets[cap][type] : '—';
         });
+    });
+    // Make capacity cards clickable to filter
+    document.querySelectorAll('.ram-cap-card').forEach(card => {
+        card.onclick = () => {
+            const cap = card.dataset.cap;
+            const sel = document.getElementById('capacity-filter');
+            if (sel) {
+                sel.value = cap === '64' ? '64' : cap;
+                loadListings();
+            }
+        };
     });
 }
 
@@ -1533,6 +2065,121 @@ function updateAvgPriceByDDR(listings) {
                     grid: { drawOnChartArea: false },
                     title: { display: true, text: 'Count', color: textColor },
                     ticks: { color: textColor }
+                }
+            }
+        }
+    });
+}
+
+// Set period for average RAM price chart and refresh
+function setRAMAvgPeriod(period) {
+    ramAvgPeriod = period;
+    const weekBtn = document.getElementById('ram-avg-week');
+    const monthBtn = document.getElementById('ram-avg-month');
+    if (weekBtn) weekBtn.classList.toggle('active', period === 'week');
+    if (monthBtn) monthBtn.classList.toggle('active', period === 'month');
+    // Use whichever dataset is currently available
+    const source = (allRAMsForStats && allRAMsForStats.length > 0) ? allRAMsForStats : allRAMs;
+    updateRAMAvgPriceChart(source);
+}
+
+// Update average RAM price by capacity (8/16/32 GB) and DDR type over time
+function updateRAMAvgPriceChart(listings) {
+    const ctx = document.getElementById('ramAvgPriceChart');
+    if (!ctx) return;
+
+    const period = ramAvgPeriod; // 'week' or 'month'
+    const keyFn = dateStr => {
+        const d = new Date(dateStr);
+        if (period === 'week') {
+            const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
+            const weekNo = Math.ceil((((d - yearStart) / 86400000) + yearStart.getUTCDay() + 1) / 7);
+            return `${d.getUTCFullYear()}-W${String(weekNo).padStart(2, '0')}`;
+        }
+        return `${d.getUTCFullYear()}-${String(d.getUTCMonth() + 1).padStart(2, '0')}`;
+    };
+
+    const targetCaps = [8, 16, 32];
+    const palette = { '8': '#667eea', '16': '#10b981', '32': '#f59e0b' };
+
+    // Group by period, capacity, and DDR type
+    const buckets = {};
+    listings.forEach(item => {
+        const d = item.date_posted || item.first_seen_at;
+        if (!d) return;
+        const cap = parseInt(item.capacity_gb || item.ram_capacity);
+        if (!targetCaps.includes(cap)) return;
+        const ddr = (item.ddr_type || item.ram_type || 'DDR4').toUpperCase();
+        const key = keyFn(d);
+        if (!buckets[key]) buckets[key] = {};
+        const seriesKey = `${cap}GB ${ddr}`;
+        if (!buckets[key][seriesKey]) buckets[key][seriesKey] = { prices: [], count: 0 };
+        buckets[key][seriesKey].prices.push(parseFloat(item.price_eur) || 0);
+        buckets[key][seriesKey].count++;
+    });
+
+    const periods = Object.keys(buckets).sort();
+    const periodIndex = Object.fromEntries(periods.map((p, i) => [p, i]));
+
+    // Build one dataset per series
+    const seriesData = {};
+    periods.forEach(p => {
+        Object.entries(buckets[p]).forEach(([seriesKey, vals]) => {
+            if (!seriesData[seriesKey]) seriesData[seriesKey] = [];
+            const avg = vals.prices.reduce((a, b) => a + b, 0) / vals.prices.length;
+            seriesData[seriesKey].push({ x: periodIndex[p], y: avg, count: vals.count, period: p });
+        });
+    });
+
+    const colorList = ['#667eea', '#10b981', '#f59e0b', '#ef4444', '#8B5CF6', '#06b6d4', '#ec4899', '#84cc16', '#f97316', '#6366f1', '#14b8a6', '#f43f5e'];
+    const datasets = Object.keys(seriesData).map((seriesKey, idx) => ({
+        label: seriesKey,
+        data: seriesData[seriesKey],
+        borderColor: colorList[idx % colorList.length],
+        backgroundColor: colorList[idx % colorList.length],
+        borderWidth: 2,
+        tension: 0.3,
+        pointRadius: 4,
+        pointHoverRadius: 6,
+        spanGaps: true
+    }));
+
+    const labels = periods;
+
+    if (ramAvgPriceChart) ramAvgPriceChart.destroy();
+    const gridColor = getComputedStyle(document.body).getPropertyValue('--table-border').trim() || '#e5e7eb';
+    const textColor = getComputedStyle(document.body).getPropertyValue('--text-color').trim() || '#374151';
+    ramAvgPriceChart = new Chart(ctx, {
+        type: 'line',
+        data: { labels, datasets },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            animation: false,
+            plugins: {
+                legend: { display: true, position: 'bottom', labels: { boxWidth: 12, font: { size: 10 }, color: textColor } },
+                tooltip: {
+                    callbacks: {
+                        title: (items) => period === 'week' ? `Week ${items[0].label}` : `Month ${items[0].label}`,
+                        label: (ctx) => {
+                            const pt = ctx.raw;
+                            return `${ctx.dataset.label}: €${Number(pt.y).toFixed(2)} (${pt.count} listings)`;
+                        }
+                    }
+                }
+            },
+            scales: {
+                x: {
+                    type: 'category',
+                    title: { display: true, text: period === 'week' ? 'Week' : 'Month', color: textColor },
+                    ticks: { color: textColor },
+                    grid: { color: gridColor }
+                },
+                y: {
+                    beginAtZero: true,
+                    title: { display: true, text: 'Average Price (€)', color: textColor },
+                    ticks: { color: textColor },
+                    grid: { color: gridColor }
                 }
             }
         }
@@ -1983,7 +2630,7 @@ function showFlagModalWithCategories(listingId, title) {
                     </div>
                     
                     <div style="display: flex; gap: 1rem; justify-content: flex-end;">
-                        <button class="btn btn-secondary" onclick="closeFlagModal()">Cancel</button>
+                        <button class="btn btn-secondary" onclick="closeFlagModal()">{{ t('Cancel') }}</button>
                         <button id="flag-submit-btn" class="btn" style="background: #dc3545; color: white;" onclick="submitFlagFromModal('${listingId}')">Submit Flag</button>
                     </div>
                 </div>
@@ -2154,12 +2801,35 @@ async function submitFlagFromModal(listingId) {
     }
 }
 
+// Parse URL query parameters for direct filtering (e.g. /ram?ram_id=123)
+function applyUrlFilters() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const ramId = urlParams.get('ram_id');
+    const capacity = urlParams.get('capacity');
+    const ddrType = urlParams.get('ddr_type') || urlParams.get('type');
+
+    if (ramId) {
+        const ramIdInput = document.getElementById('ram-id-filter');
+        if (ramIdInput) ramIdInput.value = ramId;
+    }
+    if (capacity) {
+        const capacitySelect = document.getElementById('capacity-filter');
+        if (capacitySelect) capacitySelect.value = capacity;
+    }
+    if (ddrType) {
+        currentDDRFilter = ddrType;
+        const ddrSelect = document.getElementById('ddr-filter');
+        if (ddrSelect) ddrSelect.value = ddrType;
+    }
+}
+
 // Load on page load
 document.addEventListener('DOMContentLoaded', () => {
     try {
         initColumnCustomization();
         loadColumnSettings();
         loadStats();
+        applyUrlFilters();
         loadListings();
         updatePriceTrends();
     } catch (e) {

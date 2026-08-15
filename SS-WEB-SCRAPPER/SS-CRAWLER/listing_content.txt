@@ -1,0 +1,17 @@
+
+
+STDERR:
+C:\Users\goldm\AppData\Local\Programs\Python\Python310\lib\site-packages\pydantic\_internal\_fields.py:149: UserWarning: Field "model_name" has conflict with protected namespace "model_".
+
+You may be able to resolve this warning by setting `model_config['protected_namespaces'] = ()`.
+  warnings.warn(
+C:\Users\goldm\AppData\Local\Programs\Python\Python310\lib\site-packages\pydantic\_internal\_fields.py:149: UserWarning: Field "model_original" has conflict with protected namespace "model_".
+
+You may be able to resolve this warning by setting `model_config['protected_namespaces'] = ()`.
+  warnings.warn(
+C:\Users\goldm\AppData\Local\Programs\Python\Python310\lib\site-packages\requests\__init__.py:109: RequestsDependencyWarning: urllib3 (2.6.3) or chardet (7.4.3)/charset_normalizer (2.1.1) doesn't match a supported version!
+  warnings.warn(
+Traceback (most recent call last):
+  File "G:\Github\SS-WEB-SCRAPPER\SS-CRAWLER\check_listing.py", line 5, in <module>
+    from src.scraper.database import Database
+ModuleNotFoundError: No module named 'src.scraper.database'

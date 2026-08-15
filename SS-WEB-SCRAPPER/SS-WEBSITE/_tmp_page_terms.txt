@@ -1,0 +1,7 @@
+﻿discovered_computer_models idx 83934
+loadDiscoveredComputerModels idx 84015
+FIRST idx 83840
+STEAL idx 84648
+BUY idx 84656
+NEW idx 84642
+computeComputerDealBadges idx 84736

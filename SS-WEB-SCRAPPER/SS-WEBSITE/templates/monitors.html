@@ -1,0 +1,1614 @@
+{% extends "base.html" %}
+
+{% block title %}Monitors - SS-Crawler Dashboard{% endblock %}
+
+{% block extra_css %}
+
+:root {
+    --stat-text: #333;
+    --stat-border: #eee;
+}
+
+[data-theme="dark"] {
+    --stat-text: #e0e0e0;
+    --stat-border: #444;
+}
+
+/* Support prefers-color-scheme as fallback */
+@media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+        --stat-text: #e0e0e0;
+        --stat-border: #444;
+    }
+}
+.stat-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5rem;
+    border-bottom: 1px solid var(--stat-border);
+    color: var(--stat-text);
+}
+.stat-row:last-child {
+    border-bottom: none;
+}
+.stat-count {
+    font-weight: bold;
+}
+.no-data {
+    color: var(--stat-text);
+    font-style: italic;
+}
+
+/* Monitor Performance Class Badges */
+.performance-badge {
+    display: inline-block;
+    padding: 3px 8px;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    margin: 2px 4px 2px 0;
+    white-space: nowrap;
+}
+.performance-badge.gaming {
+    background: linear-gradient(135deg, #dc2626, #ef4444);
+    color: white;
+    border: 1px solid #dc2626;
+}
+.performance-badge.creator {
+    background: linear-gradient(135deg, #7c3aed, #8b5cf6);
+    color: white;
+    border: 1px solid #7c3aed;
+}
+.performance-badge.office {
+    background: linear-gradient(135deg, #059669, #10b981);
+    color: white;
+    border: 1px solid #059669;
+}
+.performance-badge.budget {
+    background: linear-gradient(135deg, #d97706, #f59e0b);
+    color: white;
+    border: 1px solid #d97706;
+}
+.performance-badge.ultrawide {
+    background: linear-gradient(135deg, #0891b2, #06b6d4);
+    color: white;
+    border: 1px solid #0891b2;
+}
+.performance-badge.high-end {
+    background: linear-gradient(135deg, #1e40af, #3b82f6);
+    color: white;
+    border: 1px solid #1e40af;
+}
+
+/* Monitor Category Grid Icons */
+.category-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 1rem;
+    margin: 1rem 0;
+}
+.category-card {
+    background: var(--card-bg);
+    border: 2px solid var(--card-border);
+    border-radius: 12px;
+    padding: 1rem;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+.category-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+    border-color: #667eea;
+}
+.category-card.active {
+    border-color: #667eea;
+    background: linear-gradient(135deg, rgba(102,126,234,0.1), rgba(118,75,162,0.1));
+}
+.category-icon {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+}
+.category-name {
+    font-weight: 600;
+    font-size: 0.875rem;
+    color: var(--text-color);
+}
+.category-count {
+    font-size: 0.75rem;
+    color: #666;
+    margin-top: 0.25rem;
+}
+
+/* Performance Stats Section */
+.performance-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin-top: 1rem;
+}
+.performance-stat-card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 8px;
+    padding: 1rem;
+}
+.performance-stat-card h4 {
+    margin: 0 0 0.75rem 0;
+    font-size: 1rem;
+    color: var(--text-color);
+}
+.stat-bar {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+.stat-bar-label {
+    width: 100px;
+    font-size: 0.875rem;
+    color: var(--text-color);
+}
+.stat-bar-track {
+    flex: 1;
+    height: 20px;
+    background: #e5e7eb;
+    border-radius: 10px;
+    overflow: hidden;
+    margin: 0 0.5rem;
+}
+.stat-bar-fill {
+    height: 100%;
+    border-radius: 10px;
+    transition: width 0.3s ease;
+}
+.stat-bar-count {
+    width: 40px;
+    text-align: right;
+    font-weight: 600;
+    font-size: 0.875rem;
+}
+
+/* Refresh rate grouping toggle */
+.refresh-toggle {
+    display: inline-flex;
+    gap: 0;
+    margin-left: 0.75rem;
+    border: 1px solid var(--card-border, #ddd);
+    border-radius: 6px;
+    overflow: hidden;
+    font-size: 0.75rem;
+    vertical-align: middle;
+}
+.refresh-toggle button {
+    border: none;
+    background: var(--card-bg, #fff);
+    color: var(--text-color, #333);
+    padding: 0.25rem 0.5rem;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+.refresh-toggle button.active {
+    background: #667eea;
+    color: #fff;
+}
+.refresh-toggle button:hover:not(.active) {
+    background: var(--stat-border, #eee);
+}
+
+{% endblock %}
+
+{% block content %}
+<!-- Monitor Categories Grid -->
+<div class="section">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+        <h2>🎯 Monitor Categories</h2>
+    </div>
+    <div class="category-grid" id="category-grid">
+        <div class="category-card" data-category="gaming" onclick="filterByCategory('gaming')">
+            <div class="category-icon">🎮</div>
+            <div class="category-name">Gaming</div>
+            <div class="category-count" id="gaming-count">{{ t('Loading...') }}</div>
+        </div>
+        <div class="category-card" data-category="ultrawide" onclick="filterByCategory('ultrawide')">
+            <div class="category-icon">📺</div>
+            <div class="category-name">Ultrawide</div>
+            <div class="category-count" id="ultrawide-count">{{ t('Loading...') }}</div>
+        </div>
+        <div class="category-card" data-category="creator" onclick="filterByCategory('creator')">
+            <div class="category-icon">🎨</div>
+            <div class="category-name">Creator</div>
+            <div class="category-count" id="creator-count">{{ t('Loading...') }}</div>
+        </div>
+        <div class="category-card" data-category="office" onclick="filterByCategory('office')">
+            <div class="category-icon">📋</div>
+            <div class="category-name">Office</div>
+            <div class="category-count" id="office-count">{{ t('Loading...') }}</div>
+        </div>
+        <div class="category-card" data-category="high-end" onclick="filterByCategory('high-end')">
+            <div class="category-icon">🏆</div>
+            <div class="category-name">High-End</div>
+            <div class="category-count" id="high-end-count">{{ t('Loading...') }}</div>
+        </div>
+        <div class="category-card" data-category="budget" onclick="filterByCategory('budget')">
+            <div class="category-icon">💰</div>
+            <div class="category-name">Budget</div>
+            <div class="category-count" id="budget-count">{{ t('Loading...') }}</div>
+        </div>
+    </div>
+</div>
+
+<!-- Performance Class Statistics -->
+<div class="section">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+        <h2>📊 Performance Class Distribution <button class="btn btn-small" onclick="toggleSection('performance-stats-section', this)" style="margin-left: 1rem;">▼</button></h2>
+    </div>
+    <div id="performance-stats-section">
+        <div id="performance-stats-container" class="performance-stats">
+            <div class="loading">Loading performance statistics...</div>
+        </div>
+    </div>
+</div>
+
+<div class="section">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+        <h2>🖥️ Monitor Listings <button class="btn btn-small" onclick="toggleSection('listings-section', this)" style="margin-left: 1rem;">▼</button></h2>
+        <div style="font-size: 0.875rem; color: #666;" data-theme="dark" style="color: #aaa;">
+            Click ▼ to collapse/expand
+        </div>
+    </div>
+
+    <div id="listings-section">
+    <div class="filters">
+        <span style="font-weight: 600; margin-right: 0.5rem;">Filters:</span>
+        <label>
+            <input type="checkbox" id="active-only" checked>
+            Active only
+        </label>
+        <label class="{% if not is_staff %}staff-only{% endif %}">
+            Min confidence:
+            <select id="min-confidence">
+                <option value="0">{{ t('All') }}</option>
+                <option value="0.5">50%+</option>
+                <option value="0.7" selected>70%+</option>
+                <option value="0.9">90%+</option>
+            </select>
+        </label>
+        <label>
+            Time:
+            <select id="time-filter">
+                <option value="all_time">All time</option>
+                <option value="week">Last 7 days</option>
+                <option value="month">Last 30 days</option>
+                <option value="year">Last year</option>
+            </select>
+        </label>
+        <label>
+            <span style="font-weight: 600;">Sort:</span>
+            <select id="sort-by">
+                <option value="date_posted">Date</option>
+                <option value="price">{{ t('Price') }}</option>
+            </select>
+        </label>
+        <label>
+            Order:
+            <select id="sort-order">
+                <option value="desc">{{ t('Descending') }}</option>
+                <option value="asc">{{ t('Ascending') }}</option>
+            </select>
+        </label>
+        <label>
+            Size:
+            <select id="size-filter">
+                <option value="all">All sizes</option>
+            </select>
+        </label>
+        <label>
+            Resolution:
+            <select id="resolution-filter">
+                <option value="all">All resolutions</option>
+            </select>
+        </label>
+        <label>
+            Refresh Rate:
+            <select id="refresh-filter">
+                <option value="all">All refresh rates</option>
+            </select>
+        </label>
+        <label>
+            Panel:
+            <select id="panel-filter">
+                <option value="all">All panels</option>
+            </select>
+        </label>
+        <label>
+            Location:
+            <select id="location-filter">
+                <option value="all">All locations</option>
+            </select>
+        </label>
+    </div>
+
+    <div id="listings-table">
+        <div class="loading">Loading listings...</div>
+    </div>
+    </div>
+</div>
+
+<div class="section">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+        <h2>🖥️ Monitor Models <button class="btn btn-small" onclick="toggleSection('models-section', this)" style="margin-left: 1rem;">▼</button></h2>
+    </div>
+    <div id="models-section">
+        <div id="models-grid">
+            <div class="loading">Loading models...</div>
+        </div>
+    </div>
+</div>
+
+<div class="section">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+        <h2>📊 Monitor Statistics <button class="btn btn-small" onclick="toggleSection('stats-section', this)" style="margin-left: 1rem;">▼</button></h2>
+    </div>
+
+    <div id="stats-section">
+    <div id="stats-container" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem;">
+        <div class="stat-card" style="text-align: center;">
+            <h3>By Size</h3>
+            <div id="size-stats" class="loading">{{ t('Loading...') }}</div>
+        </div>
+        <div class="stat-card" style="text-align: center;">
+            <h3>By Resolution</h3>
+            <div id="resolution-stats" class="loading">{{ t('Loading...') }}</div>
+        </div>
+        <div class="stat-card" style="text-align: center;">
+            <h3>By Panel Type</h3>
+            <div id="panel-stats" class="loading">{{ t('Loading...') }}</div>
+        </div>
+    </div>
+    </div>
+</div>
+
+<div class="section">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+        <h2>📊 Cost Analysis <button class="btn btn-small" onclick="toggleSection('cost-section', this)" style="margin-left: 1rem;">▼</button></h2>
+    </div>
+    <div id="cost-section">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 1rem;">
+            <div class="chart-wrapper">
+                <h3 style="margin-bottom: 1rem; text-align: center;">Cost per Million Pixels by Resolution</h3>
+                <div class="chart-container" style="position: relative; height: 300px;">
+                    <canvas id="costPerPixelChart"></canvas>
+                </div>
+            </div>
+            <div class="chart-wrapper">
+                <h3 style="margin-bottom: 1rem; text-align: center;">Cost per Hz by Refresh Rate</h3>
+                <div class="chart-container" style="position: relative; height: 300px;">
+                    <canvas id="costPerHzChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+// Toggle section visibility
+function toggleSection(sectionId, btn) {
+    const section = document.getElementById(sectionId);
+    const isCollapsed = section.style.display === 'none';
+
+    if (isCollapsed) {
+        section.style.display = 'block';
+        btn.textContent = '▼';
+        btn.title = 'Collapse';
+    } else {
+        section.style.display = 'none';
+        btn.textContent = '▶';
+        btn.title = 'Expand';
+    }
+
+    // Save preference to localStorage
+    localStorage.setItem('monitors_' + sectionId + '_collapsed', !isCollapsed);
+}
+
+// Restore collapsed state on page load
+function restoreCollapsedSections() {
+    const sections = ['listings-section', 'stats-section', 'models-section'];
+    sections.forEach(id => {
+        const isCollapsed = localStorage.getItem('monitors_' + id + '_collapsed') === 'true';
+        if (isCollapsed) {
+            const section = document.getElementById(id);
+            const btn = document.querySelector(`button[onclick*="'${id}'"]`);
+            if (section && btn) {
+                section.style.display = 'none';
+                btn.textContent = '▶';
+            }
+        }
+    });
+}
+
+// Helper function to get image HTML with local image support
+function computeMonitorDealBadges(item) {
+    let dealBadge = '';
+
+    const isNewListing = item.is_new === true;
+    if (isNewListing) {
+        dealBadge += `<span class="badge" style="background: #3b82f6; color: white; font-weight: bold;" title="New listing from current import!">🆕 NEW</span><br>`;
+    }
+    if (!isNewListing && item.price_stats && item.price_stats.below_avg) {
+        const avgPrice = parseFloat(item.price_stats.avg);
+        const currentPrice = item.price_eur;
+        const savingsPct = ((avgPrice - currentPrice) / avgPrice * 100);
+        if (savingsPct >= 15) {
+            dealBadge += `<span class="badge" style="background: #dc2626; color: white; font-weight: bold;" title="Price is ${savingsPct.toFixed(0)}% below average!">🔥 STEAL</span><br>`;
+        }
+    }
+    return dealBadge;
+}
+
+function getImageHtml(item) {
+    // Use local image if available, fallback to external URL
+    // local_image_path format: "facebook/filename.png" or "ss.com/filename.png"
+    const imageUrl = item.local_image_path
+        ? `/images/${item.local_image_path}`
+        : item.image_url;
+    const imageClickUrl = item.local_image_path
+        ? `/images/${item.local_image_path}`
+        : item.image_url;
+
+    if (!imageUrl) {
+        return '<div class="listing-thumb-placeholder">📷</div>';
+    }
+
+    return `<img src="${imageUrl}" alt="${item.title}" class="listing-thumb" loading="lazy" onclick="event.stopPropagation(); showImageModal('${imageClickUrl}', '${item.title.replace(/'/g, "\\'")}')">`;
+}
+
+// Calculate monitor performance class based on specs
+function getMonitorPerformanceClass(size, resolution, refresh_rate, panel_type) {
+    const sizeNum = parseFloat(size) || 0;
+    const refreshNum = parseInt(refresh_rate) || 60;
+
+    // Determine if ultrawide
+    const isUltrawide = resolution && (
+        resolution.includes('2560x1080') ||
+        resolution.includes('2560 x 1080') ||
+        resolution.includes('3440x1440') ||
+        resolution.includes('3440 x 1440') ||
+        resolution.includes('3840x1600') ||
+        resolution.includes('3840 x 1600') ||
+        resolution.includes('5120x1440') ||
+        resolution.includes('5120 x 1440') ||
+        resolution.includes('UW') ||
+        resolution.includes('ultrawide')
+    );
+
+    const is4K = resolution && (
+        resolution.includes('3840x2160') ||
+        resolution.includes('3840 x 2160') ||
+        resolution.includes('4096x2160') ||
+        resolution.includes('4096 x 2160') ||
+        resolution.includes('4K')
+    );
+
+    // Determine if 1440p
+    const is1440p = resolution && (
+        resolution.includes('2560x1440') ||
+        resolution.includes('2560 x 1440') ||
+        resolution.includes('1440p') ||
+        resolution.includes('QHD')
+    );
+
+    // Professional features (IPS, wide color gamut, etc.)
+    const isProfessional = panel_type && (
+        panel_type.toLowerCase().includes('ips') ||
+        panel_type.toLowerCase().includes('oled') ||
+        panel_type.toLowerCase().includes('mini-led')
+    );
+
+    // Gaming criteria
+    if (refreshNum >= 120 || sizeNum >= 27) {
+        if (is4K && refreshNum >= 144) {
+            return { class: 'high-end', label: 'High-End', icon: '🏆' };
+        }
+        if (isUltrawide) {
+            return { class: 'ultrawide', label: 'Ultrawide', icon: '📺' };
+        }
+        if (refreshNum >= 144) {
+            return { class: 'gaming', label: 'Gaming', icon: '🎮' };
+        }
+    }
+
+    // Professional/4K criteria (merged into Creator)
+    if (isProfessional && (is4K || sizeNum >= 27)) {
+        return { class: 'creator', label: 'Creator', icon: '🎨' };
+    }
+
+    // 4K non-gaming (also Creator)
+    if (is4K) {
+        return { class: 'creator', label: 'Creator', icon: '🎨' };
+    }
+
+    // Budget criteria
+    if (sizeNum <= 22 && refreshNum <= 75) {
+        return { class: 'budget', label: 'Budget', icon: '💰' };
+    }
+
+    // Default to office
+    return { class: 'office', label: 'Office', icon: '📋' };
+}
+
+// Get performance class badge HTML
+function getPerformanceClassBadge(monitor) {
+    const size = monitor.size || monitor.monitor_size || 0;
+    const resolution = monitor.resolution || monitor.monitor_resolution || '';
+    const refresh = monitor.refresh_rate || monitor.monitor_refresh_rate || 60;
+    const panel = monitor.panel_type || monitor.panel || '';
+
+    const perf = getMonitorPerformanceClass(size, resolution, refresh, panel);
+
+    return `
+        <span class="performance-badge ${perf.class}" title="${perf.label} Monitor">
+            ${perf.icon} ${perf.label}
+        </span>
+    `;
+}
+
+// Get tier badge HTML (legacy support)
+function getTierBadge(tier) {
+    if (!tier) return '-';
+    return `
+        <span class="monitor-tier-badge"
+              style="background: ${tier.bg_color};
+                     color: ${tier.color};
+                     border: 2px solid ${tier.color};
+                     padding: 4px 8px;
+                     border-radius: 4px;
+                     font-weight: bold;
+                     font-size: 0.85rem;
+                     display: inline-block;"
+              title="${tier.description} | Score: ${tier.score}/${tier.max_score}">
+            ${tier.icon} ${tier.tier}
+        </span>
+    `;
+}
+
+// Refresh rate grouping mode
+let refreshRateGroupingMode = localStorage.getItem('monitors_refresh_rate_grouping') || 'exact';
+
+// Filter by category
+let currentCategoryFilter = 'all';
+
+function filterByCategory(category) {
+    currentCategoryFilter = category;
+
+    // Update UI
+    document.querySelectorAll('.category-card').forEach(card => {
+        card.classList.remove('active');
+        if (card.dataset.category === category) {
+            card.classList.add('active');
+        }
+    });
+
+    fetchListings();
+}
+
+// Fetch category counts
+async function fetchCategoryCounts() {
+    try {
+        const response = await fetch('/api/monitors?active=true');
+        const listings = await response.json();
+
+        const counts = {
+            gaming: 0,
+            ultrawide: 0,
+            creator: 0,
+            'high-end': 0,
+            office: 0,
+            budget: 0
+        };
+
+        listings.forEach(item => {
+            const size = item.size || item.monitor_size || 0;
+            const resolution = item.resolution || item.monitor_resolution || '';
+            const refresh = item.refresh_rate || item.monitor_refresh_rate || 60;
+            const panel = item.panel_type || item.monitor_panel_type || '';
+
+            const perf = getMonitorPerformanceClass(size, resolution, refresh, panel);
+            // Map old classes to new creator class
+            let className = perf.class;
+            if (className === '4k' || className === 'professional') {
+                className = 'creator';
+            }
+            if (className === 'high-end') {
+                counts['high-end']++;
+            } else if (counts[className] !== undefined) {
+                counts[className]++;
+            }
+        });
+
+        // Update counts - only show Creator, not separate 4k/professional
+        document.getElementById('gaming-count').textContent = counts.gaming + ' listings';
+        document.getElementById('ultrawide-count').textContent = counts.ultrawide + ' listings';
+        document.getElementById('creator-count').textContent = counts.creator + ' listings';
+        document.getElementById('high-end-count').textContent = counts['high-end'] + ' listings';
+        document.getElementById('office-count').textContent = counts.office + ' listings';
+        document.getElementById('budget-count').textContent = counts.budget + ' listings';
+
+    } catch (error) {
+        console.error('Error loading category counts:', error);
+    }
+}
+
+// Fetch and render performance statistics
+function setRefreshRateGrouping(mode) {
+    if (mode === refreshRateGroupingMode) return;
+    refreshRateGroupingMode = mode;
+    localStorage.setItem('monitors_refresh_rate_grouping', mode);
+    fetchPerformanceStats();
+}
+
+async function fetchPerformanceStats() {
+    try {
+        const response = await fetch('/api/monitors?active=true');
+        const listings = await response.json();
+
+        const counts = {
+            gaming: 0,
+            ultrawide: 0,
+            creator: 0,
+            'high-end': 0,
+            office: 0,
+            budget: 0
+        };
+
+        const refreshRates = {};
+        const sizes = {};
+        const resolutions = {};
+
+        listings.forEach(item => {
+            const size = item.size || item.monitor_size || 0;
+            const resolution = item.resolution || item.monitor_resolution || '';
+            const refresh = item.refresh_rate || item.monitor_refresh_rate || 60;
+            const panel = item.panel_type || item.monitor_panel_type || '';
+
+            const perf = getMonitorPerformanceClass(size, resolution, refresh, panel);
+            // Map old classes to new creator class
+            let className = perf.class;
+            if (className === '4k' || className === 'professional') {
+                className = 'creator';
+            }
+            if (className === 'high-end') {
+                counts['high-end']++;
+            } else if (counts[className] !== undefined) {
+                counts[className]++;
+            }
+            
+            // Collect other stats
+            refreshRates[refresh] = (refreshRates[refresh] || 0) + 1;
+            sizes[size] = (sizes[size] || 0) + 1;
+            if (resolution) resolutions[resolution] = (resolutions[resolution] || 0) + 1;
+        });
+        
+        const total = listings.length || 1;
+
+        // Color map for performance classes
+        const colorMap = {
+            gaming: '#dc2626',
+            ultrawide: '#0891b2',
+            creator: '#7c3aed',
+            'high-end': '#3b82f6',
+            office: '#059669',
+            budget: '#d97706'
+        };
+
+        let html = `
+            <div class="performance-stat-card">
+                <h4>By Performance Class</h4>
+        `;
+
+        Object.entries(counts).forEach(([className, count]) => {
+            const percentage = Math.round((count / total) * 100);
+            html += `
+                <div class="stat-bar">
+                    <div class="stat-bar-label">${className.charAt(0).toUpperCase() + className.slice(1)}</div>
+                    <div class="stat-bar-track">
+                        <div class="stat-bar-fill" style="width: ${percentage}%; background: ${colorMap[className] || '#666'};"></div>
+                    </div>
+                    <div class="stat-bar-count">${count}</div>
+                </div>
+            `;
+        });
+
+        html += '</div>';
+
+        // Add Refresh Rate Distribution
+        html += `
+            <div class="performance-stat-card">
+                <h4>
+                    By Refresh Rate
+                    <span class="refresh-toggle">
+                        <button id="refresh-mode-exact" class="${refreshRateGroupingMode === 'exact' ? 'active' : ''}" onclick="setRefreshRateGrouping('exact')">Exact</button>
+                        <button id="refresh-mode-simplified" class="${refreshRateGroupingMode === 'simplified' ? 'active' : ''}" onclick="setRefreshRateGrouping('simplified')">Simplified</button>
+                    </span>
+                </h4>
+        `;
+
+        if (refreshRateGroupingMode === 'simplified') {
+            const buckets = {
+                '60Hz': 0,
+                '75+Hz': 0,
+                '120+Hz': 0,
+                '200+Hz': 0,
+                '300+Hz': 0
+            };
+
+            Object.entries(refreshRates).forEach(([rate, count]) => {
+                const r = parseInt(rate) || 0;
+                if (r >= 300) buckets['300+Hz'] += count;
+                else if (r >= 200) buckets['200+Hz'] += count;
+                else if (r >= 120) buckets['120+Hz'] += count;
+                else if (r >= 75) buckets['75+Hz'] += count;
+                else buckets['60Hz'] += count;
+            });
+
+            Object.entries(buckets).forEach(([bucket, count]) => {
+                const percentage = Math.round((count / total) * 100);
+                html += `
+                    <div class="stat-bar">
+                        <div class="stat-bar-label">${bucket}</div>
+                        <div class="stat-bar-track">
+                            <div class="stat-bar-fill" style="width: ${percentage}%; background: #667eea;"></div>
+                        </div>
+                        <div class="stat-bar-count">${count}</div>
+                    </div>
+                `;
+            });
+        } else {
+            Object.entries(refreshRates)
+                .sort((a, b) => parseInt(a[0]) - parseInt(b[0]))
+                .forEach(([rate, count]) => {
+                    const percentage = Math.round((count / total) * 100);
+                    html += `
+                        <div class="stat-bar">
+                            <div class="stat-bar-label">${rate}Hz</div>
+                            <div class="stat-bar-track">
+                                <div class="stat-bar-fill" style="width: ${percentage}%; background: #667eea;"></div>
+                            </div>
+                            <div class="stat-bar-count">${count}</div>
+                        </div>
+                    `;
+                });
+        }
+
+        html += '</div>';
+
+        // Add Resolution Distribution
+        html += `
+            <div class="performance-stat-card">
+                <h4>By Resolution</h4>
+        `;
+
+        Object.entries(resolutions)
+            .sort((a, b) => b[1] - a[1])
+            .slice(0, 6)
+            .forEach(([res, count]) => {
+                const percentage = Math.round((count / total) * 100);
+                html += `
+                    <div class="stat-bar">
+                        <div class="stat-bar-label">${res}</div>
+                        <div class="stat-bar-track">
+                            <div class="stat-bar-fill" style="width: ${percentage}%; background: #764ba2;"></div>
+                        </div>
+                        <div class="stat-bar-count">${count}</div>
+                    </div>
+                `;
+            });
+
+        html += '</div>';
+
+        document.getElementById('performance-stats-container').innerHTML = html;
+
+    } catch (error) {
+        console.error('Error loading performance stats:', error);
+        document.getElementById('performance-stats-container').innerHTML =
+            '<div class="loading">Failed to load statistics</div>';
+    }
+}
+
+// Fetch filter options
+async function fetchFilterOptions() {
+    try {
+        const response = await fetch('/api/monitor-filters');
+        const data = await response.json();
+
+        // Populate size filter
+        const sizeSelect = document.getElementById('size-filter');
+        data.sizes.forEach(size => {
+            const option = document.createElement('option');
+            option.value = size;
+            option.textContent = size + '"';
+            sizeSelect.appendChild(option);
+        });
+
+        // Populate resolution filter
+        const resolutionSelect = document.getElementById('resolution-filter');
+        data.resolutions.forEach(res => {
+            const option = document.createElement('option');
+            option.value = res;
+            option.textContent = res;
+            resolutionSelect.appendChild(option);
+        });
+
+        // Populate refresh rate filter
+        const refreshSelect = document.getElementById('refresh-filter');
+        data.refresh_rates.forEach(rate => {
+            const option = document.createElement('option');
+            option.value = rate;
+            option.textContent = rate + 'Hz';
+            refreshSelect.appendChild(option);
+        });
+
+        // Populate panel type filter
+        const panelSelect = document.getElementById('panel-filter');
+        data.panel_types.forEach(panel => {
+            const option = document.createElement('option');
+            option.value = panel;
+            option.textContent = panel;
+            panelSelect.appendChild(option);
+        });
+
+        // Populate location filter
+        const locationSelect = document.getElementById('location-filter');
+        data.locations.forEach(loc => {
+            const option = document.createElement('option');
+            option.value = loc;
+            option.textContent = loc;
+            locationSelect.appendChild(option);
+        });
+    } catch (error) {
+        console.error('Error loading filter options:', error);
+    }
+}
+
+// Fetch listings
+async function fetchListings() {
+    const activeOnly = document.getElementById('active-only').checked;
+    const minConfidence = document.getElementById('min-confidence').value;
+    const timeFilter = document.getElementById('time-filter').value;
+    const sortBy = document.getElementById('sort-by').value;
+    const sortOrder = document.getElementById('sort-order').value;
+    const sizeFilter = document.getElementById('size-filter').value;
+    const resolutionFilter = document.getElementById('resolution-filter').value;
+    const refreshFilter = document.getElementById('refresh-filter').value;
+    const panelFilter = document.getElementById('panel-filter').value;
+    const locationFilter = document.getElementById('location-filter').value;
+
+    const params = new URLSearchParams({
+        active: activeOnly,
+        min_confidence: minConfidence,
+        time: timeFilter,
+        sort: sortBy,
+        order: sortOrder
+    });
+
+    // Add new filter params
+    if (sizeFilter !== 'all') params.append('size', sizeFilter);
+    if (resolutionFilter !== 'all') params.append('resolution', resolutionFilter);
+    if (refreshFilter !== 'all') params.append('refresh_rate', refreshFilter);
+    if (panelFilter !== 'all') params.append('panel_type', panelFilter);
+    if (locationFilter !== 'all') params.append('location', locationFilter);
+
+    // Add category filter
+    if (currentCategoryFilter !== 'all') {
+        params.append('category_filter', currentCategoryFilter);
+    }
+
+    try {
+        const response = await fetch(`/api/monitors?${params}`);
+        const data = await response.json();
+
+        // Filter by performance class if set
+        let listings = data;
+        if (currentCategoryFilter !== 'all') {
+            listings = data.filter(item => {
+                const size = item.size || item.monitor_size || 0;
+                const resolution = item.resolution || item.monitor_resolution || '';
+                const refresh = item.refresh_rate || item.monitor_refresh_rate || 60;
+                const panel = item.panel_type || item.monitor_panel_type || '';
+                const perf = getMonitorPerformanceClass(size, resolution, refresh, panel);
+                return perf.class === currentCategoryFilter;
+            });
+        }
+
+        renderListings(listings);
+    } catch (error) {
+        document.getElementById('listings-table').innerHTML =
+            `<div class="error">Error loading listings: ${error.message}</div>`;
+    }
+}
+
+// Fetch models
+async function fetchModels() {
+    const timeFilter = document.getElementById('time-filter')?.value || 'all_time';
+
+    try {
+        const response = await fetch(`/api/monitor-models?time=${timeFilter}`);
+        const data = await response.json();
+        renderModels(data);
+    } catch (error) {
+        document.getElementById('models-grid').innerHTML =
+            `<div class="error">Error loading models: ${error.message}</div>`;
+    }
+}
+
+// Fetch and calculate statistics
+async function fetchStats() {
+    const timeFilter = document.getElementById('time-filter')?.value || 'all_time';
+
+    try {
+        const response = await fetch(`/api/monitors?active=true&time=${timeFilter}&sort=price&order=desc`);
+        const data = await response.json();
+        renderStats(data);
+    } catch (error) {
+        console.error('Error loading stats:', error);
+    }
+}
+
+// Fetch monitor stats from API
+async function fetchMonitorStats() {
+    const timeFilter = document.getElementById('time-filter')?.value || 'all_time';
+
+    try {
+        const response = await fetch(`/api/monitor-stats?time=${timeFilter}`);
+        const data = await response.json();
+
+        if (data.success && data.stats) {
+            // Update category counts from API
+            const perfStats = data.stats.by_performance_class;
+            document.getElementById('gaming-count').textContent = (perfStats.gaming || 0) + ' listings';
+            document.getElementById('ultrawide-count').textContent = (perfStats.ultrawide || 0) + ' listings';
+            document.getElementById('creator-count').textContent = (perfStats.creator || 0) + ' listings';
+            document.getElementById('high-end-count').textContent = (perfStats['high-end'] || 0) + ' listings';
+            document.getElementById('office-count').textContent = (perfStats.office || 0) + ' listings';
+            document.getElementById('budget-count').textContent = (perfStats.budget || 0) + ' listings';
+        }
+    } catch (error) {
+        console.error('Error loading monitor stats:', error);
+    }
+}
+
+// Render listings table
+function renderListings(listings) {
+    if (listings.error) {
+        document.getElementById('listings-table').innerHTML =
+            `<div class="error">Error: ${listings.error}</div>`;
+        return;
+    }
+
+    if (listings.length === 0) {
+        document.getElementById('listings-table').innerHTML =
+            `<div class="loading">No listings found</div>`;
+        return;
+    }
+
+    const html = `
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 80px;">Image</th>
+                    <th>Listing</th>
+                    <th>Matched Model</th>
+                    <th style="width: 120px;">Specs</th>
+                    <th style="width: 70px;">Panel</th>
+                    <th style="width: 80px;">{{ t('Price') }}</th>
+                    <th style="width: 100px;">Location</th>
+                    <th style="width: 90px;">Date</th>
+                    <th style="width: 80px;">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                ${listings.map(item => `
+                    <tr class="clickable" onclick="showSharedListingDetail('${item.listing_id.replace(/'/g, "\\'").replace(/"/g, '&quot;')}', true)" title="Click to view listing details">
+                        <td class="listing-image-cell" style="position: relative;">
+                            ${getImageHtml(item)}
+                            ${(() => {
+                                const dealBadge = computeMonitorDealBadges(item);
+                                return dealBadge ? `<div style="position: absolute; top: 4px; right: 4px; display: flex; flex-direction: column; gap: 4px; z-index: 10;">${dealBadge}</div>` : '';
+                            })()}
+                        </td>
+                        <td style="max-width: 300px;">
+                            <div style="font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                                ${item.title.replace(/SS\.COM Datori un orgtehnika - Monitori, Cena \d+ €,?\s*/i, '').replace(/SS\.COM Datori un orgtehnika - Monitori,?\s*/i, '')}
+                            </div>
+                            ${item.description ? `<div style="font-size: 0.8rem; color: #666; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 2px;">${item.description}</div>` : ''}
+                        </td>
+                        <td>
+                            <div style="font-weight: 500;">
+                                ${item.brand ? `${item.brand} ${item.model || ''}` : 'Unknown'}
+                            </div>
+                            ${item.confidence_score ? `<span class="${getConfidenceClass(item.confidence_score)}" style="font-size: 0.75rem;">${(item.confidence_score * 100).toFixed(0)}% confidence</span>` : ''}
+                        </td>
+                        <td>
+                            <div style="display: flex; flex-direction: column; gap: 4px;">
+                                ${getPerformanceClassBadge(item)}
+                                ${item.tier ? getTierBadge(item.tier) : ''}
+                                <span style="font-size: 0.8rem;">${item.size ? item.size + '"' : ''} ${item.resolution || ''}</span>
+                                <span style="font-size: 0.8rem;">${item.refresh_rate ? item.refresh_rate + 'Hz' : ''}</span>
+                            </div>
+                        </td>
+                        <td style="text-align: center;">
+                            ${item.panel_type || '-'}
+                        </td>
+                        <td class="price">€${item.price_eur.toFixed(2)}</td>
+                        <td>${item.seller_location || '-'}</td>
+                        <td>${new Date(item.date_posted).toLocaleDateString()}</td>
+                        <td>
+                            ${renderPriceDecreaseBadge(item)}
+                            <a href="${item.listing_url}" target="_blank" class="btn btn-small" onclick="event.stopPropagation()">View</a>
+                            ${renderHistoryButton(item.listing_id, item.history?.length > 0)}
+                            <button class="btn btn-small" style="background: #e74c3c; color: white; margin-top: 4px;" onclick="event.stopPropagation(); showFlagModalWithCategories('${item.listing_id.replace(/'/g, "\\'").replace(/"/g, '&quot;')}', '${item.title.replace(/'/g, "\\'").replace(/"/g, '&quot;')}')">Flag</button>
+                        </td>
+                    </tr>
+                `).join('')}
+            </tbody>
+        </table>
+    `;
+
+    document.getElementById('listings-table').innerHTML = html;
+}
+
+// Render models
+function renderModels(models) {
+    if (models.error) {
+        document.getElementById('models-grid').innerHTML =
+            `<div class="error">Error: ${models.error}</div>`;
+        return;
+    }
+
+    if (models.length === 0) {
+        document.getElementById('models-grid').innerHTML =
+            `<div class="loading">No models found</div>`;
+        return;
+    }
+
+    const html = models.map(model => `
+        <div class="model-card">
+            <h3>${model.brand} ${model.model}</h3>
+            <p>${model.size}" • ${model.resolution} • ${model.refresh_rate}Hz • ${model.panel_type}</p>
+            <p style="font-size: 0.875rem; color: #666; margin-top: 0.5rem;">
+                ${model.listing_count} active listings
+            </p>
+            ${model.avg_price ? `<p style="font-size: 1.25rem; font-weight: 600; margin-top: 0.5rem;">Avg: €${model.avg_price.toFixed(2)}</p>` : ''}
+            ${model.min_price ? `<p style="font-size: 0.875rem; color: #666;">Range: €${model.min_price.toFixed(2)} - €${model.max_price.toFixed(2)}</p>` : ''}
+            <button class="btn btn-small" onclick="showMonitorModelHistory('${model.id}')" style="margin-top: 1rem;">
+                View Price History
+            </button>
+        </div>
+    `).join('');
+
+    document.getElementById('models-grid').innerHTML = html;
+}
+
+// Render statistics
+function renderStats(listings) {
+    // Size distribution
+    const sizeGroups = {};
+    listings.forEach(item => {
+        const size = item.size || 'Unknown';
+        if (size === 'Unknown') return;
+        sizeGroups[size] = (sizeGroups[size] || 0) + 1;
+    });
+
+    const sizeHtml = Object.entries(sizeGroups)
+        .sort((a, b) => b[1] - a[1])
+        .map(([size, count]) => `
+            <div class="stat-row">
+                <span>${size}"</span>
+                <span class="stat-count">${count}</span>
+            </div>
+        `).join('');
+    document.getElementById('size-stats').innerHTML = sizeHtml || '<div class="no-data">No data</div>';
+
+    // Resolution distribution
+    const resGroups = {};
+    listings.forEach(item => {
+        const res = item.resolution || 'Unknown';
+        if (res === 'Unknown') return;
+        resGroups[res] = (resGroups[res] || 0) + 1;
+    });
+
+    const resHtml = Object.entries(resGroups)
+        .sort((a, b) => b[1] - a[1])
+        .map(([res, count]) => `
+            <div class="stat-row">
+                <span>${res}</span>
+                <span class="stat-count">${count}</span>
+            </div>
+        `).join('');
+    document.getElementById('resolution-stats').innerHTML = resHtml || '<div class="no-data">No data</div>';
+
+    // Panel type distribution
+    const panelGroups = {};
+    listings.forEach(item => {
+        const panel = item.panel_type || 'Unknown';
+        if (panel === 'Unknown') return;
+        panelGroups[panel] = (panelGroups[panel] || 0) + 1;
+    });
+
+    const panelHtml = Object.entries(panelGroups)
+        .sort((a, b) => b[1] - a[1])
+        .map(([panel, count]) => `
+            <div class="stat-row">
+                <span>${panel}</span>
+                <span class="stat-count">${count}</span>
+            </div>
+        `).join('');
+    document.getElementById('panel-stats').innerHTML = panelHtml || '<div class="no-data">No data</div>';
+}
+
+// Get CSS class for confidence score
+function getConfidenceClass(score) {
+    if (score >= 0.9) return 'confidence-high';
+    if (score >= 0.7) return 'confidence-medium';
+    return 'confidence-low';
+}
+
+// Render price decrease badge
+function renderPriceDecreaseBadge(item) {
+    if (item.price_decrease && item.price_decrease > 0) {
+        return `<span class="price-decrease-badge" title="Price dropped from €${item.price_before.toFixed(2)}">↓ ${item.price_decrease}%</span>`;
+    }
+    return '';
+}
+
+// Render history button
+function renderHistoryButton(listingId, hasHistory) {
+    if (hasHistory) {
+        return `<button class="btn btn-small" onclick="showPriceHistory('${listingId}', event)">History</button>`;
+    }
+    return '';
+}
+
+// Show price history modal
+function showPriceHistory(listingId, event) {
+    event.stopPropagation();
+
+    const modal = document.createElement('div');
+    modal.className = 'modal';
+    modal.innerHTML = `
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Price History</h2>
+                <button class="modal-close" onclick="this.closest('.modal').remove()">&times;</button>
+            </div>
+            <div class="modal-body" id="history-content">
+                <div class="loading">{{ t('Loading...') }}</div>
+            </div>
+        </div>
+    `;
+    document.body.appendChild(modal);
+
+    fetch(`/api/price-history/${listingId}`)
+        .then(response => response.json())
+        .then(data => {
+            const content = document.getElementById('history-content');
+            if (data.length === 0) {
+                content.innerHTML = '<div class="loading">No price history found</div>';
+                return;
+            }
+
+            const html = `
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>{{ t('Price') }}</th>
+                            <th>Change</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${data.map(h => `
+                            <tr>
+                                <td>${new Date(h.recorded_at).toLocaleDateString()}</td>
+                                <td class="price">€${h.price_eur.toFixed(2)}</td>
+                                <td>${h.change_type || '-'}</td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+            `;
+            content.innerHTML = html;
+        })
+        .catch(error => {
+            document.getElementById('history-content').innerHTML =
+                `<div class="error">Error loading history: ${error.message}</div>`;
+        });
+}
+
+// Show monitor model history modal
+function showMonitorModelHistory(modelId) {
+    const modal = document.createElement('div');
+    modal.className = 'modal';
+    modal.innerHTML = `
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Monitor Model Price History</h2>
+                <button class="modal-close" onclick="this.closest('.modal').remove()">&times;</button>
+            </div>
+            <div class="modal-body" id="model-history-content">
+                <div class="loading">{{ t('Loading...') }}</div>
+            </div>
+        </div>
+    `;
+    document.body.appendChild(modal);
+
+    fetch(`/api/monitor-model-history/${modelId}`)
+        .then(response => response.json())
+        .then(data => {
+            const content = document.getElementById('model-history-content');
+            if (!data.history || data.history.length === 0) {
+                content.innerHTML = '<div class="loading">No price history found</div>';
+                return;
+            }
+
+            const html = `
+                <h3>${data.brand} ${data.model}</h3>
+                <p>${data.size}" • ${data.resolution} • ${data.refresh_rate}Hz • ${data.panel_type}</p>
+
+                <h4 style="margin-top: 1.5rem;">Average Prices Over Time</h4>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>{{ t('Avg Price') }}</th>
+                            <th>Min Price</th>
+                            <th>Max Price</th>
+                            <th>Listings</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${data.history.map(h => `
+                            <tr>
+                                <td>${new Date(h.date).toLocaleDateString()}</td>
+                                <td class="price">€${h.avg_price.toFixed(2)}</td>
+                                <td>€${h.min_price.toFixed(2)}</td>
+                                <td>€${h.max_price.toFixed(2)}</td>
+                                <td>${h.listing_count}</td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+            `;
+            content.innerHTML = html;
+        })
+        .catch(error => {
+            document.getElementById('model-history-content').innerHTML =
+                `<div class="error">Error loading history: ${error.message}</div>`;
+        });
+}
+
+// Flag modal with categories function
+function showFlagModalWithCategories(listingId, title) {
+    const existingModal = document.getElementById('flag-modal');
+    if (existingModal) existingModal.remove();
+
+    const safeId = listingId.replace(/'/g, "\\'").replace(/"/g, '&quot;');
+
+    const modalHtml = `
+        <div id="flag-modal" class="modal-overlay active" style="z-index: 2000;">
+            <div class="modal" style="max-width: 500px;">
+                <div class="modal-header">
+                    <h3>🚩 Flag Listing</h3>
+                    <button class="modal-close" onclick="closeFlagModal()">&times;</button>
+                </div>
+                <div style="padding: 1.5rem;">
+                    <p style="margin-bottom: 1rem;"><strong>Listing:</strong> ${title || listingId}</p>
+
+                    <div class="form-group" style="margin-bottom: 1rem;">
+                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Flag Category:</label>
+                        <select id="flag-category" style="width: 100%; padding: 0.5rem; border: 1px solid #ddd; border-radius: 6px;">
+                            <option value="IGNORE">IGNORE - Hide from listings</option>
+                            <option value="SKIP">SKIP - Skip in future scrapes</option>
+                            <option value="SCRAPPER">SCRAPPER - Scraper issue</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group" style="margin-bottom: 1rem;">
+                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Reason:</label>
+                        <textarea id="flag-reason" placeholder="Enter reason (e.g., Scam, Wrong specs, Sold)"
+                            style="width: 100%; padding: 0.75rem; border: 2px solid #e74c3c; border-radius: 8px; font-family: inherit; resize: vertical;"
+                            rows="3"></textarea>
+                    </div>
+
+                    <div style="display: flex; gap: 0.5rem; justify-content: flex-end;">
+                        <button class="btn btn-small btn-secondary" onclick="closeFlagModal()">{{ t('Cancel') }}</button>
+                        <button class="btn btn-small" style="background: #e74c3c;" onclick="submitFlagFromModal('${safeId}')">Submit Flag</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+
+    document.body.insertAdjacentHTML('beforeend', modalHtml);
+
+    document.getElementById('flag-modal').addEventListener('click', function(e) {
+        if (e.target === this) closeFlagModal();
+    });
+}
+
+function closeFlagModal() {
+    const modal = document.getElementById('flag-modal');
+    if (modal) modal.remove();
+}
+
+function removeListingRow(listingId) {
+    const rows = document.querySelectorAll('#listings-container tbody tr, table tbody tr');
+    rows.forEach(row => {
+        const onclick = row.getAttribute('onclick') || '';
+        const html = row.innerHTML;
+        if (onclick.includes("'" + listingId + "'") || html.includes("'" + listingId + "'") || html.includes(listingId)) {
+            row.style.transition = 'opacity 0.3s ease';
+            row.style.opacity = '0';
+            setTimeout(() => row.remove(), 300);
+        }
+    });
+}
+
+async function submitFlagFromModal(listingId) {
+    const categorySelect = document.getElementById('flag-category');
+    const reasonInput = document.getElementById('flag-reason');
+
+    const category = categorySelect ? categorySelect.value : 'IGNORE';
+    const reason = reasonInput ? reasonInput.value.trim() : '';
+
+    if (!reason) {
+        alert('Please enter a reason for flagging');
+        return;
+    }
+
+    try {
+        const response = await fetch('/api/flag-listing', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                listing_id: listingId,
+                comment: reason,
+                category: 'monitor',
+                flag_category: category
+            })
+        });
+
+        const data = await response.json();
+        if (data.success) {
+            alert('Listing flagged successfully!');
+            closeFlagModal();
+            fetchListings();
+        } else {
+            alert('Error: ' + (data.error || 'Failed to flag listing'));
+        }
+    } catch (error) {
+        console.error('Error flagging listing:', error);
+        alert('Failed to flag listing. Please try again.');
+    }
+}
+
+// Cost analysis charts
+let costPerPixelChart = null;
+let costPerHzChart = null;
+
+async function loadCostCharts() {
+    const ppContainer = document.getElementById('costPerPixelChart')?.parentElement;
+    const hzContainer = document.getElementById('costPerHzChart')?.parentElement;
+
+    if (typeof Chart === 'undefined') {
+        const msg = 'Chart.js library failed to load. Charts cannot render.';
+        if (ppContainer) ppContainer.innerHTML = `<div class="loading">${msg}</div>`;
+        if (hzContainer) hzContainer.innerHTML = `<div class="loading">${msg}</div>`;
+        console.error(msg);
+        return;
+    }
+
+    try {
+        const response = await fetch('/api/monitor-models');
+        if (!response.ok) {
+            throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+        }
+        const models = await response.json();
+
+        if (!Array.isArray(models) || models.length === 0) {
+            if (ppContainer) ppContainer.innerHTML = '<div class="loading">No monitor model data for cost chart.</div>';
+            if (hzContainer) hzContainer.innerHTML = '<div class="loading">No monitor model data for cost chart.</div>';
+            return;
+        }
+
+        // --- Cost per Pixel by Resolution ---
+        const resolutionGroups = {};
+        models.forEach(m => {
+            if (!m.resolution || !m.avg_price) return;
+            const parts = m.resolution.split('x');
+            if (parts.length !== 2) return;
+            const w = parseInt(parts[0]);
+            const h = parseInt(parts[1]);
+            if (!w || !h) return;
+            const megapixels = (w * h) / 1000000;
+            const costPerMp = m.avg_price / megapixels;
+
+            let category;
+            if (megapixels < 1) category = 'SD (<1MP)';
+            else if (megapixels < 2.5) category = 'HD (1-2.5MP)';
+            else if (megapixels < 5) category = 'Full HD (2.5-5MP)';
+            else if (megapixels < 9) category = 'QHD (5-9MP)';
+            else category = '4K+ (9+MP)';
+
+            if (!resolutionGroups[category]) resolutionGroups[category] = { totalCost: 0, count: 0 };
+            resolutionGroups[category].totalCost += costPerMp;
+            resolutionGroups[category].count++;
+        });
+
+        const resLabels = [];
+        const resData = [];
+        const resTooltips = [];
+        Object.entries(resolutionGroups).sort((a, b) => {
+            const order = ['SD (<1MP)', 'HD (1-2.5MP)', 'Full HD (2.5-5MP)', 'QHD (5-9MP)', '4K+ (9+MP)'];
+            return order.indexOf(a[0]) - order.indexOf(b[0]);
+        }).forEach(([cat, info]) => {
+            resLabels.push(cat);
+            resData.push(info.totalCost / info.count);
+            resTooltips.push(`Models: ${info.count}`);
+        });
+
+        const ppCtx = document.getElementById('costPerPixelChart')?.getContext('2d');
+        if (ppCtx) {
+            if (costPerPixelChart) costPerPixelChart.destroy();
+            costPerPixelChart = new Chart(ppCtx, {
+                type: 'line',
+                data: {
+                    labels: resLabels,
+                    datasets: [{
+                        label: '€ per Million Pixels',
+                        data: resData,
+                        borderColor: '#27ae60',
+                        backgroundColor: 'rgba(39, 174, 96, 0.1)',
+                        borderWidth: 3,
+                        pointBackgroundColor: '#27ae60',
+                        pointBorderColor: '#fff',
+                        pointBorderWidth: 2,
+                        pointRadius: 6,
+                        pointHoverRadius: 8,
+                        fill: true,
+                        tension: 0.3
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                afterLabel: function(ctx) { return resTooltips[ctx.dataIndex]; }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: { beginAtZero: true, title: { display: true, text: '€ / Million Pixels' } },
+                        x: { grid: { display: false } }
+                    }
+                }
+            });
+        }
+
+        // --- Cost per Hz by Refresh Rate ---
+        const hzGroups = {};
+        models.forEach(m => {
+            const hz = parseInt(m.refresh_rate);
+            if (!hz || !m.avg_price) return;
+            const costPerHz = m.avg_price / hz;
+
+            let bucket;
+            if (hz <= 60) bucket = '60 Hz';
+            else if (hz <= 75) bucket = '75 Hz';
+            else if (hz <= 120) bucket = '100-120 Hz';
+            else if (hz <= 144) bucket = '144 Hz';
+            else if (hz <= 165) bucket = '165 Hz';
+            else bucket = '240 Hz+';
+
+            if (!hzGroups[bucket]) hzGroups[bucket] = { totalCost: 0, count: 0 };
+            hzGroups[bucket].totalCost += costPerHz;
+            hzGroups[bucket].count++;
+        });
+
+        const hzLabels = [];
+        const hzData = [];
+        const hzTooltips = [];
+        Object.entries(hzGroups).sort((a, b) => {
+            const order = ['60 Hz', '75 Hz', '100-120 Hz', '144 Hz', '165 Hz', '240 Hz+'];
+            return order.indexOf(a[0]) - order.indexOf(b[0]);
+        }).forEach(([bucket, info]) => {
+            hzLabels.push(bucket);
+            hzData.push(info.totalCost / info.count);
+            hzTooltips.push(`Models: ${info.count}`);
+        });
+
+        const hzCtx = document.getElementById('costPerHzChart')?.getContext('2d');
+        if (hzCtx) {
+            if (costPerHzChart) costPerHzChart.destroy();
+            costPerHzChart = new Chart(hzCtx, {
+                type: 'line',
+                data: {
+                    labels: hzLabels,
+                    datasets: [{
+                        label: '€ per Hz',
+                        data: hzData,
+                        borderColor: '#3498db',
+                        backgroundColor: 'rgba(52, 152, 219, 0.1)',
+                        borderWidth: 3,
+                        pointBackgroundColor: '#3498db',
+                        pointBorderColor: '#fff',
+                        pointBorderWidth: 2,
+                        pointRadius: 6,
+                        pointHoverRadius: 8,
+                        fill: true,
+                        tension: 0.3
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                afterLabel: function(ctx) { return hzTooltips[ctx.dataIndex]; }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: { beginAtZero: true, title: { display: true, text: '€ / Hz' } },
+                        x: { grid: { display: false } }
+                    }
+                }
+            });
+        }
+    } catch (e) {
+        console.error('Error loading cost charts:', e);
+        const err = `<div class="loading">Error loading charts: ${e.message}</div>`;
+        if (ppContainer) ppContainer.innerHTML = err;
+        if (hzContainer) hzContainer.innerHTML = err;
+    }
+}
+
+// Event listeners
+document.getElementById('active-only')?.addEventListener('change', fetchListings);
+document.getElementById('min-confidence')?.addEventListener('change', fetchListings);
+document.getElementById('time-filter')?.addEventListener('change', () => {
+    fetchListings();
+    fetchModels();
+    fetchStats();
+    fetchCategoryCounts();
+    fetchPerformanceStats();
+    fetchMonitorStats();
+    loadCostCharts();
+});
+document.getElementById('sort-by')?.addEventListener('change', fetchListings);
+document.getElementById('sort-order')?.addEventListener('change', fetchListings);
+document.getElementById('size-filter')?.addEventListener('change', fetchListings);
+document.getElementById('resolution-filter')?.addEventListener('change', fetchListings);
+document.getElementById('refresh-filter')?.addEventListener('change', fetchListings);
+document.getElementById('panel-filter')?.addEventListener('change', fetchListings);
+document.getElementById('location-filter')?.addEventListener('change', fetchListings);
+
+// Initialize
+restoreCollapsedSections();
+fetchFilterOptions();
+fetchListings();
+fetchModels();
+fetchStats();
+fetchCategoryCounts();
+fetchPerformanceStats();
+fetchMonitorStats();
+loadCostCharts();
+</script>
+{% endblock %}

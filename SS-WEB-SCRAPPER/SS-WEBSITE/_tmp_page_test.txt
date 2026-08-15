@@ -1,0 +1,10 @@
+﻿status 200 len 182669
+compute idx 84736
+computeComputerDealBadges(item) {
+    const badges = [];
+
+    // FIRST: persistently track the first time we see a listing/title
+    const modelKey = item.listing_id || item.title;
+    if (modelKey && !discoveredComputerModels.has(modelKey)) {
+        discoveredComputerModels.add(modelKey);
+        

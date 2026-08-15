@@ -1,0 +1,361 @@
+/* Dark Mode Styles - SS-WEBSITE */
+/* This file contains dark mode overrides for various components */
+
+/* ============================================
+   1. CHART LABELS FIX (RAM, SSD pages)
+   ============================================ */
+
+/* Chart.js canvas text colors in dark mode */
+[data-theme="dark"] canvas {
+    filter: none;
+}
+
+/* Chart.js tooltip styling in dark mode - comprehensive */
+[data-theme="dark"] #chartjs-tooltip,
+[data-theme="dark"] .chartjs-tooltip,
+[data-theme="dark"] .chart-tooltip {
+    background: rgba(26, 26, 46, 0.95) !important;
+    border: 1px solid #0f3460 !important;
+    color: #e0e0e0 !important;
+}
+
+/* Chart tooltip body and title */
+[data-theme="dark"] .chartjs-tooltip .tooltip-body,
+[data-theme="dark"] .chartjs-tooltip .tooltip-title {
+    color: #e0e0e0 !important;
+}
+
+/* Ensure chart legends are visible in dark mode */
+[data-theme="dark"] .chartjs-legend,
+[data-theme="dark"] .chart-legend {
+    color: #e0e0e0 !important;
+}
+
+[data-theme="dark"] .chartjs-legend-item {
+    color: #e0e0e0 !important;
+}
+
+/* Chart title in dark mode */
+[data-theme="dark"] .chartjs-title,
+[data-theme="dark"] .chart-title {
+    color: #e0e0e0 !important;
+}
+
+/* Axis labels */
+[data-theme="dark"] .chart-axis-label,
+[data-theme="dark"] .chartjs-axis-label {
+    color: #e0e0e0 !important;
+    fill: #e0e0e0 !important;
+}
+
+/* Chart scales */
+[data-theme="dark"] .chartjs-scale-text {
+    color: #e0e0e0 !important;
+}
+
+[data-theme="dark"] .chartjs-grid-line {
+    stroke: #444 !important;
+}
+
+/* Chart container backgrounds */
+[data-theme="dark"] .chart-wrapper {
+    background: #16213e !important;
+    border: 1px solid #0f3460;
+}
+
+[data-theme="dark"] .chart-wrapper h3 {
+    color: #e0e0e0 !important;
+}
+
+/* Chart container text */
+[data-theme="dark"] .chart-container {
+    color: #e0e0e0;
+}
+
+/* ============================================
+   GPU PAGE DARK MODE FIXES
+   ============================================ */
+
+/* Expensive listings (price-above-avg) - ensure white text in dark mode */
+[data-theme="dark"] .price-above-avg {
+    color: #ffffff !important;
+}
+
+/* Price indicators (red/green badges) - ensure white text */
+[data-theme="dark"] td span[style*="background: linear-gradient"],
+[data-theme="dark"] td span[style*="background:linear-gradient"] {
+    color: #ffffff !important;
+}
+
+/* Price in the price column - force white text for all price classes in dark mode */
+[data-theme="dark"] td .price-below-avg,
+[data-theme="dark"] td .price-average,
+[data-theme="dark"] td .price-above-avg {
+    color: #ffffff !important;
+}
+
+/* Unicorn badge - ensure text is white and visible */
+[data-theme="dark"] .unicorn-badge {
+    color: #ffffff !important;
+    text-shadow: 
+        2px 2px 0 #000, 
+        -1px -1px 0 #000, 
+        1px -1px 0 #000, 
+        -1px 1px 0 #000,
+        0 0 10px rgba(255,255,255,0.8) !important;
+}
+
+/* Ensure all badge text is white in dark mode */
+[data-theme="dark"] .badge {
+    color: #ffffff !important;
+}
+
+/* Deal badges in image overlay */
+[data-theme="dark"] .listing-image-cell .badge {
+    color: #ffffff !important;
+}
+
+/* Price column text - override any inline styles */
+[data-theme="dark"] td[style*="padding"] span[style*="font-weight: 700"] {
+    color: #ffffff !important;
+}
+
+/* Market position column text */
+[data-theme="dark"] td[style*="text-align: center"] {
+    color: #e0e0e0;
+}
+
+[data-theme="dark"] td[style*="text-align: center"] small {
+    color: #aaa !important;
+}
+
+/* GPU name and vendor text */
+[data-theme="dark"] td strong {
+    color: #e0e0e0 !important;
+}
+
+/* Confidence score text */
+[data-theme="dark"] td small.confidence-high,
+[data-theme="dark"] td small.confidence-medium,
+[data-theme="dark"] td small.confidence-low {
+    color: inherit !important;
+}
+
+/* Stats bar in dark mode */
+[data-theme="dark"] .stats-bar {
+    background: transparent;
+}
+
+[data-theme="dark"] .stat-label {
+    color: #aaa !important;
+}
+
+/* ============================================
+   2. ADMIN PAGE BACKGROUNDS FIX
+   ============================================ */
+
+/* Admin page light backgrounds */
+[data-theme="dark"] #settings-tab > div:first-child {
+    background: #16213e !important;
+    border: 1px solid #0f3460;
+}
+
+/* Settings tab labels */
+[data-theme="dark"] #settings-tab label {
+    background: #16213e !important;
+    border-color: #0f3460 !important;
+}
+
+/* Settings tab text colors */
+[data-theme="dark"] #settings-tab strong {
+    color: #e0e0e0 !important;
+}
+
+[data-theme="dark"] #settings-tab div[style*="color: #666"] {
+    color: #aaa !important;
+}
+
+/* Status message backgrounds */
+[data-theme="dark"] #summary-status,
+[data-theme="dark"] #source-dots-status,
+[data-theme="dark"] #geforce-status,
+[data-theme="dark"] #ram-columns-status {
+    background: #0f3460 !important;
+    color: #e0e0e0 !important;
+    border: 1px solid #1a4a7a;
+}
+
+/* Toggle slider backgrounds */
+[data-theme="dark"] .toggle-slider {
+    background-color: #444 !important;
+}
+
+[data-theme="dark"] input:checked + .toggle-slider {
+    background-color: #667eea !important;
+}
+
+/* Admin tab content backgrounds */
+[data-theme="dark"] #flagged-container,
+[data-theme="dark"] #unmatched-container,
+[data-theme="dark"] #ramreview-container {
+    background: #16213e !important;
+    border-color: #0f3460 !important;
+}
+
+/* RAM review stats */
+[data-theme="dark"] #ramreview-stats {
+    background: #16213e !important;
+    border-color: #0f3460 !important;
+    color: #e0e0e0 !important;
+}
+
+/* ============================================
+   3. MONITOR WARNING/INFO BOXES FIX
+   ============================================ */
+
+/* Monitor stats section - fix light backgrounds */
+[data-theme="dark"] .stat-row {
+    color: #e0e0e0 !important;
+    border-bottom-color: #0f3460 !important;
+}
+
+[data-theme="dark"] .no-data {
+    color: #aaa !important;
+}
+
+/* Monitor filter section backgrounds */
+[data-theme="dark"] .filters {
+    background: transparent;
+}
+
+/* Chart and stat card backgrounds */
+[data-theme="dark"] .stat-card {
+    background: #16213e !important;
+    border-color: #0f3460 !important;
+}
+
+[data-theme="dark"] .stat-card h3 {
+    color: #aaa !important;
+}
+
+/* Model grid cards */
+[data-theme="dark"] .model-card {
+    background: #16213e !important;
+    border-color: #0f3460 !important;
+}
+
+[data-theme="dark"] .model-card h3 {
+    color: #e0e0e0 !important;
+}
+
+[data-theme="dark"] .model-card p {
+    color: #aaa !important;
+}
+
+/* Capacity table in SSD page */
+[data-theme="dark"] .capacity-table th {
+    background: #0f3460 !important;
+    color: #e0e0e0 !important;
+}
+
+[data-theme="dark"] .capacity-table td {
+    border-bottom-color: #0f3460 !important;
+    color: #e0e0e0 !important;
+}
+
+[data-theme="dark"] .capacity-table tr:hover {
+    background: #0f3460 !important;
+}
+
+/* Capacity bar background */
+[data-theme="dark"] .capacity-bar {
+    background: #0f3460 !important;
+}
+
+/* Column settings dropdown */
+[data-theme="dark"] .column-settings-dropdown {
+    background: #1a1a2e !important;
+    border-color: #0f3460 !important;
+}
+
+[data-theme="dark"] .column-settings-dropdown h4 {
+    color: #e0e0e0 !important;
+}
+
+[data-theme="dark"] .column-option:hover {
+    background: #0f3460 !important;
+}
+
+[data-theme="dark"] .column-settings-footer button {
+    background: #16213e !important;
+    border-color: #0f3460 !important;
+    color: #e0e0e0 !important;
+}
+
+[data-theme="dark"] .column-settings-footer button:hover {
+    background: #0f3460 !important;
+}
+
+/* Price bar */
+[data-theme="dark"] .price-bar {
+    background: #0f3460 !important;
+}
+
+/* Filter buttons */
+[data-theme="dark"] .filter-btn {
+    background: #16213e !important;
+    border-color: #0f3460 !important;
+    color: #e0e0e0 !important;
+}
+
+[data-theme="dark"] .filter-btn:hover {
+    background: #0f3460 !important;
+}
+
+[data-theme="dark"] .filter-btn.active {
+    background: #667eea !important;
+    border-color: #667eea !important;
+}
+
+/* Model history popup */
+[data-theme="dark"] .model-history-popup {
+    background: #16213e !important;
+    border-color: #0f3460 !important;
+}
+
+[data-theme="dark"] .model-history-popup h4 {
+    color: #e0e0e0 !important;
+    border-bottom-color: #0f3460 !important;
+}
+
+[data-theme="dark"] .model-history-popup .price-row .label {
+    color: #aaa !important;
+}
+
+[data-theme="dark"] .model-history-popup .price-row .value {
+    color: #e0e0e0 !important;
+}
+
+/* Loading text */
+[data-theme="dark"] .loading {
+    color: #aaa !important;
+}
+
+/* Table summary row */
+[data-theme="dark"] tfoot#summary-row {
+    color: white !important;
+}
+
+/* ============================================
+   CHART.JS SPECIFIC FIXES
+   ============================================ */
+
+/* Ensure chart legends are visible in dark mode */
+[data-theme="dark"] .chartjs-legend {
+    color: #e0e0e0 !important;
+}
+
+/* Chart title */
+[data-theme="dark"] .chartjs-title {
+    color: #e0e0e0 !important;
+}

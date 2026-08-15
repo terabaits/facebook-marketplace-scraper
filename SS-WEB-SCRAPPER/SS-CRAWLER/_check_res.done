@@ -1,0 +1,19 @@
+import psycopg2
+from psycopg2.extras import RealDictCursor
+import re
+conn = psycopg2.connect(host='localhost', port=5433, database='ss_market', user='crawler', password='crawler_pass')
+cur = conn.cursor(cursor_factory=RealDictCursor)
+cur.execute(r"SELECT COUNT(*) AS n FROM laptop_listings WHERE description ~ '\d{3,4}\s*[x\u00d7]\s*\d{3,4}'")
+print('listings with resolution pattern:', cur.fetchone()['n'])
+cur.execute(r"SELECT COUNT(*) AS n FROM laptop_listings WHERE description IS NOT NULL AND description <> ''")
+print('listings with non-null desc:', cur.fetchone()['n'])
+cur.execute("SELECT id, brand, model, display_size FROM laptop_reference WHERE resolution IS NULL OR resolution = '' ORDER BY id LIMIT 3")
+for r in cur.fetchall():
+    print('ref:', dict(r))
+    cur.execute('SELECT brand, model, display_size, LEFT(description, 200) as desc_excerpt FROM laptop_listings WHERE brand=%s AND model=%s AND (display_size IS NOT DISTINCT FROM %s) LIMIT 2', (r['brand'], r['model'], r['display_size']))
+    rows = cur.fetchall()
+    print('  has', len(rows), 'matching listings')
+    for x in rows:
+        m = re.search(r'\d{3,4}\s*[x\u00d7]\s*\d{3,4}', x['desc_excerpt'] or '')
+        print('   ', x['brand'], x['model'], x['display_size'], 'pattern:', m.group(0) if m else None)
+conn.close()

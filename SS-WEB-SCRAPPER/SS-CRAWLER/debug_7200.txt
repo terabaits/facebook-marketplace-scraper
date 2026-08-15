@@ -1,0 +1,22 @@
+Title: 7200mhz. Pardodu operativo atminu Ram Cl34. 32Gb
+Extracted speed: DDR5-7200
+Normalized title: 7200mhz pardodu operativo atminu ram cl34 32gb
+
+7200 #1: ID 692
+  Name: G.Skill Trident Z5 Royal 32 GB
+  Speed: DDR5-7200
+  Score: 77.33333333333334
+  Method: fuzzy+speed_exact
+
+7200 #2: ID 254
+  Name: G.Skill Trident Z5 RGB 32 GB
+  Speed: DDR5-7200
+  Score: 75.61643835616438
+  Method: fuzzy+speed_exact
+
+6400: ID 665
+  Name: G.Skill Trident Z5 32 GB
+  Speed: DDR5-6400
+  Score: -31.8840579710145
+  Method: fuzzy+freq_mismatch
+

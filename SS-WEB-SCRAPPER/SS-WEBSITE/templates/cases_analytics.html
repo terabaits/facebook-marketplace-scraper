@@ -1,0 +1,344 @@
+{% extends "base.html" %}
+
+{% block title %}Cases Price Analytics - SS-Crawler{% endblock %}
+
+{% block extra_css %}
+.analytics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.analytics-card {
+    background: white;
+    border-radius: 8px;
+    padding: 1.25rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    border-left: 4px solid #27ae60;
+}
+
+.analytics-card h4 {
+    font-size: 0.875rem;
+    color: #666;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+}
+
+.analytics-value {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #333;
+}
+
+.analytics-subtitle {
+    font-size: 0.75rem;
+    color: #666;
+    margin-top: 0.25rem;
+}
+
+.price-comparison {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.price-diff-positive {
+    color: #27ae60;
+}
+
+.price-diff-negative {
+    color: #e74c3c;
+}
+
+.table-container {
+    overflow-x: auto;
+}
+
+.analytics-table th, .analytics-table td {
+    padding: 0.75rem 1rem;
+    text-align: left;
+}
+
+.analytics-table th {
+    background: #f8f9fa;
+    font-weight: 600;
+    color: #666;
+}
+
+.analytics-table tr:hover {
+    background: #f8f9fa;
+}
+
+.case-type-badge {
+    display: inline-block;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.case-type-badge.atx-full { background: #f8d7da; color: #721c24; }
+.case-type-badge.atx-mid { background: #d1ecf1; color: #0c5460; }
+.case-type-badge.microatx { background: #d4edda; color: #155724; }
+.case-type-badge.mini-itx { background: #fff3cd; color: #856404; }
+
+.chart-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+}
+
+.chart-card {
+    background: white;
+    border-radius: 8px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.chart-card h3 {
+    margin-bottom: 1rem;
+    font-size: 1rem;
+    color: #333;
+}
+{% endblock %}
+
+{% block content %}
+<div class="section">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
+        <h2>Cases Price Analytics</h2>
+        <div class="filters" style="margin: 0;">
+            <label>
+                Time Range:
+                <select id="time-filter" onchange="loadAnalytics()">
+                    <option value="all_time">All Time</option>
+                    <option value="year">Last Year</option>
+                    <option value="month">Last Month</option>
+                </select>
+            </label>
+        </div>
+    </div>
+    
+    <div id="analytics-container">
+        <div class="loading">Loading Cases analytics...</div>
+    </div>
+</div>
+
+<div class="section">
+    <h2>Price Trends by Case Type</h2>
+    <div class="chart-container" style="height: 400px;">
+        <canvas id="priceTrendChart"></canvas>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+let priceTrendChart = null;
+
+function getCaseTypeClass(caseType) {
+    const type = (caseType || 'ATX Mid').toLowerCase().replace(/\s+/g, '-');
+    if (type.includes('full')) return 'atx-full';
+    if (type.includes('micro')) return 'microatx';
+    if (type.includes('mini')) return 'mini-itx';
+    return 'atx-mid';
+}
+
+function getCaseTypeLabel(caseType) {
+    if (!caseType) return 'ATX Mid';
+    const type = caseType.toLowerCase();
+    if (type.includes('full')) return 'ATX Full';
+    if (type.includes('micro')) return 'MicroATX';
+    if (type.includes('mini')) return 'Mini ITX';
+    return 'ATX Mid';
+}
+
+function formatCurrency(value) {
+    return value ? `€${parseFloat(value).toFixed(2)}` : 'N/A';
+}
+
+async function loadAnalytics() {
+    const timeFilter = document.getElementById('time-filter').value;
+    
+    try {
+        const response = await fetch(`/api/cases-analytics?time=${timeFilter}`);
+        const data = await response.json();
+        
+        if (data.error) {
+            document.getElementById('analytics-container').innerHTML = 
+                `<div class="error">Error: ${data.error}</div>`;
+            return;
+        }
+        
+        if (!data.case_type_stats || data.case_type_stats.length === 0) {
+            document.getElementById('analytics-container').innerHTML = 
+                '<div class="loading">No Cases data available</div>';
+            return;
+        }
+        
+        renderAnalytics(data);
+        renderPriceTrendChart(data.monthly_trends);
+        
+    } catch (error) {
+        document.getElementById('analytics-container').innerHTML = 
+            `<div class="error">Failed to load analytics: ${error.message}</div>`;
+    }
+}
+
+function renderAnalytics(data) {
+    const container = document.getElementById('analytics-container');
+    
+    let html = `
+        <div class="analytics-grid">
+            <div class="analytics-card">
+                <h4>Total Cases Listings</h4>
+                <div class="analytics-value">${data.total_listings || 0}</div>
+                <div class="analytics-subtitle">${data.matched_listings || 0} matched</div>
+            </div>
+            <div class="analytics-card">
+                <h4>Average Price</h4>
+                <div class="analytics-value">${formatCurrency(data.avg_price)}</div>
+                <div class="analytics-subtitle">across all Cases</div>
+            </div>
+            <div class="analytics-card">
+                <h4>Price Range</h4>
+                <div class="analytics-value">${formatCurrency(data.min_price)} - ${formatCurrency(data.max_price)}</div>
+                <div class="analytics-subtitle">min to max</div>
+            </div>
+        </div>
+        
+        <h3 style="margin: 1.5rem 0 1rem;">Price by Case Type</h3>
+        <div class="table-container">
+            <table class="analytics-table">
+                <thead>
+                    <tr>
+                        <th>Case Type</th>
+                        <th>Listing Count</th>
+                        <th>{{ t('Avg Price') }}</th>
+                        <th>Reference Price (USD→EUR)</th>
+                        <th>vs Reference</th>
+                        <th>Price Range</th>
+                    </tr>
+                </thead>
+                <tbody>
+    `;
+    
+    data.case_type_stats.forEach(stat => {
+        const caseTypeLabel = getCaseTypeLabel(stat.case_type_bucket);
+        const caseTypeClass = getCaseTypeClass(stat.case_type_bucket);
+        const priceDiff = stat.avg_price - stat.ref_price_eur;
+        const priceDiffPct = stat.ref_price_eur > 0 ? (priceDiff / stat.ref_price_eur * 100).toFixed(1) : 0;
+        const diffClass = priceDiff <= 0 ? 'price-diff-positive' : 'price-diff-negative';
+        const diffSymbol = priceDiff <= 0 ? '-' : '+';
+        
+        html += `
+            <tr>
+                <td><span class="case-type-badge ${caseTypeClass}">${caseTypeLabel}</span></td>
+                <td>${stat.listing_count}</td>
+                <td class="price">${formatCurrency(stat.avg_price)}</td>
+                <td>${formatCurrency(stat.ref_price_eur)}</td>
+                <td class="${diffClass}">${diffSymbol}${Math.abs(priceDiffPct)}%</td>
+                <td>${formatCurrency(stat.min_price)} - ${formatCurrency(stat.max_price)}</td>
+            </tr>
+        `;
+    });
+    
+    html += `
+                </tbody>
+            </table>
+        </div>
+    `;
+    
+    container.innerHTML = html;
+}
+
+function renderPriceTrendChart(monthlyTrends) {
+    const ctx = document.getElementById('priceTrendChart').getContext('2d');
+    
+    if (priceTrendChart) {
+        priceTrendChart.destroy();
+    }
+    
+    if (!monthlyTrends || monthlyTrends.length === 0) {
+        return;
+    }
+    
+    // Group data by case type buckets
+    const caseTypes = ['ATX Full', 'ATX Mid', 'MicroATX', 'Mini ITX'];
+    const datasets = [];
+    
+    const colors = {
+        'ATX Full': 'rgba(231, 76, 60, 1)',
+        'ATX Mid': 'rgba(102, 126, 234, 1)',
+        'MicroATX': 'rgba(39, 174, 96, 1)',
+        'Mini ITX': 'rgba(243, 156, 18, 1)'
+    };
+    
+    const months = [...new Set(monthlyTrends.map(t => t.month))].sort();
+    
+    caseTypes.forEach(caseType => {
+        const data = months.map(month => {
+            const trend = monthlyTrends.find(t => t.month === month && t.case_type_bucket === caseType);
+            return trend ? trend.avg_price : null;
+        });
+        
+        // Only add if we have data
+        if (data.some(v => v !== null)) {
+            datasets.push({
+                label: caseType,
+                data: data,
+                borderColor: colors[caseType],
+                backgroundColor: colors[caseType].replace('1)', '0.1)'),
+                borderWidth: 2,
+                pointRadius: 3,
+                fill: false,
+                tension: 0.1
+            });
+        }
+    });
+    
+    priceTrendChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: months,
+            datasets: datasets
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'top'
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            return context.dataset.label + ': ' + formatCurrency(context.raw);
+                        }
+                    }
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    title: {
+                        display: true,
+                        text: 'Average Price (€)'
+                    }
+                },
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Month'
+                    }
+                }
+            }
+        }
+    });
+}
+
+// Load on page load
+document.addEventListener('DOMContentLoaded', loadAnalytics);
+</script>
+{% endblock %}

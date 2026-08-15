@@ -1,0 +1,65 @@
+"""Append T286 to the project board solved column."""
+import json
+from datetime import datetime, timezone
+
+path = r'G:\Github\SS-WEB-SCRAPPER\SS-WEBSITE\data\project_board.json'
+with open(path, 'r', encoding='utf-8') as f:
+    board = json.load(f)
+
+now = datetime.now(timezone.utc).isoformat()
+task = {
+    "id": "T286",
+    "title": "Laptops: shared per-model reference (material/ports/resolution/VALID)",
+    "page": "/laptops",
+    "category": "laptops",
+    "priority": "medium",
+    "fix": (
+        "Created laptop_reference table keyed by a case-insensitive "
+        "brand+model+display_size normalized_key so one edit propagates to every "
+        "listing of the same model. Populated 626 rows from 790 laptop_listings; "
+        "185 had resolution pre-filled by regex over the listing description. "
+        "POST /api/laptop-reference/save is gated by require_login + require_role('mod'); "
+        "the VALID mark (is_valid) is admin-only and silently ignored for mods. "
+        "GET /api/laptops and GET /api/listing-details/<id> LEFT JOIN "
+        "laptop_reference so the card title, the detail popup, and the save panel "
+        "all read from the same row. UI: detail popup shows the reference data as "
+        "spec chips; mod/admin users get a small edit panel with material dropdown, "
+        "USB-C/USB/HDMI number inputs, resolution text, and (admin only) a VALID "
+        "checkbox + badge."
+    ),
+    "column": "solved",
+    "created": now,
+    "updated": now,
+    "updated_at": now,
+    "completed_at": now,
+    "code_snippet": (
+        "INSERT INTO laptop_reference (brand, model, display_size, normalized_key, resolution)\n"
+        "SELECT brand, model, display_size,\n"
+        "       lower(regexp_replace(trim(brand), '\\s+', ' ', 'g')) || '|' ||\n"
+        "       lower(regexp_replace(trim(model), '\\s+', ' ', 'g')) || '|' ||\n"
+        "       regexp_replace(COALESCE(display_size, ''), '[^0-9.]', '', 'g'),\n"
+        "       <most-frequent NNNNxNNNN from description>\n"
+        "FROM (SELECT brand, model, display_size, COUNT(*) FROM laptop_listings\n"
+        "      WHERE brand IS NOT NULL AND model IS NOT NULL\n"
+        "      GROUP BY brand, model, display_size) d;"
+    ),
+    "language": "sql",
+    "linked_tasks": [],
+    "linked_task_id": None,
+    "relationship_type": None,
+    "future_folder_id": None,
+    "folder_id": None,
+    "reopen_history": [],
+    "special": None
+}
+
+for col in board['columns']:
+    if col['id'] == 'solved':
+        col['tasks'].append(task)
+        print(f"Appended T286 to '{col['id']}' (now {len(col['tasks'])} tasks)")
+        break
+
+with open(path, 'w', encoding='utf-8') as f:
+    json.dump(board, f, indent=2, ensure_ascii=False)
+
+print('Wrote project_board.json with T286')

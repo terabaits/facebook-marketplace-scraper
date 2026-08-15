@@ -1,0 +1,127 @@
+{% extends "base.html" %}
+
+{% block title %}GPU Compare - SS-Crawler{% endblock %}
+
+{% block extra_css %}
+.compare-checkbox-styled {
+    width: 24px;
+    height: 24px;
+    accent-color: #667eea;
+    cursor: pointer;
+    border-radius: 6px;
+    box-shadow: 0 0 6px rgba(102, 126, 234, 0.4);
+    transition: transform 0.15s ease;
+}
+.compare-checkbox-styled:hover {
+    transform: scale(1.1);
+}
+.compare-row-checked {
+    background: rgba(102, 126, 234, 0.12) !important;
+    box-shadow: inset 0 0 10px rgba(102, 126, 234, 0.15);
+}
+{% endblock %}
+
+{% block content %}
+<div class="section">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
+        <h2>GPU Compare</h2>
+        <a href="/gpu" class="btn btn-small">← Back to GPU listings</a>
+    </div>
+
+    <div id="compare-container">
+        <div class="loading">Loading comparison...</div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+const urlParams = new URLSearchParams(window.location.search);
+let ids = (urlParams.get('ids') || '').split(',').filter(Boolean);
+
+if (ids.length === 0) {
+    try {
+        ids = JSON.parse(localStorage.getItem('gpu_compare_ids') || '[]');
+    } catch (e) {}
+}
+
+async function loadComparison() {
+    const container = document.getElementById('compare-container');
+    if (ids.length < 2) {
+        container.innerHTML = '<div class="error">Select 2-4 GPUs on the GPU listings page to compare.</div>';
+        return;
+    }
+
+    try {
+        const response = await fetch('/api/gpus?active=false&limit=500');
+        const listings = await response.json();
+        const selected = listings.filter(l => ids.includes(l.listing_id));
+
+        if (selected.length < 2) {
+            container.innerHTML = '<div class="error">Could not find enough selected listings. They may be inactive or removed.</div>';
+            return;
+        }
+
+        const fmtPrice = value => {
+            const n = Number(value);
+            return Number.isFinite(n) ? `€${n.toFixed(2)}` : '-';
+        };
+
+        const rows = [
+            { label: 'GPU', field: l => `<strong>${l.gpu_model || l.title}</strong>` },
+            { label: 'Vendor', field: l => l.vendor || '-' },
+            { label: 'VRAM', field: l => l.vram_gb ? `${l.vram_gb}GB` : '-' },
+            { label: 'Year', field: l => l.year_released || '-' },
+            { label: 'Price', field: l => `<strong style="font-size:1.15em;color:var(--accent-color, #3b82f6);">${fmtPrice(l.price_eur)}</strong>` },
+            { label: 'G3D Mark', field: l => l.g3d_mark ? Number(l.g3d_mark).toLocaleString() : '-' },
+            { label: 'G2D Mark', field: l => l.g2d_mark ? Number(l.g2d_mark).toLocaleString() : '-' },
+            { label: 'Rank', field: l => l.g3d_rank ? `#${Number(l.g3d_rank).toLocaleString()}` : '-' },
+            { label: 'Performance/Price', field: l => (l.g3d_mark && Number(l.price_eur)) ? (l.g3d_mark / Number(l.price_eur)).toFixed(1) + ' G3D/€' : '-' },
+            { label: 'Avg Model Price', field: l => l.price_stats && l.price_stats.avg ? `€${l.price_stats.avg}` : '-' },
+            { label: 'Location', field: l => l.seller_location || '-' },
+            { label: 'Date', field: l => l.date_posted ? new Date(l.date_posted).toLocaleDateString() : '-' },
+            { label: 'Link', field: l => `<a href="${l.listing_url}" target="_blank" class="btn btn-small">View →</a>` }
+        ];
+
+        let html = '<div style="overflow-x: auto;"><table class="gpu-listings-table"><thead><tr><th style="text-align:left;">Feature</th>';
+        selected.forEach(l => {
+            html += `<th style="text-align:center; min-width:180px;"><div style="font-weight:600;">${l.gpu_model || l.title}</div><div style="font-size:0.75rem;color:var(--text-secondary);margin-top:0.25rem;">Selected listing price</div><div style="font-size:0.95rem;color:var(--accent-color, #3b82f6);font-weight:700;">${fmtPrice(l.price_eur)}</div></th>`;
+        });
+        html += '</tr></thead><tbody>';
+
+        rows.forEach(row => {
+            html += `<tr><td style="font-weight:600;background:var(--card-bg);">${row.label}</td>`;
+            selected.forEach(l => {
+                html += `<td style="text-align:center;">${row.field(l)}</td>`;
+            });
+            html += '</tr>';
+        });
+
+        // Highlight best price and best performance/price
+        html += '</tbody></table></div>';
+
+        // Summary cards
+        const bestPrice = selected.reduce((min, l) => parseFloat(l.price_eur) < parseFloat(min.price_eur) ? l : min, selected[0]);
+        const bestPerf = selected.reduce((max, l) => (l.g3d_mark || 0) > (max.g3d_mark || 0) ? l : max, selected[0]);
+        const bestValue = selected.filter(l => l.g3d_mark && l.price_eur).reduce((best, l) => {
+            const ratio = l.g3d_mark / l.price_eur;
+            return ratio > best.ratio ? { l, ratio } : best;
+        }, { l: selected.find(l => l.g3d_mark && l.price_eur), ratio: 0 });
+
+        html += `<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1rem;margin-top:1.5rem;">`;
+        html += `<div style="background:var(--card-bg);border-radius:8px;padding:1rem;border:1px solid var(--card-border);"><div style="color:var(--text-secondary);font-size:0.85rem;">Lowest price</div><strong>${bestPrice.gpu_model || bestPrice.title}</strong><div>${fmtPrice(bestPrice.price_eur)}</div></div>`;
+        html += `<div style="background:var(--card-bg);border-radius:8px;padding:1rem;border:1px solid var(--card-border);"><div style="color:var(--text-secondary);font-size:0.85rem;">Highest G3D</div><strong>${bestPerf.gpu_model || bestPerf.title}</strong><div>${bestPerf.g3d_mark ? Number(bestPerf.g3d_mark).toLocaleString() : '-'} pts</div></div>`;
+        if (bestValue && bestValue.l) {
+            html += `<div style="background:var(--card-bg);border-radius:8px;padding:1rem;border:1px solid var(--card-border);"><div style="color:var(--text-secondary);font-size:0.85rem;">Best performance/price</div><strong>${bestValue.l.gpu_model || bestValue.l.title}</strong><div>${bestValue.ratio.toFixed(1)} G3D/€</div></div>`;
+        }
+        html += `</div>`;
+
+        container.innerHTML = html;
+    } catch (error) {
+        container.innerHTML = `<div class="error">Failed to load comparison: ${error.message}</div>`;
+    }
+}
+
+loadComparison();
+</script>
+{% endblock %}

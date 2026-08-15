@@ -4,6 +4,10 @@
 
 {% block extra_css %}
 
+.cpu-row-divider {
+    border-bottom: 1px solid rgba(238, 238, 238, 0.12);
+}
+
 @keyframes spin {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
@@ -895,6 +899,24 @@ body.drag-mode-active .drag-mode-hint {
                 </div>
                 <div class="widget-resize-handle" aria-hidden="true"></div>
             </div>
+
+            <!-- CPU Price Over Time by Months -->
+            <div class="widget-card wide" data-widget-id="cpu-price-over-time" data-widget-default-w="" data-widget-default-h="">
+                <div class="widget-header">
+                    <h4 style="display: flex; align-items: center; gap: 0.5rem; margin: 0;">
+                        <span>📈</span> Price Over Time (Months)
+                    </h4>
+                    <div class="widget-actions">
+                        <button class="widget-toggle-btn" onclick="toggleWidgetVisibility('cpu-price-over-time')" title="Hide widget">🙈</button>
+                        <button class="widget-pin-btn" onclick="toggleWidgetPin('cpu-price-over-time')" title="Save / un-save as widget">📌</button>
+                        <span class="widget-drag-handle" title="Drag to move">☰</span>
+                    </div>
+                </div>
+                <div id="cpu-price-over-time-chart" class="widget-body" style="position: relative; min-height: 240px;">
+                    <div class="loading">{{ t('Loading...') }}</div>
+                </div>
+                <div class="widget-resize-handle" aria-hidden="true"></div>
+            </div>
         </div>
     </div>
 </div>
@@ -908,7 +930,7 @@ body.drag-mode-active .drag-mode-hint {
                 <input type="checkbox" id="active-only" checked onchange="loadListings()">
                 Active only
             </label>
-            <label>
+            <label class="{% if not is_staff %}staff-only{% endif %}">
                 <input type="checkbox" id="high-confidence" checked onchange="loadListings()">
                 High confidence (≥70%)
             </label>
@@ -1047,6 +1069,18 @@ let historyChart = null;
 // Cache for current listings data
 let currentListingsData = [];
 let showAvgPriceGlobal = false;  // Global variable for show average price toggle
+
+// SS.com stores thumbnails as .t.jpg but serves the full gallery image as .800.jpg.
+// Normalize a remote image URL so popups and table clicks use the full-size version.
+function normalizeCpuImageUrl(url) {
+    if (!url) return url;
+    const u = String(url);
+    const match = u.match(/^(.*)\.t\.(jpe?g|png|webp|gif)$/i);
+    if (match) {
+        return `${match[1]}.800.${match[2].toLowerCase()}`;
+    }
+    return u;
+}
 
 // Default column order and config
 const defaultColumnOrder = [
@@ -1571,15 +1605,17 @@ function renderTableRow(item) {
                 const rowLocalImage = item.local_image_path ? String(item.local_image_path).replace(/\\/g, '/') : null;
                 // CPU images are stored under SS-CRAWLER/images/cpu (ss.com) or images/facebook (facebook).
                 // If the stored path already contains a folder prefix, use it; otherwise default to cpu/.
-                const rowImageUrl = rowLocalImage
+                const localRowImageUrl = rowLocalImage
                     ? (rowLocalImage.includes('/') ? `/images/${rowLocalImage}` : `/images/cpu/${rowLocalImage}`)
-                    : (item.image_url || null);
+                    : null;
+                // Table thumbnails should show the full-size original; the global .listing-thumb CSS constrains it.
+                const rowImageUrl = normalizeCpuImageUrl(item.image_url || localRowImageUrl || null);
                 const imageOverlayBadges = (dealBadge)
                     ? `<div style="position: absolute; top: 4px; right: 4px; display: flex; flex-direction: column; gap: 4px; z-index: 10;">${dealBadge}</div>`
                     : '';
                 return `<td data-col="col-image" class="${hiddenClass}" style="padding: 0.75rem; text-align: center; position: relative; ${style}">
                     ${imageOverlayBadges}
-                    ${rowImageUrl ? `<img src="${rowImageUrl}" alt="${cpuName}" class="listing-thumb" onclick="event.stopPropagation(); showImageModal('${rowImageUrl}', '${cpuName}')" style="max-width: 80px; max-height: 60px; border-radius: 4px; cursor: pointer;">` : '<div class="listing-thumb-placeholder" style="width: 80px; height: 60px; background: #f0f0f0; border-radius: 4px; display: flex; align-items: center; justify-content: center; color: #999;">📷</div>'}
+                    ${rowImageUrl ? `<img src="${rowImageUrl}" alt="${cpuName}" class="listing-thumb" onclick="event.stopPropagation(); showImageModal('${rowImageUrl}', '${cpuName}')">` : '<div class="listing-thumb-placeholder">📷</div>'}
                 </td>`;
             }
             case 'col-cpu':
@@ -1660,7 +1696,7 @@ function renderTableRow(item) {
         }
     }).join('');
 
-    return `<tr id="listing-row-${item.listing_id}" class="${rowClass}" ${clickHandler} title="Click to view listing details" style="border-bottom: 1px solid #eee;">${cells}</tr>`;
+    return `<tr id="listing-row-${item.listing_id}" class="${rowClass} cpu-row-divider" ${clickHandler} title="Click to view listing details">${cells}</tr>`;
 }
 
 // Load CPU statistics for dashboard
@@ -2124,6 +2160,65 @@ async function loadMotherboardMarketStats() {
     }
 }
 
+let cpuPriceOverTimeChart = null;
+
+async function loadCPUPriceOverTime() {
+    const container = document.getElementById('cpu-price-over-time-chart');
+    if (!container) return;
+    try {
+        const response = await fetch('/api/cpus/price-history-monthly?active=false');
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        const data = await response.json();
+        if (!Array.isArray(data) || data.length === 0) {
+            container.innerHTML = '<div style="text-align:center; color:#888; padding:1rem;">No price history data</div>';
+            return;
+        }
+        const labels = data.map(d => d.month);
+        const prices = data.map(d => d.avg_price);
+        if (cpuPriceOverTimeChart) cpuPriceOverTimeChart.destroy();
+        const ctx = document.createElement('canvas');
+        container.innerHTML = '';
+        container.appendChild(ctx);
+        cpuPriceOverTimeChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels,
+                datasets: [{
+                    label: 'Avg CPU price',
+                    data: prices,
+                    borderColor: '#667eea',
+                    backgroundColor: 'rgba(102,126,234,0.12)',
+                    fill: true,
+                    tension: 0.3,
+                    pointRadius: 4,
+                    pointHoverRadius: 6
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: true, position: 'top' },
+                    tooltip: {
+                        callbacks: {
+                            afterLabel: function(context) {
+                                const row = data[context.dataIndex];
+                                return `Listings: ${row.listing_count || 0}`;
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: { beginAtZero: false, title: { display: true, text: 'Avg price (€)' } },
+                    x: { title: { display: true, text: 'Month' } }
+                }
+            }
+        });
+    } catch (error) {
+        console.error('Failed to load CPU price over time', error);
+        container.innerHTML = '<div style="text-align:center; color:#888; padding:1rem;">Failed to load chart</div>';
+    }
+}
 
 async function loadMotherboardStatistics() {
     try {
@@ -2468,11 +2563,13 @@ async function openListingDetails(listingId) {
         // CPU images are stored under SS-CRAWLER/images/cpu (ss.com) or images/facebook (facebook).
         // If the stored path already contains a folder prefix, use it; otherwise default to cpu/.
         const localImagePath = current.local_image_path ? String(current.local_image_path).replace(/\\/g, '/') : null;
-        const remoteImageUrl = current.image_url ? String(current.image_url) : null;
-        let imageUrl = localImagePath
+        const remoteImageUrl = current.image_url ? normalizeCpuImageUrl(String(current.image_url)) : null;
+        const localImageUrl = localImagePath
             ? (localImagePath.includes('/') ? `/images/${localImagePath}` : `/images/cpu/${localImagePath}`)
-            : remoteImageUrl;
-        const fallbackImageUrl = remoteImageUrl || '';
+            : null;
+        // Popup should show the full-size original image (usually the .800 SS.com URL).
+        let imageUrl = remoteImageUrl || localImageUrl;
+        const fallbackImageUrl = localImageUrl || '';
 
         let html = '';
 
@@ -2684,7 +2781,7 @@ async function showModelHistory(modelId, modelName) {
         // Normalize listing image URLs like the main listing table/popup does.
         function getListingImageUrl(item) {
             const localPath = item.local_image_path ? String(item.local_image_path).replace(/\\/g, '/') : null;
-            const remoteUrl = item.image_url ? String(item.image_url) : null;
+            const remoteUrl = item.image_url ? normalizeCpuImageUrl(String(item.image_url)) : null;
             if (localPath) {
                 return localPath.includes('/') ? `/images/${localPath}` : `/images/cpu/${localPath}`;
             }
@@ -2731,8 +2828,8 @@ async function showModelHistory(modelId, modelName) {
                     ${uniqueListings.map(item => {
                         const imgUrl = getListingImageUrl(item);
                         const imgHtml = imgUrl
-                            ? `<img src="${imgUrl}" alt="${item.title || ''}" class="listing-thumb" style="width:60px;height:60px;object-fit:cover;border-radius:6px;cursor:pointer;" onerror="this.style.display='none'" onclick="event.stopPropagation(); showImageModal('${imgUrl.replace(/'/g, "\\'")}', '${(item.title || '').replace(/'/g, "\\'")}')">`
-                            : `<div class="listing-thumb-placeholder" style="width:60px;height:60px;">🖼️</div>`;
+                            ? `<img src="${imgUrl}" alt="${item.title || ''}" class="listing-thumb" onerror="this.style.display='none'" onclick="event.stopPropagation(); showImageModal('${imgUrl.replace(/'/g, "\\'")}', '${(item.title || '').replace(/'/g, "\\'")}')">`
+                            : `<div class="listing-thumb-placeholder">🖼️</div>`;
                         return `
                         <tr>
                             <td style="text-align:center;">${imgHtml}</td>
@@ -3080,11 +3177,11 @@ const GRID_COLS_KEY = 'cpuGridCols';
 const WIDGET_SIZE_KEY = 'cpuWidgetSizes';
 
 function getDefaultOrder() {
-    return ['most-listed', 'mb-year', 'cpu-platform', 'cpu-socket', 'price-vendor', 'source', 'class', 'top-deals', 'best-value', 'mb-market'];
+    return ['most-listed', 'mb-year', 'cpu-platform', 'cpu-socket', 'price-vendor', 'source', 'class', 'top-deals', 'best-value', 'mb-market', 'cpu-price-over-time'];
 }
 
 function getDefaultSubgridOrder() {
-    return ['mb-year', 'cpu-platform', 'cpu-socket', 'price-vendor', 'source', 'class', 'top-deals', 'best-value', 'mb-market'];
+    return ['mb-year', 'cpu-platform', 'cpu-socket', 'price-vendor', 'source', 'class', 'top-deals', 'best-value', 'mb-market', 'cpu-price-over-time'];
 }
 
 function loadWidgetOrder() {
@@ -3618,6 +3715,7 @@ window.initWidgetSystem = function() {
 document.addEventListener('DOMContentLoaded', function() {
     loadListings();
     loadCPUStatistics();
+    loadCPUPriceOverTime();
     loadMotherboardStatistics();
     initWidgetSystem();
 });

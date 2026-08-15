@@ -1,0 +1,13 @@
+import psycopg2
+conn=psycopg2.connect(host='localhost', port=5433, dbname='ss_market', user='crawler', password='crawler_pass')
+cur=conn.cursor()
+cur.execute('SELECT COUNT(*) FROM laptop_reference WHERE model_number IS NULL')
+print('NULL model_number:', cur.fetchone()[0])
+cur.execute('SELECT COUNT(*) FROM laptop_reference WHERE model_number IS NOT NULL')
+print('Set model_number:', cur.fetchone()[0])
+cur.execute("SELECT COUNT(*) FROM laptop_reference WHERE model = 'Unknown'")
+print('Marked Unknown:', cur.fetchone()[0])
+cur.execute('SELECT COUNT(*) FROM laptop_reference')
+print('Total rows:', cur.fetchone()[0])
+cur.execute("SELECT id, brand, model, model_number, display_size FROM laptop_reference WHERE model = 'Unknown' ORDER BY id LIMIT 30")
+for r in cur.fetchall(): print(r)

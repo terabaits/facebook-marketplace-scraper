@@ -1,0 +1,41 @@
+        // Populate RAM detected size in flag form
+        if (breakdown.ram && breakdown.ram.capacity_gb) {
+            const ramDetectedSize = document.getElementById('ram-detected-size');
+            if (ramDetectedSize) ramDetectedSize.value = breakdown.ram.capacity_gb + 'GB';
+        }
+        
+        // Initialize price chart if data exists
+        if (breakdown.price_history && breakdown.price_history.length > 1) {
+            renderPriceChart(breakdown.price_history);
+        }
+        
+    } catch (error) {
+        console.error('Error loading computer details:', error);
+        document.getElementById('computer-content').innerHTML = 
+            `<div class="error" style="padding: 2rem;"><strong>Error loading details:</strong><br>${error.message}</div>`;
+        document.getElementById('computer-modal').classList.add('active');
+    }
+}
+
+function buildComponentsSection(breakdown) {
+    let html = '';
+    
+    // CPU
+    if (breakdown.cpu) {
+        const cpuProducer = breakdown.cpu.producer || '';
+        const cpuModel = breakdown.cpu.model || '';
+        const cpuName = cpuModel.toLowerCase().startsWith(cpuProducer.toLowerCase()) ? cpuModel : `${cpuProducer} ${cpuModel}`.trim();
+        html += `
+            <div class="component-row detailed">
+                <div class="component-header">
+                    <div class="component-icon-large cpu-icon">⚙️</div>
+                    <div class="component-info">
+                        <div class="component-name">${cpuName}</div>
+                        <div class="component-specs">
+                            ${breakdown.cpu.processor_number ? `<span class="spec-tag">${breakdown.cpu.processor_number}</span>` : ''}
+                            ${breakdown.cpu.cores ? `<span class="spec-tag">${breakdown.cpu.cores} Cores</span>` : ''}
+                            ${breakdown.cpu.threads ? `<span class="spec-tag">${breakdown.cpu.threads} Threads</span>` : ''}
+                            ${breakdown.cpu.base_freq ? `<span class="spec-tag">${breakdown.cpu.base_freq} GHz</span>` : ''}
+                            ${breakdown.cpu.tdp ? `<span class="spec-tag">${breakdown.cpu.tdp}W TDP</span>` : ''}
+                        </div>
+                    </div>

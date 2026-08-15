@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8"><title>CPU popup test</title></head>
+<body>
+<script>
+const listing = {
+    listing_id: '15115640_a2c555ab',
+    title: 'i3-9100f',
+    local_image_path: 'cpu\\15115640_a2c555ab.jpg',
+    image_url: 'https://static6.andelemandele.lv/images/658/36f/1/large/67f807fe67bf299ff.jpg',
+    price_eur: 50,
+    seller_location: 'Riga',
+    date_posted: '2026-06-20',
+    is_active: true,
+    description: 'test'
+};
+const localImagePath = listing.local_image_path ? String(listing.local_image_path).replace(/\\\\/g, '/') : null;
+const remoteImageUrl = listing.image_url ? String(listing.image_url) : null;
+let imageUrl = localImagePath ? `/images/${localImagePath}` : remoteImageUrl;
+console.log('resolved imageUrl', imageUrl);
+document.body.innerHTML += `<img src="${imageUrl}" onload="this.style.border='5px solid green'" onerror="this.style.border='5px solid red'" style="max-width:300px"><br><code>${imageUrl}</code>`;
+</script>
+</body>
+</html>

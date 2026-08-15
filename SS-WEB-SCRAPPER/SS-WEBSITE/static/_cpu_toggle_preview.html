@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>CPU Toggle Preview</title>
+<style>
+body { padding: 0; background: var(--bg-color, #1a1a2e); color: var(--text-color, #e0e0e0); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif; }
+:root { --bg-color: #1a1a2e; --card-bg: #16213e; --text-color: #e0e0e0; --text-secondary: #9ca3af; --primary: #667eea; --table-border: #0f3460; --bar-bg: #3a3a4a; }
+.preview-wrap { padding: 1.5rem; max-width: 1100px; margin: 0 auto; }
+.preview-wrap h2 { margin-top: 0; }
+.popup-mock {
+    background: var(--card-bg);
+    border: 1px solid var(--table-border);
+    border-radius: 14px;
+    padding: 0;
+    box-shadow: 0 24px 60px rgba(0,0,0,0.28);
+    overflow: hidden;
+    max-width: 700px;
+}
+.popup-header { padding: 14px 18px 8px; border-bottom: 1px solid var(--table-border); background: linear-gradient(180deg, rgba(102,126,234,0.04) 0%, transparent 100%); }
+.popup-title { font-weight: 700; font-size: 0.95rem; display: flex; align-items: center; gap: 0.5rem; }
+.popup-title svg { width: 18px; height: 18px; color: var(--primary); }
+.popup-body { padding: 8px 14px 14px; }
+
+/* ===== NEW DESIGN: no checkbox, clickable row, left-border + check on selection ===== */
+
+/* Option row */
+.cpu-option-v2 {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 7px 10px 7px 12px;
+    border-left: 3px solid transparent;
+    border-radius: 6px;
+    background: transparent;
+    cursor: pointer;
+    font-size: 0.85rem;
+    color: var(--text-color);
+    user-select: none;
+    position: relative;
+    margin: 1px 0;
+    transition: background 0.1s ease, border-color 0.1s ease;
+}
+.cpu-option-v2:hover { background: var(--bar-bg); }
+.cpu-option-v2.checked {
+    background: rgba(102, 126, 234, 0.10);
+    border-left-color: var(--primary);
+}
+.cpu-option-v2.checked:hover { background: rgba(102, 126, 234, 0.16); }
+
+.cpu-option-v2-name {
+    flex: 1;
+    font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+    font-size: 0.85rem;
+    font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.cpu-option-v2-check {
+    width: 16px;
+    height: 16px;
+    color: var(--primary);
+    flex-shrink: 0;
+    opacity: 0;
+    transform: scale(0.5);
+    transition: opacity 0.12s ease, transform 0.18s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.cpu-option-v2.checked .cpu-option-v2-check {
+    opacity: 1;
+    transform: scale(1);
+}
+.cpu-option-v2-count {
+    font-size: 0.7rem;
+    color: var(--text-secondary);
+    font-weight: 600;
+    background: var(--bar-bg);
+    padding: 2px 8px;
+    border-radius: 999px;
+    min-width: 26px;
+    text-align: center;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    transition: background 0.12s ease, color 0.12s ease;
+}
+.cpu-option-v2.checked .cpu-option-v2-count {
+    background: rgba(102, 126, 234, 0.25);
+    color: var(--primary);
+}
+
+/* Class header "Select all" becomes a button */
+.cpu-class-selectall-v2 {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 3px 10px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    background: transparent;
+    border: 1.5px solid var(--table-border);
+    border-radius: 999px;
+    cursor: pointer;
+    user-select: none;
+    transition: all 0.12s ease;
+}
+.cpu-class-selectall-v2:hover {
+    color: var(--primary);
+    border-color: var(--primary);
+}
+.cpu-class-selectall-v2.checked {
+    background: var(--primary);
+    color: #fff;
+    border-color: var(--primary);
+    box-shadow: 0 2px 6px rgba(102, 126, 234, 0.4);
+}
+.cpu-class-selectall-v2 svg { width: 12px; height: 12px; }
+.cpu-class-selectall-v2.checked .sa-icon-empty { display: none; }
+.cpu-class-selectall-v2:not(.checked) .sa-icon-check { display: none; }
+
+/* Class header */
+.cpu-class-header-v2 {
+    display: flex;
+    align-items: center;
+    padding: 6px 8px 6px 4px;
+    cursor: pointer;
+    user-select: none;
+    border-radius: 6px;
+    transition: background 0.12s ease;
+}
+.cpu-class-header-v2:hover { background: var(--bar-bg); }
+.cpu-class-left { display: flex; align-items: center; gap: 0.45rem; flex: 1; }
+.cpu-chevron-v2 { width: 14px; height: 14px; color: var(--text-secondary); transition: transform 0.18s ease; }
+.cpu-class-block-v2.expanded .cpu-chevron-v2 { transform: rotate(90deg); }
+.cpu-class-label-v2 { font-size: 0.95rem; font-weight: 700; }
+.cpu-class-tier-v2 { font-size: 0.68rem; color: var(--text-secondary); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; padding: 1px 7px; background: var(--bar-bg); border-radius: 999px; }
+.cpu-class-actions-v2 { display: flex; align-items: center; gap: 0.85rem; }
+.cpu-class-count-v2 { font-size: 0.72rem; color: var(--text-secondary); font-weight: 500; }
+.cpu-options-grid-v2 { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 2px; max-height: 0; overflow: hidden; opacity: 0; padding: 0 4px; transition: max-height 0.22s ease, opacity 0.18s ease, padding 0.18s ease; }
+.cpu-class-block-v2.expanded .cpu-options-grid-v2 { max-height: 1200px; opacity: 1; padding: 4px 4px 8px; }
+.cpu-vendor-section-v2 { margin-top: 10px; }
+.cpu-vendor-section-v2:first-child { margin-top: 4px; }
+.cpu-vendor-header-v2 { display: flex; align-items: center; gap: 0.6rem; padding: 8px 6px 6px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; }
+.cpu-vendor-dot-v2 { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.cpu-vendor-name-v2 { color: var(--text-color); }
+.cpu-vendor-meta-v2 { margin-left: auto; font-size: 0.7rem; color: var(--text-secondary); font-weight: 500; text-transform: none; letter-spacing: 0; }
+</style>
+</head>
+<body>
+<div class="preview-wrap">
+    <h2 style="color: var(--text-color);">CPU Filter — New Toggle Design (no checkboxes)</h2>
+    <p style="color: var(--text-secondary);">Click any row to toggle. The whole row is the target. Selected rows get a colored left border + check icon + colored count.</p>
+
+    <div class="popup-mock">
+        <div class="popup-header">
+            <div class="popup-title">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/><line x1="20" y1="9" x2="23" y2="9"/><line x1="20" y1="14" x2="23" y2="14"/><line x1="1" y1="9" x2="4" y2="9"/><line x1="1" y1="14" x2="4" y2="14"/></svg>
+                Filter by CPU
+            </div>
+        </div>
+        <div class="popup-body">
+            <!-- VENDOR: Intel -->
+            <div class="cpu-vendor-section-v2">
+                <div class="cpu-vendor-header-v2">
+                    <span class="cpu-vendor-dot-v2" style="background: #0071c5;"></span>
+                    <span class="cpu-vendor-name-v2">Intel</span>
+                    <span class="cpu-vendor-meta-v2">4 classes · 18 CPUs · 287 listings</span>
+                </div>
+                <div class="cpu-class-block-v2 expanded">
+                    <div class="cpu-class-header-v2">
+                        <div class="cpu-class-left">
+                            <svg class="cpu-chevron-v2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 6 15 12 9 18"/></svg>
+                            <span class="cpu-class-label-v2">i7</span>
+                            <span class="cpu-class-tier-v2">High-End</span>
+                        </div>
+                        <div class="cpu-class-actions-v2">
+                            <span class="cpu-class-count-v2">6 CPUs</span>
+                            <div class="cpu-class-selectall-v2 checked" role="button" tabindex="0" onclick="this.classList.toggle('checked')">
+                                <svg class="sa-icon-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                                <svg class="sa-icon-empty" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                                <span>Select all</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="cpu-options-grid-v2">
+                        <div class="cpu-option-v2 checked" onclick="this.classList.toggle('checked')">
+                            <span class="cpu-option-v2-name">i7-12650H</span>
+                            <svg class="cpu-option-v2-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                            <span class="cpu-option-v2-count">22</span>
+                        </div>
+                        <div class="cpu-option-v2" onclick="this.classList.toggle('checked')">
+                            <span class="cpu-option-v2-name">i7-11400H</span>
+                            <svg class="cpu-option-v2-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                            <span class="cpu-option-v2-count">31</span>
+                        </div>
+                        <div class="cpu-option-v2" onclick="this.classList.toggle('checked')">
+                            <span class="cpu-option-v2-name">i7-1165G7</span>
+                            <svg class="cpu-option-v2-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                            <span class="cpu-option-v2-count">8</span>
+                        </div>
+                        <div class="cpu-option-v2" onclick="this.classList.toggle('checked')">
+                            <span class="cpu-option-v2-name">i7-10710U</span>
+                            <svg class="cpu-option-v2-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                            <span class="cpu-option-v2-count">5</span>
+                        </div>
+                        <div class="cpu-option-v2 checked" onclick="this.classList.toggle('checked')">
+                            <span class="cpu-option-v2-name">i7-10510U</span>
+                            <svg class="cpu-option-v2-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                            <span class="cpu-option-v2-count">4</span>
+                        </div>
+                        <div class="cpu-option-v2" onclick="this.classList.toggle('checked')">
+                            <span class="cpu-option-v2-name">i7-8665U</span>
+                            <svg class="cpu-option-v2-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                            <span class="cpu-option-v2-count">3</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="cpu-class-block-v2">
+                    <div class="cpu-class-header-v2">
+                        <div class="cpu-class-left">
+                            <svg class="cpu-chevron-v2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 6 15 12 9 18"/></svg>
+                            <span class="cpu-class-label-v2">i5</span>
+                            <span class="cpu-class-tier-v2">Mid-Range</span>
+                        </div>
+                        <div class="cpu-class-actions-v2">
+                            <span class="cpu-class-count-v2">5 CPUs</span>
+                            <div class="cpu-class-selectall-v2" role="button" tabindex="0" onclick="this.classList.toggle('checked')">
+                                <svg class="sa-icon-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                                <svg class="sa-icon-empty" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                                <span>Select all</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

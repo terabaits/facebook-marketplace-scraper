@@ -1,0 +1,114 @@
+STDOUT:
+Testing Computer URL: https://www.ss.com/msg/lv/electronics/computers/pc/pbdhn.html
+==================================================
+2026-05-24 20:35:11 | INFO     | ss_crawler | [computer_scraper] Initializing computer scraper...
+2026-05-24 20:35:11 | INFO     | ss_crawler | [database] Database connected: localhost:5433/ss_market
+2026-05-24 20:35:11 | INFO     | ss_crawler | [computer_scraper] Database: postgresql+psycopg2://crawler:crawler_pass@localhost:5433/ss_market
+2026-05-24 20:35:12 | INFO     | ss_crawler | [cpu_matcher] CPUMatcher initialized with 5320 CPUs
+2026-05-24 20:35:12 | INFO     | ss_crawler | [matcher] GPUMatcher initialized with 631 GPUs
+2026-05-24 20:35:12 | INFO     | ss_crawler | [ram_matcher] RAMMatcher initialized with 5284 RAM references
+2026-05-24 20:35:13 | INFO     | ss_crawler | [ssd_matcher] SSDMatcher initialized with 2451 SSDs
+2026-05-24 20:35:13 | INFO     | ss_crawler | [psu_matcher] PSUMatcher initialized with 2895 PSU references
+2026-05-24 20:35:13 | INFO     | ss_crawler | [case_matcher] CaseMatcher initialized with 5742 case references
+2026-05-24 20:35:14 | INFO     | ss_crawler | [motherboard_matcher] MotherboardMatcher initialized with 5732 motherboards
+2026-05-24 20:35:15 | INFO     | ss_crawler | [computer_monitor_matcher] ComputerMonitorMatcher initialized with 20272 monitors
+2026-05-24 20:35:15 | INFO     | ss_crawler | [computer_matcher] ComputerMatcher initialized: 5320 CPUs, 631 GPUs, 5284 RAMs, 2451 SSDs, 2895 PSUs, 5742 Cases, 5732 Motherboards, 20272 Monitors
+2026-05-24 20:35:15 | INFO     | ss_crawler | [computer_scraper] Loaded references: 5320 CPUs, 631 GPUs, 5284 RAMs, 2451 SSDs, 2895 PSUs, 5742 Cases, 5732 Motherboards, 20272 Monitors
+2026-05-24 20:35:15 | INFO     | ss_crawler | [computer_scraper] Initializing computer scraper...
+2026-05-24 20:35:15 | INFO     | ss_crawler | [database] Database connected: localhost:5433/ss_market
+2026-05-24 20:35:15 | INFO     | ss_crawler | [computer_scraper] Database: postgresql+psycopg2://crawler:crawler_pass@localhost:5433/ss_market
+2026-05-24 20:35:16 | INFO     | ss_crawler | [cpu_matcher] CPUMatcher initialized with 5320 CPUs
+2026-05-24 20:35:16 | INFO     | ss_crawler | [matcher] GPUMatcher initialized with 631 GPUs
+2026-05-24 20:35:16 | INFO     | ss_crawler | [ram_matcher] RAMMatcher initialized with 5284 RAM references
+2026-05-24 20:35:16 | INFO     | ss_crawler | [ssd_matcher] SSDMatcher initialized with 2451 SSDs
+2026-05-24 20:35:16 | INFO     | ss_crawler | [psu_matcher] PSUMatcher initialized with 2895 PSU references
+2026-05-24 20:35:17 | INFO     | ss_crawler | [case_matcher] CaseMatcher initialized with 5742 case references
+2026-05-24 20:35:18 | INFO     | ss_crawler | [motherboard_matcher] MotherboardMatcher initialized with 5732 motherboards
+2026-05-24 20:35:18 | INFO     | ss_crawler | [computer_monitor_matcher] ComputerMonitorMatcher initialized with 20272 monitors
+2026-05-24 20:35:18 | INFO     | ss_crawler | [computer_matcher] ComputerMatcher initialized: 5320 CPUs, 631 GPUs, 5284 RAMs, 2451 SSDs, 2895 PSUs, 5742 Cases, 5732 Motherboards, 20272 Monitors
+2026-05-24 20:35:18 | INFO     | ss_crawler | [computer_scraper] Loaded references: 5320 CPUs, 631 GPUs, 5284 RAMs, 2451 SSDs, 2895 PSUs, 5742 Cases, 5732 Motherboards, 20272 Monitors
+2026-05-24 20:35:18 | INFO     | ss_crawler | [crawler] Fetching single computer listing: https://www.ss.com/msg/lv/electronics/computers/pc/pbdhn.html
+2026-05-24 20:35:21 | INFO     | ss_crawler | [ssd_matcher] SSDMatcher initialized with 95 SSDs
+2026-05-24 20:35:23 | INFO     | ss_crawler | [computer_monitor_matcher] Generic monitor detected: 24" 1920x1080 (50%)
+2026-05-24 20:35:23 | INFO     | ss_crawler | [computer_scraper] Single scrape result: unchanged - Unchanged: Datori un orgtehnika/Datori/ Pārdod...
+2026-05-24 20:35:23 | INFO     | ss_crawler | [ssd_matcher] SSDMatcher initialized with 95 SSDs
+2026-05-24 20:35:24 | INFO     | ss_crawler | [computer_monitor_matcher] Generic monitor detected: 24" 1920x1080 (50%)
+
+LISTING DATA:
+--------------------------------------------------
+ID:          pbdhn
+Title:       Datori un orgtehnika/Datori/ Pārdod
+Price:       EUR 365.00
+Location:    Rīgas rajons
+
+==================================================
+MATCHED COMPONENTS:
+==================================================
+
+🖥️  CPU: Ryzen 5 1600 (90.0% confidence)
+    ID: 1509
+    Match Method: name_match
+    Brand: N/A
+    Socket: AM4
+    Cores/Threads: 6/12
+    Avg Price: EUR 150.00
+
+🎮 GPU: GeForce GTX 1060 6GB (85.5% confidence)
+    ID: 568
+    Match Method: name+vram_verified
+    Brand: N/A
+    VRAM: 6144 GB
+    Est. Price: EUR 211.65
+
+💾 RAM: Crucial CT2K4G4DFS632A 8 GB (100.0% confidence)
+    ID: 1996
+    Match Method: fuzzy+model_part+freq_exact+capacity_exact+modules_exact
+    Capacity: 8 GB
+    Speed: N/A
+    Price: EUR 50.00
+
+💿 SSD: BX500 (100.0% confidence)
+    ID: 443
+    Match Method: exact+model_part+brand_match+capacity_exact
+    Capacity: 480 GB
+    Type: N/A
+    Price: EUR 50.00
+
+⚡ PSU: Not detected (Fallback: 650W)
+
+📦 Case: Not detected (Fallback: EUR 15.00)
+
+🔌 Motherboard: Gigabyte B450 AORUS ELITE (100.0% confidence)
+    ID: 7255
+    Match Method: fuzzy+chipset+model_part
+    Socket: AM4
+    Chipset: B450
+
+🖥️  Monitor: Generic 24" 1920x1080 (50.0% confidence)
+    Size: 24"
+    Resolution: 1920x1080
+    Refresh Rate: 144Hz
+    Match Method: keyword_monitors
+
+==================================================
+PRICE BREAKDOWN:
+==================================================
+Component Total:    EUR 511.65
+Listing Price:      EUR 365.00
+Price Difference:   🔴 EUR -146.65
+
+
+STDERR:
+C:\Users\goldm\AppData\Local\Programs\Python\Python310\lib\site-packages\pydantic\_internal\_fields.py:149: UserWarning: Field "model_name" has conflict with protected namespace "model_".
+
+You may be able to resolve this warning by setting `model_config['protected_namespaces'] = ()`.
+  warnings.warn(
+C:\Users\goldm\AppData\Local\Programs\Python\Python310\lib\site-packages\pydantic\_internal\_fields.py:149: UserWarning: Field "model_original" has conflict with protected namespace "model_".
+
+You may be able to resolve this warning by setting `model_config['protected_namespaces'] = ()`.
+  warnings.warn(
+C:\Users\goldm\AppData\Local\Programs\Python\Python310\lib\site-packages\requests\__init__.py:109: RequestsDependencyWarning: urllib3 (2.6.3) or chardet (7.4.3)/charset_normalizer (2.1.1) doesn't match a supported version!
+  warnings.warn(
+
+
+Return code: 0

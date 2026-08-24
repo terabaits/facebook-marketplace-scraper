@@ -13,11 +13,22 @@
     <div class="loading" style="grid-column: 1/-1;">{{ t('Loading dashboard…') }}</div>
 </div>
 
-<!-- ===== THE MONEY SHOT: 4 profit scenarios ===== -->
+<!-- ===== HERO DETAIL MODAL (click a hero card to see the full calculation) ===== -->
+<div class="modal-overlay" id="hero-detail-modal" onclick="if(event.target===this) closeHeroDetail()">
+    <div class="modal" style="max-width: 720px;" onclick="event.stopPropagation()">
+        <div class="modal-header">
+            <h3 id="hero-detail-title" style="font-size: 1.05rem; font-weight: 700; margin: 0; color: var(--text-color);"></h3>
+            <button class="modal-close" onclick="closeHeroDetail()">×</button>
+        </div>
+        <div class="modal-content" id="hero-detail-body"></div>
+    </div>
+</div>
+
+<!-- ===== THE MONEY SHOT: 3 profit scenarios ===== -->
 <div class="section">
     <div class="dash-section-header">
         <h2>💎 {{ t('The Money Shot — Profit Scenarios') }}</h2>
-        <span class="dash-section-sub">{{ t('Four views of what your inventory could earn') }}</span>
+        <span class="dash-section-sub">{{ t('Three views of what your inventory could earn') }}</span>
     </div>
     <div class="chart-tall"><canvas id="profit-scenarios-chart"></canvas></div>
     <div id="profit-scenarios-legend" style="margin-top: 0.75rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 0.75rem;"></div>
@@ -122,7 +133,7 @@
     <div class="section">
         <div class="dash-section-header">
             <h2>🔻 {{ t('Biggest Price Drops') }}</h2>
-            <span class="dash-section-sub">{{ t('Largest absolute price drops in the last 30 days') }}</span>
+            <span class="dash-section-sub">{{ t('Largest drops vs the listing\u2019s all-time peak') }}</span>
         </div>
         <div class="dash-scroll-x">
             <table class="deals-table" id="top-drops-table">
@@ -253,81 +264,157 @@ function imgOrPlaceholder(item) {
 const charts = {};
 
 // Render hero KPI cards
-function renderHero(totals) {
+function renderHero(totals, categories) {
     const hero = document.getElementById('dash-hero');
-    // Profit box: "Spend" = market value (sum of all active listing
-    // prices). "Get" = market value + category-max upside (the most
-    // aggressive but achievable target — assumes every listing sells
-    // at the highest price its category has ever seen). "Profit" =
-    // upside. "ROI" = profit / spend. These four numbers answer the
-    // most common buyer question: "If I bought everything right now,
-    // how much could I make?"
-    const spend = Number(totals.active_value) || 0;
-    const upside = Number(totals.upside_max) || 0;
-    const revenue = spend + upside;
-    const roiPct = spend > 0 ? (upside / spend) * 100 : 0;
-    const profitSign = upside >= 0 ? '+' : '−';
+    // Keep the full payload on hand so the click-to-inspect modals can
+    // show the underlying numbers and their per-category breakdown.
+    window.__dashTotals__ = totals;
+    window.__dashCategories__ = categories || [];
+    // The theoretical max value of the active inventory if every listing
+    // sold at its model's all-time high = current market value + model
+    // upside (each listing's upside is model_max - current, summed).
+    const maxValue = (Number(totals.active_value) || 0) + (Number(totals.model_upside_max) || 0);
     hero.innerHTML = `
-        <div class="dash-profit-box">
-            <div class="dash-profit-icon">📈</div>
-            <div class="dash-profit-label">{{ t('Total Profit Potential') }}</div>
-            <div class="dash-profit-flow">
-                <div class="dash-profit-cell">
-                    <div class="dash-profit-cell-label">{{ t('Spend') }}</div>
-                    <div class="dash-profit-cell-value">${fmtEur(spend, {compact:true})}</div>
-                    <div class="dash-profit-cell-sub">{{ t('Buy every active listing') }}</div>
-                </div>
-                <div class="dash-profit-arrow">→</div>
-                <div class="dash-profit-cell">
-                    <div class="dash-profit-cell-label">{{ t('Get') }}</div>
-                    <div class="dash-profit-cell-value">${fmtEur(revenue, {compact:true})}</div>
-                    <div class="dash-profit-cell-sub">{{ t('Resell at category max') }}</div>
-                </div>
-                <div class="dash-profit-arrow">=</div>
-                <div class="dash-profit-cell highlight">
-                    <div class="dash-profit-cell-label">{{ t('Profit') }}</div>
-                    <div class="dash-profit-cell-value">${profitSign}${fmtEur(Math.abs(upside), {compact:true})}</div>
-                    <div class="dash-profit-cell-sub">${roiPct.toFixed(1)}% {{ t('ROI') }}</div>
-                </div>
+        <div class="dash-hero-card gradient-purple" onclick="openHeroDetail('active')" title="{{ t('Click for details') }}">
+            <div class="dash-hero-head">
+                <span class="dash-hero-icon">📦</span>
+                <span class="dash-hero-label">{{ t('Active Listings') }}</span>
             </div>
-        </div>
-        <div class="dash-hero-card gradient-purple">
-            <span class="dash-hero-icon">📦</span>
-            <div class="dash-hero-label">{{ t('Active Listings') }}</div>
             <div class="dash-hero-value">${fmtNum(totals.active_listings)}</div>
-            <div class="dash-hero-sub">${fmtNum(totals.total_listings)} ${ t('lifetime') }} · ${totals.delist_rate}% {{ t('delist rate') }}</div>
+            <div class="dash-hero-sub">${fmtNum(totals.total_listings)} {{ t('lifetime') }} · ${totals.delist_rate}% {{ t('delist rate') }}</div>
         </div>
-        <div class="dash-hero-card gradient-blue">
-            <span class="dash-hero-icon">💰</span>
-            <div class="dash-hero-label">{{ t('Market Value') }}</div>
+        <div class="dash-hero-card gradient-blue" onclick="openHeroDetail('value')" title="{{ t('Click for details') }}">
+            <div class="dash-hero-head">
+                <span class="dash-hero-icon">💰</span>
+                <span class="dash-hero-label">{{ t('Market Value') }}</span>
+            </div>
             <div class="dash-hero-value">${fmtEur(totals.active_value, {compact:true})}</div>
-            <div class="dash-hero-sub">${t('avg')} ${fmtEur(totals.avg_price)} {{ t('per listing') }}</div>
+            <div class="dash-hero-sub">{{ t('avg') }} ${fmtEur(totals.avg_price)} {{ t('per listing') }}</div>
+            <div class="dash-hero-sub dash-hero-sub-max">${t('max')} @ {{ t('model all-time high') }}: ${fmtEur(maxValue, {compact:true})}</div>
         </div>
-        <div class="dash-hero-card gradient-teal">
-            <span class="dash-hero-icon">🎯</span>
-            <div class="dash-hero-label">{{ t('Model Max Upside') }}</div>
+        <div class="dash-hero-card gradient-teal" onclick="openHeroDetail('upside')" title="{{ t('Click for details') }}">
+            <div class="dash-hero-head">
+                <span class="dash-hero-icon">🎯</span>
+                <span class="dash-hero-label">{{ t('Max Upside') }}</span>
+            </div>
             <div class="dash-hero-value">${fmtEur(totals.model_upside_max, {compact:true})}</div>
-            <div class="dash-hero-sub">{{ t('If each listing sold at the highest price that exact model has ever listed at') }}</div>
+            <div class="dash-hero-sub">{{ t('If each listing sold at its model\u2019s all-time highest price') }}</div>
         </div>
-        <div class="dash-hero-card gradient-green">
-            <span class="dash-hero-icon">🚀</span>
-            <div class="dash-hero-label">{{ t('Category Max Upside') }}</div>
-            <div class="dash-hero-value">${fmtEur(totals.upside_max, {compact:true})}</div>
-            <div class="dash-hero-sub">{{ t('If everything sold at the highest price its entire category has ever seen') }}</div>
-        </div>
-        <div class="dash-hero-card gradient-orange">
-            <span class="dash-hero-icon">🤝</span>
-            <div class="dash-hero-label">{{ t('Haggling Max') }}</div>
+        <div class="dash-hero-card gradient-orange" onclick="openHeroDetail('haggling')" title="{{ t('Click for details') }}">
+            <div class="dash-hero-head">
+                <span class="dash-hero-icon">🤝</span>
+                <span class="dash-hero-label">{{ t('Haggling Max') }}</span>
+            </div>
             <div class="dash-hero-value">${fmtEur(totals.haggling_max, {compact:true})}</div>
-            <div class="dash-hero-sub">{{ t('Buy every listing at its category minimum, resell at the maximum') }}</div>
-        </div>
-        <div class="dash-hero-card gradient-gold">
-            <span class="dash-hero-icon">⚖</span>
-            <div class="dash-hero-label">{{ t('Avg Upside per Listing') }}</div>
-            <div class="dash-hero-value">${fmtEur(totals.upside_per_listing)}</div>
-            <div class="dash-hero-sub">{{ t('Per-listing potential profit headroom') }}</div>
+            <div class="dash-hero-sub">{{ t('Buy each listing at its model\u2019s all-time min, resell at the max') }}</div>
         </div>
     `;
+}
+
+// === Hero detail modal — click a hero card to see the full calculation ===
+function openHeroDetail(key) {
+    const T = window.__dashTotals__ || {};
+    const cats = window.__dashCategories__ || [];
+    const sorted = [...cats].sort((a, b) => (b.active || 0) - (a.active || 0));
+    const catMeta = (c) => (CAT_META[c.category] || { label: c.category, color: '#999' });
+    const catRows = (cols) => sorted.map(c => {
+        const m = catMeta(c);
+        return `<tr><td><span style="color:${m.color}; font-weight:600;">${m.label}</span></td>${cols.map(f => `<td style="text-align:right; white-space:nowrap;">${f(c)}</td>`).join('')}</tr>`;
+    }).join('');
+
+    let title = '';
+    let body = '';
+    const n = (v) => Number(v) || 0;
+
+    if (key === 'active') {
+        const total = n(T.total_listings);
+        const active = n(T.active_listings);
+        const delisted = total - active;
+        const delistRate = n(T.delist_rate);
+        title = t('Active Listings');
+        body = `
+            <div class="hero-detail-big">${fmtNum(active)} <small>${t('active of')} ${fmtNum(total)} ${t('lifetime')}</small></div>
+            <div class="hero-detail-formula">
+${t('Lifetime total')} = ${fmtNum(total)}<br>
+${t('Delisted')} = ${fmtNum(total)} − ${fmtNum(active)} = ${fmtNum(delisted)}<br>
+${t('Delist rate')} = ${fmtNum(delisted)} ÷ ${fmtNum(total)} = ${delistRate}%
+            </div>
+            <div class="hero-detail-kv"><span class="k">${t('Active listings')}</span><span class="v">${fmtNum(active)}</span></div>
+            <div class="hero-detail-kv"><span class="k">${t('Lifetime total')}</span><span class="v">${fmtNum(total)}</span></div>
+            <div class="hero-detail-kv"><span class="k">${t('Delisted')}</span><span class="v">${fmtNum(delisted)}</span></div>
+            <div class="hero-detail-kv"><span class="k">${t('Delist rate')}</span><span class="v">${delistRate}%</span></div>
+            <table class="hero-detail-table">
+                <thead><tr><th>${t('Category')}</th><th>${t('Active')}</th><th>${t('Lifetime')}</th><th>${t('Avg price')}</th></tr></thead>
+                <tbody>${catRows([c => fmtNum(c.active), c => fmtNum(c.total), c => fmtEur(c.avg_price)])}</tbody>
+            </table>
+        `;
+    } else if (key === 'value') {
+        const value = n(T.active_value);
+        const active = n(T.active_listings);
+        const avg = active > 0 ? value / active : 0;
+        const maxValue = value + n(T.model_upside_max);
+        title = t('Market Value');
+        body = `
+            <div class="hero-detail-big">${fmtEur(value, {compact:true})} <small>${t('across')} ${fmtNum(active)} ${t('active listings')}</small></div>
+            <div class="hero-detail-formula">
+${t('Market value')} = Σ ${t('active listing prices')} = ${fmtEur(value)}<br>
+${t('Avg price')} = ${fmtEur(value)} ÷ ${fmtNum(active)} = ${fmtEur(avg)}<br>
+${t('Max at model all-time high')} = ${fmtEur(value)} + ${fmtEur(n(T.model_upside_max))} = ${fmtEur(maxValue)}
+            </div>
+            <div class="hero-detail-kv"><span class="k">${t('Market value')}</span><span class="v">${fmtEur(value)}</span></div>
+            <div class="hero-detail-kv"><span class="k">${t('Max at model all-time high')}</span><span class="v">${fmtEur(maxValue)}</span></div>
+            <div class="hero-detail-kv"><span class="k">${t('Active listings')}</span><span class="v">${fmtNum(active)}</span></div>
+            <div class="hero-detail-kv"><span class="k">${t('Avg price')}</span><span class="v">${fmtEur(avg)}</span></div>
+            <table class="hero-detail-table">
+                <thead><tr><th>${t('Category')}</th><th>${t('Value')}</th><th>${t('Active')}</th><th>${t('Avg price')}</th></tr></thead>
+                <tbody>${catRows([c => fmtEur(c.active_value, {compact:true}), c => fmtNum(c.active), c => fmtEur(c.avg_price)])}</tbody>
+            </table>
+        `;
+    } else if (key === 'upside') {
+        const upside = n(T.model_upside_max);
+        const active = n(T.active_listings);
+        const perListing = active > 0 ? upside / active : 0;
+        title = t('Max Upside');
+        body = `
+            <div class="hero-detail-big">${fmtEur(upside, {compact:true})} <small>${t('total upside')}</small></div>
+            <div class="hero-detail-formula">
+${t('Upside per listing')} = ${t('model all-time max price')} − ${t('current price')}<br>
+${t('Max Upside')} = Σ ${t('upside per listing')} = ${fmtEur(upside)}<br>
+${t('Avg per listing')} = ${fmtEur(upside)} ÷ ${fmtNum(active)} = ${fmtEur(perListing)}
+            </div>
+            <div class="hero-detail-kv"><span class="k">${t('Max Upside')}</span><span class="v">${fmtEur(upside)}</span></div>
+            <div class="hero-detail-kv"><span class="k">${t('Active listings')}</span><span class="v">${fmtNum(active)}</span></div>
+            <div class="hero-detail-kv"><span class="k">${t('Avg upside per listing')}</span><span class="v">${fmtEur(perListing)}</span></div>
+            <table class="hero-detail-table">
+                <thead><tr><th>${t('Category')}</th><th>${t('Model upside')}</th><th>${t('Active')}</th><th>${t('Avg model max')}</th><th>${t('Avg model min')}</th></tr></thead>
+                <tbody>${catRows([c => fmtEur(c.model_upside, {compact:true}), c => fmtNum(c.active), c => fmtEur(c.avg_model_max), c => fmtEur(c.avg_model_min)])}</tbody>
+            </table>
+            <div class="hero-detail-note">${t('Each active listing is compared to the highest price its exact model has ever listed at; only positive gaps are summed.')}</div>
+        `;
+    } else if (key === 'haggling') {
+        title = t('Haggling Max');
+        body = `
+            <div class="hero-detail-big">${fmtEur(n(T.haggling_max), {compact:true})} <small>${t('theoretical spread')}</small></div>
+            <div class="hero-detail-formula">
+${t('Haggling per listing')} = ${t('model all-time max price')} − ${t('model all-time min price')}<br>
+${t('Haggling Max')} = Σ ${t('haggling per listing')} = ${fmtEur(n(T.haggling_max))}
+            </div>
+            <div class="hero-detail-kv"><span class="k">${t('Haggling Max')}</span><span class="v">${fmtEur(n(T.haggling_max))}</span></div>
+            <table class="hero-detail-table">
+                <thead><tr><th>${t('Category')}</th><th>${t('Haggle max')}</th><th>${t('Active')}</th></tr></thead>
+                <tbody>${catRows([c => fmtEur(c.haggling_max, {compact:true}), c => fmtNum(c.active)])}</tbody>
+            </table>
+            <div class="hero-detail-note">${t('For every active listing: buy at its model\u2019s all-time minimum and resell at the all-time maximum; the total is summed across all listings.')}</div>
+        `;
+    }
+
+    document.getElementById('hero-detail-title').textContent = title;
+    document.getElementById('hero-detail-body').innerHTML = body || `<div class="hero-detail-note">${t('No details available.')}</div>`;
+    document.getElementById('hero-detail-modal').classList.add('active');
+}
+
+function closeHeroDetail() {
+    document.getElementById('hero-detail-modal').classList.remove('active');
 }
 
 // Per-category cards
@@ -452,10 +539,9 @@ function renderTopRises(rows) {
 function renderProfitScenarios(totals, categories) {
     const ctx = document.getElementById('profit-scenarios-chart').getContext('2d');
     const theme = getThemeColors();
-    const labels = ['Current\nValue', 'Model Max\nUpside', 'Category Max\nUpside', 'Haggling\nMax'];
+    const labels = ['Current\nValue', 'Model Max\nUpside', 'Haggling\nMax'];
     const current = totals.active_value;
     const modelUpside = totals.model_upside_max;
-    const catUpside = totals.upside_max;
     const haggling = totals.haggling_max;
     if (charts.profit) charts.profit.destroy();
     charts.profit = new Chart(ctx, {
@@ -464,9 +550,9 @@ function renderProfitScenarios(totals, categories) {
             labels: labels,
             datasets: [{
                 label: '€',
-                data: [current, modelUpside, catUpside, haggling],
-                backgroundColor: ['#667eea', '#10b981', '#14b8a6', '#f59e0b'],
-                borderColor: ['#5a67d8', '#059669', '#0d9488', '#d97706'],
+                data: [current, modelUpside, haggling],
+                backgroundColor: ['#667eea', '#10b981', '#f59e0b'],
+                borderColor: ['#5a67d8', '#059669', '#d97706'],
                 borderWidth: 2,
                 borderRadius: 8,
                 maxBarThickness: 90
@@ -515,15 +601,10 @@ function renderProfitScenarios(totals, categories) {
             <div style="font-size: 1.4rem; font-weight: 800; color: var(--text-color);">+${fmtEur(modelUpside, {compact:true})}</div>
             <div style="font-size: 0.75rem; color: var(--text-muted, #6b7280); margin-top: 0.2rem;">{{ t('If each listing sold at the highest price that exact model has ever been listed at') }}</div>
         </div>
-        <div style="background: rgba(20,184,166,0.08); border-left: 3px solid #14b8a6; padding: 0.75rem 1rem; border-radius: 8px;">
-            <div style="font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.5px; color: #0d9488; font-weight: 700;">{{ t('Category Max Upside') }}</div>
-            <div style="font-size: 1.4rem; font-weight: 800; color: var(--text-color);">+${fmtEur(catUpside, {compact:true})}</div>
-            <div style="font-size: 0.75rem; color: var(--text-muted, #6b7280); margin-top: 0.2rem;">{{ t('If every listing sold at the highest price its entire category has ever seen') }}</div>
-        </div>
         <div style="background: rgba(245,158,11,0.08); border-left: 3px solid #f59e0b; padding: 0.75rem 1rem; border-radius: 8px;">
             <div style="font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.5px; color: #f59e0b; font-weight: 700;">{{ t('Haggling Max') }}</div>
             <div style="font-size: 1.4rem; font-weight: 800; color: var(--text-color);">+${fmtEur(haggling, {compact:true})}</div>
-            <div style="font-size: 0.75rem; color: var(--text-muted, #6b7280); margin-top: 0.2rem;">{{ t('Haggle each listing down to its category minimum, then resell at the maximum') }}</div>
+            <div style="font-size: 0.75rem; color: var(--text-muted, #6b7280); margin-top: 0.2rem;">{{ t('Haggle each listing down to its model\u2019s all-time minimum, then resell at its maximum') }}</div>
         </div>
     `;
 }
@@ -1101,7 +1182,7 @@ async function _dashLoadRun() {
             }
         }
         renderDashFilterBar(state, data);
-        renderHero(data.totals);
+        renderHero(data.totals, data.categories);
         renderProfitScenarios(data.totals, data.categories);
         renderCategoryBreakdown(data.categories);
         renderMarketShare(data.categories);

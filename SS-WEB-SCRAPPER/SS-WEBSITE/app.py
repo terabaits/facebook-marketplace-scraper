@@ -843,7 +843,6 @@ _DASH_CACHE_LOCK = threading.Lock()
 
 
 @app.route('/api/dashboard-summary')
-@cache_control(max_age=30)
 def get_dashboard_summary():
     """Dashboard summary. The full SQL touches the entire listings +
     price_history tables and takes ~2s; rapid chip clicks would otherwise
@@ -1060,28 +1059,31 @@ def _dashboard_summary_impl():
             # full database totals. Without the filter clause, a
             # model-filtered view would show 83 active listings
             # even when only 5 listings match that model.
+            # NOTE: table aliased as `l` because model_filter_sql
+            # references `l.matched_cpu_id` (etc.) — the other
+            # queries in this file use the same convention.
             cursor.execute(f"""
                 SELECT
                     COUNT(*) AS total_listings,
-                    COUNT(*) FILTER (WHERE is_active) AS active_listings,
-                    COUNT(DISTINCT category) AS categories_with_listings,
-                    ROUND(AVG(price_eur)::numeric, 2) AS avg_price,
-                    ROUND(SUM(price_eur) FILTER (WHERE is_active)::numeric, 2) AS active_value
-                FROM listings
-                WHERE category IN {cats_in_list} {model_filter_sql}
-                  AND listing_id NOT IN (SELECT listing_id FROM flagged_listings)
+                    COUNT(*) FILTER (WHERE l.is_active) AS active_listings,
+                    COUNT(DISTINCT l.category) AS categories_with_listings,
+                    ROUND(AVG(l.price_eur)::numeric, 2) AS avg_price,
+                    ROUND(SUM(l.price_eur) FILTER (WHERE l.is_active)::numeric, 2) AS active_value
+                FROM listings l
+                WHERE l.category IN {cats_in_list} {model_filter_sql}
+                  AND l.listing_id NOT IN (SELECT listing_id FROM flagged_listings)
                   AND (
-                      matched_cpu_id IS NOT NULL OR
-                      matched_gpu_id IS NOT NULL OR
-                      matched_ram_id IS NOT NULL OR
-                      matched_ssd_id IS NOT NULL OR
-                      matched_psu_id IS NOT NULL OR
-                      matched_case_id IS NOT NULL OR
-                      matched_camera_id IS NOT NULL OR
-                      matched_lens_id IS NOT NULL OR
-                      matched_console_id IS NOT NULL OR
-                      monitor_model_id IS NOT NULL OR
-                      motherboard_model_id IS NOT NULL
+                      l.matched_cpu_id IS NOT NULL OR
+                      l.matched_gpu_id IS NOT NULL OR
+                      l.matched_ram_id IS NOT NULL OR
+                      l.matched_ssd_id IS NOT NULL OR
+                      l.matched_psu_id IS NOT NULL OR
+                      l.matched_case_id IS NOT NULL OR
+                      l.matched_camera_id IS NOT NULL OR
+                      l.matched_lens_id IS NOT NULL OR
+                      l.matched_console_id IS NOT NULL OR
+                      l.monitor_model_id IS NOT NULL OR
+                      l.motherboard_model_id IS NOT NULL
                   )
             """)
             totals = dict(cursor.fetchone())
@@ -1189,8 +1191,10 @@ def _dashboard_summary_impl():
                 ) ph ON true
                 WHERE l.is_active = true
                   AND l.category IN {cats_in_list} {model_filter_sql}
+                  AND l.price_eur > ph.price_eur
+                  AND l.listing_id NOT IN (SELECT listing_id FROM flagged_listings)
                 ORDER BY (l.price_eur - ph.price_eur) DESC
-                LIMIT 5
+                LIMIT 10
             """)
             top_rises = [
                 {
@@ -1374,22 +1378,23 @@ def _dashboard_summary_impl():
             # if they bought and resold at the model's all-time max.
             cursor.execute(f"""
                 WITH model_agg AS (
-                    SELECT 'gpu' AS category, matched_gpu_id::text AS model_id, MAX(price_eur) AS model_max
+                    SELECT 'gpu' AS category, matched_gpu_id::text AS model_id, MAX(price_eur) AS model_max, MIN(price_eur) AS model_min
                     FROM listings WHERE matched_gpu_id IS NOT NULL AND price_eur > 0 GROUP BY matched_gpu_id
-                    UNION ALL SELECT 'cpu', matched_cpu_id::text, MAX(price_eur) FROM listings WHERE matched_cpu_id IS NOT NULL AND price_eur > 0 GROUP BY matched_cpu_id
-                    UNION ALL SELECT 'ram', matched_ram_id::text, MAX(price_eur) FROM listings WHERE matched_ram_id IS NOT NULL AND price_eur > 0 GROUP BY matched_ram_id
-                    UNION ALL SELECT 'ssd', matched_ssd_id::text, MAX(price_eur) FROM listings WHERE matched_ssd_id IS NOT NULL AND price_eur > 0 GROUP BY matched_ssd_id
-                    UNION ALL SELECT 'psu', matched_psu_id::text, MAX(price_eur) FROM listings WHERE matched_psu_id IS NOT NULL AND price_eur > 0 GROUP BY matched_psu_id
-                    UNION ALL SELECT 'case', matched_case_id::text, MAX(price_eur) FROM listings WHERE matched_case_id IS NOT NULL AND price_eur > 0 GROUP BY matched_case_id
-                    UNION ALL SELECT 'lens', matched_lens_id, MAX(price_eur) FROM listings WHERE matched_lens_id IS NOT NULL AND price_eur > 0 GROUP BY matched_lens_id
-                    UNION ALL SELECT 'camera', matched_camera_id::text, MAX(price_eur) FROM listings WHERE matched_camera_id IS NOT NULL AND price_eur > 0 GROUP BY matched_camera_id
-                    UNION ALL SELECT 'console', matched_console_id::text, MAX(price_eur) FROM listings WHERE matched_console_id IS NOT NULL AND price_eur > 0 GROUP BY matched_console_id
-                    UNION ALL SELECT 'monitor', monitor_model_id::text, MAX(price_eur) FROM listings WHERE monitor_model_id IS NOT NULL AND price_eur > 0 GROUP BY monitor_model_id
-                    UNION ALL SELECT 'motherboard', motherboard_model_id::text, MAX(price_eur) FROM listings WHERE motherboard_model_id IS NOT NULL AND price_eur > 0 GROUP BY motherboard_model_id
+                    UNION ALL SELECT 'cpu', matched_cpu_id::text, MAX(price_eur), MIN(price_eur) FROM listings WHERE matched_cpu_id IS NOT NULL AND price_eur > 0 GROUP BY matched_cpu_id
+                    UNION ALL SELECT 'ram', matched_ram_id::text, MAX(price_eur), MIN(price_eur) FROM listings WHERE matched_ram_id IS NOT NULL AND price_eur > 0 GROUP BY matched_ram_id
+                    UNION ALL SELECT 'ssd', matched_ssd_id::text, MAX(price_eur), MIN(price_eur) FROM listings WHERE matched_ssd_id IS NOT NULL AND price_eur > 0 GROUP BY matched_ssd_id
+                    UNION ALL SELECT 'psu', matched_psu_id::text, MAX(price_eur), MIN(price_eur) FROM listings WHERE matched_psu_id IS NOT NULL AND price_eur > 0 GROUP BY matched_psu_id
+                    UNION ALL SELECT 'case', matched_case_id::text, MAX(price_eur), MIN(price_eur) FROM listings WHERE matched_case_id IS NOT NULL AND price_eur > 0 GROUP BY matched_case_id
+                    UNION ALL SELECT 'lens', matched_lens_id, MAX(price_eur), MIN(price_eur) FROM listings WHERE matched_lens_id IS NOT NULL AND price_eur > 0 GROUP BY matched_lens_id
+                    UNION ALL SELECT 'camera', matched_camera_id::text, MAX(price_eur), MIN(price_eur) FROM listings WHERE matched_camera_id IS NOT NULL AND price_eur > 0 GROUP BY matched_camera_id
+                    UNION ALL SELECT 'console', matched_console_id::text, MAX(price_eur), MIN(price_eur) FROM listings WHERE matched_console_id IS NOT NULL AND price_eur > 0 GROUP BY matched_console_id
+                    UNION ALL SELECT 'monitor', monitor_model_id::text, MAX(price_eur), MIN(price_eur) FROM listings WHERE monitor_model_id IS NOT NULL AND price_eur > 0 GROUP BY monitor_model_id
+                    UNION ALL SELECT 'motherboard', motherboard_model_id::text, MAX(price_eur), MIN(price_eur) FROM listings WHERE motherboard_model_id IS NOT NULL AND price_eur > 0 GROUP BY motherboard_model_id
                 ),
                 per_listing AS (
                     SELECT l.listing_id, l.title, l.category, l.price_eur, l.image_url, l.listing_url,
-                           ma.model_max, (ma.model_max - l.price_eur) AS upside_eur
+                           ma.model_max, (ma.model_max - l.price_eur) AS upside_eur,
+                           ma.model_min, (ma.model_max - ma.model_min) AS haggling_eur
                     FROM listings l
                     JOIN model_agg ma ON ma.category = l.category
                         AND (
@@ -1409,12 +1414,18 @@ def _dashboard_summary_impl():
                       AND l.listing_id NOT IN (SELECT listing_id FROM flagged_listings)
                 )
                 SELECT category,
-                       ROUND(SUM(GREATEST(upside_eur, 0))::numeric, 2) AS model_upside
+                       ROUND(SUM(GREATEST(upside_eur, 0))::numeric, 2) AS model_upside,
+                       ROUND(SUM(GREATEST(haggling_eur, 0))::numeric, 2) AS model_haggling
                 FROM per_listing
                 GROUP BY category
             """)
-            model_upside_by_cat = {r["category"]: float(r["model_upside"] or 0) for r in cursor.fetchall()}
+            model_upside_by_cat = {}
+            model_haggling_by_cat = {}
+            for r in cursor.fetchall():
+                model_upside_by_cat[r["category"]] = float(r["model_upside"] or 0)
+                model_haggling_by_cat[r["category"]] = float(r["model_haggling"] or 0)
             total_model_upside = sum(model_upside_by_cat.values())
+            total_model_haggling = sum(model_haggling_by_cat.values())
 
             # === Top 10 model opportunities: biggest per-model haggling potential
             # (max_ever - min_ever for each individual model). These are the
@@ -1448,7 +1459,7 @@ def _dashboard_summary_impl():
                 SELECT category, model_id, model_max, model_min, n,
                        (model_max - model_min) AS spread
                 FROM model_agg
-                WHERE n >= 2
+                WHERE n >= 2 AND category IN {cats_in_list}
                 ORDER BY spread DESC
                 LIMIT 10
             """)
@@ -1500,16 +1511,12 @@ def _dashboard_summary_impl():
                     (ph.price_eur - l.price_eur) AS drop_eur,
                     CASE WHEN ph.price_eur > 0
                          THEN ROUND(((ph.price_eur - l.price_eur) / ph.price_eur * 100)::numeric, 1)
-                         ELSE 0 END AS drop_pct,
-                    ph.recorded_at
+                         ELSE 0 END AS drop_pct
                 FROM listings l
                 JOIN LATERAL (
-                    SELECT price_eur, recorded_at
+                    SELECT MAX(ph.price_eur) AS price_eur
                     FROM price_history ph
                     WHERE ph.listing_id = l.listing_id
-                      AND ph.recorded_at >= NOW() - INTERVAL '30 days'
-                    ORDER BY recorded_at DESC
-                    LIMIT 1
                 ) ph ON true
                 WHERE l.is_active = true
                   AND l.category IN {cats_in_list} {model_filter_sql}
@@ -1543,7 +1550,7 @@ def _dashboard_summary_impl():
                     "drop_pct": float(r.get("drop_pct") or 0),
                     "image_url": r.get("image_url"),
                     "listing_url": r.get("listing_url"),
-                    "recorded_at": r["recorded_at"].isoformat() if r.get("recorded_at") else None,
+                    "recorded_at": None,
                 })
 
             # === Lifetime stats: total ever listed, currently delisted, delist rate ===
@@ -1555,14 +1562,14 @@ def _dashboard_summary_impl():
                     COUNT(*) FILTER (WHERE NOT is_active) AS lifetime_delisted,
                     COUNT(*) FILTER (WHERE is_active)  AS currently_active,
                     ROUND((COUNT(*) FILTER (WHERE NOT is_active)::numeric / GREATEST(COUNT(*), 1) * 100), 1) AS delist_rate
-                FROM listings
-                WHERE category IN {cats_in_list} {model_filter_sql}
+                FROM listings l
+                WHERE l.category IN {cats_in_list} {model_filter_sql}
             """)
             lifetime = dict(cursor.fetchone())
 
             # Rollup totals
             total_upside = sum(c["upside_max"] for c in categories)
-            total_haggling = sum(c["haggling_max"] for c in categories)
+            total_haggling = total_model_haggling
             total_active_value = sum(c["active_value"] for c in categories)
             biggest_deal = top_deals[0] if top_deals else None
             biggest_drop = top_drops[0] if top_drops else None
@@ -1576,6 +1583,7 @@ def _dashboard_summary_impl():
                 c["avg_model_min"] = ms.get("avg_model_min", 0)
                 c["haggling_potential"] = ms.get("haggling_potential", 0)
                 c["model_upside"] = model_upside_by_cat.get(c["category"], 0)
+                c["haggling_max"] = model_haggling_by_cat.get(c["category"], 0)
 
             return jsonify({
                 "totals": {
@@ -1587,7 +1595,7 @@ def _dashboard_summary_impl():
                     "upside_max": round(total_upside, 2),
                     "model_upside_max": round(total_model_upside, 2),
                     "haggling_max": round(total_haggling, 2),
-                    "upside_per_listing": round(total_upside / max(int(totals.get("active_listings") or 0), 1), 2),
+                    "upside_per_listing": round(total_model_upside / max(int(totals.get("active_listings") or 0), 1), 2),
                     "lifetime_total": int(lifetime.get("lifetime_total") or 0),
                     "lifetime_delisted": int(lifetime.get("lifetime_delisted") or 0),
                     "delist_rate": float(lifetime.get("delist_rate") or 0),
@@ -2351,12 +2359,14 @@ def get_cpus():
                 query += " AND c.processor_number ILIKE %s"
                 params.append(f'%{series_filter}%')
 
-            # Add model filter
+            # Add model filter. Exact match (ILIKE without wildcards) so
+            # picking "Intel Core i7-6700" doesn't also pull in i7-6700K /
+            # i7-6700T / i7-6700HQ / i7-6700TE, which are separate models.
             model_filter = request.args.get('model', '')
             if model_filter:
                 query += " AND (c.cpu_name ILIKE %s OR c.processor_number ILIKE %s)"
-                params.append(f'%{model_filter}%')
-                params.append(f'%{model_filter}%')
+                params.append(model_filter)
+                params.append(model_filter)
 
             # Add source filter
             if source_filter and source_filter.lower() != 'all':

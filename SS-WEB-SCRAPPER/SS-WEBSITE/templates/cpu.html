@@ -13,6 +13,14 @@
     100% { transform: rotate(360deg); }
 }
 
+/* CPU listings section: header (h2) has 0rem top margin, filter row has 1rem top margin */
+.component-filters-header {
+    margin: 0 0 0 0 !important;
+}
+.component-filters-section {
+    margin-top: 1rem !important;
+}
+
 /* Column Settings Button in Header */
 .column-settings-btn {
     background: rgba(255,255,255,0.2);
@@ -165,9 +173,181 @@ th[data-col="col-actions"].actions-collapsed .header-content {
 /* Description box styling for dark mode */
 [data-theme="dark"] .description-box {
     background: var(--card-bg) !important;
-    color: var(--text-color) !important;
+    color: #e5e7eb !important;
     border-color: var(--accent-color, #667eea) !important;
 }
+[data-theme="dark"] .description-box * { color: inherit; }
+
+/* Pretty scrollbar for modal content (WebKit + Firefox) */
+.modal::-webkit-scrollbar,
+.description-box::-webkit-scrollbar,
+.history-chart-toolbar::-webkit-scrollbar,
+.listing-modal-body::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+.modal::-webkit-scrollbar-track,
+.description-box::-webkit-scrollbar-track {
+    background: transparent;
+}
+.modal::-webkit-scrollbar-thumb,
+.description-box::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    border-radius: 10px;
+    border: 2px solid transparent;
+    background-clip: padding-box;
+    transition: background 0.2s;
+}
+.modal::-webkit-scrollbar-thumb:hover,
+.description-box::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(135deg, #4f46e5, #5b21b6);
+    background-clip: padding-box;
+    border: 2px solid transparent;
+}
+.modal,
+.description-box {
+    scrollbar-width: thin;
+    scrollbar-color: #667eea transparent;
+}
+[data-theme="dark"] .modal,
+[data-theme="dark"] .description-box {
+    scrollbar-color: #a78bfa transparent;
+}
+[data-theme="dark"] .modal::-webkit-scrollbar-thumb,
+[data-theme="dark"] .description-box::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, #a78bfa, #6d28d9);
+    background-clip: padding-box;
+    border: 2px solid transparent;
+}
+
+/* === Market Price Analysis card (CPU popup) === */
+.market-analysis-card {
+    background: linear-gradient(135deg, rgba(99,102,241,0.06), rgba(168,85,247,0.06));
+    padding: 1.1rem 1.1rem 1rem 1.1rem;
+    border-radius: 12px;
+    margin-bottom: 1.5rem;
+    border: 1px solid rgba(99,102,241,0.18);
+    border-left: 4px solid var(--accent-color, #667eea);
+    box-shadow: 0 2px 6px rgba(99,102,241,0.06);
+}
+.market-analysis-title {
+    margin: 0 0 0.85rem 0;
+    color: var(--accent-color, #667eea);
+    font-size: 1.05rem;
+    font-weight: 700;
+    letter-spacing: 0.2px;
+}
+.market-analysis-sub {
+    margin: 0;
+    color: #6b7280;
+    font-size: 0.875rem;
+}
+.market-unicorn-banner {
+    background: linear-gradient(135deg, #9333ea, #c084fc);
+    color: white;
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 600;
+    box-shadow: 0 2px 6px rgba(147,51,234,0.25);
+}
+.market-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.6rem;
+    margin-bottom: 0.5rem;
+}
+.market-stat-cell {
+    background: var(--modal-stat-bg, #ffffff);
+    padding: 0.7rem 0.5rem;
+    border-radius: 8px;
+    text-align: center;
+    border: 1px solid rgba(99,102,241,0.12);
+    transition: transform 0.15s, box-shadow 0.15s;
+}
+.market-stat-cell:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 3px 8px rgba(99,102,241,0.12);
+}
+.market-stat-label {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    color: #6b7280;
+    letter-spacing: 0.5px;
+    margin-bottom: 0.3rem;
+    font-weight: 600;
+}
+.market-stat-value {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--stat-value-color, #1f2937);
+}
+[data-theme="dark"] .market-stat-cell { background: rgba(255,255,255,0.04); border-color: rgba(255,255,255,0.08); }
+[data-theme="dark"] .market-stat-value { color: #f3f4f6; }
+[data-theme="dark"] .market-analysis-card { background: linear-gradient(135deg, rgba(99,102,241,0.10), rgba(168,85,247,0.10)); }
+[data-theme="dark"] .market-analysis-sub { color: #9ca3af; }
+[data-theme="dark"] .market-stat-label { color: #9ca3af; }
+
+.market-percentile {
+    margin-top: 0.85rem;
+    padding: 0.85rem 1rem;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    border: 1px solid;
+    background-image: linear-gradient(135deg, rgba(255,255,255,0.4), rgba(255,255,255,0));
+}
+.market-percentile.cheaper { background-color: #ecfdf5; border-color: #86efac; }
+.market-percentile.pricier { background-color: #fef2f2; border-color: #fca5a5; }
+[data-theme="dark"] .market-percentile.cheaper { background-color: rgba(34,197,94,0.12); border-color: rgba(34,197,94,0.4); }
+[data-theme="dark"] .market-percentile.pricier { background-color: rgba(239,68,68,0.12); border-color: rgba(239,68,68,0.4); }
+.market-percentile-info { flex: 1; }
+.market-percentile-headline {
+    font-size: 0.95rem;
+    color: #111827;
+    font-weight: 700;
+}
+.market-percentile-detail {
+    font-size: 0.75rem;
+    color: #4b5563;
+    margin-top: 3px;
+}
+[data-theme="dark"] .market-percentile-headline { color: #f3f4f6; }
+[data-theme="dark"] .market-percentile-detail { color: #9ca3af; }
+.market-percentile-pct {
+    font-size: 1.65rem;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+}
+
+/* === Price history table (CPU popup) — taller for long histories === */
+.price-history-scroll {
+    max-height: 360px;
+    overflow-y: auto;
+    border: 1px solid rgba(99,102,241,0.15);
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
+}
+.price-history-table thead th {
+    position: sticky;
+    top: 0;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    z-index: 1;
+}
+.price-history-table tbody tr:nth-child(even) { background: rgba(99,102,241,0.04); }
+[data-theme="dark"] .price-history-table thead th { background: linear-gradient(135deg, #4f46e5, #7c3aed); }
+[data-theme="dark"] .price-history-table tbody tr:nth-child(even) { background: rgba(255,255,255,0.03); }
+.price-history-scroll::-webkit-scrollbar { width: 8px; }
+.price-history-scroll::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    border-radius: 8px;
+}
+.price-history-scroll { scrollbar-width: thin; scrollbar-color: #667eea transparent; }
 
 /* Header cell with settings button */
 th.column-header {
@@ -333,13 +513,33 @@ table thead th {
     border: 1px solid var(--card-border);
     transition: box-shadow 0.2s, transform 0.15s, border-color 0.2s, opacity 0.2s;
     position: relative;
-    resize: both;
+    /* CSS native resize is disabled — the custom pointer-based handler in attachResizeListeners()
+       gives a smoother experience with a live preview ghost and a "snap to grid" feel. */
+    resize: none;
     overflow: auto;
-    min-width: 180px;
-    min-height: 140px;
+    min-width: 220px;
+    min-height: 260px;
     max-width: 100%;
     align-self: start;
     justify-self: start;
+}
+
+/* Live preview rectangle shown while the user is dragging the resize handle */
+.widget-resize-preview {
+    position: fixed;
+    border: 2px dashed #667eea;
+    background: rgba(102, 126, 234, 0.08);
+    pointer-events: none;
+    z-index: 10002;
+    border-radius: 8px;
+    display: none;
+}
+.widget-resize-preview.active { display: block; }
+
+/* Snapping animation after resize ends */
+.widget-card.resize-snap {
+    transition: width 0.18s ease-out, height 0.18s ease-out, box-shadow 0.18s ease-out;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.25);
 }
 
 /* Ensure the resize grip doesn't overlap the action buttons */
@@ -692,6 +892,246 @@ body.drag-mode-active .drag-mode-hint {
     background: rgba(102,126,234,0.25);
 }
 
+/* === Fix #1: Modal title (h3 in .modal-header) is unreadable in dark mode === */
+.modal-header h3 {
+    color: var(--text-color, #1f2937);
+    margin: 0;
+    font-size: 1.15rem;
+    font-weight: 600;
+}
+[data-theme="dark"] .modal-header h3 { color: #f3f4f6 !important; }
+
+/* === Fix #2: Center all column text + headers in the listing list === */
+#listings-table th,
+#listings-table td {
+    text-align: center;
+    vertical-align: middle;
+}
+/* Image cell stays centered but with no extra left/right padding */
+#listings-table td[data-col="col-image"] {
+    text-align: center;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+}
+/* Allow long titles to wrap nicely (left-aligned, single line OK) */
+#listings-table td[data-col="col-title"] {
+    text-align: left;
+    max-width: 320px;
+    white-space: normal;
+    word-wrap: break-word;
+}
+
+/* === Fix #3: Popup box color scheme — replace hardcoded colors with theme vars === */
+.popup-cpu-card {
+    background: var(--card-bg, #ffffff);
+    border: 1px solid var(--card-border, rgba(99,102,241,0.12));
+    border-radius: 12px;
+    padding: 0;
+    margin-bottom: 1.25rem;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+}
+[data-theme="dark"] .popup-cpu-card {
+    background: #1e293b;
+    border-color: rgba(255,255,255,0.08);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+}
+.popup-cpu-left {
+    padding: 1rem 1.25rem;
+    border-right: 1px solid var(--card-border, rgba(99,102,241,0.10));
+}
+[data-theme="dark"] .popup-cpu-left {
+    border-right-color: rgba(255,255,255,0.08);
+}
+.popup-cpu-right {
+    padding: 1rem 1.25rem;
+    background: rgba(102,126,234,0.04);
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+}
+[data-theme="dark"] .popup-cpu-right {
+    background: rgba(99,102,241,0.08);
+}
+.popup-section-title {
+    margin: 0 0 0.65rem 0;
+    color: var(--accent-color, #667eea);
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-weight: 600;
+}
+[data-theme="dark"] .popup-section-title { color: #a5b4fc; }
+.popup-detail-row {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.85rem;
+}
+.popup-detail-icon { opacity: 0.65; font-size: 0.95rem; }
+.popup-detail-label {
+    color: var(--text-secondary, #6b7280);
+    min-width: 62px;
+    font-weight: 500;
+}
+.popup-detail-value {
+    color: var(--text-color, #0f172a);
+    font-weight: 500;
+}
+[data-theme="dark"] .popup-detail-label { color: #94a3b8; }
+[data-theme="dark"] .popup-detail-value { color: #f1f5f9; }
+.popup-meta-label {
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    color: var(--text-secondary, #6b7280);
+    letter-spacing: 0.4px;
+    font-weight: 600;
+}
+[data-theme="dark"] .popup-meta-label { color: #94a3b8; }
+.popup-meta-value {
+    color: var(--text-color, #0f172a);
+    font-weight: 500;
+}
+[data-theme="dark"] .popup-meta-value { color: #f1f5f9; }
+.popup-current-price {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--primary, #4f46e5);
+    line-height: 1.1;
+}
+[data-theme="dark"] .popup-current-price { color: #a5b4fc; }
+
+/* === Fix #5: Listing-title banner inside the modal === */
+.listing-title-banner {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    padding: 0.9rem 1.1rem;
+    background: linear-gradient(135deg, rgba(99,102,241,0.10), rgba(168,85,247,0.10));
+    border: 1px solid rgba(99,102,241,0.20);
+    border-radius: 10px;
+    margin-bottom: 1.1rem;
+}
+[data-theme="dark"] .listing-title-banner {
+    background: linear-gradient(135deg, rgba(99,102,241,0.18), rgba(168,85,247,0.18));
+    border-color: rgba(168,85,247,0.30);
+}
+.listing-title-icon {
+    font-size: 1.6rem;
+    line-height: 1;
+    flex-shrink: 0;
+}
+.listing-title-text {
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--text-color, #0f172a);
+    line-height: 1.3;
+    flex: 1;
+    word-wrap: break-word;
+}
+[data-theme="dark"] .listing-title-text { color: #f1f5f9; }
+.listing-title-actions {
+    display: flex;
+    gap: 0.5rem;
+    flex-shrink: 0;
+}
+.listing-title-id {
+    font-size: 0.7rem;
+    font-family: ui-monospace, SFMono-Regular, monospace;
+    color: var(--text-secondary, #6b7280);
+    background: rgba(99,102,241,0.08);
+    padding: 0.15rem 0.5rem;
+    border-radius: 4px;
+    border: 1px solid rgba(99,102,241,0.15);
+    align-self: center;
+}
+[data-theme="dark"] .listing-title-id {
+    background: rgba(255,255,255,0.06);
+    border-color: rgba(255,255,255,0.10);
+    color: #94a3b8;
+}
+
+/* === Fix #4: Neon gradient for "market-percentile cheaper" === */
+.market-percentile.cheaper {
+    background: linear-gradient(135deg, rgba(34,197,94,0.18), rgba(132,204,22,0.10));
+    border: 1px solid rgba(34,197,94,0.55);
+    box-shadow: 0 0 16px rgba(34,197,94,0.18), inset 0 0 12px rgba(132,204,22,0.08);
+}
+[data-theme="dark"] .market-percentile.cheaper {
+    background: linear-gradient(135deg, rgba(34,197,94,0.22), rgba(132,204,22,0.12));
+    border-color: rgba(74,222,128,0.7);
+    box-shadow: 0 0 22px rgba(34,197,94,0.25), inset 0 0 14px rgba(132,204,22,0.10);
+}
+.market-percentile.cheaper .market-percentile-pct {
+    color: #16a34a;
+    text-shadow: 0 0 8px rgba(34,197,94,0.5);
+}
+[data-theme="dark"] .market-percentile.cheaper .market-percentile-pct {
+    color: #4ade80;
+    text-shadow: 0 0 10px rgba(74,222,128,0.6);
+}
+.market-percentile.cheaper .market-percentile-headline {
+    color: #15803d;
+    font-weight: 700;
+}
+[data-theme="dark"] .market-percentile.cheaper .market-percentile-headline {
+    color: #86efac;
+}
+.market-percentile.cheaper .market-percentile-detail {
+    color: #166534;
+}
+[data-theme="dark"] .market-percentile.cheaper .market-percentile-detail {
+    color: #a7f3d0;
+}
+.market-percentile.pricier {
+    background: linear-gradient(135deg, rgba(239,68,68,0.18), rgba(244,114,182,0.10));
+    border: 1px solid rgba(239,68,68,0.55);
+    box-shadow: 0 0 16px rgba(239,68,68,0.18), inset 0 0 12px rgba(244,114,182,0.08);
+}
+[data-theme="dark"] .market-percentile.pricier {
+    background: linear-gradient(135deg, rgba(239,68,68,0.22), rgba(244,114,182,0.12));
+    border-color: rgba(248,113,113,0.7);
+    box-shadow: 0 0 22px rgba(239,68,68,0.25), inset 0 0 14px rgba(244,114,182,0.10);
+}
+.market-percentile.pricier .market-percentile-pct {
+    color: #dc2626;
+    text-shadow: 0 0 8px rgba(239,68,68,0.5);
+}
+[data-theme="dark"] .market-percentile.pricier .market-percentile-pct {
+    color: #f87171;
+    text-shadow: 0 0 10px rgba(248,113,113,0.6);
+}
+.market-percentile.pricier .market-percentile-headline { color: #b91c1c; font-weight: 700; }
+[data-theme="dark"] .market-percentile.pricier .market-percentile-headline { color: #fca5a5; }
+.market-percentile.pricier .market-percentile-detail { color: #991b1b; }
+[data-theme="dark"] .market-percentile.pricier .market-percentile-detail { color: #fecaca; }
+
+/* === Fix #6: Flag button styling (used in popup + table) === */
+.flag-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.4rem 0.7rem;
+    font-size: 0.82rem;
+    font-weight: 500;
+    border: 1px solid #f59e0b;
+    background: linear-gradient(135deg, #f59e0b, #ea580c);
+    color: white;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: transform 0.1s, box-shadow 0.15s;
+}
+.flag-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 10px rgba(245,158,11,0.3);
+}
+.flag-btn.flagged {
+    background: linear-gradient(135deg, #16a34a, #15803d);
+    border-color: #16a34a;
+    cursor: default;
+}
+.flag-btn-icon { font-size: 0.95rem; line-height: 1; }
+
 {% endblock %}
 
 {% block content %}
@@ -923,8 +1363,8 @@ body.drag-mode-active .drag-mode-hint {
 
 <div class="section">
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
-        <h2>{{ t('CPU Listings') }}</h2>
-        <div class="filters" style="margin: 0;">
+        <h2 class="component-filters-header">{{ t('CPU Listings') }}</h2>
+        <div class="filters component-filters-section" style="margin: 0;">
             <span style="font-weight: 600; margin-right: 0.5rem;">Filters:</span>
             <label>
                 <input type="checkbox" id="active-only" checked onchange="loadListings()">
@@ -1086,6 +1526,7 @@ function normalizeCpuImageUrl(url) {
 const defaultColumnOrder = [
     { id: 'col-image', label: 'Image' },
     { id: 'col-cpu', label: 'CPU', required: true },
+    { id: 'col-title', label: 'Title' },
     { id: 'col-cores', label: 'Cores/Threads' },
     { id: 'col-price', label: 'Price' },
     { id: 'col-price-perf', label: 'Price/Perf' },
@@ -1176,21 +1617,23 @@ function saveDiscoveredCpuModels() {
 }
 
 function computeCpuDealBadges(item) {
-    let dealBadge = '';
+    const badges = [];
 
     const isNewListing = item.is_new === true;
     if (isNewListing) {
-        dealBadge += `<span class="badge" style="background: #3b82f6; color: white; font-weight: bold;" title="New listing from current import!">🆕 NEW</span><br>`;
+        badges.push(`<span class="badge" style="background: #3b82f6; color: white; font-weight: bold;" title="New listing from current import!">🆕 NEW</span>`);
     }
     if (!isNewListing && item.price_stats && item.price_stats.below_avg) {
         const avgPrice = parseFloat(item.price_stats.avg);
         const currentPrice = item.price_eur;
         const savingsPct = ((avgPrice - currentPrice) / avgPrice * 100);
         if (savingsPct >= 15) {
-            dealBadge += `<span class="badge" style="background: #dc2626; color: white; font-weight: bold;" title="Price is ${savingsPct.toFixed(0)}% below average!">🔥 STEAL</span><br>`;
+            badges.push(`<span class="badge" style="background: #dc2626; color: white; font-weight: bold;" title="Price is ${savingsPct.toFixed(0)}% below average!">🔥 STEAL</span>`);
         }
     }
-    return dealBadge;
+    if (badges.length === 0) return '';
+    // Single-row flex container; the old code used <br> which forced each badge onto its own line.
+    return `<div class="deal-badge-row" style="display: flex; flex-direction: row; flex-wrap: wrap; gap: 4px; align-items: center;">${badges.join('')}</div>`;
 }
 
 // Toggle column visibility
@@ -1629,6 +2072,22 @@ function renderTableRow(item) {
                     <div style="font-weight: bold;">${cpuName}${sourceDotCPU}</div>
                     ${item.match_method ? `<div style="font-size: 0.85rem; margin-top: 0.25rem;"><span class="${confidenceClass}">${(confidence*100).toFixed(0)}% confidence</span></div>` : ''}
                 </td>`;
+            case 'col-title': {
+                // Clean the raw SS.COM title: strip "SS.COM ... Cena X €.," prefix and " - Sludinājumi" suffix.
+                const rawTitle = (item.title || '').trim();
+                const cleaned = rawTitle
+                    .replace(/^SS\.COM[^,]*,\s*Cena\s+[\d.,]+\s*€\.?,?\s*/i, '')
+                    .replace(/\s+-\s+Sludinājumi\s*$/i, '')
+                    .replace(/\s+-\s+Andele\s+Mandele\s*$/i, '')
+                    .trim() || rawTitle;
+                const shortTitle = cleaned.length > 80 ? cleaned.substring(0, 80) + '…' : cleaned;
+                return `<td data-col="col-title" class="${hiddenClass}" style="padding: 0.75rem; max-width: 320px; ${style}"
+                    title="${(item.title || '').replace(/"/g, '&quot;')}">
+                    <div style="font-size: 0.85rem; color: #374151; line-height: 1.35; word-wrap: break-word;">
+                        ${shortTitle}
+                    </div>
+                </td>`;
+            }
             case 'col-cores':
                 return `<td data-col="col-cores" class="${hiddenClass}" style="padding: 0.75rem; text-align: center; ${style}">${cores}</td>`;
             case 'col-price':
@@ -1674,15 +2133,17 @@ function renderTableRow(item) {
             case 'col-date':
                 return `<td data-col="col-date" class="${hiddenClass}" ${style}>${(item.date_posted || item.first_seen_at || item.created_at) ? new Date(item.date_posted || item.first_seen_at || item.created_at).toLocaleDateString() : 'N/A'}</td>`;
             case 'col-actions': {
-                // Keep a minimal gear placeholder in every Actions body cell so the column remains
-                // reachable when the Actions header is collapsed, but hide the action buttons.
+                // The per-row gear icon was removed on 2026-08-20 — too noisy.
+                // When the Actions column is hidden, the column itself is hidden
+                // entirely via .hidden-column (see toggleColumnVisibility), and
+                // reordering is available via the (now single) header gear
+                // (column-settings-btn in the Actions header — see below).
                 const isActionsHidden = !columnVisibility['col-actions'];
-                const cellPaddingStyle = isActionsHidden ? 'padding: 0.5rem; text-align: center;' : '';
                 const actionCellClass = isActionsHidden ? ' actions-collapsed' : '';
                 const displayStyle = isActionsHidden ? 'display: table-cell;' : '';
-                return `<td data-col="col-actions" class="${actionCellClass}" style="${style}${cellPaddingStyle}${displayStyle}">
+                return `<td data-col="col-actions" class="${actionCellClass}" style="${style}${displayStyle}">
                     ${isActionsHidden
-                        ? `<button class="column-settings-btn" onclick="event.stopPropagation(); toggleColumnSettings(event)" title="Column Settings" style="margin:0 auto; display:inline-flex;">⚙️</button>`
+                        ? ''  // No body content when hidden (the whole cell collapses)
                         : `<div style="display: flex; gap: 0.5rem; flex-wrap: wrap; justify-content: center;">
                             <button class="btn btn-small" onclick="event.stopPropagation(); openListingDetails('${item.listing_id}')">{{ t('Details') }}</button>
                             <button class="btn btn-small" onclick="event.stopPropagation(); showModelHistoryByListing('${item.listing_id}')">History</button>
@@ -2385,6 +2846,9 @@ async function loadListings() {
 
         let listingsWithHistory = await fetchPriceHistoryForListings(uniqueListings);
 
+        // Cache globally so openListingDetails() can read price_stats / model context for the popup.
+        window.allCpuListings = listingsWithHistory;
+
         loadDiscoveredCpuModels();
 
         // Defensive client-side sort: ensure the displayed order always matches
@@ -2514,10 +2978,22 @@ async function fetchPriceHistoryForListings(listings) {
 }
 
 function renderPriceDecreaseBadge(item) {
+    // Prefer the explicit flag from the API when available.
     if (item.has_price_decreased && item.price_changes && item.price_changes.length > 0) {
         const change = item.price_changes[0];
         if (change.change < 0) {
-            return `<span class="badge badge-success" title="Price dropped by €${Math.abs(change.change).toFixed(2)}">↓ Price Drop</span><br>`;
+            return `<span class="badge badge-success" title="Price dropped by €${Math.abs(change.change).toFixed(2)}">↓ €${Math.abs(change.change).toFixed(0)}</span><br>`;
+        }
+    }
+    // Fallback: derive from item.history (the historical price snapshots attached to the row).
+    // `item.history` is sorted newest → oldest. index 0 is the latest snapshot, index 1 is the prior.
+    if (Array.isArray(item.history) && item.history.length >= 2) {
+        const latest = Number(item.history[0].price_eur);
+        const prior = Number(item.history[1].price_eur);
+        const current = Number(item.price_eur);
+        if (current < prior && prior > 0) {
+            const drop = prior - current;
+            return `<span class="badge badge-success" title="Price dropped by €${drop.toFixed(2)} (was €${prior.toFixed(0)})">↓ €${drop.toFixed(0)}</span><br>`;
         }
     }
     return '';
@@ -2556,7 +3032,10 @@ async function openListingDetails(listingId) {
         const listingData = await listingResponse.json();
         const current = listingData.current || {};
 
-        document.getElementById('listing-title').textContent = current.title || 'Listing Details';
+        // The modal's h3 is a fixed "Listing Details" header. The actual
+        // title appears in the body via the listing-title-banner below
+        // (which also holds the Flag button + optional listing ID chip).
+        document.getElementById('listing-title').textContent = '📋 Listing Details';
 
         // Resolve image URL: prefer local download, fall back to original remote URL.
         // Normalize Windows backslashes from the DB so Flask's /images/<path:filename> route works.
@@ -2578,59 +3057,174 @@ async function openListingDetails(listingId) {
             const safeImageUrl = imageUrl.replace(/'/g, "\\'");
             const safeFallbackImageUrl = fallbackImageUrl.replace(/'/g, "\\'");
             html += `
-                <div style="margin-bottom: 1rem; text-align: center;">
+                <div style="margin-bottom: 1rem; text-align: center; max-height: 320px; overflow: hidden; display: flex; align-items: center; justify-content: center; background: var(--card-bg, #f8f9fa); border-radius: 8px; padding: 0.5rem;">
                     <img src="${imageUrl}" alt="${current.title || 'CPU listing'}"
-                         style="max-width: 100%; max-height: 70vh; border-radius: 8px; cursor: zoom-in; box-shadow: 0 2px 8px rgba(0,0,0,0.1);"
+                         style="max-width: 100%; max-height: 300px; width: auto; height: auto; object-fit: contain; border-radius: 8px; cursor: zoom-in; box-shadow: 0 2px 8px rgba(0,0,0,0.1);"
                          onerror="this.onerror=null; this.src='${safeFallbackImageUrl}';"
                          onclick="showImageModal('${safeImageUrl}', '${(current.title || '').replace(/'/g, "\\'")}')">
                 </div>
             `;
         }
 
-        // CPU-specific info
-        if (current.vendor || current.cpu_name || current.cores || current.threads || current.socket || current.processor_number) {
-            html += `
-                <div style="margin-bottom: 1.5rem; padding: 1rem; background: var(--modal-box-bg, #f8f9fa); border-radius: 8px; border-left: 4px solid var(--accent-color, #667eea);">
-                    <h4 style="margin-bottom: 0.75rem; color: var(--accent-color, #667eea);">CPU Details</h4>
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem;">
-                        ${current.vendor ? `<div><strong>Brand:</strong> ${current.vendor}</div>` : ''}
-                        ${current.cpu_name ? `<div><strong>Model:</strong> ${current.cpu_name}</div>` : ''}
-                        ${current.processor_number ? `<div><strong>Processor Number:</strong> ${current.processor_number}</div>` : ''}
-                        ${current.cores ? `<div><strong>Cores / Threads:</strong> ${current.cores}${current.threads ? ` / ${current.threads}` : ''}</div>` : ''}
-                        ${current.socket ? `<div><strong>Socket:</strong> ${current.socket}</div>` : ''}
-                    </div>
-                </div>
-            `;
+        // CPU-specific info + price/location/date/status — combined into one cohesive card
+        // with icons. CPU details appear ONCE (was previously duplicated).
+        const cpuDetailsPairs = [];
+        if (current.vendor) cpuDetailsPairs.push(['🧠', 'Brand', current.vendor]);
+        if (current.cpu_name) cpuDetailsPairs.push(['⚙️', 'Model', current.cpu_name]);
+        if (current.processor_number) cpuDetailsPairs.push(['#️⃣', 'Processor', current.processor_number]);
+        if (current.cores) cpuDetailsPairs.push(['🔲', 'Cores / Threads',
+            `${current.cores}${current.threads ? ' / ' + current.threads : ''}`]);
+        if (current.socket) cpuDetailsPairs.push(['🔌', 'Socket', current.socket]);
+        if (current.match_method) {
+            const conf = (current.confidence_score || 0) * 100;
+            const confClass = conf >= 70 ? 'confidence-high' : (conf >= 50 ? 'confidence-medium' : 'confidence-low');
+            cpuDetailsPairs.push(['🎯', 'Match',
+                `<span class="${confClass}">${conf.toFixed(0)}%</span>`]);
         }
 
-        // Price info grid
+        const isActive = current.is_active;
+        const priceRow = current.price_eur ? Number(current.price_eur).toFixed(2) : 'N/A';
+        const statusBadge = isActive
+            ? '<span style="color:#16a34a; font-weight:600;">● Active</span>'
+            : '<span style="color:#dc2626; font-weight:600;">● Inactive</span>';
+        const dateRow = current.date_posted
+            ? new Date(current.date_posted).toLocaleDateString('en-GB', {day: '2-digit', month: 'short', year: 'numeric'})
+            : 'N/A';
+        const locationRow = current.seller_location || 'N/A';
+
+        // Combined card: CPU details on left, key facts on right (uses
+        // theme-aware CSS classes — no more hardcoded #0f172a / #6b7280).
+        const flagId = (current.listing_id || '').replace(/'/g, "\\'").replace(/"/g, '&quot;');
+        const flagTitle = (current.title || '').replace(/'/g, "\\'").replace(/"/g, '&quot;');
+        const showListingId = localStorage.getItem('showListingId') === 'true';
+        const titleIdHtml = showListingId
+            ? `<span class="listing-title-id">${escapeHtml(current.listing_id || '')}</span>`
+            : '';
         html += `
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem;">
-                <div style="background: var(--modal-box-bg, #f8f9fa); padding: 1rem; border-radius: 8px;">
-                    <strong>Current Price:</strong> <span class="price" style="font-size: 1.25rem;">€${current.price_eur || 'N/A'}</span>
+            <div class="listing-title-banner">
+                <span class="listing-title-icon">🧠</span>
+                <span class="listing-title-text">${escapeHtml(current.title || 'Listing Details')}</span>
+                <div class="listing-title-actions">
+                    ${titleIdHtml}
+                    <button class="flag-btn" onclick="showFlagModalForListing('${flagId}', '${flagTitle}')" title="Flag this listing for review">
+                        <span class="flag-btn-icon">🚩</span> Flag
+                    </button>
                 </div>
-                <div style="background: var(--modal-box-bg, #f8f9fa); padding: 1rem; border-radius: 8px;">
-                    <strong>Location:</strong> ${current.seller_location || 'N/A'}
-                </div>
-                <div style="background: var(--modal-box-bg, #f8f9fa); padding: 1rem; border-radius: 8px;">
-                    <strong>Date:</strong> ${current.date_posted ? new Date(current.date_posted).toLocaleDateString() : 'N/A'}
-                </div>
-                <div style="background: var(--modal-box-bg, #f8f9fa); padding: 1rem; border-radius: 8px;">
-                    <strong>Status:</strong> ${current.is_active ? '<span style="color: #27ae60;">Active</span>' : '<span style="color: #e74c3c;">Inactive</span>'}
+            </div>
+            <div class="popup-cpu-card">
+                <div style="display: grid; grid-template-columns: 2fr 1.1fr; gap: 0;">
+                    <!-- LEFT: CPU Details -->
+                    <div class="popup-cpu-left">
+                        <h4 class="popup-section-title">CPU Details</h4>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.4rem 1rem; font-size: 0.85rem;">
+                            ${cpuDetailsPairs.map(([icon, label, value]) => `
+                                <div class="popup-detail-row">
+                                    <span class="popup-detail-icon">${icon}</span>
+                                    <span class="popup-detail-label">${label}:</span>
+                                    <span class="popup-detail-value">${value}</span>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                    <!-- RIGHT: Price / Location / Date / Status -->
+                    <div class="popup-cpu-right">
+                        <div>
+                            <div class="popup-meta-label">Current Price</div>
+                            <div class="popup-current-price">€${priceRow}</div>
+                        </div>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.4rem; font-size: 0.78rem;">
+                            <div>
+                                <div class="popup-meta-label">Location</div>
+                                <div class="popup-meta-value">📍 ${escapeHtml(locationRow)}</div>
+                            </div>
+                            <div>
+                                <div class="popup-meta-label">Posted</div>
+                                <div class="popup-meta-value">📅 ${dateRow}</div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="popup-meta-label">Status</div>
+                            <div style="font-size: 0.85rem;">${statusBadge}</div>
+                        </div>
+                    </div>
                 </div>
             </div>
         `;
 
-        // CPU-specific info
-        if (current.cpu_name) {
-            html += `
-                <div style="background: var(--modal-highlight-bg, #e8f0ff); padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
-                    <strong>CPU:</strong> ${current.producer || ''} ${current.cpu_name}<br>
-                    ${current.cores ? `<strong>Cores/Threads:</strong> ${current.cores}/${current.threads || '?'}<br>` : ''}
-                    ${current.match_method ? `<strong>Match Confidence:</strong> <span class="${(current.confidence_score || 0) >= 0.70 ? 'confidence-high' : ((current.confidence_score || 0) >= 0.50 ? 'confidence-medium' : 'confidence-low')}">${((current.confidence_score || 0) * 100).toFixed(0)}%</span>` : ''}
-                </div>
-            `;
+        // 📊 Market Price Analysis — look up the cached row from window.allCpuListings
+        // so the popup mirrors what the user sees in the table (avg / range / percentile / unicorn).
+        const cachedRow = (window.allCpuListings || []).find(r => r.listing_id === listingId) || {};
+        const stats = cachedRow.price_stats;
+        const isUnicorn = cachedRow.is_unicorn;
+        // Build a clean model name; cpu_name on this listing already
+        // includes the brand ("AMD Ryzen 9 7900"), so adding vendor="AMD"
+        // would produce "AMD AMD Ryzen 9 7900". Strip the duplicate.
+        const _vendor = (current.vendor || '').trim();
+        const _cpuName = (current.cpu_name || '').trim();
+        let modelName;
+        if (_cpuName && _vendor && _cpuName.toLowerCase().startsWith(_vendor.toLowerCase())) {
+            modelName = _cpuName;
+        } else {
+            modelName = `${_vendor} ${_cpuName}`.trim() || 'this model';
         }
+        html += `
+            <div class="market-analysis-card">
+                <h4 class="market-analysis-title">📊 Market Price Analysis</h4>
+                ${isUnicorn ? `
+                    <div class="market-unicorn-banner">
+                        🦄 Only one listing for ${escapeHtml(modelName)}
+                    </div>
+                    <p class="market-analysis-sub">
+                        This CPU is rare — there's no comparable price data to compare against yet. Check back after more listings of this model appear.
+                    </p>
+                ` : stats ? `
+                    <div class="market-stats-grid">
+                        <div class="market-stat-cell">
+                            <div class="market-stat-label">Avg</div>
+                            <div class="market-stat-value">€${Number(stats.avg).toFixed(2)}</div>
+                        </div>
+                        <div class="market-stat-cell">
+                            <div class="market-stat-label">Range</div>
+                            <div class="market-stat-value">€${Number(stats.min).toFixed(0)}–€${Number(stats.max).toFixed(0)}</div>
+                        </div>
+                        <div class="market-stat-cell">
+                            <div class="market-stat-label">Listings</div>
+                            <div class="market-stat-value">${stats.listing_count || 0}</div>
+                        </div>
+                    </div>
+                    ${stats.percentile !== undefined && stats.percentile !== null ? (() => {
+                        const pct = Number(stats.percentile);
+                        const cur = Number(current.price_eur);
+                        const avg = Number(stats.avg);
+                        const diff = cur - avg;
+                        const diffPct = avg > 0 ? (diff / avg * 100) : 0;
+                        const cheaper = diff < 0;
+                        const color = cheaper ? '#16a34a' : '#dc2626';
+                        const verb = cheaper ? 'below' : 'above';
+                        const arrow = cheaper ? '↓' : '↑';
+                        return `
+                            <div class="market-percentile ${cheaper ? 'cheaper' : 'pricier'}">
+                                <div class="market-percentile-info">
+                                    <div class="market-percentile-headline">
+                                        ${arrow} €${Math.abs(diff).toFixed(0)} ${verb} avg
+                                    </div>
+                                    <div class="market-percentile-detail">
+                                        This listing is at the <strong>${pct.toFixed(0)}th percentile</strong> of all ${stats.listing_count} ${escapeHtml(modelName)} listings
+                                    </div>
+                                </div>
+                                <div class="market-percentile-pct" style="color: ${color};">
+                                    ${diffPct >= 0 ? '+' : ''}${diffPct.toFixed(0)}%
+                                </div>
+                            </div>
+                        `;
+                    })() : ''}
+                ` : `
+                    <p class="market-analysis-sub">No price data available for this model.</p>
+                `}
+            </div>
+        `;
+
+        // CPU-specific info (now combined with the price/location block above — no duplicate here)
 
         // Description box (styled like GPU/Console)
         html += `
@@ -2646,7 +3240,8 @@ async function openListingDetails(listingId) {
         if (history.length > 0) {
             html += `
                 <h4 style="margin-top: 1.5rem; margin-bottom: 0.5rem;">Price History</h4>
-                <table style="width: 100%; margin-bottom: 1.5rem;">
+                <div class="price-history-scroll">
+                <table class="price-history-table" style="width: 100%; margin-bottom: 1.5rem;">
                     <thead>
                         <tr>
                             <th>Date</th>
@@ -2681,15 +3276,23 @@ async function openListingDetails(listingId) {
                 prevPrice = h.price_eur;
             });
 
-            html += `</tbody></table>`;
+            html += `</tbody></table></div>`;
         }
 
-        // Add link to original listing
+        // Add link to original listing — the link text + target reflects
+        // the source marketplace (was always "View on ss.com" before).
+        const sourceLabel = current.source === 'andelemandele' ? 'Andele Mandele'
+            : current.source === 'facebook_extension' ? 'Facebook'
+            : current.source === 'ss.com' ? 'SS.com'
+            : (current.source || 'listing');
+        const sourceHost = current.source === 'andelemandele' ? 'andelemandele.lv'
+            : current.source === 'facebook_extension' ? 'Facebook'
+            : 'ss.com';
         html += `
             <div style="margin-top: 1.5rem; display: flex; gap: 1rem; justify-content: flex-end; align-items: center;">
-                ${current.source ? `<span class="badge" style="background: ${current.source === 'andelemandele' ? '#ff6b6b' : current.source === 'facebook_extension' ? '#4267B2' : '#90EE90'}; color: ${current.source === 'ss.com' ? '#333' : 'white'}; padding: 0.35rem 0.7rem; border-radius: 12px; font-size: 0.8rem; margin-right: auto;">${current.source === 'facebook_extension' ? 'Facebook' : current.source === 'andelemandele' ? 'Andele Mandele' : 'SS.com'}</span>` : ''}
+                ${current.source ? `<span class="badge" style="background: ${current.source === 'andelemandele' ? '#ff6b6b' : current.source === 'facebook_extension' ? '#4267B2' : '#90EE90'}; color: ${current.source === 'ss.com' ? '#333' : 'white'}; padding: 0.35rem 0.7rem; border-radius: 12px; font-size: 0.8rem; margin-right: auto; transform: translate(-2px, 2px);">${sourceLabel}</span>` : ''}
                 <a href="${current.listing_url || '#'}" target="_blank" class="btn">
-                    View on ss.com →
+                    View on ${escapeHtml(sourceHost)} →
                 </a>
             </div>
         `;
@@ -2705,6 +3308,13 @@ async function openListingDetails(listingId) {
 
 function closeListingModal() {
     document.getElementById('listing-modal').classList.remove('active');
+}
+
+// Wrapper used by the popup's Flag button. Delegates to the existing
+// showFlagModalWithCategories helper so the modal markup stays in one
+// place.
+function showFlagModalForListing(listingId, title) {
+    return showFlagModalWithCategories(listingId, title);
 }
 
 // Backwards-compatible alias: listing-row clicks and old buttons may still call showListingHistory
@@ -3582,7 +4192,11 @@ function onPointerMove(e) {
 }
 
 function onPointerUp(e) {
-    if (!draggedCard) return;
+    if (!draggedCard) {
+        // Defensive: tooltip may have been left behind by a previous cancelled drag.
+        hideDragTooltip();
+        return;
+    }
     const subGrid = document.getElementById('cpu-widget-subgrid');
     const mainGrid = document.getElementById('cpu-widget-grid');
     if (placeholder && placeholder.parentElement && placeholder.parentElement === subGrid) {
@@ -3621,31 +4235,37 @@ function cleanupDrag() {
 }
 
 function createDragGhost(card, x, y) {
-    const rect = card.getBoundingClientRect();
+    // The card has class .dragging which sets display:none, so its getBoundingClientRect is (0,0,0,0).
+    // Use the stashed _lastRect from the pointerdown handler that measured it before hiding.
+    const rect = (card._lastRect && card._lastRect.width > 0) ? card._lastRect : card.getBoundingClientRect();
     const ghost = document.createElement('div');
     ghost.className = 'drag-clone';
     ghost.textContent = card.querySelector('h3, h4')?.textContent?.trim() || 'Widget';
-    ghost.style.width = Math.min(rect.width, 220) + 'px';
+    // Use a sensible fixed width; fall back to rect.width only if the card had real dimensions.
+    const ghostWidth = rect.width > 50 ? Math.min(rect.width, 220) : 220;
+    ghost.style.width = ghostWidth + 'px';
     ghost.style.height = 'auto';
-    ghost.style.padding = '0.75rem';
+    ghost.style.minHeight = '60px';
+    ghost.style.padding = '0.75rem 1rem';
     ghost.style.display = 'flex';
     ghost.style.alignItems = 'center';
     ghost.style.justifyContent = 'center';
     ghost.style.fontWeight = '600';
     ghost.style.boxShadow = '0 8px 24px rgba(0,0,0,0.25)';
-    ghost.offsetX = x - rect.left;
-    ghost.offsetY = y - rect.top;
+    // Use the card's last-known position (saved before .dragging hid it) or fall back to pointer pos.
+    const anchorLeft = rect.width > 0 ? rect.left : (x - 110);
+    const anchorTop = rect.width > 0 ? rect.top : (y - 30);
+    ghost.offsetX = x - anchorLeft;
+    ghost.offsetY = y - anchorTop;
     document.body.appendChild(ghost);
-    // Set initial position so the ghost starts exactly over the original card
-    ghost.style.left = (x - ghost.offsetX) + 'px';
-    ghost.style.top = (y - ghost.offsetY) + 'px';
+    // Set initial position so the ghost starts at the card's last known position
+    ghost.style.left = anchorLeft + 'px';
+    ghost.style.top = anchorTop + 'px';
     return ghost;
 }
 
 function initDragAndDrop() {
     document.querySelectorAll('.widget-card').forEach(card => {
-        // The sidebar widget is managed (hidden/shown) but stays in the sidebar
-        if (card.dataset.widgetId === 'most-listed') return;
         const handle = card.querySelector('.widget-drag-handle');
         if (!handle) return;
         handle.addEventListener('pointerdown', e => {
@@ -3653,11 +4273,15 @@ function initDragAndDrop() {
             e.preventDefault();
             e.stopPropagation();
             draggedCard = card;
+            // Measure the card BEFORE adding .dragging (which sets display:none and would zero out the rect).
+            const cardRect = card.getBoundingClientRect();
             const sizes = loadWidgetSizes();
             const s = sizes[card.dataset.widgetId];
-            card.style.width = s ? s.w : card.getBoundingClientRect().width + 'px';
-            card.style.height = s ? s.h : card.getBoundingClientRect().height + 'px';
+            card.style.width = (s && s.w) ? s.w : (cardRect.width > 0 ? cardRect.width + 'px' : '220px');
+            card.style.height = (s && s.h) ? s.h : (cardRect.height > 0 ? cardRect.height + 'px' : '180px');
             card.classList.add('dragging');
+            // Stash the pre-hide rect on the card so createDragGhost can use it.
+            card._lastRect = cardRect;
             dragGhost = createDragGhost(card, e.clientX, e.clientY);
             movePlaceholder(e.clientX, e.clientY);
             document.addEventListener('pointermove', onPointerMove);
@@ -3669,30 +4293,74 @@ function initDragAndDrop() {
 
 function attachResizeListeners() {
     let resizing = null;
+    let startRect = null;
+    let preview = null;
+
+    // Lazy-create the preview overlay (one per page)
+    function getPreview() {
+        if (preview) return preview;
+        preview = document.createElement('div');
+        preview.className = 'widget-resize-preview';
+        document.body.appendChild(preview);
+        return preview;
+    }
+
     document.querySelectorAll('.widget-card').forEach(card => {
         card.addEventListener('pointerdown', function(e) {
             if (dragModeActive) return;
             const rect = this.getBoundingClientRect();
-            const gripSize = 16;
+            const gripSize = 18;
             const onGrip = e.clientX >= rect.right - gripSize && e.clientY >= rect.bottom - gripSize;
             if (!onGrip) return;
             e.preventDefault();
             resizing = this;
+            startRect = rect;
+            // Show live preview at the original size
+            const pv = getPreview();
+            pv.style.left = rect.left + 'px';
+            pv.style.top = rect.top + 'px';
+            pv.style.width = rect.width + 'px';
+            pv.style.height = rect.height + 'px';
+            pv.classList.add('active');
+            // Hide the actual card while resizing (the preview shows the new size)
+            resizing.style.opacity = '0.35';
+
             const startX = e.clientX;
             const startY = e.clientY;
             const startW = rect.width;
             const startH = rect.height;
+
+            // Snap to a 20px grid for cleaner final sizes
+            const SNAP = 20;
+            const MIN_W = 180, MIN_H = 140;
+
             const onMove = ev => {
                 if (!resizing) return;
-                const newW = Math.max(180, startW + ev.clientX - startX);
-                const newH = Math.max(140, startH + ev.clientY - startY);
-                resizing.style.width = newW + 'px';
-                resizing.style.height = newH + 'px';
+                let newW = Math.max(MIN_W, startW + ev.clientX - startX);
+                let newH = Math.max(MIN_H, startH + ev.clientY - startY);
+                // Snap to grid
+                newW = Math.round(newW / SNAP) * SNAP;
+                newH = Math.round(newH / SNAP) * SNAP;
+                // Update preview position/size (no card mutation yet → smooth preview)
+                pv.style.width = newW + 'px';
+                pv.style.height = newH + 'px';
             };
             const onUp = ev => {
                 if (!resizing) return;
+                // Compute final size from the LAST preview dimensions
+                const finalW = parseFloat(pv.style.width) || startW;
+                const finalH = parseFloat(pv.style.height) || startH;
+                // Apply final size with a brief snap animation
+                resizing.style.opacity = '';
+                resizing.classList.add('resize-snap');
+                resizing.style.width = finalW + 'px';
+                resizing.style.height = finalH + 'px';
                 persistCurrentWidgetSize(resizing);
+                setTimeout(() => resizing && resizing.classList.remove('resize-snap'), 220);
+                // Hide preview
+                pv.classList.remove('active');
                 resizing = null;
+                startRect = null;
                 document.removeEventListener('pointermove', onMove);
                 document.removeEventListener('pointerup', onUp);
                 document.removeEventListener('pointercancel', onUp);
@@ -3713,6 +4381,42 @@ window.initWidgetSystem = function() {
 
 // ==========================================================
 document.addEventListener('DOMContentLoaded', function() {
+    // Read URL params on first load so deep-links from the Computers popup
+    // (e.g. /cpu?model=i7-6700) auto-apply the filter. The CPU page
+    // rebuilds #model-filter options inside loadListings (via
+    // updateModelFilter / populateModelFilter), so we use a
+    // MutationObserver to detect option rebuilds and re-add the URL
+    // model + restore the selection. This survives every repopulation
+    // (including the case where 0 listings match — the dropdown would
+    // otherwise become empty and the filter would silently drop).
+    try {
+        const _urlParams = new URLSearchParams(window.location.search);
+        const _modelParam = _urlParams.get('model');
+        if (_modelParam) {
+            const sel = document.getElementById('model-filter');
+            if (sel) {
+                const _reApply = () => {
+                    let found = false;
+                    for (const opt of sel.options) {
+                        if (opt.value === _modelParam) { found = true; break; }
+                    }
+                    if (!found) {
+                        const opt = document.createElement('option');
+                        opt.value = _modelParam;
+                        opt.textContent = _modelParam;
+                        sel.appendChild(opt);
+                    }
+                    sel.value = _modelParam;
+                };
+                // Initial pass
+                _reApply();
+                // Watch for option list rebuilds (innerHTML replacement)
+                const obs = new MutationObserver(() => _reApply());
+                obs.observe(sel, { childList: true, subtree: false });
+            }
+        }
+    } catch (e) { console.warn('CPU URL param init failed:', e); }
+
     loadListings();
     loadCPUStatistics();
     loadCPUPriceOverTime();

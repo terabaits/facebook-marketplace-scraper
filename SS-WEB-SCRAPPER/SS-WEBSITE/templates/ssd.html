@@ -5,11 +5,346 @@
 {% block extra_css %}
 
     .stat-card.ssd { border-left: 4px solid #27ae60; }
+
+    /* Modern panel — rounded table with hover states and dark-mode support */
+    .modern-panel {
+        background: var(--card-bg, #fff);
+        border-radius: 12px;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+        border: 1px solid var(--card-border, #e5e7eb);
+        overflow: hidden;
+    }
+    [data-theme="dark"] .modern-panel {
+        box-shadow: 0 1px 3px rgba(0,0,0,0.4);
+    }
+    .modern-panel table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    .modern-panel th, .modern-panel td { padding: 10px 12px; text-align: left; vertical-align: middle; }
+    .modern-panel thead th {
+        background: var(--section-bg, #f8f9fa);
+        font-weight: 600;
+        color: var(--text-secondary, #6b7280);
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.4px;
+        border-bottom: 2px solid var(--card-border, #e5e7eb);
+    }
+    [data-theme="dark"] .modern-panel thead th { background: rgba(255,255,255,0.04); }
+    .modern-panel tbody tr {
+        border-bottom: 1px solid rgba(99,102,241,.10);
+        cursor: pointer;
+        transition: background .12s;
+    }
+    .modern-panel tbody tr:hover { background: rgba(99,102,241,.06); }
+    [data-theme="dark"] .modern-panel tbody tr:hover { background: rgba(99,102,241,.15); }
+    .modern-panel .listing-thumb {
+        width: 68px; height: 68px; border-radius: 10px; object-fit: cover;
+        background: rgba(0,0,0,.04);
+        box-shadow: 0 1px 2px rgba(0,0,0,.06);
+    }
+    .modern-panel .listing-thumb-placeholder {
+        width: 68px; height: 68px; border-radius: 10px;
+        display: grid; place-items: center; font-size: 26px; color: var(--text-secondary, #6b7280);
+        background: rgba(0,0,0,.04);
+    }
+    .modern-panel .price { font-weight: 800; color: #16a34a; font-size: 14px; }
+    [data-theme="dark"] .modern-panel .price { color: #4ade80; }
     
     .badge-new { background: #28a745; color: #fff; padding: 0.15rem 0.4rem; border-radius: 0.25rem; font-size: 0.75rem; font-weight: 600; white-space: nowrap; }
-    
     .badge-new-hover { position: absolute; top: 6px; left: 6px; z-index: 5; box-shadow: 0 2px 6px rgba(0,0,0,0.25); pointer-events: none; }
-    
+
+    /* Deal badges overlay — same chip styling as GPU page so SSD
+       listings can show NEW / FIRST / STEAL / 📉 DROP / 🦄 UNICORN
+       stacked on top of the thumbnail. UNICORN renders as a small
+       emoji-only badge (least important) so it doesn't compete
+       visually with the more actionable NEW / DROP / STEAL chips. */
+
+    /* Market price position bar (capacity-level). The .price-bar is the
+       track and .price-bar-fill is the colored "where you sit" indicator
+       inside the min/max range. The width is set inline per row so we
+       can colour the bar to match the diff-to-avg state. */
+    .price-bar {
+        position: relative;
+        height: 6px;
+        background: var(--table-border, #e5e7eb);
+        border-radius: 3px;
+        overflow: hidden;
+        margin-top: 2px;
+        margin-bottom: 4px;
+    }
+    [data-theme="dark"] .price-bar {
+        background: rgba(255, 255, 255, 0.08);
+    }
+    .price-bar-fill {
+        height: 100%;
+        background: #6b7280;
+        border-radius: 3px;
+        transition: width 0.18s ease;
+    }
+
+    /* Neon sort toggle (replaces the Order: dropdown). Cyan→pink gradient
+       arrow that rotates 180° when flipped (desc → asc) with a soft glow
+       on hover. The .visually-hidden <select> underneath stays in the
+       DOM so the rest of the page (loadListings, filter state) keeps
+       working without rewiring. */
+    .neon-sort-toggle {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.45rem;
+        padding: 0.4rem 0.85rem;
+        background: rgba(8, 14, 30, 0.85);
+        color: #5eead4;
+        border: 1.5px solid rgba(94, 234, 212, 0.55);
+        border-radius: 999px;
+        font-weight: 700;
+        font-size: 0.8rem;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        cursor: pointer;
+        transition: border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease, transform 0.18s ease;
+        box-shadow: 0 0 0 rgba(94, 234, 212, 0), inset 0 0 0 rgba(94, 234, 212, 0);
+        position: relative;
+        overflow: hidden;
+    }
+    .neon-sort-toggle:hover {
+        color: #f0abfc;
+        border-color: rgba(240, 171, 252, 0.85);
+        box-shadow: 0 0 12px rgba(94, 234, 212, 0.45),
+                    0 0 24px rgba(240, 171, 252, 0.25),
+                    inset 0 0 6px rgba(240, 171, 252, 0.15);
+    }
+    .neon-sort-toggle:active {
+        transform: scale(0.96);
+    }
+    .neon-sort-toggle[data-state="asc"] {
+        color: #f0abfc;
+        border-color: rgba(240, 171, 252, 0.85);
+    }
+    .neon-sort-label { line-height: 1; }
+    .neon-sort-arrow {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 16px;
+        height: 16px;
+        transform-origin: center;
+        transition: transform 0.45s cubic-bezier(0.68, -0.55, 0.27, 1.55),
+                    filter 0.2s ease;
+        filter: drop-shadow(0 0 4px rgba(94, 234, 212, 0.6));
+    }
+    .neon-sort-toggle[data-state="asc"] .neon-sort-arrow {
+        transform: rotate(180deg);
+        filter: drop-shadow(0 0 4px rgba(240, 171, 252, 0.6));
+    }
+    .neon-sort-arrow svg { width: 100%; height: 100%; display: block; }
+    /* Subtle pulse on click to sell the "flip" interaction. */
+    .neon-sort-toggle.flipping .neon-sort-arrow {
+        animation: neonSortFlip 0.45s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+    }
+    @keyframes neonSortFlip {
+        0%   { transform: scale(1)   rotate(var(--from, 0deg)); }
+        50%  { transform: scale(1.4) rotate(calc(var(--from, 0deg) + 90deg)); }
+        100% { transform: scale(1)   rotate(calc(var(--from, 0deg) + 180deg)); }
+    }
+
+    /* ---- Loading overlay (mirrors gpu.html) ---- */
+    @keyframes ssd-spin { to { transform: rotate(360deg); } }
+    #ssd-loading-overlay { display: none; }
+    #ssd-loading-overlay.active { display: flex !important; }
+
+    /* ---- Filter icon bar (GPU-style) ----
+       The .filter-icon-btn class itself is already defined in base.html
+       so it picks up the hover/active rules globally. We only need a
+       small gap so the icon group doesn't sit flush against Sort:. */
+    .filters .filter-icon-bar {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin-right: 0.8rem;
+        vertical-align: middle;
+    }
+    .interface-type-label {
+        font-size: 0.85rem;
+        font-weight: 600;
+        color: var(--text-color, #1e293b);
+        margin: 0 0.25rem 0 0.75rem;
+    }
+
+    /* Interface type icons — vendor-style. Each option has a unique
+       accent color so users can scan them quickly. The .active state
+       fills the icon with a gradient (same look as the GPU's vendor
+       buttons). */
+    .interface-icon-bar { gap: 4px !important; }
+    .interface-icon-bar .filter-icon-btn {
+        width: 26px;
+        height: 26px;
+        border-radius: 7px;
+        border-width: 1.5px;
+    }
+    .interface-icon-bar .filter-icon-btn svg {
+        width: 14px;
+        height: 14px;
+    }
+    .filter-icon-btn.interface-all     { border-color: #6366f1; color: #6366f1; background: rgba(99,102,241,0.12); }
+    .filter-icon-btn.interface-all.active     { background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%); border-color: #4f46e5; color: #fff; }
+    .filter-icon-btn.interface-sata    { border-color: #f59e0b; color: #f59e0b; background: rgba(245,158,11,0.12); }
+    .filter-icon-btn.interface-sata.active    { background: linear-gradient(135deg, #f59e0b 0%, #b45309 100%); border-color: #b45309; color: #fff; }
+    .filter-icon-btn.interface-nvme    { border-color: #10b981; color: #10b981; background: rgba(16,185,129,0.12); }
+    .filter-icon-btn.interface-nvme.active    { background: linear-gradient(135deg, #10b981 0%, #047857 100%); border-color: #047857; color: #fff; }
+    .filter-icon-btn.interface-portable{ border-color: #06b6d4; color: #06b6d4; background: rgba(6,182,212,0.12); }
+    .filter-icon-btn.interface-portable.active{ background: linear-gradient(135deg, #06b6d4 0%, #0e7490 100%); border-color: #0e7490; color: #fff; }
+    .filter-icon-btn.interface-other   { border-color: #8b5cf6; color: #8b5cf6; background: rgba(139,92,246,0.12); }
+    .filter-icon-btn.interface-other.active   { background: linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%); border-color: #6d28d9; color: #fff; }
+
+    /* Hidden form controls that the data model still needs. */
+    .hidden-filter {
+        position: absolute;
+        left: -9999px;
+        width: 1px;
+        height: 1px;
+        opacity: 0;
+    }
+    .visually-hidden {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
+    }
+
+    /* Neon icon button (replaces the checkbox-style Active only / High
+       confidence toggles). Same visual language as the sort arrow —
+       cyan/pink gradient ring with a soft glow. */
+    .neon-icon-toggle {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        padding: 0.35rem 0.75rem;
+        background: rgba(8, 14, 30, 0.85);
+        color: var(--text-secondary, #6b7280);
+        border: 1.5px solid var(--table-border, rgba(0, 0, 0, 0.15));
+        border-radius: 999px;
+        font-weight: 600;
+        font-size: 0.78rem;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+        cursor: pointer;
+        transition: color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+        position: relative;
+        user-select: none;
+    }
+    .neon-icon-toggle:hover {
+        color: #5eead4;
+        border-color: rgba(94, 234, 212, 0.55);
+    }
+    .neon-icon-toggle[aria-pressed="true"],
+    .neon-icon-toggle.active {
+        color: #5eead4;
+        border-color: rgba(94, 234, 212, 0.85);
+        background: rgba(94, 234, 212, 0.1);
+        box-shadow: 0 0 10px rgba(94, 234, 212, 0.35),
+                    inset 0 0 4px rgba(94, 234, 212, 0.15);
+    }
+    .neon-icon-toggle[aria-pressed="true"] .neon-icon-glyph,
+    .neon-icon-toggle.active .neon-icon-glyph {
+        color: #5eead4;
+    }
+    .neon-icon-glyph {
+        display: inline-flex;
+        width: 16px;
+        height: 16px;
+        align-items: center;
+        justify-content: center;
+        transition: transform 0.2s ease, color 0.2s ease, filter 0.2s ease;
+        filter: drop-shadow(0 0 2px transparent);
+    }
+    .neon-icon-toggle[aria-pressed="true"] .neon-icon-glyph,
+    .neon-icon-toggle.active .neon-icon-glyph {
+        filter: drop-shadow(0 0 4px rgba(94, 234, 212, 0.7));
+    }
+    .neon-icon-glyph svg { width: 100%; height: 100%; display: block; }
+    .neon-icon-toggle:hover .neon-icon-glyph {
+        transform: scale(1.08);
+    }
+    /* The hidden native checkbox still drives the data model; the visible
+       label is just a styled button. */
+    .neon-icon-toggle .visually-hidden {
+        position: absolute;
+        opacity: 0;
+        pointer-events: none;
+    }
+
+    .ssd-deal-badges {
+        position: absolute;
+        top: 6px;
+        right: 6px;
+        z-index: 10;
+        max-width: calc(100% - 12px);
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        gap: 4px;
+        justify-content: flex-end;
+        align-items: center;
+    }
+    .ssd-deal-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 2px;
+        padding: 3px 6px;
+        border-radius: 4px;
+        font-size: 0.7rem;
+        font-weight: 800;
+        line-height: 1.1;
+        color: white;
+        white-space: nowrap;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.4);
+    }
+    .ssd-deal-badge-NEW { background: linear-gradient(135deg, #3b82f6, #1d4ed8); }
+    .ssd-deal-badge-STEAL { background: linear-gradient(135deg, #dc2626, #991b1b); }
+    .ssd-deal-badge-DROP { background: linear-gradient(135deg, #16a34a, #15803d); font-size: 0.62rem; }
+    .ssd-deal-badge-UNICORN {
+        /* Smaller, simpler badge — just the emoji on a faint outline.
+           UNICORN is the least important of the four deal badges. */
+        background: rgba(245, 158, 11, 0.18);
+        border: 1px solid rgba(245, 158, 11, 0.45);
+        color: #b45309;
+        padding: 2px 5px;
+        font-size: 0.85rem;
+        box-shadow: none;
+        animation: none;
+    }
+
+    /* Source dot — small colored circle to the LEFT of the thumbnail so
+       users can spot Andele / ss.com / Facebook listings at a glance.
+       Uses a slightly larger gap (8px) than the GPU page (6px) per
+       user feedback — the SSD thumbnails are smaller so a touch more
+       breathing room keeps the dot from looking crowded. */
+    .ssd-source-dot {
+        display: inline-block;
+        width: 10px;
+        height: 10px;
+        min-width: 10px;
+        border-radius: 50%;
+        box-shadow: 0 0 0 2px var(--card-bg, #1a1a2e), 0 1px 3px rgba(0,0,0,0.4);
+        flex-shrink: 0;
+        transition: transform 0.12s ease, box-shadow 0.12s ease;
+        cursor: help;
+    }
+    .ssd-source-dot:hover {
+        transform: scale(1.35);
+        box-shadow: 0 0 0 2px var(--card-bg, #1a1a2e), 0 0 8px currentColor;
+    }
+    .ssd-image-cell-inner {
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+    }
+
     .listing-image-cell { position: relative; display: inline-block; }
     
     .chart-wrapper {
@@ -253,7 +588,7 @@ window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', win
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
                 <h3 style="margin: 0; text-align: center; flex: 1;">Capacity Distribution by Listings</h3>
                 <label style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.85rem; cursor: pointer; white-space: nowrap;">
-                    <input type="checkbox" id="simplified-capacity-toggle" onchange="loadStats()">
+                    <input type="checkbox" id="simplified-capacity-toggle" checked onchange="loadStats()">
                     <span>Simplified</span>
                 </label>
             </div>
@@ -295,14 +630,34 @@ window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', win
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
         <h2>{{ t('SSD Listings') }}</h2>
         <div class="filters" style="margin: 0;">
-            <label>
-                <input type="checkbox" id="active-only" checked onchange="loadListings()">
-                Active only
-            </label>
-            <label class="{% if not is_staff %}staff-only{% endif %}">
-                <input type="checkbox" id="high-confidence" checked onchange="loadListings()">
-                High confidence (≥70%)
-            </label>
+            <!-- Active-only + High-confidence filter icon bar (GPU-style).
+                 The hidden <input type="checkbox"> elements stay in the DOM
+                 so the rest of the page (loadListings, default state, admin
+                 toggles) keeps working without rewiring. -->
+            <div class="filter-icon-bar">
+                <button type="button" class="filter-icon-btn" data-target="active-only"
+                        title="{{ t('Active only') }}" aria-pressed="true"
+                        onclick="toggleFilterIcon(this, 'active-only')">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                        <circle cx="12" cy="12" r="3"/>
+                    </svg>
+                </button>
+                <button type="button" class="filter-icon-btn {% if not is_staff %}staff-only{% endif %}" data-target="high-confidence"
+                        title="{{ t('High confidence (≥70%)') }}" aria-pressed="true"
+                        onclick="toggleFilterIcon(this, 'high-confidence')">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                        <polyline points="9 12 12 15 16 10"/>
+                    </svg>
+                </button>
+            </div>
+            <input type="checkbox" id="active-only" checked class="hidden-filter">
+            <input type="checkbox" id="high-confidence" checked class="hidden-filter">
+
+            <!-- Sort row: "Sort:" + sort-by dropdown + SORT toggle button
+                 (no "Order:" label anymore; the button is right of the
+                 dropdown and shows the word "SORT" with the rotating arrow) -->
             <label>
                 Sort:
                 <select id="sort-by" onchange="loadListings()">
@@ -310,13 +665,67 @@ window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', win
                     <option value="price">{{ t('Price') }}</option>
                 </select>
             </label>
-            <label>
-                Order:
-                <select id="sort-order" onchange="loadListings()">
-                    <option value="desc">{{ t('Descending') }}</option>
-                    <option value="asc">{{ t('Ascending') }}</option>
-                </select>
-            </label>
+            <button type="button" id="sort-order-toggle" class="neon-sort-toggle" data-state="desc"
+                    title="Click to flip sort direction (currently Descending)"
+                    onclick="flipSortOrder()">
+                <span class="neon-sort-label">SORT</span>
+                <span class="neon-sort-arrow" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 4v16"/>
+                        <path d="M5 13l7 7 7-7"/>
+                    </svg>
+                </span>
+            </button>
+            <select id="sort-order" onchange="loadListings()" class="visually-hidden" aria-hidden="true">
+                <option value="desc">{{ t('Descending') }}</option>
+                <option value="asc">{{ t('Ascending') }}</option>
+            </select>
+
+            <!-- Interface type: one icon button per option (vendor-style).
+                 Each button sets the underlying <select>; the active one
+                 gets the filled gradient. Layout mirrors the GPU's
+                 vendor-icon-bar so it's familiar to users. -->
+            <span class="interface-type-label">Interface:</span>
+            <div class="filter-icon-bar interface-icon-bar" id="interface-type-bar">
+                <button type="button" class="filter-icon-btn interface-all" data-interface="" title="All interfaces" data-active="true" onclick="selectInterfaceType('')">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="9"/>
+                        <path d="M8 12h8M12 8v8"/>
+                    </svg>
+                </button>
+                <button type="button" class="filter-icon-btn interface-sata" data-interface="SATA" title="SATA" data-active="false" onclick="selectInterfaceType('SATA')">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="2.5" y="7" width="19" height="10" rx="2"/>
+                        <path d="M6 11h12M6 14h8"/>
+                    </svg>
+                </button>
+                <button type="button" class="filter-icon-btn interface-nvme" data-interface="NVMe" title="NVMe" data-active="false" onclick="selectInterfaceType('NVMe')">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M13 2L4 14h7l-1 8 9-12h-7l1-8z"/>
+                    </svg>
+                </button>
+                <button type="button" class="filter-icon-btn interface-portable" data-interface="Portable" title="Portable" data-active="false" onclick="selectInterfaceType('Portable')">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="3" y="9" width="18" height="8" rx="1.5"/>
+                        <path d="M7 13h2M16 12v2"/>
+                    </svg>
+                </button>
+                <button type="button" class="filter-icon-btn interface-other" data-interface="Other" title="Other" data-active="false" onclick="selectInterfaceType('Other')">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="9"/>
+                        <path d="M9.5 9.5a2.5 2.5 0 0 1 5 0c0 1.5-2.5 2-2.5 3.5"/>
+                        <circle cx="12" cy="17" r="0.5" fill="currentColor"/>
+                    </svg>
+                </button>
+            </div>
+            <select id="interface-type-filter" onchange="loadListings()" class="visually-hidden" aria-hidden="true">
+                <option value="" selected>{{ t('All') }}</option>
+                <option value="SATA">SATA</option>
+                <option value="NVMe">NVMe</option>
+                <option value="Portable">Portable</option>
+                <option value="Other">Other</option>
+            </select>
+
             <label>
                 Time:
                 <select id="time-filter" onchange="loadListings()">
@@ -376,19 +785,19 @@ window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', win
                     <option value="">None</option>
                 </select>
             </label>
-            <label>
-                Interface type:
-                <select id="interface-type-filter" onchange="loadListings()">
-                    <option value="">{{ t('All') }}</option>
-                    <option value="SATA">SATA</option>
-                    <option value="NVMe">NVMe</option>
-                    <option value="Portable">Portable</option>
-                    <option value="Other">Other</option>
-                </select>
-            </label>
         </div>
     </div>
     
+    <div id="ssd-top-deals-container"></div>
+
+    <!-- SSD loading overlay (mirrors gpu.html's #gpu-loading-overlay).
+         Shown on every loadListings() invocation; hidden in the
+         finally{} block of loadListings even on error. -->
+    <div id="ssd-loading-overlay" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.35); z-index: 2000; justify-content: center; align-items: center; flex-direction: column;">
+        <div style="width: 48px; height: 48px; border: 4px solid rgba(255,255,255,0.2); border-top-color: #00d4ff; border-radius: 50%; animation: ssd-spin 1s linear infinite;"></div>
+        <div style="margin-top: 12px; color: #fff; font-weight: 500;">Loading SSDs...</div>
+    </div>
+
     <div id="listings-container">
         <div class="loading">Loading SSD listings...</div>
     </div>
@@ -1127,7 +1536,174 @@ function renderAvgPriceList(rangedData) {
 // Existing loadListings function
 let allSSDs = [];
 
+// -------- Top deals for SSDs (price >= 15% below model average) --------
+function renderSSDTopDeals(listings) {
+    const container = document.getElementById('ssd-top-deals-container');
+    if (!container) return;
+    if (!Array.isArray(listings) || listings.length === 0) {
+        container.innerHTML = '';
+        return;
+    }
+
+    // Group by model (matched_ssd_id), compute avg + min + max.
+    const groups = {};
+    listings.forEach(item => {
+        const key = item.matched_ssd_id;
+        if (!key) return;
+        if (!groups[key]) groups[key] = { items: [], prices: [] };
+        groups[key].items.push(item);
+        const p = parseFloat(item.price_eur);
+        if (Number.isFinite(p) && p > 0) groups[key].prices.push({ item, p });
+    });
+
+    const deals = [];
+    Object.values(groups).forEach(g => {
+        if (g.prices.length < 2) return;  // need at least 2 listings to compute "below avg"
+        const avg = g.prices.reduce((s, x) => s + x.p, 0) / g.prices.length;
+        g.prices.forEach(({ item, p }) => {
+            if (p < avg * 0.85) {
+                const savingsPct = ((avg - p) / avg) * 100;
+                deals.push({ item, p, avg, savingsPct });
+            }
+        });
+    });
+    deals.sort((a, b) => b.savingsPct - a.savingsPct);
+
+    if (deals.length === 0) {
+        container.innerHTML = '';
+        return;
+    }
+
+    const top = deals.slice(0, 6);
+    container.innerHTML = `
+        <div class="modern-panel" style="margin-bottom: 1rem; padding: 0.85rem 1rem;">
+            <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:0.5rem;">
+                <h3 style="margin:0;font-size:1rem;">🔥 Top SSD deals <span style="font-weight:400;font-size:0.8rem;color:var(--text-secondary);">— ${deals.length} listing${deals.length === 1 ? '' : 's'} at least 15% below model average</span></h3>
+            </div>
+            <div class="ssd-deals-strip" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:0.5rem;">
+                ${top.map(d => {
+                    const item = d.item;
+                    const imgPath = item.local_image_path ? String(item.local_image_path).replace(/\\/g, '/') : null;
+                    const imgUrl = imgPath ? `/images/${imgPath}` : item.image_url;
+                    const cap = item.capacity_gb || item.ssd_capacity_gb;
+                    const name = item.ssd_model ? `${item.ssd_brand || ''} ${item.ssd_model}`.trim() : item.title;
+                    const safeId = (item.listing_id || '').replace(/'/g, "\\'");
+                    return `
+                        <div class="deal-card" onclick="showSharedListingDetail('${safeId}')" style="cursor:pointer;background:var(--card-bg);border:1px solid var(--card-border);border-radius:8px;padding:0.5rem;display:flex;gap:0.5rem;align-items:center;">
+                            <div style="width:50px;height:50px;flex-shrink:0;background:#f5f5f5;border-radius:6px;display:flex;align-items:center;justify-content:center;overflow:hidden;">
+                                ${imgUrl ? `<img src="${imgUrl}" alt="${name}" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none'">` : '<span style="font-size:22px;">💾</span>'}
+                            </div>
+                            <div style="flex:1;min-width:0;">
+                                <div style="font-weight:700;color:#dc2626;font-size:0.95rem;">€${d.p.toFixed(0)}</div>
+                                <div style="font-size:0.75rem;color:var(--text-secondary);text-decoration:line-through;">avg €${d.avg.toFixed(0)}</div>
+                                <div style="font-size:0.75rem;font-weight:600;color:#dc2626;">↓ ${d.savingsPct.toFixed(0)}% off</div>
+                                <div style="font-size:0.7rem;color:var(--text-secondary);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="${name}">${name}${cap ? ' · ' + cap + 'GB' : ''}</div>
+                            </div>
+                        </div>
+                    `;
+                }).join('')}
+            </div>
+        </div>
+    `;
+}
+
+// Flip the sort-order dropdown (desc <-> asc) and animate the neon arrow.
+// The visible button stays in sync with the hidden <select> so the
+// rest of the page (loadListings) reads the same value via
+// document.getElementById('sort-order').value.
+function flipSortOrder() {
+    const sel = document.getElementById('sort-order');
+    const btn = document.getElementById('sort-order-toggle');
+    if (!sel || !btn) return;
+    const next = sel.value === 'desc' ? 'asc' : 'desc';
+    sel.value = next;
+    btn.dataset.state = next;
+    btn.setAttribute('title', next === 'desc'
+        ? 'Click to flip sort direction (currently Descending)'
+        : 'Click to flip sort direction (currently Ascending)');
+    // Trigger a one-shot pulse animation
+    btn.classList.remove('flipping');
+    // Force reflow so the animation restarts on rapid clicks
+    void btn.offsetWidth;
+    btn.classList.add('flipping');
+    setTimeout(() => btn.classList.remove('flipping'), 460);
+    loadListings();
+}
+
+// Reflect programmatic changes to #sort-order back into the neon button
+// (used when loadListings sets the value from localStorage on init).
+function syncSortOrderButton() {
+    const sel = document.getElementById('sort-order');
+    const btn = document.getElementById('sort-order-toggle');
+    if (!sel || !btn) return;
+    btn.dataset.state = sel.value;
+    btn.setAttribute('title', sel.value === 'desc'
+        ? 'Click to flip sort direction (currently Descending)'
+        : 'Click to flip sort direction (currently Ascending)');
+}
+
+// ---- Filter icon button wiring (GPU-style) ----
+// Mirrors the gpu.html implementation: each .filter-icon-btn toggles a
+// hidden <input type="checkbox"> and reflects the new state via the
+// .active class. This lets the rest of the page keep reading from the
+// same checkbox elements.
+function toggleFilterIcon(btn, checkboxId) {
+    const cb = document.getElementById(checkboxId);
+    if (!cb) return;
+    cb.checked = !cb.checked;
+    updateFilterIconState(btn, cb.checked);
+    cb.dispatchEvent(new Event('change'));
+}
+
+function updateFilterIconState(btn, isActive) {
+    if (isActive) {
+        btn.classList.add('active');
+        btn.setAttribute('aria-pressed', 'true');
+    } else {
+        btn.classList.remove('active');
+        btn.setAttribute('aria-pressed', 'false');
+    }
+}
+
+function initFilterIcons() {
+    document.querySelectorAll('.filter-icon-btn[data-target]').forEach(btn => {
+        const targetId = btn.getAttribute('data-target');
+        const cb = document.getElementById(targetId);
+        if (cb) updateFilterIconState(btn, cb.checked);
+    });
+    // Sync interface-type icon bar with the underlying select on init.
+    syncInterfaceTypeButtons();
+}
+
+// Interface type filter — direct selection. One icon button per option
+// (All, SATA, NVMe, Portable, Other). The active button gets the filled
+// gradient; the rest stay outline-only. The hidden <select> is the data
+// model so loadListings() can keep reading the same value.
+function selectInterfaceType(value) {
+    const sel = document.getElementById('interface-type-filter');
+    if (!sel) return;
+    sel.value = value;
+    syncInterfaceTypeButtons();
+    loadListings();
+}
+
+function syncInterfaceTypeButtons() {
+    const sel = document.getElementById('interface-type-filter');
+    if (!sel) return;
+    const current = sel.value;
+    document.querySelectorAll('.interface-icon-bar .filter-icon-btn').forEach(btn => {
+        const matches = (btn.getAttribute('data-interface') || '') === current;
+        btn.dataset.active = matches ? 'true' : 'false';
+        btn.setAttribute('aria-pressed', matches ? 'true' : 'false');
+    });
+}
+
 async function loadListings() {
+    // Show the loading overlay for any user-initiated reload. The first
+    // load on page boot also gets one so the UI doesn't show stale rows
+    // while the request is in flight.
+    const overlay = document.getElementById('ssd-loading-overlay');
+    if (overlay) overlay.classList.add('active');
     const activeOnly = document.getElementById('active-only').checked;
     const highConfidence = document.getElementById('high-confidence').checked;
     const sortBy = document.getElementById('sort-by').value;
@@ -1152,11 +1728,10 @@ async function loadListings() {
     if (location) params.append('location', location);
     const interfaceType = document.getElementById('interface-type-filter')?.value || '';
     if (interfaceType) params.append('interface_type', interfaceType);
-    
+
     try {
         const response = await fetch('/api/ssds?' + params.toString());
         const listings = await response.json();
-        
         // Populate model filter options based on brand selection
         const modelSelect = document.getElementById('model-filter');
         if (listings.length > 0) {
@@ -1190,21 +1765,23 @@ async function loadListings() {
         
         // Fetch price history for all listings
         const listingsWithHistory = await fetchPriceHistoryForListings(listings);
+
+        // Render top deals strip above the table
+        renderSSDTopDeals(listingsWithHistory);
         
         let html = `
-            <table>
+            <table class="modern-panel">
                 <thead>
                     <tr>
                         <th>Image</th>
-                        <th>Listing ID</th>
                         <th>{{ t('SSD') }}</th>
                         <th>{{ t('Capacity') }}</th>
                         <th>{{ t('Interface') }}</th>
                         <th>{{ t('Type') }}</th>
                         <th>{{ t('Price') }}</th>
+                        <th title="How this drive's price compares to the average for all SSD listings of the same capacity, including inactive ones">Market price position</th>
                         <th>Location</th>
                         <th>Date</th>
-                        <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -1243,12 +1820,10 @@ async function loadListings() {
             
             // Check if has history
             const hasHistory = item.history && item.history.length > 0;
-            
-            // Compute capacity tag (only if detected)
-            let capacityTag = '';
-            if (capacityVal && capacityVal > 0) {
-                capacityTag = `&nbsp;<span class="capacity-tag">${capacity}</span>`;
-            }
+
+            // (capacity-tag removed from the listing row — capacity has
+            // its own dedicated column right next to the name, so the
+            // inline tag was redundant.)
 
             // Escape for onclick
             const safeListingId = item.listing_id ? item.listing_id.replace(/'/g, "\\'") : '';
@@ -1272,32 +1847,108 @@ async function loadListings() {
                 }
             }
             
+            // Build the deal-badge stack for the image overlay. Mirrors the
+            // GPU page's badge system: NEW (just-imported), STEAL (≥15% below
+            // model avg), 📉 DROP (price has dropped since first seen), and
+            // 🦄 UNICORN (only one active listing of this model).
+            const dealBadges = [];
+            if (item.is_new) {
+                dealBadges.push(`<span class="ssd-deal-badge ssd-deal-badge-NEW" title="New listing from current import">🆕 NEW</span>`);
+            }
+            if (item.has_price_decreased) {
+                dealBadges.push(`<span class="ssd-deal-badge ssd-deal-badge-DROP" title="Price dropped since first seen">📉 <span style="font-weight:600;">DROP</span></span>`);
+            }
+            if (item.price_stats && item.price_stats.below_avg && !item.is_new) {
+                // Only mark STEAL when ≥15% below average (avoid noisy badges for tiny diffs)
+                const cur = parseFloat(item.price_eur);
+                const avg = parseFloat(item.price_stats.avg);
+                if (avg > 0 && ((avg - cur) / avg) >= 0.15) {
+                    dealBadges.push(`<span class="ssd-deal-badge ssd-deal-badge-STEAL" title="≥15% below model average">🔥 STEAL</span>`);
+                }
+            }
+            if (item.is_unicorn) {
+                // UNICORN is the least important badge — just an emoji so it
+                // doesn't compete for visual space with NEW / DROP / STEAL.
+                dealBadges.push(`<span class="ssd-deal-badge ssd-deal-badge-UNICORN" title="Only one listing of this model in all history">🦄</span>`);
+            }
+            const dealBadgesHtml = dealBadges.length
+                ? `<div class="ssd-deal-badges">${dealBadges.join('')}</div>`
+                : '';
+
             html += `
-                <tr class="clickable" onclick="showSSDDetail('${safeListingId}')">
+                <tr class="clickable" onclick="showSharedListingDetail('${safeListingId}')">
                     <td class="listing-image-cell" onclick="event.stopPropagation()">
-                        ${item.is_new ? '<span class="badge badge-new badge-new-hover">New</span>' : ''}
-                        ${safeImageUrl ? `<img src="${safeImageUrl}" alt="${ssdName}" class="listing-thumb" onclick="event.stopPropagation(); showImageModal('${safeModalImageUrl}', '${safeSsdName}')">` : '<div class="listing-thumb-placeholder">📷</div>'}
-                    </td>
-                    <td onclick="event.stopPropagation()">
-                        <code style="font-size: 0.85rem;">${item.listing_id}</code>
+                        <div class="ssd-image-cell-inner">
+                            ${(() => {
+                                // Source dot — colored circle to the LEFT of the
+                                // thumbnail, no text. Skipped if the user disabled
+                                // source dots via localStorage.
+                                if (localStorage.getItem('showSourceDots') === 'false') return '';
+                                const labels = {
+                                    'andelemandele': { bg: '#8B5CF6', text: 'Andele' },
+                                    'facebook_extension': { bg: '#1877F2', text: 'Facebook' },
+                                    'ss.com': { bg: '#10b981', text: 'SS.com' }
+                                };
+                                const info = labels[item.source] || labels['ss.com'];
+                                return `<span class="ssd-source-dot" title="${info.text} (${item.source || 'unknown'})" aria-label="${info.text}" style="background: ${info.bg};"></span>`;
+                            })()}
+                            <div style="position: relative; display: inline-block;">
+                                ${dealBadgesHtml}
+                                ${safeImageUrl ? `<img src="${safeImageUrl}" alt="${ssdName}" class="listing-thumb" onclick="event.stopPropagation(); showImageModal('${safeModalImageUrl}', '${safeSsdName}')">` : '<div class="listing-thumb-placeholder">💾</div>'}
+                            </div>
+                        </div>
                     </td>
                     <td>
-                        <strong>${ssdName}</strong>${capacityTag}
-                        ${item.ssd_match_method ? `<br><small class="${confidenceClass}">${(confidence*100).toFixed(0)}% confidence</small>` : ''}
+                        <strong>${ssdName}</strong>
                     </td>
                     <td>${capacity}</td>
                     <td>${item.interface || 'N/A'}</td>
                     <td><span class="badge badge-success">${item.interface_type || 'N/A'}</span></td>
                     <td>
-                        ${renderPriceDecreaseBadge(item)}
+                        ${item.has_price_decreased ? '<span class="badge" style="background: linear-gradient(135deg, #16a34a, #15803d); color: white; font-size: 0.7rem; padding: 2px 6px; border-radius: 4px; font-weight: 700; margin-right: 4px;" title="Price has dropped since first seen">↓ Price drop</span>' : ''}
                         <span class="price">€${item.price_eur}</span>
+                    </td>
+                    <td>
+                        ${(() => {
+                            const mp = item.market_position;
+                            if (!mp || !mp.avg) {
+                                return '<span style="color: var(--text-secondary); font-size: 0.85rem;">—</span>';
+                            }
+                            const cur = parseFloat(item.price_eur) || 0;
+                            const avg = mp.avg;
+                            const minP = mp.min || 0;
+                            const maxP = mp.max || 0;
+                            const range = maxP - minP;
+                            // Position the current price inside the capacity's
+                            // own min-max range (0% = cheapest ever, 100% = most
+                            // expensive ever). The bar visually mirrors what
+                            // the GPU page's "Market Position" column does.
+                            const pos = range > 0 ? Math.max(0, Math.min(100, ((cur - minP) / range) * 100)) : 50;
+                            const diff = cur - avg;
+                            const diffPct = avg > 0 ? (diff / avg) * 100 : 0;
+                            // Colour: green if below average, red if above, grey at avg
+                            const diffColor = diffPct < -5 ? '#16a34a' : (diffPct > 5 ? '#dc2626' : '#6b7280');
+                            const diffLabel = `${diffPct > 0 ? '+' : ''}${diffPct.toFixed(0)}% vs avg`;
+                            const rangeLabel = `€${Math.round(minP)} – €${Math.round(maxP)}`;
+                            // Active vs total: drive context — is this a thin
+                            // market? A 1-listing "market" is barely a market.
+                            const sampleNote = mp.active_count < mp.count
+                                ? ` <span style="color: var(--text-secondary); font-size: 0.7rem;">(${mp.active_count} active / ${mp.count} total)</span>`
+                                : ` <span style="color: var(--text-secondary); font-size: 0.7rem;">(${mp.count} total)</span>`;
+                            return `
+                                <div style="font-size: 0.78rem; line-height: 1.4;">
+                                    <div>Avg: €${avg.toFixed(0)} <span style="color: ${diffColor}; font-weight: 600;">${diffLabel}</span></div>
+                                    <div style="color: var(--text-secondary); font-size: 0.72rem;">Range: ${rangeLabel}</div>
+                                    <div class="price-bar" title="Current price position in capacity range (${pos.toFixed(0)}% from min)">
+                                        <div class="price-bar-fill" style="width: ${pos}%; background: ${diffColor};"></div>
+                                    </div>
+                                    <div>${sampleNote}</div>
+                                </div>
+                            `;
+                        })()}
                     </td>
                     <td>${item.seller_location || 'N/A'}</td>
                     <td>${dateStr}</td>
-                    <td onclick="event.stopPropagation()">
-                        ${renderHistoryButton(item.listing_id, hasHistory)}
-                        <a href="${item.listing_url}" target="_blank" class="btn btn-small">View →</a>
-                    </td>
                 </tr>
             `;
         });
@@ -1331,8 +1982,12 @@ async function loadListings() {
         }
         
     } catch (error) {
-        document.getElementById('listings-container').innerHTML = 
+        document.getElementById('listings-container').innerHTML =
             `<div class="error">Failed to load listings: ${error.message}</div>`;
+    } finally {
+        // Always hide the loading overlay, even on error, so it doesn't
+        // get stuck over the page.
+        if (overlay) overlay.classList.remove('active');
     }
 }
 
@@ -1435,6 +2090,225 @@ function closeSSDModal() {
     if (modal) modal.classList.remove('active');
 }
 
+// -------- Listing detail popup (shared with RAM/Camera/Monitor) --------
+function showSharedListingDetail(listingId) {
+    // Pull the row from the cached allSSDs list so we render immediately.
+    const row = (allSSDs || []).find(x => x.listing_id === listingId) || {};
+
+    let modal = document.getElementById('shared-listing-modal');
+    if (!modal) {
+        modal = document.createElement('div');
+        modal.id = 'shared-listing-modal';
+        modal.className = 'modal-overlay';
+        modal.innerHTML = `
+            <div class="modal modern-detail-modal" onclick="if(event.target===this) (this.parentElement._closeMe || function(){this.parentElement.classList.remove('active')}).call(this.parentElement)">
+                <div class="modal-header" style="display:flex;justify-content:space-between;align-items:center;padding:14px 18px;border-bottom:1px solid var(--ram-border,#e5e7eb);">
+                    <h2 id="shared-listing-title" style="margin:0;font-size:1.1rem;">Listing Details</h2>
+                    <button class="modal-close" onclick="(document.getElementById('shared-listing-modal')._closeMe || function(){this.classList.remove('active')}).call(document.getElementById('shared-listing-modal'))" style="background:none;border:none;font-size:22px;cursor:pointer;color:inherit;">×</button>
+                </div>
+                <div id="shared-listing-content" style="padding:18px;max-height:78vh;overflow-y:auto;"></div>
+            </div>
+        `;
+        document.body.appendChild(modal);
+    }
+    const content = document.getElementById('shared-listing-content');
+    const title = document.getElementById('shared-listing-title');
+    title.textContent = 'Loading…';
+    content.innerHTML = '<div class="loading">Loading listing…</div>';
+    modal.classList.add('active');
+    document.body.classList.add('modal-open');
+    document.documentElement.classList.add('modal-open');
+    // Stash the listing id on the modal so the close/flag handlers can
+    // reference it without re-deriving from a DOM element.
+    modal.dataset.listingId = listingId;
+    // (closure) helper: remove the modal + clear the body lock so the
+    // page background becomes scrollable again.
+    const closeMe = () => {
+        modal.classList.remove('active');
+        document.body.classList.remove('modal-open');
+        document.documentElement.classList.remove('modal-open');
+    };
+    modal._closeMe = closeMe;
+
+    const ssdName = row.ssd_model ? `${row.ssd_brand} ${row.ssd_model}` : (row.title || 'SSD listing');
+    title.textContent = ssdName;
+
+    const imgPath = row.local_image_path ? String(row.local_image_path).replace(/\\/g, '/') : null;
+    const imgUrl = imgPath ? `/images/${imgPath}` : row.image_url;
+    const price = parseFloat(row.price_eur) || 0;
+    const capGb = row.capacity_gb || row.ssd_capacity_gb;
+    const datePosted = row.date_posted ? new Date(row.date_posted).toLocaleDateString() : '—';
+
+    // Admin toggle: show the matched SSD ID + raw listing ID in the popup.
+    // Defaults to off because these are power-user fields. The values come
+    // from the same row that the row click loaded.
+    const showIds = (typeof window.__userToggleDefaults !== 'undefined'
+                     && window.__userToggleDefaults.showSsdIds === true)
+                  || localStorage.getItem('showSsdIds') === 'true';
+    const idChips = showIds ? `
+        <div style="display:flex;flex-wrap:wrap;gap:0.4rem;margin-top:0.5rem;">
+            <span title="Matched SSD reference ID" style="display:inline-flex;align-items:center;gap:0.25rem;background:rgba(99,102,241,0.12);color:#4f46e5;padding:2px 8px;border-radius:12px;font-size:0.7rem;font-weight:600;font-family:monospace;">SSD ID: ${row.matched_ssd_id || '—'}</span>
+            <span title="Raw listing ID" style="display:inline-flex;align-items:center;gap:0.25rem;background:rgba(0,0,0,0.06);color:#374151;padding:2px 8px;border-radius:12px;font-size:0.7rem;font-weight:600;font-family:monospace;">Listing: ${row.listing_id || '—'}</span>
+        </div>` : '';
+
+    content.innerHTML = `
+        <div style="margin-bottom:0.75rem;">
+            <div style="font-size:0.78rem;color:var(--text-muted,#6b7280);">${ssdName}</div>
+            ${idChips}
+        </div>
+        <div class="ram-popup-grid">
+            <div class="ram-popup-left">
+                <div class="ram-popup-img" onclick="${imgUrl ? `window.open('${imgUrl}','_blank')` : ''}">
+                    ${imgUrl
+                        ? `<img src="${imgUrl}" alt="${ssdName}" loading="lazy" onerror="this.parentElement.innerHTML='<div style=font-size:64px>💾</div>'">`
+                        : '<div style="font-size:64px;">💾</div>'}
+                </div>
+                <div class="ram-popup-price-block">
+                    <div class="ram-popup-price">€${price.toFixed(0)}</div>
+                    ${capGb ? `<div class="ram-popup-price-sub">${capGb}GB · ${price && capGb ? '€' + (price / capGb).toFixed(3) + '/GB' : ''}</div>` : ''}
+                    <div class="ram-popup-price-sub">${row.seller_location || '—'} · ${datePosted}</div>
+                </div>
+            </div>
+            <div class="ram-popup-right">
+                <h3 class="ram-popup-h">📝 Listing</h3>
+                <div class="ram-popup-rows">
+                    <div class="rp-row"><span class="rp-k">Title</span><span class="rp-v">${ssdName || '—'}</span></div>
+                    ${row.title && row.title !== ssdName ? `<div class="rp-row" style="opacity:0.6;font-size:0.75rem;"><span class="rp-k">Raw</span><span class="rp-v">${row.title}</span></div>` : ''}
+                    <div class="rp-row"><span class="rp-k">Brand/Model</span><span class="rp-v">${row.ssd_brand || '—'} ${row.ssd_model ? '· ' + row.ssd_model : ''}</span></div>
+                    <div class="rp-row"><span class="rp-k">Location</span><span class="rp-v">${row.seller_location || '—'}</span></div>
+                    <div class="rp-row"><span class="rp-k">Posted</span><span class="rp-v">${datePosted}</span></div>
+                    <div class="rp-row"><span class="rp-k">Status</span><span class="rp-v">${row.is_active ? '🟢 Active' : '⚪ Inactive'}</span></div>
+                </div>
+                <div class="ram-popup-actions">
+                    ${row.listing_url ? `<a href="${row.listing_url}" target="_blank" rel="noopener" class="ram-popup-btn primary">View on ss.com ↗</a>` : ''}
+                    <button class="ram-popup-btn" onclick="showFlagModal('${row.listing_id}')">🚩 Flag</button>
+                </div>
+            </div>
+        </div>
+
+        <h3 class="ram-popup-h" style="margin-top:18px;">💾 SSD Reference</h3>
+        <div class="ram-popup-spec-grid">
+            <div class="rp-spec"><span class="rp-spec-k">Brand</span><span class="rp-spec-v">${row.ssd_brand || '—'}</span></div>
+            <div class="rp-spec"><span class="rp-spec-k">Model</span><span class="rp-spec-v">${row.ssd_model || '—'}</span></div>
+            <div class="rp-spec"><span class="rp-spec-k">Capacity</span><span class="rp-spec-v">${capGb ? capGb + ' GB' : '—'}</span></div>
+            <div class="rp-spec"><span class="rp-spec-k">Interface</span><span class="rp-spec-v">${row.interface || '—'}</span></div>
+            <div class="rp-spec"><span class="rp-spec-k">Type</span><span class="rp-spec-v">${row.interface_type || '—'}</span></div>
+            ${row.ssd_confidence_score ? `<div class="rp-spec"><span class="rp-spec-k">Confidence</span><span class="rp-spec-v">${Math.round((row.ssd_confidence_score || 0) * 100)}%</span></div>` : ''}
+            ${capGb ? `<div class="rp-spec"><span class="rp-spec-k">Cost / GB</span><span class="rp-spec-v">€${(price / capGb).toFixed(3)}</span></div>` : ''}
+        </div>
+
+        ${row.description ? `
+        <h3 class="ram-popup-h" style="margin-top:18px;">📄 Description</h3>
+        <div class="ram-popup-description" style="padding:0.75rem 1rem;background:var(--card-bg-soft,rgba(0,0,0,0.03));border-radius:6px;border:1px solid var(--ram-border,#e5e7eb);font-size:0.875rem;line-height:1.55;white-space:pre-wrap;color:var(--text-color);max-height:240px;overflow-y:auto;">${(row.description || '').replace(/</g, '&lt;').replace(/>/g, '&gt;')}</div>
+        ` : ''}
+
+        <h3 class="ram-popup-h" style="margin-top:18px;">📈 Price History <span class="ram-popup-h-meta" id="sld-history-count"></span></h3>
+        <div id="sld-price-history" class="ram-popup-history"></div>
+    `;
+
+    // Async price history
+    const histEl = document.getElementById('sld-price-history');
+    const histCount = document.getElementById('sld-history-count');
+    fetch(`/api/price-history/${listingId}`)
+        .then(r => r.ok ? r.json() : [])
+        .then(history => {
+            if (!histEl) return;
+            if (!Array.isArray(history) || history.length === 0) {
+                if (histCount) histCount.textContent = '— first price snapshot only';
+                histEl.outerHTML = `
+                    <div class="ram-popup-empty" style="display:flex;align-items:center;gap:0.75rem;">
+                        <div style="font-size:1.5rem;">📸</div>
+                        <div>
+                            <div style="font-weight:600;color:var(--ram-text,#1e293b);">No price changes recorded yet</div>
+                            <div style="font-size:0.78rem;margin-top:2px;">This listing only has one price snapshot so far. We'll show the price history here once a price change is detected.</div>
+                        </div>
+                    </div>`;
+                return;
+            }
+            // Filter to only rows where the price ACTUALLY changed from the
+            // next-older snapshot. Repeated same-price snapshots are noise
+            // (re-crawls without a change). History is ordered newest-first,
+            // so `history[i+1]` is the previous (older) price for row `i`.
+            const changedRows = [];
+            for (let i = 0; i < history.length; i++) {
+                const cur = Number(history[i].price_eur);
+                const olderRow = history[i + 1];
+                const prev = olderRow ? Number(olderRow.price_eur) : null;
+                if (prev === null || prev !== cur) {
+                    changedRows.push({ h: history[i], prev });
+                }
+            }
+            // Build a small table: Date | Price | Change. Use the current
+            // listing price as the "starting point" of the change column for
+            // the newest row (so users see e.g. "€50 ← -€10" if the
+            // most recent snapshot dropped the price).
+            const curPrice = parseFloat(row.price_eur) || 0;
+            const newest = changedRows[0];
+            if (newest && Number(newest.h.price_eur) !== curPrice) {
+                // If the newest snapshot's price differs from the listing's
+                // current price, prepend a synthetic row showing the delta
+                // to the actual current price.
+                changedRows.unshift({
+                    h: { price_eur: curPrice, recorded_at: history[0].recorded_at, _synthetic: true },
+                    prev: Number(newest.h.price_eur)
+                });
+            }
+            if (histCount) {
+                const real = changedRows.filter(r => !r.h._synthetic).length;
+                histCount.textContent = `${real} price change${real === 1 ? '' : 's'} recorded`;
+            }
+            if (changedRows.length === 0) {
+                histEl.innerHTML = `
+                    <div class="ram-popup-empty" style="display:flex;align-items:center;gap:0.75rem;">
+                        <div style="font-size:1.5rem;">📸</div>
+                        <div>
+                            <div style="font-weight:600;">Price has not changed since first snapshot</div>
+                            <div style="font-size:0.78rem;margin-top:2px;">All ${history.length} recorded snapshots show the same price (€${Number(history[0].price_eur).toFixed(0)}).</div>
+                        </div>
+                    </div>`;
+                return;
+            }
+            histEl.innerHTML = `
+                <table class="ram-popup-history-table" style="width:100%;border-collapse:collapse;font-size:0.85rem;">
+                    <thead>
+                        <tr style="border-bottom:1px solid var(--ram-border,#e5e7eb);text-align:left;color:var(--text-muted,#6b7280);">
+                            <th style="padding:0.4rem 0.5rem;font-weight:500;">Date</th>
+                            <th style="padding:0.4rem 0.5rem;font-weight:500;text-align:right;">Price</th>
+                            <th style="padding:0.4rem 0.5rem;font-weight:500;text-align:right;">Change</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${changedRows.slice(0, 12).map(({ h, prev }) => {
+                            const isCur = h._synthetic;
+                            // `prev` may be `null` (no older row), a number, or
+                            // NaN — guard with isFinite so the change column
+                            // doesn't fall through to "€NaN" for the oldest row.
+                            const hasPrev = prev !== null && prev !== undefined && Number.isFinite(prev);
+                            const change = hasPrev ? Number(h.price_eur) - prev : 0;
+                            const arrow = change < 0 ? '↓' : (change > 0 ? '↑' : '·');
+                            const color = change < 0 ? '#16a34a' : (change > 0 ? '#dc2626' : '#6b7280');
+                            return `
+                                <tr style="border-bottom:1px solid var(--ram-border,#e5e7eb);${isCur ? 'background:rgba(99,102,241,0.08);font-weight:600;' : ''}">
+                                    <td style="padding:0.4rem 0.5rem;">${h.recorded_at ? new Date(h.recorded_at).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: '2-digit' }) : '—'}${isCur ? ' <span style="font-size:0.7rem;color:#4f46e5;">(current)</span>' : ''}</td>
+                                    <td style="padding:0.4rem 0.5rem;text-align:right;">€${Number(h.price_eur || 0).toFixed(0)}</td>
+                                    <td style="padding:0.4rem 0.5rem;text-align:right;color:${color};">
+                                        ${hasPrev && change !== 0
+                                            ? `${arrow} €${Math.abs(change).toFixed(0)}`
+                                            : '<span style="color:#9ca3af;">—</span>'}
+                                    </td>
+                                </tr>
+                            `;
+                        }).join('')}
+                    </tbody>
+                </table>
+            `;
+        })
+        .catch(() => {
+            if (histCount) histCount.textContent = '—';
+            if (histEl) histEl.outerHTML = `<div class="ram-popup-empty">No price history available for this listing.</div>`;
+        });
+}
+
 // Close modal on background click
 document.addEventListener('click', function(e) {
     const modal = document.getElementById('ssd-modal');
@@ -1443,10 +2317,9 @@ document.addEventListener('click', function(e) {
     }
 });
 
-// Fetch price history for listings
+// Fetch price history for listings — run all in parallel (was N+1 sequential, ~22s → ~1s)
 async function fetchPriceHistoryForListings(listings) {
-    const listingsWithHistory = [];
-    for (const listing of listings) {
+    const results = await Promise.all(listings.map(async listing => {
         try {
             const response = await fetch(`/api/price-history/${listing.listing_id}`);
             const data = await response.json();
@@ -1454,9 +2327,9 @@ async function fetchPriceHistoryForListings(listings) {
         } catch (error) {
             listing.history = [];
         }
-        listingsWithHistory.push(listing);
-    }
-    return listingsWithHistory;
+        return listing;
+    }));
+    return results;
 }
 
 // Render price decrease badge
@@ -1792,10 +2665,26 @@ async function submitFlag() {
         });
         
         const result = await response.json();
-        
+
         if (result.success) {
             // Close the flag popup immediately on success
             closeFlagModal();
+            // If the shared listing detail popup is open for this row,
+            // close that too — the listing has just been removed from
+            // the active set and the user shouldn't see stale data.
+            const detail = document.getElementById('shared-listing-modal');
+            if (detail && detail.classList.contains('active')
+                && detail.dataset.listingId === currentListingId) {
+                if (typeof detail._closeMe === 'function') detail._closeMe();
+                else detail.classList.remove('active');
+                document.body.classList.remove('modal-open');
+                document.documentElement.classList.remove('modal-open');
+            }
+            // Remove the row from the table immediately so the user
+            // doesn't have to wait for the refetch. The list refresh
+            // below will reconcile any other state.
+            const row = document.querySelector(`tr.clickable[onclick*="showSharedListingDetail('${currentListingId}')"]`);
+            if (row) row.remove();
             loadListings();
         } else {
             alert('Error: ' + (result.error || 'Unknown error'));
@@ -1807,9 +2696,50 @@ async function submitFlag() {
 
 // Load on page load
 document.addEventListener('DOMContentLoaded', function() {
+    // Sync the neon Order arrow with whatever value the <select> has on init
+    // (could be set by a saved preference, defaulting to "desc").
+    if (typeof syncSortOrderButton === 'function') syncSortOrderButton();
+    if (typeof initFilterIcons === 'function') initFilterIcons();
+
+    // Read URL params on first load so deep-links from the Computers popup
+    // (e.g. /ssd?model=Samsung%20990%20Pro or /ssd?capacity=1024) auto-apply.
+    // Capacity is straightforward (option list is static). Model filter is
+    // rebuilt by loadListings, so we use a MutationObserver to re-apply
+    // the URL model across every repopulation (even when 0 listings match).
+    try {
+        const _urlParams = new URLSearchParams(window.location.search);
+        const _capacityParam = _urlParams.get('capacity');
+        if (_capacityParam) {
+            const sel = document.getElementById('capacity-filter');
+            if (sel) sel.value = _capacityParam;
+        }
+        const _modelParam = _urlParams.get('model');
+        if (_modelParam) {
+            const sel = document.getElementById('model-filter');
+            if (sel) {
+                const _reApply = () => {
+                    let found = false;
+                    for (const opt of sel.options) {
+                        if (opt.value === _modelParam) { found = true; break; }
+                    }
+                    if (!found) {
+                        const opt = document.createElement('option');
+                        opt.value = _modelParam;
+                        opt.textContent = _modelParam;
+                        sel.appendChild(opt);
+                    }
+                    sel.value = _modelParam;
+                };
+                _reApply();
+                const obs = new MutationObserver(() => _reApply());
+                obs.observe(sel, { childList: true, subtree: false });
+            }
+        }
+    } catch (e) { console.warn('SSD URL param init failed:', e); }
+
     loadStats();
     loadListings();
-    
+
     // Flag modal close on outside click
     const flagModal = document.getElementById('flag-modal');
     if (flagModal) {

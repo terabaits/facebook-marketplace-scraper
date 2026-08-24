@@ -18,7 +18,7 @@
         },
         {
           "id": "T106",
-          "title": "adjust second column to be wider where \"By Source\" and \"Top Deals\" so \"â‚¬59.00 vs â‚¬95 avg (2 listings)\" fits in",
+          "title": "adjust second column to be wider where \"By Source\" and \"Top Deals\" so \"\u00e2\u201a\u00ac59.00 vs \u00e2\u201a\u00ac95 avg (2 listings)\" fits in",
           "page": "GPU",
           "category": "Frontend",
           "priority": "Medium",
@@ -84,7 +84,90 @@
       "id": "assignment",
       "title": "Assignment",
       "color": "#f39c12",
-      "tasks": [],
+      "tasks": [
+        {
+          "id": "T217",
+          "title": "Scrapper is not grabbing correct date_posted or Location field. Added code snippet how listings looks",
+          "page": "Cases",
+          "category": "Scraper",
+          "priority": "Medium",
+          "fix": "",
+          "column": "assignment",
+          "created": "2026-07-19T15:04:29.558000",
+          "updated": "2026-08-19T12:53:05.251376",
+          "reopen_history": [
+            {
+              "reopened_at": "2026-08-19T12:28:18.172686",
+              "update": "still not really resolved. for example listing https://www.ss.com/msg/lv/electronics/computers/completing-pc/cases/pkkhj.html says it was posted on <td class=\"msg_footer\" align=\"right\">Datums: 07.08.2026 16:27</td>, but website shows 17.08.2026",
+              "previous_completed_at": null,
+              "fix": ""
+            },
+            {
+              "reopened_at": "2026-08-19T12:30:13.208565",
+              "update": "listing https://www.ss.com/msg/lv/electronics/computers/completing-pc/cases/pkkhj.html says it was posted <td class=\"msg_footer\" align=\"right\">Datums: 07.08.2026 16:27</td>, but our website shows 17.08.2026",
+              "previous_completed_at": "2026-08-19T12:28:29.091238"
+            },
+            {
+              "reopened_at": "2026-08-19T12:30:52.237894",
+              "update": "a",
+              "previous_completed_at": null
+            },
+            {
+              "reopened_at": "2026-08-19T12:34:02.283134",
+              "update": "b",
+              "previous_completed_at": null
+            },
+            {
+              "reopened_at": "2026-08-19T12:39:07.803599",
+              "update": "test reopen from script",
+              "previous_completed_at": null
+            },
+            {
+              "reopened_at": "2026-08-19T12:39:14.066238",
+              "update": "stress 0",
+              "previous_completed_at": null
+            },
+            {
+              "reopened_at": "2026-08-19T12:39:18.293363",
+              "update": "stress 1",
+              "previous_completed_at": null
+            },
+            {
+              "reopened_at": "2026-08-19T12:39:22.484102",
+              "update": "stress 2",
+              "previous_completed_at": null
+            },
+            {
+              "reopened_at": "2026-08-19T12:39:26.655485",
+              "update": "stress 3",
+              "previous_completed_at": null
+            },
+            {
+              "reopened_at": "2026-08-19T12:39:30.887562",
+              "update": "stress 4",
+              "previous_completed_at": null
+            },
+            {
+              "reopened_at": "2026-08-19T12:53:05.251376",
+              "update": "listing https://www.ss.com/msg/lv/electronics/computers/completing-pc/cases/pkkhj.html says it was posted Datums: 07.08.2026 16:27, but our website shows 17.08.2026",
+              "previous_completed_at": null
+            }
+          ]
+        },
+        {
+          "id": "T295",
+          "title": "move the type guide button so it sits next to the type filter as small information icon that can redirect to type guide",
+          "page": "Cases",
+          "category": "Frontend",
+          "priority": "Medium",
+          "fix": "",
+          "column": "assignment",
+          "created": "2026-08-19T13:28:44.821101",
+          "updated": "2026-08-19T13:28:44.821101",
+          "linked_task_id": null,
+          "relationship_type": null
+        }
+      ],
       "updated": "2026-08-12T16:05:56.281142+00:00"
     },
     {
@@ -98,30 +181,6 @@
       "title": "Review",
       "color": "#9b59b6",
       "tasks": [
-        {
-          "id": "T117",
-          "title": "SSD scrapper doesnt seem to download images and attach image_url to listing database",
-          "page": "SSD",
-          "category": "Scraper",
-          "priority": "Medium",
-          "fix": "Verified end-to-end: 93 SSD listings, 49 with image_url and local_image_path, all active SSD listings with images have both fields. Sample files confirmed on disk in SS-CRAWLER/images/ssds/. Image serving route (/images/ssds/<file>) returns 200. No further changes needed.",
-          "column": "talking",
-          "created": "2026-06-25T13:13:19.619396",
-          "updated": "2026-06-29T10:00:19.704184Z",
-          "linked_task_id": null,
-          "relationship_type": null,
-          "started_at": "2026-06-25T13:28:29.581637",
-          "reopen_history": [
-            {
-              "reopened_at": "2026-06-27T13:59:49.313884",
-              "update": "It doesnt seem to download the right image for listing \"cgmejh\". In the snippet I added part where it is found",
-              "previous_completed_at": "2026-06-25T13:55:00.000000",
-              "fix": "Verified end-to-end: 93 SSD listings, 49 with image_url and local_image_path, all active SSD listings with images have both fields. Sample files confirmed on disk in SS-CRAWLER/images/ssds/. Image serving route (/images/ssds/<file>) returns 200. No further changes needed."
-            }
-          ],
-          "code_snippet": "<div onmouseover=\"show_pic_menu(1);\" oncontextmenu=\"return false;\" onmouseout=\"show_pic_menu(0);\" ontouchstart=\"show_pic_menu(1);\" style=\"position: relative; display: block; width: 723px; max-width: 100%; overflow: hidden; border: 1px solid rgb(204, 204, 204); cursor: pointer; margin: -1px; height: 482px;\" align=\"center\" id=\"big_pic_div\"><div align=\"center\" id=\"img_div_scroll\" style=\"position: relative; display: block; z-index: 2; height: 482px; overflow: hidden scroll; width: 496px;\"><img onclick=\"this.blur();\" style=\"display: block; width: 482px; height: 643px; position: relative;\" onload=\"play_image();\" onfocus=\"this.blur();\" id=\"msg_img_img\" border=\"0\" src=\"https://i.ss.com/gallery/8/1514/378455/computers-completing-pc-ssd-75690967.800.jpg\"><div onclick=\"el('navi_prev').click();return false;\" ontouchstart=\"_tstart(event);\" ontouchmove=\"_tmove(event);\" ontouchend=\"if(_tend(event)) {this.click();}return false;\" id=\"navi_prev2\" style=\"position: absolute; top: 0px; left: 0px; width: 96px; height: 643px;\" title=\"IepriekÅ¡Ä“jÄ\"><img src=\"https://i.ss.com/img/p.gif\" width=\"100%\" height=\"100%\"></div><div onclick=\"el('navi_next').click();return false;\" ontouchstart=\"_tstart(event);\" ontouchmove=\"_tmove(event);\" ontouchend=\"if(_tend(event)) {this.click();}return false;\" id=\"navi_next2\" style=\"position: absolute; top: 0px; left: 96px; width: 381px; height: 643px;\" title=\"NÄkamÄ\"><img src=\"https://i.ss.com/img/p.gif\" width=\"100%\" height=\"100%\"></div></div><div onmouseout=\"show_pic_menu(0);\" onmouseover=\"show_pic_menu(1)\" id=\"pic_menu_prev\" onclick=\"mnu('foto', 3);return false;\" title=\"IepriekÅ¡Ä“jÄ\" ontouchstart=\"_tstart(event);\" ontouchmove=\"_tmove(event);\" ontouchend=\"if(_tend(event)) {this.click();}return false;\" style=\"z-index:15;width: 36px; height: 43px; position: absolute; top:50%; left: 0px; background: url( 'https://i.ss.com/img/left.png' ) no-repeat;\"></div><div onmouseout=\"show_pic_menu(0);\" onmouseover=\"show_pic_menu(1)\" id=\"pic_menu_next\" onclick=\"mnu('foto', 2);return false;\" title=\"NÄkamÄ\" ontouchstart=\"_tstart(event);\" ontouchmove=\"_tmove(event);\" ontouchend=\"if(_tend(event)) {this.click();}return false;\" style=\"z-index:15;width:36px;height:43px;position:absolute;top:50%;right:0px;background: url( 'https://i.ss.com/img/right.png' ) no-repeat;\"></div><div id=\"navi_prev\" ontouchstart=\"_tstart(event);\" ontouchmove=\"_tmove(event);\" ontouchend=\"if(_tend(event)) {this.click();}return false;\" style=\"width: 30%; height: 100%; top: 0px; left: 0px; position: absolute; z-index: 0;\" title=\"IepriekÅ¡Ä“jÄ\"><img src=\"https://i.ss.com/img/p.gif\" width=\"100%\" height=\"100%\"></div><div id=\"navi_next\" ontouchstart=\"_tstart(event);\" ontouchmove=\"_tmove(event);\" ontouchend=\"if(_tend(event)) {this.click();}return false;\" style=\"width: 70%; height: 100%; top: 0px; left: 30%; position: absolute; z-index: 0;\" title=\"NÄkamÄ\"><img src=\"https://i.ss.com/img/p.gif\" width=\"100%\" height=\"100%\"></div><div style=\"z-index:25;width:30%;height:70%;top:15%;left:35%;position:absolute;\" title=\"ParÄdÄ«t HD kvalitÄtÄ“\" onclick=\"event.stopPropagation();hd_image_open('hRstv1AOqkXYAduqeNTdDlJO%2B0IP1LpraZDQp8Tsaqty%2BDUSHkKWRUJP8l7vIyhg',1);return false;\" ontouchstart=\"_tstart(event);\" ontouchmove=\"_tmove(event);\" ontouchend=\"if(_tend(event)) {this.click();}return false;\"><img src=\"https://i.ss.com/img/p.gif\" width=\"100%\" height=\"100%\"></div><div onmouseout=\"show_pic_menu(0);\" onmouseover=\"show_pic_menu(1)\" title=\"ParÄdÄ«t HD kvalitÄtÄ“\" id=\"pic_menu_hd\" onclick=\"event.stopPropagation();hd_image_open('hRstv1AOqkXYAduqeNTdDlJO%2B0IP1LpraZDQp8Tsaqty%2BDUSHkKWRUJP8l7vIyhg',1);return false;\" ontouchstart=\"_tstart(event);\" ontouchmove=\"_tmove(event);\" ontouchend=\"if(_tend(event)) {this.click();}return false;\" style=\"z-index:25;width:43px;height:43px;cursor:pointer;position:absolute;top:0px;right:50px;background: url( 'https://i.ss.com/img/hd_v2.png' ) no-repeat;\"></div><div onmouseout=\"show_pic_menu(0);\" onmouseover=\"show_pic_menu(1)\" title=\"AizvÄ“rt\" id=\"pic_menu_close\" onclick=\"event.stopPropagation();mnu('msg');return false;\" ontouchstart=\"_tstart(event);\" ontouchmove=\"_tmove(event);\" ontouchend=\"if(_tend(event)) {this.click();}return false;\" style=\"z-index:15;width:43px;height:43px;cursor:pointer;position:absolute;top:0px;right:0px;background: url( 'https://i.ss.com/img/close_v2.png' ) no-repeat;\"></div><img id=\"msg_img_load\" src=\"https://i.ss.com/img/wait_img.gif\" border=\"0\" style=\"display: none; position: absolute; top: 50%; left: 50%;\" width=\"32\" height=\"32\"></div>",
-          "completed_at": "2026-06-29T10:00:19.704184Z"
-        },
         {
           "id": "T116",
           "title": "create a scrapper that will check and download all images for andele listings",
@@ -252,31 +311,6 @@
           "completed_at": "2026-06-29T14:55:31.754860"
         },
         {
-          "id": "T059",
-          "title": "Case pop up window doesnt work",
-          "page": "Cases",
-          "category": "Frontend",
-          "priority": "Medium",
-          "fix": "Added image popup to Case listings: Added thumbnail with onclick handler, implemented showImageModal() function, exposed to global scope",
-          "linked_task_id": null,
-          "relationship_type": null,
-          "column": "talking",
-          "created": "2026-06-19T11:27:28.871859",
-          "updated": "2026-06-27T14:50:57.425258",
-          "started_at": "2026-06-29T14:55:31.754860",
-          "reopen_history": [
-            {
-              "reopened_at": "2026-06-27T14:31:50.443234",
-              "update": "I think you did not understand the task. Pop up window should show detailed information about the listings.\n\nSource, Description, image, location, data, price, historical listing price",
-              "previous_completed_at": "2026-06-19T16:08:00",
-              "fix": "Added image popup to Case listings: Added thumbnail with onclick handler, implemented showImageModal() function, exposed to global scope"
-            }
-          ],
-          "status": "talking",
-          "updated_at": "2026-06-29T14:57:29.974438",
-          "completed_at": "2026-06-29T14:57:29.974438"
-        },
-        {
           "id": "T060",
           "title": "Lsting window doesnt pop up when you click on it",
           "page": "PSU",
@@ -380,7 +414,7 @@
         },
         {
           "id": "T118",
-          "title": "or example SSD listing_id \"cgmebj\" description in datbase says \"Brand: Kioxia Model: Keg60Zns512G Condition: lietota\" . But it should get more info like <div id=\"msg_div_msg\"> <div style=\"float:right;margin:0px 0px 20px 20px;\" id=\"content_sys_div_msg\"></div>  Keg60Zns512G kioxia eg6 512gb nvme pcie gen4x4 m. 2 2230 ssd<br><br><table cellpadding=\"0\" cellspacing=\"0\" border=\"0\" width=\"100%\" class=\"options_list\"><tbody><tr><td width=\"50%\" valign=\"top\"><table border=\"0\" width=\"100%\" cellpadding=\"1\" cellspacing=\"0\"> \t\t\t\t<tbody><tr> \t\t\t\t\t<td height=\"20\" class=\"ads_opt_name\" width=\"30\" nowrap=\"\"> \t\t\t\t\t\tMarka: \t\t\t\t\t</td> \t\t\t\t\t<td class=\"ads_opt\" id=\"tdo_125\" nowrap=\"\"> \t\t\t\t\t\t<b>Kioxia</b> \t\t\t\t\t</td> \t\t\t\t</tr> \t\t\t\t<tr> \t\t\t\t\t<td height=\"20\" class=\"ads_opt_name\" width=\"30\" nowrap=\"\"> \t\t\t\t\t\tModelis: \t\t\t\t\t</td> \t\t\t\t\t<td class=\"ads_opt\" id=\"tdo_24\" nowrap=\"\"> \t\t\t\t\t\t<b>Keg60Zns512G</b> \t\t\t\t\t</td> \t\t\t\t</tr> \t\t\t\t<tr> \t\t\t\t\t<td height=\"20\" class=\"ads_opt_name\" width=\"30\" nowrap=\"\"> \t\t\t\t\t\tApjoms, Gb: \t\t\t\t\t</td> \t\t\t\t\t<td class=\"ads_opt\" id=\"tdo_42\" nowrap=\"\"> \t\t\t\t\t\t512 \t\t\t\t\t</td> \t\t\t\t</tr> \t\t\t\t<tr> \t\t\t\t\t<td id=\"pprice_td\" height=\"20\" class=\"ads_opt_name\" width=\"30\" nowrap=\"\"> \t\t\t\t\t\tStÄvoklis: \t\t\t\t\t</td> \t\t\t\t\t<td class=\"ads_opt\" id=\"tdo_352\" nowrap=\"\"> \t\t\t\t\t\tlietota \t\t\t\t\t</td> \t\t\t\t</tr></tbody></table></td></tr></tbody></table><table style=\"border-top:1px #eee solid;padding-top:5px;margin-top:10px;\" cellpadding=\"1\" cellspacing=\"0\" border=\"0\" width=\"100%\"> \t\t\t\t<tbody><tr> \t\t\t\t\t<td valign=\"top\" height=\"20\" class=\"ads_opt_name_big\" width=\"30\" nowrap=\"\"> \t\t\t\t\t\tCena: \t\t\t\t\t</td> \t\t\t\t\t<td class=\"ads_price\" id=\"tdo_8\" valign=\"top\" nowrap=\"\"> \t\t\t\t\t\t75 â‚¬ \t\t\t\t\t</td> \t\t\t\t</tr></tbody></table></div> be SSD scrapper doesnt seem to download images and attach image_url to listing database",
+          "title": "or example SSD listing_id \"cgmebj\" description in datbase says \"Brand: Kioxia Model: Keg60Zns512G Condition: lietota\" . But it should get more info like <div id=\"msg_div_msg\"> <div style=\"float:right;margin:0px 0px 20px 20px;\" id=\"content_sys_div_msg\"></div>  Keg60Zns512G kioxia eg6 512gb nvme pcie gen4x4 m. 2 2230 ssd<br><br><table cellpadding=\"0\" cellspacing=\"0\" border=\"0\" width=\"100%\" class=\"options_list\"><tbody><tr><td width=\"50%\" valign=\"top\"><table border=\"0\" width=\"100%\" cellpadding=\"1\" cellspacing=\"0\"> \t\t\t\t<tbody><tr> \t\t\t\t\t<td height=\"20\" class=\"ads_opt_name\" width=\"30\" nowrap=\"\"> \t\t\t\t\t\tMarka: \t\t\t\t\t</td> \t\t\t\t\t<td class=\"ads_opt\" id=\"tdo_125\" nowrap=\"\"> \t\t\t\t\t\t<b>Kioxia</b> \t\t\t\t\t</td> \t\t\t\t</tr> \t\t\t\t<tr> \t\t\t\t\t<td height=\"20\" class=\"ads_opt_name\" width=\"30\" nowrap=\"\"> \t\t\t\t\t\tModelis: \t\t\t\t\t</td> \t\t\t\t\t<td class=\"ads_opt\" id=\"tdo_24\" nowrap=\"\"> \t\t\t\t\t\t<b>Keg60Zns512G</b> \t\t\t\t\t</td> \t\t\t\t</tr> \t\t\t\t<tr> \t\t\t\t\t<td height=\"20\" class=\"ads_opt_name\" width=\"30\" nowrap=\"\"> \t\t\t\t\t\tApjoms, Gb: \t\t\t\t\t</td> \t\t\t\t\t<td class=\"ads_opt\" id=\"tdo_42\" nowrap=\"\"> \t\t\t\t\t\t512 \t\t\t\t\t</td> \t\t\t\t</tr> \t\t\t\t<tr> \t\t\t\t\t<td id=\"pprice_td\" height=\"20\" class=\"ads_opt_name\" width=\"30\" nowrap=\"\"> \t\t\t\t\t\tSt\u00c4\u0081voklis: \t\t\t\t\t</td> \t\t\t\t\t<td class=\"ads_opt\" id=\"tdo_352\" nowrap=\"\"> \t\t\t\t\t\tlietota \t\t\t\t\t</td> \t\t\t\t</tr></tbody></table></td></tr></tbody></table><table style=\"border-top:1px #eee solid;padding-top:5px;margin-top:10px;\" cellpadding=\"1\" cellspacing=\"0\" border=\"0\" width=\"100%\"> \t\t\t\t<tbody><tr> \t\t\t\t\t<td valign=\"top\" height=\"20\" class=\"ads_opt_name_big\" width=\"30\" nowrap=\"\"> \t\t\t\t\t\tCena: \t\t\t\t\t</td> \t\t\t\t\t<td class=\"ads_price\" id=\"tdo_8\" valign=\"top\" nowrap=\"\"> \t\t\t\t\t\t75 \u00e2\u201a\u00ac \t\t\t\t\t</td> \t\t\t\t</tr></tbody></table></div> be SSD scrapper doesnt seem to download images and attach image_url to listing database",
           "page": "SSD",
           "category": "Scraper",
           "priority": "Medium",
@@ -465,7 +499,7 @@
           "category": "Frontend",
           "priority": "Medium",
           "fix": "",
-          "code_snippet": "<div>\n                    <h4 style=\"color: var(--text-color); margin-bottom: 1rem;\">ðŸ’¾ SSD Information</h4>\n                    <table style=\"width: 100%; color: var(--text-color);\">\n                        <tbody><tr><td><strong>Brand:</strong></td><td>WD</td></tr>\n                        <tr><td><strong>Model:</strong></td><td>SN850X</td></tr>\n                        <tr><td><strong>Capacity:</strong></td><td>2000GB</td></tr>\n                        <tr><td><strong>Interface:</strong></td><td>x4 PCIe 4.0/NVMe</td></tr>\n                        <tr><td><strong>Form Factor:</strong></td><td>M.2</td></tr>\n                        <tr><td><strong>Read Speed:</strong></td><td>7300 MB/s</td></tr>\n                        <tr><td><strong>Write Speed:</strong></td><td>N/A</td></tr>\n                        <tr><td><strong>NAND Type:</strong></td><td>TLC</td></tr>\n                        <tr><td><strong>Controller:</strong></td><td>WD Proprietary</td></tr>\n                    </tbody></table>\n                    \n                    <h4 style=\"color: var(--text-color); margin: 1.5rem 0 1rem 0;\">ðŸ’° Pricing</h4>\n                    <table style=\"width: 100%; color: var(--text-color);\">\n                        <tbody><tr><td><strong>Current Price:</strong></td><td>â‚¬240.00</td></tr>\n                        <tr><td><strong>Cost per GB:</strong></td><td>â‚¬0.120</td></tr>\n                        <tr><td><strong>Confidence Score:</strong></td><td>100%</td></tr>\n                    </tbody></table>\n                </div>",
+          "code_snippet": "<div>\n                    <h4 style=\"color: var(--text-color); margin-bottom: 1rem;\">\u00f0\u0178\u2019\u00be SSD Information</h4>\n                    <table style=\"width: 100%; color: var(--text-color);\">\n                        <tbody><tr><td><strong>Brand:</strong></td><td>WD</td></tr>\n                        <tr><td><strong>Model:</strong></td><td>SN850X</td></tr>\n                        <tr><td><strong>Capacity:</strong></td><td>2000GB</td></tr>\n                        <tr><td><strong>Interface:</strong></td><td>x4 PCIe 4.0/NVMe</td></tr>\n                        <tr><td><strong>Form Factor:</strong></td><td>M.2</td></tr>\n                        <tr><td><strong>Read Speed:</strong></td><td>7300 MB/s</td></tr>\n                        <tr><td><strong>Write Speed:</strong></td><td>N/A</td></tr>\n                        <tr><td><strong>NAND Type:</strong></td><td>TLC</td></tr>\n                        <tr><td><strong>Controller:</strong></td><td>WD Proprietary</td></tr>\n                    </tbody></table>\n                    \n                    <h4 style=\"color: var(--text-color); margin: 1.5rem 0 1rem 0;\">\u00f0\u0178\u2019\u00b0 Pricing</h4>\n                    <table style=\"width: 100%; color: var(--text-color);\">\n                        <tbody><tr><td><strong>Current Price:</strong></td><td>\u00e2\u201a\u00ac240.00</td></tr>\n                        <tr><td><strong>Cost per GB:</strong></td><td>\u00e2\u201a\u00ac0.120</td></tr>\n                        <tr><td><strong>Confidence Score:</strong></td><td>100%</td></tr>\n                    </tbody></table>\n                </div>",
           "column": "talking",
           "created": "2026-06-27T14:05:44.103933",
           "updated": "2026-06-29T13:37:14.290995+00:00",
@@ -524,7 +558,7 @@
           "category": "Frontend",
           "priority": "Medium",
           "fix": "",
-          "code_snippet": "<select id=\"ram-select\" class=\"component-select\" onchange=\"selectComponent('ram', this.value)\"><option value=\"\">Select RAM...</option><option value=\"72\" data-name=\"Corsair Vengeance RGB 192 GB\" data-capacity=\"192\" data-type=\"DDR5\" data-speed=\"DDR5-5200\">Corsair Vengeance RGB 192 GB (192GB DDR5 DDR5-5200MHz) - â‚¬1600</option><option value=\"23\" data-name=\"G.Skill Trident Z5 Neo RGB 64 GB\" data-capacity=\"64\" data-type=\"DDR5\" data-speed=\"DDR5-6000\">G.Skill Trident Z5 Neo RGB 64 GB (64GB DDR5 DDR5-6000MHz) - â‚¬1000</option><option value=\"1365\" data-name=\"ADATA XPG Lancer Blade 32 GB\" data-capacity=\"32\" data-type=\"DDR5\" data-speed=\"DDR5-6400\">ADATA XPG Lancer Blade 32 GB (32GB DDR5 DDR5-6400MHz) - â‚¬520</option><option value=\"20\" data-name=\"Crucial Pro 64 GB\" data-capacity=\"64\" data-type=\"DDR5\" data-speed=\"DDR5-6000\">Crucial Pro 64 GB (64GB DDR5 DDR5-6000MHz) - â‚¬520</option><option value=\"741\" data-name=\"Kingston FURY Beast RGB 64 GB\" data-capacity=\"64\" data-type=\"DDR4\" data-speed=\"DDR4-3600\">Kingston FURY Beast RGB 64 GB (64GB DDR4 DDR4-3600MHz) - â‚¬500</option><option value=\"36\" data-name=\"Patriot Viper Venom 32 GB\" data-capacity=\"32\" data-type=\"DDR5\" data-speed=\"DDR5-6000\">Patriot Viper Venom 32 GB (32GB DDR5 DDR5-6000MHz) - â‚¬395</option><option value=\"1895\" data-name=\"ADATA ADATA 32GB\" data-capacity=\"32\" data-type=\"DDR4\" data-speed=\"DDR4-3000\">ADATA ADATA 32GB (32GB DDR4 DDR4-3000MHz) - â‚¬380</option><option value=\"1\" data-name=\"Corsair Vengeance RGB 32 GB\" data-capacity=\"32\" data-type=\"DDR5\" data-speed=\"DDR5-6000\">Corsair Vengeance RGB 32 GB (32GB DDR5 DDR5-6000MHz) - â‚¬380</option><option value=\"303\" data-name=\"GOODRAM IRDM 32 GB\" data-capacity=\"32\" data-type=\"DDR5\" data-speed=\"DDR5-6000\">GOODRAM IRDM 32 GB (32GB DDR5 DDR5-6000MHz) - â‚¬380</option><option value=\"16\" data-name=\"Kingston FURY Beast 32 GB\" data-capacity=\"32\" data-type=\"DDR5\" data-speed=\"DDR5-6000\">Kingston FURY Beast 32 GB (32GB DDR5 DDR5-6000MHz) - â‚¬375</option><option value=\"3813\" data-name=\"Kingston T1 8 GB\" data-capacity=\"8\" data-type=\"DDR3\" data-speed=\"DDR3-1866\">Kingston T1 8 GB (8GB DDR3 DDR3-1866MHz) - â‚¬360</option><option value=\"177\" data-name=\"G.Skill Ripjaws S5 32 GB\" data-capacity=\"32\" data-type=\"DDR5\" data-speed=\"DDR5-6400\">G.Skill Ripjaws S5 32 GB (32GB DDR5 DDR5-6400MHz) - â‚¬350</option><option value=\"1007\" data-name=\"ADATA XPG Lancer Blade RGB 32 GB\" data-capacity=\"32\" data-type=\"DDR5\" data-speed=\"DDR5-6400\">ADATA XPG Lancer Blade RGB 32 GB (32GB DDR5 DDR5-6400MHz) - â‚¬300</option><option value=\"10\" data-name=\"Corsair Vengeance 32 GB\" data-capacity=\"32\" data-type=\"DDR5\" data-speed=\"DDR5-6000\">Corsair Vengeance 32 GB (32GB DDR5 DDR5-6000MHz) - â‚¬300</option><option value=\"107\" data-name=\"Kingston FURY Beast 32 GB\" data-capacity=\"32\" data-type=\"DDR5\" data-speed=\"DDR5-5600\">Kingston FURY Beast 32 GB (32GB DDR5 DDR5-5600MHz) - â‚¬265</option><option value=\"83\" data-name=\"G.Skill Trident Z RGB 32 GB\" data-capacity=\"32\" data-type=\"DDR4\" data-speed=\"DDR4-3600\">G.Skill Trident Z RGB 32 GB (32GB DDR4 DDR4-3600MHz) - â‚¬210</option><option value=\"896\" data-name=\"Kingston Fury Renegade RGB 16 GB\" data-capacity=\"16\" data-type=\"DDR5\" data-speed=\"DDR5-6400\">Kingston Fury Renegade RGB 16 GB (16GB DDR5 DDR5-6400MHz) - â‚¬200</option><option value=\"49\" data-name=\"G.Skill Ripjaws V 32 GB\" data-capacity=\"32\" data-type=\"DDR4\" data-speed=\"DDR4-3200\">G.Skill Ripjaws V 32 GB (32GB DDR4 DDR4-3200MHz) - â‚¬200</option><option value=\"526\" data-name=\"Crucial CT32G56C46U5 32 GB\" data-capacity=\"32\" data-type=\"DDR5\" data-speed=\"DDR5-5600\">Crucial CT32G56C46U5 32 GB (32GB DDR5 DDR5-5600MHz) - â‚¬180</option><option value=\"359\" data-name=\"G.Skill Aegis 5 16 GB\" data-capacity=\"16\" data-type=\"DDR5\" data-speed=\"DDR5-6000\">G.Skill Aegis 5 16 GB (16GB DDR5 DDR5-6000MHz) - â‚¬150</option><option value=\"60\" data-name=\"Kingston FURY Beast 16 GB\" data-capacity=\"16\" data-type=\"DDR5\" data-speed=\"DDR5-6000\">Kingston FURY Beast 16 GB (16GB DDR5 DDR5-6000MHz) - â‚¬145</option><option value=\"710\" data-name=\"Corsair Vengeance RGB RS 16 GB\" data-capacity=\"16\" data-type=\"DDR4\" data-speed=\"DDR4-3600\">Corsair Vengeance RGB RS 16 GB (16GB DDR4 DDR4-3600MHz) - â‚¬140</option><option value=\"5\" data-name=\"Corsair Vengeance LPX 16 GB\" data-capacity=\"16\" data-type=\"DDR4\" data-speed=\"DDR4-3200\">Corsair Vengeance LPX 16 GB (16GB DDR4 DDR4-3200MHz) - â‚¬115</option><option value=\"4034\" data-name=\"Kingston 1500 4 GB\" data-capacity=\"4\" data-type=\"DDR3\" data-speed=\"DDR3-1600\">Kingston 1500 4 GB (4GB DDR3 DDR3-1600MHz) - â‚¬96.67</option><option value=\"686\" data-name=\"Corsair CORSAIR Vengeance LPX 16GB\" data-capacity=\"16\" data-type=\"DDR4\" data-speed=\"DDR4-3000\">Corsair CORSAIR Vengeance LPX 16GB (16GB DDR4 DDR4-3000MHz) - â‚¬95</option><option value=\"435\" data-name=\"SK Hynix HMAA2GU6CJR8N-XN 16 GB\" data-capacity=\"16\" data-type=\"DDR4\" data-speed=\"DDR4-3200\">SK Hynix HMAA2GU6CJR8N-XN 16 GB (16GB DDR4 DDR4-3200MHz) - â‚¬85</option><option value=\"347\" data-name=\"Corsair Vengeance LPX 16 GB\" data-capacity=\"16\" data-type=\"DDR4\" data-speed=\"DDR4-2666\">Corsair Vengeance LPX 16 GB (16GB DDR4 DDR4-2666MHz) - â‚¬75</option><option value=\"401\" data-name=\"Corsair Vengeance LPX 32 GB\" data-capacity=\"32\" data-type=\"DDR4\" data-speed=\"DDR4-2133\">Corsair Vengeance LPX 32 GB (32GB DDR4 DDR4-2133MHz) - â‚¬70</option><option value=\"402\" data-name=\"Corsair Vengeance RGB RS 32 GB\" data-capacity=\"32\" data-type=\"DDR4\" data-speed=\"DDR4-3200\">Corsair Vengeance RGB RS 32 GB (32GB DDR4 DDR4-3200MHz) - â‚¬45</option><option value=\"1369\" data-name=\"Samsung M391A2K43BB1-CPB 16 GB\" data-capacity=\"16\" data-type=\"DDR4\" data-speed=\"DDR4-2133\">Samsung M391A2K43BB1-CPB 16 GB (16GB DDR4 DDR4-2133MHz) - â‚¬40</option><option value=\"163\" data-name=\"Samsung M378A1K43CB2-CRC 8 GB\" data-capacity=\"8\" data-type=\"DDR4\" data-speed=\"DDR4-2400\">Samsung M378A1K43CB2-CRC 8 GB (8GB DDR4 DDR4-2400MHz) - â‚¬37.5</option><option value=\"371\" data-name=\"Kingston ValueRAM 8 GB\" data-capacity=\"8\" data-type=\"DDR4\" data-speed=\"DDR4-3200\">Kingston ValueRAM 8 GB (8GB DDR4 DDR4-3200MHz) - â‚¬35</option><option value=\"4855\" data-name=\"Crucial CT3K8G3ERSLD8160B 24 GB\" data-capacity=\"24\" data-type=\"DDR3\" data-speed=\"DDR3-1600\">Crucial CT3K8G3ERSLD8160B 24 GB (24GB DDR3 DDR3-1600MHz) - â‚¬25</option><option value=\"365\" data-name=\"SK Hynix HMA81GU6MFR8N-UH 8 GB\" data-capacity=\"8\" data-type=\"DDR4\" data-speed=\"DDR4-2400\">SK Hynix HMA81GU6MFR8N-UH 8 GB (8GB DDR4 DDR4-2400MHz) - â‚¬25</option><option value=\"4359\" data-name=\"Crucial Ballistix 16 GB\" data-capacity=\"16\" data-type=\"DDR3\" data-speed=\"DDR3-1600\">Crucial Ballistix 16 GB (16GB DDR3 DDR3-1600MHz) - â‚¬19</option><option value=\"3570\" data-name=\"Crucial Ballistix Smart Tracer 4 GB\" data-capacity=\"4\" data-type=\"DDR3\" data-speed=\"DDR3-1600\">Crucial Ballistix Smart Tracer 4 GB (4GB DDR3 DDR3-1600MHz) - â‚¬15</option><option value=\"530\" data-name=\"Samsung Green 8 GB\" data-capacity=\"8\" data-type=\"DDR4\" data-speed=\"DDR4-2133\">Samsung Green 8 GB (8GB DDR4 DDR4-2133MHz) - â‚¬15</option><option value=\"3784\" data-name=\"Kingston Blu 8 GB\" data-capacity=\"8\" data-type=\"DDR3\" data-speed=\"DDR3-1600\">Kingston Blu 8 GB (8GB DDR3 DDR3-1600MHz) - â‚¬11</option><option value=\"457\" data-name=\"Corsair Vengeance LPX 128 GB\" data-capacity=\"128\" data-type=\"DDR4\" data-speed=\"DDR4-3200\">Corsair Vengeance LPX 128 GB (128GB DDR4 DDR4-3200MHz) - â‚¬10</option><option value=\"598\" data-name=\"Corsair Vengeance LPX 8 GB\" data-capacity=\"8\" data-type=\"DDR4\" data-speed=\"DDR4-2400\">Corsair Vengeance LPX 8 GB (8GB DDR4 DDR4-2400MHz) - â‚¬10</option><option value=\"4180\" data-name=\"Corsair Mac Memory 4 GB\" data-capacity=\"4\" data-type=\"DDR3\" data-speed=\"DDR3-1066\">Corsair Mac Memory 4 GB (4GB DDR3 DDR3-1066MHz) - â‚¬10</option><option value=\"79\" data-name=\"Corsair Vengeance LPX 8 GB\" data-capacity=\"8\" data-type=\"DDR4\" data-speed=\"DDR4-2400\">Corsair Vengeance LPX 8 GB (8GB DDR4 DDR4-2400MHz) - â‚¬9</option><option value=\"1013\" data-name=\"Corsair CORSAIR Vengeance LPX 64GB\" data-capacity=\"64\" data-type=\"DDR4\" data-speed=\"DDR4-3200\">Corsair CORSAIR Vengeance LPX 64GB (64GB DDR4 DDR4-3200MHz) - â‚¬5</option><option value=\"662\" data-name=\"SK Hynix HMT41GU6MFR8C-PB 8 GB\" data-capacity=\"8\" data-type=\"DDR3\" data-speed=\"DDR3-1600\">SK Hynix HMT41GU6MFR8C-PB 8 GB (8GB DDR3 DDR3-1600MHz) - â‚¬5</option><option value=\"140\" data-name=\"Kingston FURY Beast 32 GB\" data-capacity=\"32\" data-type=\"DDR4\" data-speed=\"DDR4-3600\">Kingston FURY Beast 32 GB (32GB DDR4 DDR4-3600MHz) - â‚¬0</option></select>",
+          "code_snippet": "<select id=\"ram-select\" class=\"component-select\" onchange=\"selectComponent('ram', this.value)\"><option value=\"\">Select RAM...</option><option value=\"72\" data-name=\"Corsair Vengeance RGB 192 GB\" data-capacity=\"192\" data-type=\"DDR5\" data-speed=\"DDR5-5200\">Corsair Vengeance RGB 192 GB (192GB DDR5 DDR5-5200MHz) - \u00e2\u201a\u00ac1600</option><option value=\"23\" data-name=\"G.Skill Trident Z5 Neo RGB 64 GB\" data-capacity=\"64\" data-type=\"DDR5\" data-speed=\"DDR5-6000\">G.Skill Trident Z5 Neo RGB 64 GB (64GB DDR5 DDR5-6000MHz) - \u00e2\u201a\u00ac1000</option><option value=\"1365\" data-name=\"ADATA XPG Lancer Blade 32 GB\" data-capacity=\"32\" data-type=\"DDR5\" data-speed=\"DDR5-6400\">ADATA XPG Lancer Blade 32 GB (32GB DDR5 DDR5-6400MHz) - \u00e2\u201a\u00ac520</option><option value=\"20\" data-name=\"Crucial Pro 64 GB\" data-capacity=\"64\" data-type=\"DDR5\" data-speed=\"DDR5-6000\">Crucial Pro 64 GB (64GB DDR5 DDR5-6000MHz) - \u00e2\u201a\u00ac520</option><option value=\"741\" data-name=\"Kingston FURY Beast RGB 64 GB\" data-capacity=\"64\" data-type=\"DDR4\" data-speed=\"DDR4-3600\">Kingston FURY Beast RGB 64 GB (64GB DDR4 DDR4-3600MHz) - \u00e2\u201a\u00ac500</option><option value=\"36\" data-name=\"Patriot Viper Venom 32 GB\" data-capacity=\"32\" data-type=\"DDR5\" data-speed=\"DDR5-6000\">Patriot Viper Venom 32 GB (32GB DDR5 DDR5-6000MHz) - \u00e2\u201a\u00ac395</option><option value=\"1895\" data-name=\"ADATA ADATA 32GB\" data-capacity=\"32\" data-type=\"DDR4\" data-speed=\"DDR4-3000\">ADATA ADATA 32GB (32GB DDR4 DDR4-3000MHz) - \u00e2\u201a\u00ac380</option><option value=\"1\" data-name=\"Corsair Vengeance RGB 32 GB\" data-capacity=\"32\" data-type=\"DDR5\" data-speed=\"DDR5-6000\">Corsair Vengeance RGB 32 GB (32GB DDR5 DDR5-6000MHz) - \u00e2\u201a\u00ac380</option><option value=\"303\" data-name=\"GOODRAM IRDM 32 GB\" data-capacity=\"32\" data-type=\"DDR5\" data-speed=\"DDR5-6000\">GOODRAM IRDM 32 GB (32GB DDR5 DDR5-6000MHz) - \u00e2\u201a\u00ac380</option><option value=\"16\" data-name=\"Kingston FURY Beast 32 GB\" data-capacity=\"32\" data-type=\"DDR5\" data-speed=\"DDR5-6000\">Kingston FURY Beast 32 GB (32GB DDR5 DDR5-6000MHz) - \u00e2\u201a\u00ac375</option><option value=\"3813\" data-name=\"Kingston T1 8 GB\" data-capacity=\"8\" data-type=\"DDR3\" data-speed=\"DDR3-1866\">Kingston T1 8 GB (8GB DDR3 DDR3-1866MHz) - \u00e2\u201a\u00ac360</option><option value=\"177\" data-name=\"G.Skill Ripjaws S5 32 GB\" data-capacity=\"32\" data-type=\"DDR5\" data-speed=\"DDR5-6400\">G.Skill Ripjaws S5 32 GB (32GB DDR5 DDR5-6400MHz) - \u00e2\u201a\u00ac350</option><option value=\"1007\" data-name=\"ADATA XPG Lancer Blade RGB 32 GB\" data-capacity=\"32\" data-type=\"DDR5\" data-speed=\"DDR5-6400\">ADATA XPG Lancer Blade RGB 32 GB (32GB DDR5 DDR5-6400MHz) - \u00e2\u201a\u00ac300</option><option value=\"10\" data-name=\"Corsair Vengeance 32 GB\" data-capacity=\"32\" data-type=\"DDR5\" data-speed=\"DDR5-6000\">Corsair Vengeance 32 GB (32GB DDR5 DDR5-6000MHz) - \u00e2\u201a\u00ac300</option><option value=\"107\" data-name=\"Kingston FURY Beast 32 GB\" data-capacity=\"32\" data-type=\"DDR5\" data-speed=\"DDR5-5600\">Kingston FURY Beast 32 GB (32GB DDR5 DDR5-5600MHz) - \u00e2\u201a\u00ac265</option><option value=\"83\" data-name=\"G.Skill Trident Z RGB 32 GB\" data-capacity=\"32\" data-type=\"DDR4\" data-speed=\"DDR4-3600\">G.Skill Trident Z RGB 32 GB (32GB DDR4 DDR4-3600MHz) - \u00e2\u201a\u00ac210</option><option value=\"896\" data-name=\"Kingston Fury Renegade RGB 16 GB\" data-capacity=\"16\" data-type=\"DDR5\" data-speed=\"DDR5-6400\">Kingston Fury Renegade RGB 16 GB (16GB DDR5 DDR5-6400MHz) - \u00e2\u201a\u00ac200</option><option value=\"49\" data-name=\"G.Skill Ripjaws V 32 GB\" data-capacity=\"32\" data-type=\"DDR4\" data-speed=\"DDR4-3200\">G.Skill Ripjaws V 32 GB (32GB DDR4 DDR4-3200MHz) - \u00e2\u201a\u00ac200</option><option value=\"526\" data-name=\"Crucial CT32G56C46U5 32 GB\" data-capacity=\"32\" data-type=\"DDR5\" data-speed=\"DDR5-5600\">Crucial CT32G56C46U5 32 GB (32GB DDR5 DDR5-5600MHz) - \u00e2\u201a\u00ac180</option><option value=\"359\" data-name=\"G.Skill Aegis 5 16 GB\" data-capacity=\"16\" data-type=\"DDR5\" data-speed=\"DDR5-6000\">G.Skill Aegis 5 16 GB (16GB DDR5 DDR5-6000MHz) - \u00e2\u201a\u00ac150</option><option value=\"60\" data-name=\"Kingston FURY Beast 16 GB\" data-capacity=\"16\" data-type=\"DDR5\" data-speed=\"DDR5-6000\">Kingston FURY Beast 16 GB (16GB DDR5 DDR5-6000MHz) - \u00e2\u201a\u00ac145</option><option value=\"710\" data-name=\"Corsair Vengeance RGB RS 16 GB\" data-capacity=\"16\" data-type=\"DDR4\" data-speed=\"DDR4-3600\">Corsair Vengeance RGB RS 16 GB (16GB DDR4 DDR4-3600MHz) - \u00e2\u201a\u00ac140</option><option value=\"5\" data-name=\"Corsair Vengeance LPX 16 GB\" data-capacity=\"16\" data-type=\"DDR4\" data-speed=\"DDR4-3200\">Corsair Vengeance LPX 16 GB (16GB DDR4 DDR4-3200MHz) - \u00e2\u201a\u00ac115</option><option value=\"4034\" data-name=\"Kingston 1500 4 GB\" data-capacity=\"4\" data-type=\"DDR3\" data-speed=\"DDR3-1600\">Kingston 1500 4 GB (4GB DDR3 DDR3-1600MHz) - \u00e2\u201a\u00ac96.67</option><option value=\"686\" data-name=\"Corsair CORSAIR Vengeance LPX 16GB\" data-capacity=\"16\" data-type=\"DDR4\" data-speed=\"DDR4-3000\">Corsair CORSAIR Vengeance LPX 16GB (16GB DDR4 DDR4-3000MHz) - \u00e2\u201a\u00ac95</option><option value=\"435\" data-name=\"SK Hynix HMAA2GU6CJR8N-XN 16 GB\" data-capacity=\"16\" data-type=\"DDR4\" data-speed=\"DDR4-3200\">SK Hynix HMAA2GU6CJR8N-XN 16 GB (16GB DDR4 DDR4-3200MHz) - \u00e2\u201a\u00ac85</option><option value=\"347\" data-name=\"Corsair Vengeance LPX 16 GB\" data-capacity=\"16\" data-type=\"DDR4\" data-speed=\"DDR4-2666\">Corsair Vengeance LPX 16 GB (16GB DDR4 DDR4-2666MHz) - \u00e2\u201a\u00ac75</option><option value=\"401\" data-name=\"Corsair Vengeance LPX 32 GB\" data-capacity=\"32\" data-type=\"DDR4\" data-speed=\"DDR4-2133\">Corsair Vengeance LPX 32 GB (32GB DDR4 DDR4-2133MHz) - \u00e2\u201a\u00ac70</option><option value=\"402\" data-name=\"Corsair Vengeance RGB RS 32 GB\" data-capacity=\"32\" data-type=\"DDR4\" data-speed=\"DDR4-3200\">Corsair Vengeance RGB RS 32 GB (32GB DDR4 DDR4-3200MHz) - \u00e2\u201a\u00ac45</option><option value=\"1369\" data-name=\"Samsung M391A2K43BB1-CPB 16 GB\" data-capacity=\"16\" data-type=\"DDR4\" data-speed=\"DDR4-2133\">Samsung M391A2K43BB1-CPB 16 GB (16GB DDR4 DDR4-2133MHz) - \u00e2\u201a\u00ac40</option><option value=\"163\" data-name=\"Samsung M378A1K43CB2-CRC 8 GB\" data-capacity=\"8\" data-type=\"DDR4\" data-speed=\"DDR4-2400\">Samsung M378A1K43CB2-CRC 8 GB (8GB DDR4 DDR4-2400MHz) - \u00e2\u201a\u00ac37.5</option><option value=\"371\" data-name=\"Kingston ValueRAM 8 GB\" data-capacity=\"8\" data-type=\"DDR4\" data-speed=\"DDR4-3200\">Kingston ValueRAM 8 GB (8GB DDR4 DDR4-3200MHz) - \u00e2\u201a\u00ac35</option><option value=\"4855\" data-name=\"Crucial CT3K8G3ERSLD8160B 24 GB\" data-capacity=\"24\" data-type=\"DDR3\" data-speed=\"DDR3-1600\">Crucial CT3K8G3ERSLD8160B 24 GB (24GB DDR3 DDR3-1600MHz) - \u00e2\u201a\u00ac25</option><option value=\"365\" data-name=\"SK Hynix HMA81GU6MFR8N-UH 8 GB\" data-capacity=\"8\" data-type=\"DDR4\" data-speed=\"DDR4-2400\">SK Hynix HMA81GU6MFR8N-UH 8 GB (8GB DDR4 DDR4-2400MHz) - \u00e2\u201a\u00ac25</option><option value=\"4359\" data-name=\"Crucial Ballistix 16 GB\" data-capacity=\"16\" data-type=\"DDR3\" data-speed=\"DDR3-1600\">Crucial Ballistix 16 GB (16GB DDR3 DDR3-1600MHz) - \u00e2\u201a\u00ac19</option><option value=\"3570\" data-name=\"Crucial Ballistix Smart Tracer 4 GB\" data-capacity=\"4\" data-type=\"DDR3\" data-speed=\"DDR3-1600\">Crucial Ballistix Smart Tracer 4 GB (4GB DDR3 DDR3-1600MHz) - \u00e2\u201a\u00ac15</option><option value=\"530\" data-name=\"Samsung Green 8 GB\" data-capacity=\"8\" data-type=\"DDR4\" data-speed=\"DDR4-2133\">Samsung Green 8 GB (8GB DDR4 DDR4-2133MHz) - \u00e2\u201a\u00ac15</option><option value=\"3784\" data-name=\"Kingston Blu 8 GB\" data-capacity=\"8\" data-type=\"DDR3\" data-speed=\"DDR3-1600\">Kingston Blu 8 GB (8GB DDR3 DDR3-1600MHz) - \u00e2\u201a\u00ac11</option><option value=\"457\" data-name=\"Corsair Vengeance LPX 128 GB\" data-capacity=\"128\" data-type=\"DDR4\" data-speed=\"DDR4-3200\">Corsair Vengeance LPX 128 GB (128GB DDR4 DDR4-3200MHz) - \u00e2\u201a\u00ac10</option><option value=\"598\" data-name=\"Corsair Vengeance LPX 8 GB\" data-capacity=\"8\" data-type=\"DDR4\" data-speed=\"DDR4-2400\">Corsair Vengeance LPX 8 GB (8GB DDR4 DDR4-2400MHz) - \u00e2\u201a\u00ac10</option><option value=\"4180\" data-name=\"Corsair Mac Memory 4 GB\" data-capacity=\"4\" data-type=\"DDR3\" data-speed=\"DDR3-1066\">Corsair Mac Memory 4 GB (4GB DDR3 DDR3-1066MHz) - \u00e2\u201a\u00ac10</option><option value=\"79\" data-name=\"Corsair Vengeance LPX 8 GB\" data-capacity=\"8\" data-type=\"DDR4\" data-speed=\"DDR4-2400\">Corsair Vengeance LPX 8 GB (8GB DDR4 DDR4-2400MHz) - \u00e2\u201a\u00ac9</option><option value=\"1013\" data-name=\"Corsair CORSAIR Vengeance LPX 64GB\" data-capacity=\"64\" data-type=\"DDR4\" data-speed=\"DDR4-3200\">Corsair CORSAIR Vengeance LPX 64GB (64GB DDR4 DDR4-3200MHz) - \u00e2\u201a\u00ac5</option><option value=\"662\" data-name=\"SK Hynix HMT41GU6MFR8C-PB 8 GB\" data-capacity=\"8\" data-type=\"DDR3\" data-speed=\"DDR3-1600\">SK Hynix HMT41GU6MFR8C-PB 8 GB (8GB DDR3 DDR3-1600MHz) - \u00e2\u201a\u00ac5</option><option value=\"140\" data-name=\"Kingston FURY Beast 32 GB\" data-capacity=\"32\" data-type=\"DDR4\" data-speed=\"DDR4-3600\">Kingston FURY Beast 32 GB (32GB DDR4 DDR4-3600MHz) - \u00e2\u201a\u00ac0</option></select>",
           "column": "talking",
           "created": "2026-06-27T23:33:17.716258",
           "updated": "2026-06-29T17:54:00",
@@ -551,7 +585,7 @@
           "category": "Frontend",
           "priority": "Medium",
           "fix": "",
-          "code_snippet": "<div class=\"component-details\" id=\"motherboard-details\"><div class=\"detail-row\"><span>brand:</span><span>ASUS</span></div><div class=\"detail-row\"><span>model:</span><span>ROG MAXIMUS Z690 EXTREME</span></div><div class=\"detail-row\"><span>socket:</span><span>LGA1700</span></div><div class=\"detail-row\"><span>chipset:</span><span>Z690</span></div><div class=\"detail-row\"><span>Avg Price:</span><span>â‚¬550</span></div></div>",
+          "code_snippet": "<div class=\"component-details\" id=\"motherboard-details\"><div class=\"detail-row\"><span>brand:</span><span>ASUS</span></div><div class=\"detail-row\"><span>model:</span><span>ROG MAXIMUS Z690 EXTREME</span></div><div class=\"detail-row\"><span>socket:</span><span>LGA1700</span></div><div class=\"detail-row\"><span>chipset:</span><span>Z690</span></div><div class=\"detail-row\"><span>Avg Price:</span><span>\u00e2\u201a\u00ac550</span></div></div>",
           "column": "talking",
           "created": "2026-06-27T23:31:07.868522",
           "updated": "2026-06-29T17:58:00",
@@ -718,28 +752,6 @@
           "updated": "2026-07-19T23:22:00"
         },
         {
-          "id": "T216",
-          "title": "cases scrapper doesnt download image. It should be full 800px images",
-          "page": "Cases",
-          "category": "Scraper",
-          "priority": "Medium",
-          "fix": "cases_scraper.py: prefer gallery preview image, then first .800.jpg thumbnail, then content image.",
-          "column": "talking",
-          "created": "2026-07-19T15:00:48.455808",
-          "updated": "2026-07-19T23:35:00"
-        },
-        {
-          "id": "T217",
-          "title": "Scrapper is not grabbing correct date_posted or Location field. Added code snippet how listings looks",
-          "page": "Cases",
-          "category": "Scraper",
-          "priority": "Medium",
-          "fix": "cases_scraper.py: added _extract_date from td.msg_footer and persist date_posted on insert/update. Location already reads explicit Vieta:/?????: row.",
-          "column": "talking",
-          "created": "2026-07-19T15:04:29.558000",
-          "updated": "2026-07-19T23:35:00"
-        },
-        {
           "id": "T173",
           "column": "talking",
           "updated": "2026-07-19T23:40:00",
@@ -797,7 +809,7 @@
               "fix": "templates/consoles.html: Flagged URLs modal textarea now uses --modal-box-bg instead of --modal-bg so the code snippet area renders correctly in dark mode."
             }
           ],
-          "code_snippet": "<div class=\"modal\" style=\"max-width: 900px; max-height: 90vh; overflow-y: auto;\">\n        <div class=\"modal-header\">\n            <h3 id=\"listing-detail-title\">Pardodu Sony Playstation 4 ar VR brillem â€“ Gatavs speleÅ¡anai. \n\nPardodu lieliska stavo PlayStation 4</h3>\n            <button class=\"modal-close\" onclick=\"closeListingDetailModal()\">Ã—</button>\n        </div>\n        <div id=\"listing-detail-content\" style=\"padding: 1.5rem;\">\n            <div style=\"display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem;\">\n                <div style=\"background: #f8f9fa; padding: 1rem; border-radius: 8px;\">\n                    <strong>Price:</strong> <span class=\"price\" style=\"font-size: 1.25rem;\">â‚¬290</span>\n                </div>\n                <div style=\"background: #f8f9fa; padding: 1rem; border-radius: 8px;\">\n                    <strong>Location:</strong> Riga\n                </div>\n                <div style=\"background: #f8f9fa; padding: 1rem; border-radius: 8px;\">\n                    <strong>Date:</strong> N/A\n                </div>\n                <div style=\"background: #f8f9fa; padding: 1rem; border-radius: 8px;\">\n                    <strong>Status:</strong> <span style=\"color: #27ae60;\">Active</span>\n                </div>\n            </div>\n        \n                <div style=\"background: #e8f5e9; padding: 1rem; border-radius: 8px; margin-bottom: 1rem;\">\n                    <strong>Console:</strong> PlayStation 4<br>\n                    <strong>Variant:</strong> PlayStation 4<br>\n                    \n                    \n                </div>\n            \n            <div style=\"margin-bottom: 1rem;\">\n                <strong>Description:</strong>\n                <div style=\"background: #f8f9fa; padding: 1rem; border-radius: 8px; margin-top: 0.5rem; max-height: 200px; overflow-y: auto; white-space: pre-wrap;\">\n                    Pardodu Sony Playstation 4 ar VR brillem â€“ Gatavs speleÅ¡anai. \n\nPardodu lieliska stavo PlayStation 4\n                </div>\n            </div>\n        </div>\n        <div style=\"padding: 1rem 1.5rem; background: #f8f9fa; border-top: 1px solid #eee; display: flex; gap: 1rem; justify-content: flex-end;\">\n            <button id=\"listing-detail-flag-btn\" class=\"btn btn-warning\" onclick=\"toggleFlagFromDetail()\">?? Flag</button>\n            <a id=\"listing-detail-link\" href=\"https://www.ss.com/msg/lv/electronics/computers/game-consoles/bhofcc.html\" target=\"_blank\" class=\"btn\">View on ss.com ?</a>\n        </div>\n    </div>",
+          "code_snippet": "<div class=\"modal\" style=\"max-width: 900px; max-height: 90vh; overflow-y: auto;\">\n        <div class=\"modal-header\">\n            <h3 id=\"listing-detail-title\">Pardodu Sony Playstation 4 ar VR brillem \u00e2\u20ac\u201c Gatavs spele\u00c5\u00a1anai. \n\nPardodu lieliska stavo PlayStation 4</h3>\n            <button class=\"modal-close\" onclick=\"closeListingDetailModal()\">\u00c3\u2014</button>\n        </div>\n        <div id=\"listing-detail-content\" style=\"padding: 1.5rem;\">\n            <div style=\"display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem;\">\n                <div style=\"background: #f8f9fa; padding: 1rem; border-radius: 8px;\">\n                    <strong>Price:</strong> <span class=\"price\" style=\"font-size: 1.25rem;\">\u00e2\u201a\u00ac290</span>\n                </div>\n                <div style=\"background: #f8f9fa; padding: 1rem; border-radius: 8px;\">\n                    <strong>Location:</strong> Riga\n                </div>\n                <div style=\"background: #f8f9fa; padding: 1rem; border-radius: 8px;\">\n                    <strong>Date:</strong> N/A\n                </div>\n                <div style=\"background: #f8f9fa; padding: 1rem; border-radius: 8px;\">\n                    <strong>Status:</strong> <span style=\"color: #27ae60;\">Active</span>\n                </div>\n            </div>\n        \n                <div style=\"background: #e8f5e9; padding: 1rem; border-radius: 8px; margin-bottom: 1rem;\">\n                    <strong>Console:</strong> PlayStation 4<br>\n                    <strong>Variant:</strong> PlayStation 4<br>\n                    \n                    \n                </div>\n            \n            <div style=\"margin-bottom: 1rem;\">\n                <strong>Description:</strong>\n                <div style=\"background: #f8f9fa; padding: 1rem; border-radius: 8px; margin-top: 0.5rem; max-height: 200px; overflow-y: auto; white-space: pre-wrap;\">\n                    Pardodu Sony Playstation 4 ar VR brillem \u00e2\u20ac\u201c Gatavs spele\u00c5\u00a1anai. \n\nPardodu lieliska stavo PlayStation 4\n                </div>\n            </div>\n        </div>\n        <div style=\"padding: 1rem 1.5rem; background: #f8f9fa; border-top: 1px solid #eee; display: flex; gap: 1rem; justify-content: flex-end;\">\n            <button id=\"listing-detail-flag-btn\" class=\"btn btn-warning\" onclick=\"toggleFlagFromDetail()\">?? Flag</button>\n            <a id=\"listing-detail-link\" href=\"https://www.ss.com/msg/lv/electronics/computers/game-consoles/bhofcc.html\" target=\"_blank\" class=\"btn\">View on ss.com ?</a>\n        </div>\n    </div>",
           "notes": [
             {
               "timestamp": "2026-07-23T11:09:37.8319703",
@@ -851,7 +863,7 @@
           "page": "RAM",
           "category": "Frontend",
           "priority": "Medium",
-          "fix": "templates/ram.html: market-position comparison now shows absolute â‚¬ diff and percentage (cheaper/more expensive) vs same DDR type and capacity listings.",
+          "fix": "templates/ram.html: market-position comparison now shows absolute \u00e2\u201a\u00ac diff and percentage (cheaper/more expensive) vs same DDR type and capacity listings.",
           "column": "talking",
           "created": "2026-07-19T18:29:53.787696",
           "updated": "2026-07-23T13:18:57.4743165",
@@ -860,7 +872,7 @@
               "reopened_at": "2026-07-23T12:32:25.803806",
               "update": "Market position still doesnt show any information",
               "previous_completed_at": null,
-              "fix": "templates/ram.html: market-position comparison now shows absolute â‚¬ diff and percentage (cheaper/more expensive) vs same DDR type and capacity listings."
+              "fix": "templates/ram.html: market-position comparison now shows absolute \u00e2\u201a\u00ac diff and percentage (cheaper/more expensive) vs same DDR type and capacity listings."
             }
           ],
           "notes": [
@@ -1059,7 +1071,7 @@
           "page": "Computers",
           "category": "Frontend",
           "priority": "Medium",
-          "fix": "app.py get_computer_detail: fallback RAM display names no longer append the raw match_method token (e.g., \"(fallback_ddr4_16gb)\"); they render as \"Generic 16GB DDR4\".\n\n\n2026-07-30 10:51 — (RAM buttons/names): Verified `/api/computers/fnhbc` returns clean RAM name `Generic 16GB DDR4` and no Wrong/Skip buttons exist in the RAM section of `templates/computers.html`.",
+          "fix": "app.py get_computer_detail: fallback RAM display names no longer append the raw match_method token (e.g., \"(fallback_ddr4_16gb)\"); they render as \"Generic 16GB DDR4\".\n\n\n2026-07-30 10:51 \u2014 (RAM buttons/names): Verified `/api/computers/fnhbc` returns clean RAM name `Generic 16GB DDR4` and no Wrong/Skip buttons exist in the RAM section of `templates/computers.html`.",
           "column": "talking",
           "created": "2026-07-19T18:55:52.878014",
           "updated": "2026-07-30T13:04:00",
@@ -1096,7 +1108,7 @@
           "page": "Computers",
           "category": "Frontend",
           "priority": "Medium",
-          "fix": "Use COALESCE(date_posted, first_seen_at, created_at) for RAM listings query and time filters\n\n\n2026-07-30 10:45 — (Prebuilt tags): Updated `SS-CRAWLER/src/scraper/computer_scraper.py` `_classify_build_type` to require stronger signals (5+ components or explicit \"complete PC\" keywords) instead of treating every PC listing as prebuilt. Ran `reclassify_prebuilt.py` to backfill all 511 `computer_listings` rows; distribution is now 497 prebuilt / 14 custom. Restarted Flask on port 5000.",
+          "fix": "Use COALESCE(date_posted, first_seen_at, created_at) for RAM listings query and time filters\n\n\n2026-07-30 10:45 \u2014 (Prebuilt tags): Updated `SS-CRAWLER/src/scraper/computer_scraper.py` `_classify_build_type` to require stronger signals (5+ components or explicit \"complete PC\" keywords) instead of treating every PC listing as prebuilt. Ran `reclassify_prebuilt.py` to backfill all 511 `computer_listings` rows; distribution is now 497 prebuilt / 14 custom. Restarted Flask on port 5000.",
           "column": "talking",
           "created": "2026-06-27T23:57:00.702723",
           "updated": "2026-07-30T13:04:00",
@@ -1106,7 +1118,7 @@
           "reopen_history": [
             {
               "reopened_at": "2026-06-29T18:17:42.941950",
-              "update": "every computer shows \"ÄŒustom\" tag. either the filters dont work or tag diesnt work",
+              "update": "every computer shows \"\u00c4\u0152ustom\" tag. either the filters dont work or tag diesnt work",
               "previous_completed_at": null,
               "fix": "Use COALESCE(date_posted, first_seen_at, created_at) for RAM listings query and time filters"
             },
@@ -1123,7 +1135,7 @@
           "page": "Computers",
           "category": "Backend",
           "priority": "High",
-          "fix": "2026-07-30 12:05 — (benchmark-based computer scoring): Added benchmark joins to `/api/computers` and `/api/computers/<id>` (CPU PassMark/Cinebench R23 multi, GPU G3D mark), `compute_scores()` helper using CPU 40%, GPU 40%, RAM 10%, SSD 10% weighting, backend sort by `score`/`value_score`, and frontend Score column + sort dropdown in `computers.html` plus detail modal score badges.",
+          "fix": "2026-07-30 12:05 \u2014 (benchmark-based computer scoring): Added benchmark joins to `/api/computers` and `/api/computers/<id>` (CPU PassMark/Cinebench R23 multi, GPU G3D mark), `compute_scores()` helper using CPU 40%, GPU 40%, RAM 10%, SSD 10% weighting, backend sort by `score`/`value_score`, and frontend Score column + sort dropdown in `computers.html` plus detail modal score badges.",
           "column": "talking",
           "created": "2026-07-29T15:45:38.220663",
           "updated": "2026-07-30T13:04:00",
@@ -1136,7 +1148,7 @@
           "page": "GPU",
           "category": "Backend",
           "priority": "High",
-          "fix": "2026-07-30 11:55 — (GPU compare page): Added compare checkboxes to GPU table rows, \"Compare N\" button in the filter bar, new `/gpu-compare` route in `app.py`, and `templates/gpu_compare.html` side-by-side comparison page with price, G3D/G2D, rank, VRAM, year, avg price, and best-price/best-G3D/best-value summary cards.",
+          "fix": "2026-07-30 11:55 \u2014 (GPU compare page): Added compare checkboxes to GPU table rows, \"Compare N\" button in the filter bar, new `/gpu-compare` route in `app.py`, and `templates/gpu_compare.html` side-by-side comparison page with price, G3D/G2D, rank, VRAM, year, avg price, and best-price/best-G3D/best-value summary cards.",
           "future_folder_id": "F-20260729155044-b09152e7",
           "column": "talking",
           "created": "2026-07-29T15:50:45.155020",
@@ -1152,7 +1164,7 @@
           "page": "GPU",
           "category": "Backend",
           "priority": "Medium",
-          "fix": "2026-07-30 11:40 — (Most Listed only 2): Changed `loadMostSoldModels` to show top 10 models instead of only 2.",
+          "fix": "2026-07-30 11:40 \u2014 (Most Listed only 2): Changed `loadMostSoldModels` to show top 10 models instead of only 2.",
           "column": "talking",
           "created": "2026-07-29T15:54:33.517322",
           "updated": "2026-07-30T13:04:00",
@@ -1165,7 +1177,7 @@
           "page": "GPU",
           "category": "Frontend",
           "priority": "Medium",
-          "fix": "2026-07-30 11:25 — (GPU performance/price column + sort): Added a new \"€/G3D\" column in the GPU table, shifted CSS nth-child selectors, and added backend sort option `performance_price` in `app.py` plus frontend sort dropdown option.",
+          "fix": "2026-07-30 11:25 \u2014 (GPU performance/price column + sort): Added a new \"\u20ac/G3D\" column in the GPU table, shifted CSS nth-child selectors, and added backend sort option `performance_price` in `app.py` plus frontend sort dropdown option.",
           "column": "talking",
           "created": "2026-07-29T15:58:01.802859",
           "updated": "2026-07-30T13:04:00",
@@ -1178,7 +1190,7 @@
           "page": "GPU",
           "category": "Backend",
           "priority": "Medium",
-          "fix": "2026-07-30 12:25 — (Versioning duplicates): Added GPU versioning CTE to `/api/gpus` so only the latest version (`base_id` or `base_id_vN`) is returned; older versions stay in the database as price/description history. Active-only count dropped from 89 to 80.",
+          "fix": "2026-07-30 12:25 \u2014 (Versioning duplicates): Added GPU versioning CTE to `/api/gpus` so only the latest version (`base_id` or `base_id_vN`) is returned; older versions stay in the database as price/description history. Active-only count dropped from 89 to 80.",
           "column": "talking",
           "created": "2026-07-30T11:04:29.151423",
           "updated": "2026-07-30T13:04:00",
@@ -1191,7 +1203,7 @@
           "page": "GPU",
           "category": "Backend",
           "priority": "High",
-          "fix": "2026-07-30 12:30 — (RTX 3070 count discrepancy): Verified DB has 28 base RTX 3070 rows but only 4 are active; page now shows all active latest versions. Added explanation to `docs/gpu-tags-analysis.md` about active-only filtering and version collapsing.",
+          "fix": "2026-07-30 12:30 \u2014 (RTX 3070 count discrepancy): Verified DB has 28 base RTX 3070 rows but only 4 are active; page now shows all active latest versions. Added explanation to `docs/gpu-tags-analysis.md` about active-only filtering and version collapsing.",
           "column": "talking",
           "created": "2026-07-30T11:58:09.738742",
           "updated": "2026-07-30T13:04:00",
@@ -1204,7 +1216,7 @@
           "page": "GPU",
           "category": "Frontend",
           "priority": "Medium",
-          "fix": "2026-08-10 21:20 — Monthly average chart now plots each listing/card as its own line instead of grouping all same-model listings into one dataset.",
+          "fix": "2026-08-10 21:20 \u2014 Monthly average chart now plots each listing/card as its own line instead of grouping all same-model listings into one dataset.",
           "column": "talking",
           "created": "2026-07-30T13:18:33.477453",
           "updated": "2026-08-10T18:21:52.473862Z",
@@ -1225,7 +1237,7 @@
           "page": "GPU",
           "category": "Frontend",
           "priority": "Medium",
-          "fix": "2026-08-10 21:20 — Top Performers chart now fetches all-time data (active=false, limit=10000) so leaders are computed across the full dataset, not just the current 50 filtered listings.",
+          "fix": "2026-08-10 21:20 \u2014 Top Performers chart now fetches all-time data (active=false, limit=10000) so leaders are computed across the full dataset, not just the current 50 filtered listings.",
           "column": "talking",
           "created": "2026-07-29T15:55:56.073186",
           "updated": "2026-08-10T18:21:52.473862Z",
@@ -1234,9 +1246,9 @@
           "reopen_history": [
             {
               "reopened_at": "2026-07-30T14:05:19.267581",
-              "update": "Top Performers (G3D/€), is really 5070 the most effiecient g3d/eur perfomance?",
+              "update": "Top Performers (G3D/\u20ac), is really 5070 the most effiecient g3d/eur perfomance?",
               "previous_completed_at": null,
-              "fix": "The Top Performers chart ranks listings by G3D Mark per euro (G3D/€) using the full all-time dataset, not just the 50 currently visible. A GeForce RTX 5070 at the top means its price-to-performance ratio is currently the best in the database. If a specific 5070 listing looks wrong, send me the listing ID and I'll verify the GPU match and price."
+              "fix": "The Top Performers chart ranks listings by G3D Mark per euro (G3D/\u20ac) using the full all-time dataset, not just the 50 currently visible. A GeForce RTX 5070 at the top means its price-to-performance ratio is currently the best in the database. If a specific 5070 listing looks wrong, send me the listing ID and I'll verify the GPU match and price."
             }
           ],
           "completed_at": "2026-08-10T18:21:52.473862Z"
@@ -1247,7 +1259,7 @@
           "page": "GPU",
           "category": "Frontend",
           "priority": "Medium",
-          "fix": "2026-08-10 21:20 — Source badge text removed from brand/vendor column; only the colored source dot remains to the left of the thumbnail.",
+          "fix": "2026-08-10 21:20 \u2014 Source badge text removed from brand/vendor column; only the colored source dot remains to the left of the thumbnail.",
           "column": "talking",
           "created": "2026-07-30T13:14:43.041917",
           "updated": "2026-08-10T18:21:52.473862Z",
@@ -1268,7 +1280,7 @@
           "page": "GPU",
           "category": "Frontend",
           "priority": "Medium",
-          "fix": "2026-08-10 21:20 — Source distribution chart now fetches all-time data with limit=10000 and backend /api/gpus honors the limit parameter, so Andele/Facebook shares are represented.",
+          "fix": "2026-08-10 21:20 \u2014 Source distribution chart now fetches all-time data with limit=10000 and backend /api/gpus honors the limit parameter, so Andele/Facebook shares are represented.",
           "column": "talking",
           "created": "2026-07-30T14:07:39.097852",
           "updated": "2026-08-10T18:21:52.473862Z",
@@ -1282,7 +1294,7 @@
           "page": "GPU",
           "category": "Frontend",
           "priority": "Medium",
-          "fix": "2026-08-10 21:20 — Compare checkboxes restyled as thick-bordered custom boxes with a checkmark when selected.",
+          "fix": "2026-08-10 21:20 \u2014 Compare checkboxes restyled as thick-bordered custom boxes with a checkmark when selected.",
           "column": "talking",
           "created": "2026-08-07T20:29:22.983856",
           "updated": "2026-08-10T18:21:52.473862Z",
@@ -1296,7 +1308,7 @@
           "page": "GPU",
           "category": "Frontend",
           "priority": "Medium",
-          "fix": "2026-08-10 21:20 — Compare page shows the selected listing price in each column header and in the Price row.",
+          "fix": "2026-08-10 21:20 \u2014 Compare page shows the selected listing price in each column header and in the Price row.",
           "column": "talking",
           "created": "2026-08-08T23:35:23.066509",
           "updated": "2026-08-10T18:21:52.473862Z",
@@ -1310,7 +1322,7 @@
           "page": "GPU",
           "category": "Frontend",
           "priority": "Medium",
-          "fix": "2026-08-10 21:20 — Price drop badge repositioned centered above the price value with smaller font/padding.",
+          "fix": "2026-08-10 21:20 \u2014 Price drop badge repositioned centered above the price value with smaller font/padding.",
           "column": "talking",
           "created": "2026-08-08T23:38:46.635583",
           "updated": "2026-08-10T18:21:52.473862Z",
@@ -1324,7 +1336,7 @@
           "page": "GPU",
           "category": "Frontend",
           "priority": "Medium",
-          "fix": "2026-08-10 21:20 — Source badge text removed; only colored dot remains to the left of the image thumbnail.",
+          "fix": "2026-08-10 21:20 \u2014 Source badge text removed; only colored dot remains to the left of the image thumbnail.",
           "column": "talking",
           "created": "2026-08-08T23:40:38.616343",
           "updated": "2026-08-10T18:21:52.473862Z",
@@ -1338,7 +1350,7 @@
           "page": "GPU",
           "category": "Frontend",
           "priority": "Medium",
-          "fix": "2026-08-10 21:20 — Rank range filter verified working with rank_min/rank_max query params.",
+          "fix": "2026-08-10 21:20 \u2014 Rank range filter verified working with rank_min/rank_max query params.",
           "column": "talking",
           "created": "2026-08-08T23:41:20.208784",
           "updated": "2026-08-10T18:21:52.473862Z",
@@ -1352,7 +1364,7 @@
           "page": "GPU",
           "category": "Backend",
           "priority": "Medium",
-          "fix": "2026-08-10 21:20 — GPU PassMark G3D score for RX 470/570 updated to 7911.",
+          "fix": "2026-08-10 21:20 \u2014 GPU PassMark G3D score for RX 470/570 updated to 7911.",
           "code_snippet": "Radeon RX 470/570\n(16%)\nG3D scrore: 7,911\n3MSRP: 88.99",
           "column": "talking",
           "created": "2026-08-08T23:50:10.513817",
@@ -1367,7 +1379,7 @@
           "page": "GPU",
           "category": "Backend",
           "priority": "Medium",
-          "fix": "2026-08-10 21:20 — GPU PassMark G3D score for RX 5500 XT updated to 9056.",
+          "fix": "2026-08-10 21:20 \u2014 GPU PassMark G3D score for RX 5500 XT updated to 9056.",
           "code_snippet": "Radeon RX 5500 XT\nG3D score: 9,056",
           "column": "talking",
           "created": "2026-08-08T23:52:35.213474",
@@ -1382,7 +1394,7 @@
           "page": "GPU",
           "category": "Backend",
           "priority": "Medium",
-          "fix": "2026-08-10 21:20 — GPU PassMark G3D score for GTX 760 updated to 4826.",
+          "fix": "2026-08-10 21:20 \u2014 GPU PassMark G3D score for GTX 760 updated to 4826.",
           "code_snippet": "GeForce GTX 760\nG3D score: 4,826",
           "column": "talking",
           "created": "2026-08-08T23:54:19.326235",
@@ -1397,7 +1409,7 @@
           "page": "GPU",
           "category": "Backend",
           "priority": "Medium",
-          "fix": "2026-08-10 21:20 — GPU PassMark G3D score for RX 5700 XT 50th Anniversary updated to 16528.",
+          "fix": "2026-08-10 21:20 \u2014 GPU PassMark G3D score for RX 5700 XT 50th Anniversary updated to 16528.",
           "code_snippet": "Radeon RX 5700 XT 50th Anniversary\nG3D score: 16,528",
           "column": "talking",
           "created": "2026-08-08T23:59:40.455601",
@@ -1412,7 +1424,7 @@
           "page": "GPU",
           "category": "Frontend",
           "priority": "Medium",
-          "fix": "2026-08-10 21:20 — Active-only averages wiring verified: backend get_active_avg_clauses() builds active-only SQL when use_active_avg=true, and the GPU page checkbox sends the parameter. Added tooltip to label.",
+          "fix": "2026-08-10 21:20 \u2014 Active-only averages wiring verified: backend get_active_avg_clauses() builds active-only SQL when use_active_avg=true, and the GPU page checkbox sends the parameter. Added tooltip to label.",
           "column": "talking",
           "created": "2026-07-29T16:02:07.500935",
           "updated": "2026-08-10T18:21:52.473862Z",
@@ -1439,7 +1451,7 @@
           "page": "GPU",
           "category": "Frontend",
           "priority": "Medium",
-          "fix": "2026-08-10 21:20 — Image column already centered by existing CSS; no further changes needed.",
+          "fix": "2026-08-10 21:20 \u2014 Image column already centered by existing CSS; no further changes needed.",
           "column": "talking",
           "created": "2026-07-29T16:00:13.344433",
           "updated": "2026-08-10T18:21:52.473862Z",
@@ -1466,7 +1478,7 @@
           "page": "RAM",
           "category": "Backend",
           "priority": "Medium",
-          "fix": "2026-08-10 21:20 — Added RAM ID badge to shared listing popup, togglable from admin panel via new \"Show RAM ID in Popup\" switch.",
+          "fix": "2026-08-10 21:20 \u2014 Added RAM ID badge to shared listing popup, togglable from admin panel via new \"Show RAM ID in Popup\" switch.",
           "column": "talking",
           "created": "2026-08-09T00:17:45.401272",
           "updated": "2026-08-10T18:21:52.473862Z",
@@ -1480,7 +1492,7 @@
           "page": "RAM",
           "category": "Backend",
           "priority": "Medium",
-          "fix": "2026-08-10 21:20 — Moved gear/settings icon into the Actions column header so there is no separate empty gear column and unwanted spacing.",
+          "fix": "2026-08-10 21:20 \u2014 Moved gear/settings icon into the Actions column header so there is no separate empty gear column and unwanted spacing.",
           "column": "talking",
           "created": "2026-08-09T00:19:00.257087",
           "updated": "2026-08-10T18:21:52.473862Z",
@@ -1494,7 +1506,7 @@
           "page": "RAM",
           "category": "Backend",
           "priority": "Medium",
-          "fix": "2026-08-10 21:20 — Added new \"Avg RAM Price by Capacity & Type Over Time\" chart with Week/Month toggle for 8/16/32 GB capacities and DDR types.",
+          "fix": "2026-08-10 21:20 \u2014 Added new \"Avg RAM Price by Capacity & Type Over Time\" chart with Week/Month toggle for 8/16/32 GB capacities and DDR types.",
           "column": "talking",
           "created": "2026-08-09T00:20:45.683271",
           "updated": "2026-08-10T18:21:52.473862Z",
@@ -1723,7 +1735,7 @@
         },
         {
           "id": "T284",
-          "title": "make the unicor filter just as simple button with icon. remove \"All\" \"Hide\" \"🦄 Unicorn:\"",
+          "title": "make the unicor filter just as simple button with icon. remove \"All\" \"Hide\" \"\ud83e\udd84 Unicorn:\"",
           "page": "GPU",
           "category": "Frontend",
           "priority": "Medium",
@@ -1800,7 +1812,36 @@
         {
           "id": "T273",
           "fix": "showSharedListingDetail function added to laptops.html; fetches /api/listing-details/<id> and renders shared modal with image, price, specs, and description.",
-          "updated": "2026-08-16T01:32:14.316952"
+          "updated": "2026-08-16T01:32:14.316952",
+          "column": "talking"
+        },
+        {
+          "id": "T117",
+          "title": "SSD scrapper doesnt seem to download images and attach image_url to listing database",
+          "page": "SSD",
+          "category": "Scraper",
+          "priority": "Medium",
+          "fix": "Verified end-to-end: 93 SSD listings, 49 with image_url and local_image_path, all active SSD listings with images have both fields. Sample files confirmed on disk in SS-CRAWLER/images/ssds/. Image serving route (/images/ssds/<file>) returns 200. No further changes needed.",
+          "column": "talking",
+          "created": "2026-06-25T13:13:19.619396",
+          "updated": "2026-08-19T12:40:46.336943",
+          "linked_task_id": null,
+          "relationship_type": null,
+          "started_at": "2026-06-25T13:28:29.581637",
+          "reopen_history": [
+            {
+              "reopened_at": "2026-06-27T13:59:49.313884",
+              "update": "It doesnt seem to download the right image for listing \"cgmejh\". In the snippet I added part where it is found",
+              "previous_completed_at": "2026-06-25T13:55:00.000000",
+              "fix": "Verified end-to-end: 93 SSD listings, 49 with image_url and local_image_path, all active SSD listings with images have both fields. Sample files confirmed on disk in SS-CRAWLER/images/ssds/. Image serving route (/images/ssds/<file>) returns 200. No further changes needed."
+            },
+            {
+              "reopened_at": "2026-08-19T12:40:42.093767",
+              "update": "smoke test",
+              "previous_completed_at": "2026-06-29T10:00:19.704184Z"
+            }
+          ],
+          "code_snippet": "<div onmouseover=\"show_pic_menu(1);\" oncontextmenu=\"return false;\" onmouseout=\"show_pic_menu(0);\" ontouchstart=\"show_pic_menu(1);\" style=\"position: relative; display: block; width: 723px; max-width: 100%; overflow: hidden; border: 1px solid rgb(204, 204, 204); cursor: pointer; margin: -1px; height: 482px;\" align=\"center\" id=\"big_pic_div\"><div align=\"center\" id=\"img_div_scroll\" style=\"position: relative; display: block; z-index: 2; height: 482px; overflow: hidden scroll; width: 496px;\"><img onclick=\"this.blur();\" style=\"display: block; width: 482px; height: 643px; position: relative;\" onload=\"play_image();\" onfocus=\"this.blur();\" id=\"msg_img_img\" border=\"0\" src=\"https://i.ss.com/gallery/8/1514/378455/computers-completing-pc-ssd-75690967.800.jpg\"><div onclick=\"el('navi_prev').click();return false;\" ontouchstart=\"_tstart(event);\" ontouchmove=\"_tmove(event);\" ontouchend=\"if(_tend(event)) {this.click();}return false;\" id=\"navi_prev2\" style=\"position: absolute; top: 0px; left: 0px; width: 96px; height: 643px;\" title=\"Iepriek\u00c5\u00a1\u00c4\u201cj\u00c4\u0081\"><img src=\"https://i.ss.com/img/p.gif\" width=\"100%\" height=\"100%\"></div><div onclick=\"el('navi_next').click();return false;\" ontouchstart=\"_tstart(event);\" ontouchmove=\"_tmove(event);\" ontouchend=\"if(_tend(event)) {this.click();}return false;\" id=\"navi_next2\" style=\"position: absolute; top: 0px; left: 96px; width: 381px; height: 643px;\" title=\"N\u00c4\u0081kam\u00c4\u0081\"><img src=\"https://i.ss.com/img/p.gif\" width=\"100%\" height=\"100%\"></div></div><div onmouseout=\"show_pic_menu(0);\" onmouseover=\"show_pic_menu(1)\" id=\"pic_menu_prev\" onclick=\"mnu('foto', 3);return false;\" title=\"Iepriek\u00c5\u00a1\u00c4\u201cj\u00c4\u0081\" ontouchstart=\"_tstart(event);\" ontouchmove=\"_tmove(event);\" ontouchend=\"if(_tend(event)) {this.click();}return false;\" style=\"z-index:15;width: 36px; height: 43px; position: absolute; top:50%; left: 0px; background: url( 'https://i.ss.com/img/left.png' ) no-repeat;\"></div><div onmouseout=\"show_pic_menu(0);\" onmouseover=\"show_pic_menu(1)\" id=\"pic_menu_next\" onclick=\"mnu('foto', 2);return false;\" title=\"N\u00c4\u0081kam\u00c4\u0081\" ontouchstart=\"_tstart(event);\" ontouchmove=\"_tmove(event);\" ontouchend=\"if(_tend(event)) {this.click();}return false;\" style=\"z-index:15;width:36px;height:43px;position:absolute;top:50%;right:0px;background: url( 'https://i.ss.com/img/right.png' ) no-repeat;\"></div><div id=\"navi_prev\" ontouchstart=\"_tstart(event);\" ontouchmove=\"_tmove(event);\" ontouchend=\"if(_tend(event)) {this.click();}return false;\" style=\"width: 30%; height: 100%; top: 0px; left: 0px; position: absolute; z-index: 0;\" title=\"Iepriek\u00c5\u00a1\u00c4\u201cj\u00c4\u0081\"><img src=\"https://i.ss.com/img/p.gif\" width=\"100%\" height=\"100%\"></div><div id=\"navi_next\" ontouchstart=\"_tstart(event);\" ontouchmove=\"_tmove(event);\" ontouchend=\"if(_tend(event)) {this.click();}return false;\" style=\"width: 70%; height: 100%; top: 0px; left: 30%; position: absolute; z-index: 0;\" title=\"N\u00c4\u0081kam\u00c4\u0081\"><img src=\"https://i.ss.com/img/p.gif\" width=\"100%\" height=\"100%\"></div><div style=\"z-index:25;width:30%;height:70%;top:15%;left:35%;position:absolute;\" title=\"Par\u00c4\u0081d\u00c4\u00abt HD kvalit\u00c4\u0081t\u00c4\u201c\" onclick=\"event.stopPropagation();hd_image_open('hRstv1AOqkXYAduqeNTdDlJO%2B0IP1LpraZDQp8Tsaqty%2BDUSHkKWRUJP8l7vIyhg',1);return false;\" ontouchstart=\"_tstart(event);\" ontouchmove=\"_tmove(event);\" ontouchend=\"if(_tend(event)) {this.click();}return false;\"><img src=\"https://i.ss.com/img/p.gif\" width=\"100%\" height=\"100%\"></div><div onmouseout=\"show_pic_menu(0);\" onmouseover=\"show_pic_menu(1)\" title=\"Par\u00c4\u0081d\u00c4\u00abt HD kvalit\u00c4\u0081t\u00c4\u201c\" id=\"pic_menu_hd\" onclick=\"event.stopPropagation();hd_image_open('hRstv1AOqkXYAduqeNTdDlJO%2B0IP1LpraZDQp8Tsaqty%2BDUSHkKWRUJP8l7vIyhg',1);return false;\" ontouchstart=\"_tstart(event);\" ontouchmove=\"_tmove(event);\" ontouchend=\"if(_tend(event)) {this.click();}return false;\" style=\"z-index:25;width:43px;height:43px;cursor:pointer;position:absolute;top:0px;right:50px;background: url( 'https://i.ss.com/img/hd_v2.png' ) no-repeat;\"></div><div onmouseout=\"show_pic_menu(0);\" onmouseover=\"show_pic_menu(1)\" title=\"Aizv\u00c4\u201crt\" id=\"pic_menu_close\" onclick=\"event.stopPropagation();mnu('msg');return false;\" ontouchstart=\"_tstart(event);\" ontouchmove=\"_tmove(event);\" ontouchend=\"if(_tend(event)) {this.click();}return false;\" style=\"z-index:15;width:43px;height:43px;cursor:pointer;position:absolute;top:0px;right:0px;background: url( 'https://i.ss.com/img/close_v2.png' ) no-repeat;\"></div><img id=\"msg_img_load\" src=\"https://i.ss.com/img/wait_img.gif\" border=\"0\" style=\"display: none; position: absolute; top: 50%; left: 50%;\" width=\"32\" height=\"32\"></div>"
         }
       ]
     },
@@ -1815,7 +1856,7 @@
           "page": "",
           "category": "Frontend",
           "priority": "Medium",
-          "fix": "Updated project_board.html: 1) renderTaskCard now shows 'âœ“ Fix: [description]' in green directly on solved task cards, 2) showTaskDetail modal displays fix explanation in green highlighted box with timestamps for started/completed",
+          "fix": "Updated project_board.html: 1) renderTaskCard now shows '\u00e2\u0153\u201c Fix: [description]' in green directly on solved task cards, 2) showTaskDetail modal displays fix explanation in green highlighted box with timestamps for started/completed",
           "column": "solved",
           "created": "2026-06-18T10:27:43.903286",
           "updated": "2026-06-18T14:43:28.095424",
@@ -1841,7 +1882,7 @@
           "page": "",
           "category": "DevOps",
           "priority": "Medium",
-          "fix": "Documented and configured the automated workflow: Cron job 'check-assignments' (ID: 7f0c11ae-4035-459e-999b-02b77bb97b96) runs every 5 minutes to check for tasks in Assignment column. When found: 1) Task automatically moved to In Progress, 2) Agent works on task and announces progress, 3) Upon completion, task moved to Review for user approval, 4) User marks task as solved in UI to move to Solved column. Workflow: Assignment â†’ In Progress â†’ Review â†’ Solved.",
+          "fix": "Documented and configured the automated workflow: Cron job 'check-assignments' (ID: 7f0c11ae-4035-459e-999b-02b77bb97b96) runs every 5 minutes to check for tasks in Assignment column. When found: 1) Task automatically moved to In Progress, 2) Agent works on task and announces progress, 3) Upon completion, task moved to Review for user approval, 4) User marks task as solved in UI to move to Solved column. Workflow: Assignment \u00e2\u2020\u2019 In Progress \u00e2\u2020\u2019 Review \u00e2\u2020\u2019 Solved.",
           "column": "solved",
           "created": "2026-06-18T15:04:02.286638",
           "updated": "2026-06-18T15:15:00",
@@ -1854,7 +1895,7 @@
           "page": "",
           "category": "",
           "priority": "Medium",
-          "fix": "Added page-badge and category-badge CSS classes, updated renderTaskCard() to display Page (ðŸ“„) and Category (ðŸ·ï¸) badges in task-meta section alongside priority badge",
+          "fix": "Added page-badge and category-badge CSS classes, updated renderTaskCard() to display Page (\u00f0\u0178\u201c\u201e) and Category (\u00f0\u0178\u008f\u00b7\u00ef\u00b8\u008f) badges in task-meta section alongside priority badge",
           "linked_task_id": null,
           "column": "solved",
           "created": "2026-06-18T22:01:04.112250",
@@ -1984,7 +2025,7 @@
           "page": "PC Builder",
           "category": "Frontend",
           "priority": "Medium",
-          "fix": "Added manual price entry feature: Each component section now has 'Enter Custom Price' button that opens input field, validate and apply custom price to build total, displays custom price with ðŸ“ indicator in component details",
+          "fix": "Added manual price entry feature: Each component section now has 'Enter Custom Price' button that opens input field, validate and apply custom price to build total, displays custom price with \u00f0\u0178\u201c\u009d indicator in component details",
           "column": "solved",
           "created": "2026-06-19T15:35:00.000000",
           "updated": "2026-06-19T16:00:00.000000",
@@ -1997,7 +2038,7 @@
           "page": "PC Builder",
           "category": "Backend",
           "priority": "High",
-          "fix": "Added compatibility checking: Implemented checkCompatibility() function that validates CPU socket vs Motherboard socket, RAM type (DDR4/DDR5) compatibility, PSU wattage sufficiency. Shows warnings with ðŸ”´ emoji and specific error messages",
+          "fix": "Added compatibility checking: Implemented checkCompatibility() function that validates CPU socket vs Motherboard socket, RAM type (DDR4/DDR5) compatibility, PSU wattage sufficiency. Shows warnings with \u00f0\u0178\u201d\u00b4 emoji and specific error messages",
           "column": "solved",
           "created": "2026-06-19T16:05:00.000000",
           "updated": "2026-06-19T16:35:00.000000",
@@ -2066,7 +2107,7 @@
           "page": "",
           "category": "Frontend",
           "priority": "Medium",
-          "fix": "Updated project_board.html: 1) Modified handleDrop function to intercept Reviewâ†’Assignment drag, 2) Added modal popup showing task details, current fix, and full fix history including all previous re-open attempts, 3) Updated modal title from 'Previous Fix' to 'Fix History' and changed from text to HTML content to support rich formatting",
+          "fix": "Updated project_board.html: 1) Modified handleDrop function to intercept Review\u00e2\u2020\u2019Assignment drag, 2) Added modal popup showing task details, current fix, and full fix history including all previous re-open attempts, 3) Updated modal title from 'Previous Fix' to 'Fix History' and changed from text to HTML content to support rich formatting",
           "column": "solved",
           "created": "2026-06-18T14:57:03.182480",
           "updated": "2026-06-21T19:21:42.119524",
@@ -2146,7 +2187,7 @@
           "page": "Project Board",
           "category": "UI/UX",
           "priority": "Medium",
-          "fix": "Fixed: Aligned the Mark as Special checkbox with its label using inline-flex styling, ensuring it behaves like a normal checkbox across all task states. Added a visible â­ SPECIAL badge to task cards so the special tag is visible from the general board lists.",
+          "fix": "Fixed: Aligned the Mark as Special checkbox with its label using inline-flex styling, ensuring it behaves like a normal checkbox across all task states. Added a visible \u00e2\u00ad\u0090 SPECIAL badge to task cards so the special tag is visible from the general board lists.",
           "column": "solved",
           "created": "2026-06-19T16:24:21.787962",
           "updated": "2026-06-24T15:44:12.203385",
@@ -2164,7 +2205,7 @@
               "reopened_at": "2026-06-21T16:18:35.052131",
               "update": "It is there, but not in line with text and checkbox",
               "previous_completed_at": "2026-06-21T13:56:17.468580",
-              "fix": "Fixed: Aligned the Mark as Special checkbox with its label using inline-flex styling, ensuring it behaves like a normal checkbox across all task states. Added a visible â­ SPECIAL badge to task cards so the special tag is visible from the general board lists."
+              "fix": "Fixed: Aligned the Mark as Special checkbox with its label using inline-flex styling, ensuring it behaves like a normal checkbox across all task states. Added a visible \u00e2\u00ad\u0090 SPECIAL badge to task cards so the special tag is visible from the general board lists."
             }
           ],
           "completed_at": "2026-06-22T14:52:40.549357",
@@ -2399,7 +2440,7 @@
           "category": "Frontend",
           "priority": "Medium",
           "fix": "Updated templates/cpu.html summary row to dynamically calculate colSpan values based on the number of currently visible columns. Replaced hardcoded colspan totals with a helper updateSummaryRowColspans() that is called on initial render and inside renderFullTable() whenever columns are toggled/reordered via the gear icon. Also moved the 'Summary:' label into the first cell so the summary row always spans the full table width regardless of which columns are hidden.",
-          "code_snippet": "<tfoot id=\"summary-row\" style=\"display: table-row-group; background: linear-gradient(135deg, rgb(102, 126, 234) 0%, rgb(118, 75, 162) 100%); color: white; font-weight: bold;\">\n                    <tr>\n                        <td colspan=\"2\" style=\"text-align: right; padding: 0.75rem;\">Summary:</td>\n                        <td id=\"summary-total-price\" style=\"padding: 0.75rem;\">â‚¬23.00 total</td>\n                        <td id=\"summary-avg-price\" style=\"padding: 0.75rem; font-size: 0.85rem;\">avg: â‚¬23.00</td>\n                        <td id=\"summary-count\" style=\"padding: 0.75rem;\" colspan=\"5\">1 listings shown</td>\n                    </tr>\n                </tfoot>",
+          "code_snippet": "<tfoot id=\"summary-row\" style=\"display: table-row-group; background: linear-gradient(135deg, rgb(102, 126, 234) 0%, rgb(118, 75, 162) 100%); color: white; font-weight: bold;\">\n                    <tr>\n                        <td colspan=\"2\" style=\"text-align: right; padding: 0.75rem;\">Summary:</td>\n                        <td id=\"summary-total-price\" style=\"padding: 0.75rem;\">\u00e2\u201a\u00ac23.00 total</td>\n                        <td id=\"summary-avg-price\" style=\"padding: 0.75rem; font-size: 0.85rem;\">avg: \u00e2\u201a\u00ac23.00</td>\n                        <td id=\"summary-count\" style=\"padding: 0.75rem;\" colspan=\"5\">1 listings shown</td>\n                    </tr>\n                </tfoot>",
           "language": "html",
           "future_folder_id": "F-20260626184910-ffd72a21",
           "column": "solved",
@@ -2445,7 +2486,7 @@
         },
         {
           "id": "T061",
-          "title": "in flag window make this text readable: <span>âœ“ Size comparison is correct (detected matches actual)</span>",
+          "title": "in flag window make this text readable: <span>\u00e2\u0153\u201c Size comparison is correct (detected matches actual)</span>",
           "page": "SSD",
           "category": "Frontend",
           "priority": "Medium",
@@ -2551,7 +2592,7 @@
           "page": "Monitors",
           "category": "",
           "priority": "Medium",
-          "fix": "Root causes: (1) DB_CONFIG default port was 5433 but earlier I had changed it to 5432 â€” the real database with all data is on port 5433, port 5432 had an empty database, causing ALL pages to show no data. Reverted to 5433. (2) get_monitor_models() had no @app.route decorator (404 on monitor-models). (3) fetchMonitorStats() used non-existent element IDs '4k-count'/'professional-count' instead of 'creator-count'/'high-end-count'. All fixed. Server reverted to port 5433, data confirmed: 1497 listings, 20272 monitor_models.",
+          "fix": "Root causes: (1) DB_CONFIG default port was 5433 but earlier I had changed it to 5432 \u00e2\u20ac\u201d the real database with all data is on port 5433, port 5432 had an empty database, causing ALL pages to show no data. Reverted to 5433. (2) get_monitor_models() had no @app.route decorator (404 on monitor-models). (3) fetchMonitorStats() used non-existent element IDs '4k-count'/'professional-count' instead of 'creator-count'/'high-end-count'. All fixed. Server reverted to port 5433, data confirmed: 1497 listings, 20272 monitor_models.",
           "column": "solved",
           "created": "2026-07-04T02:23:30.035188",
           "updated": "2026-07-04T03:20:58.631675",
@@ -2574,10 +2615,10 @@
               "reopened_at": "2026-07-04T03:09:51.786843",
               "update": "listings still dont load in",
               "previous_completed_at": null,
-              "fix": "Root causes: (1) DB_CONFIG default port was 5433 but earlier I had changed it to 5432 â€” the real database with all data is on port 5433, port 5432 had an empty database, causing ALL pages to show no data. Reverted to 5433. (2) get_monitor_models() had no @app.route decorator (404 on monitor-models). (3) fetchMonitorStats() used non-existent element IDs '4k-count'/'professional-count' instead of 'creator-count'/'high-end-count'. All fixed. Server reverted to port 5433, data confirmed: 1497 listings, 20272 monitor_models."
+              "fix": "Root causes: (1) DB_CONFIG default port was 5433 but earlier I had changed it to 5432 \u00e2\u20ac\u201d the real database with all data is on port 5433, port 5432 had an empty database, causing ALL pages to show no data. Reverted to 5433. (2) get_monitor_models() had no @app.route decorator (404 on monitor-models). (3) fetchMonitorStats() used non-existent element IDs '4k-count'/'professional-count' instead of 'creator-count'/'high-end-count'. All fixed. Server reverted to port 5433, data confirmed: 1497 listings, 20272 monitor_models."
             }
           ],
-          "code_snippet": "contentscript.js:14083 MaxListenersExceededWarning: Possible EventEmitter memory leak detected. 11 close listeners added. Use emitter.setMaxListeners() to increase limit\nn @ contentscript.js:14083\nu @ contentscript.js:14083\na.addListener @ contentscript.js:14083\nZ.on @ contentscript.js:14082\na.once @ contentscript.js:14083\nj.pipe @ contentscript.js:14063\nq @ contentscript.js:14063\nD @ contentscript.js:14063\nP @ contentscript.js:14063\nM @ contentscript.js:14063\nI @ contentscript.js:14063\n(anonymous) @ contentscript.js:14083\ncall.__webpack_require__._LM_.__webpack_require__.__webpack_require__ @ contentscript.js:14083\n(anonymous) @ contentscript.js:14083\n(anonymous) @ contentscript.js:14083\ncontentscript.js:14083 MaxListenersExceededWarning: Possible EventEmitter memory leak detected. 11 end listeners added. Use emitter.setMaxListeners() to increase limit\nn @ contentscript.js:14083\nu @ contentscript.js:14083\na.addListener @ contentscript.js:14083\nZ.on @ contentscript.js:14082\nO @ contentscript.js:14083\nq @ contentscript.js:14063\nD @ contentscript.js:14063\nP @ contentscript.js:14063\nM @ contentscript.js:14063\nI @ contentscript.js:14063\n(anonymous) @ contentscript.js:14083\ncall.__webpack_require__._LM_.__webpack_require__.__webpack_require__ @ contentscript.js:14083\n(anonymous) @ contentscript.js:14083\n(anonymous) @ contentscript.js:14083\nmonitors:1025 Unchecked runtime.lastError: Could not establish connection. Receiving end does not exist.\ncontentscript.js:14083 ObjectMultiplex - orphaned data for stream \"app-init-liveness\"\nwarn @ contentscript.js:14083\n_write @ contentscript.js:14082\nM @ contentscript.js:14063\nx @ contentscript.js:14063\nE.write @ contentscript.js:14063\nd @ contentscript.js:14082\na.emit @ contentscript.js:14083\nJ @ contentscript.js:14082\nK @ contentscript.js:14082\nZ.push @ contentscript.js:14082\n(anonymous) @ contentscript.js:14063\ncontentscript.js:14083 ObjectMultiplex - orphaned data for stream \"app-init-liveness\"\nwarn @ contentscript.js:14083\n_write @ contentscript.js:14082\nM @ contentscript.js:14063\nx @ contentscript.js:14063\nE.write @ contentscript.js:14063\nd @ contentscript.js:14082\na.emit @ contentscript.js:14083\nJ @ contentscript.js:14082\nK @ contentscript.js:14082\nZ.push @ contentscript.js:14082\n(anonymous) @ contentscript.js:14082\ntransform @ contentscript.js:14063\ns._write @ contentscript.js:14082\nI @ contentscript.js:14083\nL @ contentscript.js:14083\nO.write @ contentscript.js:14083\nd @ contentscript.js:14082\na.emit @ contentscript.js:14083\nJ @ contentscript.js:14082\nK @ contentscript.js:14082\nZ.push @ contentscript.js:14082\n(anonymous) @ contentscript.js:14063\ncontentscript.js:14083 ObjectMultiplex - orphaned data for stream \"background-liveness\"\nwarn @ contentscript.js:14083\n_write @ contentscript.js:14082\nM @ contentscript.js:14063\nx @ contentscript.js:14063\nE.write @ contentscript.js:14063\nd @ contentscript.js:14082\na.emit @ contentscript.js:14083\nJ @ contentscript.js:14082\nK @ contentscript.js:14082\nZ.push @ contentscript.js:14082\n(anonymous) @ contentscript.js:14063\ncontentscript.js:14083 ObjectMultiplex - orphaned data for stream \"background-liveness\"\nwarn @ contentscript.js:14083\n_write @ contentscript.js:14082\nM @ contentscript.js:14063\nx @ contentscript.js:14063\nE.write @ contentscript.js:14063\nd @ contentscript.js:14082\na.emit @ contentscript.js:14083\nJ @ contentscript.js:14082\nK @ contentscript.js:14082\nZ.push @ contentscript.js:14082\n(anonymous) @ contentscript.js:14082\ntransform @ contentscript.js:14063\ns._write @ contentscript.js:14082\nI @ contentscript.js:14083\nL @ contentscript.js:14083\nO.write @ contentscript.js:14083\nd @ contentscript.js:14082\na.emit @ contentscript.js:14083\nJ @ contentscript.js:14082\nK @ contentscript.js:14082\nZ.push @ contentscript.js:14082\n(anonymous) @ contentscript.js:14063\ncontentscript.js:14083 ObjectMultiplex - malformed chunk without name \"[object Object]\"\nwarn @ contentscript.js:14083\n_write @ contentscript.js:14082\nM @ contentscript.js:14063\nx @ contentscript.js:14063\nE.write @ contentscript.js:14063\nd @ contentscript.js:14082\na.emit @ contentscript.js:14083\nJ @ contentscript.js:14082\nK @ contentscript.js:14082\nZ.push @ contentscript.js:14082\n(anonymous) @ contentscript.js:14063\ncontentscript.js:14083 ObjectMultiplex - malformed chunk without name \"[object Object]\"\nwarn @ contentscript.js:14083\n_write @ contentscript.js:14082\nM @ contentscript.js:14063\nx @ contentscript.js:14063\nE.write @ contentscript.js:14063\nd @ contentscript.js:14082\na.emit @ contentscript.js:14083\nJ @ contentscript.js:14082\nK @ contentscript.js:14082\nZ.push @ contentscript.js:14082\n(anonymous) @ contentscript.js:14082\ntransform @ contentscript.js:14063\ns._write @ contentscript.js:14082\nI @ contentscript.js:14083\nL @ contentscript.js:14083\nO.write @ contentscript.js:14083\nd @ contentscript.js:14082\na.emit @ contentscript.js:14083\nJ @ contentscript.js:14082\nK @ contentscript.js:14082\nZ.push @ contentscript.js:14082\n(anonymous) @ contentscript.js:14063\nchunk-mgcl-MAO3VRCL.js:16 @import rules are not allowed here. See https://github.com/WICG/construct-stylesheets/issues/119#issuecomment-588352418.\n(anonymous) @ chunk-mgcl-MAO3VRCL.js:16\nawait in (anonymous)\n(anonymous) @ chunk-mgcl-MAO3VRCL.js:16\n(anonymous) @ chunk-mgcl-UYK37KGI.js:1\n(anonymous) @ chunk-mgcl-UYK37KGI.js:1\nvl @ chunk-mgcl-DT437CWL.js:8\nqn @ chunk-mgcl-DT437CWL.js:8\nms @ chunk-mgcl-DT437CWL.js:8\nvn @ chunk-mgcl-DT437CWL.js:6\nTe @ chunk-mgcl-DT437CWL.js:8\nad @ chunk-mgcl-DT437CWL.js:6\nnext @ chunk-mgcl-X3BOXWJK.js:1\nr.next @ chunk-mgcl-52COTP23.js:3\ne._next @ chunk-mgcl-52COTP23.js:3\ne.next @ chunk-mgcl-52COTP23.js:3\n(anonymous) @ chunk-mgcl-52COTP23.js:3\np._next @ chunk-mgcl-52COTP23.js:3\ne.next @ chunk-mgcl-52COTP23.js:3\n(anonymous) @ chunk-mgcl-T7QKCVM3.js:1\n(anonymous) @ chunk-mgcl-T7QKCVM3.js:1\nPromise.then\nft @ chunk-mgcl-T7QKCVM3.js:1\n(anonymous) @ chunk-mgcl-T7QKCVM3.js:1\nr._trySubscribe @ chunk-mgcl-52COTP23.js:3\n(anonymous) @ chunk-mgcl-52COTP23.js:3\nK @ chunk-mgcl-52COTP23.js:3\nr.subscribe @ chunk-mgcl-52COTP23.js:3\n(anonymous) @ chunk-mgcl-52COTP23.js:3\n(anonymous) @ chunk-mgcl-52COTP23.js:3\n(anonymous) @ chunk-mgcl-52COTP23.js:3\nK @ chunk-mgcl-52COTP23.js:3\nr.subscribe @ chunk-mgcl-52COTP23.js:3\n(anonymous) @ chunk-mgcl-X3BOXWJK.js:1\nvl @ chunk-mgcl-DT437CWL.js:8\nqn @ chunk-mgcl-DT437CWL.js:8\nzn @ chunk-mgcl-DT437CWL.js:8\nId @ chunk-mgcl-DT437CWL.js:8\nkl @ chunk-mgcl-DT437CWL.js:8\nve.render @ chunk-mgcl-DT437CWL.js:8\nv3 @ chunk-mgcl-MAO3VRCL.js:16\nI3 @ chunk-mgcl-MAO3VRCL.js:16\nawait in I3\n(anonymous) @ chunk-mgcl-MAO3VRCL.js:16\nmonitors:1 Unchecked runtime.lastError: Could not establish connection. Receiving end does not exist.\nabout:srcdoc:1 Unchecked runtime.lastError: Could not establish connection. Receiving end does not exist.\nabout:srcdoc:1 Unchecked runtime.lastError: Could not establish connection. Receiving end does not exist.\nchunk-mgcl-HFZJ56IT.js:558 Received json-rpc sentryRequest error response for id b9fbc9d9-2ee1-4149-8c0b-8502d8c61ae7 {message: 'e.recordDroppedEvent is not a function', stack: 'TypeError: e.recordDroppedEvent is not a function\\nâ€¦lcilmhacighjamp/background/background.js:256:2319', name: 'TypeError'}\n(anonymous) @ chunk-mgcl-HFZJ56IT.js:558\n(anonymous) @ chunk-mgcl-52COTP23.js:3\np._next @ chunk-mgcl-52COTP23.js:3\ne.next @ chunk-mgcl-52COTP23.js:3\n(anonymous) @ chunk-mgcl-52COTP23.js:3\np._next @ chunk-mgcl-52COTP23.js:3\ne.next @ chunk-mgcl-52COTP23.js:3\n(anonymous) @ chunk-mgcl-52COTP23.js:3\np._next @ chunk-mgcl-52COTP23.js:3\ne.next @ chunk-mgcl-52COTP23.js:3\nn @ chunk-mgcl-52COTP23.js:3",
+          "code_snippet": "contentscript.js:14083 MaxListenersExceededWarning: Possible EventEmitter memory leak detected. 11 close listeners added. Use emitter.setMaxListeners() to increase limit\nn @ contentscript.js:14083\nu @ contentscript.js:14083\na.addListener @ contentscript.js:14083\nZ.on @ contentscript.js:14082\na.once @ contentscript.js:14083\nj.pipe @ contentscript.js:14063\nq @ contentscript.js:14063\nD @ contentscript.js:14063\nP @ contentscript.js:14063\nM @ contentscript.js:14063\nI @ contentscript.js:14063\n(anonymous) @ contentscript.js:14083\ncall.__webpack_require__._LM_.__webpack_require__.__webpack_require__ @ contentscript.js:14083\n(anonymous) @ contentscript.js:14083\n(anonymous) @ contentscript.js:14083\ncontentscript.js:14083 MaxListenersExceededWarning: Possible EventEmitter memory leak detected. 11 end listeners added. Use emitter.setMaxListeners() to increase limit\nn @ contentscript.js:14083\nu @ contentscript.js:14083\na.addListener @ contentscript.js:14083\nZ.on @ contentscript.js:14082\nO @ contentscript.js:14083\nq @ contentscript.js:14063\nD @ contentscript.js:14063\nP @ contentscript.js:14063\nM @ contentscript.js:14063\nI @ contentscript.js:14063\n(anonymous) @ contentscript.js:14083\ncall.__webpack_require__._LM_.__webpack_require__.__webpack_require__ @ contentscript.js:14083\n(anonymous) @ contentscript.js:14083\n(anonymous) @ contentscript.js:14083\nmonitors:1025 Unchecked runtime.lastError: Could not establish connection. Receiving end does not exist.\ncontentscript.js:14083 ObjectMultiplex - orphaned data for stream \"app-init-liveness\"\nwarn @ contentscript.js:14083\n_write @ contentscript.js:14082\nM @ contentscript.js:14063\nx @ contentscript.js:14063\nE.write @ contentscript.js:14063\nd @ contentscript.js:14082\na.emit @ contentscript.js:14083\nJ @ contentscript.js:14082\nK @ contentscript.js:14082\nZ.push @ contentscript.js:14082\n(anonymous) @ contentscript.js:14063\ncontentscript.js:14083 ObjectMultiplex - orphaned data for stream \"app-init-liveness\"\nwarn @ contentscript.js:14083\n_write @ contentscript.js:14082\nM @ contentscript.js:14063\nx @ contentscript.js:14063\nE.write @ contentscript.js:14063\nd @ contentscript.js:14082\na.emit @ contentscript.js:14083\nJ @ contentscript.js:14082\nK @ contentscript.js:14082\nZ.push @ contentscript.js:14082\n(anonymous) @ contentscript.js:14082\ntransform @ contentscript.js:14063\ns._write @ contentscript.js:14082\nI @ contentscript.js:14083\nL @ contentscript.js:14083\nO.write @ contentscript.js:14083\nd @ contentscript.js:14082\na.emit @ contentscript.js:14083\nJ @ contentscript.js:14082\nK @ contentscript.js:14082\nZ.push @ contentscript.js:14082\n(anonymous) @ contentscript.js:14063\ncontentscript.js:14083 ObjectMultiplex - orphaned data for stream \"background-liveness\"\nwarn @ contentscript.js:14083\n_write @ contentscript.js:14082\nM @ contentscript.js:14063\nx @ contentscript.js:14063\nE.write @ contentscript.js:14063\nd @ contentscript.js:14082\na.emit @ contentscript.js:14083\nJ @ contentscript.js:14082\nK @ contentscript.js:14082\nZ.push @ contentscript.js:14082\n(anonymous) @ contentscript.js:14063\ncontentscript.js:14083 ObjectMultiplex - orphaned data for stream \"background-liveness\"\nwarn @ contentscript.js:14083\n_write @ contentscript.js:14082\nM @ contentscript.js:14063\nx @ contentscript.js:14063\nE.write @ contentscript.js:14063\nd @ contentscript.js:14082\na.emit @ contentscript.js:14083\nJ @ contentscript.js:14082\nK @ contentscript.js:14082\nZ.push @ contentscript.js:14082\n(anonymous) @ contentscript.js:14082\ntransform @ contentscript.js:14063\ns._write @ contentscript.js:14082\nI @ contentscript.js:14083\nL @ contentscript.js:14083\nO.write @ contentscript.js:14083\nd @ contentscript.js:14082\na.emit @ contentscript.js:14083\nJ @ contentscript.js:14082\nK @ contentscript.js:14082\nZ.push @ contentscript.js:14082\n(anonymous) @ contentscript.js:14063\ncontentscript.js:14083 ObjectMultiplex - malformed chunk without name \"[object Object]\"\nwarn @ contentscript.js:14083\n_write @ contentscript.js:14082\nM @ contentscript.js:14063\nx @ contentscript.js:14063\nE.write @ contentscript.js:14063\nd @ contentscript.js:14082\na.emit @ contentscript.js:14083\nJ @ contentscript.js:14082\nK @ contentscript.js:14082\nZ.push @ contentscript.js:14082\n(anonymous) @ contentscript.js:14063\ncontentscript.js:14083 ObjectMultiplex - malformed chunk without name \"[object Object]\"\nwarn @ contentscript.js:14083\n_write @ contentscript.js:14082\nM @ contentscript.js:14063\nx @ contentscript.js:14063\nE.write @ contentscript.js:14063\nd @ contentscript.js:14082\na.emit @ contentscript.js:14083\nJ @ contentscript.js:14082\nK @ contentscript.js:14082\nZ.push @ contentscript.js:14082\n(anonymous) @ contentscript.js:14082\ntransform @ contentscript.js:14063\ns._write @ contentscript.js:14082\nI @ contentscript.js:14083\nL @ contentscript.js:14083\nO.write @ contentscript.js:14083\nd @ contentscript.js:14082\na.emit @ contentscript.js:14083\nJ @ contentscript.js:14082\nK @ contentscript.js:14082\nZ.push @ contentscript.js:14082\n(anonymous) @ contentscript.js:14063\nchunk-mgcl-MAO3VRCL.js:16 @import rules are not allowed here. See https://github.com/WICG/construct-stylesheets/issues/119#issuecomment-588352418.\n(anonymous) @ chunk-mgcl-MAO3VRCL.js:16\nawait in (anonymous)\n(anonymous) @ chunk-mgcl-MAO3VRCL.js:16\n(anonymous) @ chunk-mgcl-UYK37KGI.js:1\n(anonymous) @ chunk-mgcl-UYK37KGI.js:1\nvl @ chunk-mgcl-DT437CWL.js:8\nqn @ chunk-mgcl-DT437CWL.js:8\nms @ chunk-mgcl-DT437CWL.js:8\nvn @ chunk-mgcl-DT437CWL.js:6\nTe @ chunk-mgcl-DT437CWL.js:8\nad @ chunk-mgcl-DT437CWL.js:6\nnext @ chunk-mgcl-X3BOXWJK.js:1\nr.next @ chunk-mgcl-52COTP23.js:3\ne._next @ chunk-mgcl-52COTP23.js:3\ne.next @ chunk-mgcl-52COTP23.js:3\n(anonymous) @ chunk-mgcl-52COTP23.js:3\np._next @ chunk-mgcl-52COTP23.js:3\ne.next @ chunk-mgcl-52COTP23.js:3\n(anonymous) @ chunk-mgcl-T7QKCVM3.js:1\n(anonymous) @ chunk-mgcl-T7QKCVM3.js:1\nPromise.then\nft @ chunk-mgcl-T7QKCVM3.js:1\n(anonymous) @ chunk-mgcl-T7QKCVM3.js:1\nr._trySubscribe @ chunk-mgcl-52COTP23.js:3\n(anonymous) @ chunk-mgcl-52COTP23.js:3\nK @ chunk-mgcl-52COTP23.js:3\nr.subscribe @ chunk-mgcl-52COTP23.js:3\n(anonymous) @ chunk-mgcl-52COTP23.js:3\n(anonymous) @ chunk-mgcl-52COTP23.js:3\n(anonymous) @ chunk-mgcl-52COTP23.js:3\nK @ chunk-mgcl-52COTP23.js:3\nr.subscribe @ chunk-mgcl-52COTP23.js:3\n(anonymous) @ chunk-mgcl-X3BOXWJK.js:1\nvl @ chunk-mgcl-DT437CWL.js:8\nqn @ chunk-mgcl-DT437CWL.js:8\nzn @ chunk-mgcl-DT437CWL.js:8\nId @ chunk-mgcl-DT437CWL.js:8\nkl @ chunk-mgcl-DT437CWL.js:8\nve.render @ chunk-mgcl-DT437CWL.js:8\nv3 @ chunk-mgcl-MAO3VRCL.js:16\nI3 @ chunk-mgcl-MAO3VRCL.js:16\nawait in I3\n(anonymous) @ chunk-mgcl-MAO3VRCL.js:16\nmonitors:1 Unchecked runtime.lastError: Could not establish connection. Receiving end does not exist.\nabout:srcdoc:1 Unchecked runtime.lastError: Could not establish connection. Receiving end does not exist.\nabout:srcdoc:1 Unchecked runtime.lastError: Could not establish connection. Receiving end does not exist.\nchunk-mgcl-HFZJ56IT.js:558 Received json-rpc sentryRequest error response for id b9fbc9d9-2ee1-4149-8c0b-8502d8c61ae7 {message: 'e.recordDroppedEvent is not a function', stack: 'TypeError: e.recordDroppedEvent is not a function\\n\u00e2\u20ac\u00a6lcilmhacighjamp/background/background.js:256:2319', name: 'TypeError'}\n(anonymous) @ chunk-mgcl-HFZJ56IT.js:558\n(anonymous) @ chunk-mgcl-52COTP23.js:3\np._next @ chunk-mgcl-52COTP23.js:3\ne.next @ chunk-mgcl-52COTP23.js:3\n(anonymous) @ chunk-mgcl-52COTP23.js:3\np._next @ chunk-mgcl-52COTP23.js:3\ne.next @ chunk-mgcl-52COTP23.js:3\n(anonymous) @ chunk-mgcl-52COTP23.js:3\np._next @ chunk-mgcl-52COTP23.js:3\ne.next @ chunk-mgcl-52COTP23.js:3\nn @ chunk-mgcl-52COTP23.js:3",
           "completed_at": "2026-07-04T03:20:58.631675"
         },
         {
@@ -2679,7 +2720,7 @@
           "page": "Monitors",
           "category": "Backend",
           "priority": "Medium",
-          "fix": "No code fix needed. Verified: /api/monitors LEFT JOIN monitor_models returns brand/model correctly for all 157 listings with valid monitor_model_id. The 42 \"Unknown\" entries are legitimate â€” those listings have NULL monitor_model_id because the scraper could not match them to any known monitor model (e.g. generic/ambiguous titles). DB query confirmed 157/199 have brand/model, API response verified on running server.",
+          "fix": "No code fix needed. Verified: /api/monitors LEFT JOIN monitor_models returns brand/model correctly for all 157 listings with valid monitor_model_id. The 42 \"Unknown\" entries are legitimate \u00e2\u20ac\u201d those listings have NULL monitor_model_id because the scraper could not match them to any known monitor model (e.g. generic/ambiguous titles). DB query confirmed 157/199 have brand/model, API response verified on running server.",
           "column": "solved",
           "created": "2026-07-03T20:55:59.418753",
           "updated": "2026-07-05T18:55:15.937054",
@@ -2696,7 +2737,7 @@
               "reopened_at": "2026-07-04T03:08:27.630366",
               "update": "Listings still dont load in",
               "previous_completed_at": null,
-              "fix": "No code fix needed. Verified: /api/monitors LEFT JOIN monitor_models returns brand/model correctly for all 157 listings with valid monitor_model_id. The 42 \"Unknown\" entries are legitimate â€” those listings have NULL monitor_model_id because the scraper could not match them to any known monitor model (e.g. generic/ambiguous titles). DB query confirmed 157/199 have brand/model, API response verified on running server."
+              "fix": "No code fix needed. Verified: /api/monitors LEFT JOIN monitor_models returns brand/model correctly for all 157 listings with valid monitor_model_id. The 42 \"Unknown\" entries are legitimate \u00e2\u20ac\u201d those listings have NULL monitor_model_id because the scraper could not match them to any known monitor model (e.g. generic/ambiguous titles). DB query confirmed 157/199 have brand/model, API response verified on running server."
             }
           ],
           "code_snippet": "contentscript.js:14083 MaxListenersExceededWarning: Possible EventEmitter memory leak detected. 11 close listeners added. Use emitter.setMaxListeners() to increase limit\nn @ contentscript.js:14083\nu @ contentscript.js:14083\na.addListener @ contentscript.js:14083\nZ.on @ contentscript.js:14082\na.once @ contentscript.js:14083\nj.pipe @ contentscript.js:14063\nq @ contentscript.js:14063\nD @ contentscript.js:14063\nP @ contentscript.js:14063\nM @ contentscript.js:14063\nI @ contentscript.js:14063\n(anonymous) @ contentscript.js:14083\ncall.__webpack_require__._LM_.__webpack_require__.__webpack_require__ @ contentscript.js:14083\n(anonymous) @ contentscript.js:14083\n(anonymous) @ contentscript.js:14083\ncontentscript.js:14083 MaxListenersExceededWarning: Possible EventEmitter memory leak detected. 11 end listeners added. Use emitter.setMaxListeners() to increase limit\nn @ contentscript.js:14083\nu @ contentscript.js:14083\na.addListener @ contentscript.js:14083\nZ.on @ contentscript.js:14082\nO @ contentscript.js:14083\nq @ contentscript.js:14063\nD @ contentscript.js:14063\nP @ contentscript.js:14063\nM @ contentscript.js:14063\nI @ contentscript.js:14063\n(anonymous) @ contentscript.js:14083\ncall.__webpack_require__._LM_.__webpack_require__.__webpack_require__ @ contentscript.js:14083\n(anonymous) @ contentscript.js:14083\n(anonymous) @ contentscript.js:14083\nmonitors:1025 Unchecked runtime.lastError: Could not establish connection. Receiving end does not exist.\ncontentscript.js:14083 ObjectMultiplex - orphaned data for stream \"app-init-liveness\"\nwarn @ contentscript.js:14083\n_write @ contentscript.js:14082\nM @ contentscript.js:14063\nx @ contentscript.js:14063\nE.write @ contentscript.js:14063\nd @ contentscript.js:14082\na.emit @ contentscript.js:14083\nJ @ contentscript.js:14082\nK @ contentscript.js:14082\nZ.push @ contentscript.js:14082\n(anonymous) @ contentscript.js:14063\ncontentscript.js:14083 ObjectMultiplex - orphaned data for stream \"app-init-liveness\"\nwarn @ contentscript.js:14083\n_write @ contentscript.js:14082\nM @ contentscript.js:14063\nx @ contentscript.js:14063\nE.write @ contentscript.js:14063\nd @ contentscript.js:14082\na.emit @ contentscript.js:14083\nJ @ contentscript.js:14082\nK @ contentscript.js:14082\nZ.push @ contentscript.js:14082\n(anonymous) @ contentscript.js:14082\ntransform @ contentscript.js:14063\ns._write @ contentscript.js:14082\nI @ contentscript.js:14083\nL @ contentscript.js:14083\nO.write @ contentscript.js:14083\nd @ contentscript.js:14082\na.emit @ contentscript.js:14083\nJ @ contentscript.js:14082\nK @ contentscript.js:14082\nZ.push @ contentscript.js:14082\n(anonymous) @ contentscript.js:14063\ncontentscript.js:14083 ObjectMultiplex - orphaned data for stream \"background-liveness\"\nwarn @ contentscript.js:14083\n_write @ contentscript.js:14082\nM @ contentscript.js:14063\nx @ contentscript.js:14063\nE.write @ contentscript.js:14063\nd @ contentscript.js:14082\na.emit @ contentscript.js:14083\nJ @ contentscript.js:14082\nK @ contentscript.js:14082\nZ.push @ contentscript.js:14082\n(anonymous) @ contentscript.js:14063\ncontentscript.js:14083 ObjectMultiplex - orphaned data for stream \"background-liveness\"\nwarn @ contentscript.js:14083\n_write @ contentscript.js:14082\nM @ contentscript.js:14063\nx @ contentscript.js:14063\nE.write @ contentscript.js:14063\nd @ contentscript.js:14082\na.emit @ contentscript.js:14083\nJ @ contentscript.js:14082\nK @ contentscript.js:14082\nZ.push @ contentscript.js:14082\n(anonymous) @ contentscript.js:14082\ntransform @ contentscript.js:14063\ns._write @ contentscript.js:14082\nI @ contentscript.js:14083\nL @ contentscript.js:14083\nO.write @ contentscript.js:14083\nd @ contentscript.js:14082\na.emit @ contentscript.js:14083\nJ @ contentscript.js:14082\nK @ contentscript.js:14082\nZ.push @ contentscript.js:14082\n(anonymous) @ contentscript.js:14063\ncontentscript.js:14083 ObjectMultiplex - malformed chunk without name \"[object Object]\"\nwarn @ contentscript.js:14083\n_write @ contentscript.js:14082\nM @ contentscript.js:14063\nx @ contentscript.js:14063\nE.write @ contentscript.js:14063\nd @ contentscript.js:14082\na.emit @ contentscript.js:14083\nJ @ contentscript.js:14082\nK @ contentscript.js:14082\nZ.push @ contentscript.js:14082\n(anonymous) @ contentscript.js:14063\ncontentscript.js:14083 ObjectMultiplex - malformed chunk without name \"[object Object]\"\nwarn @ contentscript.js:14083\n_write @ contentscript.js:14082\nM @ contentscript.js:14063\nx @ contentscript.js:14063\nE.write @ contentscript.js:14063\nd @ contentscript.js:14082\na.emit @ contentscript.js:14083\nJ @ contentscript.js:14082\nK @ contentscript.js:14082\nZ.push @ contentscript.js:14082\n(anonymous) @ contentscript.js:14082\ntransform @ contentscript.js:14063\ns._write @ contentscript.js:14082\nI @ contentscript.js:14083\nL @ contentscript.js:14083\nO.write @ contentscript.js:14083\nd @ contentscript.js:14082\na.emit @ contentscript.js:14083\nJ @ contentscript.js:14082\nK @ contentscript.js:14082\nZ.push @ contentscript.js:14082\n(anonymous) @ contentscript.js:14063\nchunk-mgcl-MAO3VRCL.js:16 @import rules are not allowed here. See https://github.com/WICG/construct-stylesheets/issues/119#issuecomment-588352418.\n(anonymous) @ chunk-mgcl-MAO3VRCL.js:16\nawait in (anonymous)\n(anonymous) @ chunk-mgcl-MAO3VRCL.js:16\n(anonymous) @ chunk-mgcl-UYK37KGI.js:1\n(anonymous) @ chunk-mgcl-UYK37KGI.js:1\nvl @ chunk-mgcl-DT437CWL.js:8\nqn @ chunk-mgcl-DT437CWL.js:8\nms @ chunk-mgcl-DT437CWL.js:8\nvn @ chunk-mgcl-DT437CWL.js:6\nTe @ chunk-mgcl-DT437CWL.js:8\nad @ chunk-mgcl-DT437CWL.js:6\nnext @ chunk-mgcl-X3BOXWJK.js:1\nr.next @ chunk-mgcl-52COTP23.js:3\ne._next @ chunk-mgcl-52COTP23.js:3\ne.next @ chunk-mgcl-52COTP23.js:3\n(anonymous) @ chunk-mgcl-52COTP23.js:3\np._next @ chunk-mgcl-52COTP23.js:3\ne.next @ chunk-mgcl-52COTP23.js:3\n(anonymous) @ chunk-mgcl-T7QKCVM3.js:1\n(anonymous) @ chunk-mgcl-T7QKCVM3.js:1\nPromise.then\nft @ chunk-mgcl-T7QKCVM3.js:1\n(anonymous) @ chunk-mgcl-T7QKCVM3.js:1\nr._trySubscribe @ chunk-mgcl-52COTP23.js:3\n(anonymous) @ chunk-mgcl-52COTP23.js:3\nK @ chunk-mgcl-52COTP23.js:3\nr.subscribe @ chunk-mgcl-52COTP23.js:3\n(anonymous) @ chunk-mgcl-52COTP23.js:3\n(anonymous) @ chunk-mgcl-52COTP23.js:3\n(anonymous) @ chunk-mgcl-52COTP23.js:3\nK @ chunk-mgcl-52COTP23.js:3\nr.subscribe @ chunk-mgcl-52COTP23.js:3\n(anonymous) @ chunk-mgcl-X3BOXWJK.js:1\nvl @ chunk-mgcl-DT437CWL.js:8\nqn @ chunk-mgcl-DT437CWL.js:8\nzn @ chunk-mgcl-DT437CWL.js:8\nId @ chunk-mgcl-DT437CWL.js:8\nkl @ chunk-mgcl-DT437CWL.js:8\nve.render @ chunk-mgcl-DT437CWL.js:8\nv3 @ chunk-mgcl-MAO3VRCL.js:16\nI3 @ chunk-mgcl-MAO3VRCL.js:16\nawait in I3\n(anonymous) @ chunk-mgcl-MAO3VRCL.js:16\nmonitors:1 Unchecked runtime.lastError: Could not establish connection. Receiving end does not exist.\nabout:srcdoc:1 Unchecked runtime.lastError: Could not establish connection. Receiving end does not exist.\nabout:srcdoc:1 Unchecked runtime.lastError: Could not establish connection. Receiving end does not exist.",
@@ -2722,7 +2763,7 @@
               "fix": "Modal HTML was inside block title (lines 3-21), rendering inside title tags in head. Browser treated it as plain text, not DOM, so getElementById returned null. Moved modal into block content."
             }
           ],
-          "code_snippet": "contentscript.js:14083 MaxListenersExceededWarning: Possible EventEmitter memory leak detected. 11 close listeners added. Use emitter.setMaxListeners() to increase limit\nn @ contentscript.js:14083\ncontentscript.js:14083 MaxListenersExceededWarning: Possible EventEmitter memory leak detected. 11 end listeners added. Use emitter.setMaxListeners() to increase limit\nn @ contentscript.js:14083\ncontentscript.js:14083 ObjectMultiplex - orphaned data for stream \"app-init-liveness\"\nwarn @ contentscript.js:14083\ncontentscript.js:14083 ObjectMultiplex - orphaned data for stream \"app-init-liveness\"\nwarn @ contentscript.js:14083\ncontentscript.js:14083 ObjectMultiplex - orphaned data for stream \"background-liveness\"\nwarn @ contentscript.js:14083\ncontentscript.js:14083 ObjectMultiplex - orphaned data for stream \"background-liveness\"\nwarn @ contentscript.js:14083\ncontentscript.js:14083 ObjectMultiplex - malformed chunk without name \"[object Object]\"\nwarn @ contentscript.js:14083\ncontentscript.js:14083 ObjectMultiplex - malformed chunk without name \"[object Object]\"\nwarn @ contentscript.js:14083\nconsoles:1665 Console icons script loaded, getConsoleIcon available: true\nchunk-mgcl-MAO3VRCL.js:16 @import rules are not allowed here. See https://github.com/WICG/construct-stylesheets/issues/119#issuecomment-588352418.\n(anonymous) @ chunk-mgcl-MAO3VRCL.js:16\nconsoles:1697 Loading models...\nconsoles:1708 Models loaded: Array(36)\nconsoles:1740 getConsoleIcon available: true\nconsoles:1747 Icon for Meta Quest 2 : found\nconsoles:1747 Icon for Meta Quest 3 : found\nconsoles:1747 Icon for Meta Quest 3S : found\nconsoles:1747 Icon for Nintendo 2DS : found\nconsoles:1747 Icon for Nintendo 3DS : found\nconsoles:1747 Icon for Nintendo DS : found\nconsoles:1747 Icon for Nintendo GameCube : found\nconsoles:1747 Icon for Nintendo Switch : found\nconsoles:1747 Icon for Nintendo Switch 2 : found\nconsoles:1747 Icon for Nintendo Switch Lite : found\nconsoles:1747 Icon for PSP Go : found\nconsoles:1747 Icon for PlayStation : found\nconsoles:1747 Icon for PlayStation 2 : found\nconsoles:1747 Icon for PlayStation 3 : found\nconsoles:1747 Icon for PlayStation 3 Slim : found\nconsoles:1747 Icon for PlayStation 3 Super Slim : found\nconsoles:1747 Icon for PlayStation 4 : found\nconsoles:1747 Icon for PlayStation 4 Pro : found\nconsoles:1747 Icon for PlayStation 4 Slim : found\nconsoles:1747 Icon for PlayStation 5 : found\nconsoles:1747 Icon for PlayStation 5 Pro : found\nconsoles:1747 Icon for PlayStation 5 Slim : found\nconsoles:1747 Icon for PlayStation Portable 2000 : found\nconsoles:1747 Icon for PlayStation Portable Street : found\nconsoles:1747 Icon for PlayStation VR : found\nconsoles:1747 Icon for PlayStation VR2 : found\nconsoles:1747 Icon for Steam Deck : found\nconsoles:1747 Icon for Wii : found\nconsoles:1747 Icon for Xbox : found\nconsoles:1747 Icon for Xbox 360 : found\nconsoles:1747 Icon for Xbox One : found\nconsoles:1747 Icon for Xbox One S : found\nconsoles:1747 Icon for Xbox One X : found\nconsoles:1747 Icon for Xbox Series S : found\nconsoles:1747 Icon for Xbox Series X : found\nconsoles:1747 Icon for Unknown Console : found\nconsoles:2621 Error loading listing details: TypeError: Cannot set properties of null (setting 'textContent')\n    at showListingDetail (consoles:2516:69)\nshowListingDetail @ consoles:2621\nchunk-mgcl-HFZJ56IT.js:558 Received json-rpc sentryRequest error response for id db23a415-2a28-4bd6-b285-d404ab6df608 {message: 'e.recordDroppedEvent is not a function', stack: 'TypeError: e.recordDroppedEvent is not a function\\nâ€¦lcilmhacighjamp/background/background.js:256:2319', name: 'TypeError'}\n(anonymous) @ chunk-mgcl-HFZJ56IT.js:558\n(anonymous) @ chunk-mgcl-52COTP23.js:3\np._next @ chunk-mgcl-52COTP23.js:3\ne.next @ chunk-mgcl-52COTP23.js:3\n(anonymous) @ chunk-mgcl-52COTP23.js:3\np._next @ chunk-mgcl-52COTP23.js:3\ne.next @ chunk-mgcl-52COTP23.js:3\n(anonymous) @ chunk-mgcl-52COTP23.js:3\np._next @ chunk-mgcl-52COTP23.js:3\ne.next @ chunk-mgcl-52COTP23.js:3\nn @ chunk-mgcl-52COTP23.js:3",
+          "code_snippet": "contentscript.js:14083 MaxListenersExceededWarning: Possible EventEmitter memory leak detected. 11 close listeners added. Use emitter.setMaxListeners() to increase limit\nn @ contentscript.js:14083\ncontentscript.js:14083 MaxListenersExceededWarning: Possible EventEmitter memory leak detected. 11 end listeners added. Use emitter.setMaxListeners() to increase limit\nn @ contentscript.js:14083\ncontentscript.js:14083 ObjectMultiplex - orphaned data for stream \"app-init-liveness\"\nwarn @ contentscript.js:14083\ncontentscript.js:14083 ObjectMultiplex - orphaned data for stream \"app-init-liveness\"\nwarn @ contentscript.js:14083\ncontentscript.js:14083 ObjectMultiplex - orphaned data for stream \"background-liveness\"\nwarn @ contentscript.js:14083\ncontentscript.js:14083 ObjectMultiplex - orphaned data for stream \"background-liveness\"\nwarn @ contentscript.js:14083\ncontentscript.js:14083 ObjectMultiplex - malformed chunk without name \"[object Object]\"\nwarn @ contentscript.js:14083\ncontentscript.js:14083 ObjectMultiplex - malformed chunk without name \"[object Object]\"\nwarn @ contentscript.js:14083\nconsoles:1665 Console icons script loaded, getConsoleIcon available: true\nchunk-mgcl-MAO3VRCL.js:16 @import rules are not allowed here. See https://github.com/WICG/construct-stylesheets/issues/119#issuecomment-588352418.\n(anonymous) @ chunk-mgcl-MAO3VRCL.js:16\nconsoles:1697 Loading models...\nconsoles:1708 Models loaded: Array(36)\nconsoles:1740 getConsoleIcon available: true\nconsoles:1747 Icon for Meta Quest 2 : found\nconsoles:1747 Icon for Meta Quest 3 : found\nconsoles:1747 Icon for Meta Quest 3S : found\nconsoles:1747 Icon for Nintendo 2DS : found\nconsoles:1747 Icon for Nintendo 3DS : found\nconsoles:1747 Icon for Nintendo DS : found\nconsoles:1747 Icon for Nintendo GameCube : found\nconsoles:1747 Icon for Nintendo Switch : found\nconsoles:1747 Icon for Nintendo Switch 2 : found\nconsoles:1747 Icon for Nintendo Switch Lite : found\nconsoles:1747 Icon for PSP Go : found\nconsoles:1747 Icon for PlayStation : found\nconsoles:1747 Icon for PlayStation 2 : found\nconsoles:1747 Icon for PlayStation 3 : found\nconsoles:1747 Icon for PlayStation 3 Slim : found\nconsoles:1747 Icon for PlayStation 3 Super Slim : found\nconsoles:1747 Icon for PlayStation 4 : found\nconsoles:1747 Icon for PlayStation 4 Pro : found\nconsoles:1747 Icon for PlayStation 4 Slim : found\nconsoles:1747 Icon for PlayStation 5 : found\nconsoles:1747 Icon for PlayStation 5 Pro : found\nconsoles:1747 Icon for PlayStation 5 Slim : found\nconsoles:1747 Icon for PlayStation Portable 2000 : found\nconsoles:1747 Icon for PlayStation Portable Street : found\nconsoles:1747 Icon for PlayStation VR : found\nconsoles:1747 Icon for PlayStation VR2 : found\nconsoles:1747 Icon for Steam Deck : found\nconsoles:1747 Icon for Wii : found\nconsoles:1747 Icon for Xbox : found\nconsoles:1747 Icon for Xbox 360 : found\nconsoles:1747 Icon for Xbox One : found\nconsoles:1747 Icon for Xbox One S : found\nconsoles:1747 Icon for Xbox One X : found\nconsoles:1747 Icon for Xbox Series S : found\nconsoles:1747 Icon for Xbox Series X : found\nconsoles:1747 Icon for Unknown Console : found\nconsoles:2621 Error loading listing details: TypeError: Cannot set properties of null (setting 'textContent')\n    at showListingDetail (consoles:2516:69)\nshowListingDetail @ consoles:2621\nchunk-mgcl-HFZJ56IT.js:558 Received json-rpc sentryRequest error response for id db23a415-2a28-4bd6-b285-d404ab6df608 {message: 'e.recordDroppedEvent is not a function', stack: 'TypeError: e.recordDroppedEvent is not a function\\n\u00e2\u20ac\u00a6lcilmhacighjamp/background/background.js:256:2319', name: 'TypeError'}\n(anonymous) @ chunk-mgcl-HFZJ56IT.js:558\n(anonymous) @ chunk-mgcl-52COTP23.js:3\np._next @ chunk-mgcl-52COTP23.js:3\ne.next @ chunk-mgcl-52COTP23.js:3\n(anonymous) @ chunk-mgcl-52COTP23.js:3\np._next @ chunk-mgcl-52COTP23.js:3\ne.next @ chunk-mgcl-52COTP23.js:3\n(anonymous) @ chunk-mgcl-52COTP23.js:3\np._next @ chunk-mgcl-52COTP23.js:3\ne.next @ chunk-mgcl-52COTP23.js:3\nn @ chunk-mgcl-52COTP23.js:3",
           "completed_at": "2026-07-04T00:36:17.221494+00:00"
         },
         {
@@ -2782,7 +2823,7 @@
           "category": "",
           "priority": "Medium",
           "fix": "Patched SSD scraper to use correct ss.com gallery full-size images (.800.jpg) and re-download/repair existing listings with missing or broken images. Verified bbbffd now has a valid 40KB image.",
-          "code_snippet": "<div align=\"center\" id=\"img_div_scroll\" style=\"position: relative; display: block; z-index: 2; height: 482px; overflow: hidden scroll; width: 496px;\"><img onclick=\"this.blur();\" style=\"display: block; width: 482px; height: 643px; position: relative;\" onload=\"play_image();\" onfocus=\"this.blur();\" id=\"msg_img_img\" border=\"0\" src=\"https://i.ss.com/gallery/8/1516/378871/computers-completing-pc-ssd-75774073.800.jpg\"><div onclick=\"el('navi_prev').click();return false;\" ontouchstart=\"_tstart(event);\" ontouchmove=\"_tmove(event);\" ontouchend=\"if(_tend(event)) {this.click();}return false;\" id=\"navi_prev2\" style=\"position: absolute; top: 0px; left: 0px; width: 96px; height: 643px;\" title=\"IepriekÅ¡eja\"><img src=\"https://i.ss.com/img/p.gif\" width=\"100%\" height=\"100%\"></div><div onclick=\"el('navi_next').click();return false;\" ontouchstart=\"_tstart(event);\" ontouchmove=\"_tmove(event);\" ontouchend=\"if(_tend(event)) {this.click();}return false;\" id=\"navi_next2\" style=\"position: absolute; top: 0px; left: 96px; width: 381px; height: 643px;\" title=\"Nakama\"><img src=\"https://i.ss.com/img/p.gif\" width=\"100%\" height=\"100%\"></div></div>",
+          "code_snippet": "<div align=\"center\" id=\"img_div_scroll\" style=\"position: relative; display: block; z-index: 2; height: 482px; overflow: hidden scroll; width: 496px;\"><img onclick=\"this.blur();\" style=\"display: block; width: 482px; height: 643px; position: relative;\" onload=\"play_image();\" onfocus=\"this.blur();\" id=\"msg_img_img\" border=\"0\" src=\"https://i.ss.com/gallery/8/1516/378871/computers-completing-pc-ssd-75774073.800.jpg\"><div onclick=\"el('navi_prev').click();return false;\" ontouchstart=\"_tstart(event);\" ontouchmove=\"_tmove(event);\" ontouchend=\"if(_tend(event)) {this.click();}return false;\" id=\"navi_prev2\" style=\"position: absolute; top: 0px; left: 0px; width: 96px; height: 643px;\" title=\"Iepriek\u00c5\u00a1eja\"><img src=\"https://i.ss.com/img/p.gif\" width=\"100%\" height=\"100%\"></div><div onclick=\"el('navi_next').click();return false;\" ontouchstart=\"_tstart(event);\" ontouchmove=\"_tmove(event);\" ontouchend=\"if(_tend(event)) {this.click();}return false;\" id=\"navi_next2\" style=\"position: absolute; top: 0px; left: 96px; width: 381px; height: 643px;\" title=\"Nakama\"><img src=\"https://i.ss.com/img/p.gif\" width=\"100%\" height=\"100%\"></div></div>",
           "column": "solved",
           "created": "2026-07-03T11:30:44.862255",
           "updated": "2026-07-06T13:59:16.783428",
@@ -2819,7 +2860,7 @@
           "reopen_history": [
             {
               "reopened_at": "2026-07-04T16:25:34.179742",
-              "update": "Comment says - Skip listings with Startejiet sistemu daÅ¾u sekunÅ¾u laika in description\n\nbut it should say - Skip listings with \"Startejiet sistemu daÅ¾u sekunÅ¾u laika\" in description",
+              "update": "Comment says - Skip listings with Startejiet sistemu da\u00c5\u00beu sekun\u00c5\u00beu laika in description\n\nbut it should say - Skip listings with \"Startejiet sistemu da\u00c5\u00beu sekun\u00c5\u00beu laika\" in description",
               "previous_completed_at": "2026-07-04T01:01:16.223119+00:00",
               "fix": "Verified the avg cost/GB over months timeline chart is a line chart. Removed beginAtZero on the y-axis so trends are more visible, matching the SSD cost chart style."
             }
@@ -3211,7 +3252,7 @@
               "fix": "templates/motherboards.html: renamed Motherboard Models heading to Motherboard Chipsets and loading text to Loading chipsets... to reflect the actual chipset data shown."
             }
           ],
-          "code_snippet": "<div class=\"model-card\">\n            <h4>X570</h4>\n            <div style=\"color: #666; font-size: 0.875rem; margin-bottom: 0.5rem;\">\n                Socket: AM4 | Form: ATX\n            </div>\n            <div style=\"color: #888; font-size: 0.75rem; margin-bottom: 0.5rem;\">\n                Brands: -\n            </div>\n            <div class=\"model-stats\">\n                <div class=\"model-stat\">\n                    <div class=\"model-stat-value\">1</div>\n                    <div class=\"model-stat-label\">Listings</div>\n                </div>\n                <div class=\"model-stat\">\n                    <div class=\"model-stat-value\">undefined</div>\n                    <div class=\"model-stat-label\">Models</div>\n                </div>\n                <div class=\"model-stat\">\n                    <div class=\"model-stat-value\">â‚¬130</div>\n                    <div class=\"model-stat-label\">Avg Price</div>\n                </div>\n            </div>\n            <div class=\"price-bar\">\n                <div class=\"price-bar-fill\" style=\"width: 50%\"></div>\n            </div>\n            <div style=\"font-size: 0.75rem; color: #666; margin-top: 0.5rem;\">\n                Range: â‚¬130 - â‚¬130\n            </div>\n        </div>",
+          "code_snippet": "<div class=\"model-card\">\n            <h4>X570</h4>\n            <div style=\"color: #666; font-size: 0.875rem; margin-bottom: 0.5rem;\">\n                Socket: AM4 | Form: ATX\n            </div>\n            <div style=\"color: #888; font-size: 0.75rem; margin-bottom: 0.5rem;\">\n                Brands: -\n            </div>\n            <div class=\"model-stats\">\n                <div class=\"model-stat\">\n                    <div class=\"model-stat-value\">1</div>\n                    <div class=\"model-stat-label\">Listings</div>\n                </div>\n                <div class=\"model-stat\">\n                    <div class=\"model-stat-value\">undefined</div>\n                    <div class=\"model-stat-label\">Models</div>\n                </div>\n                <div class=\"model-stat\">\n                    <div class=\"model-stat-value\">\u00e2\u201a\u00ac130</div>\n                    <div class=\"model-stat-label\">Avg Price</div>\n                </div>\n            </div>\n            <div class=\"price-bar\">\n                <div class=\"price-bar-fill\" style=\"width: 50%\"></div>\n            </div>\n            <div style=\"font-size: 0.75rem; color: #666; margin-top: 0.5rem;\">\n                Range: \u00e2\u201a\u00ac130 - \u00e2\u201a\u00ac130\n            </div>\n        </div>",
           "notes": [
             {
               "timestamp": "2026-07-23T10:57:38.3826809",
@@ -3334,7 +3375,7 @@
           "page": "GPU",
           "category": "UI/UX",
           "priority": "Medium",
-          "fix": "Added a VRAM mode toggle to gpu.html (Exact size / â‰¥ selected) and updated /api/gpus in app.py to honor vram_mode=exact|min.",
+          "fix": "Added a VRAM mode toggle to gpu.html (Exact size / \u00e2\u2030\u00a5 selected) and updated /api/gpus in app.py to honor vram_mode=exact|min.",
           "column": "solved",
           "created": "2026-06-27T14:29:31.077057",
           "updated": "2026-07-23T17:55:05.060680",
@@ -3508,7 +3549,7 @@
           "reopen_history": [
             {
               "reopened_at": "2026-07-23T13:13:48.014115",
-              "update": "It shows \"No SSD detected\" yet it shows average price of ~â‚¬72 at the same time",
+              "update": "It shows \"No SSD detected\" yet it shows average price of ~\u00e2\u201a\u00ac72 at the same time",
               "previous_completed_at": null,
               "fix": ""
             }
@@ -3630,7 +3671,7 @@
           "page": "GPU",
           "category": "",
           "priority": "Medium",
-          "fix": "2026-07-30 12:31 — (Source badge): Added text source badges (`SS`, `Andele`, `FB`) next to the existing colored dots in the GPU table, color-coded by source.",
+          "fix": "2026-07-30 12:31 \u2014 (Source badge): Added text source badges (`SS`, `Andele`, `FB`) next to the existing colored dots in the GPU table, color-coded by source.",
           "column": "solved",
           "created": "2026-07-30T12:20:01.190750",
           "updated": "2026-07-30T13:14:22.630113",
@@ -3641,7 +3682,7 @@
               "reopened_at": "2026-07-30T13:07:37.891016",
               "update": "1)\"By source\" chart shows 100% is from ss.com which is incorrect.\n2) I dont see the badge in the listing list",
               "previous_completed_at": null,
-              "fix": "2026-07-30 12:31 — (Source badge): Added text source badges (`SS`, `Andele`, `FB`) next to the existing colored dots in the GPU table, color-coded by source."
+              "fix": "2026-07-30 12:31 \u2014 (Source badge): Added text source badges (`SS`, `Andele`, `FB`) next to the existing colored dots in the GPU table, color-coded by source."
             }
           ],
           "completed_at": "2026-07-30T13:14:22.630113"
@@ -3662,12 +3703,12 @@
         },
         {
           "id": "T247",
-          "title": "Implement \"Multisistēma Rīga\" skip as we have in other scrappers",
+          "title": "Implement \"Multisist\u0113ma R\u012bga\" skip as we have in other scrappers",
           "page": "GPU",
           "category": "Scraper",
           "priority": "Medium",
           "fix": "",
-          "code_snippet": "<tr><td class=\"ads_contacts_name\">Uzņēmums:</td><td class=\"ads_contacts\">Multisistēma Rīga</td></tr>",
+          "code_snippet": "<tr><td class=\"ads_contacts_name\">Uz\u0146\u0113mums:</td><td class=\"ads_contacts\">Multisist\u0113ma R\u012bga</td></tr>",
           "column": "solved",
           "created": "2026-07-29T16:06:33.686681",
           "updated": "2026-07-30T13:22:05.444185",
@@ -3812,7 +3853,7 @@
               "fix": ""
             }
           ],
-          "code_snippet": "<div class=\"modal\" style=\"max-width: 900px;\">\n        <div class=\"modal-header\">\n            <h3 id=\"listing-title\">Procesors: Intel Core i5-6500 pārbaudīti, pilnībā darba kārtībā, bez defektiem.</h3>\n            <button class=\"modal-close\" onclick=\"closeListingModal()\">×</button>\n        </div>\n        <div id=\"listing-content\" style=\"padding: 1.5rem;\">\n                <div style=\"margin-bottom: 1rem; text-align: center;\">\n                    <img src=\"/images/cpus/efbel_c69f7d9e.jpg\" alt=\"Procesors: Intel Core i5-6500 pārbaudīti, pilnībā darba kārtībā, bez defektiem.\" style=\"max-width: 100%; max-height: 70vh; border-radius: 8px; cursor: zoom-in; box-shadow: 0 2px 8px rgba(0,0,0,0.1);\" onerror=\"this.onerror=null; this.src='https://i.ss.com/gallery/8/1504/375841/computers-completing-pc-cpu-75168106.800.jpg';\" onclick=\"showImageModal('/images/cpus/efbel_c69f7d9e.jpg', 'Procesors: Intel Core i5-6500 pārbaudīti, pilnībā darba kārtībā, bez defektiem.')\">\n                </div>\n            \n                <div style=\"margin-bottom: 1.5rem; padding: 1rem; background: var(--modal-box-bg, #f8f9fa); border-radius: 8px; border-left: 4px solid var(--accent-color, #667eea);\">\n                    <h4 style=\"margin-bottom: 0.75rem; color: var(--accent-color, #667eea);\">CPU Details</h4>\n                    <div style=\"display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem;\">\n                        <div><strong>Brand:</strong> Intel</div>\n                        <div><strong>Model:</strong> Intel Core i5-6500</div>\n                        <div><strong>Processor Number:</strong> i5-6500</div>\n                        <div><strong>Cores / Threads:</strong> 4 / 4</div>\n                        <div><strong>Socket:</strong> LGA1151</div>\n                    </div>\n                </div>\n            \n            <div style=\"display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem;\">\n                <div style=\"background: var(--modal-box-bg, #f8f9fa); padding: 1rem; border-radius: 8px;\">\n                    <strong>Current Price:</strong> <span class=\"price\" style=\"font-size: 1.25rem;\">€20</span>\n                </div>\n                <div style=\"background: var(--modal-box-bg, #f8f9fa); padding: 1rem; border-radius: 8px;\">\n                    <strong>Location:</strong> Rīga\n                </div>\n                <div style=\"background: var(--modal-box-bg, #f8f9fa); padding: 1rem; border-radius: 8px;\">\n                    <strong>Date:</strong> 5/29/2026\n                </div>\n                <div style=\"background: var(--modal-box-bg, #f8f9fa); padding: 1rem; border-radius: 8px;\">\n                    <strong>Status:</strong> <span style=\"color: #27ae60;\">Active</span>\n                </div>\n            </div>\n        \n                <div style=\"background: var(--modal-highlight-bg, #e8f0ff); padding: 1rem; border-radius: 8px; margin-bottom: 1rem;\">\n                    <strong>CPU:</strong>  Intel Core i5-6500<br>\n                    <strong>Cores/Threads:</strong> 4/4<br>\n                    \n                </div>\n            \n            <div style=\"margin-bottom: 1.5rem;\">\n                <strong>Description:</strong>\n                <div class=\"description-box\" style=\"margin-top: 0.5rem; max-height: 300px; overflow-y: auto; background: var(--modal-box-bg, #f8f9fa); padding: 1rem; border-radius: 8px; border-left: 4px solid var(--accent-color, #667eea);\">\n                    Procesors: Intel Core i5-6500 pārbaudīti, pilnībā darba kārtībā, bez defektiem.<br>(Pieejami 6 gab. )<br>Cpu Frekvence: 3.20 Ghz<br>Kešatmiņa: 6 MB Intel Smart Cache<br>Procesora kodoli: 4<br>Vītņu skaits: 4<br>Procesora ligzdas tips: FCLGA1151<br>Procesora grafika: Intel HD Graphics 530<br>Riga, Imanta. Rakstiet vai zvaniet WhatsApp, vai arī uz parasto tālruņa numuru.<br>Процессор: Intel Core i5-6500 проверенные полностью рабочие, без дефектов (Доступны 6 штук. )<br>Рига, Иманта. Пишите/звоните на ватсап или просто на номер<br>Cena:20 €\n                </div>\n            </div>\n        \n                <h4 style=\"margin-top: 1.5rem; margin-bottom: 0.5rem;\">Price History</h4>\n                <table style=\"width: 100%; margin-bottom: 1.5rem;\">\n                    <thead>\n                        <tr>\n                            <th>Date</th>\n                            <th>Price</th>\n                            <th>Change</th>\n                        </tr>\n                    </thead>\n                    <tbody>\n            \n                    <tr>\n                        <td>5/31/2026</td>\n                        <td class=\"price\">€20</td>\n                        <td>-</td>\n                    </tr>\n                </tbody></table>\n            <div style=\"margin-top: 1.5rem; display: flex; gap: 1rem; justify-content: flex-end; align-items: center;\">\n                <span class=\"badge\" style=\"background: #90EE90; color: #333; padding: 0.35rem 0.7rem; border-radius: 12px; font-size: 0.8rem; margin-right: auto;\">SS.com</span>\n                <a href=\"https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/efbel.html\" target=\"_blank\" class=\"btn\">\n                    View on ss.com →\n                </a>\n            </div>\n        </div>\n    </div>",
+          "code_snippet": "<div class=\"modal\" style=\"max-width: 900px;\">\n        <div class=\"modal-header\">\n            <h3 id=\"listing-title\">Procesors: Intel Core i5-6500 p\u0101rbaud\u012bti, piln\u012bb\u0101 darba k\u0101rt\u012bb\u0101, bez defektiem.</h3>\n            <button class=\"modal-close\" onclick=\"closeListingModal()\">\u00d7</button>\n        </div>\n        <div id=\"listing-content\" style=\"padding: 1.5rem;\">\n                <div style=\"margin-bottom: 1rem; text-align: center;\">\n                    <img src=\"/images/cpus/efbel_c69f7d9e.jpg\" alt=\"Procesors: Intel Core i5-6500 p\u0101rbaud\u012bti, piln\u012bb\u0101 darba k\u0101rt\u012bb\u0101, bez defektiem.\" style=\"max-width: 100%; max-height: 70vh; border-radius: 8px; cursor: zoom-in; box-shadow: 0 2px 8px rgba(0,0,0,0.1);\" onerror=\"this.onerror=null; this.src='https://i.ss.com/gallery/8/1504/375841/computers-completing-pc-cpu-75168106.800.jpg';\" onclick=\"showImageModal('/images/cpus/efbel_c69f7d9e.jpg', 'Procesors: Intel Core i5-6500 p\u0101rbaud\u012bti, piln\u012bb\u0101 darba k\u0101rt\u012bb\u0101, bez defektiem.')\">\n                </div>\n            \n                <div style=\"margin-bottom: 1.5rem; padding: 1rem; background: var(--modal-box-bg, #f8f9fa); border-radius: 8px; border-left: 4px solid var(--accent-color, #667eea);\">\n                    <h4 style=\"margin-bottom: 0.75rem; color: var(--accent-color, #667eea);\">CPU Details</h4>\n                    <div style=\"display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem;\">\n                        <div><strong>Brand:</strong> Intel</div>\n                        <div><strong>Model:</strong> Intel Core i5-6500</div>\n                        <div><strong>Processor Number:</strong> i5-6500</div>\n                        <div><strong>Cores / Threads:</strong> 4 / 4</div>\n                        <div><strong>Socket:</strong> LGA1151</div>\n                    </div>\n                </div>\n            \n            <div style=\"display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem;\">\n                <div style=\"background: var(--modal-box-bg, #f8f9fa); padding: 1rem; border-radius: 8px;\">\n                    <strong>Current Price:</strong> <span class=\"price\" style=\"font-size: 1.25rem;\">\u20ac20</span>\n                </div>\n                <div style=\"background: var(--modal-box-bg, #f8f9fa); padding: 1rem; border-radius: 8px;\">\n                    <strong>Location:</strong> R\u012bga\n                </div>\n                <div style=\"background: var(--modal-box-bg, #f8f9fa); padding: 1rem; border-radius: 8px;\">\n                    <strong>Date:</strong> 5/29/2026\n                </div>\n                <div style=\"background: var(--modal-box-bg, #f8f9fa); padding: 1rem; border-radius: 8px;\">\n                    <strong>Status:</strong> <span style=\"color: #27ae60;\">Active</span>\n                </div>\n            </div>\n        \n                <div style=\"background: var(--modal-highlight-bg, #e8f0ff); padding: 1rem; border-radius: 8px; margin-bottom: 1rem;\">\n                    <strong>CPU:</strong>  Intel Core i5-6500<br>\n                    <strong>Cores/Threads:</strong> 4/4<br>\n                    \n                </div>\n            \n            <div style=\"margin-bottom: 1.5rem;\">\n                <strong>Description:</strong>\n                <div class=\"description-box\" style=\"margin-top: 0.5rem; max-height: 300px; overflow-y: auto; background: var(--modal-box-bg, #f8f9fa); padding: 1rem; border-radius: 8px; border-left: 4px solid var(--accent-color, #667eea);\">\n                    Procesors: Intel Core i5-6500 p\u0101rbaud\u012bti, piln\u012bb\u0101 darba k\u0101rt\u012bb\u0101, bez defektiem.<br>(Pieejami 6 gab. )<br>Cpu Frekvence: 3.20 Ghz<br>Ke\u0161atmi\u0146a: 6 MB Intel Smart Cache<br>Procesora kodoli: 4<br>V\u012bt\u0146u skaits: 4<br>Procesora ligzdas tips: FCLGA1151<br>Procesora grafika: Intel HD Graphics 530<br>Riga, Imanta. Rakstiet vai zvaniet WhatsApp, vai ar\u012b uz parasto t\u0101lru\u0146a numuru.<br>\u041f\u0440\u043e\u0446\u0435\u0441\u0441\u043e\u0440: Intel Core i5-6500 \u043f\u0440\u043e\u0432\u0435\u0440\u0435\u043d\u043d\u044b\u0435 \u043f\u043e\u043b\u043d\u043e\u0441\u0442\u044c\u044e \u0440\u0430\u0431\u043e\u0447\u0438\u0435, \u0431\u0435\u0437 \u0434\u0435\u0444\u0435\u043a\u0442\u043e\u0432 (\u0414\u043e\u0441\u0442\u0443\u043f\u043d\u044b 6 \u0448\u0442\u0443\u043a. )<br>\u0420\u0438\u0433\u0430, \u0418\u043c\u0430\u043d\u0442\u0430. \u041f\u0438\u0448\u0438\u0442\u0435/\u0437\u0432\u043e\u043d\u0438\u0442\u0435 \u043d\u0430 \u0432\u0430\u0442\u0441\u0430\u043f \u0438\u043b\u0438 \u043f\u0440\u043e\u0441\u0442\u043e \u043d\u0430 \u043d\u043e\u043c\u0435\u0440<br>Cena:20 \u20ac\n                </div>\n            </div>\n        \n                <h4 style=\"margin-top: 1.5rem; margin-bottom: 0.5rem;\">Price History</h4>\n                <table style=\"width: 100%; margin-bottom: 1.5rem;\">\n                    <thead>\n                        <tr>\n                            <th>Date</th>\n                            <th>Price</th>\n                            <th>Change</th>\n                        </tr>\n                    </thead>\n                    <tbody>\n            \n                    <tr>\n                        <td>5/31/2026</td>\n                        <td class=\"price\">\u20ac20</td>\n                        <td>-</td>\n                    </tr>\n                </tbody></table>\n            <div style=\"margin-top: 1.5rem; display: flex; gap: 1rem; justify-content: flex-end; align-items: center;\">\n                <span class=\"badge\" style=\"background: #90EE90; color: #333; padding: 0.35rem 0.7rem; border-radius: 12px; font-size: 0.8rem; margin-right: auto;\">SS.com</span>\n                <a href=\"https://www.ss.com/msg/lv/electronics/computers/completing-pc/cpu/efbel.html\" target=\"_blank\" class=\"btn\">\n                    View on ss.com \u2192\n                </a>\n            </div>\n        </div>\n    </div>",
           "completed_at": "2026-08-11T20:53:17.928271"
         },
         {
@@ -3922,6 +3963,43 @@
           "linked_task_id": null,
           "relationship_type": null,
           "completed_at": "2026-08-12T16:05:56.281142+00:00"
+        },
+        {
+          "id": "T059",
+          "title": "Case pop up window doesnt work",
+          "page": "Cases",
+          "category": "Frontend",
+          "priority": "Medium",
+          "fix": "",
+          "linked_task_id": null,
+          "relationship_type": null,
+          "column": "solved",
+          "created": "2026-06-19T11:27:28.871859",
+          "updated": "2026-08-19T12:53:17.501311",
+          "started_at": "2026-06-29T14:55:31.754860",
+          "reopen_history": [
+            {
+              "reopened_at": "2026-06-27T14:31:50.443234",
+              "update": "I think you did not understand the task. Pop up window should show detailed information about the listings.\n\nSource, Description, image, location, data, price, historical listing price",
+              "previous_completed_at": "2026-06-19T16:08:00",
+              "fix": ""
+            }
+          ],
+          "status": "talking",
+          "updated_at": "2026-06-29T14:57:29.974438",
+          "completed_at": "2026-06-29T14:57:29.974438"
+        },
+        {
+          "id": "T216",
+          "title": "cases scrapper doesnt download image. It should be full 800px images",
+          "page": "Cases",
+          "category": "Scraper",
+          "priority": "Medium",
+          "fix": "",
+          "column": "solved",
+          "created": "2026-07-19T15:00:48.455808",
+          "updated": "2026-08-19T13:28:56.981163",
+          "completed_at": "2026-08-19T13:28:56.981163"
         }
       ]
     },
@@ -3936,7 +4014,7 @@
           "page": "Project Board",
           "category": "",
           "priority": "Medium",
-          "fix": "Added âœ… Mark Solved button to Review/Talking column tasks: Updated project_board.html showTaskDetail function to display the Mark Solved button alongside the Re-open button for tasks in the Review (talking) column. Tasks in Review now have both options: ðŸ”„ Re-open and âœ… Mark Solved.",
+          "fix": "Added \u00e2\u0153\u2026 Mark Solved button to Review/Talking column tasks: Updated project_board.html showTaskDetail function to display the Mark Solved button alongside the Re-open button for tasks in the Review (talking) column. Tasks in Review now have both options: \u00f0\u0178\u201d\u201e Re-open and \u00e2\u0153\u2026 Mark Solved.",
           "column": "future",
           "created": "2026-06-19T23:30:35.513312",
           "updated": "2026-06-20T18:05:00",
@@ -3949,7 +4027,7 @@
               "reopened_at": "2026-06-20T20:39:49.771476",
               "update": "there should alsso be a slove button in Review box task tickets",
               "previous_completed_at": "2026-06-20T00:19:00",
-              "fix": "Added âœ… Mark Solved button to Review/Talking column tasks: Updated project_board.html showTaskDetail function to display the Mark Solved button alongside the Re-open button for tasks in the Review (talking) column. Tasks in Review now have both options: ðŸ”„ Re-open and âœ… Mark Solved."
+              "fix": "Added \u00e2\u0153\u2026 Mark Solved button to Review/Talking column tasks: Updated project_board.html showTaskDetail function to display the Mark Solved button alongside the Re-open button for tasks in the Review (talking) column. Tasks in Review now have both options: \u00f0\u0178\u201d\u201e Re-open and \u00e2\u0153\u2026 Mark Solved."
             }
           ],
           "folder_id": "F-20260621134436-a2fac031",
@@ -4011,7 +4089,7 @@
           "page": "Project Board",
           "category": "",
           "priority": "Medium",
-          "fix": "Enhanced task detail popup: Added \"ðŸ“¨ Linked From (Incoming)\" section showing all tasks that link TO this task. Task cards already show link count badge. Separated outgoing links (ðŸ”— Linked Tasks) from incoming links (ðŸ“¨ Linked From).",
+          "fix": "Enhanced task detail popup: Added \"\u00f0\u0178\u201c\u00a8 Linked From (Incoming)\" section showing all tasks that link TO this task. Task cards already show link count badge. Separated outgoing links (\u00f0\u0178\u201d\u2014 Linked Tasks) from incoming links (\u00f0\u0178\u201c\u00a8 Linked From).",
           "column": "future",
           "created": "2026-06-19T23:23:20.268510",
           "updated": "2026-06-21T13:58:53.570337",
@@ -4029,7 +4107,7 @@
               "reopened_at": "2026-06-21T13:48:58.253279",
               "update": "none tas seem to show this",
               "previous_completed_at": "2026-06-20T21:30:00",
-              "fix": "Enhanced task detail popup: Added \"ðŸ“¨ Linked From (Incoming)\" section showing all tasks that link TO this task. Task cards already show link count badge. Separated outgoing links (ðŸ”— Linked Tasks) from incoming links (ðŸ“¨ Linked From)."
+              "fix": "Enhanced task detail popup: Added \"\u00f0\u0178\u201c\u00a8 Linked From (Incoming)\" section showing all tasks that link TO this task. Task cards already show link count badge. Separated outgoing links (\u00f0\u0178\u201d\u2014 Linked Tasks) from incoming links (\u00f0\u0178\u201c\u00a8 Linked From)."
             }
           ],
           "completed_at": "2026-06-21T13:58:53.570337",
@@ -4242,7 +4320,7 @@
           "reopen_history": [
             {
               "reopened_at": "2026-06-19T11:52:56.415567",
-              "update": "Its still there <button class=\"btn\" onclick=\"showAddTaskModal()\">âž• New Task</button>",
+              "update": "Its still there <button class=\"btn\" onclick=\"showAddTaskModal()\">\u00e2\u017e\u2022 New Task</button>",
               "previous_completed_at": "2026-06-19T11:52:00",
               "fix": "Removed the New Task button from board-header. The button was successfully removed from the template - if still visible, browser cache needs refresh (Ctrl+F5)"
             }
@@ -4349,7 +4427,7 @@
           "page": "",
           "category": "Frontend",
           "priority": "Medium",
-          "fix": "Updated project_board.html: 1) Enhanced showTaskDetail function to display the fix that was applied at each re-open stage (shown in green box within each history entry), 2) Updated the Reviewâ†’Assignment drag modal to show fix history with both the applied fix and the reported issue for each attempt, 3) Each re-open entry now shows: attempt number, date, fix applied (green), and issue reported (red)",
+          "fix": "Updated project_board.html: 1) Enhanced showTaskDetail function to display the fix that was applied at each re-open stage (shown in green box within each history entry), 2) Updated the Review\u00e2\u2020\u2019Assignment drag modal to show fix history with both the applied fix and the reported issue for each attempt, 3) Each re-open entry now shows: attempt number, date, fix applied (green), and issue reported (red)",
           "column": "future",
           "created": "2026-06-18T15:08:10.215644",
           "updated": "2026-06-19T09:57:02.480082",
@@ -4423,7 +4501,7 @@
           "page": "",
           "category": "Frontend",
           "priority": "High",
-          "fix": "Added task linking feature: 1) Added 'Link to Task' dropdown in New Task modal with populateLinkedTaskDropdown() function, 2) Updated addTask() to send linked_task_id to backend, 3) Updated backend API to store linked_task_id in task data, 4) Added ðŸ”— icon to task cards when linked, 5) Added linked task display in task detail modal with clickable link",
+          "fix": "Added task linking feature: 1) Added 'Link to Task' dropdown in New Task modal with populateLinkedTaskDropdown() function, 2) Updated addTask() to send linked_task_id to backend, 3) Updated backend API to store linked_task_id in task data, 4) Added \u00f0\u0178\u201d\u2014 icon to task cards when linked, 5) Added linked task display in task detail modal with clickable link",
           "column": "future",
           "created": "2026-06-18T19:10:58.939970",
           "updated": "2026-06-19T09:17:52.555433",
@@ -4627,7 +4705,7 @@
           "page": "",
           "category": "Frontend",
           "priority": "High",
-          "fix": "Implemented complete task relationship functionality:\n1) Backend: Added PUT /api/project-board/task/<task_id> endpoint to update existing tasks including relationship_type\n2) Frontend: Added editTask() function that pre-fills the Add Task modal with existing task data\n3) Frontend: Modified addTask() to call saveEditedTask() when editing (window.editingTaskId is set)\n4) Frontend: Added saveEditedTask() to send PUT request with updated fields\n5) Frontend: Modified populateLinkedTaskDropdown() to exclude self when editing\n6) Frontend: Added relationship_type dropdown to re-open modal\n7) Backend: Updated reopen endpoint to accept and save relationship_type\n8) Frontend: Modified confirmReopen() to send relationship_type with re-open\n9) Task Detail: Added âœï¸ Edit Task button to task detail modal\n10) Task Cards: Relationship icons now display on task cards",
+          "fix": "Implemented complete task relationship functionality:\n1) Backend: Added PUT /api/project-board/task/<task_id> endpoint to update existing tasks including relationship_type\n2) Frontend: Added editTask() function that pre-fills the Add Task modal with existing task data\n3) Frontend: Modified addTask() to call saveEditedTask() when editing (window.editingTaskId is set)\n4) Frontend: Added saveEditedTask() to send PUT request with updated fields\n5) Frontend: Modified populateLinkedTaskDropdown() to exclude self when editing\n6) Frontend: Added relationship_type dropdown to re-open modal\n7) Backend: Updated reopen endpoint to accept and save relationship_type\n8) Frontend: Modified confirmReopen() to send relationship_type with re-open\n9) Task Detail: Added \u00e2\u0153\u008f\u00ef\u00b8\u008f Edit Task button to task detail modal\n10) Task Cards: Relationship icons now display on task cards",
           "linked_task_id": null,
           "column": "future",
           "created": "2026-06-18T21:34:30.769321",
@@ -4640,7 +4718,7 @@
               "update": "1. task was not resolved. 2. why did it was placed in review without any comment?",
               "previous_completed_at": "2026-06-18T22:38:00",
               "previous_fix": "Added relationship dropdown in Add Task modal with options: linked, caused_by, similar_to, blocks, blocked_by, updated renderTaskCard() to show relationship icon, added getRelationshipIcon() and getRelationshipLabel() functions, updated showTaskDetail() to display relationship type with icon",
-              "fix": "Implemented complete task relationship functionality:\n1) Backend: Added PUT /api/project-board/task/<task_id> endpoint to update existing tasks including relationship_type\n2) Frontend: Added editTask() function that pre-fills the Add Task modal with existing task data\n3) Frontend: Modified addTask() to call saveEditedTask() when editing (window.editingTaskId is set)\n4) Frontend: Added saveEditedTask() to send PUT request with updated fields\n5) Frontend: Modified populateLinkedTaskDropdown() to exclude self when editing\n6) Frontend: Added relationship_type dropdown to re-open modal\n7) Backend: Updated reopen endpoint to accept and save relationship_type\n8) Frontend: Modified confirmReopen() to send relationship_type with re-open\n9) Task Detail: Added âœï¸ Edit Task button to task detail modal\n10) Task Cards: Relationship icons now display on task cards"
+              "fix": "Implemented complete task relationship functionality:\n1) Backend: Added PUT /api/project-board/task/<task_id> endpoint to update existing tasks including relationship_type\n2) Frontend: Added editTask() function that pre-fills the Add Task modal with existing task data\n3) Frontend: Modified addTask() to call saveEditedTask() when editing (window.editingTaskId is set)\n4) Frontend: Added saveEditedTask() to send PUT request with updated fields\n5) Frontend: Modified populateLinkedTaskDropdown() to exclude self when editing\n6) Frontend: Added relationship_type dropdown to re-open modal\n7) Backend: Updated reopen endpoint to accept and save relationship_type\n8) Frontend: Modified confirmReopen() to send relationship_type with re-open\n9) Task Detail: Added \u00e2\u0153\u008f\u00ef\u00b8\u008f Edit Task button to task detail modal\n10) Task Cards: Relationship icons now display on task cards"
             }
           ],
           "folder_id": "F-20260621191317-c326bdc2",
@@ -4718,7 +4796,7 @@
           "reopen_history": [
             {
               "reopened_at": "2026-07-04T16:30:19.440388",
-              "update": "comment it left - Comment: Skip listings with Startejiet sistemu daÅ¾u sekunÅ¾u laika in description\nbut it should be - Comment: Skip listings with \"Startejiet sistemu daÅ¾u sekunÅ¾u laika\" in description",
+              "update": "comment it left - Comment: Skip listings with Startejiet sistemu da\u00c5\u00beu sekun\u00c5\u00beu laika in description\nbut it should be - Comment: Skip listings with \"Startejiet sistemu da\u00c5\u00beu sekun\u00c5\u00beu laika\" in description",
               "previous_completed_at": null,
               "fix": "Updated submitFlag() in ssd.html so the Skip reason wraps the user comment in double quotes."
             }
@@ -4961,7 +5039,7 @@
     "Scraper",
     "UI/UX"
   ],
-  "next_id": 295,
+  "next_id": 296,
   "updated": "2026-06-25T13:36:42",
   "schema": "project-board-bridge.v2",
   "schema_version": 2,

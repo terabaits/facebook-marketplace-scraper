@@ -195,6 +195,189 @@
     background: var(--stat-border, #eee);
 }
 
+/* ============ Modern panel for listing list ============ */
+.modern-panel {
+    background: var(--card-bg, #ffffff);
+    border: 1px solid var(--card-border, rgba(0,0,0,0.08));
+    border-radius: 12px;
+    padding: 14px 16px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 4px 12px rgba(0,0,0,0.04);
+    margin-bottom: 1rem;
+    overflow: hidden;
+}
+[data-theme="dark"] .modern-panel {
+    background: #1e293b;
+    border-color: rgba(255,255,255,0.08);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.3), 0 4px 12px rgba(0,0,0,0.25);
+}
+.modern-panel table {
+    width: 100%;
+    border-collapse: collapse;
+}
+.modern-panel table th,
+.modern-panel table td {
+    padding: 8px 10px;
+    text-align: left;
+    font-size: 0.85rem;
+    border-bottom: 1px solid var(--card-border, rgba(0,0,0,0.06));
+}
+[data-theme="dark"] .modern-panel table th,
+[data-theme="dark"] .modern-panel table td {
+    border-bottom-color: rgba(255,255,255,0.06);
+}
+.modern-panel table thead th {
+    background: rgba(99,102,241,0.06);
+    color: var(--ram-text-dim, #64748b);
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.7rem;
+    letter-spacing: 0.4px;
+}
+[data-theme="dark"] .modern-panel table thead th {
+    background: rgba(255,255,255,0.04);
+}
+.modern-panel table tbody tr {
+    transition: background 0.15s ease;
+}
+.modern-panel table tbody tr:hover {
+    background: rgba(99,102,241,0.04);
+}
+[data-theme="dark"] .modern-panel table tbody tr:hover {
+    background: rgba(255,255,255,0.03);
+}
+
+/* ============ Top deals strip ============ */
+.deals-strip {
+    background: var(--card-bg, #ffffff);
+    border: 1px solid var(--card-border, rgba(0,0,0,0.08));
+    border-radius: 12px;
+    padding: 12px 16px;
+    margin-bottom: 1rem;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+}
+[data-theme="dark"] .deals-strip {
+    background: #1e293b;
+    border-color: rgba(255,255,255,0.08);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+}
+.deals-strip h3 {
+    margin: 0 0 10px 0;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--text-color, #1e293b);
+}
+[data-theme="dark"] .deals-strip h3 { color: #e2e8f0; }
+.deals-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 10px;
+}
+.deal-card {
+    display: grid;
+    grid-template-columns: 64px 1fr auto;
+    gap: 10px;
+    align-items: center;
+    padding: 10px 12px;
+    background: var(--card-bg-soft, #f8fafc);
+    border: 1px solid var(--card-border, rgba(0,0,0,0.06));
+    border-radius: 8px;
+    cursor: pointer;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+[data-theme="dark"] .deal-card {
+    background: #0f172a;
+    border-color: rgba(255,255,255,0.06);
+}
+.deal-card:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+}
+[data-theme="dark"] .deal-card:hover { box-shadow: 0 4px 10px rgba(0,0,0,0.4); }
+.deal-card .deal-img {
+    width: 64px;
+    height: 64px;
+    object-fit: contain;
+    background: white;
+    border-radius: 6px;
+    border: 1px solid var(--card-border, rgba(0,0,0,0.06));
+}
+[data-theme="dark"] .deal-card .deal-img {
+    background: #fff; /* keep images on white so colors are correct */
+    border-color: rgba(255,255,255,0.1);
+}
+.deal-card .deal-info {
+    min-width: 0;
+}
+.deal-card .deal-name {
+    font-weight: 600;
+    font-size: 0.85rem;
+    color: var(--text-color, #1e293b);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+[data-theme="dark"] .deal-card .deal-name { color: #e2e8f0; }
+.deal-card .deal-meta {
+    font-size: 0.72rem;
+    color: var(--text-dim, #64748b);
+    margin-top: 2px;
+}
+[data-theme="dark"] .deal-card .deal-meta { color: #94a3b8; }
+.deal-card .deal-price {
+    text-align: right;
+}
+.deal-card .deal-price-main {
+    font-weight: 700;
+    font-size: 1.05rem;
+    color: var(--text-color, #1e293b);
+}
+[data-theme="dark"] .deal-card .deal-price-main { color: #e2e8f0; }
+.deal-card .deal-avg {
+    font-size: 0.7rem;
+    color: var(--text-dim, #64748b);
+    text-decoration: line-through;
+}
+[data-theme="dark"] .deal-card .deal-avg { color: #94a3b8; }
+.deal-card .deal-save {
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: #dc2626;
+}
+
+/* ============ Modern detail modal (popup) ============ */
+.modern-detail-modal {
+    max-width: 920px;
+    width: calc(100% - 40px);
+    background: var(--card-bg, #ffffff);
+    color: var(--text-color, #1e293b);
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.18);
+}
+[data-theme="dark"] .modern-detail-modal {
+    background: #1e293b;
+    color: #e2e8f0;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+}
+[data-theme="dark"] .modern-detail-modal a { color: #818cf8; }
+[data-theme="dark"] .modern-detail-modal > div,
+[data-theme="dark"] .modern-detail-modal > div > div { color: #e2e8f0; }
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.55);
+    display: none;
+    align-items: flex-start;
+    justify-content: center;
+    z-index: 9999;
+    overflow-y: auto;
+    padding: 40px 16px;
+}
+[data-theme="dark"] .modal-overlay { background: rgba(0,0,0,0.7); }
+.modal-overlay.active {
+    display: flex;
+}
+
 {% endblock %}
 
 {% block content %}
@@ -239,16 +422,6 @@
 
 <!-- Performance Class Statistics -->
 <div class="section">
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-        <h2>📊 Performance Class Distribution <button class="btn btn-small" onclick="toggleSection('performance-stats-section', this)" style="margin-left: 1rem;">▼</button></h2>
-    </div>
-    <div id="performance-stats-section">
-        <div id="performance-stats-container" class="performance-stats">
-            <div class="loading">Loading performance statistics...</div>
-        </div>
-    </div>
-</div>
-
 <div class="section">
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
         <h2>🖥️ Monitor Listings <button class="btn btn-small" onclick="toggleSection('listings-section', this)" style="margin-left: 1rem;">▼</button></h2>
@@ -328,8 +501,12 @@
         </label>
     </div>
 
-    <div id="listings-table">
+    <div id="listings-table" class="modern-panel">
         <div class="loading">Loading listings...</div>
+    </div>
+    <div id="monitor-top-deals-strip" class="deals-strip" style="display:none;">
+        <h3>🔥 Top deals — price ≥ 15% below model average</h3>
+        <div class="deals-grid" id="monitor-top-deals-container"></div>
     </div>
     </div>
 </div>
@@ -370,6 +547,17 @@
 
 <div class="section">
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+        <h2>📊 Panel Distribution <button class="btn btn-small" onclick="toggleSection('panel-distribution-section', this)" style="margin-left: 1rem;">▼</button></h2>
+    </div>
+    <div id="panel-distribution-section">
+        <div class="chart-wrapper" style="background:var(--card-bg,#fff);border:1px solid var(--card-border,rgba(0,0,0,0.08));border-radius:12px;padding:18px;height:320px;position:relative;">
+            <canvas id="panelDistributionChart"></canvas>
+        </div>
+    </div>
+</div>
+
+<div class="section">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
         <h2>📊 Cost Analysis <button class="btn btn-small" onclick="toggleSection('cost-section', this)" style="margin-left: 1rem;">▼</button></h2>
     </div>
     <div id="cost-section">
@@ -394,6 +582,15 @@
 
 {% block scripts %}
 <script>
+// Strip "SS.COM Datori un orgtehnika - Monitori, Cena XX €.," type prefixes
+// from raw ss.com listing titles so the table is more scannable.
+function cleanMonitorTitle(raw) {
+    if (!raw) return '';
+    return String(raw)
+        .replace(/SS\.COM[^,]*,\s*Cena\s*\d+([.,]\d+)?\s*€\.?\s*/i, '')
+        .replace(/SS\.COM[^,]*,\s*/i, '')
+        .replace(/^\s+|\s+$/g, '');
+}
 // Toggle section visibility
 function toggleSection(sectionId, btn) {
     const section = document.getElementById(sectionId);
@@ -459,10 +656,37 @@ function getImageHtml(item) {
         : item.image_url;
 
     if (!imageUrl) {
-        return '<div class="listing-thumb-placeholder">📷</div>';
+        // Custom SVG monitor icon as fallback (stylized desktop on a stand)
+        return `<div class="listing-thumb-placeholder" style="background: linear-gradient(135deg, #e0e7ff 0%, #c7d2fe 100%); display: grid; place-items: center; padding: 6px;">
+            <svg viewBox="0 0 64 64" width="42" height="42" aria-hidden="true">
+                <defs>
+                    <linearGradient id="monFbScreen" x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" style="stop-color:#1e293b"/>
+                        <stop offset="100%" style="stop-color:#0f172a"/>
+                    </linearGradient>
+                </defs>
+                <rect x="22" y="52" width="20" height="3" rx="1" fill="#94a3b8"/>
+                <rect x="29" y="46" width="6" height="6" fill="#94a3b8"/>
+                <rect x="6" y="10" width="52" height="38" rx="3" fill="#cbd5e1" stroke="#64748b" stroke-width="1"/>
+                <rect x="9" y="13" width="46" height="32" rx="1.5" fill="url(#monFbScreen)"/>
+                <rect x="11" y="15" width="20" height="2" rx="1" fill="#334155" opacity="0.6"/>
+            </svg>
+        </div>`;
     }
 
-    return `<img src="${imageUrl}" alt="${item.title}" class="listing-thumb" loading="lazy" onclick="event.stopPropagation(); showImageModal('${imageClickUrl}', '${item.title.replace(/'/g, "\\'")}')">`;
+    // Inline SVG fallback for image-load failures (avoids broken-image icon)
+    const fallbackSvg = encodeURIComponent(
+        `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'>
+            <rect width='64' height='64' fill='#e0e7ff'/>
+            <rect x='6' y='10' width='52' height='38' rx='3' fill='#cbd5e1' stroke='#64748b' stroke-width='1'/>
+            <rect x='9' y='13' width='46' height='32' rx='1.5' fill='#1e293b'/>
+            <rect x='22' y='52' width='20' height='3' rx='1' fill='#94a3b8'/>
+            <rect x='29' y='46' width='6' height='6' fill='#94a3b8'/>
+        </svg>`
+    );
+    const fallbackDataUrl = `data:image/svg+xml;utf8,${fallbackSvg}`;
+
+    return `<img src="${imageUrl}" alt="${item.title}" class="listing-thumb" loading="lazy" onclick="event.stopPropagation(); showImageModal('${imageClickUrl}', '${item.title.replace(/'/g, "\\'")}')" onerror="this.onerror=null;this.src='${fallbackDataUrl}';">`;
 }
 
 // Calculate monitor performance class based on specs
@@ -922,7 +1146,10 @@ async function fetchListings() {
             });
         }
 
+        // Cache for the popup so it can re-use the row without an extra roundtrip
+        allMonitorListings = listings;
         renderListings(listings);
+        renderMonitorTopDeals(listings);
     } catch (error) {
         document.getElementById('listings-table').innerHTML =
             `<div class="error">Error loading listings: ${error.message}</div>`;
@@ -994,44 +1221,44 @@ function renderListings(listings) {
     }
 
     const html = `
-        <table>
+        <table style="text-align: center;">
             <thead>
                 <tr>
-                    <th style="width: 80px;">Image</th>
-                    <th>Listing</th>
-                    <th>Matched Model</th>
-                    <th style="width: 120px;">Specs</th>
-                    <th style="width: 70px;">Panel</th>
-                    <th style="width: 80px;">{{ t('Price') }}</th>
-                    <th style="width: 100px;">Location</th>
-                    <th style="width: 90px;">Date</th>
-                    <th style="width: 80px;">Actions</th>
+                    <th style="width: 80px; text-align: center;">Image</th>
+                    <th style="text-align: left;">Listing</th>
+                    <th style="text-align: center;">Matched Model</th>
+                    <th style="width: 120px; text-align: center;">Specs</th>
+                    <th style="width: 70px; text-align: center;">Panel</th>
+                    <th style="width: 90px; text-align: center;">{{ t('Price') }}</th>
+                    <th style="width: 100px; text-align: center;">Location</th>
+                    <th style="width: 90px; text-align: center;">Date</th>
+                    <th style="width: 80px; text-align: center;">Actions</th>
                 </tr>
             </thead>
             <tbody>
                 ${listings.map(item => `
                     <tr class="clickable" onclick="showSharedListingDetail('${item.listing_id.replace(/'/g, "\\'").replace(/"/g, '&quot;')}', true)" title="Click to view listing details">
-                        <td class="listing-image-cell" style="position: relative;">
+                        <td class="listing-image-cell" style="position: relative; text-align: center;">
                             ${getImageHtml(item)}
                             ${(() => {
                                 const dealBadge = computeMonitorDealBadges(item);
                                 return dealBadge ? `<div style="position: absolute; top: 4px; right: 4px; display: flex; flex-direction: column; gap: 4px; z-index: 10;">${dealBadge}</div>` : '';
                             })()}
                         </td>
-                        <td style="max-width: 300px;">
-                            <div style="font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
-                                ${item.title.replace(/SS\.COM Datori un orgtehnika - Monitori, Cena \d+ €,?\s*/i, '').replace(/SS\.COM Datori un orgtehnika - Monitori,?\s*/i, '')}
+                        <td style="max-width: 300px; text-align: left;">
+                            <div style="font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="${item.title.replace(/"/g, '&quot;')}">
+                                ${cleanMonitorTitle(item.title)}
                             </div>
                             ${item.description ? `<div style="font-size: 0.8rem; color: #666; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 2px;">${item.description}</div>` : ''}
                         </td>
-                        <td>
+                        <td style="text-align: center;">
                             <div style="font-weight: 500;">
                                 ${item.brand ? `${item.brand} ${item.model || ''}` : 'Unknown'}
                             </div>
                             ${item.confidence_score ? `<span class="${getConfidenceClass(item.confidence_score)}" style="font-size: 0.75rem;">${(item.confidence_score * 100).toFixed(0)}% confidence</span>` : ''}
                         </td>
-                        <td>
-                            <div style="display: flex; flex-direction: column; gap: 4px;">
+                        <td style="text-align: center;">
+                            <div style="display: flex; flex-direction: column; gap: 4px; align-items: center;">
                                 ${getPerformanceClassBadge(item)}
                                 ${item.tier ? getTierBadge(item.tier) : ''}
                                 <span style="font-size: 0.8rem;">${item.size ? item.size + '"' : ''} ${item.resolution || ''}</span>
@@ -1041,14 +1268,14 @@ function renderListings(listings) {
                         <td style="text-align: center;">
                             ${item.panel_type || '-'}
                         </td>
-                        <td class="price">€${item.price_eur.toFixed(2)}</td>
-                        <td>${item.seller_location || '-'}</td>
-                        <td>${new Date(item.date_posted).toLocaleDateString()}</td>
-                        <td>
+                        <td class="price" style="text-align: center; font-weight: 700;">€${item.price_eur.toFixed(2)}</td>
+                        <td style="text-align: center;">${item.seller_location || '-'}</td>
+                        <td style="text-align: center;">${new Date(item.date_posted).toLocaleDateString()}</td>
+                        <td style="text-align: center;">
                             ${renderPriceDecreaseBadge(item)}
                             <a href="${item.listing_url}" target="_blank" class="btn btn-small" onclick="event.stopPropagation()">View</a>
                             ${renderHistoryButton(item.listing_id, item.history?.length > 0)}
-                            <button class="btn btn-small" style="background: #e74c3c; color: white; margin-top: 4px;" onclick="event.stopPropagation(); showFlagModalWithCategories('${item.listing_id.replace(/'/g, "\\'").replace(/"/g, '&quot;')}', '${item.title.replace(/'/g, "\\'").replace(/"/g, '&quot;')}')">Flag</button>
+                            <button class="btn btn-small" style="background: #e74c3c; color: white; margin-top: 4px;" onclick="event.stopPropagation(); showFlagModalWithCategories('${item.listing_id.replace(/'/g, "\\'").replace(/"/g, '&quot;')}', '${cleanMonitorTitle(item.title).replace(/'/g, "\\'").replace(/"/g, '&quot;')}')">Flag</button>
                         </td>
                     </tr>
                 `).join('')}
@@ -1146,6 +1373,44 @@ function renderStats(listings) {
             </div>
         `).join('');
     document.getElementById('panel-stats').innerHTML = panelHtml || '<div class="no-data">No data</div>';
+
+    // Panel distribution doughnut chart
+    renderPanelDistributionChart(panelGroups);
+}
+
+// Doughnut chart for panel type distribution
+let panelDistributionChart = null;
+function renderPanelDistributionChart(panelGroups) {
+    const ctx = document.getElementById('panelDistributionChart');
+    if (!ctx) return;
+    if (panelDistributionChart) { panelDistributionChart.destroy(); panelDistributionChart = null; }
+    const entries = Object.entries(panelGroups).sort((a, b) => b[1] - a[1]);
+    if (entries.length === 0) return;
+    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+    const textColor = isDark ? '#e2e8f0' : '#1e293b';
+    // Stable, distinguishable panel colors
+    const PALETTE = ['#6366f1', '#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#06b6d4', '#84cc16'];
+    panelDistributionChart = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            labels: entries.map(([k]) => k),
+            datasets: [{
+                data: entries.map(([, v]) => v),
+                backgroundColor: entries.map((_, i) => PALETTE[i % PALETTE.length]),
+                borderColor: isDark ? '#1e293b' : '#ffffff',
+                borderWidth: 2,
+            }],
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { position: 'right', labels: { color: textColor, font: { size: 12 }, boxWidth: 14, padding: 10 } },
+                tooltip: { callbacks: { label: (item) => `${item.label}: ${item.raw} listings (${(item.raw / entries.reduce((s,e)=>s+e[1],0) * 100).toFixed(1)}%)` } },
+            },
+            cutout: '55%',
+        },
+    });
 }
 
 // Get CSS class for confidence score
@@ -1296,9 +1561,19 @@ function showFlagModalWithCategories(listingId, title) {
 
     const safeId = listingId.replace(/'/g, "\\'").replace(/"/g, '&quot;');
 
+    // Try to pull the detected model from the cached listing row so we can
+    // pre-fill the "Detected model" field in the mismatch UI.
+    const row = (typeof allMonitorListings !== 'undefined'
+        ? allMonitorListings.find(x => x.listing_id === listingId)
+        : null) || {};
+    const detectedModelId = row.monitor_model_id || '';
+    const detectedBrand = row.brand || '';
+    const detectedModel = row.model || '';
+    const detectedLabel = [detectedBrand, detectedModel].filter(Boolean).join(' ').trim() || '—';
+
     const modalHtml = `
-        <div id="flag-modal" class="modal-overlay active" style="z-index: 2000;">
-            <div class="modal" style="max-width: 500px;">
+        <div id="flag-modal" class="modal-overlay active" style="z-index: 10000;">
+            <div class="modal" style="max-width: 540px;">
                 <div class="modal-header">
                     <h3>🚩 Flag Listing</h3>
                     <button class="modal-close" onclick="closeFlagModal()">&times;</button>
@@ -1308,7 +1583,7 @@ function showFlagModalWithCategories(listingId, title) {
 
                     <div class="form-group" style="margin-bottom: 1rem;">
                         <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Flag Category:</label>
-                        <select id="flag-category" style="width: 100%; padding: 0.5rem; border: 1px solid #ddd; border-radius: 6px;">
+                        <select id="flag-category" style="width: 100%; padding: 0.5rem; border: 1px solid #ddd; border-radius: 6px;" onchange="onFlagCategoryChange()">
                             <option value="IGNORE">IGNORE - Hide from listings</option>
                             <option value="SKIP">SKIP - Skip in future scrapes</option>
                             <option value="SCRAPPER">SCRAPPER - Scraper issue</option>
@@ -1317,14 +1592,49 @@ function showFlagModalWithCategories(listingId, title) {
 
                     <div class="form-group" style="margin-bottom: 1rem;">
                         <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Reason:</label>
-                        <textarea id="flag-reason" placeholder="Enter reason (e.g., Scam, Wrong specs, Sold)"
-                            style="width: 100%; padding: 0.75rem; border: 2px solid #e74c3c; border-radius: 8px; font-family: inherit; resize: vertical;"
+                        <select id="flag-reason-select" style="width: 100%; padding: 0.5rem; border: 1px solid #ddd; border-radius: 6px; margin-bottom: 0.5rem;" onchange="onFlagReasonChange()">
+                            <option value="">— select a reason —</option>
+                            <option value="model_mismatch">🪟 Monitor model mismatch (link to correct model)</option>
+                            <option value="wrong_price">💰 Wrong price</option>
+                            <option value="sold">✅ Already sold</option>
+                            <option value="spam">⚠️ Spam / Scam</option>
+                            <option value="duplicate">🔁 Duplicate of another listing</option>
+                            <option value="other">📝 Other (write comment)</option>
+                        </select>
+                    </div>
+
+                    <!-- Monitor model mismatch panel -->
+                    <div id="flag-monitor-mismatch-container" style="display: none; margin-bottom: 1rem; padding: 0.85rem; background: rgba(99, 102, 241, 0.08); border: 1px solid rgba(99, 102, 241, 0.3); border-radius: 8px;">
+                        <div style="display: grid; grid-template-columns: 1fr; gap: 0.6rem; margin-bottom: 0.5rem;">
+                            <div>
+                                <label style="display: block; margin-bottom: 0.3rem; font-weight: 600; font-size: 0.85rem;">Detected model:</label>
+                                <input type="text" id="flag-monitor-detected" value="${detectedLabel}" readonly
+                                    style="width: 100%; padding: 0.5rem; border: 1px solid #ddd; border-radius: 6px; background: rgba(0,0,0,0.04); font-size: 0.9rem;">
+                            </div>
+                            <div>
+                                <label style="display: block; margin-bottom: 0.3rem; font-weight: 600; font-size: 0.85rem;">Correct monitor ID:</label>
+                                <input type="number" id="flag-monitor-correct-id" min="1" placeholder="e.g. 1234" onblur="fetchMonitorById()"
+                                    style="width: 100%; padding: 0.5rem; border: 1px solid #ddd; border-radius: 6px; font-size: 0.9rem;">
+                                <small style="color: #666; font-size: 0.75rem;">Enter ID and press Tab to auto-fill the model</small>
+                            </div>
+                            <div>
+                                <label style="display: block; margin-bottom: 0.3rem; font-weight: 600; font-size: 0.85rem;">Correct model (auto-filled):</label>
+                                <input type="text" id="flag-monitor-correct" readonly
+                                    style="width: 100%; padding: 0.5rem; border: 1px solid #ddd; border-radius: 6px; background: rgba(0,0,0,0.04); font-size: 0.9rem;">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group" id="flag-comment-group" style="margin-bottom: 1rem;">
+                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Comment (optional):</label>
+                        <textarea id="flag-reason" placeholder="Add any extra context (e.g. sold to a friend, duplicate of listing #xyz)"
+                            style="width: 100%; padding: 0.75rem; border: 1px solid #ddd; border-radius: 8px; font-family: inherit; resize: vertical;"
                             rows="3"></textarea>
                     </div>
 
                     <div style="display: flex; gap: 0.5rem; justify-content: flex-end;">
                         <button class="btn btn-small btn-secondary" onclick="closeFlagModal()">{{ t('Cancel') }}</button>
-                        <button class="btn btn-small" style="background: #e74c3c;" onclick="submitFlagFromModal('${safeId}')">Submit Flag</button>
+                        <button id="flag-submit-btn" class="btn btn-small" style="background: #e74c3c;" onclick="submitFlagFromModal('${safeId}')">Submit Flag</button>
                     </div>
                 </div>
             </div>
@@ -1336,6 +1646,45 @@ function showFlagModalWithCategories(listingId, title) {
     document.getElementById('flag-modal').addEventListener('click', function(e) {
         if (e.target === this) closeFlagModal();
     });
+}
+
+// Show/hide the monitor mismatch panel based on the chosen reason
+function onFlagReasonChange() {
+    const reasonSelect = document.getElementById('flag-reason-select');
+    const mismatchContainer = document.getElementById('flag-monitor-mismatch-container');
+    const reason = reasonSelect ? reasonSelect.value : '';
+    if (mismatchContainer) {
+        mismatchContainer.style.display = reason === 'model_mismatch' ? 'block' : 'none';
+    }
+}
+
+// Stub kept for backward compat with any caller
+function onFlagCategoryChange() { /* noop for now */ }
+
+// Fetch monitor details by ID and populate the correct-model field
+async function fetchMonitorById() {
+    const idInput = document.getElementById('flag-monitor-correct-id');
+    const correctInput = document.getElementById('flag-monitor-correct');
+    if (!idInput || !correctInput) return;
+    const id = parseInt(idInput.value, 10);
+    if (!id || id <= 0) {
+        correctInput.value = '';
+        return;
+    }
+    try {
+        const res = await fetch(`/api/monitor-details/${id}`);
+        const data = await res.json();
+        if (data && data.success && data.monitor) {
+            const m = data.monitor;
+            const label = [m.brand, m.model, m.size ? m.size + '"' : null, m.resolution, m.refresh_rate ? m.refresh_rate + 'Hz' : null, m.panel_type]
+                .filter(Boolean).join(' · ');
+            correctInput.value = label || `${m.brand} ${m.model}`;
+        } else {
+            correctInput.value = '— not found —';
+        }
+    } catch (err) {
+        correctInput.value = '— lookup failed —';
+    }
 }
 
 function closeFlagModal() {
@@ -1358,39 +1707,93 @@ function removeListingRow(listingId) {
 
 async function submitFlagFromModal(listingId) {
     const categorySelect = document.getElementById('flag-category');
+    const reasonSelect = document.getElementById('flag-reason-select');
     const reasonInput = document.getElementById('flag-reason');
 
     const category = categorySelect ? categorySelect.value : 'IGNORE';
-    const reason = reasonInput ? reasonInput.value.trim() : '';
+    const reasonChoice = reasonSelect ? reasonSelect.value : '';
+    const extraComment = reasonInput ? reasonInput.value.trim() : '';
 
-    if (!reason) {
-        alert('Please enter a reason for flagging');
+    // Build the reason string. For model mismatch, embed the detected/correct IDs
+    // so the row in flagged_listings is searchable + machine-readable.
+    let reason = '';
+    if (reasonChoice === 'model_mismatch') {
+        const idInput = document.getElementById('flag-monitor-correct-id');
+        const correctInput = document.getElementById('flag-monitor-correct');
+        const detectedInput = document.getElementById('flag-monitor-detected');
+        const correctId = idInput && idInput.value ? parseInt(idInput.value, 10) : null;
+        const detected = detectedInput ? detectedInput.value : '';
+        const correct = correctInput ? correctInput.value : '';
+        if (!correctId || !correct || correct.startsWith('—')) {
+            alert('Please enter a valid correct monitor ID and wait for it to auto-fill.');
+            return;
+        }
+        reason = `Model mismatch — detected "${detected}", should be #${correctId} (${correct})` +
+                 (extraComment ? ` — ${extraComment}` : '');
+    } else if (reasonChoice === 'wrong_price') {
+        reason = 'Wrong price' + (extraComment ? ` — ${extraComment}` : '');
+    } else if (reasonChoice === 'sold') {
+        reason = 'Already sold' + (extraComment ? ` — ${extraComment}` : '');
+    } else if (reasonChoice === 'spam') {
+        reason = 'Spam/Scam' + (extraComment ? ` — ${extraComment}` : '');
+    } else if (reasonChoice === 'duplicate') {
+        reason = 'Duplicate listing' + (extraComment ? ` — ${extraComment}` : '');
+    } else if (reasonChoice === 'other') {
+        if (!extraComment) {
+            alert('Please add a comment explaining the "Other" reason.');
+            return;
+        }
+        reason = extraComment;
+    } else {
+        alert('Please select a reason for flagging.');
         return;
     }
 
+    const payload = {
+        listing_id: listingId,
+        comment: reason,
+        category: 'monitor',
+        flag_category: category,
+        reason: reasonChoice || 'other'
+    };
+
     try {
+        const submitBtn = document.getElementById('flag-submit-btn');
+        if (submitBtn) {
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Submitting…';
+        }
         const response = await fetch('/api/flag-listing', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                listing_id: listingId,
-                comment: reason,
-                category: 'monitor',
-                flag_category: category
-            })
+            body: JSON.stringify(payload)
         });
 
         const data = await response.json();
         if (data.success) {
-            alert('Listing flagged successfully!');
-            closeFlagModal();
-            fetchListings();
+            if (submitBtn) {
+                submitBtn.textContent = '✓ Flagged';
+                submitBtn.style.background = '#10b981';
+            }
+            setTimeout(() => {
+                closeFlagModal();
+                fetchListings();
+            }, 600);
         } else {
             alert('Error: ' + (data.error || 'Failed to flag listing'));
+            if (submitBtn) {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Submit Flag';
+            }
         }
     } catch (error) {
         console.error('Error flagging listing:', error);
         alert('Failed to flag listing. Please try again.');
+        const submitBtn = document.getElementById('flag-submit-btn');
+        if (submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Submit Flag';
+        }
     }
 }
 
@@ -1600,6 +2003,234 @@ document.getElementById('refresh-filter')?.addEventListener('change', fetchListi
 document.getElementById('panel-filter')?.addEventListener('change', fetchListings);
 document.getElementById('location-filter')?.addEventListener('change', fetchListings);
 
+// -------- Listing detail popup --------
+// (Mirrors RAM's `showSharedListingDetail` — combined listing row + price history.)
+let allMonitorListings = [];
+
+function cleanMonitorTitle(raw) {
+    if (!raw) return '';
+    return String(raw)
+        .replace(/SS\.COM[^,]*,\s*Cena\s*\d+([.,]\d+)?\s*€\.?\s*/i, '')
+        .replace(/SS\.COM[^,]*,\s*/i, '')
+        .replace(/^\s+|\s+$/g, '');
+}
+
+function showSharedListingDetail(listingId, hasHistory) {
+    let modal = document.getElementById('shared-listing-modal');
+    if (!modal) {
+        modal = document.createElement('div');
+        modal.id = 'shared-listing-modal';
+        modal.className = 'modal-overlay';
+        modal.innerHTML = `
+            <div class="modal modern-detail-modal" onclick="if(event.target===this) this.classList.remove('active')">
+                <div class="modal-header" style="display:flex;justify-content:space-between;align-items:center;padding:14px 18px;border-bottom:1px solid var(--ram-border,#e5e7eb);">
+                    <h2 id="shared-listing-title" style="margin:0;font-size:1.1rem;">Listing Details</h2>
+                    <button class="modal-close" onclick="document.getElementById('shared-listing-modal').classList.remove('active')" style="background:none;border:none;font-size:22px;cursor:pointer;color:inherit;">×</button>
+                </div>
+                <div id="shared-listing-content" style="padding:18px;max-height:78vh;overflow-y:auto;"></div>
+            </div>
+        `;
+        document.body.appendChild(modal);
+    }
+    const content = document.getElementById('shared-listing-content');
+    const title = document.getElementById('shared-listing-title');
+    title.textContent = 'Loading…';
+    content.innerHTML = '<div class="loading">Loading listing…</div>';
+    modal.classList.add('active');
+
+    // Use the row we already have so we can render immediately, then enrich
+    // with details + price history fetched in parallel.
+    const row = allMonitorListings.find(x => x.listing_id === listingId) || {};
+    const stats = row.price_stats || null;
+    const cleaned = cleanMonitorTitle(row.title || 'Monitor listing');
+    title.textContent = cleaned || 'Monitor listing';
+
+    const imgPath = row.local_image_path ? String(row.local_image_path).replace(/\\/g, '/') : null;
+    const imgUrl = imgPath ? `/images/${imgPath}` : row.image_url;
+    const price = parseFloat(row.price_eur) || 0;
+    const datePosted = row.date_posted ? new Date(row.date_posted).toLocaleDateString() : '—';
+
+    content.innerHTML = `
+        <div class="ram-popup-grid">
+            <div class="ram-popup-left">
+                <div class="ram-popup-img" onclick="${imgUrl ? `window.open('${imgUrl}','_blank')` : ''}" style="background: linear-gradient(135deg, #e0e7ff 0%, #c7d2fe 100%);">
+                    ${imgUrl
+                        ? `<img src="${imgUrl}" alt="${cleaned}" loading="lazy" onerror="this.parentElement.innerHTML='<div style=display:grid;place-items:center;height:100%;><svg viewBox=&quot;0 0 64 64&quot; width=&quot;120&quot; height=&quot;120&quot;><rect x=&quot;22&quot; y=&quot;52&quot; width=&quot;20&quot; height=&quot;3&quot; rx=&quot;1&quot; fill=&quot;#94a3b8&quot;/><rect x=&quot;29&quot; y=&quot;46&quot; width=&quot;6&quot; height=&quot;6&quot; fill=&quot;#94a3b8&quot;/><rect x=&quot;6&quot; y=&quot;10&quot; width=&quot;52&quot; height=&quot;38&quot; rx=&quot;3&quot; fill=&quot;#cbd5e1&quot; stroke=&quot;#64748b&quot; stroke-width=&quot;1&quot;/><rect x=&quot;9&quot; y=&quot;13&quot; width=&quot;46&quot; height=&quot;32&quot; rx=&quot;1.5&quot; fill=&quot;#1e293b&quot;/></svg></div>'">`
+                        : '<div style="display:grid;place-items:center;height:100%;"><svg viewBox="0 0 64 64" width="120" height="120"><rect x="22" y="52" width="20" height="3" rx="1" fill="#94a3b8"/><rect x="29" y="46" width="6" height="6" fill="#94a3b8"/><rect x="6" y="10" width="52" height="38" rx="3" fill="#cbd5e1" stroke="#64748b" stroke-width="1"/><rect x="9" y="13" width="46" height="32" rx="1.5" fill="#1e293b"/></svg></div>'}
+                </div>
+                <div class="ram-popup-price-block">
+                    <div class="ram-popup-price">€${price.toFixed(0)}</div>
+                    <div class="ram-popup-price-sub">${row.seller_location || '—'} · ${datePosted}</div>
+                    ${stats && stats.avg && stats.avg > 0
+                        ? `<div class="ram-popup-vs-avg">${price < stats.avg
+                            ? `<span class="vs-avg below">−€${(stats.avg - price).toFixed(0)} below avg</span>`
+                            : (price > stats.avg
+                                ? `<span class="vs-avg above">+€${(price - stats.avg).toFixed(0)} above avg</span>`
+                                : `<span class="vs-avg">= avg</span>`)}</div>`
+                        : ''}
+                </div>
+            </div>
+            <div class="ram-popup-right">
+                <h3 class="ram-popup-h">📝 Listing</h3>
+                <div class="ram-popup-rows">
+                    <div class="rp-row"><span class="rp-k">Title</span><span class="rp-v">${cleaned || '—'}</span></div>
+                    ${row.title && row.title !== cleaned ? `<div class="rp-row" style="opacity:0.6;font-size:0.75rem;"><span class="rp-k">Raw</span><span class="rp-v">${row.title}</span></div>` : ''}
+                    <div class="rp-row"><span class="rp-k">Brand/Model</span><span class="rp-v">${row.brand || '—'} ${row.model ? '· ' + row.model : ''}</span></div>
+                    <div class="rp-row"><span class="rp-k">Location</span><span class="rp-v">${row.seller_location || '—'}</span></div>
+                    <div class="rp-row"><span class="rp-k">Posted</span><span class="rp-v">${datePosted}</span></div>
+                    <div class="rp-row"><span class="rp-k">Status</span><span class="rp-v">${row.is_active ? '🟢 Active' : '⚪ Inactive'}</span></div>
+                </div>
+                <div class="ram-popup-actions">
+                    ${row.listing_url ? `<a href="${row.listing_url}" target="_blank" rel="noopener" class="ram-popup-btn primary">View on ss.com ↗</a>` : ''}
+                    <button class="ram-popup-btn" onclick="showFlagModalWithCategories('${row.listing_id}','${(cleaned || '').replace(/'/g, "\\'")}')">🚩 Flag</button>
+                </div>
+            </div>
+        </div>
+
+        <h3 class="ram-popup-h" style="margin-top:18px;">🖥️ Monitor Reference</h3>
+        <div class="ram-popup-spec-grid">
+            <div class="rp-spec"><span class="rp-spec-k">Brand</span><span class="rp-spec-v">${row.brand || '—'}</span></div>
+            <div class="rp-spec"><span class="rp-spec-k">Model</span><span class="rp-spec-v">${row.model || '—'}</span></div>
+            <div class="rp-spec"><span class="rp-spec-k">Size</span><span class="rp-spec-v">${row.size ? row.size + '"' : '—'}</span></div>
+            <div class="rp-spec"><span class="rp-spec-k">Resolution</span><span class="rp-spec-v">${row.resolution || '—'}</span></div>
+            <div class="rp-spec"><span class="rp-spec-k">Refresh</span><span class="rp-spec-v">${row.refresh_rate ? row.refresh_rate + ' Hz' : '—'}</span></div>
+            <div class="rp-spec"><span class="rp-spec-k">Panel</span><span class="rp-spec-v">${row.panel_type || '—'}</span></div>
+            ${row.nits ? `<div class="rp-spec"><span class="rp-spec-k">Brightness</span><span class="rp-spec-v">${row.nits} nits ${row.nits >= 400 ? '☀️' : (row.nits >= 300 ? '🔆' : '🌙')}</span></div>` : ''}
+            ${row.tier ? `<div class="rp-spec"><span class="rp-spec-k">Tier</span><span class="rp-spec-v">${row.tier}</span></div>` : ''}
+            ${row.confidence_score ? `<div class="rp-spec"><span class="rp-spec-k">Confidence</span><span class="rp-spec-v">${Math.round(row.confidence_score * 100)}%</span></div>` : ''}
+        </div>
+
+        <h3 class="ram-popup-h" style="margin-top:18px;">📊 Market Price Analysis <span class="ram-popup-h-meta">${stats && stats.listing_count ? `${stats.listing_count} listing${stats.listing_count === 1 ? '' : 's'} for this model` : 'no comparable listings'}</span></h3>
+        ${stats && stats.listing_count > 1 ? `
+            <div class="ram-popup-stats">
+                <div class="ram-stat-mini">
+                    <div class="ram-stat-mini-h">Avg price (same model)</div>
+                    <div class="ram-stat-mini-v">€${Number(stats.avg).toFixed(0)}</div>
+                    <div class="ram-stat-mini-m">€${Number(stats.min).toFixed(0)}–€${Number(stats.max).toFixed(0)}</div>
+                    <div class="ram-stat-mini-d ${price < stats.avg ? 'below' : 'above'}">${price < stats.avg
+                        ? `−€${(stats.avg - price).toFixed(0)} (${((stats.avg - price) / stats.avg * 100).toFixed(0)}% below)`
+                        : (price > stats.avg
+                            ? `+€${(price - stats.avg).toFixed(0)} (${((price - stats.avg) / stats.avg * 100).toFixed(0)}% above)`
+                            : '= avg')}</div>
+                </div>
+                <div class="ram-stat-mini">
+                    <div class="ram-stat-mini-h">Price percentile</div>
+                    <div class="ram-stat-mini-v">${stats.percentile}%</div>
+                    <div class="ram-stat-mini-m">${stats.percentile < 25 ? 'Bottom of the range' : (stats.percentile > 75 ? 'Top of the range' : 'In the middle')}</div>
+                </div>
+            </div>
+        ` : `<div class="ram-popup-empty">
+            <div style="font-size:1.05rem;margin-bottom:0.25rem;">🦄 Only one listing for this model</div>
+            This monitor is rare — there's no comparable price data to compare against yet. Check back after more listings of this model appear.
+        </div>`}
+
+        <h3 class="ram-popup-h" style="margin-top:18px;">📈 Price History <span class="ram-popup-h-meta" id="sld-history-count"></span></h3>
+        <div id="sld-price-history" class="ram-popup-history"></div>
+    `;
+
+    // Fetch price history async and append
+    const histEl = document.getElementById('sld-price-history');
+    const histCount = document.getElementById('sld-history-count');
+    fetch(`/api/price-history/${listingId}`)
+        .then(r => r.ok ? r.json() : [])
+        .then(history => {
+            if (!histEl) return;
+            if (!Array.isArray(history) || history.length === 0) {
+                if (histCount) histCount.textContent = '— first price snapshot only';
+                histEl.outerHTML = `
+                    <div class="ram-popup-empty" style="display:flex;align-items:center;gap:0.75rem;">
+                        <div style="font-size:1.5rem;">📸</div>
+                        <div>
+                            <div style="font-weight:600;color:var(--ram-text,#1e293b);">No price changes recorded yet</div>
+                            <div style="font-size:0.78rem;margin-top:2px;">This listing only has one price snapshot so far. We'll show the price history here once a price change is detected.</div>
+                        </div>
+                    </div>`;
+                return;
+            }
+            if (histCount) histCount.textContent = `${history.length} snapshot${history.length === 1 ? '' : 's'}`;
+            histEl.innerHTML = history.slice(0, 12).map(h => `
+                <div class="ram-popup-history-card">
+                    <div class="rh-price">€${Number(h.price_eur || 0).toFixed(0)}</div>
+                    <div class="rh-date">${new Date(h.recorded_at).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: '2-digit' })}</div>
+                </div>
+            `).join('');
+        })
+        .catch(() => {
+            if (histCount) histCount.textContent = '—';
+            if (histEl) histEl.outerHTML = `<div class="ram-popup-empty">No price history available for this listing.</div>`;
+        });
+}
+
+// Capture fetched listings so the popup can re-use them
+async function captureListings() {
+    try {
+        const r = await fetch('/api/monitors?active=true&limit=500');
+        const j = await r.json();
+        if (Array.isArray(j)) allMonitorListings = j;
+    } catch (e) { /* ignore */ }
+}
+
+// -------- Top deals for monitors (price >= 15% below model average) --------
+// Mirrors the RAM "🔥 Top deals" strip.
+function renderMonitorTopDeals(listings) {
+    const container = document.getElementById('monitor-top-deals-container');
+    const strip = document.getElementById('monitor-top-deals-strip');
+    if (!container || !strip) return;
+
+    if (!Array.isArray(listings) || listings.length === 0) {
+        strip.style.display = 'none';
+        return;
+    }
+
+    const deals = [];
+    listings.forEach(item => {
+        // Look for either price_stats or precomputed below_avg
+        const stats = item.price_stats;
+        if (!stats || !stats.avg || !item.price_eur) return;
+        const avg = parseFloat(stats.avg);
+        const cur = parseFloat(item.price_eur);
+        if (!isFinite(avg) || !isFinite(cur) || avg <= 0) return;
+        const savingsPct = ((avg - cur) / avg) * 100;
+        if (savingsPct >= 15) {
+            deals.push({ ...item, savingsPct, savingsAbs: avg - cur });
+        }
+    });
+
+    if (deals.length === 0) {
+        strip.style.display = 'none';
+        return;
+    }
+
+    deals.sort((a, b) => b.savingsPct - a.savingsPct);
+    const top = deals.slice(0, 10);
+
+    strip.style.display = 'block';
+    container.innerHTML = top.map(item => {
+        const imgPath = item.local_image_path ? String(item.local_image_path).replace(/\\/g, '/') : null;
+        const imgUrl = imgPath ? `/images/${imgPath}` : item.image_url;
+        const title = cleanMonitorTitle(item.title) || `${item.brand || ''} ${item.model || ''}`.trim() || 'Monitor';
+        const modelName = `${item.brand || ''} ${item.model || ''}`.trim() || '—';
+        const stats = item.price_stats;
+        return `
+            <div class="deal-card" onclick="showSharedListingDetail('${item.listing_id}', true)">
+                ${imgUrl
+                    ? `<img class="deal-img" src="${imgUrl}" alt="${title}" loading="lazy" onerror="this.style.display='none'">`
+                    : `<div class="deal-img" style="display:grid;place-items:center;background:linear-gradient(135deg,#e0e7ff 0%,#c7d2fe 100%);"><svg viewBox="0 0 64 64" width="32" height="32"><rect x="22" y="52" width="20" height="3" rx="1" fill="#94a3b8"/><rect x="29" y="46" width="6" height="6" fill="#94a3b8"/><rect x="6" y="10" width="52" height="38" rx="3" fill="#cbd5e1" stroke="#64748b" stroke-width="1"/><rect x="9" y="13" width="46" height="32" rx="1.5" fill="#1e293b"/></svg></div>`}
+                <div class="deal-info">
+                    <div class="deal-name">${title}</div>
+                    <div class="deal-meta">${modelName} · ${item.size ? item.size + '" ' : ''}${item.resolution || ''} ${item.refresh_rate ? '· ' + item.refresh_rate + 'Hz' : ''}</div>
+                    <div class="deal-meta">${item.seller_location || '—'} · ${item.date_posted ? new Date(item.date_posted).toLocaleDateString() : '—'}</div>
+                </div>
+                <div class="deal-price">
+                    <div class="deal-price-main">€${Number(item.price_eur).toFixed(0)}</div>
+                    <div class="deal-avg">avg €${Number(stats.avg).toFixed(0)}</div>
+                    <div class="deal-save">−€${item.savingsAbs.toFixed(0)} (${item.savingsPct.toFixed(0)}%)</div>
+                </div>
+            </div>
+        `;
+    }).join('');
+}
+
 // Initialize
 restoreCollapsedSections();
 fetchFilterOptions();
@@ -1610,5 +2241,7 @@ fetchCategoryCounts();
 fetchPerformanceStats();
 fetchMonitorStats();
 loadCostCharts();
+// Initial capture for the popup
+captureListings();
 </script>
 {% endblock %}

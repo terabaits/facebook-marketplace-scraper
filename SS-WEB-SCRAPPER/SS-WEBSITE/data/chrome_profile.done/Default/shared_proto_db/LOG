@@ -1,2 +1,3 @@
-2026/08/15-00:14:42.030 9a88 Creating DB G:\Github\SS-WEB-SCRAPPER\SS-WEBSITE\data\chrome_profile\Default\shared_proto_db since it was missing.
-2026/08/15-00:14:42.040 9a88 Reusing MANIFEST G:\Github\SS-WEB-SCRAPPER\SS-WEBSITE\data\chrome_profile\Default\shared_proto_db/MANIFEST-000001
+2026/08/20-10:10:05.849 281c Reusing MANIFEST G:\Github\SS-WEB-SCRAPPER\SS-WEBSITE\data\chrome_profile.done\Default\shared_proto_db/MANIFEST-000001
+2026/08/20-10:10:05.849 281c Recovering log #3
+2026/08/20-10:10:05.850 281c Reusing old log G:\Github\SS-WEB-SCRAPPER\SS-WEBSITE\data\chrome_profile.done\Default\shared_proto_db/000003.log 

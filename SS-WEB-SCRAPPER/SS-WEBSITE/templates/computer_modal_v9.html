@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Computer Modal v9 — Two-Panel IDE · SS-Crawler</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: #1e1e1e; color: #d4d4d4;
+  min-height: 100vh; padding: 20px;
+}
+.page-bg { max-width: 1200px; margin: 0 auto; }
+.demo-header { padding: 8px 0 16px; border-bottom: 1px solid #2d2d2d; margin-bottom: 16px; }
+.demo-header h1 { font-size: 18px; font-weight: 800; color: #f5f5f5; }
+.demo-header .v-tag { display: inline-block; font-size: 10px; padding: 2px 8px; background: #007acc; color: white; border-radius: 10px; margin-left: 8px; vertical-align: middle; }
+.demo-header p { font-size: 12px; color: #858585; margin-top: 4px; }
+
+/* === IDE MODAL === */
+.ide-backdrop { position: fixed; inset: 0; background: rgba(0,0,0,.7); z-index: 100; display: none; }
+.ide-backdrop.open { display: block; }
+.ide {
+  position: fixed; inset: 5vh 5vw;
+  background: #1e1e1e; border: 1px solid #2d2d2d; border-radius: 6px;
+  z-index: 101; display: none; flex-direction: column;
+  box-shadow: 0 25px 80px rgba(0,0,0,.5);
+}
+.ide.open { display: flex; animation: ideIn .25s ease-out; }
+@keyframes ideIn { from { opacity: 0; transform: scale(.98); } to { opacity: 1; transform: scale(1); } }
+
+.ide-titlebar {
+  display: flex; align-items: center; gap: 10px;
+  padding: 8px 14px; background: #3c3c3c; border-bottom: 1px solid #2d2d2d;
+  font-size: 11.5px; color: #cccccc; flex-shrink: 0;
+}
+.ide-titlebar .file { color: #ffffff; }
+.ide-titlebar .file::before { content: '🖥️ '; }
+.ide-titlebar .path { color: #858585; }
+.ide-titlebar .right { margin-left: auto; display: flex; gap: 6px; }
+.ide-titlebar .right span { color: #cccccc; }
+.ide-titlebar .right .x { cursor: pointer; padding: 2px 6px; border-radius: 3px; }
+.ide-titlebar .right .x:hover { background: #e81123; color: white; }
+
+.ide-menu {
+  display: flex; gap: 0; padding: 0 14px;
+  background: #252526; border-bottom: 1px solid #2d2d2d;
+  font-size: 12px; flex-shrink: 0;
+}
+.ide-menu .mi {
+  padding: 6px 12px; color: #cccccc; cursor: pointer; border-radius: 0;
+}
+.ide-menu .mi:hover { background: #094771; }
+.ide-menu .mi .kbd { color: #858585; font-size: 10px; margin-left: 6px; }
+
+.ide-body { flex: 1; display: grid; grid-template-columns: 320px 6px 1fr; overflow: hidden; }
+
+.ide-sidebar { background: #252526; overflow-y: auto; display: flex; flex-direction: column; }
+.ide-sidebar-head { padding: 8px 14px; font-size: 10.5px; font-weight: 700; color: #cccccc; text-transform: uppercase; letter-spacing: .08em; border-bottom: 1px solid #2d2d2d; display: flex; align-items: center; gap: 6px; }
+.ide-sidebar-head .badge { background: #007acc; color: white; font-size: 9.5px; padding: 1px 5px; border-radius: 6px; }
+
+.ide-list { flex: 1; overflow-y: auto; padding: 4px 0; }
+.ide-list-item {
+  display: flex; gap: 8px; padding: 8px 14px; cursor: pointer; border-left: 2px solid transparent;
+  font-size: 12.5px; align-items: center;
+}
+.ide-list-item:hover { background: #2a2d2e; }
+.ide-list-item.active { background: #094771; border-left-color: #007acc; }
+.ide-list-item .ico { font-size: 16px; }
+.ide-list-item .ti { flex: 1; color: #ffffff; font-weight: 500; line-height: 1.3; }
+.ide-list-item .sub { font-size: 10.5px; color: #858585; }
+.ide-list-item .pr { color: #4ec9b0; font-weight: 600; font-size: 11.5px; }
+.ide-list-item .warn { color: #f48771; }
+
+.ide-resizer {
+  background: #2d2d2d; cursor: col-resize; position: relative;
+}
+.ide-resizer::before { content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 2px; height: 30px; background: #555; border-radius: 1px; }
+
+.ide-main { background: #1e1e1e; overflow: hidden; display: flex; flex-direction: column; }
+
+.ide-tabs { display: flex; background: #252526; border-bottom: 1px solid #2d2d2d; flex-shrink: 0; }
+.ide-tab { padding: 8px 14px; font-size: 12px; color: #858585; cursor: pointer; border-right: 1px solid #2d2d2d; display: flex; align-items: center; gap: 6px; }
+.ide-tab.active { color: #ffffff; background: #1e1e1e; border-top: 1px solid #007acc; }
+.ide-tab .x { color: #858585; padding: 0 4px; border-radius: 3px; }
+.ide-tab .x:hover { background: #4a4a4a; color: white; }
+.ide-tab .warn { color: #f48771; }
+
+.ide-content { flex: 1; overflow-y: auto; padding: 20px 28px; }
+.ide-content h2 { font-size: 16px; color: #ffffff; font-weight: 600; margin-bottom: 4px; }
+.ide-content .breadcrumb { font-size: 11.5px; color: #858585; margin-bottom: 20px; }
+.ide-content .breadcrumb .sep { color: #555; margin: 0 6px; }
+.ide-content .breadcrumb .live { color: #4ec9b0; margin-left: 8px; }
+
+.ide-image {
+  width: 100%; max-width: 600px; aspect-ratio: 16/8;
+  background: linear-gradient(135deg, #252526, #2d2d2d);
+  border: 1px solid #2d2d2d; border-radius: 4px;
+  display: grid; place-items: center; font-size: 64px; margin-bottom: 20px;
+}
+
+.ide-section-title {
+  font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em;
+  color: #007acc; margin: 18px 0 8px; display: flex; align-items: center; gap: 6px;
+}
+
+.ide-specs { width: 100%; max-width: 600px; font-size: 12.5px; }
+.ide-specs .row { display: grid; grid-template-columns: 140px 1fr; padding: 6px 0; border-bottom: 1px solid #2d2d2d; }
+.ide-specs .row .k { color: #858585; }
+.ide-specs .row .v { color: #d4d4d4; font-weight: 500; }
+.ide-specs .row .v .ok { color: #4ec9b0; }
+.ide-specs .row .v .warn { color: #f48771; }
+
+.ide-flag { background: #252526; border: 1px solid #2d2d2d; border-radius: 4px; padding: 16px; max-width: 600px; margin-top: 18px; }
+.ide-flag h4 { font-size: 12px; color: #f48771; margin-bottom: 10px; font-weight: 600; }
+.ide-flag h4::before { content: '🚩 '; }
+.ide-flag .cats { display: flex; gap: 4px; margin-bottom: 10px; }
+.ide-flag .cats button { flex: 1; padding: 6px 8px; background: #1e1e1e; border: 1px solid #3c3c3c; color: #d4d4d4; border-radius: 3px; font-size: 11px; cursor: pointer; }
+.ide-flag .cats button.active { background: #007acc; color: white; border-color: #007acc; }
+.ide-flag .comps { display: grid; grid-template-columns: repeat(5, 1fr); gap: 4px; margin-bottom: 10px; }
+.ide-flag .comps label { display: flex; flex-direction: column; align-items: center; padding: 8px 4px; background: #1e1e1e; border: 1px solid #3c3c3c; border-radius: 3px; font-size: 10px; cursor: pointer; color: #d4d4d4; gap: 2px; }
+.ide-flag .comps label.checked { background: #094771; border-color: #007acc; }
+.ide-flag .comps label .ic { font-size: 14px; }
+.ide-flag textarea { width: 100%; padding: 8px 10px; background: #1e1e1e; border: 1px solid #3c3c3c; color: #d4d4d4; border-radius: 3px; font-size: 12px; font-family: inherit; outline: none; min-height: 50px; resize: vertical; }
+.ide-flag textarea:focus { border-color: #007acc; }
+
+.ide-statusbar {
+  display: flex; align-items: center; gap: 14px; padding: 4px 14px;
+  background: #007acc; color: white; font-size: 11px; flex-shrink: 0;
+}
+.ide-statusbar .right { margin-left: auto; }
+.ide-statusbar .dot { display: inline-block; width: 6px; height: 6px; background: #4ec9b0; border-radius: 50%; margin-right: 4px; }
+</style>
+</head>
+<body>
+<div class="page-bg">
+  <div class="demo-header">
+    <h1>Computer Listings <span class="v-tag">v9 — IDE Two-Panel</span></h1>
+    <p>VS Code style: list sidebar + detail editor · Resizable divider · Dark theme</p>
+  </div>
+  <p style="font-size: 12px; color: #858585;">Click "Open IDE" below to launch the modal:</p>
+  <button style="margin-top: 8px; padding: 10px 16px; background: #007acc; color: white; border: none; border-radius: 3px; font-size: 12px; font-weight: 600; cursor: pointer;" onclick="openIde()">⤢ Open in IDE</button>
+</div>
+
+<div class="ide-backdrop" id="ide-bd" onclick="closeIde()"></div>
+<div class="ide" id="ide">
+  <div class="ide-titlebar">
+    <span class="file">Gaming PC — RTX 4070 / i7-13700K / 32GB DDR5</span>
+    <span class="path">— /listings/cmp_a7f3e2c1 —</span>
+    <div class="right">
+      <span>UTF-8</span><span>JSON</span><span class="x" onclick="closeIde()">✕</span>
+    </div>
+  </div>
+  <div class="ide-menu">
+    <div class="mi">File <span class="kbd">⌘F</span></div>
+    <div class="mi">Edit <span class="kbd">⌘E</span></div>
+    <div class="mi">View <span class="kbd">⌘V</span></div>
+    <div class="mi">Flag <span class="kbd">⌘⇧F</span></div>
+    <div class="mi">Tools <span class="kbd">⌘T</span></div>
+  </div>
+  <div class="ide-body">
+    <div class="ide-sidebar">
+      <div class="ide-sidebar-head">📁 Listings <span class="badge">12</span></div>
+      <div class="ide-list">
+        <div class="ide-list-item active" onclick="pickIde(this, 0)">
+          <span class="ico">🖥️</span>
+          <div style="flex:1; min-width:0;">
+            <div class="ti">Gaming PC — RTX 4070</div>
+            <div class="sub">Rīga · Custom · 2d</div>
+          </div>
+          <div class="pr">€1,850</div>
+        </div>
+        <div class="ide-list-item" onclick="pickIde(this, 1)">
+          <span class="ico">💻</span>
+          <div style="flex:1; min-width:0;">
+            <div class="ti">ThinkPad T14 Gen 3</div>
+            <div class="sub">Liepāja · Prebuilt · 1w</div>
+          </div>
+          <div class="pr">€620</div>
+        </div>
+        <div class="ide-list-item" onclick="pickIde(this, 2)">
+          <span class="ico">🎮</span>
+          <div style="flex:1; min-width:0;">
+            <div class="ti">RTX 3060 Gaming Bundle</div>
+            <div class="sub">Jelgava · Custom · 3d</div>
+          </div>
+          <div class="pr">€780</div>
+        </div>
+        <div class="ide-list-item" onclick="pickIde(this, 3)">
+          <span class="ico">🖥️</span>
+          <div style="flex:1; min-width:0;">
+            <div class="ti">Custom i9-14900K Build</div>
+            <div class="sub warn">⚠ 2 issues</div>
+          </div>
+          <div class="pr warn">€2,400</div>
+        </div>
+        <div class="ide-list-item" onclick="pickIde(this, 4)">
+          <span class="ico">💼</span>
+          <div style="flex:1; min-width:0;">
+            <div class="ti">HP EliteDesk 800 G6</div>
+            <div class="sub">Rīga · Prebuilt · 5d</div>
+          </div>
+          <div class="pr">€450</div>
+        </div>
+      </div>
+    </div>
+    <div class="ide-resizer" id="ide-resizer"></div>
+    <div class="ide-main">
+      <div class="ide-tabs">
+        <div class="ide-tab active">🖥️ listing.json <span class="x">●</span></div>
+        <div class="ide-tab">🧩 components <span class="warn">⚠</span></div>
+        <div class="ide-tab">🚩 flag.form <span class="x">+</span></div>
+      </div>
+      <div class="ide-content">
+        <h2 id="ide-title">Gaming PC — RTX 4070 / i7-13700K / 32GB DDR5</h2>
+        <div class="breadcrumb">
+          listings<span class="sep">/</span>computers<span class="sep">/</span>cmp_a7f3e2c1<span class="live">● live</span>
+        </div>
+        <div class="ide-image">🖥️</div>
+
+        <div class="ide-section-title">// Hardware</div>
+        <div class="ide-specs">
+          <div class="row"><span class="k">motherboard</span><span class="v">"ASUS ROG Strix B760-F"</span></div>
+          <div class="row"><span class="k">cpu</span><span class="v">"Intel Core i7-13700K" <span class="ok">✓</span></span></div>
+          <div class="row"><span class="k">gpu</span><span class="v">"NVIDIA GeForce RTX 4070" <span class="ok">✓</span></span></div>
+          <div class="row"><span class="k">ram</span><span class="v">"32 GB DDR5-5600 (2×16)" <span class="ok">✓</span></span></div>
+          <div class="row"><span class="k">storage</span><span class="v">"1 TB NVMe SSD" <span class="ok">✓</span></span></div>
+          <div class="row"><span class="k">psu</span><span class="v"><span class="warn">null</span> — not detected</span></div>
+          <div class="row"><span class="k">cooling</span><span class="v">"AIO 240mm"</span></div>
+        </div>
+
+        <div class="ide-section-title">// Seller</div>
+        <div class="ide-specs">
+          <div class="row"><span class="k">username</span><span class="v">"rig_builder_riga"</span></div>
+          <div class="row"><span class="k">rating</span><span class="v">4.8 ★ (47 reviews)</span></div>
+          <div class="row"><span class="k">location</span><span class="v">"Rīga, LV"</span></div>
+        </div>
+
+        <div class="ide-flag">
+          <h4>Flag Listing</h4>
+          <div class="cats">
+            <button class="active" onclick="pickIdeCat(this)">🔧 Scraper</button>
+            <button onclick="pickIdeCat(this)">👤 Seller</button>
+            <button onclick="pickIdeCat(this)">📌 Other</button>
+          </div>
+          <div class="comps">
+            <label onclick="pickIdeComp(this)"><input type="checkbox" hidden><span class="ic">🖥️</span>MB</label>
+            <label onclick="pickIdeComp(this)"><input type="checkbox" hidden><span class="ic">⚙️</span>CPU</label>
+            <label onclick="pickIdeComp(this)"><input type="checkbox" hidden><span class="ic">🎮</span>GPU</label>
+            <label onclick="pickIdeComp(this)"><input type="checkbox" hidden><span class="ic">💾</span>RAM</label>
+            <label onclick="pickIdeComp(this)"><input type="checkbox" hidden><span class="ic">💿</span>SSD</label>
+          </div>
+          <textarea placeholder="// describe the issue (optional)"></textarea>
+        </div>
+      </div>
+      <div class="ide-statusbar">
+        <span><span class="dot"></span>connected</span>
+        <span>Ln 12, Col 4</span>
+        <span>Spaces: 2</span>
+        <span class="right">UTF-8 · LF · JSON · main</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const data = [
+  { title: 'Gaming PC — RTX 4070 / i7-13700K / 32GB DDR5' },
+  { title: 'Lenovo ThinkPad T14 Gen 3 — i5 / 16GB / 512GB SSD' },
+  { title: 'RTX 3060 Gaming PC Bundle — Ryzen 5 5600X / 16GB' },
+  { title: 'Custom i9-14900K Build — RTX 4080' },
+  { title: 'HP EliteDesk 800 G6 Mini' }
+];
+function openIde() {
+  document.getElementById('ide-bd').classList.add('open');
+  document.getElementById('ide').classList.add('open');
+}
+function closeIde() {
+  document.getElementById('ide-bd').classList.remove('open');
+  document.getElementById('ide').classList.remove('open');
+}
+function pickIde(el, idx) {
+  document.querySelectorAll('.ide-list-item').forEach(i => i.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('ide-title').textContent = data[idx].title;
+}
+function pickIdeCat(btn) {
+  document.querySelectorAll('.ide-flag .cats button').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+function pickIdeComp(label) {
+  const cb = label.querySelector('input');
+  cb.checked = !cb.checked;
+  label.classList.toggle('checked', cb.checked);
+}
+
+// resizer
+const resizer = document.getElementById('ide-resizer');
+let resizing = false;
+resizer.addEventListener('mousedown', () => { resizing = true; document.body.style.cursor = 'col-resize'; });
+document.addEventListener('mousemove', e => {
+  if (!resizing) return;
+  const ide = document.getElementById('ide');
+  const rect = ide.getBoundingClientRect();
+  const x = e.clientX - rect.left;
+  if (x > 200 && x < rect.width - 300) {
+    document.querySelector('.ide-body').style.gridTemplateColumns = x + 'px 6px 1fr';
+  }
+});
+document.addEventListener('mouseup', () => { resizing = false; document.body.style.cursor = ''; });
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeIde(); });
+</script>
+</body>
+</html>

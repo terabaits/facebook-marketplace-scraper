@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Console v3 — Rarity Cards · SS-Crawler</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: radial-gradient(ellipse at top, #1a1a2e 0%, #0a0a0f 60%);
+  color: #e4e4e7; min-height: 100vh; padding: 24px 20px;
+}
+.wrap { max-width: 1400px; margin: 0 auto; }
+.head { display: flex; align-items: baseline; gap: 14px; margin-bottom: 18px; flex-wrap: wrap; }
+h1 { font-size: 28px; font-weight: 800; }
+.head p { color: #a1a1aa; font-size: 13px; }
+.v-tag { background: linear-gradient(135deg, #f59e0b, #ef4444); color: white; font-size: 11px; font-weight: 800; padding: 3px 9px; border-radius: 5px; }
+
+.tabs { display: flex; gap: 6px; margin-bottom: 18px; flex-wrap: wrap; }
+.tab { padding: 8px 14px; background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.1); border-radius: 20px; font-size: 12px; font-weight: 600; cursor: pointer; }
+.tab.active { background: linear-gradient(135deg, #f59e0b, #ef4444); color: white; border-color: transparent; }
+.tab .c { font-size: 10px; opacity: .7; margin-left: 4px; }
+
+.grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 18px; perspective: 1200px;
+}
+
+/* CARD */
+.rcard {
+  position: relative; height: 360px; cursor: pointer; transition: transform .3s;
+  transform-style: preserve-3d;
+}
+.rcard:hover { transform: translateY(-6px); }
+.rcard.flipped { transform: rotateY(180deg); }
+
+.rface {
+  position: absolute; inset: 0; backface-visibility: hidden;
+  border-radius: 16px; padding: 14px; display: flex; flex-direction: column;
+  background: linear-gradient(135deg, #18181b, #27272a);
+  border: 1px solid #3f3f46; box-shadow: 0 8px 24px rgba(0,0,0,.4);
+}
+.rback {
+  position: absolute; inset: 0; backface-visibility: hidden; transform: rotateY(180deg);
+  border-radius: 16px; padding: 14px; display: flex; flex-direction: column;
+  background: linear-gradient(135deg, #0c0a09, #1c1917);
+  border: 1px solid #44403c; box-shadow: 0 8px 24px rgba(0,0,0,.4);
+}
+
+.rarity {
+  display: inline-block; align-self: flex-start;
+  font-size: 9px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase;
+  padding: 3px 8px; border-radius: 4px; margin-bottom: 6px;
+}
+.r-common { background: #52525b; color: white; }
+.r-uncommon { background: #16a34a; color: white; }
+.r-rare { background: #2563eb; color: white; }
+.r-epic { background: #7c3aed; color: white; }
+.r-legendary { background: linear-gradient(135deg, #f59e0b, #ef4444, #ec4899); color: white; }
+
+.rface .art {
+  flex: 1; background: linear-gradient(135deg, #27272a, #3f3f46);
+  border-radius: 10px; display: grid; place-items: center; font-size: 80px;
+  margin-bottom: 10px; position: relative; overflow: hidden;
+}
+.rface .art::after { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, transparent 40%, rgba(255,255,255,.1) 50%, transparent 60%); }
+.legendary .rface .art::before {
+  content: ''; position: absolute; inset: -50%;
+  background: conic-gradient(from 0deg, transparent, #fbbf24 30%, transparent 60%);
+  animation: holo 3s linear infinite; opacity: .4;
+  z-index: 0;
+}
+@keyframes holo { to { transform: rotate(360deg); } }
+
+.rface .name { font-size: 15px; font-weight: 800; line-height: 1.2; }
+.rface .brand { font-size: 10.5px; color: #a1a1aa; margin-top: 2px; }
+.rface .stats { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 4px; margin-top: 8px; padding-top: 8px; border-top: 1px solid #3f3f46; }
+.rface .stat { text-align: center; }
+.rface .stat .v { font-size: 14px; font-weight: 800; color: #f59e0b; }
+.rface .stat .l { font-size: 8.5px; color: #a1a1aa; text-transform: uppercase; letter-spacing: .04em; }
+.rface .price { font-size: 18px; font-weight: 800; color: #4ade80; margin-top: 8px; text-align: center; }
+.rface .flip { position: absolute; top: 10px; right: 10px; background: rgba(0,0,0,.5); border: 1px solid #52525b; color: #d4d4d8; padding: 4px 8px; border-radius: 4px; font-size: 10px; cursor: pointer; }
+
+/* BACK */
+.rback h4 { font-size: 11px; text-transform: uppercase; letter-spacing: .08em; color: #a1a1aa; margin: 8px 0 4px; }
+.rback h4:first-child { margin-top: 0; }
+.rback .row { display: flex; justify-content: space-between; font-size: 12px; padding: 4px 0; border-bottom: 1px solid #292524; }
+.rback .row:last-child { border-bottom: none; }
+.rback .row .l { color: #a1a1aa; }
+.rback .row .v { font-weight: 700; }
+.rback .row .v.good { color: #4ade80; }
+.rback .row .v.warn { color: #facc15; }
+.rback .row .v.bad { color: #f87171; }
+.rback .trend { height: 40px; background: #0c0a09; border-radius: 6px; padding: 6px; margin: 6px 0; }
+.rback .spark { display: flex; align-items: flex-end; gap: 1px; height: 100%; }
+.rback .spark .b { flex: 1; background: linear-gradient(180deg, #f59e0b, #ef4444); border-radius: 1px; min-height: 2px; }
+.rback .actions { display: flex; gap: 6px; margin-top: auto; padding-top: 8px; }
+.rback .act { flex: 1; padding: 8px; border-radius: 6px; font-size: 11px; font-weight: 700; text-align: center; cursor: pointer; border: none; }
+.rback .act.view { background: #f59e0b; color: #1c1917; }
+.rback .act.flag { background: transparent; color: #f87171; border: 1px solid #7f1d1d; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="head">
+    <h1>🎮 Consoles <span class="v-tag">v3 — Rarity Cards</span></h1>
+    <p>Collectible card view · Rarity based on price percentile · Click to flip</p>
+  </div>
+
+  <div class="tabs">
+    <div class="tab active" onclick="pickTab(this, 'all')">All <span class="c">12</span></div>
+    <div class="tab" onclick="pickTab(this, 'legendary')">Legendary <span class="c">2</span></div>
+    <div class="tab" onclick="pickTab(this, 'epic')">Epic <span class="c">3</span></div>
+    <div class="tab" onclick="pickTab(this, 'rare')">Rare <span class="c">3</span></div>
+    <div class="tab" onclick="pickTab(this, 'uncommon')">Uncommon <span class="c">2</span></div>
+    <div class="tab" onclick="pickTab(this, 'common')">Common <span class="c">2</span></div>
+  </div>
+
+  <div class="grid" id="grid"></div>
+</div>
+
+<script>
+const CARDS = [
+  { id: 1, name: 'PS5 Disc Edition', brand: 'PlayStation', ico: '🎮', price: 445, avg: 487, save: 8, percentile: 91, rarity: 'legendary', cond: 'Like new', meta: 'Rīga · 2d', conf: 0.95, deal: 8, vol: 69 },
+  { id: 2, name: 'Xbox Series X 1TB', brand: 'Xbox', ico: '🟢', price: 520, avg: 487, save: 0, percentile: 58, rarity: 'epic', cond: 'New', meta: 'Jelgava · 4h', conf: 0.90, deal: 0, vol: 32 },
+  { id: 3, name: 'Switch OLED White', brand: 'Nintendo', ico: '🔴', price: 290, avg: 305, save: 5, percentile: 76, rarity: 'rare', cond: 'Like new', meta: 'Rīga · 1d', conf: 0.95, deal: 5, vol: 39 },
+  { id: 4, name: 'PS4 Pro Star Wars Ed.', brand: 'PlayStation', ico: '⭐', price: 229, avg: 180, save: 0, percentile: 32, rarity: 'legendary', cond: 'Good', meta: 'Jelgava · 3d', conf: 0.90, deal: 0, vol: 18, special: true },
+  { id: 5, name: 'Switch Lite Yellow', brand: 'Nintendo', ico: '🟡', price: 120, avg: 165, save: 27, percentile: 92, rarity: 'epic', cond: 'Good', meta: 'Rīga · 5d', conf: 0.85, deal: 27, vol: 24 },
+  { id: 6, name: 'PS5 Digital Edition', brand: 'PlayStation', ico: '🎮', price: 380, avg: 400, save: 5, percentile: 70, rarity: 'rare', cond: 'Like new', meta: 'Valmiera · 1d', conf: 0.90, deal: 5, vol: 41 },
+  { id: 7, name: 'Xbox Series S 512GB', brand: 'Xbox', ico: '🟢', price: 320, avg: 205, save: 0, percentile: 0, rarity: 'uncommon', cond: 'New', meta: 'Daugavpils · 2d', conf: 0.90, deal: 0, vol: 30 },
+  { id: 8, name: 'PS4 Slim 500GB', brand: 'PlayStation', ico: '🕹️', price: 75, avg: 130, save: 42, percentile: 96, rarity: 'epic', cond: 'Used', meta: 'Jelgava · 1w', conf: 0.90, deal: 42, vol: 46 },
+  { id: 9, name: 'PS3 Super Slim', brand: 'PlayStation', ico: '📦', price: 45, avg: 75, save: 40, percentile: 88, rarity: 'rare', cond: 'Used', meta: 'Valmiera · 1w', conf: 0.85, deal: 40, vol: 22 },
+  { id: 10, name: 'Game Boy Advance SP', brand: 'Nintendo', ico: '🎯', price: 65, avg: 80, save: 19, percentile: 78, rarity: 'uncommon', cond: 'Used', meta: 'Rīga · 2w', conf: 0.80, deal: 19, vol: 15 },
+  { id: 11, name: 'Xbox One X 1TB', brand: 'Xbox', ico: '🟢', price: 180, avg: 220, save: 18, percentile: 65, rarity: 'common', cond: 'Good', meta: 'Rīga · 4d', conf: 0.85, deal: 18, vol: 28 },
+  { id: 12, name: 'PSP Slim', brand: 'PlayStation', ico: '📱', price: 50, avg: 70, save: 29, percentile: 70, rarity: 'common', cond: 'Used', meta: 'Liepāja · 2w', conf: 0.80, deal: 29, vol: 11 },
+];
+
+const RARITY_LABEL = { legendary: '✨ Legendary', epic: '💎 Epic', rare: '⚜ Rare', uncommon: '✦ Uncommon', common: '○ Common' };
+
+function render(filter = 'all') {
+  const list = filter === 'all' ? CARDS : CARDS.filter(c => c.rarity === filter);
+  document.getElementById('grid').innerHTML = list.map(c => `
+    <div class="rcard ${c.rarity === 'legendary' ? 'legendary' : ''}" onclick="this.classList.toggle('flipped')">
+      <div class="rface">
+        <div class="rarity r-${c.rarity}">${RARITY_LABEL[c.rarity]}</div>
+        <button class="flip">↺ flip</button>
+        <div class="art">${c.ico}</div>
+        <div class="name">${c.name}</div>
+        <div class="brand">${c.brand} · ${c.meta}</div>
+        <div class="stats">
+          <div class="stat"><div class="v">${c.deal}%</div><div class="l">Save</div></div>
+          <div class="stat"><div class="v">${c.conf}</div><div class="l">Conf</div></div>
+          <div class="stat"><div class="v">${c.vol}</div><div class="l">Vol</div></div>
+        </div>
+        <div class="price">€${c.price}</div>
+      </div>
+      <div class="rback">
+        <h4>Card Stats</h4>
+        <div class="row"><span class="l">Asking</span><span class="v">€${c.price}</span></div>
+        <div class="row"><span class="l">Market avg</span><span class="v">€${c.avg}</span></div>
+        <div class="row"><span class="l">Below avg</span><span class="v ${c.price < c.avg ? 'good' : 'bad'}">${c.price < c.avg ? 'Yes' : 'No'} (${Math.abs(c.avg - c.price)}€)</span></div>
+        <div class="row"><span class="l">Percentile</span><span class="v ${c.percentile > 80 ? 'good' : c.percentile < 30 ? 'bad' : 'warn'}">p${c.percentile}</span></div>
+        <div class="row"><span class="l">Condition</span><span class="v">${c.cond}</span></div>
+        <h4>30-day trend</h4>
+        <div class="trend">
+          <div class="spark">
+            ${Array.from({length: 12}, (_, i) => `<div class="b" style="height:${20 + Math.random() * 80}%"></div>`).join('')}
+          </div>
+        </div>
+        <div class="actions">
+          <button class="act view" onclick="event.stopPropagation();alert('View details')">View</button>
+          <button class="act flag" onclick="event.stopPropagation();alert('Flag listing')">🚩 Flag</button>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function pickTab(el, filter) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  render(filter);
+}
+
+render();
+</script>
+</body>
+</html>

@@ -1,0 +1,320 @@
+<!doctype html>
+<html lang="lv">
+<head>
+<meta charset="utf-8">
+<title>RAM popup mockup</title>
+<style>
+  :root {
+    --ram-primary: #6366f1;
+    --ram-primary-soft: #818cf8;
+    --ram-success: #10b981;
+    --ram-warning: #f59e0b;
+    --ram-error: #ef4444;
+    --ram-text: #1e293b;
+    --ram-text-dim: #64748b;
+    --ram-border: rgba(0,0,0,0.08);
+    --ram-bg: #ffffff;
+    --ram-bg-soft: #f8fafc;
+    --ram-shadow: 0 1px 2px rgba(0,0,0,0.04), 0 1px 3px rgba(0,0,0,0.06);
+    --ram-shadow-lg: 0 4px 6px -1px rgba(0,0,0,0.08), 0 2px 4px -2px rgba(0,0,0,0.05);
+    --ram-radius: 10px;
+    --ram-radius-sm: 6px;
+  }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    background: #f1f5f9;
+    margin: 0; padding: 40px;
+    color: var(--ram-text);
+  }
+  h1 { font-size: 14px; color: var(--ram-text-dim); text-transform: uppercase; letter-spacing: 1px; margin: 0 0 24px; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; max-width: 1100px; }
+  .label { font-size: 11px; color: var(--ram-text-dim); text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 8px; font-weight: 600; }
+  .stage {
+    background: white;
+    border-radius: 12px;
+    padding: 60px 30px 30px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+    min-height: 600px;
+    position: relative;
+  }
+  .stage-row {
+    background: #f1f5f9;
+    border-radius: 8px;
+    padding: 8px 12px;
+    display: flex; align-items: center; gap: 10px;
+    margin-bottom: 10px;
+  }
+  .stage-row .name { flex: 1; font-size: 13px; }
+  .stage-row .info-btn {
+    background: var(--ram-primary); color: white; border: none;
+    width: 28px; height: 28px; border-radius: 6px; cursor: pointer; font-size: 13px;
+  }
+  /* Popup styles — copied from ram.html */
+  @keyframes ram-popup-in {
+    0%   { opacity: 0; transform: translate(8px, 0) scale(0.96); }
+    100% { opacity: 1; transform: translate(0, 0)   scale(1); }
+  }
+  #popup { animation: ram-popup-in 360ms cubic-bezier(0.2, 0.8, 0.2, 1); }
+  #popup {
+    background: var(--ram-bg);
+    border: 1px solid var(--ram-border);
+    border-radius: var(--ram-radius);
+    width: 420px;
+    overflow: hidden;
+    box-shadow: 0 12px 36px rgba(0,0,0,0.18);
+    font-size: 13px;
+    position: relative;
+  }
+  #popup.ddr-d4 { border-left: 3px solid #3b82f6; }
+  .mhp-header {
+    display: flex; align-items: center; gap: 11px;
+    padding: 12px 14px;
+    background: var(--ram-bg-soft);
+    border-bottom: 1px solid var(--ram-border);
+  }
+  .mhp-header .mhp-img {
+    width: 44px; height: 44px; border-radius: 6px; object-fit: cover;
+    border: 1px solid var(--ram-border); flex-shrink: 0;
+  }
+  .mhp-header .mhp-titles { flex: 1; min-width: 0; }
+  .mhp-header .mhp-title { font-weight: 700; font-size: 14px; line-height: 1.2; }
+  .mhp-header .mhp-sub { font-size: 11px; color: var(--ram-text-dim); margin-top: 2px; display: flex; align-items: center; gap: 6px; }
+  .mhp-header .ddr-chip { font-size: 10px; font-weight: 700; padding: 1px 6px; border-radius: 3px; color: white; text-transform: uppercase; letter-spacing: 0.3px; }
+  .mhp-header .ddr-chip.d4 { background: #3b82f6; }
+  .mhp-header .mhp-close { background: transparent; border: 1px solid var(--ram-border); border-radius: 6px; color: var(--ram-text-dim); width: 26px; height: 26px; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; line-height: 1; font-size: 15px; padding: 0; }
+  .mhp-badges { display: flex; flex-wrap: wrap; gap: 4px; padding: 8px 14px 0; }
+  .mhp-badge { display: inline-flex; align-items: center; gap: 3px; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 4px; text-transform: uppercase; letter-spacing: 0.3px; }
+  .mhp-badge.steal { background: linear-gradient(135deg, #ef4444, #f97316); color: white; box-shadow: 0 0 8px rgba(239,68,68,0.4); animation: pulse 1.6s ease-in-out infinite; }
+  @keyframes pulse {
+    0%, 100% { box-shadow: 0 0 8px rgba(239,68,68,0.4); }
+    50%      { box-shadow: 0 0 14px rgba(239,68,68,0.7); }
+  }
+  .mhp-badge.unicorn { background: linear-gradient(135deg, #a855f7, #ec4899); color: white; }
+  .mhp-badge.deal { background: var(--ram-warning); color: white; }
+  .mhp-badge.new { background: var(--ram-success); color: white; }
+  .mhp-badge.seen { background: var(--ram-bg-soft); color: var(--ram-text-dim); border: 1px solid var(--ram-border); }
+  .mhp-kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; padding: 9px 14px 6px; }
+  .mhp-kpi { background: var(--ram-bg-soft); border: 1px solid var(--ram-border); border-radius: 6px; padding: 7px 8px; display: flex; flex-direction: column; gap: 1px; }
+  .mhp-kpi .kpi-label { font-size: 9.5px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.3px; color: var(--ram-text-dim); }
+  .mhp-kpi .kpi-value { font-size: 16px; font-weight: 800; line-height: 1.1; font-variant-numeric: tabular-nums; }
+  .mhp-kpi .kpi-sub { font-size: 10px; color: var(--ram-text-dim); line-height: 1.2; }
+  .mhp-kpi.deal-glow { border-color: var(--ram-success); background: rgba(16,185,129,0.08); }
+  .mhp-kpi.deal-glow .kpi-value { color: var(--ram-success); }
+  .mhp-kpi.overpriced { border-color: var(--ram-error); background: rgba(239,68,68,0.06); }
+  .mhp-kpi.overpriced .kpi-value { color: var(--ram-error); }
+  .mhp-kpi .arrow-down { color: var(--ram-success); font-weight: 700; }
+  .mhp-kpi .arrow-up { color: var(--ram-error); font-weight: 700; }
+  .mhp-section-head { display: flex; align-items: center; justify-content: space-between; padding: 10px 14px 4px; }
+  .mhp-section-head .mhp-section-title { font-size: 10.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--ram-text-dim); display: flex; align-items: center; gap: 5px; }
+  .mhp-section-head .mhp-section-title::before { content: ''; display: inline-block; width: 3px; height: 11px; background: var(--ram-primary); border-radius: 2px; }
+  .mhp-spark-wrap { padding: 0 14px 7px; }
+  .mhp-spark-wrap svg { width: 100%; height: 68px; display: block; }
+  .mhp-spark-line { fill: none; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+  .mhp-spark-area { opacity: 0.18; }
+  .mhp-spark-dot { transition: r 0.12s; }
+  .mhp-spark-axis { font-size: 9px; fill: var(--ram-text-dim); font-family: inherit; }
+  .mhp-list { padding: 0 14px 10px; }
+  .mhp-list-row { display: flex; align-items: center; gap: 8px; padding: 7px 8px; border-radius: 6px; border: 1px solid transparent; transition: background 0.1s; }
+  .mhp-list-row:hover { background: var(--ram-bg-soft); border-color: var(--ram-border); }
+  .mhp-list-row.highlighted { background: rgba(99,102,241,0.1); border-color: var(--ram-primary); }
+  .mhp-list-row .mhp-list-price { font-weight: 700; font-size: 13px; min-width: 60px; font-variant-numeric: tabular-nums; }
+  .mhp-list-row .mhp-list-price.current { color: var(--ram-primary); }
+  .mhp-list-row .mhp-list-price.better { color: var(--ram-success); }
+  .mhp-list-row .mhp-list-meta { flex: 1; font-size: 11px; color: var(--ram-text-dim); display: flex; flex-direction: column; gap: 1px; }
+  .mhp-list-row .mhp-list-meta .date { font-weight: 600; color: var(--ram-text); }
+  .mhp-list-row .mhp-list-link { color: var(--ram-text-dim); text-decoration: none; width: 22px; height: 22px; border-radius: 5px; display: inline-flex; align-items: center; justify-content: center; border: 1px solid transparent; transition: all 0.12s; font-size: 12px; }
+  .mhp-list-row .mhp-list-link:hover { color: var(--ram-primary); border-color: var(--ram-primary); background: rgba(99,102,241,0.08); }
+  .mhp-footer { padding: 10px 14px; background: var(--ram-bg-soft); border-top: 1px solid var(--ram-border); display: flex; align-items: center; gap: 10px; }
+  .mhp-footer .mhp-insight { flex: 1; font-size: 11px; color: var(--ram-text-dim); line-height: 1.3; }
+  .mhp-footer .mhp-insight strong { color: var(--ram-text); }
+  .mhp-footer .mhp-cta { background: var(--ram-primary); color: white; border: none; border-radius: 6px; padding: 7px 11px; font-size: 12px; font-weight: 600; text-decoration: none; display: inline-flex; align-items: center; gap: 4px; }
+</style>
+</head>
+<body>
+<h1>RAM popup redesign — v2 mockup</h1>
+<div class="grid">
+  <!-- Steal scenario (DDR4, 16GB, 18% below model avg) -->
+  <div>
+    <div class="label">Scenārijs A — Steal atklāts</div>
+    <div class="stage">
+      <div class="stage-row">
+        <span class="name">Kingston Fury Beast 16GB DDR4-3600</span>
+        <button class="info-btn">ℹ</button>
+      </div>
+      <div id="popup" class="ddr-d4">
+        <div class="mhp-header">
+          <img class="mhp-img" src="https://picsum.photos/seed/ram1/88" alt="">
+          <div class="mhp-titles">
+            <div class="mhp-title">Kingston Fury Beast 16GB DDR4-3600</div>
+            <div class="mhp-sub">
+              <span class="ddr-chip d4">DDR4</span>
+              <span>16 GB</span><span>· DDR4-3600</span><span>· CL18</span>
+            </div>
+          </div>
+          <button class="mhp-close">×</button>
+        </div>
+        <div class="mhp-badges">
+          <span class="mhp-badge steal">⚡ Steal</span>
+          <span class="mhp-badge seen">✓ Redzēts 4×</span>
+        </div>
+        <div class="mhp-kpi-grid">
+          <div class="mhp-kpi deal-glow">
+            <span class="kpi-label">Pašreiz</span>
+            <span class="kpi-value">€34,50</span>
+            <span class="kpi-sub">€2,16/GB · <span class="arrow-down">↓ €7,20</span> vs model</span>
+          </div>
+          <div class="mhp-kpi">
+            <span class="kpi-label">DDR4 16GB tirgus</span>
+            <span class="kpi-value">€42,30</span>
+            <span class="kpi-sub"><span class="arrow-down">↓ 18%</span></span>
+          </div>
+          <div class="mhp-kpi deal-glow">
+            <span class="kpi-label">Modeļa vid.</span>
+            <span class="kpi-value">€41,70</span>
+            <span class="kpi-sub"><span class="arrow-down">↓ 17%</span> · n=4</span>
+          </div>
+          <div class="mhp-kpi deal-glow">
+            <span class="kpi-label">Hist. zem.</span>
+            <span class="kpi-value">€34,50</span>
+            <span class="kpi-sub">= visu laiku zemākā 🎉</span>
+          </div>
+        </div>
+        <div class="mhp-section-head">
+          <span class="mhp-section-title">Cenu vēsture</span>
+          <span style="font-size:10.5px; color: var(--ram-text-dim);">5 ieraksti</span>
+        </div>
+        <div class="mhp-spark-wrap">
+          <svg viewBox="0 0 400 68" preserveAspectRatio="none">
+            <defs>
+              <linearGradient id="g1" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#10b981" stop-opacity="0.6" />
+                <stop offset="100%" stop-color="#10b981" stop-opacity="0" />
+              </linearGradient>
+            </defs>
+            <text class="mhp-spark-axis" x="392" y="14" text-anchor="end">€50</text>
+            <text class="mhp-spark-axis" x="392" y="62" text-anchor="end">€30</text>
+            <path d="M 8,28 Q 33,28 50,30 T 100,32 T 150,40 T 200,38 T 250,30 T 300,28 T 350,42 T 392,50" fill="url(#g1)" class="mhp-spark-area"/>
+            <path d="M 8,28 Q 33,28 50,30 T 100,32 T 150,40 T 200,38 T 250,30 T 300,28 T 350,42 T 392,50" fill="none" stroke="#10b981" stroke-width="1.6" class="mhp-spark-line"/>
+            <circle cx="8" cy="28" r="2.5" fill="#10b981"/>
+            <circle cx="100" cy="32" r="2.5" fill="#10b981"/>
+            <circle cx="200" cy="38" r="2.5" fill="#10b981"/>
+            <circle cx="300" cy="28" r="2.5" fill="#10b981"/>
+            <circle cx="392" cy="50" r="3.5" fill="#10b981" stroke="white" stroke-width="2"/>
+            <text class="mhp-spark-axis" x="8" y="65" text-anchor="start">15. jūn</text>
+            <text class="mhp-spark-axis" x="392" y="65" text-anchor="end">Šodien</text>
+          </svg>
+        </div>
+        <div class="mhp-section-head">
+          <span class="mhp-section-title">Visi sludinājumi (3)</span>
+        </div>
+        <div class="mhp-list">
+          <div class="mhp-list-row highlighted">
+            <span class="mhp-list-price current">€34,50</span>
+            <span class="mhp-list-meta">
+              <span class="date">Šodien · Pašreizējais</span>
+              <span>Rīga</span>
+            </span>
+            <a class="mhp-list-link" title="Atvērt ss.com">↗</a>
+          </div>
+          <div class="mhp-list-row">
+            <span class="mhp-list-price">€38,99</span>
+            <span class="mhp-list-meta">
+              <span class="date">2 dienas atpakaļ</span>
+              <span>Liepāja</span>
+            </span>
+            <a class="mhp-list-link">↗</a>
+          </div>
+          <div class="mhp-list-row">
+            <span class="mhp-list-price better">€36,50</span>
+            <span class="mhp-list-meta">
+              <span class="date">Pirms 5 dienām</span>
+              <span>Rīga</span>
+            </span>
+            <a class="mhp-list-link">↗</a>
+          </div>
+        </div>
+        <div class="mhp-footer">
+          <div class="mhp-insight">⚡ <strong>Steal!</strong> Šī cena ir par <strong>17%</strong> zemāka par modeļa vidējo.</div>
+          <a class="mhp-cta">Atvērt ss.com ↗</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Normal scenario (DDR5, 32GB) -->
+  <div>
+    <div class="label">Scenārijs B — parasti dārgs, jauns modelis</div>
+    <div class="stage">
+      <div class="stage-row">
+        <span class="name">G.Skill Trident Z5 32GB DDR5-7200</span>
+        <button class="info-btn">ℹ</button>
+      </div>
+      <div id="popup" class="ddr-d4">
+        <div class="mhp-header">
+          <img class="mhp-img" src="https://picsum.photos/seed/ram2/88" alt="">
+          <div class="mhp-titles">
+            <div class="mhp-title">G.Skill Trident Z5 32GB DDR5-7200</div>
+            <div class="mhp-sub">
+              <span class="ddr-chip d4">DDR5</span>
+              <span>32 GB</span><span>· DDR5-7200</span><span>· CL34</span>
+            </div>
+          </div>
+          <button class="mhp-close">×</button>
+        </div>
+        <div class="mhp-badges">
+          <span class="mhp-badge new">✨ Jauns</span>
+        </div>
+        <div class="mhp-kpi-grid">
+          <div class="mhp-kpi overpriced">
+            <span class="kpi-label">Pašreiz</span>
+            <span class="kpi-value">€189,00</span>
+            <span class="kpi-sub">€5,91/GB · <span class="arrow-up">↑ €12,00</span> vs model</span>
+          </div>
+          <div class="mhp-kpi overpriced">
+            <span class="kpi-label">DDR5 32GB tirgus</span>
+            <span class="kpi-value">€177,00</span>
+            <span class="kpi-sub"><span class="arrow-up">↑ 7%</span></span>
+          </div>
+          <div class="mhp-kpi overpriced">
+            <span class="kpi-label">Modeļa vid.</span>
+            <span class="kpi-value">€177,00</span>
+            <span class="kpi-sub"><span class="arrow-up">↑ 7%</span> · n=2</span>
+          </div>
+          <div class="mhp-kpi">
+            <span class="kpi-label">Hist. zem.</span>
+            <span class="kpi-value">€189,00</span>
+            <span class="kpi-sub">= pirmais ieraksts</span>
+          </div>
+        </div>
+        <div class="mhp-section-head">
+          <span class="mhp-section-title">Cenu vēsture</span>
+          <span style="font-size:10.5px; color: var(--ram-text-dim);">1 ieraksts</span>
+        </div>
+        <div class="mhp-spark-wrap">
+          <div class="mhp-spark-empty" style="text-align:center;color:#64748b;font-size:11.5px;padding:14px 0;">
+            Pagaidām nav vēsturisku cenu — pirmais ieraksts ir šis.
+          </div>
+        </div>
+        <div class="mhp-section-head">
+          <span class="mhp-section-title">Visi sludinājumi (1)</span>
+        </div>
+        <div class="mhp-list">
+          <div class="mhp-list-row highlighted">
+            <span class="mhp-list-price current">€189,00</span>
+            <span class="mhp-list-meta">
+              <span class="date">Šodien · Pašreizējais</span>
+              <span>Rīga</span>
+            </span>
+            <a class="mhp-list-link">↗</a>
+          </div>
+        </div>
+        <div class="mhp-footer">
+          <div class="mhp-insight">Pirmais redzējums — nav vēsturisku datu.</div>
+          <a class="mhp-cta">Atvērt ss.com ↗</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

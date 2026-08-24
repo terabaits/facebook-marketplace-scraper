@@ -412,21 +412,46 @@
 /* Image cell */
 .ram-cell-image {
     position: relative;
-    width: 72px;
+    width: 92px;
     padding: 0.4rem 0.6rem !important;
 }
 .ram-cell-image img {
-    width: 60px;
-    height: 60px;
+    width: 80px;
+    height: 80px;
     object-fit: cover;
-    border-radius: 6px;
+    border-radius: 8px;
     border: 1px solid var(--ram-border);
     background: var(--ram-bg-soft);
     cursor: zoom-in;
+    display: block;
+}
+/* Source dot sits to the LEFT of the thumbnail, vertically centered.
+   Bumped gap to 10px (a touch bigger than SSD's 8px) so the dot
+   breathes on the larger RAM thumbnails. */
+.ram-image-cell-inner {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+}
+.ram-source-dot {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    min-width: 10px;
+    border-radius: 50%;
+    box-shadow: 0 0 0 2px var(--card-bg, #ffffff), 0 1px 3px rgba(0,0,0,0.4);
+    flex-shrink: 0;
+    transition: transform 0.12s ease, box-shadow 0.12s ease;
+    cursor: help;
+}
+.ram-source-dot:hover {
+    transform: scale(1.35);
+    box-shadow: 0 0 0 2px var(--card-bg, #ffffff), 0 0 8px currentColor;
 }
 .ram-cell-image .deal-badge-stack {
     position: absolute;
-    top: 2px;
+    top: 12px;   /* moved 10px lower from 2px to give the source dot breathing room */
     left: 2px;
     display: flex;
     flex-direction: column;
@@ -451,35 +476,69 @@
     background: var(--ram-success);
     color: white;
 }
-.ram-cell-image .deal-badge-stack .badge.unicorn {
-    background: linear-gradient(135deg, #a855f7, #ec4899);
-    color: white;
+
+/* 🦄 Unicorn badge — cool & glowing */
+@keyframes unicorn-pulse {
+    0%, 100% {
+        box-shadow:
+            0 0 8px rgba(236, 72, 153, 0.6),
+            0 0 16px rgba(168, 85, 247, 0.45),
+            0 0 24px rgba(168, 85, 247, 0.25);
+        transform: scale(1);
+    }
+    50% {
+        box-shadow:
+            0 0 14px rgba(236, 72, 153, 0.85),
+            0 0 28px rgba(168, 85, 247, 0.65),
+            0 0 42px rgba(168, 85, 247, 0.35);
+        transform: scale(1.04);
+    }
+}
+@keyframes unicorn-shimmer {
+    0% { background-position: 0% 50%; }
+    100% { background-position: 200% 50%; }
 }
 .badge-unicorn {
     display: inline-flex;
     align-items: center;
-    gap: 0.25rem;
-    padding: 3px 8px;
-    border-radius: 6px;
-    background: linear-gradient(135deg, #a855f7, #ec4899);
+    gap: 0.3rem;
+    padding: 4px 10px;
+    border-radius: 999px;
+    background: linear-gradient(120deg, #a855f7 0%, #ec4899 35%, #f59e0b 60%, #a855f7 90%);
+    background-size: 200% 100%;
     color: white;
-    font-weight: 700;
-    font-size: 0.7rem;
+    font-weight: 800;
+    font-size: 0.72rem;
     text-transform: uppercase;
-    letter-spacing: 0.3px;
+    letter-spacing: 0.6px;
     white-space: nowrap;
+    border: 1.5px solid rgba(255, 255, 255, 0.55);
+    animation: unicorn-pulse 2.4s ease-in-out infinite,
+               unicorn-shimmer 3.5s linear infinite;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+}
+.badge-unicorn::before {
+    content: '';
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: white;
+    box-shadow: 0 0 6px white;
+    margin-right: 2px;
+    animation: unicorn-pulse 1.6s ease-in-out infinite;
 }
 .ram-cell-image .placeholder-img {
-    width: 60px;
-    height: 60px;
-    border-radius: 6px;
+    width: 80px;
+    height: 80px;
+    border-radius: 8px;
     background: var(--ram-bg-soft);
     border: 1px solid var(--ram-border);
     display: flex;
     align-items: center;
     justify-content: center;
     color: var(--ram-text-dim);
-    font-size: 1.2rem;
+    font-size: 1.4rem;
 }
 
 /* RAM name cell */
@@ -589,9 +648,19 @@
 }
 .ram-cell-latency.empty { color: var(--ram-text-dim); font-weight: 400; }
 
+/* Speed (first-word latency in ns) cell — color tiers */
+.ram-cell-latency.speed-great { background: #10b981; color: white; box-shadow: 0 0 6px rgba(16,185,129,0.4); }
+.ram-cell-latency.speed-good  { background: #3b82f6; color: white; }
+.ram-cell-latency.speed-mid   { background: #f59e0b; color: white; }
+.ram-cell-latency.speed-slow  { background: #ef4444; color: white; }
+
+/* ============ RAM popup (reworked) ============ */
+/* Popup CSS lives in base.html so RAM, Camera, Monitor, and any future page   */
+/* can share the same reworked look.                                              */
+
 /* Stat block cell (Model/Market Position) */
 .ram-cell-stat {
-    min-width: 130px;
+    min-width: 140px;
 }
 .ram-cell-stat .stat-head {
     font-size: 0.7rem;
@@ -613,23 +682,32 @@
     margin-bottom: 0.3rem;
 }
 .ram-cell-stat .stat-bar {
-    height: 4px;
-    background: rgba(0,0,0,0.06);
-    border-radius: 2px;
-    overflow: hidden;
-    margin-bottom: 0.2rem;
+    position: relative;
+    height: 8px;
+    background: linear-gradient(90deg, #10b981 0%, #84cc16 25%, #f59e0b 55%, #f97316 80%, #ef4444 100%);
+    border-radius: 4px;
+    overflow: visible;
+    margin-bottom: 0.3rem;
+    box-shadow: inset 0 1px 2px rgba(0,0,0,0.1);
 }
 .ram-cell-stat .stat-bar > div {
-    height: 100%;
-    background: var(--ram-primary);
+    position: absolute;
+    top: -2px;
+    width: 4px;
+    height: 12px;
+    background: var(--ram-text, #1e293b);
+    border: 1.5px solid white;
     border-radius: 2px;
+    transform: translateX(-2px);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.4);
+    z-index: 2;
 }
 .ram-cell-stat .stat-pct {
     font-size: 0.7rem;
     color: var(--ram-text-dim);
     font-weight: 600;
 }
-.ram-cell-stat .stat-pct .pct-num { color: var(--ram-text); }
+.ram-cell-stat .stat-pct .pct-num { color: var(--ram-text); font-weight: 700; }
 
 /* Location + Date */
 .ram-cell-meta {
@@ -744,6 +822,67 @@
     color: white;
 }
 
+/* Trend capacity chips — share styling with main DDR filter chips */
+#trend-capacity-chips button {
+    background: transparent;
+    border: 1px solid var(--ram-border);
+    color: var(--ram-text-dim);
+    padding: 0.25rem 0.65rem;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+#trend-capacity-chips button:hover {
+    border-color: var(--ram-primary);
+    color: var(--ram-text);
+}
+#trend-capacity-chips button.active {
+    background: var(--ram-primary);
+    color: white;
+    border-color: var(--ram-primary);
+}
+
+/* Trend DDR status pill (shows which DDR types are currently visible) */
+.trend-ddr-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 0.18rem 0.55rem;
+    border-radius: 999px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    border: 1px solid var(--ram-border);
+    background: var(--ram-bg-soft);
+    color: var(--ram-text-dim);
+}
+.trend-ddr-pill::before {
+    content: '';
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--ram-text-dim);
+}
+.trend-ddr-pill.ddr-d3-pill { color: #ef4444; border-color: rgba(239, 68, 68, 0.35); }
+.trend-ddr-pill.ddr-d3-pill::before { background: #ef4444; }
+.trend-ddr-pill.ddr-d4-pill { color: #3b82f6; border-color: rgba(59, 130, 246, 0.35); }
+.trend-ddr-pill.ddr-d4-pill::before { background: #3b82f6; }
+.trend-ddr-pill.ddr-d5-pill { color: #8b5cf6; border-color: rgba(139, 92, 246, 0.35); }
+.trend-ddr-pill.ddr-d5-pill::before { background: #8b5cf6; }
+.trend-ddr-pill.ddr-multi-pill { color: var(--ram-text); }
+
+/* Trend caption below the chart */
+.trend-cap-caption {
+    margin-top: 0.45rem;
+    font-size: 0.72rem;
+    color: var(--ram-text-dim);
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.2px;
+}
+
 /* ============ Misc ============ */
 .ram-loading, .ram-empty {
     text-align: center;
@@ -780,45 +919,346 @@
     font-size: 0.75rem;
 }
 
-/* Popup */
+/* ============ Model History Popup (v2 — card-style) ============ */
+@keyframes ram-popup-in {
+    0%   { opacity: 0; transform: translate(8px, 0) scale(0.96); }
+    100% { opacity: 1; transform: translate(0, 0)   scale(1); }
+}
 #model-history-popup {
     position: absolute;
     background: var(--ram-bg);
     border: 1px solid var(--ram-border);
     border-radius: var(--ram-radius);
-    padding: 0.85rem 1rem;
+    padding: 0;
     z-index: 1000;
     box-shadow: var(--ram-shadow-lg);
-    min-width: 280px;
-    max-width: 360px;
+    width: 420px;
+    max-width: calc(100vw - 24px);
     font-size: 0.85rem;
+    overflow: hidden;
+    animation: ram-popup-in 180ms cubic-bezier(0.2, 0.8, 0.2, 1);
 }
-#model-history-popup h4 {
-    margin: 0 0 0.5rem 0;
+
+/* Color band on the left edge — matches the DDR-color language used on
+   the root page stats cards (red d3, blue d4, purple d5). */
+#model-history-popup.ddr-d3 { border-left: 3px solid #ef4444; }
+#model-history-popup.ddr-d4 { border-left: 3px solid #3b82f6; }
+#model-history-popup.ddr-d5 { border-left: 3px solid #8b5cf6; }
+#model-history-popup.ddr-other { border-left: 3px solid #64748b; }
+
+.mhp-header {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    padding: 0.75rem 0.9rem;
+    background: var(--ram-bg-soft);
+    border-bottom: 1px solid var(--ram-border);
+}
+.mhp-header .mhp-img {
+    width: 44px; height: 44px;
+    border-radius: 6px;
+    object-fit: cover;
+    border: 1px solid var(--ram-border);
+    background: var(--ram-bg);
+    flex-shrink: 0;
+}
+.mhp-header .mhp-img-fallback {
+    width: 44px; height: 44px;
+    border-radius: 6px;
+    background: var(--ram-bg);
+    border: 1px solid var(--ram-border);
+    display: flex; align-items: center; justify-content: center;
+    color: var(--ram-text-dim);
+    font-size: 1.2rem;
+    flex-shrink: 0;
+}
+.mhp-header .mhp-titles { flex: 1; min-width: 0; }
+.mhp-header .mhp-title {
+    font-weight: 700;
+    color: var(--ram-text);
+    font-size: 0.9rem;
+    line-height: 1.2;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.mhp-header .mhp-sub {
+    font-size: 0.7rem;
+    color: var(--ram-text-dim);
+    margin-top: 0.1rem;
+    display: flex; align-items: center; gap: 0.4rem; flex-wrap: wrap;
+}
+.mhp-header .mhp-sub .ddr-chip {
+    display: inline-flex;
+    align-items: center;
+    font-size: 0.6rem;
+    font-weight: 700;
+    padding: 1px 5px;
+    border-radius: 3px;
+    color: white;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+}
+.mhp-header .mhp-sub .ddr-chip.d3 { background: #ef4444; }
+.mhp-header .mhp-sub .ddr-chip.d4 { background: #3b82f6; }
+.mhp-header .mhp-sub .ddr-chip.d5 { background: #8b5cf6; }
+.mhp-header .mhp-close {
+    flex-shrink: 0;
+    background: transparent;
+    border: 1px solid var(--ram-border);
+    border-radius: 6px;
+    color: var(--ram-text-dim);
+    width: 26px; height: 26px;
+    display: inline-flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    transition: all 0.12s;
+    line-height: 1;
+    font-size: 0.95rem;
+    padding: 0;
+}
+.mhp-header .mhp-close:hover {
+    color: var(--ram-error);
+    border-color: var(--ram-error);
+    background: rgba(239,68,68,0.06);
+}
+
+/* Badges row (steal / new / seen) */
+.mhp-badges {
+    display: flex; flex-wrap: wrap; gap: 0.3rem;
+    padding: 0.5rem 0.9rem 0;
+}
+.mhp-badge {
+    display: inline-flex; align-items: center; gap: 0.2rem;
+    font-size: 0.65rem;
+    font-weight: 700;
+    padding: 2px 7px;
+    border-radius: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    line-height: 1.4;
+}
+.mhp-badge.steal {
+    background: linear-gradient(135deg, #ef4444, #f97316);
+    color: white;
+    box-shadow: 0 0 8px rgba(239,68,68,0.4);
+    animation: mhp-pulse 1.6s ease-in-out infinite;
+}
+@keyframes mhp-pulse {
+    0%, 100% { box-shadow: 0 0 8px rgba(239,68,68,0.4); }
+    50%      { box-shadow: 0 0 14px rgba(239,68,68,0.7); }
+}
+.mhp-badge.deal {
+    background: var(--ram-warning);
+    color: white;
+}
+.mhp-badge.unicorn {
+    background: linear-gradient(135deg, #a855f7, #ec4899);
+    color: white;
+}
+.mhp-badge.new {
+    background: var(--ram-success);
+    color: white;
+}
+.mhp-badge.seen {
+    background: var(--ram-bg-soft);
+    color: var(--ram-text-dim);
+    border: 1px solid var(--ram-border);
+}
+
+/* KPI grid — 4 mini cards matching the root page stats language */
+.mhp-kpi-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: 0.4rem;
+    padding: 0.55rem 0.9rem 0.4rem;
+}
+.mhp-kpi {
+    background: var(--ram-bg-soft);
+    border: 1px solid var(--ram-border);
+    border-radius: 6px;
+    padding: 0.45rem 0.5rem;
+    display: flex; flex-direction: column;
+    gap: 0.05rem;
+    min-width: 0;
+}
+.mhp-kpi .kpi-label {
+    font-size: 0.6rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    color: var(--ram-text-dim);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.mhp-kpi .kpi-value {
+    font-size: 1.05rem;
+    font-weight: 800;
+    color: var(--ram-text);
+    line-height: 1.1;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+}
+.mhp-kpi .kpi-sub {
+    font-size: 0.65rem;
+    color: var(--ram-text-dim);
+    line-height: 1.2;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.mhp-kpi.deal-glow { border-color: var(--ram-success); background: rgba(16,185,129,0.08); }
+.mhp-kpi.deal-glow .kpi-value { color: var(--ram-success); }
+.mhp-kpi.overpriced { border-color: var(--ram-error); background: rgba(239,68,68,0.06); }
+.mhp-kpi.overpriced .kpi-value { color: var(--ram-error); }
+.mhp-kpi .kpi-sub .arrow-up { color: var(--ram-error); font-weight: 700; }
+.mhp-kpi .kpi-sub .arrow-down { color: var(--ram-success); font-weight: 700; }
+
+/* Price history sparkline */
+.mhp-section-head {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0.6rem 0.9rem 0.3rem;
+}
+.mhp-section-head .mhp-section-title {
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--ram-text-dim);
+    display: flex; align-items: center; gap: 0.35rem;
+}
+.mhp-section-head .mhp-section-title::before {
+    content: '';
+    display: inline-block;
+    width: 3px; height: 11px;
+    background: var(--ram-primary);
+    border-radius: 2px;
+}
+.mhp-spark-wrap {
+    padding: 0 0.9rem 0.4rem;
+    position: relative;
+}
+.mhp-spark-wrap svg {
+    width: 100%;
+    height: 56px;
+    display: block;
+    overflow: visible;
+}
+.mhp-spark-line {
+    fill: none;
+    stroke-width: 1.6;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+.mhp-spark-area { opacity: 0.18; }
+.mhp-spark-dot {
+    cursor: pointer;
+    transition: r 0.12s;
+}
+.mhp-spark-dot:hover { r: 5; }
+.mhp-spark-dot.current { stroke: white; stroke-width: 2; }
+.mhp-spark-axis {
+    font-size: 0.55rem;
+    fill: var(--ram-text-dim);
+    font-family: inherit;
+}
+.mhp-spark-empty {
+    text-align: center;
+    color: var(--ram-text-dim);
+    font-size: 0.75rem;
+    padding: 0.5rem 0;
+}
+
+/* All-listings list */
+.mhp-list { padding: 0 0.9rem 0.7rem; }
+.mhp-list-row {
+    display: flex; align-items: center; gap: 0.4rem;
+    padding: 0.4rem 0.5rem;
+    border-radius: 6px;
+    transition: background 0.1s;
+    border: 1px solid transparent;
+    cursor: pointer;
+}
+.mhp-list-row:hover { background: var(--ram-bg-soft); border-color: var(--ram-border); }
+.mhp-list-row.highlighted { background: rgba(99,102,241,0.1); border-color: var(--ram-primary); }
+.mhp-list-row .mhp-list-price {
+    font-weight: 700;
     font-size: 0.85rem;
     color: var(--ram-text);
+    font-variant-numeric: tabular-nums;
+    min-width: 56px;
 }
-#model-history-popup .seen-badge {
-    display: inline-block;
-    padding: 2px 8px;
-    border-radius: 4px;
+.mhp-list-row .mhp-list-price.current { color: var(--ram-primary); }
+.mhp-list-row .mhp-list-price.better { color: var(--ram-success); }
+.mhp-list-row .mhp-list-meta {
+    flex: 1; min-width: 0;
     font-size: 0.7rem;
+    color: var(--ram-text-dim);
+    display: flex; flex-direction: column; gap: 1px;
+}
+.mhp-list-row .mhp-list-meta .date { font-weight: 600; color: var(--ram-text); }
+.mhp-list-row .mhp-list-link {
+    flex-shrink: 0;
+    color: var(--ram-text-dim);
+    text-decoration: none;
+    width: 22px; height: 22px;
+    border-radius: 5px;
+    display: inline-flex; align-items: center; justify-content: center;
+    border: 1px solid transparent;
+    transition: all 0.12s;
+    font-size: 0.85rem;
+}
+.mhp-list-row .mhp-list-link:hover {
+    color: var(--ram-primary);
+    border-color: var(--ram-primary);
+    background: rgba(99,102,241,0.08);
+}
+
+/* Footer */
+.mhp-footer {
+    padding: 0.6rem 0.9rem;
+    background: var(--ram-bg-soft);
+    border-top: 1px solid var(--ram-border);
+    display: flex; align-items: center; gap: 0.5rem;
+    flex-wrap: wrap;
+}
+.mhp-footer .mhp-insight {
+    flex: 1; min-width: 0;
+    font-size: 0.72rem;
+    color: var(--ram-text-dim);
+    line-height: 1.3;
+}
+.mhp-footer .mhp-insight strong { color: var(--ram-text); }
+.mhp-footer .mhp-cta {
+    background: var(--ram-primary);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 0.4rem 0.7rem;
+    font-size: 0.75rem;
     font-weight: 600;
-    margin-bottom: 0.5rem;
+    text-decoration: none;
+    display: inline-flex; align-items: center; gap: 0.3rem;
+    transition: background 0.12s;
+    flex-shrink: 0;
+    cursor: pointer;
 }
-#model-history-popup .seen-badge.seen { background: var(--ram-success); color: white; }
-#model-history-popup .seen-badge.new { background: var(--ram-warning); color: white; }
-#model-history-popup .price-row {
-    display: flex;
-    justify-content: space-between;
-    padding: 0.25rem 0;
-    border-bottom: 1px dashed var(--ram-border);
+.mhp-footer .mhp-cta:hover { background: var(--ram-primary-soft); }
+.mhp-footer .mhp-cta.secondary {
+    background: transparent;
+    color: var(--ram-text);
+    border: 1px solid var(--ram-border);
 }
-#model-history-popup .price-row:last-child { border: none; }
-#model-history-popup .price-row .label { color: var(--ram-text-dim); font-size: 0.8rem; }
-#model-history-popup .price-row .value { font-weight: 700; }
-#model-history-popup .price-row .value.better { color: var(--ram-success); }
-#model-history-popup .price-row .value.worse { color: var(--ram-error); }
+.mhp-footer .mhp-cta.secondary:hover {
+    background: var(--ram-bg);
+    border-color: var(--ram-primary);
+    color: var(--ram-primary);
+}
+
+@media (max-width: 480px) {
+    #model-history-popup { width: calc(100vw - 24px); }
+    .mhp-kpi-grid { grid-template-columns: 1fr 1fr; }
+}
 
 @keyframes spin {
     0% { transform: rotate(0deg); }
@@ -981,7 +1421,7 @@
 
         <div class="filter-group">
             <span class="filter-label">Capacity</span>
-            <select id="capacity-filter" onchange="loadListings()">
+            <select id="capacity-filter" onchange="onMainCapacityChange()">
                 <option value="all">All</option>
                 <option value="4">4 GB</option>
                 <option value="8">8 GB</option>
@@ -1017,28 +1457,34 @@
         <div class="ram-loading">Loading RAM listings…</div>
     </div>
 
-    <!-- ========== PRICE TRENDS ========== -->
+    <!-- ========== AVG RAM PRICE BY CAPACITY & TYPE OVER TIME ========== -->
     <div class="ram-trends">
         <h3>
-            <span>📈 Price trends</span>
-            <span style="display: inline-flex; gap: 0.5rem; align-items: center;">
+            <span>📈 Avg RAM Price by Capacity &amp; Type over Time</span>
+            <span style="display: inline-flex; gap: 0.5rem; align-items: center; flex-wrap: wrap;">
                 <span class="filter-label">Capacity</span>
-                <select id="trend-capacity" onchange="updatePriceTrends()">
-                    <option value="8">8 GB</option>
-                    <option value="16" selected>16 GB</option>
-                    <option value="32">32 GB</option>
-                </select>
-                <span class="filter-label">DDR</span>
-                <select id="trend-ddr" onchange="updatePriceTrends()">
-                    <option value="all">All</option>
-                    <option value="DDR4" selected>DDR4</option>
-                    <option value="DDR5">DDR5</option>
-                </select>
+                <div class="filter-chips" id="trend-capacity-chips">
+                    <button data-cap="4"   onclick="setTrendCapacity('4', this)">4 GB</button>
+                    <button data-cap="8"   onclick="setTrendCapacity('8', this)">8 GB</button>
+                    <button data-cap="16"  class="active" onclick="setTrendCapacity('16', this)">16 GB</button>
+                    <button data-cap="32"  onclick="setTrendCapacity('32', this)">32 GB</button>
+                    <button data-cap="64"  onclick="setTrendCapacity('64', this)">64 GB</button>
+                    <button data-cap="all" onclick="setTrendCapacity('all', this)" title="Aggregate all capacities (one line per DDR type)">All</button>
+                </div>
+                <span class="filter-label" style="margin-left: 0.5rem;">DDR</span>
+                <span id="trend-ddr-status" class="trend-ddr-pill">
+                    <!-- Populated by JS — shows which DDR types are visible -->
+                </span>
             </span>
         </h3>
-        <div class="chart-container" style="height: 260px;">
-            <canvas id="priceTrendChart"></canvas>
+        <div class="chart-container" style="height: 280px; position: relative;">
+            <canvas id="priceByCapTypeChart"></canvas>
+            <div id="priceByCapTypeEmpty" style="display: none; position: absolute; inset: 0; align-items: center; justify-content: center; flex-direction: column; gap: 0.5rem; color: var(--ram-text-dim); font-size: 0.85rem;">
+                <div style="font-size: 1.6rem;">📭</div>
+                <div>Nav datu šim filtram — pamēģini citu ietilpību vai DDR tipu.</div>
+            </div>
         </div>
+        <div class="trend-cap-caption" id="trend-cap-caption">16 GB · DDR3 + DDR4 + DDR5</div>
     </div>
 
 </div>
@@ -1055,13 +1501,41 @@ let useAllRAMsForStats = false;
 let useActiveOnly = false;      // toggled by filter pill (default OFF so all RAM listings show on load)
 let useHighConfidence = false;   // toggled by filter pill
 let currentDDRFilter = 'all';
-let priceTrendChart = null;
 let avgPriceByDDRChart = null;
 let capacityDistChart = null;
 let ramAvgPriceChart = null;
 let ramAvgPeriod = 'week'; // 'week' or 'month'
+let priceByCapTypeChart = null;
+let trendCapacity = '16';   // '4' | '8' | '16' | '32' | '64' | 'all' — default 16 GB
+
+// DDR palette — mirrors the model-history-popup ddr-d3/d4/d5 border colors
+const DDR_PALETTE = {
+    'DDR3': { line: '#ef4444', soft: 'rgba(239, 68, 68, 0.10)' },
+    'DDR4': { line: '#3b82f6', soft: 'rgba(59, 130, 246, 0.10)' },
+    'DDR5': { line: '#8b5cf6', soft: 'rgba(139, 92, 246, 0.10)' }
+};
 
 // Helpers for deal badges (NEW, STEAL)
+
+// Parse the MHz from a speed string like "DDR4-3200", "3200 MHz", "PC4-25600" etc.
+function parseRamSpeedMhz(speed) {
+    if (!speed) return 0;
+    const s = String(speed).trim();
+    // "DDR4-3200" → 3200
+    let m = s.match(/DDR\d-?(\d{3,4})/i);
+    if (m) return parseInt(m[1]);
+    // "3200 MHz" / "3200Mhz"
+    m = s.match(/(\d{3,4})\s*MHz/i);
+    if (m) return parseInt(m[1]);
+    // PC4-25600 / PC5-41600 → divide by 8 (DDR data rate vs. module transfer rate)
+    m = s.match(/PC\d-(\d{4,5})/i);
+    if (m) return Math.round(parseInt(m[1]) / 8);
+    // bare number
+    m = s.match(/^(\d{3,4})$/);
+    if (m) return parseInt(m[1]);
+    return 0;
+}
+
 function buildRamDealBadges(item) {
     let badges = '';
 
@@ -1160,6 +1634,7 @@ let columnOrder = [
     { id: 'col-ram', label: 'RAM', required: true },
     { id: 'col-price', label: 'Price', required: true },
     { id: 'col-latency', label: 'Latency' },
+    { id: 'col-speed', label: 'Speed (ns)' },
     { id: 'col-model', label: 'Model Position' },
     { id: 'col-market', label: 'Market Position' },
     { id: 'col-location', label: 'Location' },
@@ -1174,6 +1649,7 @@ let columnVisibility = {
     'col-ram': true,
     'col-price': true,
     'col-latency': true,
+    'col-speed': true,
     'col-model': true,
     'col-market': true,
     'col-location': true,
@@ -1323,82 +1799,411 @@ async function fetchModelHistory(listingId) {
     }
 }
 
-// Show model history popup
+// ============================================================================
+// Model History Popup (v2 — card-style with KPIs, sparkline, all-listings)
+// ============================================================================
+//
+// Renders an interactive popover when the user hovers/clicks the ℹ️ button
+// on a RAM row. Sections:
+//   1. Header — product image, name, DDR+capacity chips, close button
+//   2. Badges — "Steal" / "Deal" / "New" / "Seen N×" status row
+//   3. KPI grid — Current / Market (DDR+cap avg) / Model (matched_ram_id avg) /
+//      Hist-Low (lowest seen ever)
+//   4. Sparkline — SVG line chart of historical price points (last 5 + current)
+//   5. All-listings — full list of listings for this model (active + past)
+//   6. Footer — insight text + "View on ss.com" CTA
+// ============================================================================
+
+// Number formatter for KPI values (€1.234,50 style)
+const _ramEurFmt = new Intl.NumberFormat('lv-LV', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+const _ramPctFmt = new Intl.NumberFormat('lv-LV', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+
+function _ramEur(v) {
+    if (v == null || isNaN(v)) return '—';
+    return '€' + _ramEurFmt.format(v);
+}
+function _ramPct(v) {
+    if (v == null || !isFinite(v)) return '';
+    return _ramPctFmt.format(Math.abs(v)) + '%';
+}
+function _ramArrow(v) {
+    if (v == null) return '·';
+    return v < 0 ? '↓' : v > 0 ? '↑' : '·';
+}
+function _ramArrowClass(v) {
+    if (v == null) return '';
+    return v < 0 ? 'arrow-down' : v > 0 ? 'arrow-up' : '';
+}
+
+// Escape user-supplied strings before embedding in HTML.
+function _ramEsc(s) {
+    if (s == null) return '';
+    return String(s)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+}
+
+// DDR color class for the popup border accent.
+function _ramDdrAccent(ddr) {
+    const t = (ddr || '').toUpperCase();
+    if (t.includes('DDR5') || t === 'D5') return 'ddr-d5';
+    if (t.includes('DDR4') || t === 'D4') return 'ddr-d4';
+    if (t.includes('DDR3') || t === 'D3') return 'ddr-d3';
+    return 'ddr-other';
+}
+function _ramDdrChip(ddr) {
+    const t = (ddr || '').toUpperCase();
+    if (t.includes('DDR5') || t === 'D5') return 'd5';
+    if (t.includes('DDR4') || t === 'D4') return 'd4';
+    if (t.includes('DDR3') || t === 'D3') return 'd3';
+    return '';
+}
+
+// Build the SVG sparkline markup.
+// `points` is [{price, date, listingId, isCurrent}] sorted oldest → newest.
+// Returns innerHTML for an <svg>.
+function _ramSparklineSvg(points) {
+    if (!points || points.length < 2) {
+        return '<div class="mhp-spark-empty">Nav pietiekami datu, lai zīmētu līkni.</div>';
+    }
+    const W = 400, H = 56;
+    const padX = 8, padY = 10;
+    const prices = points.map((p) => p.price);
+    const minP = Math.min(...prices);
+    const maxP = Math.max(...prices);
+    const range = maxP - minP || 1;
+    // x position per point (equal spacing)
+    const xs = points.map((_, i) => padX + (i * (W - padX * 2)) / (points.length - 1));
+    const ys = points.map((p) => padY + (1 - (p.price - minP) / range) * (H - padY * 2));
+
+    // Smooth path using Catmull-Rom-style polyline
+    let lineD = `M ${xs[0]},${ys[0]}`;
+    for (let i = 1; i < points.length; i++) {
+        const cx = (xs[i - 1] + xs[i]) / 2;
+        lineD += ` Q ${cx},${ys[i - 1]} ${cx},${(ys[i - 1] + ys[i]) / 2} T ${xs[i]},${ys[i]}`;
+    }
+    // Area fill under the line
+    const areaD = lineD + ` L ${xs[xs.length - 1]},${H - padY} L ${xs[0]},${H - padY} Z`;
+    // Choose line color: green if last point is below the average, red if above
+    const lastPrice = points[points.length - 1].price;
+    const avg = prices.reduce((a, b) => a + b, 0) / prices.length;
+    const lineColor = lastPrice <= avg ? '#10b981' : '#ef4444';
+    const gradientId = 'mhp-spark-grad-' + Math.random().toString(36).slice(2, 8);
+
+    // Y-axis min/max labels (small)
+    const yMax = `<text class="mhp-spark-axis" x="${W - padX}" y="${padY + 4}" text-anchor="end">${_ramEur(maxP)}</text>`;
+    const yMin = `<text class="mhp-spark-axis" x="${W - padX}" y="${H - padY}" text-anchor="end">${_ramEur(minP)}</text>`;
+    // X-axis: first and last date
+    const fmtD = (d) => d ? new Date(d).toLocaleDateString('lv-LV', { day: 'numeric', month: 'short' }) : '';
+    const xFirst = `<text class="mhp-spark-axis" x="${padX}" y="${H + 1}" text-anchor="start">${fmtD(points[0].date)}</text>`;
+    const xLast  = `<text class="mhp-spark-axis" x="${W - padX}" y="${H + 1}" text-anchor="end">${fmtD(points[points.length - 1].date)}</text>`;
+
+    // Data dots
+    const dots = points.map((p, i) => {
+        const isCurrent = p.isCurrent;
+        return `
+            <circle class="mhp-spark-dot${isCurrent ? ' current' : ''}"
+                cx="${xs[i]}" cy="${ys[i]}" r="${isCurrent ? 3.5 : 2.5}"
+                fill="${lineColor}"
+                data-listing-id="${_ramEsc(p.listingId || '')}"
+                onmouseenter="highlightMhpListing('${_ramEsc(p.listingId || '')}')"
+                onmouseleave="clearMhpHighlight()"
+            >
+                <title>${_ramEur(p.price)}${p.date ? ' · ' + fmtD(p.date) : ''}</title>
+            </circle>`;
+    }).join('');
+
+    return `
+        <svg viewBox="0 0 ${W} ${H + 12}" preserveAspectRatio="none">
+            <defs>
+                <linearGradient id="${gradientId}" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stop-color="${lineColor}" stop-opacity="0.6" />
+                    <stop offset="100%" stop-color="${lineColor}" stop-opacity="0" />
+                </linearGradient>
+            </defs>
+            ${yMax}${yMin}
+            <path d="${areaD}" fill="url(#${gradientId})" class="mhp-spark-area" />
+            <path d="${lineD}" class="mhp-spark-line" stroke="${lineColor}" />
+            ${dots}
+            ${xFirst}${xLast}
+        </svg>
+    `;
+}
+
+function highlightMhpListing(listingId) {
+    const row = document.querySelector(`.mhp-list-row[data-listing-id="${listingId}"]`);
+    if (row) row.classList.add('highlighted');
+}
+function clearMhpHighlight() {
+    document.querySelectorAll('.mhp-list-row.highlighted').forEach((r) => r.classList.remove('highlighted'));
+}
+
 async function showModelHistoryPopup(event, listingId) {
     event.stopPropagation();
-    
+
     const popup = document.getElementById('model-history-popup');
     const historyData = await fetchModelHistory(listingId);
-    
+
     if (!historyData) {
         popup.style.display = 'none';
         return;
     }
-    
+
     const marketAverages = calculateMarketAverages(allRAMs);
-    const item = allRAMs.find(r => r.listing_id === listingId);
-    
+    const item = allRAMs.find((r) => r.listing_id === listingId);
+
     if (!item) {
         popup.style.display = 'none';
         return;
     }
-    
-    const key = `${item.ddr_type || 'Unknown'}-${item.capacity_gb || 0}`;
-    const marketAvg = marketAverages[key];
-    const wasSeen = historyData.previous_listings && historyData.previous_listings.length > 0;
-    const prevPrice = wasSeen ? Number(historyData.previous_listings[0].price_eur) : null;
-    
-    let html = `
-        <h4>📋 Model History</h4>
-        <div class="seen-badge ${wasSeen ? 'seen' : 'new'}">
-            ${wasSeen ? `✓ Seen ${historyData.previous_listings.length} time(s) before` : '✨ New Model'}
+
+    // ===== Pre-compute data =====
+    const ddr = item.ddr_type || item.ram_type || 'Unknown';
+    const ddrCls = _ramDdrAccent(ddr);
+    const ddrChipCls = _ramDdrChip(ddr);
+    const cap = item.capacity_gb || 0;
+    const currentPrice = Number(item.price_eur) || 0;
+    const modelStats = item.price_stats || null;  // { avg, min, max, percentile, below_avg, count }
+    const modelAvg = modelStats ? parseFloat(modelStats.avg) : null;
+    const modelMin = modelStats ? parseFloat(modelStats.min) : null;
+    const marketKey = `${ddr}-${cap}`;
+    const marketAvg = marketAverages[marketKey] || null;
+
+    // All known listings for THIS model (current + previous). Build unified
+    // timeline for the sparkline.
+    const prev = (historyData.previous_listings || []).map((p) => ({
+        listing_id: p.listing_id,
+        price_eur: Number(p.price_eur) || 0,
+        date_posted: p.date_posted,
+        isCurrent: false,
+    }));
+    const timeline = [
+        ...prev.filter((p) => p.price_eur > 0).reverse(),  // oldest first
+        { listing_id, price_eur: currentPrice, date_posted: item.date_posted, isCurrent: true },
+    ].filter((p) => p.price_eur > 0);
+
+    // Historical low across all known listings (previous + current)
+    const histLow = timeline.length ? Math.min(...timeline.map((p) => p.price_eur)) : null;
+
+    // Steal / deal detection
+    // "Steal" = current is >=15% below the model avg (big red flag)
+    const isSteal = modelAvg && modelAvg > 0 && (modelAvg - currentPrice) / modelAvg >= 0.15;
+    const isDeal = modelAvg && modelAvg > 0 && currentPrice < modelAvg && !isSteal;
+    const isUnicorn = (item.is_unicorn === true) || (item.savingsPct && item.savingsPct >= 25);
+    const isNew = !historyData.previous_listings || historyData.previous_listings.length === 0;
+    const wasSeen = !isNew;
+
+    // Per-GB price
+    const perGB = cap > 0 ? currentPrice / cap : null;
+
+    // Vs market (general DDR + cap average)
+    const vsMarket = marketAvg ? currentPrice - marketAvg : null;
+    const vsMarketPct = marketAvg && marketAvg > 0 ? ((currentPrice - marketAvg) / marketAvg) * 100 : null;
+    // Vs model avg
+    const vsModel = modelAvg ? currentPrice - modelAvg : null;
+    const vsModelPct = modelAvg && modelAvg > 0 ? ((currentPrice - modelAvg) / modelAvg) * 100 : null;
+    // Vs historical low
+    const vsHistLow = histLow ? currentPrice - histLow : null;
+
+    // ===== Image =====
+    const imgSrc = item.local_image_path
+        ? `/images/${item.local_image_path.replace(/\\/g, '/')}`
+        : item.image_url;
+    const imgHtml = imgSrc
+        ? `<img class="mhp-img" src="${_ramEsc(imgSrc)}" alt="${_ramEsc(item.title || '')}" loading="lazy" onerror="this.outerHTML='<div class=\\'mhp-img-fallback\\'>🧠</div>'">`
+        : `<div class="mhp-img-fallback">🧠</div>`;
+
+    // ===== Badges row =====
+    const badges = [];
+    if (isSteal)   badges.push(`<span class="mhp-badge steal"   title="≥15% zemāka cena par modeļa vidējo">⚡ Steal</span>`);
+    if (isDeal)    badges.push(`<span class="mhp-badge deal"    title="Zem modeļa vidējās cenas">↓ Deal</span>`);
+    if (isUnicorn) badges.push(`<span class="mhp-badge unicorn" title="Ļoti rets/izdevīgs piedāvājums">🦄 Unicorn</span>`);
+    if (isNew)     badges.push(`<span class="mhp-badge new"     title="Šis modelis pirmo reizi redzams">✨ Jauns</span>`);
+    else            badges.push(`<span class="mhp-badge seen"    title="Redzēts ${historyData.previous_listings.length}× iepriekš">✓ Redzēts ${historyData.previous_listings.length}×</span>`);
+    const badgesHtml = `<div class="mhp-badges">${badges.join('')}</div>`;
+
+    // ===== KPI grid (4 cards) =====
+    // Card 1: Current price
+    const kpiCurrentExtra = perGB
+        ? `${_ramEur(perGB)}/GB`
+        : (item.speed ? _ramEsc(item.speed) : '');
+    const kpiCurrentSub = modelAvg
+        ? (vsModel < 0
+            ? `<span class="${_ramArrowClass(vsModel)}">${_ramArrow(vsModel)} ${_ramEur(Math.abs(vsModel))}</span> vs model`
+            : (vsModel > 0
+                ? `<span class="${_ramArrowClass(vsModel)}">${_ramArrow(vsModel)} ${_ramEur(Math.abs(vsModel))}</span> vs model`
+                : '= model'))
+        : (marketAvg
+            ? `${_ramArrow(vsMarket)} ${_ramPct(vsMarketPct)} vs tirgu`
+            : '');
+
+    // Card 2: Market (DDR + cap) avg
+    const marketSub = marketAvg
+        ? (vsMarketPct != null
+            ? `<span class="${_ramArrowClass(vsMarket)}">${_ramArrow(vsMarket)} ${_ramPct(vsMarketPct)}%</span>`
+            : '')
+        : 'Nav datu';
+    const marketKpiCls = marketAvg && currentPrice < marketAvg ? 'deal-glow' : (marketAvg && currentPrice > marketAvg ? 'overpriced' : '');
+
+    // Card 3: Model avg
+    const modelSub = modelAvg
+        ? (vsModel != null
+            ? `<span class="${_ramArrowClass(vsModel)}">${_ramArrow(vsModel)} ${_ramPct(vsModelPct)}%</span>`
+            : '')
+        : 'Nav datu';
+    const modelKpiCls = modelAvg && currentPrice < modelAvg ? 'deal-glow' : (modelAvg && currentPrice > modelAvg ? 'overpriced' : '');
+
+    // Card 4: Hist low
+    const histLowSub = histLow
+        ? (vsHistLow != null && vsHistLow !== 0
+            ? `<span class="${_ramArrowClass(vsHistLow)}">${_ramArrow(vsHistLow)} ${_ramEur(Math.abs(vsHistLow))}</span>`
+            : '= visu laiku zemākā')
+        : 'Nav datu';
+
+    // ===== Sparkline =====
+    const sparklineHtml = timeline.length >= 2
+        ? _ramSparklineSvg(timeline)
+        : '<div class="mhp-spark-empty">Pagaidām nav vēsturisku cenu — pirmais ieraksts ir šis.</div>';
+
+    // ===== All-listings list =====
+    // Show current + previous, with the current row highlighted.
+    const allListings = [
+        { listing_id, price_eur: currentPrice, date_posted: item.date_posted, isCurrent: true },
+        ...(historyData.previous_listings || []),
+    ].filter((p) => p && p.price_eur > 0);
+    const listRows = allListings.map((p, i) => {
+        const isCurrent = p.isCurrent === true;
+        const priceClass = isCurrent
+            ? 'current'
+            : (modelAvg && p.price_eur < modelAvg ? 'better' : '');
+        const dateLabel = p.date_posted
+            ? new Date(p.date_posted).toLocaleDateString('lv-LV', { day: 'numeric', month: 'short', year: '2-digit' })
+            : 'N/A';
+        const seller = p.listing_id === listingId ? (item.seller_location || 'N/A') : (p.seller_location || '—');
+        return `
+            <div class="mhp-list-row ${isCurrent ? 'highlighted' : ''}" data-listing-id="${_ramEsc(p.listing_id || '')}"
+                 onclick="event.stopPropagation(); ${isCurrent ? 'showSharedListingDetail(\'' + _ramEsc(p.listing_id) + '\', true)' : 'window.open(\'https://www.ss.com/lv/msg/\', \'_blank\')'}">
+                <span class="mhp-list-price ${priceClass}">${_ramEur(p.price_eur)}</span>
+                <span class="mhp-list-meta">
+                    <span class="date">${_ramEsc(dateLabel)}${isCurrent ? ' · Pašreizējais' : ''}</span>
+                    <span>${_ramEsc(seller)}</span>
+                </span>
+                <a href="${p.listing_id === listingId ? _ramEsc(item.listing_url || '#') : '#'}"
+                   target="_blank" rel="noopener noreferrer"
+                   class="mhp-list-link"
+                   title="${isCurrent ? 'Atvērt ss.com' : 'Atvērt ss.com (URL nav pieejams)'}"
+                   onclick="event.stopPropagation()">↗</a>
+            </div>
+        `;
+    }).join('');
+    const listHtml = listRows
+        ? `<div class="mhp-list">${listRows}</div>`
+        : '<div class="mhp-spark-empty">Nav citu sludinājumu.</div>';
+
+    // ===== Insight + CTA =====
+    let insight = '';
+    if (isSteal) {
+        insight = `⚡ <strong>Steal!</strong> Šī cena ir par <strong>${_ramPct(modelAvg ? ((modelAvg - currentPrice) / modelAvg) * 100 : 0)}%</strong> zemāka par modeļa vidējo.`;
+    } else if (vsModel != null && vsModel < 0) {
+        insight = `<strong>${_ramPct(vsModelPct)}%</strong> zem modeļa vidējā.`;
+    } else if (vsModel != null && vsModel > 0) {
+        insight = `<strong>${_ramPct(vsModelPct)}%</strong> virs modeļa vidējā.`;
+    } else if (histLow != null && currentPrice === histLow) {
+        insight = `🎉 <strong>Visu laiku zemākā cena</strong> šim modelim!`;
+    } else if (histLow != null) {
+        insight = `+${_ramEur(vsHistLow || 0)} virs visu laiku zemākās.`;
+    } else {
+        insight = `Pirmais redzējums — nav vēsturisku datu.`;
+    }
+    const ctaUrl = item.listing_url || '#';
+    const ctaHtml = `
+        <div class="mhp-footer">
+            <div class="mhp-insight">${insight}</div>
+            <a href="${_ramEsc(ctaUrl)}" target="_blank" rel="noopener noreferrer" class="mhp-cta">Atvērt ss.com ↗</a>
         </div>
-        <div class="price-comparison">
-            <div class="price-row">
-                <span class="label">Current Price:</span>
-                <span class="value">€${item.price_eur?.toFixed(2) || 'N/A'}</span>
-            </div>
     `;
-    
-    if (wasSeen && prevPrice) {
-        const diff = item.price_eur - prevPrice;
-        const diffClass = diff < 0 ? 'better' : diff > 0 ? 'worse' : '';
-        html += `
-            <div class="price-row">
-                <span class="label">Previously:</span>
-                <span class="value ${diffClass}">
-                    €${prevPrice.toFixed(2)} (${diff < 0 ? '↓' : '↑'} €${Math.abs(diff).toFixed(2)})
-                </span>
+
+    // ===== Assemble final HTML =====
+    const html = `
+        <div class="mhp-header">
+            ${imgHtml}
+            <div class="mhp-titles">
+                <div class="mhp-title">${_ramEsc(item.ram_name || item.title || 'RAM')}</div>
+                <div class="mhp-sub">
+                    <span class="ddr-chip ${ddrChipCls}">${_ramEsc(ddr)}</span>
+                    <span>${cap ? cap + ' GB' : ''}</span>
+                    ${item.speed ? `<span>· ${_ramEsc(item.speed)}</span>` : ''}
+                    ${item.cas_latency ? `<span>· CL${_ramEsc(item.cas_latency)}</span>` : ''}
+                </div>
             </div>
-        `;
-    }
-    
-    if (marketAvg) {
-        const vsMarket = item.price_eur - marketAvg;
-        const pct = marketAvg > 0 ? (vsMarket / marketAvg) * 100 : 0;
-        const marketClass = vsMarket < 0 ? 'better' : 'worse';
-        const cheaperOrHigher = vsMarket < 0 ? 'cheaper' : 'more expensive';
-        html += `
-            <div class="price-row">
-                <span class="label">Market Avg (${item.ddr_type} ${item.capacity_gb}GB):</span>
-                <span class="value ${marketClass}">
-                    €${marketAvg.toFixed(2)} (${vsMarket < 0 ? '↓' : '↑'} €${Math.abs(vsMarket).toFixed(2)} / ${Math.abs(pct).toFixed(0)}% ${cheaperOrHigher})
-                </span>
+            <button type="button" class="mhp-close" onclick="hideModelHistoryPopup()" aria-label="Aizvērt">×</button>
+        </div>
+        ${badgesHtml}
+        <div class="mhp-kpi-grid">
+            <div class="mhp-kpi ${currentPrice < (modelAvg || Infinity) ? 'deal-glow' : ''}">
+                <span class="kpi-label">Pašreiz</span>
+                <span class="kpi-value">${_ramEur(currentPrice)}</span>
+                <span class="kpi-sub">${_ramEsc(kpiCurrentExtra)} ${kpiCurrentSub ? '· ' + kpiCurrentSub : ''}</span>
             </div>
-        `;
-    }
-    
-    html += `</div>`;
-    
+            <div class="mhp-kpi ${marketKpiCls}">
+                <span class="kpi-label">${_ramEsc(ddr)} ${cap ? cap + 'GB' : ''} tirgus</span>
+                <span class="kpi-value">${marketAvg ? _ramEur(marketAvg) : '—'}</span>
+                <span class="kpi-sub">${marketSub}</span>
+            </div>
+            <div class="mhp-kpi ${modelKpiCls}">
+                <span class="kpi-label">Modeļa vid.</span>
+                <span class="kpi-value">${modelAvg ? _ramEur(modelAvg) : '—'}</span>
+                <span class="kpi-sub">${modelSub}${modelStats && modelStats.count ? ` · n=${modelStats.count}` : ''}</span>
+            </div>
+            <div class="mhp-kpi">
+                <span class="kpi-label">Hist. zem.</span>
+                <span class="kpi-value">${histLow ? _ramEur(histLow) : '—'}</span>
+                <span class="kpi-sub">${histLowSub}</span>
+            </div>
+        </div>
+        <div class="mhp-section-head">
+            <span class="mhp-section-title">Cenu vēsture</span>
+            <span style="font-size:0.65rem; color: var(--ram-text-dim);">${timeline.length} ieraksti</span>
+        </div>
+        <div class="mhp-spark-wrap">${sparklineHtml}</div>
+        <div class="mhp-section-head">
+            <span class="mhp-section-title">Visi sludinājumi (${allListings.length})</span>
+        </div>
+        ${listHtml}
+        ${ctaHtml}
+    `;
+
     popup.innerHTML = html;
+    popup.className = ddrCls;
     popup.style.display = 'block';
-    
-    // Position popup near the click
+
+    // Position popup near the click. Account for scroll because the popup
+    // is at the end of the document (no positioned ancestor) so style.left
+    // is document-relative, not viewport-relative.
     const rect = event.target.getBoundingClientRect();
-    popup.style.left = rect.left + 'px';
-    popup.style.top = (rect.bottom + 5) + 'px';
+    const popupWidth = 420;
+    const vw = window.innerWidth;
+    const scrollX = window.scrollX || window.pageXOffset || 0;
+    const scrollY = window.scrollY || window.pageYOffset || 0;
+    let left = rect.left + scrollX;
+    // If the popup would overflow the right edge of the document, pin it
+    // to the right edge instead. Use document width to handle zoom.
+    const docWidth = Math.max(document.documentElement.scrollWidth, vw);
+    if (left + popupWidth + 12 > docWidth) {
+        left = Math.max(8 + scrollX, docWidth - popupWidth - 12);
+    }
+    popup.style.left = left + 'px';
+    popup.style.top = (rect.bottom + scrollY + 6) + 'px';
 }
 
+// Render the reworked RAM listing-detail popup. Combines:
+//   • basic listing data from /api/listing-details/<id>
+//   • dedicated RAM stats from /api/listing-ram-stats/<id> (exact model,
+//     similar speed, similar capacity, exact model history)
+//   • legacy /api/price-history/<id> (graceful fallback)
 function showSharedListingDetail(listingId, hasHistory) {
     const modal = document.getElementById('shared-listing-modal');
     const content = document.getElementById('shared-listing-content');
@@ -1407,38 +2212,176 @@ function showSharedListingDetail(listingId, hasHistory) {
     content.innerHTML = '<div class="loading">' + t('Loading...') + '</div>';
     modal.classList.add('active');
 
-    fetch(`/api/listing-details/${listingId}`)
-        .then(response => {
-            if (!response.ok) throw new Error(t('Failed to load listing details'));
-            return response.json();
-        })
-        .then(data => {
-            const item = data.current || data;
-            const thumbUrl = item.local_image_path
-                ? `/images/${item.local_image_path.replace(/\\/g, '/')}`
-                : item.image_url;
-            const dateStr = item.date_posted
-                ? new Date(item.date_posted).toLocaleDateString()
-                : 'N/A';
-            let html = '<div class="listing-detail-body">';
-            if (thumbUrl) {
-                html += `<div class="listing-detail-images"><img src="${thumbUrl}" alt="${(item.title || '').replace(/'/g, "\\'")}" loading="lazy" onerror="this.style.display='none'"></div>`;
+    const escapeHtml = (s) => String(s == null ? '' : s)
+        .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+
+    // Use the row we already have so the popup can show stats immediately, then
+    // enrich with detailed API calls (run in parallel).
+    const row = (typeof allRAMs !== 'undefined' ? allRAMs : []).find(x => x.listing_id === listingId) || {};
+
+    Promise.all([
+        fetch(`/api/listing-details/${listingId}`).then(r => r.ok ? r.json() : null).catch(() => null),
+        fetch(`/api/listing-ram-stats/${listingId}`).then(r => r.ok ? r.json() : null).catch(() => null),
+        fetch(`/api/price-history/${listingId}`).then(r => r.ok ? r.json() : []).catch(() => []),
+    ]).then(([details, ramStats, history]) => {
+        const det = (details && details.current) || {};
+        const merged = { ...row, ...det };
+        const cleaned = cleanTitle(merged.title || row.ram_name || 'RAM listing');
+        const imgPath = merged.local_image_path ? String(merged.local_image_path).replace(/\\/g, '/') : null;
+        const imgUrl = imgPath ? `/images/${imgPath}` : merged.image_url;
+        const price = parseFloat(merged.price_eur) || 0;
+        const datePosted = merged.date_posted ? new Date(merged.date_posted).toLocaleDateString() : '—';
+
+        // ---- RAM reference (from new endpoint) ----
+        const L = (ramStats && ramStats.listing) || {};
+        const speedMhz = parseRamSpeedMhz(L.speed || row.speed);
+        const cas = parseInt(L.cas_latency || row.cas_latency);
+        const latencyNs = (cas && speedMhz) ? (cas * 2000 / speedMhz) : null;
+        const latencyCls = latencyNs == null ? ''
+            : latencyNs <= 8 ? 'speed-great'
+            : latencyNs <= 10 ? 'speed-good'
+            : latencyNs <= 12 ? 'speed-mid'
+            : 'speed-slow';
+
+        // ---- Exact model history (deduplicate by listing_id, take top 8) ----
+        const seen = new Set();
+        const modelHistoryRaw = (ramStats && ramStats.exact_model_history) || [];
+        const modelHistory = modelHistoryRaw.filter(h => {
+            if (!h || !h.listing_id) return false;
+            if (seen.has(h.listing_id)) return false;
+            seen.add(h.listing_id);
+            return true;
+        }).slice(0, 8);
+
+        // ---- Render ----
+        const statBlock = (title, stats, currentPrice) => {
+            if (!stats || !stats.count) {
+                return `<div class="ram-stat-mini"><div class="ram-stat-mini-h">${title}</div><div class="ram-stat-mini-v" style="color:var(--ram-text-dim);">No data</div></div>`;
             }
-            html += `<h2>${item.title || ''}</h2>`;
-            html += `<p style="font-size: 1.25rem; font-weight: 700; color: #667eea;">€${item.price_eur || item.price || 0}</p>`;
-            if (item.seller_location) html += `<p><strong>${t('Location')}:</strong> ${item.seller_location}</p>`;
-            if (item.date_posted) html += `<p><strong>${t('Posted')}:</strong> ${dateStr}</p>`;
-            if (item.listing_url) html += `<p><a href="${item.listing_url}" target="_blank" rel="noopener">${t('View on ss.com')} →</a></p>`;
-            if (item.description) {
-                html += `<div><strong>${t('Description')}:</strong></div>`;
-                html += `<p>${item.description}</p>`;
-            }
-            html += '</div>';
-            content.innerHTML = html;
-        })
-        .catch(error => {
-            content.innerHTML = '<div class="error">' + (error.message || t('Error loading listing')) + '</div>';
-        });
+            const avg = stats.avg;
+            const diff = (avg != null && currentPrice) ? currentPrice - avg : null;
+            const diffCls = diff == null ? '' : diff < 0 ? 'below' : 'above';
+            const diffPct = (diff != null && avg) ? (diff / avg * 100) : null;
+            return `
+                <div class="ram-stat-mini">
+                    <div class="ram-stat-mini-h">${title}</div>
+                    <div class="ram-stat-mini-v">€${Number(avg).toFixed(2)}</div>
+                    <div class="ram-stat-mini-m">€${Number(stats.min).toFixed(0)}–€${Number(stats.max).toFixed(0)} · ${stats.count} listings</div>
+                    ${diff != null ? `<div class="ram-stat-mini-d ${diffCls}">${diff < 0 ? '−' : '+'}€${Math.abs(diff).toFixed(0)} (${diff < 0 ? '' : '+'}${diffPct.toFixed(1)}%) vs this</div>` : ''}
+                </div>`;
+        };
+
+        const fmtDate = (d) => {
+            if (!d) return '—';
+            const x = new Date(d);
+            return isNaN(x.getTime()) ? '—' : x.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: '2-digit' });
+        };
+
+        const exactModel = ramStats && ramStats.exact_model;
+        const similarSpeed = ramStats && ramStats.similar_speed;
+        const similarCapacity = ramStats && ramStats.similar_capacity;
+
+        const html = `
+            <div class="ram-popup-grid">
+                <div class="ram-popup-left">
+                    <div class="ram-popup-img" onclick="${imgUrl ? `window.open('${escapeHtml(imgUrl)}','_blank')` : ''}">
+                        ${imgUrl
+                            ? `<img src="${escapeHtml(imgUrl)}" alt="${escapeHtml(cleaned)}" loading="lazy" onerror="this.parentElement.innerHTML='<div style=font-size:64px>🧮</div>'">`
+                            : '<div style="font-size:64px;">🧮</div>'}
+                    </div>
+                    <div class="ram-popup-price-block">
+                        <div class="ram-popup-price">€${price.toFixed(0)}</div>
+                        <div class="ram-popup-price-sub">${escapeHtml(row.seller_location || det.seller_location || '—')} · ${datePosted}</div>
+                        ${exactModel && exactModel.avg
+                            ? `<div class="ram-popup-vs-avg">${price < exactModel.avg
+                                ? `<span class="vs-avg below">−€${(exactModel.avg - price).toFixed(0)} below model avg</span>`
+                                : (price > exactModel.avg
+                                    ? `<span class="vs-avg above">+€${(price - exactModel.avg).toFixed(0)} above model avg</span>`
+                                    : `<span class="vs-avg">= model avg</span>`)}</div>`
+                            : ''}
+                    </div>
+                </div>
+                <div class="ram-popup-right">
+                    <h3 class="ram-popup-h">📝 Listing</h3>
+                    <div class="ram-popup-rows">
+                        <div class="rp-row"><span class="rp-k">Title</span><span class="rp-v">${escapeHtml(cleaned)}</span></div>
+                        ${(merged.title && merged.title !== cleaned) ? `<div class="rp-row" style="opacity:0.6;font-size:0.75rem;"><span class="rp-k">Raw</span><span class="rp-v">${escapeHtml(merged.title)}</span></div>` : ''}
+                        <div class="rp-row"><span class="rp-k">Brand/Model</span><span class="rp-v">${escapeHtml(L.ram_name || row.ram_name || '—')}</span></div>
+                        <div class="rp-row"><span class="rp-k">Location</span><span class="rp-v">${escapeHtml(merged.seller_location || '—')}</span></div>
+                        <div class="rp-row"><span class="rp-k">Posted</span><span class="rp-v">${datePosted}</span></div>
+                        <div class="rp-row"><span class="rp-k">Status</span><span class="rp-v">${merged.is_active ? '🟢 Active' : '⚪ Inactive'}</span></div>
+                    </div>
+                    <div class="ram-popup-actions">
+                        ${merged.listing_url ? `<a href="${escapeHtml(merged.listing_url)}" target="_blank" rel="noopener" class="ram-popup-btn primary">View on ss.com ↗</a>` : ''}
+                        <button class="ram-popup-btn" onclick="showFlagModalWithCategories('${escapeHtml(listingId)}', '${escapeHtml(cleaned)}')">🚩 Flag</button>
+                    </div>
+                </div>
+            </div>
+
+            <h3 class="ram-popup-h" style="margin-top:18px;">🧬 RAM Reference</h3>
+            <div class="ram-popup-spec-grid">
+                <div class="rp-spec"><span class="rp-spec-k">DDR</span><span class="rp-spec-v">${escapeHtml(L.ddr_type || row.ddr_type || '—')}</span></div>
+                <div class="rp-spec"><span class="rp-spec-k">Capacity</span><span class="rp-spec-v">${L.capacity_gb || row.capacity_gb || '?'} GB</span></div>
+                <div class="rp-spec"><span class="rp-spec-k">Speed</span><span class="rp-spec-v">${escapeHtml(L.speed || row.speed || '—')}${speedMhz ? ` <span style="color:var(--ram-text-dim);font-weight:500;">(${speedMhz} MHz)</span>` : ''}</span></div>
+                <div class="rp-spec"><span class="rp-spec-k">CAS</span><span class="rp-spec-v">${cas ? 'CL' + cas : '—'}</span></div>
+                <div class="rp-spec"><span class="rp-spec-k">Latency</span><span class="rp-spec-v">${latencyNs != null
+                    ? `<span class="ram-cell-latency ${latencyCls}" title="First-word latency: CL${cas} × 2000 / ${speedMhz} MHz">${latencyNs.toFixed(1)} ns</span>`
+                    : '—'}</span></div>
+                <div class="rp-spec"><span class="rp-spec-k">Modules</span><span class="rp-spec-v">${escapeHtml(L.modules || row.modules || '—')}</span></div>
+            </div>
+
+            <h3 class="ram-popup-h" style="margin-top:18px;">💰 Market Context</h3>
+            <div class="ram-popup-stats">
+                ${statBlock('Exact model', exactModel, price)}
+                ${statBlock('Same speed (' + (L.speed || row.speed || '—') + ')', similarSpeed, price)}
+                ${statBlock('Same DDR + capacity', similarCapacity, price)}
+            </div>
+
+            <h3 class="ram-popup-h" style="margin-top:18px;">📜 Exact Model History <span class="ram-popup-h-meta">${modelHistory.length} listing${modelHistory.length === 1 ? '' : 's'}</span></h3>
+            ${modelHistory.length ? `
+                <div class="ram-popup-history">
+                    ${modelHistory.map(h => `
+                        <div class="ram-popup-history-card ${h.listing_id === listingId ? 'current' : ''}">
+                            <div class="rh-price">€${Number(h.price_eur).toFixed(0)}</div>
+                            <div class="rh-date">${fmtDate(h.date_posted || h.first_seen_at)}</div>
+                            ${h.listing_id === listingId ? '<div class="rh-tag">THIS</div>' : ''}
+                        </div>
+                    `).join('')}
+                </div>
+            ` : '<div class="ram-popup-empty">No historical prices recorded for this model.</div>'}
+
+            <h3 class="ram-popup-h" style="margin-top:18px;">📈 Price History (this listing) <span class="ram-popup-h-meta">${history.length} snapshot${history.length === 1 ? '' : 's'}</span></h3>
+            ${history.length ? `
+                <div class="ram-popup-history">
+                    ${history.slice(0, 12).map(h => `
+                        <div class="ram-popup-history-card">
+                            <div class="rh-price">€${Number(h.price_eur).toFixed(0)}</div>
+                            <div class="rh-date">${fmtDate(h.recorded_at || h.date_posted)}</div>
+                        </div>
+                    `).join('')}
+                </div>
+            ` : '<div class="ram-popup-empty">No price snapshots yet — this listing has only one recorded price.</div>'}
+
+            ${merged.description ? `
+                <h3 class="ram-popup-h" style="margin-top:18px;">📄 Description</h3>
+                <div class="ram-popup-desc">${escapeHtml(merged.description)}</div>
+            ` : ''}
+        `;
+        content.innerHTML = html;
+        title.textContent = L.ram_name || row.ram_name || cleaned;
+    }).catch(error => {
+        content.innerHTML = '<div class="error">' + (error.message || t('Error loading listing')) + '</div>';
+    });
+}
+
+// Clean a raw SS.COM title (strips "SS.COM Cenas, Cena XX €.," prefix)
+function cleanTitle(raw) {
+    if (!raw) return '';
+    return String(raw)
+        .replace(/SS\.COM[^,]*,\s*Cena\s*\d+([.,]\d+)?\s*€\.?\s*/i, '')
+        .replace(/SS\.COM[^,]*,\s*/i, '')
+        .replace(/^\s+|\s+$/g, '');
 }
 
 // Hide model history popup
@@ -1530,21 +2473,53 @@ function renderTableRow(item) {
                 const isSteal = item.price_stats && item.price_stats.below_avg
                     && ((parseFloat(item.price_stats.avg) - item.price_eur) / parseFloat(item.price_stats.avg)) >= 0.15;
                 const isNew = item.is_new === true;
-                const isUnicorn = item.is_unicorn;
-                const badgeStack = (isSteal || isNew || isUnicorn) ? `
+                // NOTE: unicorn badge is intentionally NOT shown over the thumbnail anymore.
+                // It's a row-level property that lives in the col-model cell instead.
+                const badgeStack = (isSteal || isNew) ? `
                     <div class="deal-badge-stack">
                         ${isSteal ? '<span class="badge steal" title="Price ≥15% below model average">🔥 STEAL</span>' : ''}
-                        ${isUnicorn ? '<span class="badge unicorn" title="Only one listing of this model in all history">🦄</span>' : ''}
                         ${isNew && !isSteal ? '<span class="badge is-new" title="New in latest import">🆕 NEW</span>' : ''}
                     </div>` : '';
+                // Source dot indicator — small colored circle to the LEFT of
+                // the thumbnail. Toggled by the user's localStorage flag.
+                // Renders as a flex sibling of the image so it sits cleanly
+                // outside the thumbnail bounds. See the GPU/SSD pages for
+                // the same pattern.
+                const showSourceDots = localStorage.getItem('showSourceDots') !== 'false';
+                const sourceLabels = {
+                    'andelemandele': { text: 'Andele', bg: '#8B5CF6' },
+                    'facebook_extension': { text: 'Facebook', bg: '#1877F2' },
+                    'ss.com': { text: 'SS.com', bg: '#10b981' }
+                };
+                const sourceInfo = sourceLabels[item.source] || sourceLabels['ss.com'];
+                const sourceDot = showSourceDots
+                    ? `<span class="ram-source-dot" title="${sourceInfo.text} (${item.source || 'unknown'})" aria-label="${sourceInfo.text}" style="background: ${sourceInfo.bg};"></span>`
+                    : '';
                 const imgContent = imageUrl
                     ? `<img src="${imageUrl}" alt="RAM" loading="lazy" onclick="event.stopPropagation(); showImageModal('${imageClickUrl}', 'RAM')">`
                     : '<div class="placeholder-img">📷</div>';
-                return `<td data-col="col-image" class="ram-cell-image" ${style}>${badgeStack}${imgContent}</td>`;
+                return `<td data-col="col-image" class="ram-cell-image" ${style}><div class="ram-image-cell-inner">${sourceDot}<div style="position: relative; display: inline-block;">${badgeStack}${imgContent}</div></div></td>`;
             }
             case 'col-ram': {
                 const confPct = Math.round(confidence * 100);
                 const confCls = confPct >= 70 ? 'high' : confPct >= 50 ? 'medium' : 'low';
+                // Confidence bar is gated by the showRAMConfidenceBar admin
+                // toggle (default: ON). localStorage override is 'true' means
+                // user explicitly enabled it; 'false' means they hid it.
+                // Server-injected __userToggleDefaults provides the role default.
+                const roleConfBar = (typeof window.__userToggleDefaults === 'object'
+                    && window.__userToggleDefaults
+                    && window.__userToggleDefaults.showRAMConfidenceBar === false) ? false : true;
+                const lsConfBar = localStorage.getItem('showRAMConfidenceBar');
+                const showConfBar = lsConfBar === 'true' ? true
+                    : lsConfBar === 'false' ? false
+                    : roleConfBar;
+                const confBarHtml = showConfBar
+                    ? `<div class="conf-bar">
+                            <div class="conf-bar-track"><div class="conf-bar-fill ${confCls}" style="width: ${confPct}%"></div></div>
+                            <span class="conf-label">${confPct}%</span>
+                        </div>`
+                    : '';
                 return `<td data-col="col-ram" ${style}>
                     <div class="ram-cell-name">
                         <div class="ram-title">${item.ram_name || 'Unknown RAM'}</div>
@@ -1553,10 +2528,7 @@ function renderTableRow(item) {
                             <span class="cap-chip">${item.capacity_gb || '?'} GB</span>
                             ${item.speed ? `<span class="speed-text">${item.speed}</span>` : ''}
                         </div>
-                        <div class="conf-bar">
-                            <div class="conf-bar-track"><div class="conf-bar-fill ${confCls}" style="width: ${confPct}%"></div></div>
-                            <span class="conf-label">${confPct}%</span>
-                        </div>
+                        ${confBarHtml}
                     </div>
                 </td>`;
             }
@@ -1579,9 +2551,28 @@ function renderTableRow(item) {
                 }
                 return `<td data-col="col-latency" ${style}><span class="ram-cell-latency">CL${lat}</span></td>`;
             }
+            case 'col-speed': {
+                // CAS × 2000 / MHz = first-word latency in nanoseconds.
+                // For DDR4-3200 CL16: 16 × 2000 / 3200 = 10.0 ns
+                // Lower is better.
+                const lat = parseInt(item.cas_latency);
+                const mhz = parseRamSpeedMhz(item.speed);
+                if (!lat || !mhz) {
+                    return `<td data-col="col-speed" ${style}><span class="ram-cell-latency empty">—</span></td>`;
+                }
+                const ns = (lat * 2000 / mhz);
+                const cls = ns <= 8 ? 'speed-great' : ns <= 10 ? 'speed-good' : ns <= 12 ? 'speed-mid' : 'speed-slow';
+                return `<td data-col="col-speed" ${style}><span class="ram-cell-latency ${cls}" title="First-word latency: CL${lat} × 2000 / ${mhz} MHz">${ns.toFixed(1)} ns</span></td>`;
+            }
             case 'col-model':
                 if (item.is_unicorn) {
-                    return `<td data-col="col-model" ${style}><span class="badge-unicorn">🦄 UNICORN</span></td>`;
+                    return `<td data-col="col-model" ${style}>
+                        <div class="ram-cell-stat">
+                            <div class="stat-head">Model position</div>
+                            <span class="badge-unicorn" title="Only one listing of this model in all history">🦄 UNICORN</span>
+                            <div class="stat-pct" style="margin-top:0.3rem;font-size:0.7rem;">No comparable data</div>
+                        </div>
+                    </td>`;
                 }
                 if (!item.price_stats) return `<td data-col="col-model" ${style}><span class="ram-cell-meta">—</span></td>`;
                 return `<td data-col="col-model" ${style}>
@@ -1589,7 +2580,7 @@ function renderTableRow(item) {
                         <div class="stat-head">Model avg</div>
                         <div class="stat-value">€${item.price_stats.avg}</div>
                         <div class="stat-range">€${item.price_stats.min}–€${item.price_stats.max}</div>
-                        <div class="stat-bar"><div style="width: ${item.price_stats.percentile}%"></div></div>
+                        <div class="stat-bar"><div style="left: ${item.price_stats.percentile}%"></div></div>
                         <div class="stat-pct"><span class="pct-num">${item.price_stats.percentile}%</span> percentile</div>
                     </div>
                 </td>`;
@@ -1600,7 +2591,7 @@ function renderTableRow(item) {
                         <div class="stat-head">${item.ddr_stats.ddr_type || ''} ${item.ddr_stats.capacity_gb || '?'}GB market</div>
                         <div class="stat-value">€${item.ddr_stats.avg}</div>
                         <div class="stat-range">€${item.ddr_stats.min}–€${item.ddr_stats.max}</div>
-                        <div class="stat-bar"><div style="width: ${item.ddr_stats.percentile}%"></div></div>
+                        <div class="stat-bar"><div style="left: ${item.ddr_stats.percentile}%"></div></div>
                         <div class="stat-pct"><span class="pct-num">${item.ddr_stats.percentile}%</span> percentile</div>
                     </div>
                 </td>`;
@@ -1629,11 +2620,11 @@ function renderTableRow(item) {
                 return `<td ${style}></td>`;
         }
     }).join('');
-    
+
     return `<tr class="clickable" onclick="showSharedListingDetail('${item.listing_id}', true)" title="Click to view listing details">${cells}</tr>`;
     } catch (e) {
         console.error('[RAM Debug] Error in renderTableRow:', e);
-        return `<tr><td colspan="9" style="color: red;">Error: ${e.message}</td></tr>`;
+        return `<tr><td colspan="10" style="color: red;">Error: ${e.message}</td></tr>`;
     }
 }
 
@@ -1772,6 +2763,7 @@ async function loadListings() {
         updateCapacityDistribution(statsSource);
         updateRAMAvgPriceChart(statsSource);
         updateDDRStats(statsSource);
+        updatePriceByCapTypeChart(statsSource);
 
         // Update top deals (based on currently visible listings)
         renderTopDeals();
@@ -2186,136 +3178,235 @@ function updateRAMAvgPriceChart(listings) {
     });
 }
 
-// Update price trends chart using real data from allRAMs
-function updatePriceTrends() {
-    const ctx = document.getElementById('priceTrendChart');
+// Capacity chip selector for the "Avg RAM Price by Capacity & Type over Time" chart.
+// Updates the active chip state, persists the selection, and re-renders the chart
+// using the SAME data source the main charts use (so the chart stays in sync with
+// the main DDR/capacity/active-only filters automatically).
+function setTrendCapacity(cap, btn) {
+    trendCapacity = cap;
+    document.querySelectorAll('#trend-capacity-chips button').forEach(b => b.classList.remove('active'));
+    if (btn) btn.classList.add('active');
+    const source = (useAllRAMsForStats && allRAMsForStats.length > 0) ? allRAMsForStats : allRAMs;
+    updatePriceByCapTypeChart(source);
+}
+
+// Main capacity filter handler — keeps the trend chart in sync with the
+// table's main capacity filter. The main filter is "All / 4 / 8 / 16 / 32 / 64+",
+// and the trend chart reuses the same values ("all" → "All" chip, "64" → "64 GB" chip).
+function onMainCapacityChange() {
+    const cap = document.getElementById('capacity-filter').value;
+    const chip = document.querySelector(`#trend-capacity-chips button[data-cap="${cap}"]`);
+    if (chip) {
+        setTrendCapacity(cap, chip);
+    } else {
+        // Fallback — if the value is "all" or unknown, use it directly
+        setTrendCapacity(cap, null);
+    }
+    loadListings();
+}
+
+// Render the "Avg RAM Price by Capacity & Type over Time" chart.
+//   - one line per DDR type (DDR3 / DDR4 / DDR5) at the selected capacity
+//   - X axis = month (year-month key, sorted chronologically)
+//   - Y axis = average price (€) per month
+//   - responds to:
+//       * `trendCapacity` (chip selector — '4' | '8' | '16' | '32' | '64' | 'all')
+//       * `currentDDRFilter` (main DDR filter — 'all' shows all 3 lines)
+//       * `useAllRAMsForStats` toggle (use full dataset vs. filtered set)
+function updatePriceByCapTypeChart(listings) {
+    const ctx = document.getElementById('priceByCapTypeChart');
+    const emptyEl = document.getElementById('priceByCapTypeEmpty');
     if (!ctx) return;
-    
-    // Check dark mode
+
+    const source = listings || [];
     const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-    const textColor = isDark ? '#e0e0e0' : '#333';
-    const gridColor = isDark ? '#444' : '#eee';
-    
-    const capacity = document.getElementById('trend-capacity').value;
-    const ddr = document.getElementById('trend-ddr').value;
-    
-    // Filter listings by capacity and DDR type
-    const filteredListings = allRAMs.filter(item => {
-        const itemCapacity = String(item.capacity_gb || '');
-        const itemDDR = item.ddr_type || item.ram_type || '';
-        
-        const capacityMatch = itemCapacity === capacity;
-        const ddrMatch = ddr === 'all' || (itemDDR && itemDDR.toLowerCase() === ddr.toLowerCase());
-        
-        return capacityMatch && ddrMatch;
+    const gridColor = isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.06)';
+    const textColor = isDark ? '#d1d5db' : '#374151';
+
+    // Filter by selected capacity (or keep all).
+    // The "64" chip is special — it matches 64GB AND anything larger (e.g. 96/128/256).
+    // Any other capacity is an exact match. Unknown values filter to nothing.
+    const filtered = source.filter(item => {
+        const cap = parseInt(item.capacity_gb || item.ram_capacity || 0, 10);
+        if (trendCapacity === 'all') return true;
+        const want = parseInt(trendCapacity, 10);
+        if (trendCapacity === '64') return cap >= 64;
+        return cap === want;
     });
-    
-    // Group by month and calculate average prices
-    const monthlyData = {};
-    
-    filteredListings.forEach(item => {
-        if (!item.date_posted) return;
-        
-        const date = new Date(item.date_posted);
+
+    // Group: month → DDR type → { prices[], count }
+    const buckets = {};
+    filtered.forEach(item => {
+        const d = item.date_posted || item.first_seen_at;
+        if (!d) return;
+        const date = new Date(d);
         if (isNaN(date.getTime())) return;
-        
-        const monthKey = date.toLocaleDateString('en-GB', { month: 'short', year: 'numeric' });
-        
-        if (!monthlyData[monthKey]) {
-            monthlyData[monthKey] = { prices: [], count: 0 };
-        }
-        monthlyData[monthKey].prices.push(item.price_eur || 0);
-        monthlyData[monthKey].count++;
+        const monthKey = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
+        const ddr = (item.ddr_type || item.ram_type || '').toUpperCase();
+        // Normalize to canonical DDR3 / DDR4 / DDR5 only
+        if (!/^DDR[345]$/.test(ddr)) return;
+        if (!buckets[monthKey]) buckets[monthKey] = {};
+        if (!buckets[monthKey][ddr]) buckets[monthKey][ddr] = { prices: [], count: 0 };
+        buckets[monthKey][ddr].prices.push(parseFloat(item.price_eur) || 0);
+        buckets[monthKey][ddr].count += 1;
     });
-    
-    // Sort months chronologically
-    const sortedMonths = Object.keys(monthlyData).sort((a, b) => {
-        const dateA = new Date(a);
-        const dateB = new Date(b);
-        return dateA - dateB;
+
+    // Sort months chronologically and format labels
+    const months = Object.keys(buckets).sort();
+    const monthLabels = months.map(m => {
+        const [y, mm] = m.split('-');
+        const d = new Date(parseInt(y, 10), parseInt(mm, 10) - 1, 1);
+        return d.toLocaleDateString('en-GB', { month: 'short', year: '2-digit' });
     });
-    
-    // Calculate averages and counts
-    const labels = sortedMonths;
-    const prices = sortedMonths.map(month => {
-        const data = monthlyData[month];
-        return data.prices.reduce((sum, p) => sum + p, 0) / data.prices.length;
+
+    // Decide which DDR series to render
+    const allDdrs = ['DDR3', 'DDR4', 'DDR5'];
+    const ddrsToShow = (currentDDRFilter && currentDDRFilter !== 'all' && allDdrs.includes(currentDDRFilter))
+        ? [currentDDRFilter]
+        : allDdrs;
+
+    // Build datasets. Store the count alongside the y-value via a parallel array so
+    // the dataset itself stays a plain y-value array (Chart.js v4 line controller
+    // doesn't reliably draw object-form data points when the field name isn't
+    // configured via `parsing`).
+    const datasets = ddrsToShow.map(ddr => {
+        const palette = DDR_PALETTE[ddr];
+        const yData = [];
+        const countData = [];
+        months.forEach(m => {
+            const bucket = buckets[m][ddr];
+            if (!bucket || bucket.prices.length === 0) {
+                yData.push(null);
+                countData.push(0);
+            } else {
+                const avg = bucket.prices.reduce((a, b) => a + b, 0) / bucket.prices.length;
+                yData.push(Math.round(avg * 100) / 100);
+                countData.push(bucket.count);
+            }
+        });
+        return {
+            label: ddr,
+            data: yData,
+            _counts: countData, // parallel array, used only by tooltip
+            borderColor: palette.line,
+            backgroundColor: palette.soft,
+            pointBackgroundColor: palette.line,
+            pointBorderColor: '#ffffff',
+            pointBorderWidth: 1.5,
+            pointRadius: 4,
+            pointHoverRadius: 6,
+            borderWidth: 2.5,
+            tension: 0.35,
+            fill: ddrsToShow.length > 1, // only fill when multiple series
+            spanGaps: true
+        };
     });
-    const counts = sortedMonths.map(month => monthlyData[month].count);
-    
-    if (priceTrendChart) {
-        priceTrendChart.destroy();
+
+    // Total listings included (for the header caption)
+    const totalListings = filtered.length;
+    const hasData = datasets.some(ds => ds.data.some(v => v != null));
+
+    // Update the "active DDR types" pill in the section header
+    const ddrPill = document.getElementById('trend-ddr-status');
+    if (ddrPill) {
+        const label = ddrsToShow.length === 1
+            ? ddrsToShow[0]
+            : `${ddrsToShow.length} DDR tipi`;
+        const sampleClass = ddrsToShow.length === 1 ? `ddr-${ddrsToShow[0].slice(-2).toLowerCase()}-pill` : 'ddr-multi-pill';
+        ddrPill.className = `trend-ddr-pill ${sampleClass}`;
+        ddrPill.textContent = label;
     }
-    
-    // If no data, show a message
-    if (labels.length === 0) {
-        // Still create chart but with empty data
-        labels.push('No data');
-        prices.push(0);
-        counts.push(0);
+
+    // Destroy & rebuild
+    if (priceByCapTypeChart) {
+        priceByCapTypeChart.destroy();
+        priceByCapTypeChart = null;
     }
-    
-    priceTrendChart = new Chart(ctx, {
+
+    if (!hasData) {
+        // Show empty state, leave the canvas blank
+        if (emptyEl) emptyEl.style.display = 'flex';
+        return;
+    }
+    if (emptyEl) emptyEl.style.display = 'none';
+
+    const capLabel = trendCapacity === 'all'
+        ? 'Visas ietilpības'
+        : (trendCapacity === '64' ? '64+ GB' : `${trendCapacity} GB`);
+
+    priceByCapTypeChart = new Chart(ctx, {
         type: 'line',
-        data: {
-            labels: labels,
-            datasets: [{
-                label: 'Average Price (€)',
-                data: prices,
-                borderColor: '#667eea',
-                backgroundColor: isDark ? 'rgba(102, 126, 234, 0.2)' : 'rgba(102, 126, 234, 0.1)',
-                pointBackgroundColor: '#667eea',
-                pointRadius: 6,
-                fill: true,
-                tension: 0.3,
-                yAxisID: 'y'
-            }, {
-                label: 'Listings',
-                data: counts,
-                borderColor: '#764ba2',
-                backgroundColor: isDark ? 'rgba(118, 75, 162, 0.2)' : 'rgba(118, 75, 162, 0.1)',
-                pointBackgroundColor: '#764ba2',
-                pointRadius: 4,
-                fill: false,
-                tension: 0.2,
-                yAxisID: 'y1'
-            }]
-        },
+        data: { labels: monthLabels, datasets },
         options: {
             responsive: true,
             maintainAspectRatio: false,
+            animation: { duration: 400 },
+            interaction: { mode: 'index', intersect: false },
             plugins: {
-                title: { 
-                    display: true, 
-                    text: `Price Trends - ${capacity}GB ${ddr !== 'all' ? ddr : 'All DDR'} (${filteredListings.length} listings)`,
-                    color: textColor
-                },
                 legend: {
-                    labels: { color: textColor }
+                    display: true,
+                    position: 'bottom',
+                    labels: {
+                        boxWidth: 10,
+                        boxHeight: 10,
+                        usePointStyle: true,
+                        pointStyle: 'circle',
+                        font: { size: 11, weight: '500' },
+                        color: textColor,
+                        padding: 12
+                    }
+                },
+                tooltip: {
+                    backgroundColor: isDark ? '#1f2937' : '#ffffff',
+                    titleColor: isDark ? '#f3f4f6' : '#111827',
+                    bodyColor: isDark ? '#e5e7eb' : '#374151',
+                    borderColor: isDark ? '#374151' : '#e5e7eb',
+                    borderWidth: 1,
+                    padding: 10,
+                    cornerRadius: 8,
+                    displayColors: true,
+                    callbacks: {
+                        title: (items) => {
+                            if (!items.length) return '';
+                            const [y, mm] = months[items[0].dataIndex].split('-');
+                            const d = new Date(parseInt(y, 10), parseInt(mm, 10) - 1, 1);
+                            return d.toLocaleDateString('en-GB', { month: 'long', year: 'numeric' });
+                        },
+                        label: (item) => {
+                            const v = item.raw;
+                            const count = (item.dataset._counts || [])[item.dataIndex] || 0;
+                            if (v == null) return `${item.dataset.label}: —`;
+                            return `${item.dataset.label}: €${v.toFixed(2)} (${count} sludinājumi)`;
+                        }
+                    }
                 }
             },
             scales: {
                 x: {
-                    ticks: { color: textColor },
-                    grid: { color: gridColor }
+                    title: { display: true, text: 'Mēnesis', color: textColor, font: { size: 10, weight: '500' } },
+                    ticks: { color: textColor, font: { size: 10 }, maxRotation: 0, autoSkip: true, maxTicksLimit: 10 },
+                    grid: { color: gridColor, display: false }
                 },
                 y: {
                     beginAtZero: true,
-                    position: 'left',
-                    title: { display: true, text: 'Average Price (€)', color: textColor },
-                    ticks: { color: textColor },
+                    title: { display: true, text: 'Vidējā cena (€)', color: textColor, font: { size: 10, weight: '500' } },
+                    ticks: {
+                        color: textColor,
+                        font: { size: 10 },
+                        callback: (v) => `€${v.toFixed(0)}`
+                    },
                     grid: { color: gridColor }
-                },
-                y1: {
-                    beginAtZero: true,
-                    position: 'right',
-                    grid: { drawOnChartArea: false },
-                    title: { display: true, text: 'Listings', color: textColor },
-                    ticks: { color: textColor }
                 }
             }
         }
     });
+
+    // Update section caption (subtle stats below the heading)
+    const caption = document.getElementById('trend-cap-caption');
+    if (caption) {
+        const ddrList = ddrsToShow.join(' + ');
+        caption.textContent = `${capLabel} · ${ddrList} · ${totalListings} sludinājumi`;
+    }
 }
 
 // Toggle column settings dropdown
@@ -2815,11 +3906,24 @@ function applyUrlFilters() {
     if (capacity) {
         const capacitySelect = document.getElementById('capacity-filter');
         if (capacitySelect) capacitySelect.value = capacity;
+        // Also sync the trend chart capacity chip to match the main filter
+        const chip = document.querySelector(`#trend-capacity-chips button[data-cap="${capacity}"]`);
+        if (chip) {
+            trendCapacity = capacity;
+            document.querySelectorAll('#trend-capacity-chips button').forEach(b => b.classList.remove('active'));
+            chip.classList.add('active');
+        }
     }
     if (ddrType) {
         currentDDRFilter = ddrType;
         const ddrSelect = document.getElementById('ddr-filter');
         if (ddrSelect) ddrSelect.value = ddrType;
+        // Sync the visible chip so users see the filter is active
+        const ddrChip = document.querySelector(`#ddr-filter-chips button[data-ddr="${ddrType}"]`);
+        if (ddrChip) {
+            document.querySelectorAll('#ddr-filter-chips button').forEach(b => b.classList.remove('active'));
+            ddrChip.classList.add('active');
+        }
     }
 }
 
@@ -2831,10 +3935,9 @@ document.addEventListener('DOMContentLoaded', () => {
         loadStats();
         applyUrlFilters();
         loadListings();
-        updatePriceTrends();
     } catch (e) {
         console.error('[RAM Debug] Error during init:', e);
-        document.getElementById('listings-container').innerHTML = 
+        document.getElementById('listings-container').innerHTML =
             '<div class="error">Initialization error: ' + e.message + '</div>';
     }
 });

@@ -39,6 +39,15 @@ class SSDScraper:
             'Nodrošina ātru datu pārraidi',
             'Startējiet sistēmu dažu sekunžu laikā',
             'Jauns',
+            # Skip registered-shop listings (custom seller logo block). This
+            # pattern can appear anywhere in the raw HTML, not just inside
+            # the description, so the check below scans the full HTML.
+            # Recognises the specific user-logo image + table layout that
+            # registered shop listings carry (id="usr_logo" inside a td
+            # with colspan="2"). Match is by both the image src and the
+            # id so a single coincidence doesn't false-positive.
+            '<img src="https://i.ss.com/images/logo/463/462416.jpg',
+            'id="usr_logo"',
         ]
 
         self.stats = {

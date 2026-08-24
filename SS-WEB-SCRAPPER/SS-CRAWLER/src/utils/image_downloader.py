@@ -46,14 +46,41 @@ class ImageDownloader:
                 return parts[0]
         return listing_id
 
+    @staticmethod
+    def _normalize_image_url(image_url: str) -> str:
+        """Normalize an image URL to a known-good image format.
+
+        Andele Mandele serves both `.webp` and `.jpg` from the same path
+        (the server just sets a different Content-Type and ships different
+        bytes). `.webp` is unusable for our downstream image pipeline
+        (PIL/legacy browser support), so always swap to `.jpg` when the
+        extension is `.webp`. Falls back to the original URL if there's
+        no extension to swap.
+
+        Verified (2026-08-20) on static*.andelemandele.lv:
+            .../abc123.webp -> image/webp,  79378 bytes
+            .../abc123.jpg  -> image/jpeg, 228771 bytes
+        """
+        if not image_url:
+            return image_url
+        # Only swap the last extension; leave the rest of the URL alone.
+        if image_url.lower().endswith(".webp"):
+            return image_url[:-5] + ".jpg"
+        return image_url
+
     def _local_path(self, image_url: str, listing_id: str) -> Path:
         """Compute local file path for an image URL (without downloading)."""
         base_listing_id = self._get_base_listing_id(listing_id)
-        parsed = urlparse(image_url)
+        # Normalize .webp -> .jpg so the saved file matches the actual
+        # bytes we download (and so downstream consumers see `.jpg`).
+        normalized_url = self._normalize_image_url(image_url)
+        parsed = urlparse(normalized_url)
         path = parsed.path
         ext = Path(path).suffix.lower()
         if not ext or ext not in ['.jpg', '.jpeg', '.png', '.gif', '.webp']:
             ext = '.jpg'
+        # Hash the ORIGINAL url so re-normalizing doesn't change the
+        # filename for a re-download (hash is stable for the same input).
         url_hash = hashlib.md5(image_url.encode()).hexdigest()[:8]
         filename = f"{base_listing_id}_{url_hash}{ext}"
         return self.base_dir / filename
@@ -72,6 +99,10 @@ class ImageDownloader:
         if not image_url:
             return None
 
+        # Normalize .webp -> .jpg (Andele serves both from the same path;
+        # .jpg is what downstream consumers expect).
+        download_url = self._normalize_image_url(image_url)
+
         try:
             local_path = self._local_path(image_url, listing_id)
 
@@ -83,12 +114,18 @@ class ImageDownloader:
                     return str(local_path.relative_to(self.base_dir.parent))
                 logger.info(f"Existing image is a placeholder ({existing_size} bytes), re-downloading: {local_path.name}")
 
-            # Download image with fallback URLs for ss.com gallery placeholders
+            # Pick the right Referer per host. Andele's image CDN can be
+            # picky about cross-origin requests, so use its own origin.
+            if "andelemandele.lv" in download_url:
+                referer = "https://www.andelemandele.lv/"
+            else:
+                referer = "https://www.ss.com/"
+
             headers = {
                 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
                 'Accept': 'image/avif,image/webp,image/apng,image/svg+xml,image/*,*/*;q=0.8',
                 'Accept-Language': 'en-US,en;q=0.9',
-                'Referer': 'https://www.ss.com/',
+                'Referer': referer,
             }
 
             def _try_download(url: str) -> bytes:
@@ -96,7 +133,7 @@ class ImageDownloader:
                 resp.raise_for_status()
                 return resp.content
 
-            content = _try_download(image_url)
+            content = _try_download(download_url)
 
             # If the download is tiny/placeholder, try known ss.com gallery fallbacks
             if len(content) < self.MIN_IMAGE_BYTES:

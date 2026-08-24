@@ -3977,3 +3977,123 @@
 [2026-08-15T19:26:27.550757] [CREATED] [T294] {"title": "laptops toop next to listings stats, show number of how much filter show", "column": "assignment", "category": "Frontend", "priority": "Medium"}
 [2026-08-15T19:26:27.919878] [BOARD_LOADED] [SYSTEM] Source: file
 [2026-08-16T01:48:24.756391] [BOARD_LOADED] [SYSTEM] Source: file
+[2026-08-16T02:26:34.267460] [BOARD_LOADED] [SYSTEM] Source: file
+[2026-08-17T09:22:10.749531] [BOARD_LOADED] [SYSTEM] Source: file
+[2026-08-17T09:40:56.922121] [BOARD_LOADED] [SYSTEM] Source: file
+[2026-08-19T12:26:15.849088] [BOARD_LOADED] [SYSTEM] Source: file
+[2026-08-19T12:26:50.752164] [BOARD_LOADED] [SYSTEM] Source: file
+[2026-08-19T12:28:18.171686] [BOARD_LOADED] [SYSTEM] Source: file
+[2026-08-19T12:28:18.239807] [BOARD_SAVED] [SYSTEM] Tasks: 251
+[2026-08-19T12:28:18.240808] [REOPENED] [T217] {"update": "still not really resolved. for example listing https://www.ss.com/msg/lv/electronics/computers/completing-pc/cases/pkkhj.html says it was posted on <td class=\"msg_footer\" align=\"right\">Datums: 07.08.2026 16:27</td>, but website shows 17.08.2026"}
+[2026-08-19T12:28:18.587925] [BOARD_LOADED] [SYSTEM] Source: file
+[2026-08-19T12:28:29.090237] [BOARD_LOADED] [SYSTEM] Source: file
+[2026-08-19T12:28:29.091238] [SOLVED] [T217] 
+[2026-08-19T12:28:29.098236] [BOARD_SAVED] [SYSTEM] Tasks: 251
+[2026-08-19T12:28:29.098236] [MOVED] [T217] {"from": "assignment", "to": "solved", "user": "system"}
+[2026-08-19T12:28:29.364484] [BOARD_LOADED] [SYSTEM] Source: file
+[2026-08-19T12:28:33.419688] [BOARD_LOADED] [SYSTEM] Source: file
+[2026-08-19T12:28:42.446206] [BOARD_LOADED] [SYSTEM] Source: file
+[2026-08-19T12:28:42.454099] [BOARD_SAVED] [SYSTEM] Tasks: 251
+[2026-08-19T12:28:42.454099] [MOVED] [T217] {"from": "solved", "to": "solved", "user": "system"}
+[2026-08-19T12:28:42.792291] [BOARD_LOADED] [SYSTEM] Source: file
+[2026-08-19T12:30:13.208048] [BOARD_LOADED] [SYSTEM] Source: file
+[2026-08-19T12:30:13.216356] [BOARD_SAVED] [SYSTEM] Tasks: 251
+[2026-08-19T12:30:13.216371] [REOPENED] [T217] {"update": "listing https://www.ss.com/msg/lv/electronics/computers/completing-pc/cases/pkkhj.html says it was posted <td class=\"msg_footer\" align=\"right\">Datums: 07.08.2026 16:27</td>, but our website shows 17.08.2026"}
+[2026-08-19T12:30:13.508324] [BOARD_LOADED] [SYSTEM] Source: file
+[2026-08-19T12:30:29.478759] [BOARD_LOADED] [SYSTEM] Source: file
+[2026-08-19T12:30:52.236893] [BOARD_LOADED] [SYSTEM] Source: file
+[2026-08-19T12:30:52.244894] [BOARD_SAVED] [SYSTEM] Tasks: 251
+[2026-08-19T12:30:52.245892] [REOPENED] [T217] {"update": "a"}
+[2026-08-19T12:30:52.528255] [BOARD_LOADED] [SYSTEM] Source: file
+[2026-08-19T12:33:50.315540] [BOARD_LOADED] [SYSTEM] Source: file
+[2026-08-19T12:34:02.283134] [BOARD_LOADED] [SYSTEM] Source: file
+[2026-08-19T12:34:02.350271] [BOARD_SAVED] [SYSTEM] Tasks: 251
+[2026-08-19T12:34:02.350271] [REOPENED] [T217] {"update": "b"}
+[2026-08-19T12:34:02.561256] [BOARD_LOADED] [SYSTEM] Source: file
+[2026-08-19T12:38:48.392803] [BOARD_LOADED] [SYSTEM] Source: file
+[2026-08-19T12:39:01.598683] [BOARD_LOADED] [SYSTEM] Source: file
+[2026-08-19T12:39:03.650675] [BOARD_LOADED] [SYSTEM] Source: file
+[2026-08-19T12:39:03.657676] [BOARD_SAVED] [SYSTEM] Tasks: 251
+[2026-08-19T12:39:03.658675] [MOVED] [T217] {"from": "assignment", "to": "talking", "user": "system"}
+[2026-08-19T12:39:05.740290] [BOARD_LOADED] [SYSTEM] Source: file
+[2026-08-19T12:39:07.802600] [BOARD_LOADED] [SYSTEM] Source: file
+[2026-08-19T12:39:07.810600] [BOARD_SAVED] [SYSTEM] Tasks: 251
+[2026-08-19T12:39:07.811600] [REOPENED] [T217] {"update": "test reopen from script"}
+[2026-08-19T12:39:09.886810] [BOARD_LOADED] [SYSTEM] Source: file
+[2026-08-19T12:39:11.932151] [BOARD_LOADED] [SYSTEM] Source: file
+[2026-08-19T12:39:11.998530] [BOARD_SAVED] [SYSTEM] Tasks: 251
+[2026-08-19T12:39:11.998530] [MOVED] [T217] {"from": "assignment", "to": "talking", "user": "system"}
+[2026-08-19T12:39:14.065240] [BOARD_LOADED] [SYSTEM] Source: file
+[2026-08-19T12:39:14.133305] [BOARD_SAVED] [SYSTEM] Tasks: 251
+[2026-08-19T12:39:14.134306] [REOPENED] [T217] {"update": "stress 0"}
+[2026-08-19T12:39:16.203364] [BOARD_LOADED] [SYSTEM] Source: file
+[2026-08-19T12:39:16.212627] [BOARD_SAVED] [SYSTEM] Tasks: 251
+[2026-08-19T12:39:16.213629] [MOVED] [T217] {"from": "assignment", "to": "talking", "user": "system"}
+[2026-08-19T12:39:18.292362] [BOARD_LOADED] [SYSTEM] Source: file
+[2026-08-19T12:39:18.300361] [BOARD_SAVED] [SYSTEM] Tasks: 251
+[2026-08-19T12:39:18.301362] [REOPENED] [T217] {"update": "stress 1"}
+[2026-08-19T12:39:20.382889] [BOARD_LOADED] [SYSTEM] Source: file
+[2026-08-19T12:39:20.389891] [BOARD_SAVED] [SYSTEM] Tasks: 251
+[2026-08-19T12:39:20.389891] [MOVED] [T217] {"from": "assignment", "to": "talking", "user": "system"}
+[2026-08-19T12:39:22.483584] [BOARD_LOADED] [SYSTEM] Source: file
+[2026-08-19T12:39:22.492100] [BOARD_SAVED] [SYSTEM] Tasks: 251
+[2026-08-19T12:39:22.492100] [REOPENED] [T217] {"update": "stress 2"}
+[2026-08-19T12:39:24.566867] [BOARD_LOADED] [SYSTEM] Source: file
+[2026-08-19T12:39:24.577232] [BOARD_SAVED] [SYSTEM] Tasks: 251
+[2026-08-19T12:39:24.577232] [MOVED] [T217] {"from": "assignment", "to": "talking", "user": "system"}
+[2026-08-19T12:39:26.654485] [BOARD_LOADED] [SYSTEM] Source: file
+[2026-08-19T12:39:26.719937] [BOARD_SAVED] [SYSTEM] Tasks: 251
+[2026-08-19T12:39:26.720939] [REOPENED] [T217] {"update": "stress 3"}
+[2026-08-19T12:39:28.807887] [BOARD_LOADED] [SYSTEM] Source: file
+[2026-08-19T12:39:28.818886] [BOARD_SAVED] [SYSTEM] Tasks: 251
+[2026-08-19T12:39:28.818886] [MOVED] [T217] {"from": "assignment", "to": "talking", "user": "system"}
+[2026-08-19T12:39:30.886562] [BOARD_LOADED] [SYSTEM] Source: file
+[2026-08-19T12:39:30.895563] [BOARD_SAVED] [SYSTEM] Tasks: 251
+[2026-08-19T12:39:30.895563] [REOPENED] [T217] {"update": "stress 4"}
+[2026-08-19T12:39:32.957199] [BOARD_LOADED] [SYSTEM] Source: file
+[2026-08-19T12:39:35.004541] [BOARD_LOADED] [SYSTEM] Source: file
+[2026-08-19T12:40:35.957602] [BOARD_LOADED] [SYSTEM] Source: file
+[2026-08-19T12:40:40.043195] [BOARD_LOADED] [SYSTEM] Source: file
+[2026-08-19T12:40:42.093767] [BOARD_LOADED] [SYSTEM] Source: file
+[2026-08-19T12:40:42.159764] [BOARD_SAVED] [SYSTEM] Tasks: 251
+[2026-08-19T12:40:42.159764] [REOPENED] [T117] {"update": "smoke test"}
+[2026-08-19T12:40:44.235718] [BOARD_LOADED] [SYSTEM] Source: file
+[2026-08-19T12:40:46.335944] [BOARD_LOADED] [SYSTEM] Source: file
+[2026-08-19T12:40:46.343983] [BOARD_SAVED] [SYSTEM] Tasks: 251
+[2026-08-19T12:40:46.343983] [MOVED] [T117] {"from": "assignment", "to": "talking", "user": "system"}
+[2026-08-19T12:52:18.143540] [BOARD_LOADED] [SYSTEM] Source: file
+[2026-08-19T12:52:52.451864] [BOARD_LOADED] [SYSTEM] Source: file
+[2026-08-19T12:52:52.459916] [BOARD_SAVED] [SYSTEM] Tasks: 251
+[2026-08-19T12:52:52.459916] [MOVED] [T217] {"from": "assignment", "to": "talking", "user": "system"}
+[2026-08-19T12:52:52.786163] [BOARD_LOADED] [SYSTEM] Source: file
+[2026-08-19T12:53:05.250817] [BOARD_LOADED] [SYSTEM] Source: file
+[2026-08-19T12:53:05.314288] [BOARD_SAVED] [SYSTEM] Tasks: 251
+[2026-08-19T12:53:05.315288] [REOPENED] [T217] {"update": "listing https://www.ss.com/msg/lv/electronics/computers/completing-pc/cases/pkkhj.html says it was posted Datums: 07.08.2026 16:27, but our website shows 17.08.2026"}
+[2026-08-19T12:53:05.631885] [BOARD_LOADED] [SYSTEM] Source: file
+[2026-08-19T12:53:17.500309] [BOARD_LOADED] [SYSTEM] Source: file
+[2026-08-19T12:53:17.508323] [BOARD_SAVED] [SYSTEM] Tasks: 251
+[2026-08-19T12:53:17.508323] [MOVED] [T059] {"from": "talking", "to": "solved", "user": "system"}
+[2026-08-19T12:53:17.771713] [BOARD_LOADED] [SYSTEM] Source: file
+[2026-08-19T12:54:52.919401] [BOARD_LOADED] [SYSTEM] Source: file
+[2026-08-19T12:54:52.926401] [BOARD_SAVED] [SYSTEM] Tasks: 252
+[2026-08-19T12:54:52.926401] [CREATED] [T295] {"title": "test add task smoke", "column": "problems", "category": "DevOps", "priority": "Medium"}
+[2026-08-19T12:56:03.708022] [BOARD_LOADED] [SYSTEM] Source: file
+[2026-08-19T13:27:37.736459] [BOARD_LOADED] [SYSTEM] Source: file
+[2026-08-19T13:27:38.677208] [BOARD_LOADED] [SYSTEM] Source: file
+[2026-08-19T13:27:38.685248] [BOARD_SAVED] [SYSTEM] Tasks: 253
+[2026-08-19T13:27:38.686248] [CREATED] [T296] {"title": "playwright add task flow test", "column": "problems", "category": "", "priority": "Medium"}
+[2026-08-19T13:27:39.013522] [BOARD_LOADED] [SYSTEM] Source: file
+[2026-08-19T13:28:33.567363] [BOARD_LOADED] [SYSTEM] Source: file
+[2026-08-19T13:28:44.820101] [BOARD_LOADED] [SYSTEM] Source: file
+[2026-08-19T13:28:44.829100] [BOARD_SAVED] [SYSTEM] Tasks: 252
+[2026-08-19T13:28:44.829100] [CREATED] [T295] {"title": "move the type guide button so it sits next to the type filter as small information icon that can redirect to type guide", "column": "assignment", "category": "Frontend", "priority": "Medium"}
+[2026-08-19T13:28:45.088603] [BOARD_LOADED] [SYSTEM] Source: file
+[2026-08-19T13:28:56.980139] [BOARD_LOADED] [SYSTEM] Source: file
+[2026-08-19T13:28:56.981163] [SOLVED] [T216] 
+[2026-08-19T13:28:56.988679] [BOARD_SAVED] [SYSTEM] Tasks: 252
+[2026-08-19T13:28:56.988679] [MOVED] [T216] {"from": "talking", "to": "solved", "user": "system"}
+[2026-08-19T13:28:57.224271] [BOARD_LOADED] [SYSTEM] Source: file
+[2026-08-20T19:33:26.410136] [BOARD_LOADED] [SYSTEM] Source: file
+[2026-08-22T19:48:27.886343] [BOARD_LOADED] [SYSTEM] Source: file
+[2026-08-23T08:00:22.030234] [BOARD_LOADED] [SYSTEM] Source: file
+[2026-08-23T17:17:38.925523] [BOARD_LOADED] [SYSTEM] Source: file

@@ -82,7 +82,7 @@
         </div>
     </div>
 
-    <div id="listings-container">
+    <div class="modern-panel" id="listings-container">
         <div class="loading">Loading lens listings...</div>
     </div>
 </div>
@@ -109,7 +109,7 @@
             </label>
         </div>
     </div>
-    <div id="lens-models-container">
+    <div class="modern-panel" id="lens-models-container">
         <div class="loading">Loading lens models...</div>
     </div>
 </div>
@@ -167,6 +167,7 @@
 <script>
 // Cache for listing details
 const listingCache = new Map();
+let allLensListings = [];
 let brands = [];
 let mounts = [];
 let lensModels = [];
@@ -461,6 +462,9 @@ async function loadListings() {
             throw new Error('Invalid response format from API');
         }
 
+        // Cache for popup re-use
+        allLensListings = listings;
+
         const container = document.getElementById('listings-container');
 
         if (listings.length === 0) {
@@ -544,16 +548,16 @@ async function loadListings() {
                             <span style="background: linear-gradient(135deg, #ec4899, #8b5cf6); color: white; font-weight: bold; padding: 4px 8px; border-radius: 6px; font-size: 0.75rem; display: inline-block;" title="Only one listing of this model in all history!">🦄 UNICORN</span>
                         ` : (item.price_stats ? `
                             <div style="font-size: 0.85rem; color: var(--text-secondary);">
-                                Avg: €${item.price_stats.avg}<br>
-                                Range: €${item.price_stats.min} - €${item.price_stats.max}
+                                Avg: €${item.price_stats.avg ?? '—'}<br>
+                                Range: €${item.price_stats.min ?? '—'} - €${item.price_stats.max ?? '—'}
                             </div>
-                            <div style="margin-top: 0.25rem; width: 100%; height: 6px; background: var(--bar-bg); border-radius: 3px; overflow: hidden;" title="Price percentile: ${item.price_stats.percentile}%">
-                                <div style="height: 100%; background: linear-gradient(135deg, #667eea, #764ba2); width: ${item.price_stats.percentile}%;"></div>
+                            <div style="margin-top: 0.25rem; width: 100%; height: 6px; background: var(--bar-bg); border-radius: 3px; overflow: hidden;" title="Price percentile: ${item.price_stats.percentile ?? 0}%">
+                                <div style="height: 100%; background: linear-gradient(135deg, #667eea, #764ba2); width: ${item.price_stats.percentile ?? 0}%;"></div>
                             </div>
                         ` : '<span style="font-size: 0.85rem; color: var(--text-secondary);">No price data</span>')}
                     </td>
                     <td>
-                        ${item.match_method !== 'none' ? `
+                        ${item.match_method && item.match_method !== 'none' ? `
                             <span class="${confidenceClass}">${(confidence * 100).toFixed(0)}%</span>
                             <br><small>${item.match_method}</small>
                         ` : '<small class="text-muted">No match</small>'}
@@ -1081,88 +1085,216 @@ async function showListingDetail(listingId) {
     const details = await getListingDetails(listingId);
     if (!details) return;
 
+    // Prefer the enriched row from allLensListings so we get brand, mount,
+    // focal length, max aperture, price_stats and is_unicorn out of the box.
+    const row = (allLensListings || []).find(x => x.listing_id === listingId) || {};
+    const merged = Object.assign({}, details.current, row);
+
     const modal = document.getElementById('listing-modal');
     const title = document.getElementById('listing-title');
     const content = document.getElementById('listing-content');
 
-    title.textContent = details.current.title.substring(0, 80);
+    const rawTitle = merged.title || 'Lens listing';
+    const cleaned = cleanLensTitle(rawTitle);
+    title.textContent = cleaned;
 
-    // Use local image if available, fallback to external URL (same logic as table rows and GPU popup)
-    const normalizedImagePath = details.current.local_image_path
-        ? details.current.local_image_path.replace(/\\/g, '/')
-        : null;
-    const detailImageUrl = normalizedImagePath
-        ? `/images/${normalizedImagePath}`
-        : details.current.image_url;
+    const imgPath = merged.local_image_path ? String(merged.local_image_path).replace(/\\/g, '/') : null;
+    const imgUrl = imgPath ? `/images/${imgPath}` : merged.image_url;
+    const price = parseFloat(merged.price_eur) || 0;
+    const datePosted = merged.date_posted ? new Date(merged.date_posted).toLocaleDateString() : '—';
+    const stats = merged.price_stats || null;
 
-    let html = `
-        <div style="margin-bottom: 1.5rem;">
-            <div style="display: grid; grid-template-columns: ${detailImageUrl ? '1fr 1fr' : '1fr'}; gap: 2rem;">
-                ${detailImageUrl ? `
-                    <div style="text-align: center;">
-                        <img src="${detailImageUrl}" alt="${details.current.title}" style="max-width: 100%; max-height: 300px; object-fit: contain; border-radius: 8px; cursor: pointer;" onclick="showImageModal('${detailImageUrl}', '${details.current.title.replace(/'/g, "\\'")}')">
-                    </div>
-                ` : ''}
-                <div>
-                    <h4>{{ t('Listing Details') }}</h4>
-                    ${localStorage.getItem('showListingId') !== 'false' ? `<p class="listing-id-field" style="display: block;"><strong>Listing ID:</strong> <code>${details.current.listing_id}</code></p>` : ''}
-                    <p><strong>Price:</strong> <span class="price" style="font-size: 1.5rem; color: #27ae60;">€${details.current.price_eur}</span></p>
-                    <p><strong>Location:</strong> ${details.current.seller_location || 'N/A'}</p>
-                    <p><strong>Date Posted:</strong> ${details.current.date_posted ? new Date(details.current.date_posted).toLocaleDateString() : 'N/A'}</p>
-                    ${details.current.matched_lens_id ? `
-                        <p><strong>Matched Lens:</strong> <span class="badge badge-info">${details.current.matched_lens_id.replace(/_/g, ' ')}</span></p>
-                        <p><strong>Confidence:</strong> ${((details.current.confidence_score || details.current.lens_confidence_score || 0) * 100).toFixed(0)}%</p>
-                    ` : '<p><em>No lens match</em></p>'}
-                    ${details.current.source ? `<p><strong>Source:</strong> ${details.current.source}</p>` : ''}
+    content.innerHTML = `
+        <div class="ram-popup-grid">
+            <div class="ram-popup-left">
+                <div class="ram-popup-img" onclick="${imgUrl ? `window.open('${imgUrl}','_blank')` : ''}">
+                    ${imgUrl
+                        ? `<img src="${imgUrl}" alt="${cleaned}" loading="lazy" onerror="this.parentElement.innerHTML='<div style=font-size:64px>📷</div>'">`
+                        : '<div style="font-size:64px;">📷</div>'}
+                </div>
+                <div class="ram-popup-price-block">
+                    <div class="ram-popup-price">€${price.toFixed(0)}</div>
+                    <div class="ram-popup-price-sub">${merged.seller_location || '—'} · ${datePosted}</div>
+                    ${stats && stats.avg && stats.avg > 0
+                        ? `<div class="ram-popup-vs-avg">${price < stats.avg
+                            ? `<span class="vs-avg below">−€${(stats.avg - price).toFixed(0)} below avg</span>`
+                            : (price > stats.avg
+                                ? `<span class="vs-avg above">+€${(price - stats.avg).toFixed(0)} above avg</span>`
+                                : `<span class="vs-avg">= avg</span>`)}</div>`
+                        : (merged.is_unicorn
+                            ? `<div class="ram-popup-vs-avg"><span class="vs-avg">🦄 Only listing</span></div>`
+                            : '')}
+                </div>
+            </div>
+            <div class="ram-popup-right">
+                <h3 class="ram-popup-h">📝 Listing</h3>
+                <div class="ram-popup-rows">
+                    <div class="rp-row"><span class="rp-k">Title</span><span class="rp-v">${cleaned || '—'}</span></div>
+                    ${merged.title && merged.title !== cleaned ? `<div class="rp-row" style="opacity:0.6;font-size:0.75rem;"><span class="rp-k">Raw</span><span class="rp-v">${merged.title}</span></div>` : ''}
+                    <div class="rp-row"><span class="rp-k">Brand/Model</span><span class="rp-v">${merged.brand || '—'} ${merged.matched_lens_id ? '· ' + merged.matched_lens_id.replace(/_/g, ' ') : ''}</span></div>
+                    <div class="rp-row"><span class="rp-k">Location</span><span class="rp-v">${merged.seller_location || '—'}</span></div>
+                    <div class="rp-row"><span class="rp-k">Posted</span><span class="rp-v">${datePosted}</span></div>
+                    <div class="rp-row"><span class="rp-k">Status</span><span class="rp-v">${merged.is_active ? '🟢 Active' : '⚪ Inactive'}</span></div>
+                </div>
+                <div class="ram-popup-actions">
+                    ${merged.listing_url ? `<a href="${merged.listing_url}" target="_blank" rel="noopener" class="ram-popup-btn primary">View on ss.com ↗</a>` : ''}
+                    <button class="ram-popup-btn" onclick="event.stopPropagation(); showFlagModalWithCategories('${merged.listing_id}','${(cleaned || '').replace(/'/g, "\\'")}')">🚩 Flag</button>
                 </div>
             </div>
         </div>
-    `;
 
-    if (details.current.description) {
-        html += `
-            <div style="margin-bottom: 1.5rem;">
-                <h4>{{ t('Description') }}</h4>
-                <div style="background: var(--badge-bg); color: var(--text-color); padding: 1rem; border-radius: 8px; max-height: 200px; overflow-y: auto; white-space: pre-wrap; font-size: 0.9rem; line-height: 1.5; border: 1px solid var(--border-color);">
-                    ${details.current.description}
+        <h3 class="ram-popup-h" style="margin-top:18px;">🔍 Lens Reference</h3>
+        <div class="ram-popup-spec-grid">
+            <div class="rp-spec"><span class="rp-spec-k">Brand</span><span class="rp-spec-v">${merged.brand || '—'}</span></div>
+            <div class="rp-spec"><span class="rp-spec-k">Model</span><span class="rp-spec-v">${merged.matched_lens_id ? merged.matched_lens_id.replace(/_/g, ' ') : '—'}</span></div>
+            <div class="rp-spec"><span class="rp-spec-k">Mount</span><span class="rp-spec-v">${merged.mount || '—'}</span></div>
+            <div class="rp-spec"><span class="rp-spec-k">Focal length</span><span class="rp-spec-v">${merged.focal_length_mm ? merged.focal_length_mm + ' mm' : '—'}</span></div>
+            <div class="rp-spec"><span class="rp-spec-k">Max aperture</span><span class="rp-spec-v">${merged.max_aperture ? 'f/' + merged.max_aperture : '—'}</span></div>
+            ${merged.confidence_score ? `<div class="rp-spec"><span class="rp-spec-k">Match confidence</span><span class="rp-spec-v">${Math.round((merged.confidence_score || 0) * 100)}%</span></div>` : ''}
+            ${merged.is_unicorn ? `<div class="rp-spec"><span class="rp-spec-k">Rarity</span><span class="rp-spec-v">🦄 UNICORN — only one listing in all history</span></div>` : ''}
+        </div>
+
+        <h3 class="ram-popup-h" style="margin-top:18px;">💰 Market Context <span class="ram-popup-h-meta">${stats && stats.listing_count ? `${stats.listing_count} listing${stats.listing_count === 1 ? '' : 's'} for this model` : 'no comparable listings'}</span></h3>
+        ${stats && stats.listing_count > 1 ? `
+            <div class="ram-popup-stats">
+                <div class="ram-stat-mini">
+                    <div class="ram-stat-mini-h">Avg price (same model)</div>
+                    <div class="ram-stat-mini-v">€${Number(stats.avg).toFixed(0)}</div>
+                    <div class="ram-stat-mini-m">€${Number(stats.min).toFixed(0)}–€${Number(stats.max).toFixed(0)}</div>
+                    <div class="ram-stat-mini-d ${price < stats.avg ? 'below' : 'above'}">${price < stats.avg
+                        ? `−€${(stats.avg - price).toFixed(0)} (${((stats.avg - price) / stats.avg * 100).toFixed(0)}% below)`
+                        : (price > stats.avg
+                            ? `+€${(price - stats.avg).toFixed(0)} (${((price - stats.avg) / stats.avg * 100).toFixed(0)}% above)`
+                            : '= avg')}</div>
+                </div>
+                <div class="ram-stat-mini">
+                    <div class="ram-stat-mini-h">Price percentile</div>
+                    <div class="ram-stat-mini-v">${stats.percentile ?? 0}%</div>
+                    <div class="ram-stat-mini-m">${(stats.percentile ?? 0) < 25 ? 'Bottom of the range' : ((stats.percentile ?? 0) > 75 ? 'Top of the range' : 'In the middle')}</div>
+                </div>
+                <div class="ram-stat-mini">
+                    <div class="ram-stat-mini-h">Listings on record</div>
+                    <div class="ram-stat-mini-v">${stats.listing_count}</div>
+                    <div class="ram-stat-mini-m">${stats.listing_count >= 5 ? 'Strong sample' : (stats.listing_count >= 3 ? 'Decent sample' : 'Thin sample')}</div>
                 </div>
             </div>
-        `;
-    }
+        ` : `<div class="ram-popup-empty">
+            <div style="font-size:1.05rem;margin-bottom:0.25rem;">${merged.is_unicorn ? '🦄 Only one listing for this model' : 'No market data yet'}</div>
+            ${merged.is_unicorn
+                ? 'This lens is rare — there\'s no comparable price data yet. Check back after more listings of this model appear.'
+                : 'We don\'t have enough matching listings to build a price baseline for this lens yet.'}
+        </div>`}
 
-    if (details.history && details.history.length > 0) {
-        html += `
-            <h4>Price History</h4>
-            <table style="margin-top: 1rem;">
-                <thead>
-                    <tr>
-                        <th>Date</th>
-                        <th>Price (€)</th>
-                    </tr>
-                </thead>
-                <tbody>
-        `;
+        <h3 class="ram-popup-h" style="margin-top:18px;">📈 Price History <span class="ram-popup-h-meta" id="lens-popup-history-count"></span></h3>
+        <div id="lens-popup-price-history" class="ram-popup-history"></div>
+    `;
 
-        details.history.forEach(h => {
-            html += `
-                <tr>
-                    <td>${h.recorded_at ? new Date(h.recorded_at).toLocaleDateString() : 'N/A'}</td>
-                    <td>€${h.price_eur}</td>
-                </tr>
-            `;
+    // Fetch price history async and append
+    const histEl = document.getElementById('lens-popup-price-history');
+    const histCount = document.getElementById('lens-popup-history-count');
+    fetch(`/api/price-history/${listingId}`)
+        .then(r => r.ok ? r.json() : [])
+        .then(history => {
+            if (!histEl) return;
+            if (!Array.isArray(history) || history.length === 0) {
+                if (histCount) histCount.textContent = '— first price snapshot only';
+                histEl.outerHTML = `
+                    <div class="ram-popup-empty" style="display:flex;align-items:center;gap:0.75rem;">
+                        <div style="font-size:1.5rem;">📸</div>
+                        <div>
+                            <div style="font-weight:600;color:var(--ram-text,#1e293b);">No price changes recorded yet</div>
+                            <div style="font-size:0.78rem;margin-top:2px;">This listing only has one price snapshot so far. We'll show the price history here once a price change is detected.</div>
+                        </div>
+                    </div>`;
+                return;
+            }
+            if (histCount) histCount.textContent = `${history.length} snapshot${history.length === 1 ? '' : 's'}`;
+            histEl.innerHTML = history.slice(0, 12).map(h => `
+                <div class="ram-popup-history-card">
+                    <div class="rh-price">€${Number(h.price_eur || 0).toFixed(0)}</div>
+                    <div class="rh-date">${new Date(h.recorded_at).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: '2-digit' })}</div>
+                </div>
+            `).join('');
+        })
+        .catch(() => {
+            if (histCount) histCount.textContent = '—';
+            if (histEl) histEl.outerHTML = `<div class="ram-popup-empty">No price history available for this listing.</div>`;
         });
 
-        html += '</tbody></table>';
-    } else {
-        html += '<p class="loading">No price history available</p>';
+    // Description (rendered last to keep flow correct)
+    if (merged.description) {
+        const descHtml = `
+            <h3 class="ram-popup-h" style="margin-top:18px;">📄 Description</h3>
+            <div class="ram-popup-desc" style="background: var(--badge-bg, #f5f5f5); padding: 0.85rem 1rem; border-radius: 8px; max-height: 180px; overflow-y: auto; white-space: pre-wrap; font-size: 0.85rem; line-height: 1.5; border: 1px solid var(--border-color, #e5e7eb); color: var(--text-color, #1e293b);">${merged.description}</div>
+        `;
+        content.insertAdjacentHTML('beforeend', descHtml);
     }
 
-    content.innerHTML = html;
     modal.style.display = 'flex';
+}
+
+// Strip SS.COM prefix and any "Cena XX €." trailing tag from the title.
+function cleanLensTitle(raw) {
+    if (!raw) return '';
+    return String(raw)
+        .replace(/SS\.COM[^,]*,\s*Cena\s*\d+([.,]\d+)?\s*€\.?\s*/i, '')
+        .replace(/SS\.COM[^,]*,\s*/i, '')
+        .replace(/^\s+|\s+$/g, '');
 }
 
 function closeListingModal() {
     document.getElementById('listing-modal').style.display = 'none';
+}
+
+// Add a lens model to the compare list (capped at 4) and offer to open the compare page.
+function addToCompare(lensId) {
+    let ids = [];
+    try { ids = JSON.parse(localStorage.getItem('lens_compare_ids') || '[]'); } catch (e) {}
+    if (ids.includes(lensId)) {
+        showCompareToast(`Already in compare list (${ids.length}/4)`, 'info');
+    } else {
+        if (ids.length >= 4) {
+            showCompareToast(`Compare list full (4 max). Open compare to manage.`, 'warn');
+            window.open('/lens-compare', '_blank');
+            return;
+        }
+        ids.push(lensId);
+        localStorage.setItem('lens_compare_ids', JSON.stringify(ids));
+        const remaining = 4 - ids.length;
+        showCompareToast(
+            remaining > 0
+                ? `Added! Pick ${remaining} more or open compare →`
+                : `Added! All 4 picked. Opening compare...`,
+            'success'
+        );
+    }
+    // Always offer to open the compare page if we have at least 2
+    if (ids.length >= 2) {
+        setTimeout(() => {
+            if (confirm('Open the comparison page now?')) {
+                window.open('/lens-compare?ids=' + encodeURIComponent(ids.join(',')), '_blank');
+            }
+        }, 200);
+    }
+}
+
+function showCompareToast(msg, kind) {
+    let toast = document.getElementById('compare-toast');
+    if (!toast) {
+        toast = document.createElement('div');
+        toast.id = 'compare-toast';
+        toast.style.cssText = `
+            position: fixed; bottom: 24px; right: 24px; z-index: 20000;
+            background: ${kind === 'warn' ? '#f59e0b' : kind === 'info' ? '#3b82f6' : '#10b981'};
+            color: white; padding: 0.75rem 1.25rem; border-radius: 8px;
+            font-weight: 600; font-size: 0.9rem; box-shadow: 0 4px 12px rgba(0,0,0,0.18);
+            max-width: 360px;
+        `;
+        document.body.appendChild(toast);
+    }
+    toast.textContent = msg;
+    toast.style.display = 'block';
+    setTimeout(() => { toast.style.display = 'none'; }, 4000);
 }
 
 // Close modals on outside click
@@ -1248,6 +1380,7 @@ async function loadLensModels() {
                         ${launchPriceHtml}
                         <div style="margin-top: 1rem; display: flex; gap: 0.5rem;">
                             <button class="btn btn-small" style="flex: 1;" onclick="event.stopPropagation(); showLensDetail('${model.matched_lens_id}')">View Listings</button>
+                            <button class="btn btn-small btn-secondary" style="flex: 0 0 auto;" onclick="event.stopPropagation(); addToCompare('${model.matched_lens_id}')" title="Add to compare list">⚖️ Compare</button>
                         </div>
                     </div>
                 </div>
@@ -1306,6 +1439,54 @@ document.addEventListener('DOMContentLoaded', async () => {
 </script>
 
 <style>
+/* === Modern listings panel (matches cases/PSU design) === */
+.modern-panel {
+    background: var(--card-bg, #ffffff);
+    border: 1px solid var(--card-border, #e5e7eb);
+    border-radius: 12px;
+    padding: 0;
+    overflow: hidden;
+    margin-top: 1rem;
+    box-shadow: 0 1px 3px rgba(0,0,0,.04);
+}
+[data-theme="dark"] .modern-panel {
+    background: var(--card-bg, #1a1d2b);
+    border-color: var(--card-border, #2a2e3e);
+}
+.modern-panel table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.modern-panel thead th {
+    text-align: left; font-size: 10.5px; font-weight: 700; text-transform: uppercase; letter-spacing: .04em;
+    color: var(--text-secondary, #6b7280); padding: 10px 12px;
+    border-bottom: 1px solid var(--card-border, #e5e7eb);
+    background: rgba(0,0,0,.02);
+}
+.modern-panel tbody tr {
+    border-bottom: 1px solid rgba(99,102,241,.12);
+    cursor: pointer; transition: background .12s;
+}
+.modern-panel tbody tr:hover { background: rgba(99,102,241,.06); }
+.modern-panel td { padding: 12px 14px; vertical-align: middle; }
+.modern-panel .listing-thumb {
+    width: 68px; height: 68px; border-radius: 10px; object-fit: cover;
+    background: rgba(0,0,0,.04);
+    box-shadow: 0 1px 2px rgba(0,0,0,.06);
+}
+.modern-panel .listing-thumb-placeholder {
+    width: 68px; height: 68px; border-radius: 10px;
+    display: grid; place-items: center; font-size: 26px; color: var(--text-secondary, #6b7280);
+    background: rgba(0,0,0,.04);
+    box-shadow: inset 0 0 0 1px rgba(0,0,0,.04);
+}
+.modern-panel .price { font-weight: 800; color: #16a34a; font-size: 14px; }
+.modern-panel tfoot td {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white; font-weight: 700; padding: .75rem;
+}
+.modern-panel .badge-info {
+    background: rgba(99,102,241,.18); color: #4f46e5;
+    padding: 2px 7px; border-radius: 6px; font-size: 11px; font-weight: 600;
+}
+[data-theme="dark"] .modern-panel .badge-info { color: #a5b4fc; }
 .confidence-high { color: #27ae60; font-weight: 600; }
 .confidence-medium { color: #f39c12; font-weight: 600; }
 .confidence-low { color: #e74c3c; font-weight: 600; }

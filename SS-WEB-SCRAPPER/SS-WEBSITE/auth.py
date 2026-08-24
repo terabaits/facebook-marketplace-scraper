@@ -3,6 +3,7 @@ import os
 import uuid
 from datetime import datetime, timedelta
 from functools import wraps
+from contextlib import contextmanager
 
 import psycopg2
 from psycopg2.extras import RealDictCursor
@@ -13,12 +14,15 @@ from flask import jsonify, g, redirect, request
 _db_conn = None
 _app = None
 
+@contextmanager
 def get_db_connection():
+    """Yield a connection from the app-level pool."""
     global _db_conn
     if _db_conn is None:
         from app import get_db_connection as _real_get_db_connection
         _db_conn = _real_get_db_connection
-    return _db_conn()
+    with _db_conn() as conn:
+        yield conn
 
 def _get_app():
     global _app
@@ -44,127 +48,122 @@ def create_user(username, password, email=None, role='user', subscription_status
     """Create a new user. Returns (user_id, error_message)."""
     if role not in ROLES:
         return None, f"Invalid role. Choose one of: {', '.join(ROLES)}"
-    conn = get_db_connection()
-    cursor = conn.cursor(cursor_factory=RealDictCursor)
-    try:
-        cursor.execute(
-            """
-            INSERT INTO users (username, email, password_hash, role, subscription_status, created_at, updated_at)
-            VALUES (%s, %s, %s, %s, %s, NOW(), NOW())
-            RETURNING id
-            """,
-            (username.strip().lower(), email, hash_password(password), role, subscription_status)
-        )
-        user_id = cursor.fetchone()['id']
-        conn.commit()
-        return user_id, None
-    except psycopg2.IntegrityError as e:
-        conn.rollback()
-        return None, f"Username or email already exists: {e}"
-    except Exception as e:
-        conn.rollback()
-        return None, str(e)
-    finally:
-        cursor.close()
-        conn.close()
+    with get_db_connection() as conn:
+        cursor = conn.cursor(cursor_factory=RealDictCursor)
+        try:
+            cursor.execute(
+                """
+                INSERT INTO users (username, email, password_hash, role, subscription_status, created_at, updated_at)
+                VALUES (%s, %s, %s, %s, %s, NOW(), NOW())
+                RETURNING id
+                """,
+                (username.strip().lower(), email, hash_password(password), role, subscription_status)
+            )
+            user_id = cursor.fetchone()['id']
+            conn.commit()
+            return user_id, None
+        except psycopg2.IntegrityError as e:
+            conn.rollback()
+            return None, f"Username or email already exists: {e}"
+        except Exception as e:
+            conn.rollback()
+            return None, str(e)
+        finally:
+            cursor.close()
 
 
 def authenticate_user(username, password):
-    """Verify credentials. Returns user dict or None."""
-    conn = get_db_connection()
-    cursor = conn.cursor(cursor_factory=RealDictCursor)
-    try:
-        cursor.execute(
-            "SELECT * FROM users WHERE username = %s AND is_active = true",
-            (username.strip().lower(),)
-        )
-        user = cursor.fetchone()
-        if not user:
-            return None
-        if not verify_password(password, user['password_hash']):
-            return None
-        cursor.execute(
-            "UPDATE users SET last_login_at = NOW() WHERE id = %s",
-            (user['id'],)
-        )
-        conn.commit()
-        return user
-    finally:
-        cursor.close()
-        conn.close()
+    """Verify credentials by username or email. Returns user dict or None."""
+    with get_db_connection() as conn:
+        cursor = conn.cursor(cursor_factory=RealDictCursor)
+        try:
+            lookup = username.strip().lower()
+            cursor.execute(
+                "SELECT * FROM users WHERE (username = %s OR email = %s) AND is_active = true",
+                (lookup, lookup)
+            )
+            user = cursor.fetchone()
+            if not user:
+                return None
+            if not verify_password(password, user['password_hash']):
+                return None
+            cursor.execute(
+                "UPDATE users SET last_login_at = NOW() WHERE id = %s",
+                (user['id'],)
+            )
+            conn.commit()
+            return user
+        finally:
+            cursor.close()
 
 
 def create_session(user_id, days=30):
     """Create persistent session token."""
     token = uuid.uuid4().hex
     expires_at = datetime.utcnow() + timedelta(days=days)
-    conn = get_db_connection()
-    cursor = conn.cursor()
-    try:
-        cursor.execute(
-            """
-            INSERT INTO user_sessions (user_id, token, expires_at)
-            VALUES (%s, %s, %s)
-            ON CONFLICT (token) DO NOTHING
-            RETURNING token
-            """,
-            (user_id, token, expires_at)
-        )
-        conn.commit()
-        return token
-    finally:
-        cursor.close()
-        conn.close()
+    with get_db_connection() as conn:
+        cursor = conn.cursor()
+        try:
+            cursor.execute(
+                """
+                INSERT INTO user_sessions (user_id, token, expires_at)
+                VALUES (%s, %s, %s)
+                ON CONFLICT (token) DO NOTHING
+                RETURNING token
+                """,
+                (user_id, token, expires_at)
+            )
+            conn.commit()
+            return token
+        finally:
+            cursor.close()
 
 
 def get_user_by_token(token):
     """Fetch user for a session token."""
     if not token:
         return None
-    conn = get_db_connection()
-    cursor = conn.cursor(cursor_factory=RealDictCursor)
-    try:
-        cursor.execute(
-            """
-            SELECT u.* FROM users u
-            JOIN user_sessions s ON s.user_id = u.id
-            WHERE s.token = %s AND s.expires_at > NOW() AND u.is_active = true
-            """,
-            (token,)
-        )
-        return cursor.fetchone()
-    finally:
-        cursor.close()
-        conn.close()
+    with get_db_connection() as conn:
+        cursor = conn.cursor(cursor_factory=RealDictCursor)
+        try:
+            cursor.execute(
+                """
+                SELECT u.* FROM users u
+                JOIN user_sessions s ON s.user_id = u.id
+                WHERE s.token = %s AND s.expires_at > NOW() AND u.is_active = true
+                """,
+                (token,)
+            )
+            return cursor.fetchone()
+        finally:
+            cursor.close()
 
 
 def delete_session(token):
-    conn = get_db_connection()
-    cursor = conn.cursor()
-    try:
-        cursor.execute("DELETE FROM user_sessions WHERE token = %s", (token,))
-        conn.commit()
-    finally:
-        cursor.close()
-        conn.close()
+    with get_db_connection() as conn:
+        cursor = conn.cursor()
+        try:
+            cursor.execute("DELETE FROM user_sessions WHERE token = %s", (token,))
+            conn.commit()
+        finally:
+            cursor.close()
 
 
 def get_all_users():
-    conn = get_db_connection()
-    cursor = conn.cursor(cursor_factory=RealDictCursor)
-    try:
-        cursor.execute(
-            """
-            SELECT id, username, email, role, subscription_status, subscription_tier,
-                   subscription_expires_at, is_active, created_at, updated_at, last_login_at
-            FROM users
-            ORDER BY created_at DESC
-            """
-        )
-        return cursor.fetchall()
-    finally:
-        cursor.close()
-        conn.close()
+    with get_db_connection() as conn:
+        cursor = conn.cursor(cursor_factory=RealDictCursor)
+        try:
+            cursor.execute(
+                """
+                SELECT id, username, email, role, subscription_status, subscription_tier,
+                       subscription_expires_at, is_active, created_at, updated_at, last_login_at
+                FROM users
+                ORDER BY created_at DESC
+                """
+            )
+            return cursor.fetchall()
+        finally:
+            cursor.close()
 
 
 def update_user(user_id, **fields):
@@ -185,33 +184,31 @@ def update_user(user_id, **fields):
         return False, "No fields to update"
     set_clauses.append("updated_at = NOW()")
     params.append(user_id)
-    conn = get_db_connection()
-    cursor = conn.cursor()
-    try:
-        cursor.execute(
-            f"UPDATE users SET {', '.join(set_clauses)} WHERE id = %s",
-            tuple(params)
-        )
-        conn.commit()
-        return True, None
-    except Exception as e:
-        conn.rollback()
-        return False, str(e)
-    finally:
-        cursor.close()
-        conn.close()
+    with get_db_connection() as conn:
+        cursor = conn.cursor()
+        try:
+            cursor.execute(
+                f"UPDATE users SET {', '.join(set_clauses)} WHERE id = %s",
+                tuple(params)
+            )
+            conn.commit()
+            return True, None
+        except Exception as e:
+            conn.rollback()
+            return False, str(e)
+        finally:
+            cursor.close()
 
 
 def delete_user(user_id):
-    conn = get_db_connection()
-    cursor = conn.cursor()
-    try:
-        cursor.execute("DELETE FROM users WHERE id = %s", (user_id,))
-        conn.commit()
-        return cursor.rowcount > 0
-    finally:
-        cursor.close()
-        conn.close()
+    with get_db_connection() as conn:
+        cursor = conn.cursor()
+        try:
+            cursor.execute("DELETE FROM users WHERE id = %s", (user_id,))
+            conn.commit()
+            return cursor.rowcount > 0
+        finally:
+            cursor.close()
 
 
 def require_role(min_role):
@@ -265,82 +262,78 @@ PAGES = [
 
 
 def get_role_defaults(role):
-    conn = get_db_connection()
-    cursor = conn.cursor(cursor_factory=RealDictCursor)
-    try:
-        cursor.execute("SELECT allowed_pages FROM role_page_access WHERE role = %s", (role,))
-        row = cursor.fetchone()
-        return row['allowed_pages'] if row else PAGES[:]
-    finally:
-        cursor.close()
-        conn.close()
+    with get_db_connection() as conn:
+        cursor = conn.cursor(cursor_factory=RealDictCursor)
+        try:
+            cursor.execute("SELECT allowed_pages FROM role_page_access WHERE role = %s", (role,))
+            row = cursor.fetchone()
+            return row['allowed_pages'] if row else PAGES[:]
+        finally:
+            cursor.close()
 
 
 def set_role_defaults(role, allowed_pages):
-    conn = get_db_connection()
-    cursor = conn.cursor()
-    try:
-        cursor.execute(
-            """
-            INSERT INTO role_page_access (role, allowed_pages, updated_at)
-            VALUES (%s, %s, NOW())
-            ON CONFLICT (role)
-            DO UPDATE SET allowed_pages = EXCLUDED.allowed_pages, updated_at = NOW()
-            """,
-            (role, list(allowed_pages))
-        )
-        conn.commit()
-        return True
-    except Exception as e:
-        conn.rollback()
-        return False
-    finally:
-        cursor.close()
-        conn.close()
+    with get_db_connection() as conn:
+        cursor = conn.cursor()
+        try:
+            cursor.execute(
+                """
+                INSERT INTO role_page_access (role, allowed_pages, updated_at)
+                VALUES (%s, %s, NOW())
+                ON CONFLICT (role)
+                DO UPDATE SET allowed_pages = EXCLUDED.allowed_pages, updated_at = NOW()
+                """,
+                (role, list(allowed_pages))
+            )
+            conn.commit()
+            return True
+        except Exception as e:
+            conn.rollback()
+            return False
+        finally:
+            cursor.close()
 
 
 def get_user_allowed_pages(user_id, role):
     """Combine role defaults with user-specific overrides."""
     defaults = set(get_role_defaults(role))
-    conn = get_db_connection()
-    cursor = conn.cursor(cursor_factory=RealDictCursor)
-    try:
-        cursor.execute(
-            "SELECT allowed_pages, denied_pages FROM user_page_access WHERE user_id = %s",
-            (user_id,)
-        )
-        row = cursor.fetchone()
-        if not row:
-            return defaults
-        allowed = defaults | set(row['allowed_pages'] or [])
-        denied = set(row['denied_pages'] or [])
-        return allowed - denied
-    finally:
-        cursor.close()
-        conn.close()
+    with get_db_connection() as conn:
+        cursor = conn.cursor(cursor_factory=RealDictCursor)
+        try:
+            cursor.execute(
+                "SELECT allowed_pages, denied_pages FROM user_page_access WHERE user_id = %s",
+                (user_id,)
+            )
+            row = cursor.fetchone()
+            if not row:
+                return defaults
+            allowed = defaults | set(row['allowed_pages'] or [])
+            denied = set(row['denied_pages'] or [])
+            return allowed - denied
+        finally:
+            cursor.close()
 
 
 def set_user_page_access(user_id, allowed_pages=None, denied_pages=None):
-    conn = get_db_connection()
-    cursor = conn.cursor()
-    try:
-        cursor.execute(
-            """
-            INSERT INTO user_page_access (user_id, allowed_pages, denied_pages, updated_at)
-            VALUES (%s, %s, %s, NOW())
-            ON CONFLICT (user_id)
-            DO UPDATE SET
-                allowed_pages = EXCLUDED.allowed_pages,
-                denied_pages = EXCLUDED.denied_pages,
-                updated_at = NOW()
-            """,
-            (user_id, list(allowed_pages or []), list(denied_pages or []))
-        )
-        conn.commit()
-        return True
-    except Exception as e:
-        conn.rollback()
-        return False
-    finally:
-        cursor.close()
-        conn.close()
+    with get_db_connection() as conn:
+        cursor = conn.cursor()
+        try:
+            cursor.execute(
+                """
+                INSERT INTO user_page_access (user_id, allowed_pages, denied_pages, updated_at)
+                VALUES (%s, %s, %s, NOW())
+                ON CONFLICT (user_id)
+                DO UPDATE SET
+                    allowed_pages = EXCLUDED.allowed_pages,
+                    denied_pages = EXCLUDED.denied_pages,
+                    updated_at = NOW()
+                """,
+                (user_id, list(allowed_pages or []), list(denied_pages or []))
+            )
+            conn.commit()
+            return True
+        except Exception as e:
+            conn.rollback()
+            return False
+        finally:
+            cursor.close()

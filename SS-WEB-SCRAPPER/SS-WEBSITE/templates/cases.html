@@ -2,397 +2,915 @@
 
 {% block title %}Case Listings - SS-Crawler{% endblock %}
 
-{% block content %}
-<div class="section">
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
-        <h2>{{ t('Case Listings') }}</h2>
-        <div class="filters" style="margin: 0;">
-            <label>
-                <input type="checkbox" id="active-only" checked onchange="loadListings()">
-                Active only
-            </label>
-            <label class="{% if not is_staff %}staff-only{% endif %}">
-                <input type="checkbox" id="high-confidence" checked onchange="loadListings()">
-                High confidence (≥70%)
-            </label>
-            <label>
-                Sort:
-                <select id="sort-by" onchange="loadListings()">
-                    <option value="date_posted">{{ t('Date Posted') }}</option>
-                    <option value="price">{{ t('Price') }}</option>
-                </select>
-            </label>
-            <label>
-                Order:
-                <select id="sort-order" onchange="loadListings()">
-                    <option value="desc">{{ t('Descending') }}</option>
-                    <option value="asc">{{ t('Ascending') }}</option>
-                </select>
-            </label>
-            <label>
-                Time:
-                <select id="time-filter" onchange="loadListings()">
-                    <option value="all_time">All Time</option>
-                    <option value="month">Last Month</option>
-                    <option value="week">Last Week</option>
-                </select>
-            </label>
-        </div>
-    </div>
+{% block extra_css %}
+    /* Cases page — GPU-style layout */
+    body > .container { max-width: 1600px; }
 
-    <div id="listings-container">
-        <div class="loading">Loading case listings...</div>
+    .page-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr 1fr;
+        gap: 14px;
+        margin-bottom: 1.25rem;
+    }
+    .stat-card {
+        background: var(--card-bg, #1a1d2b);
+        border: 1px solid var(--card-border, #2a2e3e);
+        border-radius: 12px;
+        padding: 16px 18px;
+        position: relative;
+        overflow: hidden;
+    }
+    .stat-card .label { font-size: 11px; font-weight: 600; color: var(--text-mute, #6b7280); text-transform: uppercase; letter-spacing: .04em; margin-bottom: 6px; }
+    .stat-card .value { font-size: 28px; font-weight: 800; color: var(--text, #f1f5f9); line-height: 1.1; }
+    .stat-card .sub { font-size: 11.5px; color: var(--text-dim, #94a3b8); margin-top: 4px; }
+    .stat-card .icon { position: absolute; top: 12px; right: 14px; font-size: 18px; opacity: .35; }
+
+    .panel {
+        background: var(--card-bg, #1a1d2b);
+        border: 1px solid var(--card-border, #2a2e3e);
+        border-radius: 12px;
+        padding: 16px 18px;
+        margin-bottom: 1.25rem;
+    }
+    .panel h3 {
+        font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em;
+        color: var(--text-mute, #6b7280); margin: 0 0 12px;
+        display: flex; align-items: center; gap: 6px;
+    }
+    .panel h3 .pill { background: rgba(99,102,241,.15); color: #818cf8; padding: 1px 6px; border-radius: 8px; font-size: 9.5px; font-weight: 700; }
+
+    .charts-row {
+        display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: 14px; margin-bottom: 1.25rem;
+    }
+    @media (max-width: 1100px) { .charts-row { grid-template-columns: 1fr; } .page-grid { grid-template-columns: 1fr 1fr; } }
+
+    canvas { display: block; }
+
+    /* Fixed-height wrapper for the price chart so Chart.js doesn't grow forever */
+    .chart-box {
+        position: relative;
+        width: 100%;
+        height: 220px;
+    }
+    .chart-box canvas {
+        position: absolute;
+        inset: 0;
+        width: 100% !important;
+        height: 100% !important;
+    }
+
+    /* Notice banner */
+    .page-notice {
+        display: flex;
+        gap: 12px;
+        align-items: flex-start;
+        background: linear-gradient(135deg, rgba(245,158,11,.10), rgba(245,158,11,.04));
+        border: 1px solid rgba(245,158,11,.30);
+        border-radius: 10px;
+        padding: 12px 16px;
+        margin-bottom: 14px;
+        font-size: 12.5px;
+        line-height: 1.55;
+        color: var(--text, #1c1c1e);
+    }
+    .page-notice .page-notice-icon { font-size: 18px; line-height: 1.2; flex-shrink: 0; }
+    .page-notice code { font-size: 11.5px; padding: 1px 5px; border-radius: 3px; background: rgba(0,0,0,.08); color: inherit; }
+    .page-notice a { color: #b45309; margin-left: 4px; font-weight: 600; text-decoration: none; }
+    .page-notice a:hover { text-decoration: underline; }
+
+    [data-theme="dark"] .page-notice {
+        background: linear-gradient(135deg, rgba(245,158,11,.15), rgba(245,158,11,.05));
+        border-color: rgba(245,158,11,.50);
+        color: #e0e0e0;
+    }
+    [data-theme="dark"] .page-notice code { background: rgba(255,255,255,.12); color: #e0e0e0; }
+    [data-theme="dark"] .page-notice a { color: #fbbf24; }
+
+    .bar-list { display: flex; flex-direction: column; gap: 6px; }
+    .bar-row { display: grid; grid-template-columns: 130px 1fr 36px; align-items: center; gap: 8px; font-size: 11.5px; }
+    .bar-row .nm { color: var(--text, #e5e7eb); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .bar-row .bar { height: 8px; background: rgba(255,255,255,.06); border-radius: 4px; overflow: hidden; }
+    .bar-row .bar > div { height: 100%; border-radius: 4px; background: linear-gradient(90deg, #6366f1, #8b5cf6); transition: width .4s; }
+    .bar-row .ct { text-align: right; color: var(--text-dim, #9ca3af); font-weight: 600; }
+
+    .filter-bar {
+        display: flex; flex-wrap: wrap; gap: 8px; align-items: center;
+        background: var(--card-bg, #1a1d2b);
+        border: 1px solid var(--card-border, #2a2e3e);
+        border-radius: 12px; padding: 12px 16px; margin-bottom: 14px;
+    }
+    .filter-bar .fg { display: flex; align-items: center; gap: 6px; }
+    .filter-bar .fg label { font-size: 10.5px; font-weight: 700; color: var(--text-mute, #6b7280); text-transform: uppercase; letter-spacing: .04em; }
+    .filter-bar select, .filter-bar input[type=number], .filter-bar input[type=search] {
+        padding: 6px 10px; border: 1px solid var(--card-border, #2a2e3e); border-radius: 6px;
+        background: var(--input-bg, #0f1117); color: var(--text, #f1f5f9);
+        font-size: 12.5px; outline: none; min-width: 90px;
+    }
+    .filter-bar input[type=search] { min-width: 200px; }
+    .filter-bar input[type=number] { min-width: 70px; }
+    .filter-bar select:focus, .filter-bar input:focus { border-color: #6366f1; }
+    .filter-bar .sep { width: 1px; height: 20px; background: var(--card-border, #2a2e3e); }
+    .filter-bar button { padding: 6px 12px; background: transparent; border: 1px solid var(--card-border, #2a2e3e); color: var(--text-dim, #9ca3af); border-radius: 6px; font-size: 12px; cursor: pointer; }
+    .filter-bar button:hover { background: rgba(255,255,255,.04); color: var(--text, #f1f5f9); }
+    .filter-bar .reset-all { background: #6366f1; color: white; border-color: #6366f1; }
+    .filter-bar .reset-all:hover { background: #4f46e5; }
+
+    /* Listings table */
+    .listings-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    .listings-table thead th {
+        text-align: left; font-size: 10.5px; font-weight: 700; text-transform: uppercase; letter-spacing: .04em;
+        color: var(--text-mute, #6b7280); padding: 10px 12px; border-bottom: 1px solid var(--card-border, #2a2e3e);
+        background: rgba(255,255,255,.02);
+    }
+    .listings-table tbody tr {
+        border-bottom: 1px solid rgba(255,255,255,.04);
+        cursor: pointer; transition: background .12s;
+    }
+    .listings-table tbody tr:hover { background: rgba(99,102,241,.07); }
+    .listings-table td { padding: 10px 12px; vertical-align: middle; }
+    .listings-table .thumb {
+        width: 60px; height: 60px; background: rgba(255,255,255,.04); border-radius: 8px;
+        display: grid; place-items: center; font-size: 26px; flex-shrink: 0; object-fit: cover;
+    }
+    .listings-table .thumb.placeholder { color: var(--text-mute, #6b7280); }
+    .listings-table .case-name { font-weight: 700; color: var(--text, #f1f5f9); }
+    .listings-table .case-meta { font-size: 11px; color: var(--text-mute, #6b7280); margin-top: 2px; }
+    .listings-table .price { font-weight: 800; color: #4ade80; font-size: 14px; }
+    .listings-table .price-meta { font-size: 10.5px; color: var(--text-mute, #6b7280); margin-top: 2px; }
+    .listings-table .deal-save { color: #facc15; font-size: 10.5px; font-weight: 700; margin-left: 4px; }
+    .listings-table .deal-save.bad { color: #f87171; }
+
+    .badge {
+        display: inline-block; font-size: 9.5px; font-weight: 800; padding: 2px 7px; border-radius: 10px;
+        text-transform: uppercase; letter-spacing: .04em; line-height: 1.4;
+    }
+    .badge-new { background: #3b82f6; color: white; }
+    .badge-steal { background: #dc2626; color: white; }
+    .badge-price-drop { background: #f59e0b; color: white; }
+    .badge-mature { background: rgba(99,102,241,.18); color: #a5b4fc; }
+    .badge-high { background: rgba(34,197,94,.18); color: #4ade80; }
+    .badge-med { background: rgba(245,158,11,.18); color: #fbbf24; }
+    .badge-low { background: rgba(239,68,68,.18); color: #f87171; }
+    .badge-mfr { background: rgba(99,102,241,.18); color: #a5b4fc; }
+    .badge-type { background: rgba(20,184,166,.18); color: #5eead4; }
+    .badge-side { background: rgba(168,85,247,.18); color: #c4b5fd; }
+    .badge-color { background: rgba(244,114,182,.18); color: #f9a8d4; }
+    .badge-inactive { background: rgba(107,114,128,.18); color: #9ca3af; }
+
+    /* Detail modal */
+    .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.7); backdrop-filter: blur(4px); z-index: 100; display: none; align-items: center; justify-content: center; padding: 20px; }
+    .modal-overlay.active { display: flex; }
+    .modal { background: var(--card-bg, #1a1d2b); border: 1px solid var(--card-border, #2a2e3e); border-radius: 16px; max-width: 900px; width: 100%; max-height: 90vh; overflow-y: auto; box-shadow: 0 25px 60px rgba(0,0,0,.5); }
+    .modal-head { display: flex; align-items: center; padding: 16px 20px; border-bottom: 1px solid var(--card-border, #2a2e3e); position: sticky; top: 0; background: var(--card-bg, #1a1d2b); z-index: 2; }
+    .modal-head h2 { font-size: 17px; font-weight: 800; flex: 1; color: var(--text, #f1f5f9); }
+    .modal-close { background: rgba(255,255,255,.06); border: none; width: 32px; height: 32px; border-radius: 6px; color: var(--text-dim, #9ca3af); cursor: pointer; font-size: 16px; }
+    .modal-close:hover { background: rgba(255,255,255,.12); color: var(--text, #f1f5f9); }
+    .modal-body { padding: 20px; }
+
+    .detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+    @media (max-width: 700px) { .detail-grid { grid-template-columns: 1fr; } }
+    .detail-section { background: rgba(255,255,255,.03); border: 1px solid var(--card-border, #2a2e3e); border-radius: 10px; padding: 14px; }
+    .detail-section h4 { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: var(--text-mute, #6b7280); margin: 0 0 10px; }
+    .detail-row { display: flex; justify-content: space-between; padding: 5px 0; border-bottom: 1px solid rgba(255,255,255,.05); font-size: 13px; }
+    .detail-row:last-child { border-bottom: none; }
+    .detail-row .k { color: var(--text-dim, #9ca3af); }
+    .detail-row .v { font-weight: 600; color: var(--text, #f1f5f9); }
+    .detail-img { width: 100%; aspect-ratio: 16/10; background: rgba(255,255,255,.04); border-radius: 10px; display: grid; place-items: center; font-size: 64px; overflow: hidden; margin-bottom: 12px; }
+    .detail-img img { width: 100%; height: 100%; object-fit: contain; }
+    .detail-price-block { display: flex; align-items: baseline; gap: 10px; padding: 14px; background: linear-gradient(135deg, rgba(34,197,94,.1), rgba(34,197,94,.04)); border: 1px solid rgba(34,197,94,.2); border-radius: 10px; margin-bottom: 12px; }
+    .detail-price { font-size: 32px; font-weight: 800; color: #4ade80; }
+    .detail-price-avg { font-size: 12px; color: var(--text-dim, #9ca3af); }
+    .detail-price-avg strong { color: var(--text, #f1f5f9); }
+
+    .related-listings { display: flex; flex-direction: column; gap: 6px; max-height: 240px; overflow-y: auto; }
+    .related-item { display: flex; gap: 8px; padding: 6px 8px; border-radius: 6px; background: rgba(255,255,255,.03); font-size: 12px; }
+    .related-item:hover { background: rgba(99,102,241,.1); }
+    .related-item .nm { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--text, #e5e7eb); }
+    .related-item .pr { font-weight: 700; color: #4ade80; }
+    .related-item .date { font-size: 10px; color: var(--text-mute, #6b7280); }
+
+    .empty-state { text-align: center; padding: 60px 20px; color: var(--text-mute, #6b7280); }
+    .empty-state .em { font-size: 36px; margin-bottom: 8px; opacity: .4; }
+    .empty-state .em-title { font-size: 15px; font-weight: 700; color: var(--text-dim, #9ca3af); margin-bottom: 6px; }
+    .empty-state .em-sub { font-size: 12.5px; }
+
+    .loading-state { text-align: center; padding: 40px 20px; color: var(--text-mute, #6b7280); font-size: 13px; }
+
+    .action-btn { display: inline-flex; align-items: center; gap: 4px; padding: 6px 10px; background: transparent; border: 1px solid var(--card-border, #2a2e3e); border-radius: 6px; color: var(--text-dim, #9ca3af); font-size: 11.5px; font-weight: 600; cursor: pointer; }
+    .action-btn:hover { background: rgba(99,102,241,.15); border-color: #6366f1; color: #a5b4fc; }
+    .action-btn.primary { background: #6366f1; border-color: #6366f1; color: white; }
+    .action-btn.primary:hover { background: #4f46e5; }
+{% endblock %}
+
+{% block content %}
+
+<div style="display:flex; align-items:center; justify-content:space-between; margin-bottom: 1rem;">
+    <h1 style="margin:0;">Case Listings</h1>
+    <a href="/cases/guide" style="display:inline-flex; align-items:center; gap:6px; padding:8px 14px; background:linear-gradient(135deg,#667eea,#764ba2); color:white; text-decoration:none; border-radius:8px; font-weight:600; font-size:13px; box-shadow:0 2px 6px rgba(102,126,234,.30);">
+        📐 Type Guide
+    </a>
+</div>
+
+<!-- Stats grid -->
+<div class="page-grid" id="stats-grid">
+    <div class="stat-card"><span class="icon">📦</span><div class="label">Total Cases</div><div class="value" id="s-total">—</div><div class="sub" id="s-active">— active</div></div>
+    <div class="stat-card"><span class="icon">💰</span><div class="label">Avg Price</div><div class="value" id="s-avg">—</div><div class="sub" id="s-median">— median</div></div>
+    <div class="stat-card"><span class="icon">🗂️</span><div class="label">Unique Models</div><div class="value" id="s-models">—</div><div class="sub" id="s-mfrs">— manufacturers</div></div>
+    <div class="stat-card"><span class="icon">🎨</span><div class="label">Top Type</div><div class="value" id="s-type">—</div><div class="sub" id="s-type-count">— listings</div></div>
+</div>
+
+<!-- Charts row -->
+<div class="charts-row">
+    <div class="panel">
+        <h3>💵 Price Distribution <span class="pill">€ buckets</span></h3>
+        <div class="chart-box"><canvas id="priceChart"></canvas></div>
+    </div>
+    <div class="panel">
+        <h3>🏷️ By Type</h3>
+        <div class="bar-list" id="type-bars"></div>
+    </div>
+    <div class="panel">
+        <h3>🏭 By Manufacturer</h3>
+        <div class="bar-list" id="mfr-bars"></div>
     </div>
 </div>
+
+<!-- Notice: keep the Active filter honest about its 7-day time-based semantics -->
+<div class="page-notice">
+    <span class="page-notice-icon">ℹ️</span>
+    <div>
+        <strong>How "Active" works on this page.</strong> A listing flips to
+        <em>inactive</em> via <code>mark_stale(days=7)</code> — a time-based sweep
+        that runs after every scrape, not a live check against ss.com. So a
+        listing that was last seen 6 days ago stays marked active until the next
+        scrape session misses it, even if the seller already pulled the ad.
+        Combine the <em>Active</em> filter with <em>First seen</em> below to
+        gauge how stale a row really is. The proposed session-bound logic lives
+        in <a href="/wiki#7-common-pitfalls--how-to-avoid-them" target="_blank">Wiki §7</a>.
+    </div>
+</div>
+
+<!-- Filter bar -->
+<div class="filter-bar">
+    <div class="fg">
+        <label>Active</label>
+        <select id="filter-active" onchange="loadListings()">
+            <option value="true" selected>Active only</option>
+            <option value="false">Inactive only</option>
+            <option value="all">All (active + inactive)</option>
+        </select>
+    </div>
+    <div class="fg">
+        <label>First seen</label>
+        <select id="filter-first-seen" onchange="loadListings()">
+            <option value="">All time</option>
+            <option value="30">Last 30 days</option>
+            <option value="90">Last 90 days</option>
+            <option value="180">Last 6 months</option>
+            <option value="365">Last year</option>
+        </select>
+    </div>
+    <div class="sep"></div>
+    <div class="fg">
+        <label>Type</label>
+        <select id="filter-type" onchange="loadListings()"><option value="">All</option></select>
+    </div>
+    <div class="fg">
+        <label>Color</label>
+        <select id="filter-color" onchange="loadListings()"><option value="">All</option></select>
+    </div>
+    <div class="fg">
+        <label>Side Panel</label>
+        <select id="filter-side" onchange="loadListings()"><option value="">All</option></select>
+    </div>
+    <div class="fg">
+        <label>Manufacturer</label>
+        <select id="filter-mfr" onchange="loadListings()"><option value="">All</option></select>
+    </div>
+    <div class="sep"></div>
+    <div class="fg">
+        <label>Min €</label>
+        <input type="number" id="filter-min-price" placeholder="0" onchange="loadListings()">
+    </div>
+    <div class="fg">
+        <label>Max €</label>
+        <input type="number" id="filter-max-price" placeholder="9999" onchange="loadListings()">
+    </div>
+    <div class="sep"></div>
+    <div class="fg">
+        <label>Search</label>
+        <input type="search" id="filter-search" placeholder="Title or model..." oninput="loadListingsDebounced()">
+    </div>
+    <div class="sep"></div>
+    <div class="fg">
+        <label>Sort</label>
+        <select id="sort-by" onchange="loadListings()">
+            <option value="first_seen_at" selected>Newest</option>
+            <option value="price">Price</option>
+            <option value="confidence">Confidence</option>
+        </select>
+    </div>
+    <div class="fg">
+        <label>Order</label>
+        <select id="sort-order" onchange="loadListings()">
+            <option value="desc" selected>↓</option>
+            <option value="asc">↑</option>
+        </select>
+    </div>
+    <button class="reset-all" onclick="resetAllFilters()">↻ Reset</button>
+</div>
+
+<!-- Listings -->
+<div class="panel" style="padding: 0; overflow: hidden;">
+    <div id="listings-container">
+        <div class="loading-state">⏳ Loading case listings…</div>
+    </div>
+</div>
+
+<!-- Detail modal -->
+<div class="modal-overlay" id="detail-overlay" onclick="if(event.target===this)closeDetail()">
+    <div class="modal" onclick="event.stopPropagation()">
+        <div class="modal-head">
+            <h2 id="detail-title">Case Details</h2>
+            <button class="modal-close" onclick="closeDetail()">✕</button>
+        </div>
+        <div class="modal-body" id="detail-body">
+            <div class="loading-state">Loading…</div>
+        </div>
+    </div>
+</div>
+
+<!-- Image modal -->
+<div class="modal-overlay" id="image-overlay" style="background: rgba(0,0,0,.92);" onclick="closeImage()">
+    <img id="image-modal-img" style="max-width:90%;max-height:90%;border-radius:8px;" alt="">
+</div>
+
+<!-- Flag modal -->
+<div class="modal-overlay" id="flag-overlay" onclick="if(event.target===this)closeFlagModal()">
+    <div class="modal" style="max-width: 520px;" onclick="event.stopPropagation()">
+        <div class="modal-head">
+            <h2 style="font-size:15px;">🚩 Flag listing</h2>
+            <button class="modal-close" onclick="closeFlagModal()">✕</button>
+        </div>
+        <div class="modal-body">
+            <div class="detail-section" style="margin-bottom:12px;">
+                <h4>Listing</h4>
+                <div id="flag-listing-summary" style="font-size:12.5px;color:var(--text-dim);">—</div>
+            </div>
+            <div class="detail-section" style="margin-bottom:12px;">
+                <h4>Reason</h4>
+                <select id="flag-reason" style="width:100%;padding:8px 10px;border:1px solid var(--card-border);border-radius:6px;background:var(--input-bg);color:var(--text);font-size:13px;">
+                    <option value="wrong_model">Wrong model match</option>
+                    <option value="wrong_image">Image doesn't match listing</option>
+                    <option value="duplicate">Duplicate of another listing</option>
+                    <option value="price_too_low">Suspiciously low price</option>
+                    <option value="price_too_high">Suspiciously high price</option>
+                    <option value="sold">Already sold / listing dead</option>
+                    <option value="spam">Spam / scam</option>
+                    <option value="other">Other</option>
+                </select>
+            </div>
+            <div class="detail-section" style="margin-bottom:12px;">
+                <h4>Comment (optional)</h4>
+                <textarea id="flag-comment" placeholder="Any extra context…" style="width:100%;min-height:80px;padding:8px 10px;border:1px solid var(--card-border);border-radius:6px;background:var(--input-bg);color:var(--text);font-size:13px;font-family:inherit;resize:vertical;"></textarea>
+            </div>
+            <div style="display:flex;gap:8px;justify-content:flex-end;">
+                <button class="action-btn" onclick="closeFlagModal()">Cancel</button>
+                <button class="action-btn primary" id="flag-submit-btn" onclick="submitFlag()">🚩 Submit flag</button>
+            </div>
+            <div id="flag-status" style="margin-top:10px;font-size:12.5px;"></div>
+        </div>
+    </div>
+</div>
+
 {% endblock %}
 
 {% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <script>
-async function loadListings() {
-    const activeOnly = document.getElementById('active-only').checked;
-    const highConfidence = document.getElementById('high-confidence').checked;
-    const sortBy = document.getElementById('sort-by').value;
-    const sortOrder = document.getElementById('sort-order').value;
-    const timeFilter = document.getElementById('time-filter').value;
+let priceChart = null;
+let _loadTimer = null;
 
-    const params = new URLSearchParams();
-    params.append('active', activeOnly);
-    params.append('sort', sortBy);
-    params.append('order', sortOrder);
-    params.append('time', timeFilter);
-    if (highConfidence) params.append('min_confidence', '0.70');
+document.addEventListener('DOMContentLoaded', async () => {
+    // Apply URL search params as initial filter state (so /cases?type=ATX Mid Tower
+    // pre-selects the type dropdown). Must run BEFORE loadListings() reads them.
+    applyUrlParamsToFilters();
+    await Promise.all([loadFilters(), loadStats(), loadListings()]);
+});
 
+// Read query string and pre-set the filter dropdowns.
+// After loadFilters() populates the options, the dropdown's value is updated;
+// if a value doesn't exist as an option yet, the dropdown keeps its default
+// and the URL param is ignored silently.
+function applyUrlParamsToFilters() {
+    const sp = new URLSearchParams(window.location.search);
+    if (sp.has('type')) {
+        const sel = document.getElementById('filter-type');
+        // Defer until options are populated; loadFilters() will see the value
+        // is already set and add the matching option if missing.
+    }
+    // For all other filters: assign value directly; loadListings() will
+    // read them and pass to the API.
+    if (sp.has('active')) document.getElementById('filter-active').value = sp.get('active');
+    if (sp.has('first_seen')) document.getElementById('filter-first-seen').value = sp.get('first_seen');
+    if (sp.has('sort')) document.getElementById('sort-by').value = sp.get('sort');
+    if (sp.has('order')) document.getElementById('sort-order').value = sp.get('order');
+}
+
+function loadListingsDebounced() {
+    clearTimeout(_loadTimer);
+    _loadTimer = setTimeout(loadListings, 300);
+}
+
+async function loadFilters() {
     try {
-        const response = await fetch('/api/cases?' + params.toString());
-        let listings = await response.json();
-
-        const container = document.getElementById('listings-container');
-
-        // Check for API error
-        if (listings.error) {
-            throw new Error(listings.error);
-        }
-
-        // Ensure listings is an array
-        if (!Array.isArray(listings)) {
-            console.error('Expected array, got:', typeof listings, listings);
-            throw new Error('Invalid response format from API');
-        }
-
-        if (listings.length === 0) {
-            container.innerHTML = '<div class="loading">No listings found</div>';
-            return;
-        }
-
-        let html = `
-            <table>
-                <thead>
-                    <tr>
-                        <th>Case</th>
-                        <th>{{ t('Type') }}</th>
-                        <th>{{ t('Price') }}</th>
-                        <th>Location</th>
-                        <th>Date</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-        `;
-
-        listings.forEach(item => {
-            const caseName = item.case_name || item.title;
-            const caseType = item.case_type || 'Unknown';
-
-            const confidence = item.case_confidence_score || 0;
-            let confidenceClass = 'confidence-high';
-            if (confidence < 0.70) confidenceClass = 'confidence-medium';
-            if (confidence < 0.50) confidenceClass = 'confidence-low';
-
-            const thumbUrl = item.local_image_path
-                ? `/images/${item.local_image_path.replace(/\\/g, '/')}`
-                : item.image_url;
-            const dealBadge = computeCaseDealBadges(item);
-            const dealBadgeOverlay = dealBadge
-                ? `<div style="position: absolute; top: 4px; right: 4px; display: flex; flex-direction: column; gap: 4px; z-index: 10;">${dealBadge}</div>`
-                : '';
-
-            html += `
-                <tr style="cursor: pointer;" onclick="showCaseListingDetail('${item.listing_id}')">
-                    <td onclick="event.stopPropagation();" style="position: relative;">
-                        ${thumbUrl ? `<div class="listing-image-wrapper" style="position: relative; display: inline-block;">${dealBadgeOverlay}<img src="${thumbUrl}" alt="${caseName}" class="listing-thumb" onclick="event.stopPropagation(); showImageModal('${thumbUrl}', '${caseName.replace(/'/g, "\\'")}')"></div>` : '<div class="listing-thumb-placeholder">📦</div>'}
-                        <strong>${caseName}</strong>
-                        ${item.case_match_method ? `<br><small class="${confidenceClass}">${(confidence*100).toFixed(0)}% confidence</small>` : ''}
-                    </td>
-                    <td>${caseType}</td>
-                    <td>
-                        <span class="price">€${item.price_eur}</span>
-                    </td>
-                    <td>${item.seller_location || 'N/A'}</td>
-                    <td>${(item.date_posted || item.first_seen_at || item.created_at) ? new Date(item.date_posted || item.first_seen_at || item.created_at).toLocaleDateString() : 'N/A'}</td>
-                    <td onclick="event.stopPropagation();">
-                        <button class="btn btn-small btn-secondary" onclick="showCaseListingDetail('${item.listing_id}')">{{ t('Details') }}</button>
-                        <a href="${item.listing_url}" target="_blank" class="btn btn-small">View →</a>
-                    </td>
-                </tr>
-            `;
+        const r = await fetch('/api/case-filters');
+        const f = await r.json();
+        if (f.error) return;
+        fillSelect('filter-type', f.types || []);
+        fillSelect('filter-color', f.colors || []);
+        fillSelect('filter-side', f.side_panels || []);
+        fillSelect('filter-mfr', f.manufacturers || []);
+        // After populating options, restore any URL params that point at values
+        // not in the API list. fillSelect() preserves the first <option>, so
+        // we add a one-off option if the value isn't there.
+        const sp = new URLSearchParams(window.location.search);
+        ['type', 'color', 'side_panel', 'manufacturer'].forEach(k => {
+            const map = {type: 'filter-type', color: 'filter-color', side_panel: 'filter-side', manufacturer: 'filter-mfr'};
+            const v = sp.get(k);
+            if (!v) return;
+            const sel = document.getElementById(map[k]);
+            if (!sel) return;
+            const exists = Array.from(sel.options).some(o => o.value === v);
+            if (!exists) {
+                const opt = document.createElement('option');
+                opt.value = v; opt.textContent = v;
+                sel.appendChild(opt);
+            }
+            sel.value = v;
         });
-
-        html += '</tbody></table>';
-        container.innerHTML = html;
-
-    } catch (error) {
-        document.getElementById('listings-container').innerHTML =
-            `<div class="error">Failed to load listings: ${error.message}</div>`;
-    }
+    } catch (e) { console.warn('loadFilters:', e); }
 }
 
-function computeCaseDealBadges(item) {
-    let dealBadge = '';
-    const isNewListing = item.is_new === true;
-    if (isNewListing) {
-        dealBadge += `<span class="badge" style="background: #3b82f6; color: white; font-weight: bold;" title="New listing from current import!">🆕 NEW</span><br>`;
-    }
-    if (!isNewListing && item.price_stats && item.price_stats.below_avg) {
-        const avgPrice = parseFloat(item.price_stats.avg);
-        const currentPrice = item.price_eur;
-        const savingsPct = ((avgPrice - currentPrice) / avgPrice * 100);
-        if (savingsPct >= 15) {
-            dealBadge += `<span class="badge" style="background: #dc2626; color: white; font-weight: bold;" title="Price is ${savingsPct.toFixed(0)}% below average!">🔥 STEAL</span><br>`;
-        }
-    }
-    return dealBadge;
-}
-
-async function showCaseListingDetail(listingId) {
-    try {
-        const response = await fetch(`/api/listing-details/${listingId}`);
-        const data = await response.json();
-
-        if (data.error || !data.current) {
-            alert('Error loading listing details');
-            return;
-        }
-
-        const current = data.current;
-        const history = data.history || [];
-        const caseName = current.case_name || current.title;
-
-        const thumbUrl = current.local_image_path
-            ? `/images/${current.local_image_path.replace(/\\/g, '/')}`
-            : current.image_url;
-
-        let html = `
-            <h3>${caseName}</h3>
-
-            ${thumbUrl ? `
-            <div style="margin-bottom: 1rem; text-align: center;">
-                <img src="${thumbUrl}" alt="${caseName}" style="max-width: 100%; max-height: 70vh; border-radius: 8px; cursor: zoom-in;"
-                     onclick="showImageModal('${thumbUrl.replace(/'/g, "\\'")}', '${caseName.replace(/'/g, "\\'")}')">
-            </div>
-            ` : ''}
-
-            <div style="margin-bottom: 1rem;">
-                <strong>Title:</strong> ${current.title || '-'}
-            </div>
-
-            <div style="margin-bottom: 1rem;">
-                <strong>Price:</strong> <span class="price" style="font-size: 1.25rem;">€${current.price_eur}</span>
-            </div>
-
-            <div style="margin-bottom: 1rem;">
-                <strong>Location:</strong> ${current.seller_location || '-'}
-            </div>
-
-            <div style="margin-bottom: 1rem;">
-                <strong>Date Posted:</strong> ${(current.date_posted || current.first_seen_at || current.created_at) ? new Date(current.date_posted || current.first_seen_at || current.created_at).toLocaleDateString() : '-'}
-            </div>
-
-            <div style="margin-bottom: 1rem;">
-                <strong>Source:</strong> ${current.source || '-'}
-            </div>
-
-            ${current.case_type ? `<div style="margin-bottom: 1rem;"><strong>Case Type:</strong> ${current.case_type}</div>` : ''}
-            ${current.case_color ? `<div style="margin-bottom: 1rem;"><strong>Color:</strong> ${current.case_color}</div>` : ''}
-
-            ${current.matched_case_id ? `
-            <div style="margin-bottom: 1rem; padding: 0.75rem; background: var(--modal-box-bg, #f8f9fa); border: 1px solid var(--modal-border, #eee); border-radius: 8px;">
-                <div style="margin-bottom: 0.25rem;"><strong>Matched Model</strong></div>
-                ${current.case_confidence_score ? `<div>Confidence: ${(current.case_confidence_score * 100).toFixed(0)}%</div>` : ''}
-                ${current.case_match_method ? `<div>Method: ${current.case_match_method}</div>` : ''}
-                ${current.matched_case_id ? `<div>Model ID: ${current.matched_case_id}</div>` : ''}
-            </div>
-            ` : ''}
-
-            <div style="margin-bottom: 1rem;">
-                <strong>Description:</strong>
-                <div class="listing-description">
-                    ${current.description || '<em>No description</em>'}
-                </div>
-            </div>
-
-            ${history.length > 0 ? `
-            <div style="margin-bottom: 1rem;">
-                <strong>Historical Prices:</strong>
-                <ul style="margin: 0.5rem 0; padding-left: 1.25rem;">
-                    ${history.map(h => `
-                        <li>${h.recorded_at ? new Date(h.recorded_at).toLocaleDateString() : 'N/A'} — €${h.price_eur}</li>
-                    `).join('')}
-                </ul>
-            </div>
-            ` : ''}
-
-            <div style="margin-top: 1.5rem;">
-                <a href="${current.listing_url}" target="_blank" class="btn">View on Site</a>
-                <button class="btn btn-secondary" onclick="closeModal()" style="margin-left: 0.5rem;">{{ t('Close') }}</button>
-            </div>
-        `;
-
-        showModal(html);
-    } catch (error) {
-        console.error('Error loading details:', error);
-        alert('Error loading details: ' + error.message);
-    }
-}
-
-async function showCaseListingHistory(listingId) {
-    try {
-        const response = await fetch(`/api/price-history/${listingId}`);
-        const history = await response.json();
-
-        let html = `
-            <h3>Price History for ${listingId}</h3>
-        `;
-
-        if (history && history.length > 0) {
-            html += `
-                <table style="width: 100%; margin-top: 1rem;">
-                    <thead>
-                        <tr>
-                            <th>Date</th>
-                            <th>{{ t('Price') }}</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        ${history.map(h => `
-                            <tr>
-                                <td>${h.recorded_at ? new Date(h.recorded_at).toLocaleDateString() : 'N/A'}</td>
-                                <td class="price">€${h.price_eur}</td>
-                            </tr>
-                        `).join('')}
-                    </tbody>
-                </table>
-            `;
-        } else {
-            html += `<p>No price history available.</p>`;
-        }
-
-        html += `
-            <div style="margin-top: 1.5rem;">
-                <button class="btn btn-secondary" onclick="closeModal()">{{ t('Close') }}</button>
-            </div>
-        `;
-
-        showModal(html);
-    } catch (error) {
-        console.error('Error loading history:', error);
-        alert('Error loading history: ' + error.message);
-    }
-}
-
-function showModal(content) {
-    let overlay = document.getElementById('detail-modal-overlay');
-    if (!overlay) {
-        overlay = document.createElement('div');
-        overlay.id = 'detail-modal-overlay';
-        overlay.className = 'modal-overlay';
-        overlay.innerHTML = `
-            <div class="modal">
-                <button class="modal-close" onclick="closeModal()">&times;</button>
-                <div id="modal-body"></div>
-            </div>
-        `;
-        document.body.appendChild(overlay);
-
-        overlay.addEventListener('click', function(e) {
-            if (e.target === overlay) closeModal();
-        });
-    }
-    document.getElementById('modal-body').innerHTML = content;
-    overlay.classList.add('active');
-}
-
-function closeModal() {
-    const overlay = document.getElementById('detail-modal-overlay');
-    if (overlay) overlay.classList.remove('active');
-}
-
-// Show image modal - reused from motherboards.html
-function showImageModal(imageUrl, title) {
-    const existingModal = document.querySelector('.image-modal-overlay');
-    if (existingModal) {
-        existingModal.remove();
-    }
-
-    const modal = document.createElement('div');
-    modal.className = 'image-modal-overlay';
-    modal.style.cssText = `
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0,0,0,0.9);
-        z-index: 9999;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: zoom-out;
-    `;
-
-    const img = document.createElement('img');
-    img.src = imageUrl;
-    img.alt = title || 'Image';
-    img.onload = function() { fitPreviewImage(img); };
-    img.style.cssText = `
-        max-width: 90%;
-        max-height: 90%;
-        object-fit: contain;
-        border-radius: 8px;
-    `;
-
-    modal.appendChild(img);
-    document.body.appendChild(modal);
-
-    const closeImageModal = function() {
-        modal.remove();
-    };
-
-    modal.addEventListener('click', closeImageModal);
-
-    img.addEventListener('click', function(e) {
-        e.stopPropagation();
+function fillSelect(id, items) {
+    const sel = document.getElementById(id);
+    if (!sel) return;
+    const first = sel.options[0];
+    sel.innerHTML = '';
+    sel.appendChild(first);
+    items.forEach(v => {
+        const opt = document.createElement('option');
+        opt.value = v; opt.textContent = v;
+        sel.appendChild(opt);
     });
 }
 
-function fitPreviewImage(img) {
-    if (!img || !img.naturalWidth || !img.naturalHeight) return;
-    const isPortrait = img.naturalHeight > img.naturalWidth;
-    if (isPortrait) {
-        img.style.maxWidth = '70%';
-        img.style.margin = '0 auto';
+async function loadStats() {
+    try {
+        const r = await fetch('/api/case-stats');
+        const s = await r.json();
+        if (s.error) return;
+        const t = s.totals || {};
+        document.getElementById('s-total').textContent = t.total ?? '—';
+        document.getElementById('s-active').textContent = `${t.active ?? 0} active · ${t.inactive ?? 0} inactive`;
+        document.getElementById('s-avg').textContent = t.avg_price ? `€${Number(t.avg_price).toFixed(0)}` : '—';
+        document.getElementById('s-median').textContent = t.median_price ? `median €${Number(t.median_price).toFixed(0)}` : `range €${t.min_price ?? 0}–€${t.max_price ?? 0}`;
+        document.getElementById('s-models').textContent = t.unique_models ?? '—';
+        document.getElementById('s-mfrs').textContent = `${(s.by_manufacturer || []).length} manufacturers`;
+        const types = s.by_type || [];
+        const topType = types[0];
+        document.getElementById('s-type').textContent = topType ? topType.type : '—';
+        document.getElementById('s-type-count').textContent = topType ? `${topType.listings} listings · avg €${Number(topType.avg_price || 0).toFixed(0)}` : '';
+
+        // Bar lists
+        renderBars('type-bars', (s.by_type || []).slice(0, 7), 'type', 'listings', ['#14b8a6', '#5eead4']);
+        renderBars('mfr-bars', (s.by_manufacturer || []).slice(0, 8), 'manufacturer', 'listings', ['#6366f1', '#a78bfa']);
+
+        // Price chart
+        renderPriceChart(s.price_distribution || []);
+    } catch (e) { console.warn('loadStats:', e); }
+}
+
+function renderBars(elId, items, nameKey, valKey, colors) {
+    const el = document.getElementById(elId);
+    if (!el) return;
+    if (!items.length) { el.innerHTML = '<div style="font-size:11.5px;color:var(--text-mute)">No data</div>'; return; }
+    const max = Math.max(...items.map(i => i[valKey]));
+    el.innerHTML = items.map(it => {
+        const pct = max ? (it[valKey] / max) * 100 : 0;
+        const bg = `linear-gradient(90deg, ${colors[0]}, ${colors[1]})`;
+        return `<div class="bar-row">
+            <div class="nm" title="${escapeHtml(it[nameKey])}">${escapeHtml(it[nameKey])}</div>
+            <div class="bar"><div style="width:${pct}%;background:${bg}"></div></div>
+            <div class="ct">${it[valKey]}</div>
+        </div>`;
+    }).join('');
+}
+
+function renderPriceChart(buckets) {
+    const canvas = document.getElementById('priceChart');
+    if (!canvas) return;
+    const labels = buckets.map(b => b.bucket);
+    const data = buckets.map(b => b.listings);
+    if (priceChart) priceChart.destroy();
+    const ctx = canvas.getContext('2d');
+    priceChart = new Chart(ctx, {
+        type: 'bar',
+        data: { labels, datasets: [{
+            label: 'Listings',
+            data,
+            backgroundColor: ['#3b82f6', '#6366f1', '#8b5cf6', '#a78bfa', '#c084fc', '#ec4899'],
+            borderRadius: 6, borderSkipped: false,
+        }]},
+        options: {
+            responsive: true, maintainAspectRatio: false,
+            plugins: { legend: { display: false } },
+            scales: {
+                x: { ticks: { color: '#9ca3af', font: { size: 11 } }, grid: { display: false } },
+                y: { ticks: { color: '#9ca3af', font: { size: 11 } }, grid: { color: 'rgba(255,255,255,.05)' } },
+            },
+        },
+    });
+}
+
+async function loadListings() {
+    const container = document.getElementById('listings-container');
+    container.innerHTML = '<div class="loading-state">⏳ Loading…</div>';
+
+    const params = new URLSearchParams();
+    // Active filter: 'true' (active only), 'false' (inactive only), 'all' (no filter)
+    const active = document.getElementById('filter-active').value;
+    if (active === 'all') {
+        // omit param to skip the WHERE is_active clause entirely
     } else {
-        img.style.maxWidth = '90%';
-        img.style.margin = '0 auto';
+        params.set('active', active);
+    }
+    const t = document.getElementById('filter-type').value; if (t) params.set('type', t);
+    const c = document.getElementById('filter-color').value; if (c) params.set('color', c);
+    const s = document.getElementById('filter-side').value; if (s) params.set('side_panel', s);
+    const m = document.getElementById('filter-mfr').value; if (m) params.set('manufacturer', m);
+    const minP = document.getElementById('filter-min-price').value; if (minP) params.set('min_price', minP);
+    const maxP = document.getElementById('filter-max-price').value; if (maxP) params.set('max_price', maxP);
+    const q = document.getElementById('filter-search').value; if (q) params.set('search', q);
+    const fs = document.getElementById('filter-first-seen').value;
+    if (fs) {
+        const cutoff = new Date(Date.now() - parseInt(fs, 10) * 86400 * 1000);
+        params.set('first_seen_after', cutoff.toISOString());
+    }
+    params.set('sort', document.getElementById('sort-by').value);
+    params.set('order', document.getElementById('sort-order').value);
+
+    try {
+        const url = addHideUnmatchedParam('/api/cases?' + params.toString());
+        const r = await fetch(url);
+        const listings = await r.json();
+        if (!Array.isArray(listings)) throw new Error(listings.error || 'Bad response');
+
+        if (!listings.length) {
+            container.innerHTML = `
+                <div class="empty-state">
+                    <div class="em">📦</div>
+                    <div class="em-title">No case listings match your filters</div>
+                    <div class="em-sub">Try switching Active to "All" or clearing filters · <a href="javascript:resetAllFilters()" style="color:#818cf8;">Reset all</a></div>
+                </div>`;
+            return;
+        }
+
+        const rows = listings.map(item => {
+            const name = item.case_name || cleanTitle(item.title) || 'Unknown';
+            const t = item.case_type || '—';
+            const color = item.case_color || '—';
+            const sp = item.case_side_panel || '—';
+            const price = item.price_eur || 0;
+            const stats = item.price_stats || {};
+            const save = stats.avg ? Math.round(((stats.avg - price) / stats.avg) * 100) : 0;
+            const isSteal = save >= 15;
+            const isOverpriced = save <= -20;
+            const conf = item.case_confidence_score;
+            const confBadge = conf == null ? '<span class="badge badge-low" title="No match">unmatched</span>' :
+                conf >= 0.9 ? `<span class="badge badge-high">${Math.round(conf*100)}%</span>` :
+                conf >= 0.7 ? `<span class="badge badge-med">${Math.round(conf*100)}%</span>` :
+                              `<span class="badge badge-low">${Math.round(conf*100)}%</span>`;
+            const thumbUrl = item.local_image_path
+                ? `/images/${item.local_image_path.replace(/\\\\/g, '/')}`
+                : item.image_url;
+            const thumb = thumbUrl
+                ? `<img class="thumb" src="${thumbUrl}" alt="${escapeHtml(name)}" onerror="this.outerHTML='<div class=\\'thumb placeholder\\'>📦</div>'" onclick="event.stopPropagation();showImage('${thumbUrl.replace(/'/g, "\\'")}', '${escapeHtml(name).replace(/'/g, "\\'")}')">`
+                : '<div class="thumb placeholder">📦</div>';
+            const mfr = item.manufacturer || '';
+            // Badge system: 🆕 NEW, ↓ Price drop, 🔥 STEAL
+            // Overlay (top of thumb) — NEW + STEAL only — visible at a glance
+            const overlayBadges = [
+                item.is_new ? '<span class="badge badge-new" style="display:block;margin-bottom:3px;box-shadow:0 1px 2px rgba(0,0,0,.4);">🆕 NEW</span>' : '',
+                isSteal ? `<span class="badge badge-steal" style="display:block;margin-bottom:3px;box-shadow:0 1px 2px rgba(0,0,0,.4);">🔥 ${save}% off</span>` : '',
+            ].join('');
+            // Inline badges — Price drop + inactive
+            const newBadge = item.is_new ? '<span class="badge badge-new" style="margin-left:4px;">NEW</span>' : '';
+            const stealBadge = isSteal ? `<span class="badge badge-steal" style="margin-left:4px;">🔥 ${save}% off</span>` : '';
+            const priceDropBadge = item.has_price_decreased ? '<span class="badge badge-price-drop" style="margin-left:4px;">↓ Price drop</span>' : '';
+            const inactiveBadge = !item.is_active ? '<span class="badge badge-inactive" style="margin-left:4px;">inactive</span>' : '';
+            const priceMeta = stats.avg ? `avg €${Number(stats.avg).toFixed(0)} · p${stats.percentile ?? 50}` : (item.seller_location || '');
+            const saveSpan = stats.avg
+                ? (isSteal || isOverpriced
+                    ? `<span class="deal-save ${isOverpriced ? 'bad' : ''}">${save >= 0 ? '−' : '+'}${Math.abs(save)}%</span>`
+                    : '')
+                : '';
+
+            return `<tr onclick="showDetail('${item.listing_id}')">
+                <td>
+                    <div style="position:relative; display:inline-block;">
+                        ${overlayBadges ? `<div style="position:absolute; top:4px; right:4px; z-index:5; text-align:right;">${overlayBadges}</div>` : ''}
+                        ${thumb}
+                    </div>
+                </td>
+                <td>
+                    <div class="case-name">${escapeHtml(name)} ${confBadge} ${newBadge} ${stealBadge} ${priceDropBadge} ${inactiveBadge}</div>
+                    <div class="case-meta">${escapeHtml(mfr)} · ${escapeHtml(cleanTitle(item.title || '')).slice(0, 80)}</div>
+                </td>
+                <td>
+                    ${mfr ? `<span class="badge badge-mfr">${escapeHtml(mfr)}</span><br>` : ''}
+                    <span class="badge badge-type">${escapeHtml(t)}</span>
+                </td>
+                <td>
+                    <span class="badge badge-color">${escapeHtml(color)}</span><br>
+                    <span class="badge badge-side" style="margin-top:3px;">${escapeHtml(sp)}</span>
+                </td>
+                <td>
+                    <div class="price">€${Number(price).toFixed(0)} ${saveSpan}</div>
+                    <div class="price-meta">${escapeHtml(priceMeta)}</div>
+                </td>
+                <td>${escapeHtml(item.seller_location || '—')}</td>
+                <td>${formatDate(item.first_seen_at || item.date_posted || item.created_at)}</td>
+                <td onclick="event.stopPropagation();">
+                    <button class="action-btn" onclick="showDetail('${item.listing_id}')">Details</button>
+                    ${item.listing_url ? `<a href="${item.listing_url}" target="_blank" class="action-btn" onclick="event.stopPropagation();">View ↗</a>` : ''}
+                </td>
+            </tr>`;
+        }).join('');
+
+        container.innerHTML = `
+            <div style="padding: 0 18px 8px; display:flex; justify-content:space-between; align-items:center; font-size:12px; color:var(--text-mute);">
+                <span><strong style="color:var(--text)">${listings.length}</strong> listings shown</span>
+                <span>Click any row for full details</span>
+            </div>
+            <div style="overflow-x: auto;">
+                <table class="listings-table">
+                    <thead><tr>
+                        <th style="width:72px;"></th>
+                        <th>Case</th>
+                        <th>Manufacturer · Type</th>
+                        <th>Color · Side Panel</th>
+                        <th>Price</th>
+                        <th>Location</th>
+                        <th>First seen</th>
+                        <th style="width:140px;">Actions</th>
+                    </tr></thead>
+                    <tbody>${rows}</tbody>
+                </table>
+            </div>`;
+    } catch (e) {
+        container.innerHTML = `<div class="empty-state"><div class="em">⚠️</div><div class="em-title">Failed to load listings</div><div class="em-sub">${escapeHtml(e.message)}</div></div>`;
     }
 }
 
-// Expose to global scope for inline onclick handlers
-window.showImageModal = showImageModal;
-window.showCaseListingDetail = showCaseListingDetail;
-window.showCaseListingHistory = showCaseListingHistory;
-window.closeModal = closeModal;
+async function showDetail(listingId) {
+    const overlay = document.getElementById('detail-overlay');
+    const body = document.getElementById('detail-body');
+    const title = document.getElementById('detail-title');
+    body.innerHTML = '<div class="loading-state">Loading…</div>';
+    title.textContent = 'Case Details';
+    overlay.classList.add('active');
 
-// Load on page load
-document.addEventListener('DOMContentLoaded', loadListings);
+    try {
+        // Use generic listing-details endpoint for current listing data
+        const [listingRes, refRes] = await Promise.all([
+            fetch(`/api/listing-details/${listingId}`),
+            fetch(`/api/cases?search=&limit=200`).then(r => r.json()).catch(() => []),
+        ]);
+        const data = await listingRes.json();
+        if (data.error) throw new Error(data.error);
+
+        const cur = data.current || {};
+        const history = data.history || [];
+        const caseName = cur.case_name || cur.title || 'Unknown Case';
+        title.textContent = caseName;
+        const thumbUrl = cur.local_image_path
+            ? `/images/${cur.local_image_path.replace(/\\\\/g, '/')}`
+            : cur.image_url;
+
+        // Try to find the case_reference details from the listing
+        const refRow = (refRes || []).find(r => r.listing_id === listingId);
+        const ref = refRow || cur;
+
+        const conf = ref.case_confidence_score;
+        const confBadge = conf == null ? '<span class="badge badge-low">unmatched</span>' :
+            conf >= 0.9 ? `<span class="badge badge-high">${Math.round(conf*100)}% match</span>` :
+            conf >= 0.7 ? `<span class="badge badge-med">${Math.round(conf*100)}% match</span>` :
+                          `<span class="badge badge-low">${Math.round(conf*100)}% match</span>`;
+
+        const stats = ref.price_stats || {};
+        const savePct = stats.avg && ref.price_eur ? Math.round(((stats.avg - ref.price_eur) / stats.avg) * 100) : 0;
+
+        // Build detail body
+        body.innerHTML = `
+            <div class="detail-grid">
+                <div>
+                    <div class="detail-img" onclick="${thumbUrl ? `showImage('${thumbUrl.replace(/'/g, "\\'")}', '${escapeHtml(caseName).replace(/'/g, "\\'")}')` : ''}">
+                        ${thumbUrl ? `<img src="${thumbUrl}" alt="${escapeHtml(caseName)}" onerror="this.parentElement.innerHTML='<div style=font-size:64px>📦</div>'">` : '📦'}
+                    </div>
+                    <div class="detail-price-block">
+                        <div>
+                            <div class="detail-price">€${Number(ref.price_eur || 0).toFixed(0)}</div>
+                            ${stats.avg ? `<div class="detail-price-avg">avg <strong>€${Number(stats.avg).toFixed(0)}</strong> · p${stats.percentile ?? 50}</div>` : ''}
+                        </div>
+                        ${savePct !== 0 ? `<div style="margin-left:auto; font-size:14px; font-weight:800; color:${savePct > 0 ? '#4ade80' : '#f87171'};">${savePct > 0 ? '−' : '+'}${Math.abs(savePct)}%</div>` : ''}
+                    </div>
+                    <div class="detail-section">
+                        <h4>📝 Listing</h4>
+                        ${(() => {
+                            const raw = ref.title || '—';
+                            const clean = cleanTitle(raw);
+                            return clean && clean !== raw
+                                ? `<div class="detail-row"><span class="k">Title</span><span class="v" style="max-width:60%;text-align:right;">${escapeHtml(clean)}</span></div>
+                                   <div class="detail-row" style="opacity:.6;"><span class="k" style="font-size:10.5px;">Raw</span><span class="v" style="font-size:10.5px;max-width:60%;text-align:right;">${escapeHtml(raw)}</span></div>`
+                                : `<div class="detail-row"><span class="k">Title</span><span class="v" style="max-width:60%;text-align:right;">${escapeHtml(raw)}</span></div>`;
+                        })()}
+                        <div class="detail-row"><span class="k">Location</span><span class="v">${escapeHtml(ref.seller_location || '—')}</span></div>
+                        <div class="detail-row"><span class="k">Source</span><span class="v">${escapeHtml(ref.source || '—')}</span></div>
+                        <div class="detail-row"><span class="k">Date posted</span><span class="v">${formatDate(ref.date_posted || ref.first_seen_at || ref.created_at)}</span></div>
+                        <div class="detail-row"><span class="k">First seen</span><span class="v">${formatDate(ref.first_seen_at)}</span></div>
+                        <div class="detail-row"><span class="k">Last seen</span><span class="v">${formatDate(ref.last_seen_at)}</span></div>
+                        <div class="detail-row"><span class="k">Status</span><span class="v">${ref.is_active ? '🟢 Active' : '⚪ Inactive'}</span></div>
+                    </div>
+                </div>
+                <div>
+                    <div class="detail-section">
+                        <h4>🎛️ Case Reference ${confBadge}</h4>
+                        <div class="detail-row"><span class="k">Model</span><span class="v">${escapeHtml(ref.case_name || '—')}</span></div>
+                        <div class="detail-row"><span class="k">Manufacturer</span><span class="v">${escapeHtml((ref.case_name || '').split(' ')[0] || '—')}</span></div>
+                        <div class="detail-row"><span class="k">Type</span><span class="v">${escapeHtml(ref.case_type || '—')}</span></div>
+                        <div class="detail-row"><span class="k">Color</span><span class="v">${escapeHtml(ref.case_color || '—')}</span></div>
+                        ${ref.case_side_panel ? `<div class="detail-row"><span class="k">Side panel</span><span class="v">${escapeHtml(ref.case_side_panel)}</span></div>` : ''}
+                        ${ref.case_power_supply ? `<div class="detail-row"><span class="k">PSU</span><span class="v">${escapeHtml(ref.case_power_supply)}</span></div>` : ''}
+                        ${ref.case_volume ? `<div class="detail-row"><span class="k">Volume</span><span class="v">${Number(ref.case_volume).toFixed(1)} L</span></div>` : ''}
+                        ${ref.case_rating ? `<div class="detail-row"><span class="k">Rating</span><span class="v">${'★'.repeat(ref.case_rating)}${'☆'.repeat(5-ref.case_rating)}</span></div>` : ''}
+                        ${ref.case_match_method ? `<div class="detail-row"><span class="k">Match method</span><span class="v" style="font-family:monospace;font-size:11px;">${escapeHtml(ref.case_match_method)}</span></div>` : ''}
+                        ${ref.matched_case_id ? `<div class="detail-row"><span class="k">Model ID</span><span class="v">#${ref.matched_case_id}</span></div>` : ''}
+                    </div>
+                    <div class="detail-section" style="margin-top:12px;">
+                        <h4>📈 Price History${history.length ? ` (${history.length})` : ''}</h4>
+                        ${history.length ? `
+                        <div class="related-listings">
+                            ${history.slice(0, 15).map(h => `
+                                <div class="related-item">
+                                    <div>
+                                        <div class="nm">€${Number(h.price_eur || 0).toFixed(0)}</div>
+                                        <div class="date">${formatDate(h.recorded_at)}</div>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                        ` : `<div style="font-size:12px;color:var(--text-mute);padding:4px 0;">No price changes recorded yet — this listing has only one price snapshot.</div>`}
+                    </div>
+                    <div class="detail-section" style="margin-top:12px;">
+                        <h4>🔗 Actions</h4>
+                        <div style="display:flex; gap:6px; flex-wrap:wrap;">
+                            ${ref.listing_url ? `<a href="${ref.listing_url}" target="_blank" class="action-btn primary">View on ss.com ↗</a>` : ''}
+                            <button class="action-btn" onclick="openFlagModal('${escapeHtml(listingId)}', '${escapeHtml(ref.case_name || ref.title || '').replace(/'/g, "\\'")}')">🚩 Flag</button>
+                            <button class="action-btn" onclick="navigator.clipboard.writeText('${ref.listing_url || ''}'); this.textContent='Copied ✓'; setTimeout(() => this.textContent='📋 Copy URL', 1500);">📋 Copy URL</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            ${cur.description ? `<div class="detail-section" style="margin-top:14px;"><h4>📄 Description</h4><div style="font-size:12.5px;line-height:1.5;white-space:pre-wrap;color:var(--text-dim);">${escapeHtml(cur.description)}</div></div>` : ''}
+        `;
+    } catch (e) {
+        body.innerHTML = `<div class="empty-state"><div class="em">⚠️</div><div class="em-title">Failed to load details</div><div class="em-sub">${escapeHtml(e.message)}</div></div>`;
+    }
+}
+
+function closeDetail() {
+    document.getElementById('detail-overlay').classList.remove('active');
+}
+
+function showImage(url, title) {
+    const img = document.getElementById('image-modal-img');
+    img.src = url; img.alt = title || '';
+    document.getElementById('image-overlay').classList.add('active');
+}
+function closeImage() {
+    document.getElementById('image-overlay').classList.remove('active');
+}
+
+// -------- Flag modal --------
+
+let flagTargetId = null;
+
+function openFlagModal(listingId, displayName) {
+    flagTargetId = listingId;
+    const summary = document.getElementById('flag-listing-summary');
+    // Find the listing in the most recently loaded boardData
+    const listing = (boardData && boardData.columns
+        ? boardData.columns.flatMap(c => c.tasks)
+        : []).find(x => x.listing_id === listingId);
+    if (listing) {
+        const cleanName = listing.case_name || cleanTitle(listing.title) || displayName || listingId;
+        const price = listing.price_eur ? `€${listing.price_eur}` : '—';
+        const loc = listing.seller_location || '—';
+        summary.innerHTML = `<strong>${escapeHtml(cleanName)}</strong> · ${price} · ${escapeHtml(loc)}<br><span style="font-family:monospace;font-size:11px;">${escapeHtml(listingId)}</span>`;
+    } else {
+        summary.textContent = listingId;
+    }
+    document.getElementById('flag-reason').value = 'wrong_model';
+    document.getElementById('flag-comment').value = '';
+    document.getElementById('flag-status').textContent = '';
+    document.getElementById('flag-submit-btn').disabled = false;
+    document.getElementById('flag-submit-btn').textContent = '🚩 Submit flag';
+    document.getElementById('flag-overlay').classList.add('active');
+}
+
+function closeFlagModal() {
+    document.getElementById('flag-overlay').classList.remove('active');
+    flagTargetId = null;
+}
+
+async function submitFlag() {
+    if (!flagTargetId) return;
+    const reason = document.getElementById('flag-reason').value;
+    const comment = document.getElementById('flag-comment').value.trim();
+    const btn = document.getElementById('flag-submit-btn');
+    const status = document.getElementById('flag-status');
+    btn.disabled = true;
+    btn.textContent = '⏳ Submitting…';
+    status.style.color = 'var(--text-dim)';
+    status.textContent = '';
+    try {
+        const r = await fetch('/api/flag-listing', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ listing_id: flagTargetId, reason, comment }),
+        });
+        const out = await r.json();
+        if (!r.ok || !out.success) throw new Error(out.error || `HTTP ${r.status}`);
+        status.style.color = '#4ade80';
+        status.textContent = '✅ Flag submitted. The listing is now hidden from default searches.';
+        btn.textContent = '✓ Done';
+        setTimeout(() => { closeFlagModal(); loadListings(); }, 1200);
+    } catch (e) {
+        status.style.color = '#f87171';
+        status.textContent = 'Error: ' + e.message;
+        btn.disabled = false;
+        btn.textContent = '🚩 Submit flag';
+    }
+}
+
+function resetAllFilters() {
+    document.getElementById('filter-type').value = '';
+    document.getElementById('filter-color').value = '';
+    document.getElementById('filter-side').value = '';
+    document.getElementById('filter-mfr').value = '';
+    document.getElementById('filter-min-price').value = '';
+    document.getElementById('filter-max-price').value = '';
+    document.getElementById('filter-search').value = '';
+    document.getElementById('filter-first-seen').value = '';
+    document.getElementById('sort-by').value = 'first_seen_at';
+    document.getElementById('sort-order').value = 'desc';
+    loadListings();
+}
+
+function escapeHtml(s) {
+    if (s == null) return '';
+    return String(s).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+}
+
+// Strip the noisy ss.com prefix from titles.
+// Examples this catches:
+//   "SS.COM Komplektējošie datoriem - Korpusi, Cena 55 €."  (cases + PSUs)
+//   "SS.COM Komplektējošie datoriem - Pārējs, Cena 80 €."   (other categories)
+//   "SS.COM Datortehnika - Citi, Cena 30 €."
+function cleanTitle(raw) {
+    if (!raw) return '';
+    return String(raw)
+        .replace(/^SS\.COM\s+[^.,;]+?,\s*Cena\s+[\d.,]+\s*€\.?\s*/i, '')
+        .replace(/^SS\.COM\s+/i, '')
+        .trim();
+}
+
+function formatDate(s) {
+    if (!s) return '—';
+    try {
+        const d = new Date(s);
+        if (isNaN(d.getTime())) return '—';
+        return d.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+    } catch { return '—'; }
+}
+
+// Close modals on Esc
+document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') {
+        closeDetail();
+        closeImage();
+    }
+});
 </script>
 {% endblock %}

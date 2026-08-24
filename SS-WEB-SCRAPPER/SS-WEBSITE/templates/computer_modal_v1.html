@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Computer Modal v1 — Bottom Sheet · SS-Crawler</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: #f0f2f7; color: #1a1d2b;
+  min-height: 100vh; padding: 20px;
+}
+.page-bg {
+  background: white; max-width: 900px; margin: 0 auto; padding: 20px; border-radius: 8px;
+  background-image: linear-gradient(180deg, #fff 0%, #f8f9fc 100%);
+  min-height: 600px;
+}
+.demo-header { padding: 8px 0 16px; border-bottom: 1px solid #e3e6ed; margin-bottom: 16px; }
+.demo-header h1 { font-size: 18px; font-weight: 800; }
+.demo-header .v-tag { display: inline-block; font-size: 10px; padding: 2px 8px; background: #6366f1; color: white; border-radius: 10px; margin-left: 8px; vertical-align: middle; }
+.demo-header p { font-size: 12px; color: #5a6175; margin-top: 4px; }
+.listing-card { display: flex; gap: 14px; padding: 14px; border: 1px solid #e3e6ed; border-radius: 10px; margin-bottom: 12px; cursor: pointer; transition: all .15s; }
+.listing-card:hover { border-color: #6366f1; transform: translateY(-2px); box-shadow: 0 8px 20px -8px rgba(99,102,241,.3); }
+.listing-card .thumb { width: 80px; height: 80px; background: #f0f2f7; border-radius: 6px; flex-shrink: 0; display: grid; place-items: center; font-size: 30px; }
+.listing-card .info { flex: 1; }
+.listing-card .title { font-weight: 700; font-size: 14px; margin-bottom: 4px; }
+.listing-card .meta { font-size: 11px; color: #5a6175; margin-bottom: 6px; }
+.listing-card .price { font-weight: 800; font-size: 16px; color: #059669; }
+.listing-card .open-btn { background: #6366f1; color: white; border: none; padding: 8px 12px; border-radius: 6px; font-size: 12px; font-weight: 600; cursor: pointer; align-self: center; }
+.listing-card .open-btn:hover { background: #4f46e5; }
+
+/* === BOTTOM SHEET === */
+.backdrop { position: fixed; inset: 0; background: rgba(0,0,0,.4); backdrop-filter: blur(2px); z-index: 100; display: none; opacity: 0; transition: opacity .25s; }
+.backdrop.open { display: block; opacity: 1; }
+.sheet {
+  position: fixed; left: 0; right: 0; bottom: 0;
+  max-height: 85vh; min-height: 50vh;
+  background: white; border-radius: 20px 20px 0 0; z-index: 101;
+  display: none; transform: translateY(100%); transition: transform .35s cubic-bezier(.32, .72, 0, 1);
+  box-shadow: 0 -20px 60px rgba(0,0,0,.3);
+  display: flex; flex-direction: column;
+}
+.sheet.open { display: flex; transform: translateY(0); }
+.sheet-handle { width: 40px; height: 4px; background: #d1d5db; border-radius: 2px; margin: 8px auto 4px; }
+.sheet-header { display: flex; gap: 14px; padding: 12px 20px 14px; border-bottom: 1px solid #f0f2f7; flex-shrink: 0; }
+.sheet-img { width: 60px; height: 60px; background: #f0f2f7; border-radius: 8px; flex-shrink: 0; display: grid; place-items: center; font-size: 28px; }
+.sheet-title { flex: 1; }
+.sheet-title h2 { font-size: 16px; font-weight: 700; margin-bottom: 2px; }
+.sheet-title .sub { font-size: 11px; color: #5a6175; }
+.sheet-close { width: 36px; height: 36px; border-radius: 8px; background: #f0f2f7; border: none; color: #5a6175; cursor: pointer; font-size: 18px; align-self: center; }
+.sheet-close:hover { background: #e3e6ed; }
+
+.sheet-body { flex: 1; overflow-y: auto; padding: 16px 20px; }
+
+.detail-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #f0f2f7; font-size: 13px; }
+.detail-row:last-child { border-bottom: none; }
+.detail-row .label { color: #5a6175; }
+.detail-row .value { font-weight: 600; }
+
+.flag-block { background: #fffbeb; border: 1px solid #fde68a; border-radius: 12px; padding: 14px; margin-top: 14px; }
+.flag-block-title { font-size: 13px; font-weight: 700; color: #b45309; margin-bottom: 10px; display: flex; align-items: center; gap: 6px; }
+.flag-cat { display: flex; gap: 6px; margin-bottom: 10px; }
+.flag-cat button { flex: 1; padding: 8px 6px; border-radius: 8px; background: white; border: 1.5px solid #e3e6ed; font-size: 11px; font-weight: 600; cursor: pointer; }
+.flag-cat button.active { border-color: #f59e0b; background: #fef3c7; color: #b45309; }
+.flag-comp { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 6px; }
+.flag-comp label { display: flex; align-items: center; gap: 6px; padding: 8px 10px; background: white; border: 1px solid #e3e6ed; border-radius: 6px; font-size: 12px; cursor: pointer; }
+.flag-comp label.checked { background: #fef3c7; border-color: #f59e0b; }
+.flag-text { width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #d1d5db; font-size: 12.5px; margin-top: 10px; outline: none; font-family: inherit; resize: vertical; min-height: 60px; }
+
+.sheet-footer { padding: 12px 20px; border-top: 1px solid #f0f2f7; display: flex; gap: 8px; background: #fafbfc; flex-shrink: 0; }
+.btn { flex: 1; padding: 12px 16px; border-radius: 10px; font-size: 13px; font-weight: 600; border: none; cursor: pointer; }
+.btn-secondary { background: white; color: #5a6175; border: 1px solid #d1d5db; }
+.btn-flag { background: #dc2626; color: white; }
+.btn-flag:hover { background: #b91c1c; }
+.btn-flag:disabled { opacity: .5; cursor: not-allowed; }
+</style>
+</head>
+<body>
+<div class="page-bg">
+  <div class="demo-header">
+    <h1>🖥️ Computers Page <span class="v-tag">v1 · Bottom Sheet</span></h1>
+    <p>Modal slides up from the bottom — like a mobile sheet, but works on desktop too. Keeps context visible above. Sticky footer with actions.</p>
+  </div>
+  <div id="listings">
+    <div class="listing-card" onclick="openModal()">
+      <div class="thumb">🖥️</div>
+      <div class="info">
+        <div class="title">Gaming PC — RTX 4070 + Ryzen 7 5800X</div>
+        <div class="meta">Rīga · ss.com · 2 dienas atpakaļ</div>
+        <div class="price">€1,250</div>
+      </div>
+      <button class="open-btn">Atvērt sheet</button>
+    </div>
+    <div class="listing-card">
+      <div class="thumb">💻</div>
+      <div class="info">
+        <div class="title">Workstation — i7-12700K + 64GB RAM</div>
+        <div class="meta">Jelgava · ss.com · 1 nedēļa atpakaļ</div>
+        <div class="price">€890</div>
+      </div>
+      <button class="open-btn">Atvērt sheet</button>
+    </div>
+    <div class="listing-card">
+      <div class="thumb">🖥️</div>
+      <div class="info">
+        <div class="title">Office PC — i5-12400 + 16GB</div>
+        <div class="meta">Liepāja · ss.com · 3 dienas atpakaļ</div>
+        <div class="price">€420</div>
+      </div>
+      <button class="open-btn">Atvērt sheet</button>
+    </div>
+  </div>
+</div>
+
+<!-- Backdrop -->
+<div class="backdrop" id="backdrop" onclick="closeModal()"></div>
+
+<!-- BOTTOM SHEET -->
+<div class="sheet" id="sheet">
+  <div class="sheet-handle"></div>
+  <div class="sheet-header">
+    <div class="sheet-img">🖥️</div>
+    <div class="sheet-title">
+      <h2>Gaming PC — RTX 4070 + Ryzen 7 5800X</h2>
+      <div class="sub">Rīga · ss.com · €1,250 · confidence 92%</div>
+    </div>
+    <button class="sheet-close" onclick="closeModal()">×</button>
+  </div>
+  <div class="sheet-body">
+    <div class="detail-row"><span class="label">Cena</span><span class="value">€1,250</span></div>
+    <div class="detail-row"><span class="label">Atrašanās vieta</span><span class="value">Rīga</span></div>
+    <div class="detail-row"><span class="label">Avots</span><span class="value">ss.com</span></div>
+    <div class="detail-row"><span class="label">Pievienots</span><span class="value">2 dienas atpakaļ</span></div>
+    <div class="detail-row"><span class="label">Komponentes</span><span class="value">5 atrastas</span></div>
+
+    <div style="margin-top: 14px;">
+      <div style="font-size: 12px; font-weight: 700; color: #5a6175; text-transform: uppercase; letter-spacing: .05em; margin-bottom: 8px;">Komponentes</div>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px; font-size: 12px;">
+        <div style="padding: 8px 10px; background: #f0f2f7; border-radius: 6px;"><b>CPU:</b> Ryzen 7 5800X</div>
+        <div style="padding: 8px 10px; background: #f0f2f7; border-radius: 6px;"><b>GPU:</b> RTX 4070</div>
+        <div style="padding: 8px 10px; background: #f0f2f7; border-radius: 6px;"><b>RAM:</b> 32GB DDR4</div>
+        <div style="padding: 8px 10px; background: #f0f2f7; border-radius: 6px;"><b>SSD:</b> 1TB NVMe</div>
+        <div style="padding: 8px 10px; background: #f0f2f7; border-radius: 6px; grid-column: span 2;"><b>MB:</b> B550 TUF Gaming</div>
+      </div>
+    </div>
+
+    <div class="flag-block">
+      <div class="flag-block-title">🚩 Kaut kas nepareizi? Ziņot par problēmu</div>
+      <label style="font-size: 11px; color: #5a6175; font-weight: 600; margin-bottom: 6px; display: block;">Problēmas kategorija</label>
+      <div class="flag-cat">
+        <button class="active" onclick="selectCat(this, 'SCRAPPER')">🔧 Scraper</button>
+        <button onclick="selectCat(this, 'SELLER')">👤 Pārdevējs</button>
+        <button onclick="selectCat(this, 'OTHER')">📌 Cits</button>
+      </div>
+      <label style="font-size: 11px; color: #5a6175; font-weight: 600; margin: 10px 0 6px; display: block;">Problēmas komponentes</label>
+      <div class="flag-comp" id="comp">
+        <label><input type="checkbox" onchange="toggleComp(this)" />🖥️ Mātes plate</label>
+        <label><input type="checkbox" onchange="toggleComp(this)" />⚙️ CPU</label>
+        <label><input type="checkbox" onchange="toggleComp(this)" />🎮 GPU</label>
+        <label><input type="checkbox" onchange="toggleComp(this)" />💾 RAM</label>
+        <label><input type="checkbox" onchange="toggleComp(this)" />💽 SSD</label>
+      </div>
+      <textarea class="flag-text" placeholder="Aprakstiet problēmu (neobligāts)…"></textarea>
+    </div>
+  </div>
+  <div class="sheet-footer">
+    <button class="btn btn-secondary" onclick="closeModal()">Aizvērt</button>
+    <button class="btn btn-flag" id="flagBtn" disabled>🚩 Ziņot par problēmu</button>
+  </div>
+</div>
+
+<script>
+let compCount = 0;
+function openModal() {
+  document.getElementById('backdrop').classList.add('open');
+  document.getElementById('sheet').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeModal() {
+  document.getElementById('sheet').classList.remove('open');
+  document.getElementById('backdrop').classList.remove('open');
+  document.body.style.overflow = '';
+}
+function selectCat(btn, cat) {
+  btn.parentNode.querySelectorAll('button').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+function toggleComp(label) {
+  label.classList.toggle('checked', label.querySelector('input').checked);
+  compCount = document.querySelectorAll('#comp input:checked').length;
+  document.getElementById('flagBtn').disabled = compCount === 0;
+}
+// Drag handle for visual cue
+document.querySelector('.sheet-handle').addEventListener('click', closeModal);
+</script>
+</body>
+</html>

@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Console v1 — Bento Discovery · SS-Crawler</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: #0a0a0f; color: #e4e4e7;
+  min-height: 100vh; padding: 24px 20px;
+}
+.wrap { max-width: 1400px; margin: 0 auto; }
+.head { display: flex; align-items: baseline; gap: 14px; margin-bottom: 18px; }
+h1 { font-size: 28px; font-weight: 800; }
+.head p { color: #71717a; font-size: 13px; }
+.v-tag { background: linear-gradient(135deg, #38bdf8, #818cf8); color: #0a0a0f; font-size: 11px; font-weight: 800; padding: 3px 9px; border-radius: 5px; }
+
+.bento {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-auto-rows: 120px;
+  gap: 14px;
+}
+.tile {
+  background: linear-gradient(135deg, #18181b 0%, #1f1f25 100%);
+  border: 1px solid #27272a;
+  border-radius: 14px;
+  padding: 16px;
+  position: relative; overflow: hidden;
+  transition: all .2s;
+  display: flex; flex-direction: column;
+}
+.tile:hover { border-color: #3f3f46; transform: translateY(-2px); box-shadow: 0 12px 28px -10px rgba(0,0,0,.5); }
+.tile-title { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: #71717a; margin-bottom: 6px; }
+.tile-body { flex: 1; display: flex; flex-direction: column; justify-content: center; }
+
+/* Tile sizes */
+.t-hero { grid-column: span 2; grid-row: span 2; background: linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #1e1b4b 100%); }
+.t-wide { grid-column: span 2; }
+.t-tall { grid-row: span 2; }
+.t-stat { grid-column: span 1; }
+
+/* Hero tile */
+.hero-content { display: flex; flex-direction: column; height: 100%; }
+.hero-eyebrow { font-size: 10px; font-weight: 700; color: #a5b4fc; letter-spacing: .12em; }
+.hero-headline { font-size: 28px; font-weight: 800; line-height: 1.1; margin: 6px 0 8px; background: linear-gradient(135deg, #fff, #c7d2fe); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.hero-sub { color: #c7d2fe; font-size: 13px; line-height: 1.4; flex: 1; }
+.hero-stats { display: flex; gap: 18px; margin-top: 12px; padding-top: 12px; border-top: 1px solid rgba(165,180,252,.2); }
+.hero-stat .v { font-size: 22px; font-weight: 800; color: #fff; }
+.hero-stat .l { font-size: 10px; color: #a5b4fc; text-transform: uppercase; letter-spacing: .06em; }
+
+/* Big number tile */
+.bignum { font-size: 36px; font-weight: 800; line-height: 1; }
+.bignum-sub { font-size: 12px; color: #a1a1aa; margin-top: 4px; }
+.bignum-trend { font-size: 11px; margin-top: 6px; font-weight: 600; }
+.bignum-trend.up { color: #4ade80; }
+.bignum-trend.down { color: #f87171; }
+
+/* Brand tile */
+.brand-row { display: flex; align-items: center; gap: 10px; padding: 6px 0; border-bottom: 1px solid #27272a; }
+.brand-row:last-child { border-bottom: none; }
+.brand-dot { width: 10px; height: 10px; border-radius: 50%; }
+.brand-name { flex: 1; font-size: 13px; font-weight: 600; }
+.brand-count { font-size: 11px; color: #71717a; }
+.brand-bar { width: 60px; height: 4px; background: #27272a; border-radius: 2px; overflow: hidden; }
+.brand-bar > div { height: 100%; border-radius: 2px; }
+
+/* Deal tile */
+.deal-card { display: flex; gap: 12px; align-items: center; padding: 8px 0; }
+.deal-img { width: 48px; height: 48px; background: #27272a; border-radius: 8px; display: grid; place-items: center; font-size: 22px; flex-shrink: 0; }
+.deal-info { flex: 1; min-width: 0; }
+.deal-name { font-size: 12px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.deal-meta { font-size: 10.5px; color: #71717a; }
+.deal-price { font-size: 14px; font-weight: 800; color: #4ade80; }
+.deal-save { font-size: 9.5px; color: #facc15; font-weight: 700; }
+
+/* Mini chart */
+.mini-chart { display: flex; align-items: flex-end; gap: 3px; height: 60px; margin-top: 8px; }
+.mini-chart .bar { flex: 1; background: linear-gradient(180deg, #38bdf8, #818cf8); border-radius: 2px; min-height: 4px; transition: all .3s; }
+.mini-chart .bar:hover { background: linear-gradient(180deg, #facc15, #fb923c); }
+
+/* Listing stack */
+.listing-mini { display: flex; gap: 8px; padding: 6px 0; border-bottom: 1px solid #27272a; font-size: 11px; }
+.listing-mini:last-child { border-bottom: none; }
+.listing-mini .n { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.listing-mini .p { font-weight: 700; color: #4ade80; }
+
+/* Special tile */
+.special-card {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  text-align: center; height: 100%; padding: 12px;
+  background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 50%, #dc2626 100%);
+  border-radius: 10px; color: #0a0a0f;
+}
+.special-card .badge { font-size: 9px; font-weight: 800; letter-spacing: .12em; }
+.special-card .name { font-size: 14px; font-weight: 800; margin: 4px 0; }
+.special-card .price { font-size: 12px; font-weight: 700; }
+
+/* Search tile */
+.search-tile { background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); }
+.search-input {
+  width: 100%; background: #0a0a0f; border: 1px solid #3f3f46; color: #fafafa;
+  border-radius: 8px; padding: 10px 12px; font-size: 13px; outline: none;
+}
+.search-input:focus { border-color: #38bdf8; }
+.kbd-hint { display: inline-block; background: #27272a; color: #a1a1aa; padding: 2px 6px; border-radius: 4px; font-size: 10px; margin-left: 6px; }
+
+/* Filter chips */
+.chip-row { display: flex; gap: 6px; flex-wrap: wrap; }
+.chip { padding: 5px 11px; background: #27272a; border-radius: 14px; font-size: 11px; font-weight: 600; cursor: pointer; border: 1px solid #3f3f46; }
+.chip.active { background: #38bdf8; color: #0a0a0f; border-color: #38bdf8; }
+
+@media (max-width: 1100px) { .bento { grid-template-columns: repeat(2, 1fr); } .t-hero { grid-column: span 2; } .t-wide { grid-column: span 2; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="head">
+    <h1>🎮 Consoles <span class="v-tag">v1 — Bento</span></h1>
+    <p>Multi-lens discovery · Each tile is a different view into the data</p>
+  </div>
+
+  <div class="bento">
+    <!-- HERO: Featured listing -->
+    <div class="tile t-hero">
+      <div class="hero-content">
+        <div class="hero-eyebrow">⚡ DEAL OF THE DAY</div>
+        <div class="hero-headline">Xbox Series X<br>€320 · 35% below avg</div>
+        <div class="hero-sub">Like-new condition · Daugavpils · 30+ games included · Original controller + cables · Posted 2 days ago</div>
+        <div class="hero-stats">
+          <div class="hero-stat"><div class="v">€320</div><div class="l">Asking</div></div>
+          <div class="hero-stat"><div class="v">€487</div><div class="l">Market avg</div></div>
+          <div class="hero-stat"><div class="v">30+</div><div class="l">Games</div></div>
+          <div class="hero-stat"><div class="v">0.95</div><div class="l">Confidence</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TOTAL LISTINGS -->
+    <div class="tile t-stat">
+      <div class="tile-title">Total Listings</div>
+      <div class="tile-body">
+        <div class="bignum">487</div>
+        <div class="bignum-sub">across 12 consoles</div>
+        <div class="bignum-trend up">↗ +24 this week</div>
+      </div>
+    </div>
+
+    <!-- AVG PRICE -->
+    <div class="tile t-stat">
+      <div class="tile-title">Avg Price</div>
+      <div class="tile-body">
+        <div class="bignum">€267</div>
+        <div class="bignum-sub">median €245</div>
+        <div class="bignum-trend down">↘ -3.2% vs last month</div>
+      </div>
+    </div>
+
+    <!-- SPECIAL EDITION -->
+    <div class="tile t-stat">
+      <div class="special-card">
+        <div class="badge">✨ LIMITED</div>
+        <div class="name">PS4 Pro<br>Star Wars Ed.</div>
+        <div class="price">€229</div>
+      </div>
+    </div>
+
+    <!-- BRAND BREAKDOWN (wide) -->
+    <div class="tile t-wide">
+      <div class="tile-title">By Brand</div>
+      <div class="tile-body">
+        <div class="brand-row">
+          <div class="brand-dot" style="background:#3b82f6"></div>
+          <div class="brand-name">PlayStation</div>
+          <div class="brand-bar"><div style="width:68%;background:#3b82f6"></div></div>
+          <div class="brand-count">331</div>
+        </div>
+        <div class="brand-row">
+          <div class="brand-dot" style="background:#10b981"></div>
+          <div class="brand-name">Xbox</div>
+          <div class="brand-bar"><div style="width:14%;background:#10b981"></div></div>
+          <div class="brand-count">68</div>
+        </div>
+        <div class="brand-row">
+          <div class="brand-dot" style="background:#ef4444"></div>
+          <div class="brand-name">Nintendo</div>
+          <div class="brand-bar"><div style="width:10%;background:#ef4444"></div></div>
+          <div class="brand-count">49</div>
+        </div>
+        <div class="brand-row">
+          <div class="brand-dot" style="background:#a78bfa"></div>
+          <div class="brand-name">Retro / Other</div>
+          <div class="brand-bar"><div style="width:8%;background:#a78bfa"></div></div>
+          <div class="brand-count">39</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PRICE CHART -->
+    <div class="tile t-wide">
+      <div class="tile-title">Price Range by Console</div>
+      <div class="tile-body">
+        <div class="mini-chart">
+          <div class="bar" style="height:30%"></div>
+          <div class="bar" style="height:50%"></div>
+          <div class="bar" style="height:80%"></div>
+          <div class="bar" style="height:65%"></div>
+          <div class="bar" style="height:90%"></div>
+          <div class="bar" style="height:45%"></div>
+          <div class="bar" style="height:70%"></div>
+          <div class="bar" style="height:55%"></div>
+          <div class="bar" style="height:35%"></div>
+          <div class="bar" style="height:60%"></div>
+        </div>
+        <div style="display:flex;justify-content:space-between;font-size:10px;color:#71717a;margin-top:4px;">
+          <span>PS3</span><span>PS4</span><span>PS5</span><span>360</span><span>Series</span><span>GB</span><span>GBA</span><span>DS</span><span>PSP</span><span>Other</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- TOP DEALS (tall) -->
+    <div class="tile t-tall">
+      <div class="tile-title">Top Deals</div>
+      <div class="tile-body">
+        <div class="deal-card">
+          <div class="deal-img">🎮</div>
+          <div class="deal-info">
+            <div class="deal-name">Xbox Series S</div>
+            <div class="deal-meta">320 € · Daugavpils</div>
+          </div>
+          <div>
+            <div class="deal-save">-37%</div>
+            <div class="deal-price">€320</div>
+          </div>
+        </div>
+        <div class="deal-card">
+          <div class="deal-img">🕹️</div>
+          <div class="deal-info">
+            <div class="deal-name">PS4 Slim 500GB</div>
+            <div class="deal-meta">75 € · Jelgava</div>
+          </div>
+          <div>
+            <div class="deal-save">-43%</div>
+            <div class="deal-price">€75</div>
+          </div>
+        </div>
+        <div class="deal-card">
+          <div class="deal-img">🎯</div>
+          <div class="deal-info">
+            <div class="deal-name">Switch Lite</div>
+            <div class="deal-meta">120 € · Rīga</div>
+          </div>
+          <div>
+            <div class="deal-save">-28%</div>
+            <div class="deal-price">€120</div>
+          </div>
+        </div>
+        <div class="deal-card">
+          <div class="deal-img">📦</div>
+          <div class="deal-info">
+            <div class="deal-name">PS3 Super Slim</div>
+            <div class="deal-meta">45 € · Valmiera</div>
+          </div>
+          <div>
+            <div class="deal-save">-52%</div>
+            <div class="deal-price">€45</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RECENT LISTINGS -->
+    <div class="tile t-tall">
+      <div class="tile-title">Just Listed</div>
+      <div class="tile-body">
+        <div class="listing-mini"><div class="n">PS5 Disc Edition</div><div class="p">€445</div></div>
+        <div class="listing-mini"><div class="n">Switch OLED White</div><div class="p">€290</div></div>
+        <div class="listing-mini"><div class="n">Xbox Series X 1TB</div><div class="p">€520</div></div>
+        <div class="listing-mini"><div class="n">PS4 Pro 1TB</div><div class="p">€229</div></div>
+        <div class="listing-mini"><div class="n">Switch Lite Yellow</div><div class="p">€120</div></div>
+        <div class="listing-mini"><div class="n">PS5 Digital</div><div class="p">€380</div></div>
+        <div class="listing-mini"><div class="n">Xbox One X</div><div class="p">€180</div></div>
+        <div class="listing-mini"><div class="n">3DS XL</div><div class="p">€95</div></div>
+      </div>
+    </div>
+
+    <!-- SEARCH -->
+    <div class="tile t-wide search-tile">
+      <div class="tile-title">Quick Search</div>
+      <div class="tile-body">
+        <input type="text" class="search-input" placeholder="Search consoles, sellers, locations...">
+        <div style="margin-top: 8px;">
+          <span class="chip active">All</span>
+          <span class="chip">PlayStation</span>
+          <span class="chip">Xbox</span>
+          <span class="chip">Nintendo</span>
+          <span class="chip">Retro</span>
+          <span class="chip">Special Ed.</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- CONFIDENCE -->
+    <div class="tile t-stat">
+      <div class="tile-title">AI Match</div>
+      <div class="tile-body">
+        <div class="bignum">87%</div>
+        <div class="bignum-sub">high-confidence</div>
+        <div class="bignum-trend up">62 of 487</div>
+      </div>
+    </div>
+
+    <!-- FLAGGED -->
+    <div class="tile t-stat">
+      <div class="tile-title">⚠ Flagged</div>
+      <div class="tile-body">
+        <div class="bignum" style="color:#fbbf24">14</div>
+        <div class="bignum-sub">needs review</div>
+        <div class="bignum-trend">3 critical</div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

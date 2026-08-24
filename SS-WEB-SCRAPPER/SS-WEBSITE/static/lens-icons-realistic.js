@@ -228,28 +228,61 @@ const lensIcons = {
   <text x="50" y="44" font-size="4" fill="#ff6b00" text-anchor="middle">GM</text>
 </svg>`,
 
-    // Canon EF 50mm f/1.8 STM - Compact "nifty fifty" (TUBE but compact)
+    // Canon EF 50mm f/1.8 STM v2 - Brand-specific with proper proportions:
+    // slightly tapered body (wider at front, narrower at mount), textured focus ring,
+    // red L-line accent (subtle, since this is a non-L lens), Canon wordmark, EF mount.
     'Canon_50mm': `<svg viewBox="0 0 100 100" class="lens-icon">
   <defs>
-    <linearGradient id="c50Body" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" style="stop-color:#333"/>
-      <stop offset="50%" style="stop-color:#252525"/>
-      <stop offset="100%" style="stop-color:#333"/>
+    <linearGradient id="c50BodyV2" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#2a2a2a"/>
+      <stop offset="35%" style="stop-color:#1a1a1a"/>
+      <stop offset="65%" style="stop-color:#1a1a1a"/>
+      <stop offset="100%" style="stop-color:#2a2a2a"/>
     </linearGradient>
+    <linearGradient id="c50Ring" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#e8e8e8"/>
+      <stop offset="50%" style="stop-color:#a0a0a0"/>
+      <stop offset="100%" style="stop-color:#666"/>
+    </linearGradient>
+    <radialGradient id="c50Glass" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" style="stop-color:#3a5c8a"/>
+      <stop offset="60%" style="stop-color:#0a1a2a"/>
+      <stop offset="100%" style="stop-color:#000"/>
+    </radialGradient>
   </defs>
-  <!-- Small compact body - TUBE -->
-  <rect x="30" y="32" width="40" height="36" rx="1" fill="url(#c50Body)"/>
-  <!-- Silver ring -->
-  <rect x="30" y="32" width="40" height="3" fill="#c0c0c0"/>
-  <!-- Focus ring (small) -->
-  <rect x="32" y="38" width="36" height="8" rx="0.5" fill="#2a2a2a"/>
-  <!-- STM label area -->
-  <rect x="35" y="50" width="30" height="6" rx="0.5" fill="#222"/>
-  <!-- Rear mount -->
-  <rect x="32" y="62" width="36" height="4" rx="0.5" fill="#1a1a1a"/>
-  <!-- Front element (small) -->
-  <ellipse cx="50" cy="72" rx="18" ry="6" fill="#111" stroke="#666" stroke-width="1"/>
-  <text x="50" y="48" font-size="5" fill="#999" text-anchor="middle">STM</text>
+  <!-- Tapered body: wider at front (44), narrower at mount (38) -->
+  <polygon points="31,30 69,30 66,72 34,72" fill="url(#c50BodyV2)" stroke="#444" stroke-width="0.5"/>
+  <!-- Top silver ring (focus ring mount) -->
+  <polygon points="31,30 69,30 68,34 32,34" fill="url(#c50Ring)"/>
+  <!-- Focus ring (textured with subtle vertical lines) -->
+  <rect x="33" y="36" width="34" height="10" fill="#0d0d0d"/>
+  <line x1="35" y1="38" x2="35" y2="44" stroke="#2a2a2a" stroke-width="0.4"/>
+  <line x1="38" y1="38" x2="38" y2="44" stroke="#2a2a2a" stroke-width="0.4"/>
+  <line x1="41" y1="38" x2="41" y2="44" stroke="#2a2a2a" stroke-width="0.4"/>
+  <line x1="44" y1="38" x2="44" y2="44" stroke="#2a2a2a" stroke-width="0.4"/>
+  <line x1="47" y1="38" x2="47" y2="44" stroke="#2a2a2a" stroke-width="0.4"/>
+  <line x1="50" y1="38" x2="50" y2="44" stroke="#2a2a2a" stroke-width="0.4"/>
+  <line x1="53" y1="38" x2="53" y2="44" stroke="#2a2a2a" stroke-width="0.4"/>
+  <line x1="56" y1="38" x2="56" y2="44" stroke="#2a2a2a" stroke-width="0.4"/>
+  <line x1="59" y1="38" x2="59" y2="44" stroke="#2a2a2a" stroke-width="0.4"/>
+  <line x1="62" y1="38" x2="62" y2="44" stroke="#2a2a2a" stroke-width="0.4"/>
+  <line x1="65" y1="38" x2="65" y2="44" stroke="#2a2a2a" stroke-width="0.4"/>
+  <!-- Distance scale window -->
+  <rect x="36" y="48" width="28" height="5" rx="0.5" fill="#0a0a0a" stroke="#222" stroke-width="0.3"/>
+  <text x="50" y="52" font-size="3" fill="#88c4ff" text-anchor="middle" font-family="monospace">∞ 0.45m</text>
+  <!-- Canon wordmark -->
+  <text x="50" y="61" font-size="4" font-weight="700" fill="#e0e0e0" text-anchor="middle" font-family="serif" letter-spacing="0.5">Canon</text>
+  <!-- STM badge -->
+  <rect x="40" y="64" width="20" height="4" rx="0.5" fill="#c41e3a" opacity="0.85"/>
+  <text x="50" y="67" font-size="2.5" font-weight="700" fill="#fff" text-anchor="middle">STM</text>
+  <!-- Rear mount (EF metal bayonet) -->
+  <rect x="34" y="72" width="32" height="6" fill="#3a3a3a" stroke="#666" stroke-width="0.4"/>
+  <rect x="36" y="74" width="28" height="2" fill="#1a1a1a"/>
+  <!-- Red dot for EF mount alignment -->
+  <circle cx="60" cy="75" r="1" fill="#c41e3a"/>
+  <!-- Front element (tinted glass) -->
+  <ellipse cx="50" cy="30" rx="20" ry="6" fill="url(#c50Glass)" stroke="#888" stroke-width="0.6"/>
+  <ellipse cx="46" cy="28" rx="4" ry="1.2" fill="#a0c4ff" opacity="0.4"/>
 </svg>`,
 
     // Nikon AF-S 50mm f/1.8G - Compact prime (TUBE)

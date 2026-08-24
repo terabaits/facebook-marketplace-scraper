@@ -3,9 +3,11 @@ import time
 import logging
 import re
 import subprocess
+import base64
+import json
 from typing import Optional, List, Dict, Any, Tuple
 from datetime import datetime
-from urllib.parse import urljoin
+from urllib.parse import urljoin, urlparse
 
 import requests
 from bs4 import BeautifulSoup
@@ -103,6 +105,38 @@ class AndeleScraper:
         'computer': 'https://www.andelemandele.lv/perles/tehnika/datori/#order:actual/attributes:413',
         'monitor': 'https://www.andelemandele.lv/perles/tehnika/datori/#order:actual/attributes:578',
         'motherboard': 'https://www.andelemandele.lv/perles/tehnika/datori/#order:actual/attributes:403',
+    }
+
+    # Andele attribute IDs per category (used for direct API filtering).
+    # The Vue.js shop uses hash-fragment filters client-side; the actual data
+    # fetch goes to /product-data/?filter=<base64 json>. We use this for
+    # reliable, server-side filtering.
+    CATEGORY_ATTRIBUTE_IDS = {
+        'gpu':        409,
+        'cpu':        405,
+        'ssd':        404,
+        'ram':        406,
+        'psu':        415,
+        'computer':   413,
+        'monitor':    578,
+        'motherboard':403,
+    }
+
+    # Parent category ID for "Datori" (Computers) — the umbrella category
+    # that all the computer-component filters live under.
+    PARENT_CATEGORY_ID = 368
+
+    # URL of the SPA's product data endpoint.
+    PRODUCT_DATA_URL = "https://www.andelemandele.lv/product-data/"
+
+    # Headers needed so the /product-data/ endpoint accepts our request.
+    # Without Origin + Referer the response is 403.
+    API_HEADERS = {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/151.0.0.0 Safari/537.36',
+        'Accept': 'application/json, text/plain, */*',
+        'Accept-Language': 'lv,en-US;q=0.7,en;q=0.3',
+        'Origin': 'https://www.andelemandele.lv',
+        'Referer': 'https://www.andelemandele.lv/perles/tehnika/datori/',
     }
     
     def __init__(self, db_session: Optional[Session] = None, dry_run: bool = False):
@@ -318,20 +352,43 @@ class AndeleScraper:
                 # Scroll down
                 driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
                 time.sleep(1.5)
-                
+
                 # Check if more listings appeared
                 new_height = driver.execute_script("return document.body.scrollHeight")
-                
-                # Try clicking "Load More" or "Show More" buttons if they exist
-                load_more_buttons = driver.find_elements(By.CSS_SELECTOR, 
-                    '.load-more, .show-more, [data-action="load-more"], button:contains("Vairāk"), button:contains("More")')
-                for btn in load_more_buttons:
+
+                # Try clicking "Load More" or "Show More" buttons. Use
+                # proper XPath/text matching (`:contains(...)` is jQuery, not
+                # valid CSS — it was throwing "invalid selector" before).
+                try:
+                    load_more_buttons = driver.find_elements(
+                        By.XPATH,
+                        '//button[contains(translate(., "ABCDEFGHIJKLMNOPQRSTUVWXYZ", "abcdefghijklmnopqrstuvwxyz"), "vairāk") '
+                        'or contains(translate(., "ABCDEFGHIJKLMNOPQRSTUVWXYZ", "abcdefghijklmnopqrstuvwxyz"), "more") '
+                        'or contains(translate(., "ABCDEFGHIJKLMNOPQRSTUVWXYZ", "abcdefghijklmnopqrstuvwxyz"), "vēl")]'
+                    )
+                    for btn in load_more_buttons:
+                        try:
+                            if btn.is_displayed():
+                                btn.click()
+                                logger.info("Clicked load more button")
+                                time.sleep(2)
+                        except Exception:
+                            pass
+                except Exception:
+                    pass
+
+                # Also try common class-based load-more buttons
+                for selector in ('.load-more', '.show-more', '[data-action="load-more"]'):
                     try:
-                        if btn.is_displayed():
-                            btn.click()
-                            logger.info("Clicked load more button")
-                            time.sleep(2)
-                    except:
+                        for btn in driver.find_elements(By.CSS_SELECTOR, selector):
+                            try:
+                                if btn.is_displayed():
+                                    btn.click()
+                                    logger.info(f"Clicked {selector} button")
+                                    time.sleep(2)
+                            except Exception:
+                                pass
+                    except Exception:
                         pass
             
             # Get the fully rendered HTML
@@ -351,14 +408,207 @@ class AndeleScraper:
                 except:
                     pass
             
+    # ============================================================
+    # New: direct product-data API approach (reliable filter)
+    # ============================================================
+    #
+    # The /perles/tehnika/datori/ page is a Vue.js SPA. The hash-fragment
+    # filter (`#order:actual/attributes:409`) is applied client-side AFTER
+    # the page loads, so any naive scrape of the HTML picks up the spotlight
+    # ad carousel at the top instead of the real GPU/CPU/etc. results.
+    #
+    # The actual data fetch that powers the SPA is:
+    #   GET /product-data/?filter=<base64 of {category, order, attributes}>
+    # That endpoint returns {html: <article cards>, count: N} and is
+    # filter-correct. We use it as the source of truth for listing URLs.
+    #
+    # Each listing's full page is then fetched separately for title/desc.
+
+    def _build_product_data_filter(self, category: str) -> str:
+        """Build the base64 filter payload for /product-data/.
+
+        The format mirrors what the Vue.js SPA sends:
+        {"category":{"id":368},"order":"actual","attributes":["<id>"]}
+        """
+        attr_id = self.CATEGORY_ATTRIBUTE_IDS.get(category)
+        if attr_id is None:
+            raise ValueError(f"Unknown category for product-data filter: {category}")
+        payload = {
+            "category": {"id": self.PARENT_CATEGORY_ID},
+            "order": "actual",
+            "attributes": [str(attr_id)],
+        }
+        return base64.b64encode(json.dumps(payload).encode("utf-8")).decode("ascii")
+
+    def _fetch_product_data(self, category: str) -> Tuple[List[Dict[str, Any]], int]:
+        """Call /product-data/ directly to get the truly-filtered listings.
+
+        Returns:
+            (listings, total_count) where each listing dict has:
+                - id: str (Andele product id)
+                - url: str (full listing URL)
+                - slug: str (last URL segment without id)
+                - price_eur: float or None
+                - old_price_eur: float or None
+                - image_url: str or None
+                - image_urls: list[str] (all gallery images)
+                - brand: str or None
+        """
+        filter_b64 = self._build_product_data_filter(category)
+        api_url = f"{self.PRODUCT_DATA_URL}?filter={filter_b64}"
+        logger.info(f"Calling product-data API for {category}: {api_url[:100]}…")
+
+        try:
+            r = requests.get(api_url, headers=self.API_HEADERS, timeout=30)
+            r.raise_for_status()
+            data = r.json()
+        except Exception as e:
+            logger.error(f"product-data API failed for {category}: {e}")
+            return [], 0
+
+        if not isinstance(data, dict):
+            logger.error(f"Unexpected product-data response type: {type(data).__name__}")
+            return [], 0
+
+        html = data.get("html") or ""
+        # `count` comes back as a localized string like "21 pērle" — extract
+        # the leading integer.
+        raw_count = data.get("count") or 0
+        if isinstance(raw_count, str):
+            m = re.search(r"\d+", raw_count)
+            count = int(m.group(0)) if m else 0
+        else:
+            try:
+                count = int(raw_count)
+            except (TypeError, ValueError):
+                count = 0
+        logger.info(f"product-data returned count={count}, html_len={len(html)}")
+
+        listings = self._parse_product_data_html(html)
+        return listings, count
+
+    def _parse_product_data_html(self, html: str) -> List[Dict[str, Any]]:
+        """Parse the article cards returned by /product-data/.
+
+        Each card looks like:
+            <article data-role="product-card" data-id="16041869" ...>
+              <figure>
+                <a href="/perle/16041869/rtx-3060-12gb-dual-oc/"></a>
+                <div data-role="thumbnail" style="background-image: url(...);"></div>
+                <a data-role="gallery.pic" href="...large/...webp"></a>  (x N)
+              </figure>
+              <figcaption>
+                <header>
+                  <span class="product-card__price">300 €</span>
+                  <span class="product-card__old-price">700 €</span>
+                  ...
+                </header>
+                <ul class="product-card__attr">
+                  <li><a href="/brand/asus/7320/">Asus</a></li>
+                </ul>
+              </figcaption>
+            </article>
+
+        Spotlight/recommended items also use /perle/ links but include
+        ?utm_medium=spotlight in the href — we skip those here.
+        """
+        if not html:
+            return []
+
+        soup = BeautifulSoup(html, "html.parser")
+        listings: List[Dict[str, Any]] = []
+        seen_ids: set = set()
+
+        for article in soup.find_all("article", attrs={"data-role": "product-card"}):
+            pid = article.get("data-id", "").strip()
+            if not pid or pid in seen_ids:
+                continue
+
+            link = article.find("a", href=re.compile(r"^/perle/\d+/"))
+            if not link or not link.get("href"):
+                continue
+            href = link["href"]
+
+            # Skip spotlight/recommended ads — they pollute the listing pool
+            if "utm_medium=spotlight" in href or "utm_campaign" in href:
+                continue
+
+            full_url = urljoin(self.BASE_URL, href)
+            slug = href.rstrip("/").split("/")[-1] if "/" in href else ""
+
+            # Prices
+            def _price(span_class: str) -> Optional[float]:
+                el = article.find("span", class_=span_class)
+                if not el:
+                    return None
+                txt = el.get_text(strip=True)
+                m = re.search(r"(\d+(?:[.,]\d+)?)", txt)
+                if not m:
+                    return None
+                try:
+                    return float(m.group(1).replace(",", "."))
+                except ValueError:
+                    return None
+
+            price = _price("product-card__price")
+            old_price = _price("product-card__old-price")
+
+            # Images — prefer explicit gallery; fall back to thumbnail
+            image_urls: List[str] = []
+            for a in article.find_all("a", attrs={"data-role": "gallery.pic"}):
+                g = a.get("href", "").strip()
+                if g and g.startswith("http") and g not in image_urls:
+                    image_urls.append(g)
+            thumb = article.find("div", attrs={"data-role": "thumbnail"})
+            if thumb and thumb.get("style"):
+                m = re.search(r"url\(([^)]+)\)", thumb["style"])
+                if m:
+                    raw = m.group(1).strip().strip("'\"")
+                    if raw.startswith("http") and raw not in image_urls:
+                        # Upgrade thumbnail → large
+                        raw_large = raw.replace("/thumbnail/", "/large/")
+                        image_urls.append(raw_large if raw_large != raw else raw)
+            image_url = image_urls[0] if image_urls else None
+
+            # Brand
+            brand_el = article.find("ul", class_="product-card__attr")
+            brand = None
+            if brand_el:
+                a = brand_el.find("a")
+                if a:
+                    brand = a.get_text(strip=True) or None
+
+            listings.append({
+                "id": pid,
+                "url": full_url,
+                "slug": slug,
+                "price_eur": price,
+                "old_price_eur": old_price,
+                "image_url": image_url,
+                "image_urls": image_urls,
+                "brand": brand,
+            })
+            seen_ids.add(pid)
+
+        return listings
+
     def scrape_category(self, category: str, max_pages: int = 0, limit: int = 0) -> AndeleScrapeResult:
         """Scrape a specific category.
-        
+
+        Strategy:
+          1. Call /product-data/?filter=<base64> directly to get the truly
+             filter-correct listing URLs (no spotlight ads, no JS hash
+             filter race-conditions).
+          2. For each listing, fetch the full product page to extract
+             title/description/location/date, apply matchers, and save.
+
         Args:
             category: Category name (gpu, cpu, ssd, etc.)
-            max_pages: Max pages to scrape (0 = unlimited)
-            limit: Max listings total (0 = unlimited)
-            
+            max_pages: Max pages to scrape (0 = unlimited, ignored by the
+                       API approach because the API returns all results in
+                       one call).
+            limit: Max listings total (0 = unlimited).
+
         Returns:
             AndeleScrapeResult with statistics
         """
@@ -366,44 +616,83 @@ class AndeleScraper:
             logger.error(f"Unknown category: {category}")
             self.result.errors.append(f"Unknown category: {category}")
             return self.result
-            
+
         url = self.CATEGORY_URLS[category]
         logger.info(f"Starting scrape of {category} from {url}")
-        
+
+        # Try the direct /product-data/ API first.
+        listings, total_count = self._fetch_product_data(category)
+
+        if not listings:
+            # Fall back to browser-based scraping (less reliable because the
+            # hash filter is client-side and the spotlight carousel can leak
+            # through, but it works as a last resort).
+            logger.warning(
+                f"product-data API returned no listings for {category}; "
+                f"falling back to browser scrape"
+            )
+            return self._scrape_category_browser(category, max_pages, limit)
+
+        logger.info(
+            f"Got {len(listings)} real filtered listings for {category} "
+            f"(API reported {total_count} total)"
+        )
+
+        processed = 0
+        for entry in listings:
+            if limit > 0 and processed >= limit:
+                logger.info(f"Reached limit ({limit})")
+                break
+            self._process_listing(entry["url"], category, pre_data=entry)
+            processed += 1
+
+        logger.info(f"Completed {category}: {self.result.to_dict()}")
+        return self.result
+
+    def _scrape_category_browser(self, category: str, max_pages: int = 0,
+                                  limit: int = 0) -> AndeleScrapeResult:
+        """Browser-based fallback for category scraping.
+
+        Used only if the /product-data/ API call returns nothing. Loads the
+        SPA page in a real browser and waits for the actual filter results
+        (skipping the spotlight ad carousel that the SPA renders at the top
+        before the hash filter takes effect).
+        """
+        url = self.CATEGORY_URLS[category]
         pages_scraped = 0
         total_listings = 0
-        
+
         while url:
             if max_pages > 0 and pages_scraped >= max_pages:
                 logger.info(f"Reached max pages ({max_pages})")
                 break
-                
+
             logger.info(f"Scraping page {pages_scraped + 1}: {url}")
-            
-            # Use browser for all pages to get JavaScript-loaded listings and pagination
             html = self._fetch_page_with_browser(url)
-                
+
             if not html:
                 self.result.errors.append(f"Failed to fetch {url}")
                 break
-                
-            # Parse category page
+
             listing_urls, next_url = self.parser.parse_category_page(html, url)
-            logger.info(f"Found {len(listing_urls)} listings on this page")
-            
-            # Process each listing
+            # Strip spotlight/utm ad links even from the browser path
+            listing_urls = [
+                u for u in listing_urls
+                if "utm_medium=spotlight" not in u and "utm_campaign" not in u
+            ]
+            logger.info(f"Found {len(listing_urls)} real listings on this page (after filtering ads)")
+
             for listing_url in listing_urls:
                 if limit > 0 and total_listings >= limit:
                     logger.info(f"Reached limit ({limit})")
                     return self.result
-                    
                 self._process_listing(listing_url, category)
                 total_listings += 1
-                
+
             pages_scraped += 1
             url = next_url
-            
-        logger.info(f"Completed {category}: {self.result.to_dict()}")
+
+        logger.info(f"Completed {category} (browser): {self.result.to_dict()}")
         return self.result
         
     def scrape_listing(self, url: str, category_hint: Optional[str] = None) -> Optional[AndeleListingData]:
@@ -437,20 +726,43 @@ class AndeleScraper:
             self.result.errors.append(f"Error scraping {url}: {e}")
             return None
             
-    def _process_listing(self, url: str, category: str):
-        """Process a single listing - fetch, parse, match, save."""
+    def _process_listing(self, url: str, category: str,
+                         pre_data: Optional[Dict[str, Any]] = None):
+        """Process a single listing - fetch, parse, match, save.
+
+        Args:
+            url: Listing URL.
+            category: Category hint.
+            pre_data: Optional pre-fetched data from the /product-data/ API
+                (price, image URLs, brand). Used to avoid re-parsing things
+                we already know. The full listing page is still fetched for
+                title/description.
+        """
         self.result.total += 1
-        
+
         try:
             data = self.scrape_listing(url, category)
             if not data:
                 self.result.failed += 1
                 return
-                
+
+            # Backfill anything missing from the full page with pre_data.
+            # Price is most likely to differ (andele shows current + old on
+            # the card; the full page only shows current).
+            if pre_data:
+                if pre_data.get("price_eur") and not data.price_eur:
+                    data.price_eur = pre_data["price_eur"]
+                if pre_data.get("image_urls") and not data.image_urls:
+                    data.image_urls = pre_data["image_urls"]
+                # If the listing page parser couldn't find a title, fall
+                # back to the URL slug (humanized).
+                if not data.title and pre_data.get("slug"):
+                    data.title = pre_data["slug"].replace("-", " ").strip()
+
             if self.dry_run:
                 logger.info(f"[DRY RUN] Would save: {data.title[:50]}...")
                 return
-                
+
             # Convert to Listing model and save
             listing = self._convert_to_listing(data, category)
             
@@ -528,7 +840,12 @@ class AndeleScraper:
                         data._match_method = result.method
                         
                 elif category == 'cpu':
-                    result = matcher.match(data.title)
+                    # Pass full_text as secondary input — Andele's product-data
+                    # API only returns the slug as title (e.g. "AMD Ryzen 9"),
+                    # but the description has the full model number
+                    # (e.g. "AMD Ryzen 9 7900 procesors"). Without the secondary
+                    # input the matcher would pick the wrong model.
+                    result = matcher.match(data.title, full_text)
                     if result and result.confidence >= 0.5:
                         data.category = 'cpu'
                         data._matched_cpu_id = result.cpu.id if result.cpu else None
@@ -545,7 +862,10 @@ class AndeleScraper:
                         data._capacity_gb = result.ssd.capacity_gb if result.ssd else None
                         
                 elif category == 'ram':
-                    result = matcher.match(data.title)
+                    # Same fix as cpu — Andele's product-data API doesn't
+                    # include the full model number in the title; the
+                    # description has it.
+                    result = matcher.match(data.title, full_text)
                     if result and result.confidence >= 0.5:
                         data.category = 'ram'
                         data._matched_ram_id = result.ram.id if hasattr(result, 'ram') and result.ram else None

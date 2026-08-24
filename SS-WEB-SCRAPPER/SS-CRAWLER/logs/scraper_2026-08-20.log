@@ -1,0 +1,1130 @@
+2026-08-20 13:26:01 | INFO     | ss_crawler | [database] Database connected: localhost:5433/ss_market
+2026-08-20 13:26:01 | INFO     | ss_crawler | [andele_scraper] Database initialized for matchers
+2026-08-20 13:26:01 | INFO     | ss_crawler | [matcher] GPUMatcher initialized with 633 GPUs
+2026-08-20 13:26:01 | INFO     | ss_crawler | [andele_scraper] Initialized GPU matcher with 633 GPUs
+2026-08-20 13:26:01 | INFO     | ss_crawler | [cpu_matcher] CPUMatcher initialized with 5320 CPUs
+2026-08-20 13:26:01 | INFO     | ss_crawler | [andele_scraper] Initialized CPU matcher with 5320 CPUs
+2026-08-20 13:26:01 | INFO     | ss_crawler | [ssd_matcher] SSDMatcher initialized with 2453 SSDs
+2026-08-20 13:26:01 | INFO     | ss_crawler | [andele_scraper] Initialized SSD matcher with 2453 SSDs
+2026-08-20 13:26:02 | INFO     | ss_crawler | [ram_matcher] RAMMatcher initialized with 5281 RAM references
+2026-08-20 13:26:02 | INFO     | ss_crawler | [andele_scraper] Initialized RAM matcher with 5281 RAMs
+2026-08-20 13:26:02 | INFO     | ss_crawler | [psu_matcher] PSUMatcher initialized with 2895 PSU references
+2026-08-20 13:26:02 | INFO     | ss_crawler | [andele_scraper] Initialized PSU matcher with 2895 PSUs
+2026-08-20 13:26:02 | INFO     | ss_crawler | [monitor_scraper] MonitorMatcher initialized with 0 monitors
+2026-08-20 13:26:02 | INFO     | ss_crawler | [andele_scraper] Initialized Monitor matcher
+2026-08-20 13:26:04 | INFO     | ss_crawler | [motherboard_matcher] MotherboardMatcher initialized with 5732 motherboards
+2026-08-20 13:26:04 | INFO     | ss_crawler | [andele_scraper] Initialized Motherboard matcher with 5732 boards
+2026-08-20 13:26:04 | INFO     | ss_crawler | [cpu_matcher] CPUMatcher initialized with 5320 CPUs
+2026-08-20 13:26:05 | INFO     | ss_crawler | [matcher] GPUMatcher initialized with 633 GPUs
+2026-08-20 13:26:05 | INFO     | ss_crawler | [ram_matcher] RAMMatcher initialized with 5281 RAM references
+2026-08-20 13:26:05 | INFO     | ss_crawler | [ssd_matcher] SSDMatcher initialized with 2453 SSDs
+2026-08-20 13:26:05 | INFO     | ss_crawler | [psu_matcher] PSUMatcher initialized with 2895 PSU references
+2026-08-20 13:26:06 | INFO     | ss_crawler | [case_matcher] CaseMatcher initialized with 5742 case references
+2026-08-20 13:26:07 | INFO     | ss_crawler | [motherboard_matcher] MotherboardMatcher initialized with 5732 motherboards
+2026-08-20 13:26:07 | INFO     | ss_crawler | [computer_matcher] ComputerMatcher initialized: 5320 CPUs, 633 GPUs, 5281 RAMs, 2453 SSDs, 2895 PSUs, 5742 Cases, 5732 Motherboards, 0 Monitors
+2026-08-20 13:26:07 | INFO     | ss_crawler | [andele_scraper] Initialized Computer matcher
+2026-08-20 13:26:07 | INFO     | ss_crawler | [andele_scraper] Starting scrape of gpu from https://www.andelemandele.lv/perles/tehnika/datori/#order:actual/attributes:409
+2026-08-20 13:26:07 | INFO     | ss_crawler | [andele_scraper] Scraping page 1: https://www.andelemandele.lv/perles/tehnika/datori/#order:actual/attributes:409
+2026-08-20 13:26:10 | INFO     | ss_crawler | [andele_scraper] Starting browser for https://www.andelemandele.lv/perles/tehnika/datori/#order:actual/attributes:409
+2026-08-20 13:26:10 | INFO     | ss_crawler | [andele_scraper] Detected Chrome version: 151
+2026-08-20 13:26:15 | INFO     | ss_crawler | [andele_scraper] Listings found with selector: a[href*="/perle/"]
+2026-08-20 13:26:17 | INFO     | ss_crawler | [andele_scraper] Scrolling to load more content...
+2026-08-20 13:26:18 | ERROR    | ss_crawler | [andele_scraper] Browser fetch failed for https://www.andelemandele.lv/perles/tehnika/datori/#order:actual/attributes:409: Message: invalid selector: An invalid or illegal selector was specified
+  (Session info: chrome=151.0.7922.169); For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#invalidselectorexception
+Stacktrace:
+	undetected_chromedriver!GetHandleVerifier [0xa23353+fd93]
+	undetected_chromedriver!GetHandleVerifier [0xa23394+fdd4]
+	undetected_chromedriver!(No symbol) [0x819220]
+	undetected_chromedriver!(No symbol) [0x81ff88]
+	undetected_chromedriver!(No symbol) [0x821ffa]
+	undetected_chromedriver!(No symbol) [0x822088]
+	undetected_chromedriver!(No symbol) [0x862df0]
+	undetected_chromedriver!(No symbol) [0x86351b]
+	undetected_chromedriver!(No symbol) [0x8a5bbc]
+	undetected_chromedriver!(No symbol) [0x8858c4]
+	undetected_chromedriver!(No symbol) [0x8a34d9]
+	undetected_chromedriver!(No symbol) [0x885616]
+	undetected_chromedriver!(No symbol) [0x8587e9]
+	undetected_chromedriver!(No symbol) [0x8595b4]
+	undetected_chromedriver!GetHandleVerifier [0xcbf51a+2abf5a]
+	undetected_chromedriver!GetHandleVerifier [0xcbaa21+2a7461]
+	undetected_chromedriver!GetHandleVerifier [0xa4f374+3bdb4]
+	undetected_chromedriver!GetHandleVerifier [0xa3e036+2aa76]
+	undetected_chromedriver!GetHandleVerifier [0xa44efd+3193d]
+	undetected_chromedriver!GetHandleVerifier [0xa2c8a8+192e8]
+	undetected_chromedriver!GetHandleVerifier [0xa2ca55+19495]
+	undetected_chromedriver!GetHandleVerifier [0xa153ff+1e3f]
+	KERNEL32!BaseThreadInitThunk [0x7689fcc9+19]
+	ntdll!RtlGetAppContainerNamedObjectPath [0x776d843e+11e]
+	ntdll!RtlGetAppContainerNamedObjectPath [0x776d840e+ee]
+
+2026-08-20 13:26:21 | INFO     | ss_crawler | [andele_scraper] Found 8 listings on this page
+2026-08-20 13:26:23 | INFO     | ss_crawler | [repository] ✨ 15528378: New
+2026-08-20 13:26:23 | INFO     | ss_crawler | [andele_scraper] 🖼️  Found 3 images for 15528378: Oster kafijas automāts...
+2026-08-20 13:26:23 | INFO     | ss_crawler | [andele_scraper]    Image 1: https://static5.andelemandele.lv/images/large/c6d/bf0/1/5757abc1f97fc6b37.webp...
+2026-08-20 13:26:23 | INFO     | ss_crawler | [andele_scraper]    Image 2: https://static1.andelemandele.lv/images/large/aa2/119/1/994b0c0dd7f77b624.webp...
+2026-08-20 13:26:23 | INFO     | ss_crawler | [andele_scraper]    Image 3: https://static2.andelemandele.lv/images/large/68d/87e/1/83f946807fd0c065f.webp...
+2026-08-20 13:26:23 | INFO     | ss_crawler | [image_downloader] Downloaded image for 15528378 (stored as 15528378_72bee8b6.webp, 81666 bytes)
+2026-08-20 13:26:23 | INFO     | ss_crawler | [image_downloader] Downloaded image for 15528378 (stored as 15528378_bf45140d.webp, 98154 bytes)
+2026-08-20 13:26:23 | INFO     | ss_crawler | [image_downloader] Downloaded image for 15528378 (stored as 15528378_886a11c8.webp, 53164 bytes)
+2026-08-20 13:26:23 | INFO     | ss_crawler | [andele_scraper] 📸 Downloaded 3 images for 15528378
+2026-08-20 13:26:25 | INFO     | ss_crawler | [repository] ✨ 15915604: New
+2026-08-20 13:26:25 | INFO     | ss_crawler | [andele_scraper] 🖼️  Found 5 images for 15915604: Sky-Watcher HEQ5-R Equatorial mount PRO SynScan...
+2026-08-20 13:26:25 | INFO     | ss_crawler | [andele_scraper]    Image 1: https://static1.andelemandele.lv/images/large/89b/0b7/1/163ecf52141d619d4.webp...
+2026-08-20 13:26:25 | INFO     | ss_crawler | [andele_scraper]    Image 2: https://static3.andelemandele.lv/images/large/aef/d57/1/fff217343d0abd070.webp...
+2026-08-20 13:26:25 | INFO     | ss_crawler | [andele_scraper]    Image 3: https://static4.andelemandele.lv/images/large/1ad/f3b/1/1119b2d78df96aca6.webp...
+2026-08-20 13:26:25 | INFO     | ss_crawler | [image_downloader] Downloaded image for 15915604 (stored as 15915604_e66476fb.webp, 292542 bytes)
+2026-08-20 13:26:25 | INFO     | ss_crawler | [image_downloader] Downloaded image for 15915604 (stored as 15915604_bf664723.webp, 220128 bytes)
+2026-08-20 13:26:25 | INFO     | ss_crawler | [image_downloader] Downloaded image for 15915604 (stored as 15915604_7922456f.webp, 169464 bytes)
+2026-08-20 13:26:25 | INFO     | ss_crawler | [image_downloader] Downloaded image for 15915604 (stored as 15915604_d43850f1.webp, 121216 bytes)
+2026-08-20 13:26:26 | INFO     | ss_crawler | [image_downloader] Downloaded image for 15915604 (stored as 15915604_67ee1764.webp, 178364 bytes)
+2026-08-20 13:26:26 | INFO     | ss_crawler | [andele_scraper] 📸 Downloaded 5 images for 15915604
+2026-08-20 13:26:28 | INFO     | ss_crawler | [repository] ✨ 16010555: New
+2026-08-20 13:26:28 | INFO     | ss_crawler | [andele_scraper] 🖼️  Found 5 images for 16010555: Plašu atskaņotājs...
+2026-08-20 13:26:28 | INFO     | ss_crawler | [andele_scraper]    Image 1: https://static2.andelemandele.lv/images/large/122/041/1/b35741adc8d095931.webp...
+2026-08-20 13:26:28 | INFO     | ss_crawler | [andele_scraper]    Image 2: https://static2.andelemandele.lv/images/large/ab8/5f1/1/2936ed3d7d2e5f334.webp...
+2026-08-20 13:26:28 | INFO     | ss_crawler | [andele_scraper]    Image 3: https://static3.andelemandele.lv/images/large/690/77d/1/a046f8673e3c80ba3.webp...
+2026-08-20 13:26:28 | INFO     | ss_crawler | [image_downloader] Downloaded image for 16010555 (stored as 16010555_01d84ca5.webp, 215298 bytes)
+2026-08-20 13:26:28 | INFO     | ss_crawler | [image_downloader] Downloaded image for 16010555 (stored as 16010555_fda21905.webp, 72488 bytes)
+2026-08-20 13:26:28 | INFO     | ss_crawler | [image_downloader] Downloaded image for 16010555 (stored as 16010555_a749ac65.webp, 54064 bytes)
+2026-08-20 13:26:28 | INFO     | ss_crawler | [image_downloader] Downloaded image for 16010555 (stored as 16010555_6f59abbe.webp, 121836 bytes)
+2026-08-20 13:26:28 | INFO     | ss_crawler | [image_downloader] Downloaded image for 16010555 (stored as 16010555_b8641272.webp, 121698 bytes)
+2026-08-20 13:26:28 | INFO     | ss_crawler | [andele_scraper] 📸 Downloaded 5 images for 16010555
+2026-08-20 13:26:30 | INFO     | ss_crawler | [repository] ✨ 15954523: New
+2026-08-20 13:26:30 | INFO     | ss_crawler | [andele_scraper] 🖼️  Found 1 images for 15954523: VIRTUVES BLENDERIS🥦🍏...
+2026-08-20 13:26:30 | INFO     | ss_crawler | [andele_scraper]    Image 1: https://static6.andelemandele.lv/images/large/c9a/0db/1/b3bfcb3f1778a459e.webp...
+2026-08-20 13:26:30 | INFO     | ss_crawler | [image_downloader] Downloaded image for 15954523 (stored as 15954523_605060bb.webp, 69476 bytes)
+2026-08-20 13:26:30 | INFO     | ss_crawler | [andele_scraper] 📸 Downloaded 1 images for 15954523
+2026-08-20 13:26:33 | INFO     | ss_crawler | [repository] ✨ 15881063: New
+2026-08-20 13:26:33 | INFO     | ss_crawler | [andele_scraper] 🖼️  Found 4 images for 15881063: Pastiprinātājs...
+2026-08-20 13:26:33 | INFO     | ss_crawler | [andele_scraper]    Image 1: https://static3.andelemandele.lv/images/large/a4e/d04/1/dd4dded6ae895b298.webp...
+2026-08-20 13:26:33 | INFO     | ss_crawler | [andele_scraper]    Image 2: https://static2.andelemandele.lv/images/large/37e/c0c/1/f21e3f7c3997d8d6e.webp...
+2026-08-20 13:26:33 | INFO     | ss_crawler | [andele_scraper]    Image 3: https://static2.andelemandele.lv/images/large/63a/25c/1/9aad8a907553864fd.webp...
+2026-08-20 13:26:33 | INFO     | ss_crawler | [image_downloader] Downloaded image for 15881063 (stored as 15881063_6b5d9566.webp, 137014 bytes)
+2026-08-20 13:26:33 | INFO     | ss_crawler | [image_downloader] Downloaded image for 15881063 (stored as 15881063_84eeb657.webp, 270030 bytes)
+2026-08-20 13:26:33 | INFO     | ss_crawler | [image_downloader] Downloaded image for 15881063 (stored as 15881063_8b200584.webp, 153796 bytes)
+2026-08-20 13:26:33 | INFO     | ss_crawler | [image_downloader] Downloaded image for 15881063 (stored as 15881063_0ddc034b.webp, 110800 bytes)
+2026-08-20 13:26:33 | INFO     | ss_crawler | [andele_scraper] 📸 Downloaded 4 images for 15881063
+2026-08-20 13:26:35 | INFO     | ss_crawler | [repository] ✨ 15943806: New
+2026-08-20 13:26:35 | INFO     | ss_crawler | [andele_scraper] 🖼️  Found 5 images for 15943806: Samson Podcast / USB mikrafons...
+2026-08-20 13:26:35 | INFO     | ss_crawler | [andele_scraper]    Image 1: https://static2.andelemandele.lv/images/large/f65/6dc/1/4b12c64eb7846b6c6.webp...
+2026-08-20 13:26:35 | INFO     | ss_crawler | [andele_scraper]    Image 2: https://static1.andelemandele.lv/images/large/ba7/d3e/1/7df114bad838a1c21.webp...
+2026-08-20 13:26:35 | INFO     | ss_crawler | [andele_scraper]    Image 3: https://static6.andelemandele.lv/images/large/b2d/143/1/126f510e0582d65da.webp...
+2026-08-20 13:26:35 | INFO     | ss_crawler | [image_downloader] Downloaded image for 15943806 (stored as 15943806_0b9dbb08.webp, 64564 bytes)
+2026-08-20 13:26:35 | INFO     | ss_crawler | [image_downloader] Downloaded image for 15943806 (stored as 15943806_a6e2eab3.webp, 76046 bytes)
+2026-08-20 13:26:35 | INFO     | ss_crawler | [image_downloader] Downloaded image for 15943806 (stored as 15943806_6242b31c.webp, 53656 bytes)
+2026-08-20 13:26:35 | INFO     | ss_crawler | [image_downloader] Downloaded image for 15943806 (stored as 15943806_c8a6b62b.webp, 72208 bytes)
+2026-08-20 13:26:35 | INFO     | ss_crawler | [image_downloader] Downloaded image for 15943806 (stored as 15943806_994f7289.webp, 27754 bytes)
+2026-08-20 13:26:35 | INFO     | ss_crawler | [andele_scraper] 📸 Downloaded 5 images for 15943806
+2026-08-20 13:26:37 | INFO     | ss_crawler | [andele_scraper] ✨ GPU Match: Miatone Rush M... -> GPU ID 263 (60%)
+2026-08-20 13:26:37 | INFO     | ss_crawler | [repository] ✨ 15888955: New
+2026-08-20 13:26:37 | INFO     | ss_crawler | [andele_scraper] 🖼️  Found 5 images for 15888955: Miatone Rush M...
+2026-08-20 13:26:37 | INFO     | ss_crawler | [andele_scraper]    Image 1: https://static2.andelemandele.lv/images/large/37d/a2e/1/84c5a142e27a31f6b.webp...
+2026-08-20 13:26:37 | INFO     | ss_crawler | [andele_scraper]    Image 2: https://static2.andelemandele.lv/images/large/821/f73/1/e1d343720b28632fb.webp...
+2026-08-20 13:26:37 | INFO     | ss_crawler | [andele_scraper]    Image 3: https://static5.andelemandele.lv/images/large/63f/70e/1/1df2e90b3f3b0a9b3.webp...
+2026-08-20 13:26:37 | INFO     | ss_crawler | [image_downloader] Downloaded image for 15888955 (stored as 15888955_77cf9ba5.webp, 75920 bytes)
+2026-08-20 13:26:38 | INFO     | ss_crawler | [image_downloader] Downloaded image for 15888955 (stored as 15888955_498a7b2e.webp, 94968 bytes)
+2026-08-20 13:26:38 | INFO     | ss_crawler | [image_downloader] Downloaded image for 15888955 (stored as 15888955_4d3a0464.webp, 111304 bytes)
+2026-08-20 13:26:38 | INFO     | ss_crawler | [image_downloader] Downloaded image for 15888955 (stored as 15888955_45803e02.webp, 102892 bytes)
+2026-08-20 13:26:38 | INFO     | ss_crawler | [image_downloader] Downloaded image for 15888955 (stored as 15888955_0852ad78.webp, 154536 bytes)
+2026-08-20 13:26:38 | INFO     | ss_crawler | [andele_scraper] 📸 Downloaded 5 images for 15888955
+2026-08-20 13:26:40 | INFO     | ss_crawler | [repository] ✨ 15884166: New
+2026-08-20 13:26:40 | INFO     | ss_crawler | [andele_scraper] 🖼️  Found 3 images for 15884166: Šūjmašīna...
+2026-08-20 13:26:40 | INFO     | ss_crawler | [andele_scraper]    Image 1: https://static4.andelemandele.lv/images/large/4cd/d3e/1/5e81b433e37d30e39.webp...
+2026-08-20 13:26:40 | INFO     | ss_crawler | [andele_scraper]    Image 2: https://static5.andelemandele.lv/images/large/d47/36a/1/842dee22261ecdac3.webp...
+2026-08-20 13:26:40 | INFO     | ss_crawler | [andele_scraper]    Image 3: https://static3.andelemandele.lv/images/large/5f6/c45/1/8eafcc5b1aa4189e2.webp...
+2026-08-20 13:26:40 | INFO     | ss_crawler | [image_downloader] Downloaded image for 15884166 (stored as 15884166_9244fdf5.webp, 184738 bytes)
+2026-08-20 13:26:40 | INFO     | ss_crawler | [image_downloader] Downloaded image for 15884166 (stored as 15884166_cb5f9043.webp, 147328 bytes)
+2026-08-20 13:26:40 | INFO     | ss_crawler | [image_downloader] Downloaded image for 15884166 (stored as 15884166_45393a86.webp, 87448 bytes)
+2026-08-20 13:26:40 | INFO     | ss_crawler | [andele_scraper] 📸 Downloaded 3 images for 15884166
+2026-08-20 13:26:40 | INFO     | ss_crawler | [andele_scraper] Completed gpu: {'total': 8, 'new': 8, 'updated': 0, 'failed': 0, 'skipped': 0, 'errors': []}
+2026-08-20 13:29:00 | INFO     | ss_crawler | [database] Database connected: localhost:5433/ss_market
+2026-08-20 13:29:00 | INFO     | ss_crawler | [andele_scraper] Database initialized for matchers
+2026-08-20 13:29:00 | INFO     | ss_crawler | [matcher] GPUMatcher initialized with 633 GPUs
+2026-08-20 13:29:00 | INFO     | ss_crawler | [andele_scraper] Initialized GPU matcher with 633 GPUs
+2026-08-20 13:29:00 | INFO     | ss_crawler | [cpu_matcher] CPUMatcher initialized with 5320 CPUs
+2026-08-20 13:29:00 | INFO     | ss_crawler | [andele_scraper] Initialized CPU matcher with 5320 CPUs
+2026-08-20 13:29:01 | INFO     | ss_crawler | [ssd_matcher] SSDMatcher initialized with 2453 SSDs
+2026-08-20 13:29:01 | INFO     | ss_crawler | [andele_scraper] Initialized SSD matcher with 2453 SSDs
+2026-08-20 13:29:01 | INFO     | ss_crawler | [ram_matcher] RAMMatcher initialized with 5281 RAM references
+2026-08-20 13:29:01 | INFO     | ss_crawler | [andele_scraper] Initialized RAM matcher with 5281 RAMs
+2026-08-20 13:29:01 | INFO     | ss_crawler | [psu_matcher] PSUMatcher initialized with 2895 PSU references
+2026-08-20 13:29:01 | INFO     | ss_crawler | [andele_scraper] Initialized PSU matcher with 2895 PSUs
+2026-08-20 13:29:01 | INFO     | ss_crawler | [monitor_scraper] MonitorMatcher initialized with 0 monitors
+2026-08-20 13:29:01 | INFO     | ss_crawler | [andele_scraper] Initialized Monitor matcher
+2026-08-20 13:29:03 | INFO     | ss_crawler | [motherboard_matcher] MotherboardMatcher initialized with 5732 motherboards
+2026-08-20 13:29:03 | INFO     | ss_crawler | [andele_scraper] Initialized Motherboard matcher with 5732 boards
+2026-08-20 13:29:04 | INFO     | ss_crawler | [cpu_matcher] CPUMatcher initialized with 5320 CPUs
+2026-08-20 13:29:04 | INFO     | ss_crawler | [matcher] GPUMatcher initialized with 633 GPUs
+2026-08-20 13:29:04 | INFO     | ss_crawler | [ram_matcher] RAMMatcher initialized with 5281 RAM references
+2026-08-20 13:29:05 | INFO     | ss_crawler | [ssd_matcher] SSDMatcher initialized with 2453 SSDs
+2026-08-20 13:29:05 | INFO     | ss_crawler | [psu_matcher] PSUMatcher initialized with 2895 PSU references
+2026-08-20 13:29:05 | INFO     | ss_crawler | [case_matcher] CaseMatcher initialized with 5742 case references
+2026-08-20 13:29:07 | INFO     | ss_crawler | [motherboard_matcher] MotherboardMatcher initialized with 5732 motherboards
+2026-08-20 13:29:07 | INFO     | ss_crawler | [computer_matcher] ComputerMatcher initialized: 5320 CPUs, 633 GPUs, 5281 RAMs, 2453 SSDs, 2895 PSUs, 5742 Cases, 5732 Motherboards, 0 Monitors
+2026-08-20 13:29:07 | INFO     | ss_crawler | [andele_scraper] Initialized Computer matcher
+2026-08-20 13:29:07 | INFO     | ss_crawler | [andele_scraper] Starting scrape of gpu from https://www.andelemandele.lv/perles/tehnika/datori/#order:actual/attributes:409
+2026-08-20 13:29:07 | INFO     | ss_crawler | [andele_scraper] Scraping page 1: https://www.andelemandele.lv/perles/tehnika/datori/#order:actual/attributes:409
+2026-08-20 13:29:07 | INFO     | ss_crawler | [andele_scraper] Starting browser for https://www.andelemandele.lv/perles/tehnika/datori/#order:actual/attributes:409
+2026-08-20 13:29:07 | INFO     | ss_crawler | [andele_scraper] Detected Chrome version: 151
+2026-08-20 13:29:13 | INFO     | ss_crawler | [andele_scraper] Listings found with selector: a[href*="/perle/"]
+2026-08-20 13:29:15 | INFO     | ss_crawler | [andele_scraper] Scrolling to load more content...
+2026-08-20 13:29:16 | ERROR    | ss_crawler | [andele_scraper] Browser fetch failed for https://www.andelemandele.lv/perles/tehnika/datori/#order:actual/attributes:409: Message: invalid selector: An invalid or illegal selector was specified
+  (Session info: chrome=151.0.7922.169); For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#invalidselectorexception
+Stacktrace:
+	undetected_chromedriver!GetHandleVerifier [0x7e3353+fd93]
+	undetected_chromedriver!GetHandleVerifier [0x7e3394+fdd4]
+	undetected_chromedriver!(No symbol) [0x5d9220]
+	undetected_chromedriver!(No symbol) [0x5dff88]
+	undetected_chromedriver!(No symbol) [0x5e1ffa]
+	undetected_chromedriver!(No symbol) [0x5e2088]
+	undetected_chromedriver!(No symbol) [0x622df0]
+	undetected_chromedriver!(No symbol) [0x62351b]
+	undetected_chromedriver!(No symbol) [0x665bbc]
+	undetected_chromedriver!(No symbol) [0x6458c4]
+	undetected_chromedriver!(No symbol) [0x6634d9]
+	undetected_chromedriver!(No symbol) [0x645616]
+	undetected_chromedriver!(No symbol) [0x6187e9]
+	undetected_chromedriver!(No symbol) [0x6195b4]
+	undetected_chromedriver!GetHandleVerifier [0xa7f51a+2abf5a]
+	undetected_chromedriver!GetHandleVerifier [0xa7aa21+2a7461]
+	undetected_chromedriver!GetHandleVerifier [0x80f374+3bdb4]
+	undetected_chromedriver!GetHandleVerifier [0x7fe036+2aa76]
+	undetected_chromedriver!GetHandleVerifier [0x804efd+3193d]
+	undetected_chromedriver!GetHandleVerifier [0x7ec8a8+192e8]
+	undetected_chromedriver!GetHandleVerifier [0x7eca55+19495]
+	undetected_chromedriver!GetHandleVerifier [0x7d53ff+1e3f]
+	KERNEL32!BaseThreadInitThunk [0x7689fcc9+19]
+	ntdll!RtlGetAppContainerNamedObjectPath [0x776d843e+11e]
+	ntdll!RtlGetAppContainerNamedObjectPath [0x776d840e+ee]
+
+2026-08-20 13:29:19 | INFO     | ss_crawler | [andele_scraper] Found 8 listings on this page
+2026-08-20 13:29:21 | INFO     | ss_crawler | [repository] ✨ 15528378: New
+2026-08-20 13:29:21 | INFO     | ss_crawler | [andele_scraper] 🖼️  Found 3 images for 15528378: Oster kafijas automāts...
+2026-08-20 13:29:21 | INFO     | ss_crawler | [andele_scraper]    Image 1: https://static5.andelemandele.lv/images/large/c6d/bf0/1/5757abc1f97fc6b37.webp...
+2026-08-20 13:29:21 | INFO     | ss_crawler | [andele_scraper]    Image 2: https://static1.andelemandele.lv/images/large/aa2/119/1/994b0c0dd7f77b624.webp...
+2026-08-20 13:29:21 | INFO     | ss_crawler | [andele_scraper]    Image 3: https://static2.andelemandele.lv/images/large/68d/87e/1/83f946807fd0c065f.webp...
+2026-08-20 13:29:21 | INFO     | ss_crawler | [andele_scraper] 📸 Downloaded 3 images for 15528378
+2026-08-20 13:29:23 | INFO     | ss_crawler | [repository] ✨ 15915604: New
+2026-08-20 13:29:23 | INFO     | ss_crawler | [andele_scraper] 🖼️  Found 5 images for 15915604: Sky-Watcher HEQ5-R Equatorial mount PRO SynScan...
+2026-08-20 13:29:23 | INFO     | ss_crawler | [andele_scraper]    Image 1: https://static1.andelemandele.lv/images/large/89b/0b7/1/163ecf52141d619d4.webp...
+2026-08-20 13:29:23 | INFO     | ss_crawler | [andele_scraper]    Image 2: https://static3.andelemandele.lv/images/large/aef/d57/1/fff217343d0abd070.webp...
+2026-08-20 13:29:23 | INFO     | ss_crawler | [andele_scraper]    Image 3: https://static4.andelemandele.lv/images/large/1ad/f3b/1/1119b2d78df96aca6.webp...
+2026-08-20 13:29:23 | INFO     | ss_crawler | [andele_scraper] 📸 Downloaded 5 images for 15915604
+2026-08-20 13:29:25 | INFO     | ss_crawler | [repository] ✨ 16010555: New
+2026-08-20 13:29:25 | INFO     | ss_crawler | [andele_scraper] 🖼️  Found 5 images for 16010555: Plašu atskaņotājs...
+2026-08-20 13:29:25 | INFO     | ss_crawler | [andele_scraper]    Image 1: https://static2.andelemandele.lv/images/large/122/041/1/b35741adc8d095931.webp...
+2026-08-20 13:29:25 | INFO     | ss_crawler | [andele_scraper]    Image 2: https://static2.andelemandele.lv/images/large/ab8/5f1/1/2936ed3d7d2e5f334.webp...
+2026-08-20 13:29:25 | INFO     | ss_crawler | [andele_scraper]    Image 3: https://static3.andelemandele.lv/images/large/690/77d/1/a046f8673e3c80ba3.webp...
+2026-08-20 13:29:25 | INFO     | ss_crawler | [andele_scraper] 📸 Downloaded 5 images for 16010555
+2026-08-20 13:29:27 | INFO     | ss_crawler | [repository] ✨ 15954523: New
+2026-08-20 13:29:27 | INFO     | ss_crawler | [andele_scraper] 🖼️  Found 1 images for 15954523: VIRTUVES BLENDERIS🥦🍏...
+2026-08-20 13:29:27 | INFO     | ss_crawler | [andele_scraper]    Image 1: https://static6.andelemandele.lv/images/large/c9a/0db/1/b3bfcb3f1778a459e.webp...
+2026-08-20 13:29:27 | INFO     | ss_crawler | [andele_scraper] 📸 Downloaded 1 images for 15954523
+2026-08-20 13:29:29 | INFO     | ss_crawler | [repository] ✨ 15881063: New
+2026-08-20 13:29:29 | INFO     | ss_crawler | [andele_scraper] 🖼️  Found 4 images for 15881063: Pastiprinātājs...
+2026-08-20 13:29:29 | INFO     | ss_crawler | [andele_scraper]    Image 1: https://static3.andelemandele.lv/images/large/a4e/d04/1/dd4dded6ae895b298.webp...
+2026-08-20 13:29:29 | INFO     | ss_crawler | [andele_scraper]    Image 2: https://static2.andelemandele.lv/images/large/37e/c0c/1/f21e3f7c3997d8d6e.webp...
+2026-08-20 13:29:29 | INFO     | ss_crawler | [andele_scraper]    Image 3: https://static2.andelemandele.lv/images/large/63a/25c/1/9aad8a907553864fd.webp...
+2026-08-20 13:29:29 | INFO     | ss_crawler | [andele_scraper] 📸 Downloaded 4 images for 15881063
+2026-08-20 13:29:31 | INFO     | ss_crawler | [repository] ✨ 15943806: New
+2026-08-20 13:29:31 | INFO     | ss_crawler | [andele_scraper] 🖼️  Found 5 images for 15943806: Samson Podcast / USB mikrafons...
+2026-08-20 13:29:31 | INFO     | ss_crawler | [andele_scraper]    Image 1: https://static2.andelemandele.lv/images/large/f65/6dc/1/4b12c64eb7846b6c6.webp...
+2026-08-20 13:29:31 | INFO     | ss_crawler | [andele_scraper]    Image 2: https://static1.andelemandele.lv/images/large/ba7/d3e/1/7df114bad838a1c21.webp...
+2026-08-20 13:29:31 | INFO     | ss_crawler | [andele_scraper]    Image 3: https://static6.andelemandele.lv/images/large/b2d/143/1/126f510e0582d65da.webp...
+2026-08-20 13:29:31 | INFO     | ss_crawler | [andele_scraper] 📸 Downloaded 5 images for 15943806
+2026-08-20 13:29:33 | INFO     | ss_crawler | [andele_scraper] ✨ GPU Match: Miatone Rush M... -> GPU ID 263 (60%)
+2026-08-20 13:29:33 | INFO     | ss_crawler | [repository] ✨ 15888955: New
+2026-08-20 13:29:33 | INFO     | ss_crawler | [andele_scraper] 🖼️  Found 5 images for 15888955: Miatone Rush M...
+2026-08-20 13:29:33 | INFO     | ss_crawler | [andele_scraper]    Image 1: https://static2.andelemandele.lv/images/large/37d/a2e/1/84c5a142e27a31f6b.webp...
+2026-08-20 13:29:33 | INFO     | ss_crawler | [andele_scraper]    Image 2: https://static2.andelemandele.lv/images/large/821/f73/1/e1d343720b28632fb.webp...
+2026-08-20 13:29:33 | INFO     | ss_crawler | [andele_scraper]    Image 3: https://static5.andelemandele.lv/images/large/63f/70e/1/1df2e90b3f3b0a9b3.webp...
+2026-08-20 13:29:33 | INFO     | ss_crawler | [andele_scraper] 📸 Downloaded 5 images for 15888955
+2026-08-20 14:20:13 | INFO     | ss_crawler | [database] Database connected: localhost:5433/ss_market
+2026-08-20 14:20:13 | ERROR    | ss_crawler | [database] Database transaction failed: (psycopg2.errors.UndefinedColumn) column "url" does not exist
+LINE 2:         SELECT listing_id, source, url, title, category, cre...
+                                           ^
+
+[SQL: 
+        SELECT listing_id, source, url, title, category, created_at::text
+        FROM listings
+        WHERE source = 'andelemandele'
+          AND created_at::date = '2026-08-20'
+        ORDER BY created_at DESC
+    ]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2026-08-20 14:20:16 | INFO     | ss_crawler | [database] Database connected: localhost:5433/ss_market
+2026-08-20 14:20:16 | ERROR    | ss_crawler | [database] Database transaction failed: (psycopg2.errors.UndefinedColumn) column "url" does not exist
+LINE 2:         SELECT listing_id, source, url, title, category, cre...
+                                           ^
+
+[SQL: 
+        SELECT listing_id, source, url, title, category, created_at::text
+        FROM listings
+        WHERE source = 'andelemandele'
+          AND created_at::date = '2026-08-20'
+        ORDER BY created_at DESC
+    ]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2026-08-20 14:20:29 | INFO     | ss_crawler | [database] Database connected: localhost:5433/ss_market
+2026-08-20 14:21:08 | INFO     | ss_crawler | [database] Database connected: localhost:5433/ss_market
+2026-08-20 14:21:08 | INFO     | ss_crawler | [andele_scraper] Database initialized for matchers
+2026-08-20 14:21:08 | INFO     | ss_crawler | [matcher] GPUMatcher initialized with 633 GPUs
+2026-08-20 14:21:08 | INFO     | ss_crawler | [andele_scraper] Initialized GPU matcher with 633 GPUs
+2026-08-20 14:21:08 | INFO     | ss_crawler | [cpu_matcher] CPUMatcher initialized with 5320 CPUs
+2026-08-20 14:21:08 | INFO     | ss_crawler | [andele_scraper] Initialized CPU matcher with 5320 CPUs
+2026-08-20 14:21:08 | INFO     | ss_crawler | [ssd_matcher] SSDMatcher initialized with 2453 SSDs
+2026-08-20 14:21:08 | INFO     | ss_crawler | [andele_scraper] Initialized SSD matcher with 2453 SSDs
+2026-08-20 14:21:09 | INFO     | ss_crawler | [ram_matcher] RAMMatcher initialized with 5281 RAM references
+2026-08-20 14:21:09 | INFO     | ss_crawler | [andele_scraper] Initialized RAM matcher with 5281 RAMs
+2026-08-20 14:21:09 | INFO     | ss_crawler | [psu_matcher] PSUMatcher initialized with 2895 PSU references
+2026-08-20 14:21:09 | INFO     | ss_crawler | [andele_scraper] Initialized PSU matcher with 2895 PSUs
+2026-08-20 14:21:09 | INFO     | ss_crawler | [monitor_scraper] MonitorMatcher initialized with 0 monitors
+2026-08-20 14:21:09 | INFO     | ss_crawler | [andele_scraper] Initialized Monitor matcher
+2026-08-20 14:21:11 | INFO     | ss_crawler | [motherboard_matcher] MotherboardMatcher initialized with 5732 motherboards
+2026-08-20 14:21:11 | INFO     | ss_crawler | [andele_scraper] Initialized Motherboard matcher with 5732 boards
+2026-08-20 14:21:11 | INFO     | ss_crawler | [cpu_matcher] CPUMatcher initialized with 5320 CPUs
+2026-08-20 14:21:11 | INFO     | ss_crawler | [matcher] GPUMatcher initialized with 633 GPUs
+2026-08-20 14:21:11 | INFO     | ss_crawler | [ram_matcher] RAMMatcher initialized with 5281 RAM references
+2026-08-20 14:21:12 | INFO     | ss_crawler | [ssd_matcher] SSDMatcher initialized with 2453 SSDs
+2026-08-20 14:21:12 | INFO     | ss_crawler | [psu_matcher] PSUMatcher initialized with 2895 PSU references
+2026-08-20 14:21:12 | INFO     | ss_crawler | [case_matcher] CaseMatcher initialized with 5742 case references
+2026-08-20 14:21:14 | INFO     | ss_crawler | [motherboard_matcher] MotherboardMatcher initialized with 5732 motherboards
+2026-08-20 14:21:14 | INFO     | ss_crawler | [computer_matcher] ComputerMatcher initialized: 5320 CPUs, 633 GPUs, 5281 RAMs, 2453 SSDs, 2895 PSUs, 5742 Cases, 5732 Motherboards, 0 Monitors
+2026-08-20 14:21:14 | INFO     | ss_crawler | [andele_scraper] Initialized Computer matcher
+2026-08-20 14:21:14 | INFO     | ss_crawler | [andele_scraper] Starting scrape of gpu from https://www.andelemandele.lv/perles/tehnika/datori/#order:actual/attributes:409
+2026-08-20 14:21:14 | INFO     | ss_crawler | [andele_scraper] Calling product-data API for gpu: https://www.andelemandele.lv/product-data/?filter=eyJjYXRlZ29yeSI6IHsiaWQiOiAzNjh9LCAib3JkZXIiOiAiYW…
+2026-08-20 14:21:14 | INFO     | ss_crawler | [andele_scraper] product-data returned count=21, html_len=36431
+2026-08-20 14:21:14 | INFO     | ss_crawler | [andele_scraper] Got 21 real filtered listings for gpu (API reported 21 total)
+2026-08-20 14:21:16 | INFO     | ss_crawler | [andele_scraper] ✨ GPU Match: RTX 3060 12GB Dual OC... -> GPU ID 593 (90%)
+2026-08-20 14:21:16 | INFO     | ss_crawler | [repository] ✨ 16041869: New
+2026-08-20 14:21:16 | INFO     | ss_crawler | [andele_scraper] 🖼️  Found 3 images for 16041869: RTX 3060 12GB Dual OC...
+2026-08-20 14:21:16 | INFO     | ss_crawler | [andele_scraper]    Image 1: https://static6.andelemandele.lv/images/large/5b1/d80/1/8c262bc03c45cb151.webp...
+2026-08-20 14:21:16 | INFO     | ss_crawler | [andele_scraper]    Image 2: https://static6.andelemandele.lv/images/large/5ad/915/1/a000d5b94e5943e5f.webp...
+2026-08-20 14:21:16 | INFO     | ss_crawler | [andele_scraper]    Image 3: https://static4.andelemandele.lv/images/large/5cd/1e2/1/a53c86f41399e7d56.webp...
+2026-08-20 14:21:16 | INFO     | ss_crawler | [image_downloader] Downloaded image for 16041869 (stored as 16041869_01156ba1.webp, 79378 bytes)
+2026-08-20 14:21:16 | INFO     | ss_crawler | [image_downloader] Downloaded image for 16041869 (stored as 16041869_4506420e.webp, 75120 bytes)
+2026-08-20 14:21:16 | INFO     | ss_crawler | [image_downloader] Downloaded image for 16041869 (stored as 16041869_1f783aa9.webp, 69432 bytes)
+2026-08-20 14:21:16 | INFO     | ss_crawler | [andele_scraper] 📸 Downloaded 3 images for 16041869
+2026-08-20 14:21:16 | INFO     | ss_crawler | [andele_scraper] Reached limit (1)
+2026-08-20 14:21:16 | INFO     | ss_crawler | [andele_scraper] Completed gpu: {'total': 1, 'new': 1, 'updated': 0, 'failed': 0, 'skipped': 0, 'errors': []}
+2026-08-20 14:21:33 | INFO     | ss_crawler | [database] Database connected: localhost:5433/ss_market
+2026-08-20 14:21:33 | INFO     | ss_crawler | [andele_scraper] Database initialized for matchers
+2026-08-20 14:21:33 | INFO     | ss_crawler | [matcher] GPUMatcher initialized with 633 GPUs
+2026-08-20 14:21:33 | INFO     | ss_crawler | [andele_scraper] Initialized GPU matcher with 633 GPUs
+2026-08-20 14:21:33 | INFO     | ss_crawler | [cpu_matcher] CPUMatcher initialized with 5320 CPUs
+2026-08-20 14:21:33 | INFO     | ss_crawler | [andele_scraper] Initialized CPU matcher with 5320 CPUs
+2026-08-20 14:21:33 | INFO     | ss_crawler | [ssd_matcher] SSDMatcher initialized with 2453 SSDs
+2026-08-20 14:21:33 | INFO     | ss_crawler | [andele_scraper] Initialized SSD matcher with 2453 SSDs
+2026-08-20 14:21:33 | INFO     | ss_crawler | [ram_matcher] RAMMatcher initialized with 5281 RAM references
+2026-08-20 14:21:33 | INFO     | ss_crawler | [andele_scraper] Initialized RAM matcher with 5281 RAMs
+2026-08-20 14:21:34 | INFO     | ss_crawler | [psu_matcher] PSUMatcher initialized with 2895 PSU references
+2026-08-20 14:21:34 | INFO     | ss_crawler | [andele_scraper] Initialized PSU matcher with 2895 PSUs
+2026-08-20 14:21:34 | INFO     | ss_crawler | [monitor_scraper] MonitorMatcher initialized with 0 monitors
+2026-08-20 14:21:34 | INFO     | ss_crawler | [andele_scraper] Initialized Monitor matcher
+2026-08-20 14:21:35 | INFO     | ss_crawler | [motherboard_matcher] MotherboardMatcher initialized with 5732 motherboards
+2026-08-20 14:21:35 | INFO     | ss_crawler | [andele_scraper] Initialized Motherboard matcher with 5732 boards
+2026-08-20 14:21:36 | INFO     | ss_crawler | [cpu_matcher] CPUMatcher initialized with 5320 CPUs
+2026-08-20 14:21:36 | INFO     | ss_crawler | [matcher] GPUMatcher initialized with 633 GPUs
+2026-08-20 14:21:36 | INFO     | ss_crawler | [ram_matcher] RAMMatcher initialized with 5281 RAM references
+2026-08-20 14:21:37 | INFO     | ss_crawler | [ssd_matcher] SSDMatcher initialized with 2453 SSDs
+2026-08-20 14:21:37 | INFO     | ss_crawler | [psu_matcher] PSUMatcher initialized with 2895 PSU references
+2026-08-20 14:21:37 | INFO     | ss_crawler | [case_matcher] CaseMatcher initialized with 5742 case references
+2026-08-20 14:21:39 | INFO     | ss_crawler | [motherboard_matcher] MotherboardMatcher initialized with 5732 motherboards
+2026-08-20 14:21:39 | INFO     | ss_crawler | [computer_matcher] ComputerMatcher initialized: 5320 CPUs, 633 GPUs, 5281 RAMs, 2453 SSDs, 2895 PSUs, 5742 Cases, 5732 Motherboards, 0 Monitors
+2026-08-20 14:21:39 | INFO     | ss_crawler | [andele_scraper] Initialized Computer matcher
+2026-08-20 14:21:39 | INFO     | ss_crawler | [andele_scraper] Starting scrape of gpu from https://www.andelemandele.lv/perles/tehnika/datori/#order:actual/attributes:409
+2026-08-20 14:21:39 | INFO     | ss_crawler | [andele_scraper] Calling product-data API for gpu: https://www.andelemandele.lv/product-data/?filter=eyJjYXRlZ29yeSI6IHsiaWQiOiAzNjh9LCAib3JkZXIiOiAiYW…
+2026-08-20 14:21:39 | INFO     | ss_crawler | [andele_scraper] product-data returned count=21, html_len=36431
+2026-08-20 14:21:39 | INFO     | ss_crawler | [andele_scraper] Got 21 real filtered listings for gpu (API reported 21 total)
+2026-08-20 14:21:41 | INFO     | ss_crawler | [andele_scraper] ✨ GPU Match: RTX 3060 12GB Dual OC... -> GPU ID 593 (90%)
+2026-08-20 14:21:41 | INFO     | ss_crawler | [listing_versioning] Legacy listing 16041869 v1 matches by computed fingerprint, updating
+2026-08-20 14:21:41 | INFO     | ss_crawler | [repository] ⏸️ 16041869: Unchanged
+2026-08-20 14:21:41 | INFO     | ss_crawler | [andele_scraper] 🖼️  Found 3 images for 16041869: RTX 3060 12GB Dual OC...
+2026-08-20 14:21:41 | INFO     | ss_crawler | [andele_scraper]    Image 1: https://static6.andelemandele.lv/images/large/5b1/d80/1/8c262bc03c45cb151.webp...
+2026-08-20 14:21:41 | INFO     | ss_crawler | [andele_scraper]    Image 2: https://static6.andelemandele.lv/images/large/5ad/915/1/a000d5b94e5943e5f.webp...
+2026-08-20 14:21:41 | INFO     | ss_crawler | [andele_scraper]    Image 3: https://static4.andelemandele.lv/images/large/5cd/1e2/1/a53c86f41399e7d56.webp...
+2026-08-20 14:21:41 | INFO     | ss_crawler | [andele_scraper] 📸 Downloaded 3 images for 16041869
+2026-08-20 14:21:43 | INFO     | ss_crawler | [andele_scraper] ✨ GPU Match: RTX 3080... -> GPU ID 598 (90%)
+2026-08-20 14:21:43 | INFO     | ss_crawler | [repository] ✨ 16012074: New
+2026-08-20 14:21:43 | INFO     | ss_crawler | [andele_scraper] 🖼️  Found 2 images for 16012074: RTX 3080...
+2026-08-20 14:21:43 | INFO     | ss_crawler | [andele_scraper]    Image 1: https://static1.andelemandele.lv/images/large/0a9/c6c/1/e8ad9ded68a35bc1b.webp...
+2026-08-20 14:21:43 | INFO     | ss_crawler | [andele_scraper]    Image 2: https://static3.andelemandele.lv/images/large/6c3/309/1/40294f9785772349f.webp...
+2026-08-20 14:21:43 | INFO     | ss_crawler | [image_downloader] Downloaded image for 16012074 (stored as 16012074_e78ee5e5.webp, 56814 bytes)
+2026-08-20 14:21:43 | INFO     | ss_crawler | [image_downloader] Downloaded image for 16012074 (stored as 16012074_6f8de797.webp, 50606 bytes)
+2026-08-20 14:21:43 | INFO     | ss_crawler | [andele_scraper] 📸 Downloaded 2 images for 16012074
+2026-08-20 14:21:45 | INFO     | ss_crawler | [andele_scraper] ✨ GPU Match: ASUS GeForce RTX 3070 Ti TUF Gaming OC 8GB GDDR6X... -> GPU ID 597 (90%)
+2026-08-20 14:21:45 | INFO     | ss_crawler | [repository] ✨ 16053425: New
+2026-08-20 14:21:45 | INFO     | ss_crawler | [andele_scraper] 🖼️  Found 4 images for 16053425: ASUS GeForce RTX 3070 Ti TUF Gaming OC 8GB GDDR6X...
+2026-08-20 14:21:45 | INFO     | ss_crawler | [andele_scraper]    Image 1: https://static2.andelemandele.lv/images/large/84e/2ce/1/b50c7a333a4ce0a7d.webp...
+2026-08-20 14:21:45 | INFO     | ss_crawler | [andele_scraper]    Image 2: https://static1.andelemandele.lv/images/large/ca0/9a6/1/e83b18a63c9361f17.webp...
+2026-08-20 14:21:45 | INFO     | ss_crawler | [andele_scraper]    Image 3: https://static4.andelemandele.lv/images/large/767/7b6/1/7bce64ae66da70f16.webp...
+2026-08-20 14:21:45 | INFO     | ss_crawler | [image_downloader] Downloaded image for 16053425 (stored as 16053425_6f56b99a.webp, 52328 bytes)
+2026-08-20 14:21:45 | INFO     | ss_crawler | [image_downloader] Downloaded image for 16053425 (stored as 16053425_04b8d0ab.webp, 46576 bytes)
+2026-08-20 14:21:45 | INFO     | ss_crawler | [image_downloader] Downloaded image for 16053425 (stored as 16053425_7be7cc37.webp, 51736 bytes)
+2026-08-20 14:21:45 | INFO     | ss_crawler | [image_downloader] Downloaded image for 16053425 (stored as 16053425_cd991927.webp, 80684 bytes)
+2026-08-20 14:21:45 | INFO     | ss_crawler | [andele_scraper] 📸 Downloaded 4 images for 16053425
+2026-08-20 14:21:48 | INFO     | ss_crawler | [andele_scraper] ✨ GPU Match: Gigabyte Geforce Rtx 3060 Windforce OC 12G... -> GPU ID 593 (90%)
+2026-08-20 14:21:48 | INFO     | ss_crawler | [repository] ✨ 16048681: New
+2026-08-20 14:21:48 | INFO     | ss_crawler | [andele_scraper] 🖼️  Found 3 images for 16048681: Gigabyte Geforce Rtx 3060 Windforce OC 12G...
+2026-08-20 14:21:48 | INFO     | ss_crawler | [andele_scraper]    Image 1: https://static3.andelemandele.lv/images/large/c2c/56e/1/e2e003a24d5423619.webp...
+2026-08-20 14:21:48 | INFO     | ss_crawler | [andele_scraper]    Image 2: https://static5.andelemandele.lv/images/large/89f/d1a/1/672b5e5eb40c8b1e2.webp...
+2026-08-20 14:21:48 | INFO     | ss_crawler | [andele_scraper]    Image 3: https://static2.andelemandele.lv/images/large/d90/876/1/e1769834494c95c1f.webp...
+2026-08-20 14:21:48 | INFO     | ss_crawler | [image_downloader] Downloaded image for 16048681 (stored as 16048681_e294f2c6.webp, 105362 bytes)
+2026-08-20 14:21:48 | INFO     | ss_crawler | [image_downloader] Downloaded image for 16048681 (stored as 16048681_0573acc4.webp, 115438 bytes)
+2026-08-20 14:21:48 | INFO     | ss_crawler | [image_downloader] Downloaded image for 16048681 (stored as 16048681_79ef1d05.webp, 58196 bytes)
+2026-08-20 14:21:48 | INFO     | ss_crawler | [andele_scraper] 📸 Downloaded 3 images for 16048681
+2026-08-20 14:21:50 | INFO     | ss_crawler | [andele_scraper] ✨ GPU Match: Rtx 4080 Super... -> GPU ID 611 (90%)
+2026-08-20 14:21:50 | INFO     | ss_crawler | [repository] ✨ 16041142: New
+2026-08-20 14:21:50 | INFO     | ss_crawler | [andele_scraper] 🖼️  Found 5 images for 16041142: Rtx 4080 Super...
+2026-08-20 14:21:50 | INFO     | ss_crawler | [andele_scraper]    Image 1: https://static3.andelemandele.lv/images/large/49e/359/1/148f8f2901075976f.webp...
+2026-08-20 14:21:50 | INFO     | ss_crawler | [andele_scraper]    Image 2: https://static1.andelemandele.lv/images/large/470/743/1/74e3551e2884506d3.webp...
+2026-08-20 14:21:50 | INFO     | ss_crawler | [andele_scraper]    Image 3: https://static2.andelemandele.lv/images/large/30a/592/1/90ec42b90ee709019.webp...
+2026-08-20 14:21:50 | INFO     | ss_crawler | [image_downloader] Downloaded image for 16041142 (stored as 16041142_2a71d7ae.webp, 203190 bytes)
+2026-08-20 14:21:50 | INFO     | ss_crawler | [image_downloader] Downloaded image for 16041142 (stored as 16041142_bfc997e8.webp, 197428 bytes)
+2026-08-20 14:21:50 | INFO     | ss_crawler | [image_downloader] Downloaded image for 16041142 (stored as 16041142_92f737ca.webp, 202026 bytes)
+2026-08-20 14:21:50 | INFO     | ss_crawler | [image_downloader] Downloaded image for 16041142 (stored as 16041142_cfb4c2f5.webp, 151404 bytes)
+2026-08-20 14:21:50 | INFO     | ss_crawler | [image_downloader] Downloaded image for 16041142 (stored as 16041142_901a1f9f.webp, 187962 bytes)
+2026-08-20 14:21:50 | INFO     | ss_crawler | [andele_scraper] 📸 Downloaded 5 images for 16041142
+2026-08-20 14:21:50 | INFO     | ss_crawler | [andele_scraper] Reached limit (5)
+2026-08-20 14:21:50 | INFO     | ss_crawler | [andele_scraper] Completed gpu: {'total': 5, 'new': 4, 'updated': 0, 'failed': 0, 'skipped': 1, 'errors': []}
+2026-08-20 14:22:02 | INFO     | ss_crawler | [database] Database connected: localhost:5433/ss_market
+2026-08-20 14:22:02 | ERROR    | ss_crawler | [database] Database transaction failed: (psycopg2.errors.UndefinedTable) relation "listing_images" does not exist
+LINE 1: DELETE FROM listing_images WHERE listing_id IN (3376, 3377, ...
+                    ^
+
+[SQL: DELETE FROM listing_images WHERE listing_id IN %(ids)s]
+[parameters: {'ids': (3376, 3377, 3378, 3379, 3380)}]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2026-08-20 14:22:05 | INFO     | ss_crawler | [database] Database connected: localhost:5433/ss_market
+2026-08-20 14:22:05 | ERROR    | ss_crawler | [database] Database transaction failed: (psycopg2.errors.UndefinedTable) relation "listing_images" does not exist
+LINE 1: DELETE FROM listing_images WHERE listing_id IN (3376, 3377, ...
+                    ^
+
+[SQL: DELETE FROM listing_images WHERE listing_id IN %(ids)s]
+[parameters: {'ids': (3376, 3377, 3378, 3379, 3380)}]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2026-08-20 14:22:27 | INFO     | ss_crawler | [database] Database connected: localhost:5433/ss_market
+2026-08-20 14:22:27 | ERROR    | ss_crawler | [database] Database transaction failed: (psycopg2.errors.UndefinedFunction) operator does not exist: character varying = integer
+LINE 1: DELETE FROM price_history WHERE listing_id IN (3376, 3377, 3...
+                                                   ^
+HINT:  No operator matches the given name and argument types. You might need to add explicit type casts.
+
+[SQL: DELETE FROM price_history WHERE listing_id IN %(ids)s]
+[parameters: {'ids': (3376, 3377, 3378, 3379, 3380)}]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2026-08-20 14:22:30 | INFO     | ss_crawler | [database] Database connected: localhost:5433/ss_market
+2026-08-20 14:22:30 | ERROR    | ss_crawler | [database] Database transaction failed: (psycopg2.errors.UndefinedFunction) operator does not exist: character varying = integer
+LINE 1: DELETE FROM price_history WHERE listing_id IN (3376, 3377, 3...
+                                                   ^
+HINT:  No operator matches the given name and argument types. You might need to add explicit type casts.
+
+[SQL: DELETE FROM price_history WHERE listing_id IN %(ids)s]
+[parameters: {'ids': (3376, 3377, 3378, 3379, 3380)}]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2026-08-20 14:22:36 | INFO     | ss_crawler | [database] Database connected: localhost:5433/ss_market
+2026-08-20 14:22:36 | ERROR    | ss_crawler | [database] Database transaction failed: (psycopg2.errors.InvalidTextRepresentation) invalid input syntax for type integer: "dpfex"
+
+[SQL: DELETE FROM price_history WHERE listing_id::int IN (3376,3377,3378,3379,3380)]
+(Background on this error at: https://sqlalche.me/e/20/9h9h)
+2026-08-20 14:22:39 | INFO     | ss_crawler | [database] Database connected: localhost:5433/ss_market
+2026-08-20 14:22:39 | ERROR    | ss_crawler | [database] Database transaction failed: (psycopg2.errors.InvalidTextRepresentation) invalid input syntax for type integer: "dpfex"
+
+[SQL: DELETE FROM price_history WHERE listing_id::int IN (3376,3377,3378,3379,3380)]
+(Background on this error at: https://sqlalche.me/e/20/9h9h)
+2026-08-20 14:22:53 | INFO     | ss_crawler | [database] Database connected: localhost:5433/ss_market
+2026-08-20 14:23:13 | INFO     | ss_crawler | [database] Database connected: localhost:5433/ss_market
+2026-08-20 14:23:13 | INFO     | ss_crawler | [matcher] GPUMatcher initialized with 633 GPUs
+2026-08-20 14:27:03 | INFO     | ss_crawler | [database] Database connected: localhost:5433/ss_market
+2026-08-20 14:27:03 | INFO     | ss_crawler | [andele_scraper] Database initialized for matchers
+2026-08-20 14:27:03 | INFO     | ss_crawler | [matcher] GPUMatcher initialized with 633 GPUs
+2026-08-20 14:27:03 | INFO     | ss_crawler | [andele_scraper] Initialized GPU matcher with 633 GPUs
+2026-08-20 14:27:04 | INFO     | ss_crawler | [cpu_matcher] CPUMatcher initialized with 5320 CPUs
+2026-08-20 14:27:04 | INFO     | ss_crawler | [andele_scraper] Initialized CPU matcher with 5320 CPUs
+2026-08-20 14:27:04 | INFO     | ss_crawler | [ssd_matcher] SSDMatcher initialized with 2453 SSDs
+2026-08-20 14:27:04 | INFO     | ss_crawler | [andele_scraper] Initialized SSD matcher with 2453 SSDs
+2026-08-20 14:27:04 | INFO     | ss_crawler | [ram_matcher] RAMMatcher initialized with 5281 RAM references
+2026-08-20 14:27:04 | INFO     | ss_crawler | [andele_scraper] Initialized RAM matcher with 5281 RAMs
+2026-08-20 14:27:04 | INFO     | ss_crawler | [psu_matcher] PSUMatcher initialized with 2895 PSU references
+2026-08-20 14:27:04 | INFO     | ss_crawler | [andele_scraper] Initialized PSU matcher with 2895 PSUs
+2026-08-20 14:27:04 | INFO     | ss_crawler | [monitor_scraper] MonitorMatcher initialized with 0 monitors
+2026-08-20 14:27:04 | INFO     | ss_crawler | [andele_scraper] Initialized Monitor matcher
+2026-08-20 14:27:06 | INFO     | ss_crawler | [motherboard_matcher] MotherboardMatcher initialized with 5732 motherboards
+2026-08-20 14:27:06 | INFO     | ss_crawler | [andele_scraper] Initialized Motherboard matcher with 5732 boards
+2026-08-20 14:27:07 | INFO     | ss_crawler | [cpu_matcher] CPUMatcher initialized with 5320 CPUs
+2026-08-20 14:27:07 | INFO     | ss_crawler | [matcher] GPUMatcher initialized with 633 GPUs
+2026-08-20 14:27:07 | INFO     | ss_crawler | [ram_matcher] RAMMatcher initialized with 5281 RAM references
+2026-08-20 14:27:07 | INFO     | ss_crawler | [ssd_matcher] SSDMatcher initialized with 2453 SSDs
+2026-08-20 14:27:08 | INFO     | ss_crawler | [psu_matcher] PSUMatcher initialized with 2895 PSU references
+2026-08-20 14:27:08 | INFO     | ss_crawler | [case_matcher] CaseMatcher initialized with 5742 case references
+2026-08-20 14:27:09 | INFO     | ss_crawler | [motherboard_matcher] MotherboardMatcher initialized with 5732 motherboards
+2026-08-20 14:27:10 | INFO     | ss_crawler | [computer_matcher] ComputerMatcher initialized: 5320 CPUs, 633 GPUs, 5281 RAMs, 2453 SSDs, 2895 PSUs, 5742 Cases, 5732 Motherboards, 0 Monitors
+2026-08-20 14:27:10 | INFO     | ss_crawler | [andele_scraper] Initialized Computer matcher
+2026-08-20 14:27:10 | INFO     | ss_crawler | [andele_scraper] Starting scrape of gpu from https://www.andelemandele.lv/perles/tehnika/datori/#order:actual/attributes:409
+2026-08-20 14:27:10 | INFO     | ss_crawler | [andele_scraper] Calling product-data API for gpu: https://www.andelemandele.lv/product-data/?filter=eyJjYXRlZ29yeSI6IHsiaWQiOiAzNjh9LCAib3JkZXIiOiAiYW…
+2026-08-20 14:27:10 | INFO     | ss_crawler | [andele_scraper] product-data returned count=21, html_len=36431
+2026-08-20 14:27:10 | INFO     | ss_crawler | [andele_scraper] Got 21 real filtered listings for gpu (API reported 21 total)
+2026-08-20 14:27:12 | INFO     | ss_crawler | [andele_scraper] ✨ GPU Match: RTX 3060 12GB Dual OC... -> GPU ID 593 (90%)
+2026-08-20 14:27:12 | INFO     | ss_crawler | [repository] ✨ 16041869: New
+2026-08-20 14:27:12 | INFO     | ss_crawler | [andele_scraper] 🖼️  Found 3 images for 16041869: RTX 3060 12GB Dual OC...
+2026-08-20 14:27:12 | INFO     | ss_crawler | [andele_scraper]    Image 1: https://static6.andelemandele.lv/images/large/5b1/d80/1/8c262bc03c45cb151.webp...
+2026-08-20 14:27:12 | INFO     | ss_crawler | [andele_scraper]    Image 2: https://static6.andelemandele.lv/images/large/5ad/915/1/a000d5b94e5943e5f.webp...
+2026-08-20 14:27:12 | INFO     | ss_crawler | [andele_scraper]    Image 3: https://static4.andelemandele.lv/images/large/5cd/1e2/1/a53c86f41399e7d56.webp...
+2026-08-20 14:27:12 | INFO     | ss_crawler | [image_downloader] Downloaded image for 16041869 (stored as 16041869_01156ba1.webp, 79378 bytes)
+2026-08-20 14:27:12 | INFO     | ss_crawler | [image_downloader] Downloaded image for 16041869 (stored as 16041869_4506420e.webp, 75120 bytes)
+2026-08-20 14:27:12 | INFO     | ss_crawler | [image_downloader] Downloaded image for 16041869 (stored as 16041869_1f783aa9.webp, 69432 bytes)
+2026-08-20 14:27:12 | INFO     | ss_crawler | [andele_scraper] 📸 Downloaded 3 images for 16041869
+2026-08-20 14:27:14 | INFO     | ss_crawler | [andele_scraper] ✨ GPU Match: RTX 3080... -> GPU ID 598 (90%)
+2026-08-20 14:27:14 | INFO     | ss_crawler | [repository] ✨ 16012074: New
+2026-08-20 14:27:14 | INFO     | ss_crawler | [andele_scraper] 🖼️  Found 2 images for 16012074: RTX 3080...
+2026-08-20 14:27:14 | INFO     | ss_crawler | [andele_scraper]    Image 1: https://static1.andelemandele.lv/images/large/0a9/c6c/1/e8ad9ded68a35bc1b.webp...
+2026-08-20 14:27:14 | INFO     | ss_crawler | [andele_scraper]    Image 2: https://static3.andelemandele.lv/images/large/6c3/309/1/40294f9785772349f.webp...
+2026-08-20 14:27:14 | INFO     | ss_crawler | [image_downloader] Downloaded image for 16012074 (stored as 16012074_e78ee5e5.webp, 56814 bytes)
+2026-08-20 14:27:14 | INFO     | ss_crawler | [image_downloader] Downloaded image for 16012074 (stored as 16012074_6f8de797.webp, 50606 bytes)
+2026-08-20 14:27:14 | INFO     | ss_crawler | [andele_scraper] 📸 Downloaded 2 images for 16012074
+2026-08-20 14:27:16 | INFO     | ss_crawler | [andele_scraper] ✨ GPU Match: ASUS GeForce RTX 3070 Ti TUF Gaming OC 8GB GDDR6X... -> GPU ID 597 (90%)
+2026-08-20 14:27:16 | INFO     | ss_crawler | [repository] ✨ 16053425: New
+2026-08-20 14:27:16 | INFO     | ss_crawler | [andele_scraper] 🖼️  Found 4 images for 16053425: ASUS GeForce RTX 3070 Ti TUF Gaming OC 8GB GDDR6X...
+2026-08-20 14:27:16 | INFO     | ss_crawler | [andele_scraper]    Image 1: https://static2.andelemandele.lv/images/large/84e/2ce/1/b50c7a333a4ce0a7d.webp...
+2026-08-20 14:27:16 | INFO     | ss_crawler | [andele_scraper]    Image 2: https://static1.andelemandele.lv/images/large/ca0/9a6/1/e83b18a63c9361f17.webp...
+2026-08-20 14:27:16 | INFO     | ss_crawler | [andele_scraper]    Image 3: https://static4.andelemandele.lv/images/large/767/7b6/1/7bce64ae66da70f16.webp...
+2026-08-20 14:27:16 | INFO     | ss_crawler | [image_downloader] Downloaded image for 16053425 (stored as 16053425_6f56b99a.webp, 52328 bytes)
+2026-08-20 14:27:16 | INFO     | ss_crawler | [image_downloader] Downloaded image for 16053425 (stored as 16053425_04b8d0ab.webp, 46576 bytes)
+2026-08-20 14:27:17 | INFO     | ss_crawler | [image_downloader] Downloaded image for 16053425 (stored as 16053425_7be7cc37.webp, 51736 bytes)
+2026-08-20 14:27:17 | INFO     | ss_crawler | [image_downloader] Downloaded image for 16053425 (stored as 16053425_cd991927.webp, 80684 bytes)
+2026-08-20 14:27:17 | INFO     | ss_crawler | [andele_scraper] 📸 Downloaded 4 images for 16053425
+2026-08-20 14:27:19 | INFO     | ss_crawler | [andele_scraper] ✨ GPU Match: Gigabyte Geforce Rtx 3060 Windforce OC 12G... -> GPU ID 593 (90%)
+2026-08-20 14:27:19 | INFO     | ss_crawler | [repository] ✨ 16048681: New
+2026-08-20 14:27:19 | INFO     | ss_crawler | [andele_scraper] 🖼️  Found 3 images for 16048681: Gigabyte Geforce Rtx 3060 Windforce OC 12G...
+2026-08-20 14:27:19 | INFO     | ss_crawler | [andele_scraper]    Image 1: https://static3.andelemandele.lv/images/large/c2c/56e/1/e2e003a24d5423619.webp...
+2026-08-20 14:27:19 | INFO     | ss_crawler | [andele_scraper]    Image 2: https://static5.andelemandele.lv/images/large/89f/d1a/1/672b5e5eb40c8b1e2.webp...
+2026-08-20 14:27:19 | INFO     | ss_crawler | [andele_scraper]    Image 3: https://static2.andelemandele.lv/images/large/d90/876/1/e1769834494c95c1f.webp...
+2026-08-20 14:27:19 | INFO     | ss_crawler | [image_downloader] Downloaded image for 16048681 (stored as 16048681_e294f2c6.webp, 105362 bytes)
+2026-08-20 14:27:19 | INFO     | ss_crawler | [image_downloader] Downloaded image for 16048681 (stored as 16048681_0573acc4.webp, 115438 bytes)
+2026-08-20 14:27:19 | INFO     | ss_crawler | [image_downloader] Downloaded image for 16048681 (stored as 16048681_79ef1d05.webp, 58196 bytes)
+2026-08-20 14:27:19 | INFO     | ss_crawler | [andele_scraper] 📸 Downloaded 3 images for 16048681
+2026-08-20 14:27:21 | INFO     | ss_crawler | [andele_scraper] ✨ GPU Match: Rtx 4080 Super... -> GPU ID 611 (90%)
+2026-08-20 14:27:21 | INFO     | ss_crawler | [repository] ✨ 16041142: New
+2026-08-20 14:27:21 | INFO     | ss_crawler | [andele_scraper] 🖼️  Found 5 images for 16041142: Rtx 4080 Super...
+2026-08-20 14:27:21 | INFO     | ss_crawler | [andele_scraper]    Image 1: https://static3.andelemandele.lv/images/large/49e/359/1/148f8f2901075976f.webp...
+2026-08-20 14:27:21 | INFO     | ss_crawler | [andele_scraper]    Image 2: https://static1.andelemandele.lv/images/large/470/743/1/74e3551e2884506d3.webp...
+2026-08-20 14:27:21 | INFO     | ss_crawler | [andele_scraper]    Image 3: https://static2.andelemandele.lv/images/large/30a/592/1/90ec42b90ee709019.webp...
+2026-08-20 14:27:21 | INFO     | ss_crawler | [image_downloader] Downloaded image for 16041142 (stored as 16041142_2a71d7ae.webp, 203190 bytes)
+2026-08-20 14:27:21 | INFO     | ss_crawler | [image_downloader] Downloaded image for 16041142 (stored as 16041142_bfc997e8.webp, 197428 bytes)
+2026-08-20 14:27:21 | INFO     | ss_crawler | [image_downloader] Downloaded image for 16041142 (stored as 16041142_92f737ca.webp, 202026 bytes)
+2026-08-20 14:27:21 | INFO     | ss_crawler | [image_downloader] Downloaded image for 16041142 (stored as 16041142_cfb4c2f5.webp, 151404 bytes)
+2026-08-20 14:27:21 | INFO     | ss_crawler | [image_downloader] Downloaded image for 16041142 (stored as 16041142_901a1f9f.webp, 187962 bytes)
+2026-08-20 14:27:21 | INFO     | ss_crawler | [andele_scraper] 📸 Downloaded 5 images for 16041142
+2026-08-20 14:27:23 | INFO     | ss_crawler | [andele_scraper] ✨ GPU Match: Msi GeForce RTX 5070... -> GPU ID 616 (90%)
+2026-08-20 14:27:23 | INFO     | ss_crawler | [repository] ✨ 16036930: New
+2026-08-20 14:27:23 | INFO     | ss_crawler | [andele_scraper] 🖼️  Found 2 images for 16036930: Msi GeForce RTX 5070...
+2026-08-20 14:27:23 | INFO     | ss_crawler | [andele_scraper]    Image 1: https://static6.andelemandele.lv/images/large/97e/78a/1/2ec27592b932c2ce6.webp...
+2026-08-20 14:27:23 | INFO     | ss_crawler | [andele_scraper]    Image 2: https://static6.andelemandele.lv/images/large/794/4cf/1/9a40abe0241628326.webp...
+2026-08-20 14:27:23 | INFO     | ss_crawler | [image_downloader] Downloaded image for 16036930 (stored as 16036930_b082326a.webp, 75430 bytes)
+2026-08-20 14:27:23 | INFO     | ss_crawler | [image_downloader] Downloaded image for 16036930 (stored as 16036930_3d4fb251.webp, 176754 bytes)
+2026-08-20 14:27:23 | INFO     | ss_crawler | [andele_scraper] 📸 Downloaded 2 images for 16036930
+2026-08-20 14:27:26 | INFO     | ss_crawler | [andele_scraper] ✨ GPU Match: Zotac Gaming GeForce RTX 4070 Ti Trinity... -> GPU ID 608 (90%)
+2026-08-20 14:27:26 | WARNING  | ss_crawler | [listing_versioning] Legacy listing 15096087 v1 has NULL fingerprint, creating new version
+2026-08-20 14:27:26 | INFO     | ss_crawler | [repository] ✨ 15096087_v2: New
+2026-08-20 14:27:26 | INFO     | ss_crawler | [andele_scraper] 🖼️  Found 5 images for 15096087_v2: Zotac Gaming GeForce RTX 4070 Ti Trinity...
+2026-08-20 14:27:26 | INFO     | ss_crawler | [andele_scraper]    Image 1: https://static1.andelemandele.lv/images/large/2a0/1ce/1/b8a2f9e0dfe073d0e.webp...
+2026-08-20 14:27:26 | INFO     | ss_crawler | [andele_scraper]    Image 2: https://static3.andelemandele.lv/images/large/8a4/16a/1/f8a224678fda721d1.webp...
+2026-08-20 14:27:26 | INFO     | ss_crawler | [andele_scraper]    Image 3: https://static3.andelemandele.lv/images/large/9d5/9e8/1/729d2e00838e7d03c.webp...
+2026-08-20 14:27:26 | INFO     | ss_crawler | [image_downloader] Downloaded image for 15096087_v2 (stored as 15096087_923eceea.webp, 133460 bytes)
+2026-08-20 14:27:26 | INFO     | ss_crawler | [image_downloader] Downloaded image for 15096087_v2 (stored as 15096087_6466175d.webp, 120600 bytes)
+2026-08-20 14:27:26 | INFO     | ss_crawler | [image_downloader] Downloaded image for 15096087_v2 (stored as 15096087_69602069.webp, 52592 bytes)
+2026-08-20 14:27:26 | INFO     | ss_crawler | [image_downloader] Downloaded image for 15096087_v2 (stored as 15096087_788c3b64.webp, 62492 bytes)
+2026-08-20 14:27:26 | INFO     | ss_crawler | [image_downloader] Downloaded image for 15096087_v2 (stored as 15096087_fd642b70.webp, 108622 bytes)
+2026-08-20 14:27:26 | INFO     | ss_crawler | [andele_scraper] 📸 Downloaded 5 images for 15096087_v2
+2026-08-20 14:27:28 | INFO     | ss_crawler | [andele_scraper] ✨ GPU Match: Video karte... -> GPU ID 283 (90%)
+2026-08-20 14:27:28 | WARNING  | ss_crawler | [listing_versioning] Legacy listing 15737268 v1 has NULL fingerprint, creating new version
+2026-08-20 14:27:28 | INFO     | ss_crawler | [repository] ✨ 15737268_v2: New
+2026-08-20 14:27:28 | INFO     | ss_crawler | [andele_scraper] 🖼️  Found 3 images for 15737268_v2: Video karte...
+2026-08-20 14:27:28 | INFO     | ss_crawler | [andele_scraper]    Image 1: https://static4.andelemandele.lv/images/large/4e6/7c5/2/622e04c94b5ee4a67.webp...
+2026-08-20 14:27:28 | INFO     | ss_crawler | [andele_scraper]    Image 2: https://static6.andelemandele.lv/images/large/acd/83a/1/28891175520f283d4.webp...
+2026-08-20 14:27:28 | INFO     | ss_crawler | [andele_scraper]    Image 3: https://static3.andelemandele.lv/images/large/22c/bcb/1/250a433daee53b0e0.webp...
+2026-08-20 14:27:28 | INFO     | ss_crawler | [image_downloader] Downloaded image for 15737268_v2 (stored as 15737268_6d99639b.webp, 119704 bytes)
+2026-08-20 14:27:28 | INFO     | ss_crawler | [image_downloader] Downloaded image for 15737268_v2 (stored as 15737268_60ec1587.webp, 33278 bytes)
+2026-08-20 14:27:28 | INFO     | ss_crawler | [image_downloader] Downloaded image for 15737268_v2 (stored as 15737268_b12bacbe.webp, 119886 bytes)
+2026-08-20 14:27:29 | INFO     | ss_crawler | [andele_scraper] 📸 Downloaded 3 images for 15737268_v2
+2026-08-20 14:27:31 | INFO     | ss_crawler | [andele_scraper] ✨ GPU Match: Продам видеокарту RТХ 2060 6GB GDDR6 192... -> GPU ID 582 (90%)
+2026-08-20 14:27:31 | WARNING  | ss_crawler | [listing_versioning] Legacy listing 15651986 v1 has NULL fingerprint, creating new version
+2026-08-20 14:27:31 | INFO     | ss_crawler | [repository] ✨ 15651986_v2: New
+2026-08-20 14:27:31 | INFO     | ss_crawler | [andele_scraper] 🖼️  Found 4 images for 15651986_v2: Продам видеокарту RТХ 2060 6GB GDDR6 192...
+2026-08-20 14:27:31 | INFO     | ss_crawler | [andele_scraper]    Image 1: https://static6.andelemandele.lv/images/large/04f/ecb/1/8a38fe7972859d48d.webp...
+2026-08-20 14:27:31 | INFO     | ss_crawler | [andele_scraper]    Image 2: https://static1.andelemandele.lv/images/large/0d2/ce2/1/fe9edf871d0973794.webp...
+2026-08-20 14:27:31 | INFO     | ss_crawler | [andele_scraper]    Image 3: https://static4.andelemandele.lv/images/large/7a6/d9b/1/2a91d5d470c253386.webp...
+2026-08-20 14:27:31 | INFO     | ss_crawler | [image_downloader] Downloaded image for 15651986_v2 (stored as 15651986_8689cba8.webp, 91634 bytes)
+2026-08-20 14:27:31 | INFO     | ss_crawler | [image_downloader] Downloaded image for 15651986_v2 (stored as 15651986_4c2c1bb8.webp, 61502 bytes)
+2026-08-20 14:27:31 | INFO     | ss_crawler | [image_downloader] Downloaded image for 15651986_v2 (stored as 15651986_d6cf4842.webp, 77424 bytes)
+2026-08-20 14:27:31 | INFO     | ss_crawler | [image_downloader] Downloaded image for 15651986_v2 (stored as 15651986_5d4902bf.webp, 143918 bytes)
+2026-08-20 14:27:31 | INFO     | ss_crawler | [andele_scraper] 📸 Downloaded 4 images for 15651986_v2
+2026-08-20 14:27:33 | INFO     | ss_crawler | [andele_scraper] ✨ GPU Match: ASUS Dual Radeon RX 580 OC Edition 4GB... -> GPU ID 289 (100%)
+2026-08-20 14:27:33 | INFO     | ss_crawler | [repository] ✨ 15916927: New
+2026-08-20 14:27:33 | INFO     | ss_crawler | [andele_scraper] 🖼️  Found 4 images for 15916927: ASUS Dual Radeon RX 580 OC Edition 4GB...
+2026-08-20 14:27:33 | INFO     | ss_crawler | [andele_scraper]    Image 1: https://static3.andelemandele.lv/images/large/482/209/3/236d0ef00e09595be.webp...
+2026-08-20 14:27:33 | INFO     | ss_crawler | [andele_scraper]    Image 2: https://static2.andelemandele.lv/images/large/c20/004/2/4ec2ec7ec3817a5fd.webp...
+2026-08-20 14:27:33 | INFO     | ss_crawler | [andele_scraper]    Image 3: https://static4.andelemandele.lv/images/large/662/18b/1/9eff3d3591e8392b7.webp...
+2026-08-20 14:27:33 | INFO     | ss_crawler | [image_downloader] Downloaded image for 15916927 (stored as 15916927_0e4080a5.webp, 99860 bytes)
+2026-08-20 14:27:33 | INFO     | ss_crawler | [image_downloader] Downloaded image for 15916927 (stored as 15916927_bb08799c.webp, 155892 bytes)
+2026-08-20 14:27:33 | INFO     | ss_crawler | [image_downloader] Downloaded image for 15916927 (stored as 15916927_059be290.webp, 41146 bytes)
+2026-08-20 14:27:33 | INFO     | ss_crawler | [image_downloader] Downloaded image for 15916927 (stored as 15916927_55654ef3.webp, 58434 bytes)
+2026-08-20 14:27:33 | INFO     | ss_crawler | [andele_scraper] 📸 Downloaded 4 images for 15916927
+2026-08-20 14:27:36 | INFO     | ss_crawler | [andele_scraper] ✨ GPU Match: ASUS Strix Geforce GTX1070 videokarte... -> GPU ID 569 (90%)
+2026-08-20 14:27:36 | INFO     | ss_crawler | [listing_versioning] Legacy listing 12329094 v1 matches by computed fingerprint, updating
+2026-08-20 14:27:36 | INFO     | ss_crawler | [repository] ⏸️ 12329094: Unchanged
+2026-08-20 14:27:36 | INFO     | ss_crawler | [andele_scraper] 🖼️  Found 5 images for 12329094: ASUS Strix Geforce GTX1070 videokarte...
+2026-08-20 14:27:36 | INFO     | ss_crawler | [andele_scraper]    Image 1: https://static5.andelemandele.lv/images/large/d09/65d/2/fc36c88589afdfbc6.webp...
+2026-08-20 14:27:36 | INFO     | ss_crawler | [andele_scraper]    Image 2: https://static2.andelemandele.lv/images/large/2a8/500/2/5a1d08597a7c6ba1c.webp...
+2026-08-20 14:27:36 | INFO     | ss_crawler | [andele_scraper]    Image 3: https://static1.andelemandele.lv/images/large/b99/1e9/1/a1667be4437c1cfd3.webp...
+2026-08-20 14:27:36 | INFO     | ss_crawler | [image_downloader] Downloaded image for 12329094 (stored as 12329094_6d5e138c.webp, 116198 bytes)
+2026-08-20 14:27:36 | INFO     | ss_crawler | [image_downloader] Downloaded image for 12329094 (stored as 12329094_aa8b3f8b.webp, 196632 bytes)
+2026-08-20 14:27:36 | INFO     | ss_crawler | [image_downloader] Downloaded image for 12329094 (stored as 12329094_aad9dcc5.webp, 221674 bytes)
+2026-08-20 14:27:36 | INFO     | ss_crawler | [image_downloader] Downloaded image for 12329094 (stored as 12329094_15dc900c.webp, 168990 bytes)
+2026-08-20 14:27:36 | INFO     | ss_crawler | [image_downloader] Downloaded image for 12329094 (stored as 12329094_a78024f6.webp, 202020 bytes)
+2026-08-20 14:27:36 | INFO     | ss_crawler | [andele_scraper] 📸 Downloaded 5 images for 12329094
+2026-08-20 14:27:38 | INFO     | ss_crawler | [andele_scraper] ✨ GPU Match: Gigabyte GeForce GTX 1050 Ti G1 Gaming 4... -> GPU ID 566 (90%)
+2026-08-20 14:27:38 | INFO     | ss_crawler | [repository] ✨ 16001587: New
+2026-08-20 14:27:38 | INFO     | ss_crawler | [andele_scraper] 🖼️  Found 3 images for 16001587: Gigabyte GeForce GTX 1050 Ti G1 Gaming 4...
+2026-08-20 14:27:38 | INFO     | ss_crawler | [andele_scraper]    Image 1: https://static3.andelemandele.lv/images/large/207/075/1/1d0499f58b9548722.webp...
+2026-08-20 14:27:38 | INFO     | ss_crawler | [andele_scraper]    Image 2: https://static6.andelemandele.lv/images/large/ba3/1b7/1/d1b19047ad0ba0e24.webp...
+2026-08-20 14:27:38 | INFO     | ss_crawler | [andele_scraper]    Image 3: https://static3.andelemandele.lv/images/large/80a/37c/1/38456f7c8dc7480be.webp...
+2026-08-20 14:27:38 | INFO     | ss_crawler | [image_downloader] Downloaded image for 16001587 (stored as 16001587_362a1ed6.webp, 68156 bytes)
+2026-08-20 14:27:38 | INFO     | ss_crawler | [image_downloader] Downloaded image for 16001587 (stored as 16001587_f46c8e21.webp, 39024 bytes)
+2026-08-20 14:27:38 | INFO     | ss_crawler | [image_downloader] Downloaded image for 16001587 (stored as 16001587_53f07224.webp, 58800 bytes)
+2026-08-20 14:27:38 | INFO     | ss_crawler | [andele_scraper] 📸 Downloaded 3 images for 16001587
+2026-08-20 14:27:41 | INFO     | ss_crawler | [andele_scraper] ✨ GPU Match: Gigabyte GeForce GTX 1060 Windforce OC 3... -> GPU ID 567 (90%)
+2026-08-20 14:27:41 | INFO     | ss_crawler | [repository] ✨ 16001575: New
+2026-08-20 14:27:41 | INFO     | ss_crawler | [andele_scraper] 🖼️  Found 3 images for 16001575: Gigabyte GeForce GTX 1060 Windforce OC 3...
+2026-08-20 14:27:41 | INFO     | ss_crawler | [andele_scraper]    Image 1: https://static6.andelemandele.lv/images/large/054/113/1/0b1f9d7728f6acfb6.webp...
+2026-08-20 14:27:41 | INFO     | ss_crawler | [andele_scraper]    Image 2: https://static3.andelemandele.lv/images/large/d54/32b/1/694a121ae836b7b68.webp...
+2026-08-20 14:27:41 | INFO     | ss_crawler | [andele_scraper]    Image 3: https://static6.andelemandele.lv/images/large/412/db5/1/cc2204a2db28fd957.webp...
+2026-08-20 14:27:41 | INFO     | ss_crawler | [image_downloader] Downloaded image for 16001575 (stored as 16001575_bd25d1c8.webp, 79994 bytes)
+2026-08-20 14:27:41 | INFO     | ss_crawler | [image_downloader] Downloaded image for 16001575 (stored as 16001575_f6793ea7.webp, 58888 bytes)
+2026-08-20 14:27:41 | INFO     | ss_crawler | [image_downloader] Downloaded image for 16001575 (stored as 16001575_2fc1a601.webp, 76286 bytes)
+2026-08-20 14:27:41 | INFO     | ss_crawler | [andele_scraper] 📸 Downloaded 3 images for 16001575
+2026-08-20 14:27:43 | INFO     | ss_crawler | [andele_scraper] ✨ GPU Match: ICY BOX universālais atmiņas karšu lasītājs... -> GPU ID 279 (60%)
+2026-08-20 14:27:43 | INFO     | ss_crawler | [repository] ✨ 16000120: New
+2026-08-20 14:27:43 | INFO     | ss_crawler | [andele_scraper] 🖼️  Found 2 images for 16000120: ICY BOX universālais atmiņas karšu lasītājs...
+2026-08-20 14:27:43 | INFO     | ss_crawler | [andele_scraper]    Image 1: https://static3.andelemandele.lv/images/large/013/67f/1/5fee98eb520a82c84.webp...
+2026-08-20 14:27:43 | INFO     | ss_crawler | [andele_scraper]    Image 2: https://static4.andelemandele.lv/images/large/f57/c95/1/d6d54834b1287e17b.webp...
+2026-08-20 14:27:43 | INFO     | ss_crawler | [image_downloader] Downloaded image for 16000120 (stored as 16000120_b831cc12.webp, 102484 bytes)
+2026-08-20 14:27:43 | INFO     | ss_crawler | [image_downloader] Downloaded image for 16000120 (stored as 16000120_59b5880b.webp, 128568 bytes)
+2026-08-20 14:27:43 | INFO     | ss_crawler | [andele_scraper] 📸 Downloaded 2 images for 16000120
+2026-08-20 14:27:45 | INFO     | ss_crawler | [andele_scraper] ✨ GPU Match: MSI GeForce GTX 1050 AERO ITX 2G OCV1... -> GPU ID 564 (90%)
+2026-08-20 14:27:45 | INFO     | ss_crawler | [repository] ✨ 15981832: New
+2026-08-20 14:27:45 | INFO     | ss_crawler | [andele_scraper] 🖼️  Found 2 images for 15981832: MSI GeForce GTX 1050 AERO ITX 2G OCV1...
+2026-08-20 14:27:45 | INFO     | ss_crawler | [andele_scraper]    Image 1: https://static1.andelemandele.lv/images/large/6b7/13f/1/83247c3109e043b97.webp...
+2026-08-20 14:27:45 | INFO     | ss_crawler | [andele_scraper]    Image 2: https://static1.andelemandele.lv/images/large/015/415/1/5b55dc8badc3e5e8c.webp...
+2026-08-20 14:27:45 | INFO     | ss_crawler | [image_downloader] Downloaded image for 15981832 (stored as 15981832_406b575a.webp, 99128 bytes)
+2026-08-20 14:27:45 | INFO     | ss_crawler | [image_downloader] Downloaded image for 15981832 (stored as 15981832_b221a47a.webp, 233070 bytes)
+2026-08-20 14:27:45 | INFO     | ss_crawler | [andele_scraper] 📸 Downloaded 2 images for 15981832
+2026-08-20 14:27:48 | INFO     | ss_crawler | [andele_scraper] ✨ GPU Match: NVIDIA RTX A4000 16GB GDDR6 Video Karte... -> GPU ID 459 (60%)
+2026-08-20 14:27:48 | INFO     | ss_crawler | [repository] ✨ 15907644: New
+2026-08-20 14:27:48 | INFO     | ss_crawler | [andele_scraper] 🖼️  Found 5 images for 15907644: NVIDIA RTX A4000 16GB GDDR6 Video Karte...
+2026-08-20 14:27:48 | INFO     | ss_crawler | [andele_scraper]    Image 1: https://static6.andelemandele.lv/images/large/0a5/a80/1/c0e5dc151ea90cdb2.webp...
+2026-08-20 14:27:48 | INFO     | ss_crawler | [andele_scraper]    Image 2: https://static2.andelemandele.lv/images/large/f14/e74/1/c1179706f4f89a674.webp...
+2026-08-20 14:27:48 | INFO     | ss_crawler | [andele_scraper]    Image 3: https://static2.andelemandele.lv/images/large/11a/246/1/f8e70a49da128f93b.webp...
+2026-08-20 14:27:48 | INFO     | ss_crawler | [image_downloader] Downloaded image for 15907644 (stored as 15907644_548a3b77.webp, 112700 bytes)
+2026-08-20 14:27:48 | INFO     | ss_crawler | [image_downloader] Downloaded image for 15907644 (stored as 15907644_cc9bedb8.webp, 100512 bytes)
+2026-08-20 14:27:48 | INFO     | ss_crawler | [image_downloader] Downloaded image for 15907644 (stored as 15907644_298c8e0f.webp, 132260 bytes)
+2026-08-20 14:27:48 | INFO     | ss_crawler | [image_downloader] Downloaded image for 15907644 (stored as 15907644_0d3e964d.webp, 73024 bytes)
+2026-08-20 14:27:48 | INFO     | ss_crawler | [image_downloader] Downloaded image for 15907644 (stored as 15907644_6691d2a5.webp, 101248 bytes)
+2026-08-20 14:27:48 | INFO     | ss_crawler | [andele_scraper] 📸 Downloaded 5 images for 15907644
+2026-08-20 14:27:50 | INFO     | ss_crawler | [andele_scraper] ✨ GPU Match: AMD Radeon RX 9070 XT Sapphire Pulse... -> GPU ID 630 (100%)
+2026-08-20 14:27:50 | INFO     | ss_crawler | [repository] ✨ 14097476: New
+2026-08-20 14:27:50 | INFO     | ss_crawler | [andele_scraper] 🖼️  Found 5 images for 14097476: AMD Radeon RX 9070 XT Sapphire Pulse...
+2026-08-20 14:27:50 | INFO     | ss_crawler | [andele_scraper]    Image 1: https://static4.andelemandele.lv/images/large/997/37c/1/8062700119babc275.webp...
+2026-08-20 14:27:50 | INFO     | ss_crawler | [andele_scraper]    Image 2: https://static3.andelemandele.lv/images/large/bad/649/1/756881b8867630157.webp...
+2026-08-20 14:27:50 | INFO     | ss_crawler | [andele_scraper]    Image 3: https://static6.andelemandele.lv/images/large/cd9/5d0/1/4f98bf8cc22de2eb6.webp...
+2026-08-20 14:27:50 | INFO     | ss_crawler | [image_downloader] Downloaded image for 14097476 (stored as 14097476_bd1f334c.webp, 53052 bytes)
+2026-08-20 14:27:50 | INFO     | ss_crawler | [image_downloader] Downloaded image for 14097476 (stored as 14097476_a76daca8.webp, 94390 bytes)
+2026-08-20 14:27:50 | INFO     | ss_crawler | [image_downloader] Downloaded image for 14097476 (stored as 14097476_d1222865.webp, 78798 bytes)
+2026-08-20 14:27:51 | INFO     | ss_crawler | [image_downloader] Downloaded image for 14097476 (stored as 14097476_e7c7dfdb.webp, 106274 bytes)
+2026-08-20 14:27:51 | INFO     | ss_crawler | [image_downloader] Downloaded image for 14097476 (stored as 14097476_25cc2118.webp, 22394 bytes)
+2026-08-20 14:27:51 | INFO     | ss_crawler | [andele_scraper] 📸 Downloaded 5 images for 14097476
+2026-08-20 14:27:53 | INFO     | ss_crawler | [andele_scraper] ✨ GPU Match: EVGA RTX 3080 FTW3 Ultra... -> GPU ID 598 (90%)
+2026-08-20 14:27:53 | INFO     | ss_crawler | [repository] ✨ 15867221: New
+2026-08-20 14:27:53 | INFO     | ss_crawler | [andele_scraper] 🖼️  Found 2 images for 15867221: EVGA RTX 3080 FTW3 Ultra...
+2026-08-20 14:27:53 | INFO     | ss_crawler | [andele_scraper]    Image 1: https://static3.andelemandele.lv/images/large/fe1/2c0/1/e31f41547d723c7c4.webp...
+2026-08-20 14:27:53 | INFO     | ss_crawler | [andele_scraper]    Image 2: https://static5.andelemandele.lv/images/large/b69/d9b/1/cfab39db8c8e19cc3.webp...
+2026-08-20 14:27:53 | INFO     | ss_crawler | [image_downloader] Downloaded image for 15867221 (stored as 15867221_6fcea8a3.webp, 169750 bytes)
+2026-08-20 14:27:53 | INFO     | ss_crawler | [image_downloader] Downloaded image for 15867221 (stored as 15867221_395bf845.webp, 15222 bytes)
+2026-08-20 14:27:53 | INFO     | ss_crawler | [andele_scraper] 📸 Downloaded 2 images for 15867221
+2026-08-20 14:27:55 | INFO     | ss_crawler | [andele_scraper] ✨ GPU Match: Gigabyte GeForce GTX 1660 OC 6GB... -> GPU ID 579 (90%)
+2026-08-20 14:27:55 | INFO     | ss_crawler | [listing_versioning] Legacy listing 15595590 v1 matches by computed fingerprint, updating
+2026-08-20 14:27:55 | INFO     | ss_crawler | [repository] ⏸️ 15595590: Unchanged
+2026-08-20 14:27:55 | INFO     | ss_crawler | [andele_scraper] 🖼️  Found 1 images for 15595590: Gigabyte GeForce GTX 1660 OC 6GB...
+2026-08-20 14:27:55 | INFO     | ss_crawler | [andele_scraper]    Image 1: https://static5.andelemandele.lv/images/large/277/99b/1/9a9ea2bdfe0ec9853.webp...
+2026-08-20 14:27:55 | INFO     | ss_crawler | [image_downloader] Downloaded image for 15595590 (stored as 15595590_f1a9cbdb.webp, 107386 bytes)
+2026-08-20 14:27:55 | INFO     | ss_crawler | [andele_scraper] 📸 Downloaded 1 images for 15595590
+2026-08-20 14:27:57 | INFO     | ss_crawler | [andele_scraper] ✨ GPU Match: Spēļu videokarte MSI GeForce GTX 1060 GAMING X 6G... -> GPU ID 567 (90%)
+2026-08-20 14:27:57 | WARNING  | ss_crawler | [listing_versioning] Legacy listing 15567056 v1 has NULL fingerprint, creating new version
+2026-08-20 14:27:57 | INFO     | ss_crawler | [repository] ✨ 15567056_v2: New
+2026-08-20 14:27:57 | INFO     | ss_crawler | [andele_scraper] 🖼️  Found 3 images for 15567056_v2: Spēļu videokarte MSI GeForce GTX 1060 GAMING X 6G...
+2026-08-20 14:27:57 | INFO     | ss_crawler | [andele_scraper]    Image 1: https://static5.andelemandele.lv/images/large/f46/556/1/9a11067d31e2ef493.webp...
+2026-08-20 14:27:57 | INFO     | ss_crawler | [andele_scraper]    Image 2: https://static1.andelemandele.lv/images/large/b53/815/1/8e1ac76d45fe7358f.webp...
+2026-08-20 14:27:57 | INFO     | ss_crawler | [andele_scraper]    Image 3: https://static5.andelemandele.lv/images/large/bcf/907/1/cb6c73a5e26c27465.webp...
+2026-08-20 14:27:57 | INFO     | ss_crawler | [image_downloader] Downloaded image for 15567056_v2 (stored as 15567056_f745f10b.webp, 109606 bytes)
+2026-08-20 14:27:57 | INFO     | ss_crawler | [image_downloader] Downloaded image for 15567056_v2 (stored as 15567056_18156342.webp, 139724 bytes)
+2026-08-20 14:27:57 | INFO     | ss_crawler | [image_downloader] Downloaded image for 15567056_v2 (stored as 15567056_b859f502.webp, 80142 bytes)
+2026-08-20 14:27:57 | INFO     | ss_crawler | [andele_scraper] 📸 Downloaded 3 images for 15567056_v2
+2026-08-20 14:27:59 | INFO     | ss_crawler | [repository] ✨ 15853103: New
+2026-08-20 14:27:59 | INFO     | ss_crawler | [andele_scraper] 🖼️  Found 5 images for 15853103: Andele Mandele...
+2026-08-20 14:27:59 | INFO     | ss_crawler | [andele_scraper]    Image 1: https://static1.andelemandele.lv/images/large/f04/733/1/7ad785e0605962ee2.webp...
+2026-08-20 14:27:59 | INFO     | ss_crawler | [andele_scraper]    Image 2: https://static4.andelemandele.lv/images/large/098/4cc/1/b83c50547fca85489.webp...
+2026-08-20 14:27:59 | INFO     | ss_crawler | [andele_scraper]    Image 3: https://static1.andelemandele.lv/images/large/13b/809/1/de9b2f07294d35845.webp...
+2026-08-20 14:27:59 | INFO     | ss_crawler | [image_downloader] Downloaded image for 15853103 (stored as 15853103_b312283b.webp, 101894 bytes)
+2026-08-20 14:28:00 | INFO     | ss_crawler | [image_downloader] Downloaded image for 15853103 (stored as 15853103_b8d40305.webp, 112648 bytes)
+2026-08-20 14:28:00 | INFO     | ss_crawler | [image_downloader] Downloaded image for 15853103 (stored as 15853103_22b5375c.webp, 159572 bytes)
+2026-08-20 14:28:00 | INFO     | ss_crawler | [image_downloader] Downloaded image for 15853103 (stored as 15853103_2d9df0c0.webp, 72050 bytes)
+2026-08-20 14:28:00 | INFO     | ss_crawler | [andele_scraper] 📸 Downloaded 5 images for 15853103
+2026-08-20 14:28:00 | INFO     | ss_crawler | [andele_scraper] Completed gpu: {'total': 21, 'new': 19, 'updated': 0, 'failed': 0, 'skipped': 2, 'errors': []}
+2026-08-20 14:32:47 | INFO     | ss_crawler | [image_downloader] Downloaded image for 15567056 (stored as 15567056_01156ba1.jpg, 228771 bytes)
+2026-08-20 14:32:56 | INFO     | ss_crawler | [database] Database connected: localhost:5433/ss_market
+2026-08-20 14:32:56 | INFO     | ss_crawler | [andele_scraper] Database initialized for matchers
+2026-08-20 14:32:56 | INFO     | ss_crawler | [matcher] GPUMatcher initialized with 633 GPUs
+2026-08-20 14:32:56 | INFO     | ss_crawler | [andele_scraper] Initialized GPU matcher with 633 GPUs
+2026-08-20 14:32:56 | INFO     | ss_crawler | [cpu_matcher] CPUMatcher initialized with 5320 CPUs
+2026-08-20 14:32:56 | INFO     | ss_crawler | [andele_scraper] Initialized CPU matcher with 5320 CPUs
+2026-08-20 14:32:56 | INFO     | ss_crawler | [ssd_matcher] SSDMatcher initialized with 2453 SSDs
+2026-08-20 14:32:56 | INFO     | ss_crawler | [andele_scraper] Initialized SSD matcher with 2453 SSDs
+2026-08-20 14:32:57 | INFO     | ss_crawler | [ram_matcher] RAMMatcher initialized with 5281 RAM references
+2026-08-20 14:32:57 | INFO     | ss_crawler | [andele_scraper] Initialized RAM matcher with 5281 RAMs
+2026-08-20 14:32:57 | INFO     | ss_crawler | [psu_matcher] PSUMatcher initialized with 2895 PSU references
+2026-08-20 14:32:57 | INFO     | ss_crawler | [andele_scraper] Initialized PSU matcher with 2895 PSUs
+2026-08-20 14:32:57 | INFO     | ss_crawler | [monitor_scraper] MonitorMatcher initialized with 0 monitors
+2026-08-20 14:32:57 | INFO     | ss_crawler | [andele_scraper] Initialized Monitor matcher
+2026-08-20 14:32:59 | INFO     | ss_crawler | [motherboard_matcher] MotherboardMatcher initialized with 5732 motherboards
+2026-08-20 14:32:59 | INFO     | ss_crawler | [andele_scraper] Initialized Motherboard matcher with 5732 boards
+2026-08-20 14:32:59 | INFO     | ss_crawler | [cpu_matcher] CPUMatcher initialized with 5320 CPUs
+2026-08-20 14:32:59 | INFO     | ss_crawler | [matcher] GPUMatcher initialized with 633 GPUs
+2026-08-20 14:33:00 | INFO     | ss_crawler | [ram_matcher] RAMMatcher initialized with 5281 RAM references
+2026-08-20 14:33:00 | INFO     | ss_crawler | [ssd_matcher] SSDMatcher initialized with 2453 SSDs
+2026-08-20 14:33:00 | INFO     | ss_crawler | [psu_matcher] PSUMatcher initialized with 2895 PSU references
+2026-08-20 14:33:00 | INFO     | ss_crawler | [case_matcher] CaseMatcher initialized with 5742 case references
+2026-08-20 14:33:02 | INFO     | ss_crawler | [motherboard_matcher] MotherboardMatcher initialized with 5732 motherboards
+2026-08-20 14:33:02 | INFO     | ss_crawler | [computer_matcher] ComputerMatcher initialized: 5320 CPUs, 633 GPUs, 5281 RAMs, 2453 SSDs, 2895 PSUs, 5742 Cases, 5732 Motherboards, 0 Monitors
+2026-08-20 14:33:02 | INFO     | ss_crawler | [andele_scraper] Initialized Computer matcher
+2026-08-20 14:33:02 | INFO     | ss_crawler | [andele_scraper] Starting scrape of gpu from https://www.andelemandele.lv/perles/tehnika/datori/#order:actual/attributes:409
+2026-08-20 14:33:02 | INFO     | ss_crawler | [andele_scraper] Calling product-data API for gpu: https://www.andelemandele.lv/product-data/?filter=eyJjYXRlZ29yeSI6IHsiaWQiOiAzNjh9LCAib3JkZXIiOiAiYW…
+2026-08-20 14:33:02 | INFO     | ss_crawler | [andele_scraper] product-data returned count=20, html_len=34767
+2026-08-20 14:33:02 | INFO     | ss_crawler | [andele_scraper] Got 20 real filtered listings for gpu (API reported 20 total)
+2026-08-20 14:33:05 | INFO     | ss_crawler | [andele_scraper] ✨ GPU Match: RTX 3060 12GB Dual OC... -> GPU ID 593 (90%)
+2026-08-20 14:33:05 | INFO     | ss_crawler | [listing_versioning] Legacy listing 16041869 v1 matches by computed fingerprint, updating
+2026-08-20 14:33:05 | INFO     | ss_crawler | [repository] ⏸️ 16041869: Unchanged
+2026-08-20 14:33:05 | INFO     | ss_crawler | [andele_scraper] 🖼️  Found 3 images for 16041869: RTX 3060 12GB Dual OC...
+2026-08-20 14:33:05 | INFO     | ss_crawler | [andele_scraper]    Image 1: https://static6.andelemandele.lv/images/large/5b1/d80/1/8c262bc03c45cb151.webp...
+2026-08-20 14:33:05 | INFO     | ss_crawler | [andele_scraper]    Image 2: https://static6.andelemandele.lv/images/large/5ad/915/1/a000d5b94e5943e5f.webp...
+2026-08-20 14:33:05 | INFO     | ss_crawler | [andele_scraper]    Image 3: https://static4.andelemandele.lv/images/large/5cd/1e2/1/a53c86f41399e7d56.webp...
+2026-08-20 14:33:05 | INFO     | ss_crawler | [image_downloader] Downloaded image for 16041869 (stored as 16041869_01156ba1.jpg, 228771 bytes)
+2026-08-20 14:33:05 | INFO     | ss_crawler | [image_downloader] Downloaded image for 16041869 (stored as 16041869_4506420e.jpg, 229345 bytes)
+2026-08-20 14:33:05 | INFO     | ss_crawler | [image_downloader] Downloaded image for 16041869 (stored as 16041869_1f783aa9.jpg, 215819 bytes)
+2026-08-20 14:33:05 | INFO     | ss_crawler | [andele_scraper] 📸 Downloaded 3 images for 16041869
+2026-08-20 14:33:07 | INFO     | ss_crawler | [andele_scraper] ✨ GPU Match: RTX 3080... -> GPU ID 598 (90%)
+2026-08-20 14:33:07 | INFO     | ss_crawler | [listing_versioning] Legacy listing 16012074 v1 matches by computed fingerprint, updating
+2026-08-20 14:33:07 | INFO     | ss_crawler | [repository] ⏸️ 16012074: Unchanged
+2026-08-20 14:33:07 | INFO     | ss_crawler | [andele_scraper] 🖼️  Found 2 images for 16012074: RTX 3080...
+2026-08-20 14:33:07 | INFO     | ss_crawler | [andele_scraper]    Image 1: https://static1.andelemandele.lv/images/large/0a9/c6c/1/e8ad9ded68a35bc1b.webp...
+2026-08-20 14:33:07 | INFO     | ss_crawler | [andele_scraper]    Image 2: https://static3.andelemandele.lv/images/large/6c3/309/1/40294f9785772349f.webp...
+2026-08-20 14:33:08 | INFO     | ss_crawler | [image_downloader] Downloaded image for 16012074 (stored as 16012074_e78ee5e5.jpg, 203445 bytes)
+2026-08-20 14:33:08 | INFO     | ss_crawler | [image_downloader] Downloaded image for 16012074 (stored as 16012074_6f8de797.jpg, 193158 bytes)
+2026-08-20 14:33:08 | INFO     | ss_crawler | [andele_scraper] 📸 Downloaded 2 images for 16012074
+2026-08-20 14:33:08 | INFO     | ss_crawler | [andele_scraper] Reached limit (2)
+2026-08-20 14:33:08 | INFO     | ss_crawler | [andele_scraper] Completed gpu: {'total': 2, 'new': 0, 'updated': 0, 'failed': 0, 'skipped': 2, 'errors': []}
+2026-08-20 14:33:16 | INFO     | ss_crawler | [database] Database connected: localhost:5433/ss_market
+2026-08-20 14:33:21 | INFO     | ss_crawler | [database] Database connected: localhost:5433/ss_market
+2026-08-20 14:33:27 | INFO     | ss_crawler | [database] Database connected: localhost:5433/ss_market
+2026-08-20 14:34:01 | INFO     | ss_crawler | [database] Database connected: localhost:5433/ss_market
+2026-08-20 14:34:14 | INFO     | ss_crawler | [database] Database connected: localhost:5433/ss_market
+2026-08-20 14:34:31 | INFO     | ss_crawler | [database] Database connected: localhost:5433/ss_market
+2026-08-20 14:34:51 | INFO     | ss_crawler | [database] Database connected: localhost:5433/ss_market
+2026-08-20 14:34:58 | INFO     | ss_crawler | [database] Database connected: localhost:5433/ss_market
+2026-08-20 14:35:05 | INFO     | ss_crawler | [database] Database connected: localhost:5433/ss_market
+2026-08-20 14:35:12 | INFO     | ss_crawler | [database] Database connected: localhost:5433/ss_market
+2026-08-20 14:35:27 | INFO     | ss_crawler | [database] Database connected: localhost:5433/ss_market
+2026-08-20 14:35:27 | ERROR    | ss_crawler | [database] Database transaction failed: (psycopg2.errors.UndefinedColumn) column "local_image_path" does not exist
+LINE 2:         SELECT id, listing_id, title, local_image_path, imag...
+                                              ^
+
+[SQL: 
+        SELECT id, listing_id, title, local_image_path, image_url, version_number
+        FROM listing_versions
+        WHERE listing_id LIKE '15567056%%' OR title LIKE '%%15567056%%'
+        ORDER BY listing_id
+    ]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2026-08-20 14:35:34 | INFO     | ss_crawler | [database] Database connected: localhost:5433/ss_market
+2026-08-20 14:35:34 | ERROR    | ss_crawler | [database] Database transaction failed: (psycopg2.errors.UndefinedColumn) column "image_url" does not exist
+LINE 2:         SELECT id, listing_id, title, image_url, version_num...
+                                              ^
+
+[SQL: 
+        SELECT id, listing_id, title, image_url, version_number
+        FROM listing_versions
+        WHERE listing_id LIKE '15567056%%' OR title LIKE '%%15567056%%'
+        ORDER BY listing_id
+    ]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2026-08-20 14:35:39 | INFO     | ss_crawler | [database] Database connected: localhost:5433/ss_market
+2026-08-20 14:35:39 | ERROR    | ss_crawler | [database] Database transaction failed: (psycopg2.errors.UndefinedColumn) column "image_url" does not exist
+LINE 2:         SELECT id, listing_id, title, image_url, version_num...
+                                              ^
+
+[SQL: 
+        SELECT id, listing_id, title, image_url, version_number
+        FROM listing_versions
+        WHERE listing_id LIKE '15567056%%' OR title LIKE '%%15567056%%'
+        ORDER BY listing_id
+    ]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2026-08-20 14:35:46 | INFO     | ss_crawler | [database] Database connected: localhost:5433/ss_market
+2026-08-20 14:37:36 | INFO     | ss_crawler | [database] Database connected: localhost:5433/ss_market
+2026-08-20 14:37:36 | INFO     | ss_crawler | [andele_scraper] Database initialized for matchers
+2026-08-20 14:37:36 | INFO     | ss_crawler | [matcher] GPUMatcher initialized with 633 GPUs
+2026-08-20 14:37:36 | INFO     | ss_crawler | [andele_scraper] Initialized GPU matcher with 633 GPUs
+2026-08-20 14:37:36 | INFO     | ss_crawler | [cpu_matcher] CPUMatcher initialized with 5320 CPUs
+2026-08-20 14:37:36 | INFO     | ss_crawler | [andele_scraper] Initialized CPU matcher with 5320 CPUs
+2026-08-20 14:37:36 | INFO     | ss_crawler | [ssd_matcher] SSDMatcher initialized with 2453 SSDs
+2026-08-20 14:37:36 | INFO     | ss_crawler | [andele_scraper] Initialized SSD matcher with 2453 SSDs
+2026-08-20 14:37:37 | INFO     | ss_crawler | [ram_matcher] RAMMatcher initialized with 5281 RAM references
+2026-08-20 14:37:37 | INFO     | ss_crawler | [andele_scraper] Initialized RAM matcher with 5281 RAMs
+2026-08-20 14:37:37 | INFO     | ss_crawler | [psu_matcher] PSUMatcher initialized with 2895 PSU references
+2026-08-20 14:37:37 | INFO     | ss_crawler | [andele_scraper] Initialized PSU matcher with 2895 PSUs
+2026-08-20 14:37:37 | INFO     | ss_crawler | [monitor_scraper] MonitorMatcher initialized with 0 monitors
+2026-08-20 14:37:37 | INFO     | ss_crawler | [andele_scraper] Initialized Monitor matcher
+2026-08-20 14:37:39 | INFO     | ss_crawler | [motherboard_matcher] MotherboardMatcher initialized with 5732 motherboards
+2026-08-20 14:37:39 | INFO     | ss_crawler | [andele_scraper] Initialized Motherboard matcher with 5732 boards
+2026-08-20 14:37:39 | INFO     | ss_crawler | [cpu_matcher] CPUMatcher initialized with 5320 CPUs
+2026-08-20 14:37:39 | INFO     | ss_crawler | [matcher] GPUMatcher initialized with 633 GPUs
+2026-08-20 14:37:39 | INFO     | ss_crawler | [ram_matcher] RAMMatcher initialized with 5281 RAM references
+2026-08-20 14:37:40 | INFO     | ss_crawler | [ssd_matcher] SSDMatcher initialized with 2453 SSDs
+2026-08-20 14:37:40 | INFO     | ss_crawler | [psu_matcher] PSUMatcher initialized with 2895 PSU references
+2026-08-20 14:37:40 | INFO     | ss_crawler | [case_matcher] CaseMatcher initialized with 5742 case references
+2026-08-20 14:37:42 | INFO     | ss_crawler | [motherboard_matcher] MotherboardMatcher initialized with 5732 motherboards
+2026-08-20 14:37:42 | INFO     | ss_crawler | [computer_matcher] ComputerMatcher initialized: 5320 CPUs, 633 GPUs, 5281 RAMs, 2453 SSDs, 2895 PSUs, 5742 Cases, 5732 Motherboards, 0 Monitors
+2026-08-20 14:37:42 | INFO     | ss_crawler | [andele_scraper] Initialized Computer matcher
+2026-08-20 14:37:42 | INFO     | ss_crawler | [andele_scraper] Starting scrape of gpu from https://www.andelemandele.lv/perles/tehnika/datori/#order:actual/attributes:409
+2026-08-20 14:37:42 | INFO     | ss_crawler | [andele_scraper] Calling product-data API for gpu: https://www.andelemandele.lv/product-data/?filter=eyJjYXRlZ29yeSI6IHsiaWQiOiAzNjh9LCAib3JkZXIiOiAiYW…
+2026-08-20 14:37:42 | INFO     | ss_crawler | [andele_scraper] product-data returned count=20, html_len=34767
+2026-08-20 14:37:42 | INFO     | ss_crawler | [andele_scraper] Got 20 real filtered listings for gpu (API reported 20 total)
+2026-08-20 14:37:44 | INFO     | ss_crawler | [andele_scraper] ✨ GPU Match: RTX 3060 12GB Dual OC... -> GPU ID 593 (90%)
+2026-08-20 14:37:44 | INFO     | ss_crawler | [repository] ✨ 16041869: New
+2026-08-20 14:37:44 | INFO     | ss_crawler | [andele_scraper] 🖼️  Found 3 images for 16041869: RTX 3060 12GB Dual OC...
+2026-08-20 14:37:44 | INFO     | ss_crawler | [andele_scraper]    Image 1: https://static6.andelemandele.lv/images/large/5b1/d80/1/8c262bc03c45cb151.webp...
+2026-08-20 14:37:44 | INFO     | ss_crawler | [andele_scraper]    Image 2: https://static6.andelemandele.lv/images/large/5ad/915/1/a000d5b94e5943e5f.webp...
+2026-08-20 14:37:44 | INFO     | ss_crawler | [andele_scraper]    Image 3: https://static4.andelemandele.lv/images/large/5cd/1e2/1/a53c86f41399e7d56.webp...
+2026-08-20 14:37:44 | INFO     | ss_crawler | [image_downloader] Downloaded image for 16041869 (stored as 16041869_01156ba1.jpg, 228771 bytes)
+2026-08-20 14:37:44 | INFO     | ss_crawler | [image_downloader] Downloaded image for 16041869 (stored as 16041869_4506420e.jpg, 229345 bytes)
+2026-08-20 14:37:44 | INFO     | ss_crawler | [image_downloader] Downloaded image for 16041869 (stored as 16041869_1f783aa9.jpg, 215819 bytes)
+2026-08-20 14:37:44 | INFO     | ss_crawler | [andele_scraper] 📸 Downloaded 3 images for 16041869
+2026-08-20 14:37:46 | INFO     | ss_crawler | [andele_scraper] ✨ GPU Match: RTX 3080... -> GPU ID 598 (90%)
+2026-08-20 14:37:46 | INFO     | ss_crawler | [repository] ✨ 16012074: New
+2026-08-20 14:37:46 | INFO     | ss_crawler | [andele_scraper] 🖼️  Found 2 images for 16012074: RTX 3080...
+2026-08-20 14:37:46 | INFO     | ss_crawler | [andele_scraper]    Image 1: https://static1.andelemandele.lv/images/large/0a9/c6c/1/e8ad9ded68a35bc1b.webp...
+2026-08-20 14:37:46 | INFO     | ss_crawler | [andele_scraper]    Image 2: https://static3.andelemandele.lv/images/large/6c3/309/1/40294f9785772349f.webp...
+2026-08-20 14:37:46 | INFO     | ss_crawler | [image_downloader] Downloaded image for 16012074 (stored as 16012074_e78ee5e5.jpg, 203445 bytes)
+2026-08-20 14:37:47 | INFO     | ss_crawler | [image_downloader] Downloaded image for 16012074 (stored as 16012074_6f8de797.jpg, 193158 bytes)
+2026-08-20 14:37:47 | INFO     | ss_crawler | [andele_scraper] 📸 Downloaded 2 images for 16012074
+2026-08-20 14:37:49 | INFO     | ss_crawler | [andele_scraper] ✨ GPU Match: ASUS GeForce RTX 3070 Ti TUF Gaming OC 8GB GDDR6X... -> GPU ID 597 (90%)
+2026-08-20 14:37:49 | INFO     | ss_crawler | [repository] ✨ 16053425: New
+2026-08-20 14:37:49 | INFO     | ss_crawler | [andele_scraper] 🖼️  Found 4 images for 16053425: ASUS GeForce RTX 3070 Ti TUF Gaming OC 8GB GDDR6X...
+2026-08-20 14:37:49 | INFO     | ss_crawler | [andele_scraper]    Image 1: https://static2.andelemandele.lv/images/large/84e/2ce/1/b50c7a333a4ce0a7d.webp...
+2026-08-20 14:37:49 | INFO     | ss_crawler | [andele_scraper]    Image 2: https://static1.andelemandele.lv/images/large/ca0/9a6/1/e83b18a63c9361f17.webp...
+2026-08-20 14:37:49 | INFO     | ss_crawler | [andele_scraper]    Image 3: https://static4.andelemandele.lv/images/large/767/7b6/1/7bce64ae66da70f16.webp...
+2026-08-20 14:37:49 | INFO     | ss_crawler | [image_downloader] Downloaded image for 16053425 (stored as 16053425_6f56b99a.jpg, 144434 bytes)
+2026-08-20 14:37:49 | INFO     | ss_crawler | [image_downloader] Downloaded image for 16053425 (stored as 16053425_04b8d0ab.jpg, 116406 bytes)
+2026-08-20 14:37:49 | INFO     | ss_crawler | [image_downloader] Downloaded image for 16053425 (stored as 16053425_7be7cc37.jpg, 158006 bytes)
+2026-08-20 14:37:50 | INFO     | ss_crawler | [image_downloader] Downloaded image for 16053425 (stored as 16053425_cd991927.jpg, 208616 bytes)
+2026-08-20 14:37:50 | INFO     | ss_crawler | [andele_scraper] 📸 Downloaded 4 images for 16053425
+2026-08-20 14:37:52 | INFO     | ss_crawler | [andele_scraper] ✨ GPU Match: Gigabyte Geforce Rtx 3060 Windforce OC 12G... -> GPU ID 593 (90%)
+2026-08-20 14:37:52 | INFO     | ss_crawler | [repository] ✨ 16048681: New
+2026-08-20 14:37:52 | INFO     | ss_crawler | [andele_scraper] 🖼️  Found 3 images for 16048681: Gigabyte Geforce Rtx 3060 Windforce OC 12G...
+2026-08-20 14:37:52 | INFO     | ss_crawler | [andele_scraper]    Image 1: https://static3.andelemandele.lv/images/large/c2c/56e/1/e2e003a24d5423619.webp...
+2026-08-20 14:37:52 | INFO     | ss_crawler | [andele_scraper]    Image 2: https://static5.andelemandele.lv/images/large/89f/d1a/1/672b5e5eb40c8b1e2.webp...
+2026-08-20 14:37:52 | INFO     | ss_crawler | [andele_scraper]    Image 3: https://static2.andelemandele.lv/images/large/d90/876/1/e1769834494c95c1f.webp...
+2026-08-20 14:37:52 | INFO     | ss_crawler | [image_downloader] Downloaded image for 16048681 (stored as 16048681_e294f2c6.jpg, 293158 bytes)
+2026-08-20 14:37:52 | INFO     | ss_crawler | [image_downloader] Downloaded image for 16048681 (stored as 16048681_0573acc4.jpg, 290970 bytes)
+2026-08-20 14:37:53 | INFO     | ss_crawler | [image_downloader] Downloaded image for 16048681 (stored as 16048681_79ef1d05.jpg, 225378 bytes)
+2026-08-20 14:37:53 | INFO     | ss_crawler | [andele_scraper] 📸 Downloaded 3 images for 16048681
+2026-08-20 14:37:55 | INFO     | ss_crawler | [andele_scraper] ✨ GPU Match: Rtx 4080 Super... -> GPU ID 611 (90%)
+2026-08-20 14:37:55 | INFO     | ss_crawler | [repository] ✨ 16041142: New
+2026-08-20 14:37:55 | INFO     | ss_crawler | [andele_scraper] 🖼️  Found 5 images for 16041142: Rtx 4080 Super...
+2026-08-20 14:37:55 | INFO     | ss_crawler | [andele_scraper]    Image 1: https://static3.andelemandele.lv/images/large/49e/359/1/148f8f2901075976f.webp...
+2026-08-20 14:37:55 | INFO     | ss_crawler | [andele_scraper]    Image 2: https://static1.andelemandele.lv/images/large/470/743/1/74e3551e2884506d3.webp...
+2026-08-20 14:37:55 | INFO     | ss_crawler | [andele_scraper]    Image 3: https://static2.andelemandele.lv/images/large/30a/592/1/90ec42b90ee709019.webp...
+2026-08-20 14:37:56 | INFO     | ss_crawler | [image_downloader] Downloaded image for 16041142 (stored as 16041142_2a71d7ae.jpg, 424132 bytes)
+2026-08-20 14:37:56 | INFO     | ss_crawler | [image_downloader] Downloaded image for 16041142 (stored as 16041142_bfc997e8.jpg, 415762 bytes)
+2026-08-20 14:37:57 | INFO     | ss_crawler | [image_downloader] Downloaded image for 16041142 (stored as 16041142_92f737ca.jpg, 414123 bytes)
+2026-08-20 14:37:57 | INFO     | ss_crawler | [image_downloader] Downloaded image for 16041142 (stored as 16041142_cfb4c2f5.jpg, 348514 bytes)
+2026-08-20 14:37:58 | INFO     | ss_crawler | [image_downloader] Downloaded image for 16041142 (stored as 16041142_901a1f9f.jpg, 399433 bytes)
+2026-08-20 14:37:58 | INFO     | ss_crawler | [andele_scraper] 📸 Downloaded 5 images for 16041142
+2026-08-20 14:38:00 | INFO     | ss_crawler | [andele_scraper] ✨ GPU Match: Msi GeForce RTX 5070... -> GPU ID 616 (90%)
+2026-08-20 14:38:00 | INFO     | ss_crawler | [repository] ✨ 16036930: New
+2026-08-20 14:38:00 | INFO     | ss_crawler | [andele_scraper] 🖼️  Found 2 images for 16036930: Msi GeForce RTX 5070...
+2026-08-20 14:38:00 | INFO     | ss_crawler | [andele_scraper]    Image 1: https://static6.andelemandele.lv/images/large/97e/78a/1/2ec27592b932c2ce6.webp...
+2026-08-20 14:38:00 | INFO     | ss_crawler | [andele_scraper]    Image 2: https://static6.andelemandele.lv/images/large/794/4cf/1/9a40abe0241628326.webp...
+2026-08-20 14:38:00 | INFO     | ss_crawler | [image_downloader] Downloaded image for 16036930 (stored as 16036930_b082326a.jpg, 235327 bytes)
+2026-08-20 14:38:01 | INFO     | ss_crawler | [image_downloader] Downloaded image for 16036930 (stored as 16036930_3d4fb251.jpg, 348227 bytes)
+2026-08-20 14:38:01 | INFO     | ss_crawler | [andele_scraper] 📸 Downloaded 2 images for 16036930
+2026-08-20 14:38:03 | INFO     | ss_crawler | [andele_scraper] ✨ GPU Match: Zotac Gaming GeForce RTX 4070 Ti Trinity... -> GPU ID 608 (90%)
+2026-08-20 14:38:03 | WARNING  | ss_crawler | [listing_versioning] Legacy listing 15096087 v1 has NULL fingerprint, creating new version
+2026-08-20 14:38:03 | INFO     | ss_crawler | [repository] ✨ 15096087_v2: New
+2026-08-20 14:38:03 | INFO     | ss_crawler | [andele_scraper] 🖼️  Found 5 images for 15096087_v2: Zotac Gaming GeForce RTX 4070 Ti Trinity...
+2026-08-20 14:38:03 | INFO     | ss_crawler | [andele_scraper]    Image 1: https://static1.andelemandele.lv/images/large/2a0/1ce/1/b8a2f9e0dfe073d0e.webp...
+2026-08-20 14:38:03 | INFO     | ss_crawler | [andele_scraper]    Image 2: https://static3.andelemandele.lv/images/large/8a4/16a/1/f8a224678fda721d1.webp...
+2026-08-20 14:38:03 | INFO     | ss_crawler | [andele_scraper]    Image 3: https://static3.andelemandele.lv/images/large/9d5/9e8/1/729d2e00838e7d03c.webp...
+2026-08-20 14:38:03 | INFO     | ss_crawler | [image_downloader] Downloaded image for 15096087_v2 (stored as 15096087_923eceea.jpg, 325319 bytes)
+2026-08-20 14:38:04 | INFO     | ss_crawler | [image_downloader] Downloaded image for 15096087_v2 (stored as 15096087_6466175d.jpg, 303249 bytes)
+2026-08-20 14:38:05 | INFO     | ss_crawler | [image_downloader] Downloaded image for 15096087_v2 (stored as 15096087_69602069.jpg, 185865 bytes)
+2026-08-20 14:38:05 | INFO     | ss_crawler | [image_downloader] Downloaded image for 15096087_v2 (stored as 15096087_788c3b64.jpg, 211702 bytes)
+2026-08-20 14:38:05 | INFO     | ss_crawler | [image_downloader] Downloaded image for 15096087_v2 (stored as 15096087_fd642b70.jpg, 292169 bytes)
+2026-08-20 14:38:05 | INFO     | ss_crawler | [andele_scraper] 📸 Downloaded 5 images for 15096087_v2
+2026-08-20 14:38:07 | INFO     | ss_crawler | [andele_scraper] ✨ GPU Match: Video karte... -> GPU ID 283 (90%)
+2026-08-20 14:38:07 | WARNING  | ss_crawler | [listing_versioning] Legacy listing 15737268 v1 has NULL fingerprint, creating new version
+2026-08-20 14:38:07 | INFO     | ss_crawler | [repository] ✨ 15737268_v2: New
+2026-08-20 14:38:07 | INFO     | ss_crawler | [andele_scraper] 🖼️  Found 3 images for 15737268_v2: Video karte...
+2026-08-20 14:38:07 | INFO     | ss_crawler | [andele_scraper]    Image 1: https://static4.andelemandele.lv/images/large/4e6/7c5/2/622e04c94b5ee4a67.webp...
+2026-08-20 14:38:07 | INFO     | ss_crawler | [andele_scraper]    Image 2: https://static6.andelemandele.lv/images/large/acd/83a/1/28891175520f283d4.webp...
+2026-08-20 14:38:07 | INFO     | ss_crawler | [andele_scraper]    Image 3: https://static3.andelemandele.lv/images/large/22c/bcb/1/250a433daee53b0e0.webp...
+2026-08-20 14:38:08 | INFO     | ss_crawler | [image_downloader] Downloaded image for 15737268_v2 (stored as 15737268_6d99639b.jpg, 231791 bytes)
+2026-08-20 14:38:08 | INFO     | ss_crawler | [image_downloader] Downloaded image for 15737268_v2 (stored as 15737268_60ec1587.jpg, 129422 bytes)
+2026-08-20 14:38:08 | INFO     | ss_crawler | [image_downloader] Downloaded image for 15737268_v2 (stored as 15737268_b12bacbe.jpg, 235630 bytes)
+2026-08-20 14:38:08 | INFO     | ss_crawler | [andele_scraper] 📸 Downloaded 3 images for 15737268_v2
+2026-08-20 14:38:10 | INFO     | ss_crawler | [andele_scraper] ✨ GPU Match: Продам видеокарту RТХ 2060 6GB GDDR6 192... -> GPU ID 582 (90%)
+2026-08-20 14:38:10 | WARNING  | ss_crawler | [listing_versioning] Legacy listing 15651986 v1 has NULL fingerprint, creating new version
+2026-08-20 14:38:10 | INFO     | ss_crawler | [repository] ✨ 15651986_v2: New
+2026-08-20 14:38:10 | INFO     | ss_crawler | [andele_scraper] 🖼️  Found 4 images for 15651986_v2: Продам видеокарту RТХ 2060 6GB GDDR6 192...
+2026-08-20 14:38:10 | INFO     | ss_crawler | [andele_scraper]    Image 1: https://static6.andelemandele.lv/images/large/04f/ecb/1/8a38fe7972859d48d.webp...
+2026-08-20 14:38:10 | INFO     | ss_crawler | [andele_scraper]    Image 2: https://static1.andelemandele.lv/images/large/0d2/ce2/1/fe9edf871d0973794.webp...
+2026-08-20 14:38:10 | INFO     | ss_crawler | [andele_scraper]    Image 3: https://static4.andelemandele.lv/images/large/7a6/d9b/1/2a91d5d470c253386.webp...
+2026-08-20 14:38:11 | INFO     | ss_crawler | [image_downloader] Downloaded image for 15651986_v2 (stored as 15651986_8689cba8.jpg, 238542 bytes)
+2026-08-20 14:38:11 | INFO     | ss_crawler | [image_downloader] Downloaded image for 15651986_v2 (stored as 15651986_4c2c1bb8.jpg, 198829 bytes)
+2026-08-20 14:38:11 | INFO     | ss_crawler | [image_downloader] Downloaded image for 15651986_v2 (stored as 15651986_d6cf4842.jpg, 222379 bytes)
+2026-08-20 14:38:11 | INFO     | ss_crawler | [image_downloader] Downloaded image for 15651986_v2 (stored as 15651986_5d4902bf.jpg, 292873 bytes)
+2026-08-20 14:38:11 | INFO     | ss_crawler | [andele_scraper] 📸 Downloaded 4 images for 15651986_v2
+2026-08-20 14:38:14 | INFO     | ss_crawler | [andele_scraper] ✨ GPU Match: ASUS Dual Radeon RX 580 OC Edition 4GB... -> GPU ID 289 (100%)
+2026-08-20 14:38:14 | INFO     | ss_crawler | [repository] ✨ 15916927: New
+2026-08-20 14:38:14 | INFO     | ss_crawler | [andele_scraper] 🖼️  Found 4 images for 15916927: ASUS Dual Radeon RX 580 OC Edition 4GB...
+2026-08-20 14:38:14 | INFO     | ss_crawler | [andele_scraper]    Image 1: https://static3.andelemandele.lv/images/large/482/209/3/236d0ef00e09595be.webp...
+2026-08-20 14:38:14 | INFO     | ss_crawler | [andele_scraper]    Image 2: https://static2.andelemandele.lv/images/large/c20/004/2/4ec2ec7ec3817a5fd.webp...
+2026-08-20 14:38:14 | INFO     | ss_crawler | [andele_scraper]    Image 3: https://static4.andelemandele.lv/images/large/662/18b/1/9eff3d3591e8392b7.webp...
+2026-08-20 14:38:14 | INFO     | ss_crawler | [image_downloader] Downloaded image for 15916927 (stored as 15916927_0e4080a5.jpg, 257670 bytes)
+2026-08-20 14:38:14 | INFO     | ss_crawler | [image_downloader] Downloaded image for 15916927 (stored as 15916927_bb08799c.jpg, 327231 bytes)
+2026-08-20 14:38:14 | INFO     | ss_crawler | [image_downloader] Downloaded image for 15916927 (stored as 15916927_059be290.jpg, 184563 bytes)
+2026-08-20 14:38:15 | INFO     | ss_crawler | [image_downloader] Downloaded image for 15916927 (stored as 15916927_55654ef3.jpg, 217882 bytes)
+2026-08-20 14:38:15 | INFO     | ss_crawler | [andele_scraper] 📸 Downloaded 4 images for 15916927
+2026-08-20 14:38:17 | INFO     | ss_crawler | [andele_scraper] ✨ GPU Match: ASUS Strix Geforce GTX1070 videokarte... -> GPU ID 569 (90%)
+2026-08-20 14:38:17 | INFO     | ss_crawler | [listing_versioning] Legacy listing 12329094 v1 matches by computed fingerprint, updating
+2026-08-20 14:38:17 | INFO     | ss_crawler | [repository] ⏸️ 12329094: Unchanged
+2026-08-20 14:38:17 | INFO     | ss_crawler | [andele_scraper] 🖼️  Found 5 images for 12329094: ASUS Strix Geforce GTX1070 videokarte...
+2026-08-20 14:38:17 | INFO     | ss_crawler | [andele_scraper]    Image 1: https://static5.andelemandele.lv/images/large/d09/65d/2/fc36c88589afdfbc6.webp...
+2026-08-20 14:38:17 | INFO     | ss_crawler | [andele_scraper]    Image 2: https://static2.andelemandele.lv/images/large/2a8/500/2/5a1d08597a7c6ba1c.webp...
+2026-08-20 14:38:17 | INFO     | ss_crawler | [andele_scraper]    Image 3: https://static1.andelemandele.lv/images/large/b99/1e9/1/a1667be4437c1cfd3.webp...
+2026-08-20 14:38:17 | INFO     | ss_crawler | [image_downloader] Downloaded image for 12329094 (stored as 12329094_6d5e138c.jpg, 278671 bytes)
+2026-08-20 14:38:17 | INFO     | ss_crawler | [image_downloader] Downloaded image for 12329094 (stored as 12329094_aa8b3f8b.jpg, 357240 bytes)
+2026-08-20 14:38:18 | INFO     | ss_crawler | [image_downloader] Downloaded image for 12329094 (stored as 12329094_aad9dcc5.jpg, 401394 bytes)
+2026-08-20 14:38:18 | INFO     | ss_crawler | [image_downloader] Downloaded image for 12329094 (stored as 12329094_15dc900c.jpg, 333600 bytes)
+2026-08-20 14:38:19 | INFO     | ss_crawler | [image_downloader] Downloaded image for 12329094 (stored as 12329094_a78024f6.jpg, 357073 bytes)
+2026-08-20 14:38:19 | INFO     | ss_crawler | [andele_scraper] 📸 Downloaded 5 images for 12329094
+2026-08-20 14:38:21 | INFO     | ss_crawler | [andele_scraper] ✨ GPU Match: Gigabyte GeForce GTX 1050 Ti G1 Gaming 4... -> GPU ID 566 (85%)
+2026-08-20 14:38:21 | INFO     | ss_crawler | [repository] ✨ 16001587: New
+2026-08-20 14:38:21 | INFO     | ss_crawler | [andele_scraper] 🖼️  Found 3 images for 16001587: Gigabyte GeForce GTX 1050 Ti G1 Gaming 4...
+2026-08-20 14:38:21 | INFO     | ss_crawler | [andele_scraper]    Image 1: https://static3.andelemandele.lv/images/large/207/075/1/1d0499f58b9548722.webp...
+2026-08-20 14:38:21 | INFO     | ss_crawler | [andele_scraper]    Image 2: https://static6.andelemandele.lv/images/large/ba3/1b7/1/d1b19047ad0ba0e24.webp...
+2026-08-20 14:38:21 | INFO     | ss_crawler | [andele_scraper]    Image 3: https://static3.andelemandele.lv/images/large/80a/37c/1/38456f7c8dc7480be.webp...
+2026-08-20 14:38:21 | INFO     | ss_crawler | [image_downloader] Downloaded image for 16001587 (stored as 16001587_362a1ed6.jpg, 232415 bytes)
+2026-08-20 14:38:21 | INFO     | ss_crawler | [image_downloader] Downloaded image for 16001587 (stored as 16001587_f46c8e21.jpg, 151636 bytes)
+2026-08-20 14:38:22 | INFO     | ss_crawler | [image_downloader] Downloaded image for 16001587 (stored as 16001587_53f07224.jpg, 198481 bytes)
+2026-08-20 14:38:22 | INFO     | ss_crawler | [andele_scraper] 📸 Downloaded 3 images for 16001587
+2026-08-20 14:38:24 | INFO     | ss_crawler | [andele_scraper] ✨ GPU Match: Gigabyte GeForce GTX 1060 Windforce OC 3... -> GPU ID 567 (90%)
+2026-08-20 14:38:24 | INFO     | ss_crawler | [repository] ✨ 16001575: New
+2026-08-20 14:38:24 | INFO     | ss_crawler | [andele_scraper] 🖼️  Found 3 images for 16001575: Gigabyte GeForce GTX 1060 Windforce OC 3...
+2026-08-20 14:38:24 | INFO     | ss_crawler | [andele_scraper]    Image 1: https://static6.andelemandele.lv/images/large/054/113/1/0b1f9d7728f6acfb6.webp...
+2026-08-20 14:38:24 | INFO     | ss_crawler | [andele_scraper]    Image 2: https://static3.andelemandele.lv/images/large/d54/32b/1/694a121ae836b7b68.webp...
+2026-08-20 14:38:24 | INFO     | ss_crawler | [andele_scraper]    Image 3: https://static6.andelemandele.lv/images/large/412/db5/1/cc2204a2db28fd957.webp...
+2026-08-20 14:38:24 | INFO     | ss_crawler | [image_downloader] Downloaded image for 16001575 (stored as 16001575_bd25d1c8.jpg, 259580 bytes)
+2026-08-20 14:38:24 | INFO     | ss_crawler | [image_downloader] Downloaded image for 16001575 (stored as 16001575_f6793ea7.jpg, 198304 bytes)
+2026-08-20 14:38:24 | INFO     | ss_crawler | [image_downloader] Downloaded image for 16001575 (stored as 16001575_2fc1a601.jpg, 252544 bytes)
+2026-08-20 14:38:24 | INFO     | ss_crawler | [andele_scraper] 📸 Downloaded 3 images for 16001575
+2026-08-20 14:38:27 | INFO     | ss_crawler | [andele_scraper] ✨ GPU Match: ICY BOX universālais atmiņas karšu lasītājs... -> GPU ID 279 (60%)
+2026-08-20 14:38:27 | INFO     | ss_crawler | [repository] ✨ 16000120: New
+2026-08-20 14:38:27 | INFO     | ss_crawler | [andele_scraper] 🖼️  Found 2 images for 16000120: ICY BOX universālais atmiņas karšu lasītājs...
+2026-08-20 14:38:27 | INFO     | ss_crawler | [andele_scraper]    Image 1: https://static3.andelemandele.lv/images/large/013/67f/1/5fee98eb520a82c84.webp...
+2026-08-20 14:38:27 | INFO     | ss_crawler | [andele_scraper]    Image 2: https://static4.andelemandele.lv/images/large/f57/c95/1/d6d54834b1287e17b.webp...
+2026-08-20 14:38:27 | INFO     | ss_crawler | [image_downloader] Downloaded image for 16000120 (stored as 16000120_b831cc12.jpg, 286126 bytes)
+2026-08-20 14:38:27 | INFO     | ss_crawler | [image_downloader] Downloaded image for 16000120 (stored as 16000120_59b5880b.jpg, 316339 bytes)
+2026-08-20 14:38:27 | INFO     | ss_crawler | [andele_scraper] 📸 Downloaded 2 images for 16000120
+2026-08-20 14:38:29 | INFO     | ss_crawler | [andele_scraper] ✨ GPU Match: MSI GeForce GTX 1050 AERO ITX 2G OCV1... -> GPU ID 564 (90%)
+2026-08-20 14:38:29 | INFO     | ss_crawler | [repository] ✨ 15981832: New
+2026-08-20 14:38:29 | INFO     | ss_crawler | [andele_scraper] 🖼️  Found 2 images for 15981832: MSI GeForce GTX 1050 AERO ITX 2G OCV1...
+2026-08-20 14:38:29 | INFO     | ss_crawler | [andele_scraper]    Image 1: https://static1.andelemandele.lv/images/large/6b7/13f/1/83247c3109e043b97.webp...
+2026-08-20 14:38:29 | INFO     | ss_crawler | [andele_scraper]    Image 2: https://static1.andelemandele.lv/images/large/015/415/1/5b55dc8badc3e5e8c.webp...
+2026-08-20 14:38:30 | INFO     | ss_crawler | [image_downloader] Downloaded image for 15981832 (stored as 15981832_406b575a.jpg, 264302 bytes)
+2026-08-20 14:38:30 | INFO     | ss_crawler | [image_downloader] Downloaded image for 15981832 (stored as 15981832_b221a47a.jpg, 406790 bytes)
+2026-08-20 14:38:30 | INFO     | ss_crawler | [andele_scraper] 📸 Downloaded 2 images for 15981832
+2026-08-20 14:38:32 | INFO     | ss_crawler | [andele_scraper] ✨ GPU Match: NVIDIA RTX A4000 16GB GDDR6 Video Karte... -> GPU ID 459 (60%)
+2026-08-20 14:38:32 | INFO     | ss_crawler | [repository] ✨ 15907644: New
+2026-08-20 14:38:33 | INFO     | ss_crawler | [andele_scraper] 🖼️  Found 5 images for 15907644: NVIDIA RTX A4000 16GB GDDR6 Video Karte...
+2026-08-20 14:38:33 | INFO     | ss_crawler | [andele_scraper]    Image 1: https://static6.andelemandele.lv/images/large/0a5/a80/1/c0e5dc151ea90cdb2.webp...
+2026-08-20 14:38:33 | INFO     | ss_crawler | [andele_scraper]    Image 2: https://static2.andelemandele.lv/images/large/f14/e74/1/c1179706f4f89a674.webp...
+2026-08-20 14:38:33 | INFO     | ss_crawler | [andele_scraper]    Image 3: https://static2.andelemandele.lv/images/large/11a/246/1/f8e70a49da128f93b.webp...
+2026-08-20 14:38:33 | INFO     | ss_crawler | [image_downloader] Downloaded image for 15907644 (stored as 15907644_548a3b77.jpg, 335603 bytes)
+2026-08-20 14:38:33 | INFO     | ss_crawler | [image_downloader] Downloaded image for 15907644 (stored as 15907644_cc9bedb8.jpg, 314172 bytes)
+2026-08-20 14:38:33 | INFO     | ss_crawler | [image_downloader] Downloaded image for 15907644 (stored as 15907644_298c8e0f.jpg, 357032 bytes)
+2026-08-20 14:38:34 | INFO     | ss_crawler | [image_downloader] Downloaded image for 15907644 (stored as 15907644_0d3e964d.jpg, 243319 bytes)
+2026-08-20 14:38:34 | INFO     | ss_crawler | [image_downloader] Downloaded image for 15907644 (stored as 15907644_6691d2a5.jpg, 280188 bytes)
+2026-08-20 14:38:34 | INFO     | ss_crawler | [andele_scraper] 📸 Downloaded 5 images for 15907644
+2026-08-20 14:38:36 | INFO     | ss_crawler | [andele_scraper] ✨ GPU Match: AMD Radeon RX 9070 XT Sapphire Pulse... -> GPU ID 630 (100%)
+2026-08-20 14:38:36 | INFO     | ss_crawler | [repository] ✨ 14097476: New
+2026-08-20 14:38:36 | INFO     | ss_crawler | [andele_scraper] 🖼️  Found 5 images for 14097476: AMD Radeon RX 9070 XT Sapphire Pulse...
+2026-08-20 14:38:36 | INFO     | ss_crawler | [andele_scraper]    Image 1: https://static4.andelemandele.lv/images/large/997/37c/1/8062700119babc275.webp...
+2026-08-20 14:38:36 | INFO     | ss_crawler | [andele_scraper]    Image 2: https://static3.andelemandele.lv/images/large/bad/649/1/756881b8867630157.webp...
+2026-08-20 14:38:36 | INFO     | ss_crawler | [andele_scraper]    Image 3: https://static6.andelemandele.lv/images/large/cd9/5d0/1/4f98bf8cc22de2eb6.webp...
+2026-08-20 14:38:36 | INFO     | ss_crawler | [image_downloader] Downloaded image for 14097476 (stored as 14097476_bd1f334c.jpg, 223408 bytes)
+2026-08-20 14:38:37 | INFO     | ss_crawler | [image_downloader] Downloaded image for 14097476 (stored as 14097476_a76daca8.jpg, 262348 bytes)
+2026-08-20 14:38:37 | INFO     | ss_crawler | [image_downloader] Downloaded image for 14097476 (stored as 14097476_d1222865.jpg, 241945 bytes)
+2026-08-20 14:38:37 | INFO     | ss_crawler | [image_downloader] Downloaded image for 14097476 (stored as 14097476_e7c7dfdb.jpg, 276285 bytes)
+2026-08-20 14:38:37 | INFO     | ss_crawler | [image_downloader] Downloaded image for 14097476 (stored as 14097476_25cc2118.jpg, 96359 bytes)
+2026-08-20 14:38:37 | INFO     | ss_crawler | [andele_scraper] 📸 Downloaded 5 images for 14097476
+2026-08-20 14:38:40 | INFO     | ss_crawler | [andele_scraper] ✨ GPU Match: EVGA RTX 3080 FTW3 Ultra... -> GPU ID 598 (90%)
+2026-08-20 14:38:40 | INFO     | ss_crawler | [repository] ✨ 15867221: New
+2026-08-20 14:38:40 | INFO     | ss_crawler | [andele_scraper] 🖼️  Found 2 images for 15867221: EVGA RTX 3080 FTW3 Ultra...
+2026-08-20 14:38:40 | INFO     | ss_crawler | [andele_scraper]    Image 1: https://static3.andelemandele.lv/images/large/fe1/2c0/1/e31f41547d723c7c4.webp...
+2026-08-20 14:38:40 | INFO     | ss_crawler | [andele_scraper]    Image 2: https://static5.andelemandele.lv/images/large/b69/d9b/1/cfab39db8c8e19cc3.webp...
+2026-08-20 14:38:40 | INFO     | ss_crawler | [image_downloader] Downloaded image for 15867221 (stored as 15867221_6fcea8a3.jpg, 380316 bytes)
+2026-08-20 14:38:40 | INFO     | ss_crawler | [image_downloader] Downloaded image for 15867221 (stored as 15867221_395bf845.jpg, 36729 bytes)
+2026-08-20 14:38:40 | INFO     | ss_crawler | [andele_scraper] 📸 Downloaded 2 images for 15867221
+2026-08-20 14:38:42 | INFO     | ss_crawler | [andele_scraper] ✨ GPU Match: Gigabyte GeForce GTX 1660 OC 6GB... -> GPU ID 579 (90%)
+2026-08-20 14:38:42 | INFO     | ss_crawler | [listing_versioning] Legacy listing 15595590 v1 matches by computed fingerprint, updating
+2026-08-20 14:38:42 | INFO     | ss_crawler | [repository] ⏸️ 15595590: Unchanged
+2026-08-20 14:38:42 | INFO     | ss_crawler | [andele_scraper] 🖼️  Found 1 images for 15595590: Gigabyte GeForce GTX 1660 OC 6GB...
+2026-08-20 14:38:42 | INFO     | ss_crawler | [andele_scraper]    Image 1: https://static5.andelemandele.lv/images/large/277/99b/1/9a9ea2bdfe0ec9853.webp...
+2026-08-20 14:38:42 | INFO     | ss_crawler | [image_downloader] Downloaded image for 15595590 (stored as 15595590_f1a9cbdb.jpg, 231218 bytes)
+2026-08-20 14:38:42 | INFO     | ss_crawler | [andele_scraper] 📸 Downloaded 1 images for 15595590
+2026-08-20 14:38:45 | INFO     | ss_crawler | [andele_scraper] ✨ GPU Match: Spēļu videokarte MSI GeForce GTX 1060 GAMING X 6G... -> GPU ID 567 (90%)
+2026-08-20 14:38:45 | WARNING  | ss_crawler | [listing_versioning] Legacy listing 15567056 v1 has NULL fingerprint, creating new version
+2026-08-20 14:38:45 | INFO     | ss_crawler | [repository] ✨ 15567056_v2: New
+2026-08-20 14:38:45 | INFO     | ss_crawler | [andele_scraper] 🖼️  Found 3 images for 15567056_v2: Spēļu videokarte MSI GeForce GTX 1060 GAMING X 6G...
+2026-08-20 14:38:45 | INFO     | ss_crawler | [andele_scraper]    Image 1: https://static5.andelemandele.lv/images/large/f46/556/1/9a11067d31e2ef493.webp...
+2026-08-20 14:38:45 | INFO     | ss_crawler | [andele_scraper]    Image 2: https://static1.andelemandele.lv/images/large/b53/815/1/8e1ac76d45fe7358f.webp...
+2026-08-20 14:38:45 | INFO     | ss_crawler | [andele_scraper]    Image 3: https://static5.andelemandele.lv/images/large/bcf/907/1/cb6c73a5e26c27465.webp...
+2026-08-20 14:38:45 | INFO     | ss_crawler | [image_downloader] Downloaded image for 15567056_v2 (stored as 15567056_f745f10b.jpg, 257816 bytes)
+2026-08-20 14:38:45 | INFO     | ss_crawler | [image_downloader] Downloaded image for 15567056_v2 (stored as 15567056_18156342.jpg, 294327 bytes)
+2026-08-20 14:38:46 | INFO     | ss_crawler | [image_downloader] Downloaded image for 15567056_v2 (stored as 15567056_b859f502.jpg, 229562 bytes)
+2026-08-20 14:38:46 | INFO     | ss_crawler | [andele_scraper] 📸 Downloaded 3 images for 15567056_v2
+2026-08-20 14:38:46 | INFO     | ss_crawler | [andele_scraper] Completed gpu: {'total': 20, 'new': 18, 'updated': 0, 'failed': 0, 'skipped': 2, 'errors': []}
+2026-08-20 15:00:03 | INFO     | ss_crawler | [database] Database connected: localhost:5433/ss_market
+2026-08-20 15:00:03 | INFO     | ss_crawler | [andele_scraper] Database initialized for matchers
+2026-08-20 15:00:03 | INFO     | ss_crawler | [matcher] GPUMatcher initialized with 633 GPUs
+2026-08-20 15:00:03 | INFO     | ss_crawler | [andele_scraper] Initialized GPU matcher with 633 GPUs
+2026-08-20 15:00:03 | INFO     | ss_crawler | [cpu_matcher] CPUMatcher initialized with 5320 CPUs
+2026-08-20 15:00:03 | INFO     | ss_crawler | [andele_scraper] Initialized CPU matcher with 5320 CPUs
+2026-08-20 15:00:03 | INFO     | ss_crawler | [ssd_matcher] SSDMatcher initialized with 2453 SSDs
+2026-08-20 15:00:03 | INFO     | ss_crawler | [andele_scraper] Initialized SSD matcher with 2453 SSDs
+2026-08-20 15:00:04 | INFO     | ss_crawler | [ram_matcher] RAMMatcher initialized with 5281 RAM references
+2026-08-20 15:00:04 | INFO     | ss_crawler | [andele_scraper] Initialized RAM matcher with 5281 RAMs
+2026-08-20 15:00:04 | INFO     | ss_crawler | [psu_matcher] PSUMatcher initialized with 2895 PSU references
+2026-08-20 15:00:04 | INFO     | ss_crawler | [andele_scraper] Initialized PSU matcher with 2895 PSUs
+2026-08-20 15:00:04 | INFO     | ss_crawler | [monitor_scraper] MonitorMatcher initialized with 0 monitors
+2026-08-20 15:00:04 | INFO     | ss_crawler | [andele_scraper] Initialized Monitor matcher
+2026-08-20 15:00:06 | INFO     | ss_crawler | [motherboard_matcher] MotherboardMatcher initialized with 5732 motherboards
+2026-08-20 15:00:06 | INFO     | ss_crawler | [andele_scraper] Initialized Motherboard matcher with 5732 boards
+2026-08-20 15:00:06 | INFO     | ss_crawler | [cpu_matcher] CPUMatcher initialized with 5320 CPUs
+2026-08-20 15:00:06 | INFO     | ss_crawler | [matcher] GPUMatcher initialized with 633 GPUs
+2026-08-20 15:00:07 | INFO     | ss_crawler | [ram_matcher] RAMMatcher initialized with 5281 RAM references
+2026-08-20 15:00:07 | INFO     | ss_crawler | [ssd_matcher] SSDMatcher initialized with 2453 SSDs
+2026-08-20 15:00:07 | INFO     | ss_crawler | [psu_matcher] PSUMatcher initialized with 2895 PSU references
+2026-08-20 15:00:07 | INFO     | ss_crawler | [case_matcher] CaseMatcher initialized with 5742 case references
+2026-08-20 15:00:09 | INFO     | ss_crawler | [motherboard_matcher] MotherboardMatcher initialized with 5732 motherboards
+2026-08-20 15:00:09 | INFO     | ss_crawler | [computer_matcher] ComputerMatcher initialized: 5320 CPUs, 633 GPUs, 5281 RAMs, 2453 SSDs, 2895 PSUs, 5742 Cases, 5732 Motherboards, 0 Monitors
+2026-08-20 15:00:09 | INFO     | ss_crawler | [andele_scraper] Initialized Computer matcher
+2026-08-20 15:00:09 | INFO     | ss_crawler | [andele_scraper] Starting scrape of cpu from https://www.andelemandele.lv/perles/tehnika/datori/#order:actual/attributes:405
+2026-08-20 15:00:09 | INFO     | ss_crawler | [andele_scraper] Calling product-data API for cpu: https://www.andelemandele.lv/product-data/?filter=eyJjYXRlZ29yeSI6IHsiaWQiOiAzNjh9LCAib3JkZXIiOiAiYW…
+2026-08-20 15:00:09 | INFO     | ss_crawler | [andele_scraper] product-data returned count=8, html_len=13349
+2026-08-20 15:00:09 | INFO     | ss_crawler | [andele_scraper] Got 8 real filtered listings for cpu (API reported 8 total)
+2026-08-20 15:00:11 | INFO     | ss_crawler | [andele_scraper] ✨ CPU Match: Intel Core i5-12600KF... -> CPU ID 65 (100%)
+2026-08-20 15:00:12 | INFO     | ss_crawler | [repository] ✨ 16053542: New - Intel Core i5-12600KF
+2026-08-20 15:00:12 | INFO     | ss_crawler | [andele_scraper] 🖼️  Found 2 images for 16053542: Intel Core i5-12600KF...
+2026-08-20 15:00:12 | INFO     | ss_crawler | [andele_scraper]    Image 1: https://static5.andelemandele.lv/images/large/346/c60/1/5057570d65ba3ab60.webp...
+2026-08-20 15:00:12 | INFO     | ss_crawler | [andele_scraper]    Image 2: https://static5.andelemandele.lv/images/large/bac/9e7/1/a66ea9276de8d4699.webp...
+2026-08-20 15:00:12 | INFO     | ss_crawler | [image_downloader] Downloaded image for 16053542 (stored as 16053542_000d04be.jpg, 260537 bytes)
+2026-08-20 15:00:12 | INFO     | ss_crawler | [image_downloader] Downloaded image for 16053542 (stored as 16053542_3e6a5e70.jpg, 402494 bytes)
+2026-08-20 15:00:12 | INFO     | ss_crawler | [andele_scraper] 📸 Downloaded 2 images for 16053542
+2026-08-20 15:00:14 | INFO     | ss_crawler | [andele_scraper] ✨ CPU Match: AMD Ryzen 9 5900X... -> CPU ID 321 (95%)
+2026-08-20 15:00:14 | INFO     | ss_crawler | [repository] ✨ 15892570: New - AMD Ryzen 9 5900X
+2026-08-20 15:00:14 | INFO     | ss_crawler | [andele_scraper] 🖼️  Found 2 images for 15892570: AMD Ryzen 9 5900X...
+2026-08-20 15:00:14 | INFO     | ss_crawler | [andele_scraper]    Image 1: https://static2.andelemandele.lv/images/large/5e0/3d6/1/5574f89912bbe8e50.webp...
+2026-08-20 15:00:14 | INFO     | ss_crawler | [andele_scraper]    Image 2: https://static5.andelemandele.lv/images/large/f47/806/1/1a476aa968c9fbd13.webp...
+2026-08-20 15:00:15 | INFO     | ss_crawler | [image_downloader] Downloaded image for 15892570 (stored as 15892570_4bb10ef2.jpg, 95984 bytes)
+2026-08-20 15:00:15 | INFO     | ss_crawler | [image_downloader] Downloaded image for 15892570 (stored as 15892570_239ff698.jpg, 83696 bytes)
+2026-08-20 15:00:15 | INFO     | ss_crawler | [andele_scraper] 📸 Downloaded 2 images for 15892570
+2026-08-20 15:00:17 | INFO     | ss_crawler | [andele_scraper] ✨ CPU Match: AMD FX-8350 + Cooler Master CPU dzesētāj... -> CPU ID 384 (100%)
+2026-08-20 15:00:17 | INFO     | ss_crawler | [repository] ✨ 16020156: New - AMD FX-8350
+2026-08-20 15:00:17 | INFO     | ss_crawler | [andele_scraper] 🖼️  Found 3 images for 16020156: AMD FX-8350 + Cooler Master CPU dzesētāj...
+2026-08-20 15:00:17 | INFO     | ss_crawler | [andele_scraper]    Image 1: https://static2.andelemandele.lv/images/large/339/242/1/9ffd8e20fede24518.webp...
+2026-08-20 15:00:17 | INFO     | ss_crawler | [andele_scraper]    Image 2: https://static4.andelemandele.lv/images/large/0c9/c25/1/fc7afe6896ba0aed1.webp...
+2026-08-20 15:00:17 | INFO     | ss_crawler | [andele_scraper]    Image 3: https://static1.andelemandele.lv/images/large/368/5d0/1/6e4b37c885c119a37.webp...
+2026-08-20 15:00:18 | INFO     | ss_crawler | [image_downloader] Downloaded image for 16020156 (stored as 16020156_24c0cc8f.jpg, 447744 bytes)
+2026-08-20 15:00:18 | INFO     | ss_crawler | [image_downloader] Downloaded image for 16020156 (stored as 16020156_bb01da21.jpg, 311423 bytes)
+2026-08-20 15:00:19 | INFO     | ss_crawler | [image_downloader] Downloaded image for 16020156 (stored as 16020156_6c6e4c02.jpg, 407635 bytes)
+2026-08-20 15:00:19 | INFO     | ss_crawler | [andele_scraper] 📸 Downloaded 3 images for 16020156
+2026-08-20 15:00:21 | INFO     | ss_crawler | [andele_scraper] ✨ CPU Match: Ryzen 5 2400G... -> CPU ID 364 (95%)
+2026-08-20 15:00:21 | WARNING  | ss_crawler | [listing_versioning] Legacy listing 15653692 v1 has NULL fingerprint, creating new version
+2026-08-20 15:00:21 | INFO     | ss_crawler | [repository] ✨ 15653692_v2: New - AMD Ryzen 5 2400G
+2026-08-20 15:00:21 | INFO     | ss_crawler | [andele_scraper] 🖼️  Found 3 images for 15653692_v2: Ryzen 5 2400G...
+2026-08-20 15:00:21 | INFO     | ss_crawler | [andele_scraper]    Image 1: https://static1.andelemandele.lv/images/large/d02/d10/1/7f33fae88f2d7e5ab.webp...
+2026-08-20 15:00:21 | INFO     | ss_crawler | [andele_scraper]    Image 2: https://static5.andelemandele.lv/images/large/e95/432/1/f137a5aaf41638d1d.webp...
+2026-08-20 15:00:21 | INFO     | ss_crawler | [andele_scraper]    Image 3: https://static3.andelemandele.lv/images/large/256/c99/1/29841ada52c13a689.webp...
+2026-08-20 15:00:21 | INFO     | ss_crawler | [image_downloader] Downloaded image for 15653692_v2 (stored as 15653692_d98fc06d.jpg, 239895 bytes)
+2026-08-20 15:00:22 | INFO     | ss_crawler | [image_downloader] Downloaded image for 15653692_v2 (stored as 15653692_a8aa0c1f.jpg, 403117 bytes)
+2026-08-20 15:00:22 | INFO     | ss_crawler | [image_downloader] Downloaded image for 15653692_v2 (stored as 15653692_11c8f95e.jpg, 294520 bytes)
+2026-08-20 15:00:22 | INFO     | ss_crawler | [andele_scraper] 📸 Downloaded 3 images for 15653692_v2
+2026-08-20 15:00:24 | INFO     | ss_crawler | [andele_scraper] ✨ CPU Match: Intel i5-3470... -> CPU ID 2993 (100%)
+2026-08-20 15:00:24 | INFO     | ss_crawler | [repository] ✨ 15981872: New - Intel Core i5-3470 @ 3.20GHz
+2026-08-20 15:00:24 | INFO     | ss_crawler | [andele_scraper] 🖼️  Found 2 images for 15981872: Intel i5-3470...
+2026-08-20 15:00:24 | INFO     | ss_crawler | [andele_scraper]    Image 1: https://static5.andelemandele.lv/images/large/68b/89f/1/2b7eca0174edb632d.webp...
+2026-08-20 15:00:24 | INFO     | ss_crawler | [andele_scraper]    Image 2: https://static2.andelemandele.lv/images/large/628/982/1/1397d22b188153b35.webp...
+2026-08-20 15:00:25 | INFO     | ss_crawler | [image_downloader] Downloaded image for 15981872 (stored as 15981872_a8ceabab.jpg, 256589 bytes)
+2026-08-20 15:00:25 | INFO     | ss_crawler | [image_downloader] Downloaded image for 15981872 (stored as 15981872_b9cf1d7b.jpg, 362655 bytes)
+2026-08-20 15:00:25 | INFO     | ss_crawler | [andele_scraper] 📸 Downloaded 2 images for 15981872
+2026-08-20 15:00:27 | INFO     | ss_crawler | [repository] ✨ 15966825: New
+2026-08-20 15:00:27 | INFO     | ss_crawler | [andele_scraper] 🖼️  Found 2 images for 15966825: AMD procesors...
+2026-08-20 15:00:27 | INFO     | ss_crawler | [andele_scraper]    Image 1: https://static3.andelemandele.lv/images/large/283/410/1/e3dedbf101d410de6.webp...
+2026-08-20 15:00:27 | INFO     | ss_crawler | [andele_scraper]    Image 2: https://static1.andelemandele.lv/images/large/65a/45b/1/9c6d9621e8611f61c.webp...
+2026-08-20 15:00:27 | INFO     | ss_crawler | [image_downloader] Downloaded image for 15966825 (stored as 15966825_7b0d9266.jpg, 716203 bytes)
+2026-08-20 15:00:28 | INFO     | ss_crawler | [image_downloader] Downloaded image for 15966825 (stored as 15966825_cb1c11a9.jpg, 785276 bytes)
+2026-08-20 15:00:28 | INFO     | ss_crawler | [andele_scraper] 📸 Downloaded 2 images for 15966825
+2026-08-20 15:00:30 | INFO     | ss_crawler | [andele_scraper] ✨ CPU Match: AMD CPU 5 9600 X... -> CPU ID 342 (69%)
+2026-08-20 15:00:30 | INFO     | ss_crawler | [repository] ✨ 15904706: New - AMD Ryzen 5 9600
+2026-08-20 15:00:30 | INFO     | ss_crawler | [andele_scraper] 🖼️  Found 3 images for 15904706: AMD CPU 5 9600 X...
+2026-08-20 15:00:30 | INFO     | ss_crawler | [andele_scraper]    Image 1: https://static5.andelemandele.lv/images/large/bae/a0a/1/fab47c84cc9a84a03.webp...
+2026-08-20 15:00:30 | INFO     | ss_crawler | [andele_scraper]    Image 2: https://static1.andelemandele.lv/images/large/193/200/1/fa15ef1d79aee0ab5.webp...
+2026-08-20 15:00:30 | INFO     | ss_crawler | [andele_scraper]    Image 3: https://static1.andelemandele.lv/images/large/bb9/980/1/391c9b04d05da0dfc.webp...
+2026-08-20 15:00:30 | INFO     | ss_crawler | [image_downloader] Downloaded image for 15904706 (stored as 15904706_3a72aee2.jpg, 395086 bytes)
+2026-08-20 15:00:31 | INFO     | ss_crawler | [image_downloader] Downloaded image for 15904706 (stored as 15904706_342af67c.jpg, 445052 bytes)
+2026-08-20 15:00:31 | INFO     | ss_crawler | [image_downloader] Downloaded image for 15904706 (stored as 15904706_094d32b5.jpg, 421888 bytes)
+2026-08-20 15:00:31 | INFO     | ss_crawler | [andele_scraper] 📸 Downloaded 3 images for 15904706
+2026-08-20 15:00:33 | INFO     | ss_crawler | [andele_scraper] ✨ CPU Match: AMD Ryzen 9... -> CPU ID 1714 (85%)
+2026-08-20 15:00:33 | INFO     | ss_crawler | [repository] ✨ 15898614: New - AMD Ryzen 9 270
+2026-08-20 15:00:33 | INFO     | ss_crawler | [andele_scraper] 🖼️  Found 5 images for 15898614: AMD Ryzen 9...
+2026-08-20 15:00:33 | INFO     | ss_crawler | [andele_scraper]    Image 1: https://static2.andelemandele.lv/images/large/811/07e/1/e3a50e27740db3a1f.webp...
+2026-08-20 15:00:33 | INFO     | ss_crawler | [andele_scraper]    Image 2: https://static5.andelemandele.lv/images/large/152/80a/1/25ae7d186a0c9a36a.webp...
+2026-08-20 15:00:33 | INFO     | ss_crawler | [andele_scraper]    Image 3: https://static5.andelemandele.lv/images/large/ab3/df6/1/67287cc2849aa3684.webp...
+2026-08-20 15:00:34 | INFO     | ss_crawler | [image_downloader] Downloaded image for 15898614 (stored as 15898614_1cf37f58.jpg, 128234 bytes)
+2026-08-20 15:00:34 | INFO     | ss_crawler | [image_downloader] Downloaded image for 15898614 (stored as 15898614_8eae5d85.jpg, 156417 bytes)
+2026-08-20 15:00:34 | INFO     | ss_crawler | [image_downloader] Downloaded image for 15898614 (stored as 15898614_a45948b1.jpg, 118113 bytes)
+2026-08-20 15:00:35 | INFO     | ss_crawler | [image_downloader] Downloaded image for 15898614 (stored as 15898614_359b54f8.jpg, 168357 bytes)
+2026-08-20 15:00:35 | INFO     | ss_crawler | [image_downloader] Downloaded image for 15898614 (stored as 15898614_bc055cdd.jpg, 166288 bytes)
+2026-08-20 15:00:35 | INFO     | ss_crawler | [andele_scraper] 📸 Downloaded 5 images for 15898614
+2026-08-20 15:00:35 | INFO     | ss_crawler | [andele_scraper] Completed cpu: {'total': 8, 'new': 8, 'updated': 0, 'failed': 0, 'skipped': 0, 'errors': []}
+2026-08-20 19:16:00 | INFO     | ss_crawler | [database] Database connected: localhost:5433/ss_market
+2026-08-20 19:16:00 | ERROR    | ss_crawler | [database] Database transaction failed: (psycopg2.errors.UndefinedColumn) column "brand" does not exist
+LINE 1: SELECT id, brand, model, cpu_name FROM cpu_reference WHERE i...
+                   ^
+
+[SQL: SELECT id, brand, model, cpu_name FROM cpu_reference WHERE id = %(id)s]
+[parameters: {'id': 1714}]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2026-08-20 19:18:06 | INFO     | ss_crawler | [database] Database connected: localhost:5433/ss_market
+2026-08-20 19:18:06 | INFO     | ss_crawler | [cpu_matcher] CPUMatcher initialized with 5320 CPUs

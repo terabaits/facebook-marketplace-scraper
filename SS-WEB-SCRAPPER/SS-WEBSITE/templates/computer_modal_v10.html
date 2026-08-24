@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Computer Modal v10 — Hover Preview · SS-Crawler</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: #fafaf9; color: #1c1917;
+  min-height: 100vh; padding: 20px;
+}
+.page-bg { max-width: 1000px; margin: 0 auto; }
+.demo-header { padding: 8px 0 16px; border-bottom: 1px solid #e7e5e4; margin-bottom: 16px; }
+.demo-header h1 { font-size: 18px; font-weight: 800; }
+.demo-header .v-tag { display: inline-block; font-size: 10px; padding: 2px 8px; background: #ec4899; color: white; border-radius: 10px; margin-left: 8px; vertical-align: middle; }
+.demo-header p { font-size: 12px; color: #78716c; margin-top: 4px; }
+.listing-card { display: flex; gap: 14px; padding: 14px; border: 1px solid #e7e5e4; border-radius: 10px; margin-bottom: 12px; cursor: pointer; transition: all .2s; background: white; position: relative; }
+.listing-card:hover { border-color: #ec4899; transform: translateY(-1px); box-shadow: 0 6px 20px -8px rgba(236,72,153,.2); }
+.listing-card .thumb { width: 60px; height: 60px; background: #f5f5f4; border-radius: 6px; flex-shrink: 0; display: grid; place-items: center; font-size: 24px; }
+.listing-card .info { flex: 1; }
+.listing-card .title { font-weight: 700; font-size: 13px; margin-bottom: 4px; }
+.listing-card .meta { font-size: 11px; color: #78716c; }
+.listing-card .price { font-weight: 800; font-size: 14px; color: #16a34a; }
+.listing-card .open-btn { background: transparent; color: #ec4899; border: 1.5px solid #ec4899; padding: 8px 12px; border-radius: 6px; font-size: 11px; font-weight: 600; cursor: pointer; align-self: center; }
+.listing-card .open-btn:hover { background: #ec4899; color: white; }
+
+/* === HOVER PREVIEW POPOVER === */
+.hover-preview {
+  position: fixed; width: 380px; max-width: 92vw;
+  background: white; border-radius: 12px;
+  box-shadow: 0 20px 50px rgba(0,0,0,.18), 0 0 0 1px rgba(0,0,0,.04);
+  z-index: 200; pointer-events: none;
+  opacity: 0; transform: translateY(8px);
+  transition: opacity .18s, transform .18s;
+  overflow: hidden;
+}
+.hover-preview.show { opacity: 1; transform: translateY(0); pointer-events: auto; }
+
+.hp-img {
+  width: 100%; aspect-ratio: 16/9;
+  background: linear-gradient(135deg, #fdf2f8 0%, #fce7f3 100%);
+  display: grid; place-items: center; font-size: 64px; position: relative;
+}
+.hp-img::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 40%; background: linear-gradient(180deg, transparent, rgba(0,0,0,.05)); }
+.hp-img .hp-type-badge {
+  position: absolute; top: 10px; left: 10px;
+  background: rgba(255,255,255,.9); color: #831843;
+  font-size: 9.5px; font-weight: 800; padding: 3px 7px; border-radius: 5px;
+  text-transform: uppercase; letter-spacing: .04em;
+}
+.hp-img .hp-quick {
+  position: absolute; top: 10px; right: 10px;
+  display: flex; gap: 4px;
+}
+.hp-img .hp-quick button {
+  width: 28px; height: 28px; border-radius: 50%;
+  background: rgba(255,255,255,.9); border: none; cursor: pointer;
+  font-size: 12px; display: grid; place-items: center;
+  transition: all .15s;
+}
+.hp-img .hp-quick button:hover { background: white; transform: scale(1.1); }
+
+.hp-body { padding: 12px 14px; }
+.hp-title { font-size: 14px; font-weight: 800; line-height: 1.3; margin-bottom: 4px; }
+.hp-meta { font-size: 10.5px; color: #a16207; margin-bottom: 10px; display: flex; align-items: center; gap: 6px; }
+.hp-meta .dot { width: 4px; height: 4px; background: #d6d3d1; border-radius: 50%; }
+
+.hp-price-row { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 12px; }
+.hp-price { font-size: 22px; font-weight: 800; color: #16a34a; }
+.hp-price-meta { font-size: 10px; color: #78716c; text-align: right; }
+.hp-trend { font-size: 10px; color: #16a34a; font-weight: 600; }
+
+.hp-specs { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; margin-bottom: 12px; }
+.hp-spec { display: flex; align-items: center; gap: 6px; padding: 6px 8px; background: #fafaf9; border-radius: 6px; font-size: 11px; }
+.hp-spec .ic { font-size: 14px; }
+.hp-spec .k { color: #78716c; }
+.hp-spec .v { font-weight: 700; margin-left: auto; }
+
+.hp-warn {
+  background: #fef3c7; border: 1px solid #fde68a; border-radius: 8px;
+  padding: 8px 10px; font-size: 11px; color: #92400e;
+  display: flex; align-items: center; gap: 6px; margin-bottom: 10px;
+}
+
+.hp-actions { display: flex; gap: 6px; }
+.hp-actions .btn { flex: 1; padding: 9px 12px; border-radius: 8px; font-size: 12px; font-weight: 700; cursor: pointer; border: none; display: flex; align-items: center; justify-content: center; gap: 4px; }
+.hp-actions .primary { background: #ec4899; color: white; }
+.hp-actions .primary:hover { background: #db2777; }
+.hp-actions .secondary { background: #f5f5f4; color: #1c1917; }
+.hp-actions .secondary:hover { background: #e7e5e4; }
+.hp-actions .flag { background: #f59e0b; color: white; }
+.hp-actions .flag:hover { background: #d97706; }
+
+.hp-tip {
+  font-size: 9.5px; color: #a8a29e; text-align: center; padding: 6px 14px 10px;
+  border-top: 1px solid #f5f5f4;
+}
+
+.listings-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+</style>
+</head>
+<body>
+<div class="page-bg">
+  <div class="demo-header">
+    <h1>Computer Listings <span class="v-tag">v10 — Hover Preview</span></h1>
+    <p>Hover a row to peek · 400ms debounce · Click for full details · No modal interruption</p>
+  </div>
+
+  <div class="listings-grid">
+    <div class="listing-card" data-idx="0" onmouseenter="showHover(0, event)" onmouseleave="hideHover()">
+      <div class="thumb">🖥️</div>
+      <div class="info">
+        <div class="title">Gaming PC — RTX 4070 / i7-13700K / 32GB DDR5</div>
+        <div class="meta">ss.com · Rīga · 2 days ago</div>
+      </div>
+      <div class="price">€1,850</div>
+      <button class="open-btn">Click</button>
+    </div>
+
+    <div class="listing-card" data-idx="1" onmouseenter="showHover(1, event)" onmouseleave="hideHover()">
+      <div class="thumb">💻</div>
+      <div class="info">
+        <div class="title">Lenovo ThinkPad T14 Gen 3</div>
+        <div class="meta">ss.com · Liepāja · 1 week ago</div>
+      </div>
+      <div class="price">€620</div>
+      <button class="open-btn">Click</button>
+    </div>
+
+    <div class="listing-card" data-idx="2" onmouseenter="showHover(2, event)" onmouseleave="hideHover()">
+      <div class="thumb">🎮</div>
+      <div class="info">
+        <div class="title">RTX 3060 Gaming PC Bundle</div>
+        <div class="meta">ss.com · Jelgava · 3 days ago</div>
+      </div>
+      <div class="price">€780</div>
+      <button class="open-btn">Click</button>
+    </div>
+
+    <div class="listing-card" data-idx="3" onmouseenter="showHover(3, event)" onmouseleave="hideHover()">
+      <div class="thumb">⚙️</div>
+      <div class="info">
+        <div class="title">Custom i9-14900K Build — RTX 4080</div>
+        <div class="meta">ss.com · Rīga · 1 day ago</div>
+      </div>
+      <div class="price">€2,400</div>
+      <button class="open-btn">Click</button>
+    </div>
+
+    <div class="listing-card" data-idx="4" onmouseenter="showHover(4, event)" onmouseleave="hideHover()">
+      <div class="thumb">💼</div>
+      <div class="info">
+        <div class="title">HP EliteDesk 800 G6 Mini</div>
+        <div class="meta">ss.com · Rīga · 5 days ago</div>
+      </div>
+      <div class="price">€450</div>
+      <button class="open-btn">Click</button>
+    </div>
+
+    <div class="listing-card" data-idx="5" onmouseenter="showHover(5, event)" onmouseleave="hideHover()">
+      <div class="thumb">🎯</div>
+      <div class="info">
+        <div class="title">Gaming Workstation — Threadripper</div>
+        <div class="meta">ss.com · Valmiera · 4 days ago</div>
+      </div>
+      <div class="price">€3,200</div>
+      <button class="open-btn">Click</button>
+    </div>
+  </div>
+</div>
+
+<div class="hover-preview" id="hover-preview">
+  <div class="hp-img" id="hp-img">🖥️
+    <div class="hp-type-badge" id="hp-type">CUSTOM</div>
+    <div class="hp-quick">
+      <button title="Quick view" onclick="alert('Quick view')">👁️</button>
+      <button title="Flag" onclick="alert('Flag')">🚩</button>
+    </div>
+  </div>
+  <div class="hp-body">
+    <div class="hp-title" id="hp-title">Gaming PC — RTX 4070 / i7-13700K / 32GB DDR5</div>
+    <div class="hp-meta" id="hp-meta">📍 Rīga<span class="dot"></span>👤 rig_builder_riga<span class="dot"></span>2 days ago</div>
+    <div class="hp-price-row">
+      <div>
+        <div class="hp-price" id="hp-price">€1,850</div>
+        <div style="font-size: 10px; color: #78716c;">asking price</div>
+      </div>
+      <div class="hp-price-meta">
+        <div class="hp-trend">↗ trending</div>
+        <div>similar listings avg €1,720</div>
+      </div>
+    </div>
+    <div class="hp-specs" id="hp-specs">
+      <div class="hp-spec"><span class="ic">⚙️</span><span class="k">CPU</span><span class="v">i7-13700K</span></div>
+      <div class="hp-spec"><span class="ic">🎮</span><span class="k">GPU</span><span class="v">RTX 4070</span></div>
+      <div class="hp-spec"><span class="ic">💾</span><span class="k">RAM</span><span class="v">32GB</span></div>
+      <div class="hp-spec"><span class="ic">💿</span><span class="k">SSD</span><span class="v">1TB</span></div>
+    </div>
+    <div class="hp-warn" id="hp-warn">⚠ 3 components need review</div>
+    <div class="hp-actions">
+      <button class="btn primary" onclick="alert('Open full')">View details</button>
+      <button class="btn flag" onclick="alert('Flag')">🚩</button>
+    </div>
+  </div>
+  <div class="hp-tip">Click anywhere on the card for the full modal</div>
+</div>
+
+<script>
+const listings = [
+  { ico: '🖥️', title: 'Gaming PC — RTX 4070 / i7-13700K / 32GB DDR5', meta: '📍 Rīga · 👤 rig_builder_riga · 2 days ago', price: '€1,850', type: 'CUSTOM', trend: '↗ trending', avg: '€1,720', specs: [['CPU','i7-13700K'],['GPU','RTX 4070'],['RAM','32GB'],['SSD','1TB']], warn: '⚠ 3 components need review' },
+  { ico: '💻', title: 'Lenovo ThinkPad T14 Gen 3 — i5 / 16GB / 512GB SSD', meta: '📍 Liepāja · 👤 laptop_lover · 1 week ago', price: '€620', type: 'PREBUILT', trend: '→ stable', avg: '€650', specs: [['CPU','i5-1235U'],['GPU','Iris Xe'],['RAM','16GB'],['SSD','512GB']], warn: '⚠ Battery not detected' },
+  { ico: '🎮', title: 'RTX 3060 Gaming PC Bundle — Ryzen 5 5600X / 16GB', meta: '📍 Jelgava · 👤 gamer_jelgava · 3 days ago', price: '€780', type: 'CUSTOM', trend: '↘ cooling', avg: '€820', specs: [['CPU','R5 5600X'],['GPU','RTX 3060'],['RAM','16GB'],['SSD','—']], warn: '⚠ Storage missing' },
+  { ico: '⚙️', title: 'Custom i9-14900K Build — RTX 4080', meta: '📍 Rīga · 👤 extreme_pcs · 1 day ago', price: '€2,400', type: 'CUSTOM', trend: '↗ hot', avg: '€2,300', specs: [['CPU','i9-14900K'],['GPU','RTX 4080'],['RAM','64GB'],['SSD','2TB']], warn: '' },
+  { ico: '💼', title: 'HP EliteDesk 800 G6 Mini — i7 / 32GB / 1TB', meta: '📍 Rīga · 👤 office_tech · 5 days ago', price: '€450', type: 'PREBUILT', trend: '→ stable', avg: '€480', specs: [['CPU','i7-10700T'],['GPU','UHD 630'],['RAM','32GB'],['SSD','1TB']], warn: '' },
+  { ico: '🎯', title: 'Gaming Workstation — Threadripper 3970X / 128GB', meta: '📍 Valmiera · 👤 workstation_pro · 4 days ago', price: '€3,200', type: 'CUSTOM', trend: '↗ premium', avg: '€3,400', specs: [['CPU','TR 3970X'],['GPU','RTX 3080'],['RAM','128GB'],['SSD','4TB']], warn: '⚠ CPU cooler mismatched' }
+];
+
+let hoverTimer = null;
+let currentIdx = -1;
+
+function showHover(idx, e) {
+  clearTimeout(hoverTimer);
+  currentIdx = idx;
+  hoverTimer = setTimeout(() => {
+    const l = listings[idx];
+    const popover = document.getElementById('hover-preview');
+    document.getElementById('hp-img').firstChild.textContent = l.ico;
+    document.getElementById('hp-type').textContent = l.type;
+    document.getElementById('hp-title').textContent = l.title;
+    document.getElementById('hp-meta').innerHTML = l.meta.replace(/·/g, '<span class="dot"></span>');
+    document.getElementById('hp-price').textContent = l.price;
+    document.querySelector('.hp-trend').textContent = l.trend;
+    document.querySelector('.hp-price-meta div:last-child').textContent = 'similar listings avg ' + l.avg;
+    document.getElementById('hp-warn').style.display = l.warn ? 'flex' : 'none';
+    document.getElementById('hp-warn').textContent = l.warn;
+    const specs = document.getElementById('hp-specs');
+    const ics = ['⚙️', '🎮', '💾', '💿'];
+    specs.innerHTML = l.specs.map((s, i) => `<div class="hp-spec"><span class="ic">${ics[i]}</span><span class="k">${s[0]}</span><span class="v">${s[1]}</span></div>`).join('');
+    if (l.warn) {
+      const w = document.createElement('div');
+      w.className = 'hp-warn';
+      w.textContent = l.warn;
+    }
+
+    // position
+    const rect = e.currentTarget.getBoundingClientRect();
+    const popRect = popover.getBoundingClientRect();
+    let left = rect.right + 16;
+    let top = rect.top;
+    if (left + popRect.width > window.innerWidth) {
+      left = rect.left - popRect.width - 16;
+    }
+    if (left < 8) left = 8;
+    if (top + popRect.height > window.innerHeight) {
+      top = window.innerHeight - popRect.height - 8;
+    }
+    popover.style.left = left + 'px';
+    popover.style.top = top + 'px';
+    popover.classList.add('show');
+  }, 400);
+}
+
+function hideHover() {
+  clearTimeout(hoverTimer);
+  hoverTimer = setTimeout(() => {
+    document.getElementById('hover-preview').classList.remove('show');
+  }, 200);
+}
+
+document.getElementById('hover-preview').addEventListener('mouseenter', () => {
+  clearTimeout(hoverTimer);
+});
+document.getElementById('hover-preview').addEventListener('mouseleave', hideHover);
+</script>
+</body>
+</html>

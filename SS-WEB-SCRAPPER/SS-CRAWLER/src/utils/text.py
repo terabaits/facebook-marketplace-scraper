@@ -82,8 +82,8 @@ def extract_gpu_tokens(text: str) -> List[str]:
     patterns = [
         # RTX series
         r'rtx\s*\d{4}\s*(?:ti|super|s)?',
-        # GTX series  
-        r'gtx\s*\d{3,4}\s*(?:ti)?',
+        # GTX series
+        r'gtx\s*\d{3,4}\s*(?:ti|super)?',
         # Older NVIDIA (4-digit followed by GT/GTX like 9800 GT, 8600 GTS)
         r'\d{4}\s*gtx',
         r'\d{4}\s*gt\w*',
@@ -91,6 +91,7 @@ def extract_gpu_tokens(text: str) -> List[str]:
         r'gt\s*\d{3,4}',
         r'gs\s*\d{3,4}',
         # AMD patterns
+        r'rx\s*7\d{3}\s*(?:xt|xtx)?',  # RX 7000 series (7900 XT/XTX)
         r'rx\s*6\d{3}\s*(?:xt|xtx)?',  # RX 6000 series (6800, 6900, etc.)
         r'rx\s*5\d{3}\s*(?:xt|xtx)?',  # RX 5000 series (5700, 5600, etc.)
         r'rx\s*\d{3,4}\s*(?:xt|xtx)?',  # RX 570, RX 5700 XT (general pattern)
@@ -100,6 +101,20 @@ def extract_gpu_tokens(text: str) -> List[str]:
         r'rx\s*vega',
         # Intel
         r'arc\s*a\s*\d+',
+        # Bare model numbers (no family prefix) — handles titles like
+        # "Asus 7900Xtx" (missing "RX") and "Zotac 1660 super" (missing "GTX")
+        # Real-world listings often omit the family prefix; we must still
+        # recognise the variant suffix so the matcher picks the right model.
+        r'\b7\d{3}\s*xtx\b',   # 7900 XTX, 7800 XTX, 7700 XTX
+        r'\b7\d{3}\s*xt\b',    # 7900 XT, 7800 XT
+        r'\b6\d{3}\s*xtx?\b',  # 6800 XT/XTX, 6900 XT/XTX
+        r'\b5\d{3}\s*xtx?\b',  # 5700 XT/XTX, 5600 XT
+        r'\b1\d{3}\s*super\b',  # 1660 super, 1650 super
+        r'\b3\d{3}\s*super\b',  # 3060 super
+        r'\b1\d{3}\s*ti\b',     # 1660 ti
+        r'\b3\d{3}\s*ti\b',     # 3060 ti
+        r'\b2\d{3}\s*ti\b',     # 2060 ti
+        r'\b1\d{3}\s*xtx?\b',   # 1660 XT (rare)
     ]
     
     for pattern in patterns:

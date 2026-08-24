@@ -1,255 +1,1101 @@
 {% extends "base.html" %}
 
+{% block title %}{{ t('SS-Crawler Dashboard') }} — {{ t('Market Overview') }}{% endblock %}
+
 {% block content %}
-<div class="stats-grid" id="stats-container">
-    <div class="loading">{{ t('Loading...') }}</div>
+<!-- ===== DASHBOARD FILTER BAR ===== -->
+<div class="card" id="dash-filter-bar" style="margin-bottom: 1rem;">
+    <div class="loading" style="font-size: 0.85rem;">{{ t('Loading filter options…') }}</div>
 </div>
 
+<!-- ===== HERO KPI CARDS (5 gradient cards) ===== -->
+<div class="dash-hero" id="dash-hero">
+    <div class="loading" style="grid-column: 1/-1;">{{ t('Loading dashboard…') }}</div>
+</div>
+
+<!-- ===== THE MONEY SHOT: 4 profit scenarios ===== -->
 <div class="section">
-    <h2>💰 {{ t('Potential Earnings by Category') }}</h2>
-    <p class="section-description">{{ t('Calculated as: (max_price - min_price) × listing_count') }}</p>
-    <div class="stats-grid" id="earnings-container">
-        <div class="loading">{{ t('Loading...') }}</div>
+    <div class="dash-section-header">
+        <h2>💎 {{ t('The Money Shot — Profit Scenarios') }}</h2>
+        <span class="dash-section-sub">{{ t('Four views of what your inventory could earn') }}</span>
+    </div>
+    <div class="chart-tall"><canvas id="profit-scenarios-chart"></canvas></div>
+    <div id="profit-scenarios-legend" style="margin-top: 0.75rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 0.75rem;"></div>
+</div>
+
+<!-- ===== CATEGORY BREAKDOWN: bar chart + radar ===== -->
+<div class="dash-grid-2">
+    <div class="section">
+        <div class="dash-section-header">
+            <h2>📊 {{ t('Per-Category Breakdown') }}</h2>
+        </div>
+        <div class="chart-medium"><canvas id="category-breakdown-chart"></canvas></div>
+    </div>
+    <div class="section">
+        <div class="dash-section-header">
+            <h2>🥧 {{ t('Market Share by Value') }}</h2>
+        </div>
+        <div class="chart-medium"><canvas id="market-share-chart"></canvas></div>
     </div>
 </div>
 
+<!-- ===== PER-CATEGORY CARDS (one per product page) ===== -->
 <div class="section">
-    <h2>📈 {{ t('Price Trends Over Time') }}</h2>
-    <div class="filters">
-        <label>
-            {{ t('Time Period') }}:
-            <select id="trendTimeFilter" onchange="loadPriceTrends()">
-                <option value="week">{{ t('Last Week') }}</option>
-                <option value="month" selected>{{ t('Last Month') }}</option>
-                <option value="year">{{ t('Last Year') }}</option>
-                <option value="all_time">{{ t('All Time') }}</option>
-            </select>
-        </label>
-        <label>
-            {{ t('Category') }}:
-            <select id="trendCategoryFilter" onchange="loadPriceTrends()">
-                <option value="all" selected>{{ t('All Categories') }}</option>
-                <option value="gpu">{{ t('GPUs') }}</option>
-                <option value="cpu">{{ t('CPUs') }}</option>
-                <option value="ssd">{{ t('SSDs') }}</option>
-                <option value="ram">{{ t('RAM') }}</option>
-                <option value="psu">{{ t('PSUs') }}</option>
-                <option value="case">{{ t('Cases') }}</option>
-            </select>
-        </label>
+    <div class="dash-section-header">
+        <h2>📦 {{ t('Every Page at a Glance') }}</h2>
+        <span class="dash-section-sub">{{ t('Click a card to open the category page') }}</span>
     </div>
-    <div class="chart-container">
-        <canvas id="priceChart"></canvas>
+    <div class="cat-grid" id="cat-grid">
+        <div class="loading">{{ t('Loading…') }}</div>
     </div>
-    <div id="priceTrendsLegend" style="margin-top: 1rem; text-align: center;"></div>
 </div>
 
-<div class="section">
-    <h2>{{ t('Quick Links') }}</h2>
-    <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
-        <a href="/gpu" class="btn">{{ t('View GPU Listings') }} →</a>
-        <a href="/cpu" class="btn">{{ t('View CPU Listings') }} →</a>
-        <a href="/lenses" class="btn">{{ t('View Lens Listings') }} →</a>
-        <a href="/models" class="btn">{{ t('Model Statistics') }} →</a>
+<!-- ===== TOP MODEL OPPORTUNITIES + PRICE HEALTH ===== -->
+<div class="dash-grid-2">
+    <div class="section">
+        <div class="dash-section-header">
+            <h2>🏆 {{ t('Top 10 Model Opportunities') }}</h2>
+            <span class="dash-section-sub">{{ t('Models with the biggest historical price spread (max - min)') }}</span>
+        </div>
+        <div class="chart-medium"><canvas id="model-opps-chart"></canvas></div>
+    </div>
+    <div class="section">
+        <div class="dash-section-header">
+            <h2>💓 {{ t('Price Health') }}</h2>
+            <span class="dash-section-sub">{{ t('How listings have moved over their lifetime') }}</span>
+        </div>
+        <div class="chart-medium"><canvas id="price-health-chart"></canvas></div>
+        <div id="price-health-stats" style="margin-top: 0.75rem; display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.5rem;"></div>
     </div>
 </div>
+
+<!-- ===== TOP DEALS + TOP BUY SIGNALS side by side ===== -->
+<div class="dash-flex-row">
+    <!-- Top deals: best % below category avg -->
+    <div class="section">
+        <div class="dash-section-header">
+            <h2>🎯 {{ t('Biggest Product Deals') }}</h2>
+            <span class="dash-section-sub">{{ t('Priced the furthest below their category average') }}</span>
+        </div>
+        <div class="dash-scroll-x">
+            <table class="deals-table" id="top-deals-table">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>{{ t('Listing') }}</th>
+                        <th>{{ t('Cat') }}</th>
+                        <th>{{ t('Price') }}</th>
+                        <th>{{ t('vs Avg') }}</th>
+                    </tr>
+                </thead>
+                <tbody><tr><td colspan="5">{{ t('Loading…') }}</td></tr></tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Top buy signals: priced below this model's all-time max -->
+    <div class="section">
+        <div class="dash-section-header">
+            <h2>📈 {{ t('Biggest Resell Upside') }}</h2>
+            <span class="dash-section-sub">{{ t('Active listings below the highest price each model has ever sold') }}</span>
+        </div>
+        <div class="dash-scroll-x">
+            <table class="deals-table" id="top-buy-table">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>{{ t('Listing') }}</th>
+                        <th>{{ t('Cat') }}</th>
+                        <th>{{ t('Now') }}</th>
+                        <th>{{ t('Model Max') }}</th>
+                        <th>{{ t('Upside') }}</th>
+                    </tr>
+                </thead>
+                <tbody><tr><td colspan="6">{{ t('Loading…') }}</td></tr></tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- ===== TOP DROPS + TOP RISES side by side ===== -->
+<div class="dash-flex-row">
+    <div class="section">
+        <div class="dash-section-header">
+            <h2>🔻 {{ t('Biggest Price Drops') }}</h2>
+            <span class="dash-section-sub">{{ t('Largest absolute price drops in the last 30 days') }}</span>
+        </div>
+        <div class="dash-scroll-x">
+            <table class="deals-table" id="top-drops-table">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>{{ t('Listing') }}</th>
+                        <th>{{ t('Cat') }}</th>
+                        <th>{{ t('Was') }}</th>
+                        <th>{{ t('Now') }}</th>
+                        <th>{{ t('Drop') }}</th>
+                    </tr>
+                </thead>
+                <tbody><tr><td colspan="6">{{ t('Loading…') }}</td></tr></tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="dash-section-header">
+            <h2>🔺 {{ t('Biggest Price Rises') }}</h2>
+            <span class="dash-section-sub">{{ t('Largest absolute price increases') }}</span>
+        </div>
+        <div class="dash-scroll-x">
+            <table class="deals-table" id="top-rises-table">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>{{ t('Listing') }}</th>
+                        <th>{{ t('Cat') }}</th>
+                        <th>{{ t('Was') }}</th>
+                        <th>{{ t('Now') }}</th>
+                        <th>{{ t('Rise') }}</th>
+                    </tr>
+                </thead>
+                <tbody><tr><td colspan="6">{{ t('Loading…') }}</td></tr></tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- ===== ACTIVITY + MATCH RATES ===== -->
+<div class="dash-grid-2">
+    <div class="section">
+        <div class="dash-section-header">
+            <h2>📅 {{ t('New Listings — Last 30 Days') }}</h2>
+            <span class="dash-section-sub" id="activity-sub"></span>
+        </div>
+        <div class="chart-medium"><canvas id="activity-chart"></canvas></div>
+    </div>
+    <div class="section">
+        <div class="dash-section-header">
+            <h2>🎯 {{ t('Match Rates by Category') }}</h2>
+            <span class="dash-section-sub">{{ t('How well listings are matched to reference models') }}</span>
+        </div>
+        <div class="chart-medium"><canvas id="match-rates-chart"></canvas></div>
+    </div>
+</div>
+
 {% endblock %}
 
 {% block scripts %}
 <script>
-// Format currency
-function formatCurrency(value) {
-    if (value === null || value === undefined) return '€0';
-    return '€' + value.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+// === Category metadata (icon, color, label) — shared across the page ===
+const CAT_META = {
+    gpu:        { icon: '🎮', color: '#667eea', label: 'GPU',        url: '/gpu' },
+    cpu:        { icon: '🧠', color: '#764ba2', label: 'CPU',        url: '/cpu' },
+    ssd:        { icon: '💾', color: '#f59e0b', label: 'SSD',        url: '/ssd' },
+    ram:        { icon: '⚡', color: '#ef4444', label: 'RAM',        url: '/ram' },
+    psu:        { icon: '🔌', color: '#10b981', label: 'PSU',        url: '/psu' },
+    case:       { icon: '📦', color: '#a855f7', label: 'Case',       url: '/cases' },
+    motherboard:{ icon: '🧩', color: '#ec4899', label: 'Motherboard',url: '/motherboards' },
+    monitor:    { icon: '🖥️', color: '#14b8a6', label: 'Monitor',    url: '/monitors' },
+    camera:     { icon: '📷', color: '#f97316', label: 'Camera',     url: '/cameras' },
+    lens:       { icon: '🔍', color: '#f43f5e', label: 'Lens',       url: '/lenses' },
+    console:    { icon: '🎯', color: '#6366f1', label: 'Console',    url: '/consoles' }
+};
+const CATS_IN_ORDER = ['gpu','cpu','ssd','ram','monitor','motherboard','psu','case','lens','camera','console'];
+
+// === Theme helpers ===
+function getThemeColors() {
+    // data-theme is set on <html> (document.documentElement), not on
+    // <body>. The previous version checked document.body which is
+    // never set, so chart text always rendered as the LIGHT theme
+    // color (#1f2937 = dark slate) — barely visible on dark backgrounds.
+    const dark = document.documentElement.getAttribute('data-theme') === 'dark';
+    return {
+        text: dark ? '#e5e7eb' : '#1f2937',
+        grid: dark ? 'rgba(255,255,255,0.07)' : 'rgba(0,0,0,0.06)',
+        tooltipBg: dark ? '#0f172a' : '#ffffff',
+        tooltipBorder: dark ? 'rgba(255,255,255,0.15)' : 'rgba(0,0,0,0.1)'
+    };
 }
 
-// Load and display stats
-async function loadStats() {
-    try {
-        // Load both stats and earnings in parallel
-        const [statsResponse, earningsResponse] = await Promise.all([
-            fetch('/api/stats'),
-            fetch('/api/category-earnings')
-        ]);
-
-        const stats = await statsResponse.json();
-        const earnings = await earningsResponse.json();
-
-        const container = document.getElementById('stats-container');
-        container.innerHTML = `
-            <div class="stat-card gpu">
-                <h3>${t('GPU Listings')}</h3>
-                <div class="stat-value">${stats.gpu.active_listings}</div>
-                <small>${stats.gpu.matched} ${t('matched')} · Avg €${stats.gpu.avg_price || 'N/A'}</small>
-            </div>
-
-            <div class="stat-card cpu">
-                <h3>${t('CPU Listings')}</h3>
-                <div class="stat-value">${stats.cpu.active_listings}</div>
-                <small>${stats.cpu.matched} ${t('matched')} · Avg €${stats.cpu.avg_price || 'N/A'}</small>
-            </div>
-
-            <div class="stat-card gpu" style="border-left-color: #f39c12;">
-                <h3>${t('SSD Listings')}</h3>
-                <div class="stat-value">${stats.ssd?.active_listings || 0}</div>
-                <small>${stats.ssd?.matched || 0} ${t('matched')} · Avg €${stats.ssd?.avg_price || 'N/A'}</small>
-            </div>
-
-            <div class="stat-card cpu" style="border-left-color: #e74c3c;">
-                <h3>${t('RAM Listings')}</h3>
-                <div class="stat-value">${stats.ram?.active_listings || 0}</div>
-                <small>${stats.ram?.matched || 0} ${t('matched')} · Avg €${stats.ram?.avg_price || 'N/A'}</small>
-            </div>
-
-            <div class="stat-card gpu" style="border-left-color: #27ae60;">
-                <h3>${t('PSU Listings')}</h3>
-                <div class="stat-value">${stats.psu?.active_listings || 0}</div>
-                <small>${stats.psu?.matched || 0} ${t('matched')} · Avg €${stats.psu?.avg_price || 'N/A'}</small>
-            </div>
-
-            <div class="stat-card cpu" style="border-left-color: #9b59b6;">
-                <h3>${t('Case Listings')}</h3>
-                <div class="stat-value">${stats.case?.active_listings || 0}</div>
-                <small>${stats.case?.matched || 0} ${t('matched')} · Avg €${stats.case?.avg_price || 'N/A'}</small>
-            </div>
-
-            <div class="stat-card gpu" style="border-left-color: #e91e63;">
-                <h3>${t('Lens Listings')}</h3>
-                <div class="stat-value">${stats.lens?.active_listings || 0}</div>
-                <small>${stats.lens?.matched || 0} ${t('matched')} · Avg €${stats.lens?.avg_price || 'N/A'}</small>
-            </div>
-        `;
-
-        // Render earnings cards
-        const earningsContainer = document.getElementById('earnings-container');
-        const earningsOrder = ['gpu', 'cpu', 'ssd', 'ram', 'psu', 'case', 'lens'];
-        const earningsColors = {
-            'gpu': '#667eea',
-            'cpu': '#764ba2',
-            'ssd': '#f39c12',
-            'ram': '#e74c3c',
-            'psu': '#27ae60',
-            'case': '#9b59b6',
-            'lens': '#e91e63'
-        };
-
-        let earningsHTML = '';
-        earningsOrder.forEach(category => {
-            const data = earnings[category];
-            if (data && data.opportunity > 0) {
-                const avgPrice = data.avg_price || 0;
-                const listingCount = data.listing_count || 0;
-                const opportunity = data.opportunity || 0;
-                const color = earningsColors[category] || '#667eea';
-                const label = category.toUpperCase();
-
-                earningsHTML += `
-                    <div class="stat-card earnings-card" style="border-left-color: ${color};">
-                        <h3>${label} ${t('Potential Earnings')}</h3>
-                        <div class="earnings">${formatCurrency(opportunity)}</div>
-                        <small>${listingCount} ${t('listings')} · ${t('avg')} €${avgPrice.toFixed(2)} · ${t('spread')} €${(data.max_price - data.min_price).toFixed(2)}</small>
-                    </div>
-                `;
-            }
-        });
-
-        if (earningsHTML === '') {
-            earningsContainer.innerHTML = `<div class="no-data" style="grid-column: 1/-1;">${t('No earnings data available')}</div>`;
-        } else {
-            earningsContainer.innerHTML = earningsHTML;
-        }
-    } catch (error) {
-        document.getElementById('stats-container').innerHTML = `<div class="error">${t('Failed to load statistics')}: ${error.message}</div>`;
-        document.getElementById('earnings-container').innerHTML = `<div class="error">${t('Failed to load earnings data')}</div>`;
+// === Number formatters ===
+function fmtEur(v, opts = {}) {
+    if (v === null || v === undefined) return '€0';
+    const n = Number(v);
+    if (opts.compact && Math.abs(n) >= 1000) {
+        if (Math.abs(n) >= 1_000_000) return '€' + (n / 1_000_000).toFixed(1) + 'M';
+        return '€' + (n / 1000).toFixed(1) + 'k';
     }
+    return '€' + n.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+}
+function fmtNum(v) {
+    return Number(v || 0).toLocaleString('en-US');
+}
+function cleanTitle(raw, max = 80) {
+    if (!raw) return '';
+    let t = String(raw)
+        .replace(/^SS\.?COM[^,]*,\s*/i, '')
+        .replace(/^Cena\s+\d+\s*€\.?\s*/i, '')
+        .replace(/,\s*Cena\s+\d+\s*€\.?/i, '')
+        .replace(/\s*-\s*Sludinājumi\s*$/i, '')
+        .replace(/\s+/g, ' ')
+        .trim();
+    if (t.length > max) t = t.slice(0, max).replace(/\s+\S*$/, '') + '…';
+    return t;
+}
+function imgOrPlaceholder(item) {
+    if (item && item.image_url) {
+        return `<img class="deal-thumb" loading="lazy" src="${item.image_url}" onerror="this.outerHTML='<div class=&quot;deal-thumb-placeholder&quot;>📦</div>'" alt="">`;
+    }
+    return '<div class="deal-thumb-placeholder">📦</div>';
 }
 
-// Load price trends chart
-let priceChart = null;
+// === Chart instances kept for theme re-render ===
+const charts = {};
 
-async function loadPriceTrends() {
-    try {
-        const timeFilter = document.getElementById('trendTimeFilter').value;
-        const categoryFilter = document.getElementById('trendCategoryFilter').value;
+// Render hero KPI cards
+function renderHero(totals) {
+    const hero = document.getElementById('dash-hero');
+    hero.innerHTML = `
+        <div class="dash-hero-card gradient-purple">
+            <span class="dash-hero-icon">📦</span>
+            <div class="dash-hero-label">{{ t('Active Listings') }}</div>
+            <div class="dash-hero-value">${fmtNum(totals.active_listings)}</div>
+            <div class="dash-hero-sub">${fmtNum(totals.total_listings)} ${ t('lifetime') }} · ${totals.delist_rate}% {{ t('delist rate') }}</div>
+        </div>
+        <div class="dash-hero-card gradient-blue">
+            <span class="dash-hero-icon">💰</span>
+            <div class="dash-hero-label">{{ t('Market Value') }}</div>
+            <div class="dash-hero-value">${fmtEur(totals.active_value, {compact:true})}</div>
+            <div class="dash-hero-sub">${t('avg')} ${fmtEur(totals.avg_price)} {{ t('per listing') }}</div>
+        </div>
+        <div class="dash-hero-card gradient-teal">
+            <span class="dash-hero-icon">🎯</span>
+            <div class="dash-hero-label">{{ t('Model Max Upside') }}</div>
+            <div class="dash-hero-value">${fmtEur(totals.model_upside_max, {compact:true})}</div>
+            <div class="dash-hero-sub">{{ t('If each listing sold at the highest price that exact model has ever listed at') }}</div>
+        </div>
+        <div class="dash-hero-card gradient-green">
+            <span class="dash-hero-icon">🚀</span>
+            <div class="dash-hero-label">{{ t('Category Max Upside') }}</div>
+            <div class="dash-hero-value">${fmtEur(totals.upside_max, {compact:true})}</div>
+            <div class="dash-hero-sub">{{ t('If everything sold at the highest price its entire category has ever seen') }}</div>
+        </div>
+        <div class="dash-hero-card gradient-orange">
+            <span class="dash-hero-icon">🤝</span>
+            <div class="dash-hero-label">{{ t('Haggling Max') }}</div>
+            <div class="dash-hero-value">${fmtEur(totals.haggling_max, {compact:true})}</div>
+            <div class="dash-hero-sub">{{ t('Buy every listing at its category minimum, resell at the maximum') }}</div>
+        </div>
+        <div class="dash-hero-card gradient-gold">
+            <span class="dash-hero-icon">⚖</span>
+            <div class="dash-hero-label">{{ t('Avg Upside per Listing') }}</div>
+            <div class="dash-hero-value">${fmtEur(totals.upside_per_listing)}</div>
+            <div class="dash-hero-sub">{{ t('Per-listing potential profit headroom') }}</div>
+        </div>
+    `;
+}
 
-        const response = await fetch(`/api/price-trends?time=${timeFilter}&category=${categoryFilter}`);
-        const data = await response.json();
+// Per-category cards
+function renderCategoryCards(categories) {
+    const grid = document.getElementById('cat-grid');
+    const sorted = [...categories].sort((a, b) => b.upside_max - a.upside_max);
+    grid.innerHTML = sorted.map(c => {
+        const meta = CAT_META[c.category] || { icon: '📦', color: '#999', label: c.category.toUpperCase(), url: '#' };
+        const matchRate = (window.__match_rates__ || {})[c.category];
+        const matchPct = matchRate ? matchRate.rate : 0;
+        return `
+        <a href="${meta.url}" class="cat-card cat-${c.category}" style="text-decoration:none; color:inherit; display:block;">
+            <span class="cat-icon">${meta.icon}</span>
+            <div class="cat-name">${meta.label}</div>
+            <div class="cat-count">${fmtNum(c.active)}</div>
+            <div class="cat-avg">${t('avg')} ${fmtEur(c.avg_price)} · ${fmtEur(c.active_value, {compact:true})} {{ t('value') }}</div>
+            <div class="cat-upside">
+                <span class="cat-upside-label">{{ t('Upside') }}</span>
+                <span class="cat-upside-value">${fmtEur(c.upside_max, {compact:true})}</span>
+            </div>
+            <div class="cat-upside" style="border-top: none; padding-top: 0.25rem; margin-top: 0.25rem;">
+                <span class="cat-upside-label">{{ t('Haggle max') }}</span>
+                <span class="cat-upside-value" style="color:#f59e0b;">${fmtEur(c.haggling_max, {compact:true})}</span>
+            </div>
+            <div class="match-bar" title="${matchPct}% ${ t('matched') }">
+                <span style="width: ${matchPct}%; background: linear-gradient(90deg, ${meta.color}, ${meta.color}99);"></span>
+            </div>
+            <div style="font-size:0.7rem; color: var(--text-muted, #6b7280); margin-top: 0.25rem;">
+                ${matchPct}% ${ t('matched') } · ${fmtNum(c.unique_models)} {{ t('models') }}
+            </div>
+        </a>
+        `;
+    }).join('');
+}
 
-        const ctx = document.getElementById('priceChart').getContext('2d');
+// Top deals table
+function renderTopDeals(deals) {
+    const tbody = document.querySelector('#top-deals-table tbody');
+    if (!deals || deals.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="5">{{ t('No deals yet — need more listings.') }}</td></tr>`;
+        return;
+    }
+    tbody.innerHTML = deals.map(d => {
+        const title = cleanTitle(d.title, 60);
+        return `
+        <tr>
+            <td>${imgOrPlaceholder(d)}</td>
+            <td><a href="${d.listing_url || '#'}" target="_blank">${title}</a></td>
+            <td><span style="color:${(CAT_META[d.category]||{}).color}; font-weight:700;">${(CAT_META[d.category]||{label:d.category}).label}</span></td>
+            <td><strong>${fmtEur(d.price_eur)}</strong></td>
+            <td><span class="pct-pill up">${d.pct_below_avg.toFixed(0)}%</span> <small style="color:var(--text-muted);">${fmtEur(d.below_avg_eur)}</small></td>
+        </tr>`;
+    }).join('');
+}
 
-        if (priceChart) {
-            priceChart.destroy();
-        }
+// Top buy signals
+function renderTopBuySignals(rows) {
+    const tbody = document.querySelector('#top-buy-table tbody');
+    if (!rows || rows.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="6">{{ t('No buy signals.') }}</td></tr>`;
+        return;
+    }
+    tbody.innerHTML = rows.map(d => {
+        const title = cleanTitle(d.title, 50);
+        return `
+        <tr>
+            <td>${imgOrPlaceholder(d)}</td>
+            <td><a href="${d.listing_url || '#'}" target="_blank">${title}</a></td>
+            <td><span style="color:${(CAT_META[d.category]||{}).color}; font-weight:700;">${(CAT_META[d.category]||{label:d.category}).label}</span></td>
+            <td><strong>${fmtEur(d.price_eur)}</strong></td>
+            <td>${fmtEur(d.model_max)}</td>
+            <td><span class="pct-pill up">+${fmtEur(d.upside_eur, {compact:true})}</span> <small style="color:var(--text-muted); font-weight:600;">${d.upside_pct.toFixed(0)}%</small></td>
+        </tr>`;
+    }).join('');
+}
 
-        const datasets = data.datasets || [];
-        if (datasets.length === 0) {
-            document.getElementById('priceTrendsLegend').innerHTML = `<div class="no-data">${t('No price trend data available for the selected filters')}</div>`;
-            return;
-        }
+// Top drops
+function renderTopDrops(rows) {
+    const tbody = document.querySelector('#top-drops-table tbody');
+    if (!rows || rows.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="6">{{ t('No recent drops — scraper will fill this in over time.') }}</td></tr>`;
+        return;
+    }
+    tbody.innerHTML = rows.map(d => {
+        const title = cleanTitle(d.title, 50);
+        return `
+        <tr>
+            <td>${imgOrPlaceholder(d)}</td>
+            <td><a href="${d.listing_url || '#'}" target="_blank">${title}</a></td>
+            <td><span style="color:${(CAT_META[d.category]||{}).color}; font-weight:700;">${(CAT_META[d.category]||{label:d.category}).label}</span></td>
+            <td style="text-decoration: line-through; color: var(--text-muted);">${fmtEur(d.old_price)}</td>
+            <td><strong>${fmtEur(d.current_price)}</strong></td>
+            <td><span class="pct-pill down">-${fmtEur(d.drop_eur)}</span> <small style="color:var(--text-muted);">${d.drop_pct.toFixed(1)}%</small></td>
+        </tr>`;
+    }).join('');
+}
 
-        const colors = ['#667eea', '#764ba2', '#f39c12', '#e74c3c', '#27ae60', '#9b59b6', '#e91e63'];
-        datasets.forEach((dataset, index) => {
-            dataset.borderColor = colors[index % colors.length];
-            dataset.backgroundColor = colors[index % colors.length] + '20';
-            dataset.fill = false;
-            dataset.tension = 0.4;
-        });
+// Top rises
+function renderTopRises(rows) {
+    const tbody = document.querySelector('#top-rises-table tbody');
+    if (!rows || rows.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="6">{{ t('No recent rises yet.') }}</td></tr>`;
+        return;
+    }
+    tbody.innerHTML = rows.map(d => {
+        const title = cleanTitle(d.title, 50);
+        return `
+        <tr>
+            <td>${imgOrPlaceholder(d)}</td>
+            <td><a href="${d.listing_url || '#'}" target="_blank">${title}</a></td>
+            <td><span style="color:${(CAT_META[d.category]||{}).color}; font-weight:700;">${(CAT_META[d.category]||{label:d.category}).label}</span></td>
+            <td style="text-decoration: line-through; color: var(--text-muted);">${fmtEur(d.old_price)}</td>
+            <td><strong>${fmtEur(d.current_price)}</strong></td>
+            <td><span class="pct-pill up">+${fmtEur(d.rise_eur)}</span></td>
+        </tr>`;
+    }).join('');
+}
 
-        priceChart = new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: data.labels || [],
-                datasets: datasets
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        position: 'top',
-                    },
-                    title: {
-                        display: false
+// === CHARTS ===
+
+// 1) The Money Shot — 4 profit scenarios
+function renderProfitScenarios(totals, categories) {
+    const ctx = document.getElementById('profit-scenarios-chart').getContext('2d');
+    const theme = getThemeColors();
+    const labels = ['Current\nValue', 'Model Max\nUpside', 'Category Max\nUpside', 'Haggling\nMax'];
+    const current = totals.active_value;
+    const modelUpside = totals.model_upside_max;
+    const catUpside = totals.upside_max;
+    const haggling = totals.haggling_max;
+    if (charts.profit) charts.profit.destroy();
+    charts.profit = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: '€',
+                data: [current, modelUpside, catUpside, haggling],
+                backgroundColor: ['#667eea', '#10b981', '#14b8a6', '#f59e0b'],
+                borderColor: ['#5a67d8', '#059669', '#0d9488', '#d97706'],
+                borderWidth: 2,
+                borderRadius: 8,
+                maxBarThickness: 90
+            }]
+        },
+        options: {
+            indexAxis: 'y',
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { display: false },
+                tooltip: {
+                    backgroundColor: theme.tooltipBg,
+                    borderColor: theme.tooltipBorder,
+                    borderWidth: 1,
+                    titleColor: theme.text,
+                    bodyColor: theme.text,
+                    callbacks: {
+                        label: (ctx) => fmtEur(ctx.parsed.x, {compact:true})
                     }
+                }
+            },
+            scales: {
+                x: {
+                    grid: { color: theme.grid },
+                    ticks: { color: theme.text, callback: (v) => fmtEur(v, {compact:true}) }
                 },
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        ticks: {
-                            callback: function(value) {
-                                return '€' + value;
-                            }
+                y: {
+                    grid: { display: false },
+                    ticks: { color: theme.text, font: { size: 12, weight: '600' } }
+                }
+            }
+        }
+    });
+
+    // 4 explanation cards under the chart
+    const legend = document.getElementById('profit-scenarios-legend');
+    legend.innerHTML = `
+        <div style="background: rgba(102,126,234,0.08); border-left: 3px solid #667eea; padding: 0.75rem 1rem; border-radius: 8px;">
+            <div style="font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.5px; color: #667eea; font-weight: 700;">{{ t('Current Value') }}</div>
+            <div style="font-size: 1.4rem; font-weight: 800; color: var(--text-color);">${fmtEur(current, {compact:true})}</div>
+            <div style="font-size: 0.75rem; color: var(--text-muted, #6b7280); margin-top: 0.2rem;">{{ t('What your active inventory is worth at today\u2019s prices') }}</div>
+        </div>
+        <div style="background: rgba(16,185,129,0.08); border-left: 3px solid #10b981; padding: 0.75rem 1rem; border-radius: 8px;">
+            <div style="font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.5px; color: #10b981; font-weight: 700;">{{ t('Model Max Upside') }}</div>
+            <div style="font-size: 1.4rem; font-weight: 800; color: var(--text-color);">+${fmtEur(modelUpside, {compact:true})}</div>
+            <div style="font-size: 0.75rem; color: var(--text-muted, #6b7280); margin-top: 0.2rem;">{{ t('If each listing sold at the highest price that exact model has ever been listed at') }}</div>
+        </div>
+        <div style="background: rgba(20,184,166,0.08); border-left: 3px solid #14b8a6; padding: 0.75rem 1rem; border-radius: 8px;">
+            <div style="font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.5px; color: #0d9488; font-weight: 700;">{{ t('Category Max Upside') }}</div>
+            <div style="font-size: 1.4rem; font-weight: 800; color: var(--text-color);">+${fmtEur(catUpside, {compact:true})}</div>
+            <div style="font-size: 0.75rem; color: var(--text-muted, #6b7280); margin-top: 0.2rem;">{{ t('If every listing sold at the highest price its entire category has ever seen') }}</div>
+        </div>
+        <div style="background: rgba(245,158,11,0.08); border-left: 3px solid #f59e0b; padding: 0.75rem 1rem; border-radius: 8px;">
+            <div style="font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.5px; color: #f59e0b; font-weight: 700;">{{ t('Haggling Max') }}</div>
+            <div style="font-size: 1.4rem; font-weight: 800; color: var(--text-color);">+${fmtEur(haggling, {compact:true})}</div>
+            <div style="font-size: 0.75rem; color: var(--text-muted, #6b7280); margin-top: 0.2rem;">{{ t('Haggle each listing down to its category minimum, then resell at the maximum') }}</div>
+        </div>
+    `;
+}
+
+// 2) Per-category breakdown — grouped bar
+function renderCategoryBreakdown(categories) {
+    const ctx = document.getElementById('category-breakdown-chart').getContext('2d');
+    const theme = getThemeColors();
+    const sorted = [...categories].sort((a, b) => b.active - a.active);
+    if (charts.cat) charts.cat.destroy();
+    charts.cat = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: sorted.map(c => (CAT_META[c.category] || {label: c.category}).label),
+            datasets: [
+                { label: '{{ t("Active") }}', data: sorted.map(c => c.active), backgroundColor: '#667eea', borderRadius: 4, maxBarThickness: 28 },
+                { label: '{{ t("Upside") }}', data: sorted.map(c => c.upside_max), backgroundColor: '#10b981', borderRadius: 4, maxBarThickness: 28 },
+                { label: '{{ t("Haggle") }}', data: sorted.map(c => c.haggling_max), backgroundColor: '#f59e0b', borderRadius: 4, maxBarThickness: 28 }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { position: 'top', labels: { color: theme.text } },
+                tooltip: {
+                    backgroundColor: theme.tooltipBg, borderColor: theme.tooltipBorder, borderWidth: 1,
+                    titleColor: theme.text, bodyColor: theme.text,
+                    callbacks: { label: (c) => `${c.dataset.label}: ${fmtEur(c.parsed.y, {compact:true})}` }
+                }
+            },
+            scales: {
+                x: { grid: { display: false }, ticks: { color: theme.text } },
+                y: { grid: { color: theme.grid }, ticks: { color: theme.text, callback: (v) => fmtEur(v, {compact:true}) } }
+            }
+        }
+    });
+}
+
+// 3) Market share doughnut
+function renderMarketShare(categories) {
+    const ctx = document.getElementById('market-share-chart').getContext('2d');
+    const theme = getThemeColors();
+    const sorted = [...categories].filter(c => c.active_value > 0).sort((a, b) => b.active_value - a.active_value);
+    if (charts.share) charts.share.destroy();
+    charts.share = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            labels: sorted.map(c => (CAT_META[c.category] || {label: c.category}).label),
+            datasets: [{
+                data: sorted.map(c => c.active_value),
+                backgroundColor: sorted.map(c => (CAT_META[c.category] || {color: '#999'}).color),
+                borderWidth: 2,
+                borderColor: getThemeColors().tooltipBg
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            cutout: '60%',
+            plugins: {
+                legend: { position: 'right', labels: { color: theme.text, font: { size: 11 } } },
+                tooltip: {
+                    backgroundColor: theme.tooltipBg, borderColor: theme.tooltipBorder, borderWidth: 1,
+                    titleColor: theme.text, bodyColor: theme.text,
+                    callbacks: {
+                        label: (c) => {
+                            const total = c.dataset.data.reduce((a,b) => a+b, 0);
+                            const pct = ((c.parsed / total) * 100).toFixed(1);
+                            return `${c.label}: ${fmtEur(c.parsed, {compact:true})} (${pct}%)`;
                         }
                     }
                 }
             }
-        });
-
-        // Update legend with trend info
-        let legendHTML = '';
-        if (data.trend_info) {
-            Object.entries(data.trend_info).forEach(([category, info]) => {
-                const trendClass = info.direction === 'up' ? 'trend-up' : (info.direction === 'down' ? 'trend-down' : '');
-                const arrow = info.direction === 'up' ? '↑' : (info.direction === 'down' ? '↓' : '→');
-                legendHTML += `
-                    <span style="margin: 0 1rem;">
-                        <strong>${category.toUpperCase()}:</strong>
-                        <span class="trend-value ${trendClass}">${arrow} ${info.percentage.toFixed(1)}%</span>
-                        (${formatCurrency(info.change)})
-                    </span>
-                `;
-            });
         }
-        document.getElementById('priceTrendsLegend').innerHTML = legendHTML || '';
-    } catch (error) {
-        document.getElementById('priceTrendsLegend').innerHTML = `<div class="error">${t('Failed to load price trends')}: ${error.message}</div>`;
+    });
+}
+
+// 4) Activity bar chart
+function renderActivity(activity) {
+    const ctx = document.getElementById('activity-chart').getContext('2d');
+    const theme = getThemeColors();
+    // Fill in missing days
+    const byDay = {};
+    activity.forEach(a => { byDay[a.day] = a.count; });
+    const days = [];
+    const counts = [];
+    const today = new Date();
+    for (let i = 29; i >= 0; i--) {
+        const d = new Date(today);
+        d.setDate(d.getDate() - i);
+        const key = d.toISOString().slice(0, 10);
+        days.push(key.slice(5));  // MM-DD
+        counts.push(byDay[key] || 0);
+    }
+    if (charts.activity) charts.activity.destroy();
+    charts.activity = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: days,
+            datasets: [{
+                label: '{{ t("New listings") }}',
+                data: counts,
+                backgroundColor: days.map((_, i) => i === 29 ? '#ef4444' : '#667eea'),
+                borderRadius: 4,
+                maxBarThickness: 18
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { display: false },
+                tooltip: {
+                    backgroundColor: theme.tooltipBg, borderColor: theme.tooltipBorder, borderWidth: 1,
+                    titleColor: theme.text, bodyColor: theme.text
+                }
+            },
+            scales: {
+                x: { grid: { display: false }, ticks: { color: theme.text, font: { size: 9 } } },
+                y: { grid: { color: theme.grid }, ticks: { color: theme.text, stepSize: 1 }, beginAtZero: true }
+            }
+        }
+    });
+    const total = counts.reduce((a,b) => a+b, 0);
+    const sub = document.getElementById('activity-sub');
+    if (sub) sub.textContent = `${fmtNum(total)} ${t('new listings')} · 30 ${ t('days') }`;
+}
+
+// 5) Match rates horizontal bar
+function renderMatchRates(matchRates) {
+    const ctx = document.getElementById('match-rates-chart').getContext('2d');
+    const theme = getThemeColors();
+    const cats = Object.keys(matchRates).sort((a, b) => matchRates[b].rate - matchRates[a].rate);
+    if (charts.match) charts.match.destroy();
+    charts.match = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: cats.map(c => (CAT_META[c] || {label: c}).label),
+            datasets: [{
+                label: '%',
+                data: cats.map(c => matchRates[c].rate),
+                backgroundColor: cats.map(c => (CAT_META[c] || {color: '#999'}).color),
+                borderRadius: 4,
+                maxBarThickness: 22
+            }]
+        },
+        options: {
+            indexAxis: 'y',
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { display: false },
+                tooltip: {
+                    backgroundColor: theme.tooltipBg, borderColor: theme.tooltipBorder, borderWidth: 1,
+                    titleColor: theme.text, bodyColor: theme.text,
+                    callbacks: {
+                        label: (c) => {
+                            const m = matchRates[cats[c.dataIndex]];
+                            return `${m.rate}% (${m.matched}/${m.total})`;
+                        }
+                    }
+                }
+            },
+            scales: {
+                x: { grid: { color: theme.grid }, ticks: { color: theme.text, callback: v => v + '%' }, max: 100, beginAtZero: true },
+                y: { grid: { display: false }, ticks: { color: theme.text, font: { size: 11 } } }
+            }
+        }
+    });
+}
+
+// 6) Top model opportunities — biggest per-model spread
+function renderModelOpportunities(opps) {
+    const ctx = document.getElementById('model-opps-chart').getContext('2d');
+    const theme = getThemeColors();
+    if (!opps || opps.length === 0) {
+        if (charts.modelOpps) charts.modelOpps.destroy();
+        return;
+    }
+    // Shorten model IDs for display
+    const labels = opps.map(o => {
+        const m = o.model_id;
+        if (m.length > 24) return m.slice(0, 22) + '…';
+        return m;
+    });
+    if (charts.modelOpps) charts.modelOpps.destroy();
+    charts.modelOpps = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: labels,
+            datasets: [
+                {
+                    label: '{{ t("Min ever") }}',
+                    data: opps.map(o => o.model_min),
+                    backgroundColor: 'rgba(99,102,241,0.35)',
+                    borderColor: '#667eea',
+                    borderWidth: 1,
+                    borderRadius: 4,
+                    stack: 'a',
+                    maxBarThickness: 30
+                },
+                {
+                    label: '{{ t("Spread (max - min)") }}',
+                    data: opps.map(o => o.spread),
+                    backgroundColor: opps.map(o => (CAT_META[o.category] || {color: '#999'}).color),
+                    borderRadius: 4,
+                    stack: 'a',
+                    maxBarThickness: 30
+                }
+            ]
+        },
+        options: {
+            indexAxis: 'y',
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { position: 'top', labels: { color: theme.text, font: { size: 11 } } },
+                tooltip: {
+                    backgroundColor: theme.tooltipBg, borderColor: theme.tooltipBorder, borderWidth: 1,
+                    titleColor: theme.text, bodyColor: theme.text,
+                    callbacks: {
+                        label: (c) => {
+                            const o = opps[c.dataIndex];
+                            const meta = CAT_META[o.category] || {label: o.category};
+                            return [
+                                `${meta.label} · ${o.n} ${ t('listings')}`,
+                                `Min: ${fmtEur(o.model_min)}`,
+                                `Max: ${fmtEur(o.model_max)}`,
+                                `Spread: ${fmtEur(o.spread)}`
+                            ];
+                        }
+                    }
+                }
+            },
+            scales: {
+                x: {
+                    stacked: true,
+                    grid: { color: theme.grid },
+                    ticks: { color: theme.text, callback: (v) => fmtEur(v, {compact:true}) }
+                },
+                y: {
+                    stacked: true,
+                    grid: { display: false },
+                    ticks: { color: theme.text, font: { size: 10 } }
+                }
+            }
+        }
+    });
+}
+
+// 7) Price health doughnut + stat cards
+function renderPriceHealth(health) {
+    const ctx = document.getElementById('price-health-chart').getContext('2d');
+    const theme = getThemeColors();
+    if (charts.health) charts.health.destroy();
+    charts.health = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            labels: ['{{ t("Stable") }}', '{{ t("Dropping") }}', '{{ t("Rising") }}'],
+            datasets: [{
+                data: [health.stable, health.dropping, health.rising],
+                backgroundColor: ['#667eea', '#ef4444', '#10b981'],
+                borderColor: theme.tooltipBg,
+                borderWidth: 3
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            cutout: '55%',
+            plugins: {
+                legend: { position: 'right', labels: { color: theme.text, font: { size: 11 } } },
+                tooltip: {
+                    backgroundColor: theme.tooltipBg, borderColor: theme.tooltipBorder, borderWidth: 1,
+                    titleColor: theme.text, bodyColor: theme.text,
+                    callbacks: {
+                        label: (c) => {
+                            const total = c.dataset.data.reduce((a,b) => a+b, 0);
+                            const pct = total > 0 ? ((c.parsed / total) * 100).toFixed(1) : 0;
+                            return `${c.label}: ${c.parsed} (${pct}%)`;
+                        }
+                    }
+                }
+            }
+        }
+    });
+    const total = health.stable + health.dropping + health.rising;
+    const stats = document.getElementById('price-health-stats');
+    if (stats) {
+        const fmtPct = n => total > 0 ? ((n / total) * 100).toFixed(1) + '%' : '0%';
+        stats.innerHTML = `
+            <div style="background: rgba(102,126,234,0.08); border-left: 3px solid #667eea; padding: 0.5rem 0.75rem; border-radius: 6px;">
+                <div style="font-size: 0.7rem; color: #667eea; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">{{ t('Stable') }}</div>
+                <div style="font-size: 1.3rem; font-weight: 800; color: var(--text-color);">${health.stable}</div>
+                <div style="font-size: 0.7rem; color: var(--text-muted);">${fmtPct(health.stable)}</div>
+            </div>
+            <div style="background: rgba(239,68,68,0.08); border-left: 3px solid #ef4444; padding: 0.5rem 0.75rem; border-radius: 6px;">
+                <div style="font-size: 0.7rem; color: #ef4444; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">{{ t('Dropping') }}</div>
+                <div style="font-size: 1.3rem; font-weight: 800; color: var(--text-color);">${health.dropping}</div>
+                <div style="font-size: 0.7rem; color: var(--text-muted);">${fmtPct(health.dropping)}</div>
+            </div>
+            <div style="background: rgba(16,185,129,0.08); border-left: 3px solid #10b981; padding: 0.5rem 0.75rem; border-radius: 6px;">
+                <div style="font-size: 0.7rem; color: #10b981; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">{{ t('Rising') }}</div>
+                <div style="font-size: 1.3rem; font-weight: 800; color: var(--text-color);">${health.rising}</div>
+                <div style="font-size: 0.7rem; color: var(--text-muted);">${fmtPct(health.rising)}</div>
+            </div>
+        `;
     }
 }
 
-// Load everything on page load
-document.addEventListener('DOMContentLoaded', function() {
-    loadStats();
-    loadPriceTrends();
+// === Dashboard filter state ===
+// Two filter dimensions the user can pick on the dashboard:
+//   1. Categories — which pages to include (default: all)
+//   2. Model      — restrict to a single matched model (optional)
+// Both are stored in localStorage and re-applied on every page load.
+const DASH_FILTER_KEYS = {
+    cats: 'dashFilterCategories',
+    model: 'dashFilterModel'
+};
+
+function getDashFilterState() {
+    let cats = null;
+    try {
+        const stored = localStorage.getItem(DASH_FILTER_KEYS.cats);
+        if (stored) cats = JSON.parse(stored);
+    } catch (e) { /* ignore */ }
+    if (!cats) cats = [];  // empty → "all"
+    let model = null;
+    try {
+        const stored = localStorage.getItem(DASH_FILTER_KEYS.model);
+        if (stored) model = JSON.parse(stored);
+    } catch (e) { /* ignore */ }
+    return { categories: cats, model };
+}
+
+function setDashFilterState(state) {
+    localStorage.setItem(DASH_FILTER_KEYS.cats, JSON.stringify(state.categories || []));
+    if (state.model) {
+        localStorage.setItem(DASH_FILTER_KEYS.model, JSON.stringify(state.model));
+    } else {
+        localStorage.removeItem(DASH_FILTER_KEYS.model);
+    }
+}
+
+function buildDashQueryString(state) {
+    const parts = [];
+    if (state.categories && state.categories.length > 0) {
+        parts.push('categories=' + encodeURIComponent(state.categories.join(',')));
+    }
+    if (state.model && state.model.id) {
+        parts.push('model_id=' + encodeURIComponent(state.model.id));
+        // Pass the resolved category so the server probe reorders
+        // correctly on the first hit. Without this, id=343 (which
+        // exists in gpu/cpu/ram/ssd tables) would always pick gpu.
+        if (state.model.category) {
+            parts.push('category=' + encodeURIComponent(state.model.category));
+        }
+    }
+    return parts.length ? '?' + parts.join('&') : '';
+}
+
+function renderDashFilterBar(state, data) {
+    const bar = document.getElementById('dash-filter-bar');
+    if (!bar) return;
+    const allCats = ['gpu','cpu','ssd','ram','psu','case','motherboard','monitor','camera','lens','console'];
+    const catLabels = {
+        gpu: '🎮 GPU', cpu: '🧠 CPU', ssd: '💾 SSD', ram: '🧮 RAM',
+        psu: '⚡ PSU', case: '📦 Case', motherboard: '🔌 Motherboard',
+        monitor: '🖥️ Monitor', camera: '📷 Camera', lens: '🔭 Lens', console: '🎮 Console'
+    };
+    const selected = new Set(state.categories || []);
+    const chips = allCats.map(c => {
+        const on = selected.has(c);
+        return `<button class="dash-filter-chip ${on ? 'on' : ''}" data-cat="${c}">${catLabels[c] || c}</button>`;
+    }).join('');
+
+    const modelInfo = data.selected_model;
+    const modelChip = modelInfo
+        ? `<span class="dash-filter-chip on dash-model-chip">🎯 ${escapeHtml(modelInfo.label)}<button class="dash-model-clear" title="Clear model filter">×</button></span>`
+        : '';
+
+    const clearAll = (state.categories && state.categories.length) || modelInfo
+        ? `<button class="dash-filter-clear" onclick="clearAllDashFilters()">Clear all</button>` : '';
+
+    bar.innerHTML = `
+        <div class="dash-filter-row">
+            <span class="dash-filter-label">📂 Pages:</span>
+            ${chips}
+            <button class="dash-filter-chip dash-all-chip" data-cat-action="all" title="Select all pages">All</button>
+            <button class="dash-filter-chip dash-none-chip" data-cat-action="none" title="No pages (use model only)">None</button>
+        </div>
+        <div class="dash-filter-row">
+            <span class="dash-filter-label">🎯 Model:</span>
+            <input type="text" id="dash-model-input" placeholder="Search model (e.g. Ryzen 9 7900, RTX 3060, X570...)" autocomplete="off" style="width: 320px;" />
+            <div id="dash-model-suggestions" class="dash-model-suggestions" style="display:none;"></div>
+            ${modelChip}
+            ${clearAll}
+        </div>
+    `;
+
+    // Wire up chip clicks
+    bar.querySelectorAll('.dash-filter-chip[data-cat]').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const cat = btn.dataset.cat;
+            const newSet = new Set(selected);
+            if (newSet.has(cat)) newSet.delete(cat); else newSet.add(cat);
+            // Clearing the page filter doesn't auto-clear the model filter
+            setDashFilterState({ categories: [...newSet], model: state.model });
+            loadDashboard();
+        });
+    });
+    bar.querySelector('[data-cat-action="all"]').addEventListener('click', () => {
+        setDashFilterState({ categories: allCats.slice(), model: state.model });
+        loadDashboard();
+    });
+    bar.querySelector('[data-cat-action="none"]').addEventListener('click', () => {
+        setDashFilterState({ categories: [], model: state.model });
+        loadDashboard();
+    });
+    const clear = bar.querySelector('.dash-model-clear');
+    if (clear) {
+        clear.addEventListener('click', (e) => {
+            e.stopPropagation();
+            setDashFilterState({ categories: state.categories, model: null });
+            loadDashboard();
+        });
+    }
+
+    // Live model search (debounced)
+    const input = bar.querySelector('#dash-model-input');
+    if (input && !input.__wired) {
+        input.__wired = true;
+        input.addEventListener('input', (e) => {
+            clearTimeout(_dashModelDebounce);
+            _dashModelDebounce = setTimeout(() => dashModelSearch(e.target.value), 200);
+        });
+        input.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                applyDashModelFromInput();
+            } else if (e.key === 'Escape') {
+                hideDashModelSuggestions();
+            }
+        });
+    }
+}
+
+// Hide suggestions on outside click
+document.addEventListener('click', (e) => {
+    if (!e.target.closest('#dash-model-input') && !e.target.closest('#dash-model-suggestions')) {
+        hideDashModelSuggestions();
+    }
 });
+
+function applyDashModelFromInput() {
+    // Fallback: numeric id in the input — apply directly
+    const input = document.getElementById('dash-model-input');
+    const val = parseInt((input.value || '').trim(), 10);
+    if (!val || val < 1) {
+        showToast('Enter a valid model ID', 'warn');
+        return;
+    }
+    const state = getDashFilterState();
+    setDashFilterState({ categories: state.categories, model: { id: val } });
+    loadDashboard();
+}
+
+let _dashModelDebounce = null;
+async function dashModelSearch(q) {
+    if (!q || q.length < 2) {
+        hideDashModelSuggestions();
+        return;
+    }
+    try {
+        const resp = await fetch('/api/model-search?q=' + encodeURIComponent(q));
+        const data = await resp.json();
+        renderDashModelSuggestions(data.results || []);
+    } catch (e) {
+        console.error('model search failed:', e);
+        hideDashModelSuggestions();
+    }
+}
+
+function renderDashModelSuggestions(results) {
+    const box = document.getElementById('dash-model-suggestions');
+    if (!box) return;
+    if (!results.length) {
+        box.style.display = 'none';
+        box.innerHTML = '';
+        return;
+    }
+    const catEmoji = { gpu: '🎮', cpu: '🧠', ram: '🧮', ssd: '💾' };
+    box.innerHTML = results.map((r, i) =>
+        `<button class="dash-model-suggestion" data-idx="${i}">
+            <span class="dash-model-suggestion-cat">${catEmoji[r.category] || '•'}</span>
+            <span class="dash-model-suggestion-label">${escapeHtml(r.label)}</span>
+            <span class="dash-model-suggestion-meta">#${r.id}</span>
+        </button>`
+    ).join('');
+    box.style.display = 'block';
+    box.querySelectorAll('.dash-model-suggestion').forEach((btn, i) => {
+        btn.addEventListener('click', () => {
+            const r = results[i];
+            const state = getDashFilterState();
+            setDashFilterState({
+                categories: state.categories,
+                model: { id: r.id, category: r.category, label: r.label }
+            });
+            hideDashModelSuggestions();
+            document.getElementById('dash-model-input').value = '';
+            loadDashboard();
+        });
+    });
+}
+
+function hideDashModelSuggestions() {
+    const box = document.getElementById('dash-model-suggestions');
+    if (box) {
+        box.style.display = 'none';
+        box.innerHTML = '';
+    }
+}
+
+function clearAllDashFilters() {
+    setDashFilterState({ categories: [], model: null });
+    loadDashboard();
+}
+
+// === Main loader ===
+// Rapid chip clicks (e.g. toggling several categories back-to-back) used
+// to pile up concurrent fetches and saturate the dev server. We now
+// debounce: only the last call within 200ms triggers a fetch, and any
+// in-flight request is cancelled before the next one goes out.
+let _dashLoadInFlight = null;     // AbortController of the current request
+let _dashLoadTimer = null;        // debounce timer
+let _dashLoadSeq = 0;             // monotonically increasing request id
+async function loadDashboard() {
+    if (_dashLoadTimer) clearTimeout(_dashLoadTimer);
+    _dashLoadTimer = setTimeout(() => { _dashLoadTimer = null; _dashLoadRun(); }, 200);
+}
+async function _dashLoadRun() {
+    const state = getDashFilterState();
+    const mySeq = ++_dashLoadSeq;
+
+    // Cancel any prior in-flight request so the dev server doesn't get
+    // slammed with parallel dashboard queries.
+    if (_dashLoadInFlight) {
+        try { _dashLoadInFlight.abort(); } catch (e) {}
+        _dashLoadInFlight = null;
+    }
+    const ctrl = new AbortController();
+    _dashLoadInFlight = ctrl;
+
+    try {
+        const qs = buildDashQueryString(state);
+        const resp = await fetch('/api/dashboard-summary' + qs, { signal: ctrl.signal });
+        const data = await resp.json();
+        // If another request was queued while we were waiting, abandon
+        // this render — the next fetch will pick up the freshest state.
+        if (mySeq !== _dashLoadSeq) return;
+        if (data.error) throw new Error(data.error);
+
+        window.__match_rates__ = data.match_rates || {};
+        // Backfill the resolved category into the model state so the
+        // next request sends ?category= as a probe hint (and id
+        // collisions across gpu/cpu/ram/ssd resolve to the right table).
+        if (state.model && state.model.id && data.selected_model) {
+            const newModel = Object.assign({}, state.model, {
+                category: data.selected_model.category,
+                label: data.selected_model.label,
+            });
+            if (newModel.category !== state.model.category || newModel.label !== state.model.label) {
+                setDashFilterState({ categories: state.categories, model: newModel });
+            }
+        }
+        renderDashFilterBar(state, data);
+        renderHero(data.totals);
+        renderProfitScenarios(data.totals, data.categories);
+        renderCategoryBreakdown(data.categories);
+        renderMarketShare(data.categories);
+        renderCategoryCards(data.categories);
+        renderModelOpportunities(data.top_model_opportunities);
+        renderPriceHealth(data.price_health);
+        renderTopDeals(data.top_deals);
+        renderTopBuySignals(data.top_buy_signals);
+        renderTopDrops(data.recent_drops);
+        renderTopRises(data.top_rises);
+        renderActivity(data.activity_30d);
+        renderMatchRates(data.match_rates);
+    } catch (e) {
+        if (e.name === 'AbortError') return;  // superseded — silent
+        console.error('Dashboard load failed:', e);
+        document.getElementById('dash-hero').innerHTML =
+            `<div class="error" style="grid-column: 1/-1;">{{ t('Failed to load dashboard') }}: ${e.message}</div>`;
+    } finally {
+        if (_dashLoadInFlight === ctrl) _dashLoadInFlight = null;
+    }
+}
+
+// Re-render charts on theme change
+const themeObserver = new MutationObserver(() => {
+    // Re-fetch and re-render so all charts pick up the new theme colors
+    loadDashboard();
+});
+themeObserver.observe(document.body, { attributes: true, attributeFilter: ['data-theme'] });
+
+document.addEventListener('DOMContentLoaded', loadDashboard);
 </script>
 {% endblock %}

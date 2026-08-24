@@ -1,26 +1,35 @@
 """Prebuilt and mini PC detection keywords database."""
 
-# Popular prebuilt PC brand names
+# NOTE: We intentionally do NOT include broad OEM brand names like
+# "DELL", "HP", "LENOVO" as standalone prebuilt signals. Those words
+# appear all the time in custom-build listings (e.g. a "DELL 240W
+# SSD" or "HP Pavilion Laptop"). The prebuilt flag should fire on
+# specific prebuilt MODEL SERIES (Optiplex, ProDesk, ThinkCentre,
+# ...) or strong prebuilt brand names (Alienware, NZXT, ...), not on
+# any OEM mention.
 PREBUILT_BRANDS = {
-    # Major OEMs
-    'DELL', 'HP', 'HEWLETT PACKARD', 'LENOVO', 'ASUS', 'ACER', 'MSI',
-    
-    # Gaming prebuilts  
+    # Gaming prebuilts — strong signals (these names essentially
+    # only appear in prebuilt contexts)
     'ALIENWARE', 'AURORA', 'PREDATOR', 'OMEN', 'LEGION', 'ROG', 'TUF',
     'IBUYPOWER', 'CORSAIR', 'ORIGIN PC', 'NZXT', 'CYBERPOWERPC',
     'FALCON NORTHWEST', 'MAINGEAR', 'DIGITAL STORM',
-    
-    # Mini PCs
+
+    # Mini PCs (NUC, Beelink, etc. are prebuilt by definition)
     'INTEL NUC', 'ASUS PN', 'MINIS FORUM', 'BEELINK', 'GEEKOM',
     'CHUWI', 'MOREFINE', 'AOOSTAR', 'GMKTEC', 'ACEMAGIC',
-    
-    # Common prebuilt model series
+
+    # Common prebuilt model series — these are the real "is this a
+    # prebuilt" signal per user request: listings that mention Optiplex,
+    # ProDesk, ThinkCentre, etc. are prebuilts by definition.
     'OPTIPLEX', 'PRECISION', 'ELITEDESK', 'PRODESK', 'THINKCENTRE',
-    'VOSTRO', 'INSPIRON', 'XPS', 'PAVILION', 'ENVY',
-    'SATELLITE', 'ASPIRE', 'VERITON', 'IDEACENTRE',
-    
-    # All-in-One
-    'IMAC', 'ALL-IN-ONE', 'AIO', 'ALL IN ONE'
+    'THINKSTATION', 'THINKPAD', 'VOSTRO', 'INSPIRON', 'XPS',
+    'PAVILION', 'ENVY', 'SPECTRE', 'OMEN BY HP',
+    'SATELLITE', 'ASPIRE', 'VERITON', 'IDEACENTRE', 'IDEAPAD',
+    'SURFACE', 'STUDIO XPS', 'GAMING DESKTOP',
+
+    # All-in-One (always prebuilt)
+    'IMAC', 'ALL-IN-ONE', 'AIO', 'ALL IN ONE',
+    'MAC MINI', 'MAC STUDIO',
 }
 
 # Keywords that indicate prebuilt/mini PCs

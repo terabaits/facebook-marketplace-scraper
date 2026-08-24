@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Computer Modal v6 — Inline Expand · SS-Crawler</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: #f8fafc; color: #0f172a;
+  min-height: 100vh; padding: 20px;
+}
+.page-bg { max-width: 900px; margin: 0 auto; }
+.demo-header { padding: 8px 0 16px; border-bottom: 1px solid #e2e8f0; margin-bottom: 16px; }
+.demo-header h1 { font-size: 18px; font-weight: 800; }
+.demo-header .v-tag { display: inline-block; font-size: 10px; padding: 2px 8px; background: #14b8a6; color: white; border-radius: 10px; margin-left: 8px; vertical-align: middle; }
+.demo-header p { font-size: 12px; color: #64748b; margin-top: 4px; }
+
+.listing-card { background: white; border: 1px solid #e2e8f0; border-radius: 12px; margin-bottom: 12px; overflow: hidden; transition: all .2s; }
+.listing-card.open { border-color: #14b8a6; box-shadow: 0 8px 24px -10px rgba(20,184,166,.25); }
+.listing-card .row { display: flex; gap: 14px; padding: 14px; cursor: pointer; align-items: center; }
+.listing-card .row:hover { background: #f8fafc; }
+.listing-card.open .row { background: #f0fdfa; }
+.listing-card .thumb { width: 60px; height: 60px; background: #f1f5f9; border-radius: 8px; flex-shrink: 0; display: grid; place-items: center; font-size: 24px; transition: transform .3s; }
+.listing-card.open .thumb { transform: rotate(3deg) scale(1.05); }
+.listing-card .info { flex: 1; }
+.listing-card .title { font-weight: 700; font-size: 14px; margin-bottom: 4px; }
+.listing-card .meta { font-size: 11.5px; color: #64748b; }
+.listing-card .price { font-weight: 800; font-size: 16px; color: #059669; }
+.listing-card .chevron { color: #94a3b8; font-size: 18px; transition: transform .25s; }
+.listing-card.open .chevron { transform: rotate(180deg); color: #14b8a6; }
+
+/* === INLINE EXPAND CONTENT === */
+.expand {
+  max-height: 0; overflow: hidden; transition: max-height .4s cubic-bezier(.4, 0, .2, 1);
+  background: linear-gradient(180deg, #f0fdfa 0%, white 30%);
+}
+.listing-card.open .expand { max-height: 720px; }
+
+.expand-inner { padding: 0 18px 18px; }
+.expand-divider { height: 1px; background: linear-gradient(90deg, transparent, #14b8a6 30%, #14b8a6 70%, transparent); margin: 0 -18px 16px; opacity: .4; }
+
+.expand-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+.specs-list { display: flex; flex-direction: column; gap: 6px; }
+.spec-row { display: flex; justify-content: space-between; padding: 8px 12px; background: white; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 12.5px; }
+.spec-row .k { color: #64748b; }
+.spec-row .v { font-weight: 700; }
+.spec-row .v.ok { color: #059669; }
+.spec-row .v.warn { color: #f59e0b; }
+
+.flag-mini { background: white; border: 1px solid #e2e8f0; border-radius: 10px; padding: 14px; }
+.flag-mini h4 { font-size: 12px; font-weight: 700; margin-bottom: 8px; display: flex; align-items: center; gap: 6px; color: #b45309; }
+.flag-mini h4::before { content: '🚩'; }
+.flag-mini .cats { display: flex; gap: 4px; margin-bottom: 10px; }
+.flag-mini .cats button { flex: 1; padding: 6px 8px; font-size: 11px; border: 1.5px solid #e2e8f0; background: white; border-radius: 6px; cursor: pointer; font-weight: 600; }
+.flag-mini .cats button.active { border-color: #14b8a6; background: #f0fdfa; color: #0d9488; }
+.flag-mini .comps { display: grid; grid-template-columns: repeat(5, 1fr); gap: 4px; margin-bottom: 10px; }
+.flag-mini .comps label { display: flex; flex-direction: column; align-items: center; padding: 8px 4px; border: 1.5px solid #e2e8f0; background: white; border-radius: 6px; font-size: 9.5px; cursor: pointer; text-align: center; gap: 2px; font-weight: 600; color: #475569; }
+.flag-mini .comps label .ico { font-size: 16px; }
+.flag-mini .comps label.checked { background: #f0fdfa; border-color: #14b8a6; color: #0d9488; }
+.flag-mini textarea { width: 100%; padding: 8px 10px; border: 1.5px solid #e2e8f0; border-radius: 6px; font-size: 12px; font-family: inherit; outline: none; min-height: 50px; resize: vertical; }
+.flag-mini textarea:focus { border-color: #14b8a6; }
+
+.flag-mini .actions { display: flex; gap: 6px; margin-top: 10px; }
+.flag-mini .actions .btn { flex: 1; padding: 8px 12px; border-radius: 6px; font-size: 12px; font-weight: 600; cursor: pointer; border: none; }
+.flag-mini .actions .btn-primary { background: #14b8a6; color: white; }
+.flag-mini .actions .btn-primary:hover { background: #0d9488; }
+.flag-mini .actions .btn-primary:disabled { opacity: .5; cursor: not-allowed; }
+.flag-mini .actions .btn-secondary { background: white; color: #64748b; border: 1.5px solid #e2e8f0; }
+.flag-mini .actions .count { font-size: 10px; color: #64748b; align-self: center; }
+
+.empty-tip { text-align: center; padding: 30px 20px; color: #94a3b8; font-size: 12px; }
+</style>
+</head>
+<body>
+<div class="page-bg">
+  <div class="demo-header">
+    <h1>Computer Listings <span class="v-tag">v6 — Inline Expand</span></h1>
+    <p>No overlay · Click a row to expand in place · Other rows reflow</p>
+  </div>
+
+  <div class="listing-card" data-id="0">
+    <div class="row" onclick="toggleRow(0)">
+      <div class="thumb">🖥️</div>
+      <div class="info">
+        <div class="title">Gaming PC — RTX 4070 / i7-13700K / 32GB DDR5</div>
+        <div class="meta">ss.com · Rīga · Custom build · 2 days ago · #cmp_a7f3e2c1</div>
+      </div>
+      <div class="price">€1,850</div>
+      <div class="chevron">▾</div>
+    </div>
+    <div class="expand">
+      <div class="expand-inner">
+        <div class="expand-divider"></div>
+        <div class="expand-grid">
+          <div class="specs-list">
+            <div class="spec-row"><span class="k">Motherboard</span><span class="v">ASUS ROG B760-F</span></div>
+            <div class="spec-row"><span class="k">CPU</span><span class="v ok">i7-13700K ✓</span></div>
+            <div class="spec-row"><span class="k">GPU</span><span class="v ok">RTX 4070 ✓</span></div>
+            <div class="spec-row"><span class="k">RAM</span><span class="v ok">32 GB DDR5</span></div>
+            <div class="spec-row"><span class="k">Storage</span><span class="v ok">1 TB NVMe</span></div>
+            <div class="spec-row"><span class="k">PSU</span><span class="v warn">— not detected</span></div>
+            <div class="spec-row"><span class="k">Seller</span><span class="v">rig_builder_riga · 4.8★</span></div>
+          </div>
+          <div class="flag-mini">
+            <h4>Flag this listing</h4>
+            <div class="cats">
+              <button class="active" onclick="pickMiniCat(this, 0)">🔧 Scraper</button>
+              <button onclick="pickMiniCat(this, 0)">👤 Seller</button>
+              <button onclick="pickMiniCat(this, 0)">📌 Other</button>
+            </div>
+            <div class="comps">
+              <label onclick="toggleMiniComp(this, 0)"><input type="checkbox" hidden><span class="ico">🖥️</span>MB</label>
+              <label onclick="toggleMiniComp(this, 0)"><input type="checkbox" hidden><span class="ico">⚙️</span>CPU</label>
+              <label onclick="toggleMiniComp(this, 0)"><input type="checkbox" hidden><span class="ico">🎮</span>GPU</label>
+              <label onclick="toggleMiniComp(this, 0)"><input type="checkbox" hidden><span class="ico">💾</span>RAM</label>
+              <label onclick="toggleMiniComp(this, 0)"><input type="checkbox" hidden><span class="ico">💿</span>SSD</label>
+            </div>
+            <textarea placeholder="What's wrong? (optional)"></textarea>
+            <div class="actions">
+              <span class="count" id="mini-count-0">0 selected</span>
+              <button class="btn btn-secondary" onclick="toggleRow(0)">Cancel</button>
+              <button class="btn btn-primary" id="mini-submit-0" disabled>Submit flag</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="listing-card" data-id="1">
+    <div class="row" onclick="toggleRow(1)">
+      <div class="thumb">💻</div>
+      <div class="info">
+        <div class="title">Lenovo ThinkPad T14 Gen 3 — i5 / 16GB / 512GB SSD</div>
+        <div class="meta">ss.com · Liepāja · Prebuilt · 1 week ago · #cmp_3b9d4f2a</div>
+      </div>
+      <div class="price">€620</div>
+      <div class="chevron">▾</div>
+    </div>
+    <div class="expand">
+      <div class="expand-inner">
+        <div class="expand-divider"></div>
+        <div class="expand-grid">
+          <div class="specs-list">
+            <div class="spec-row"><span class="k">CPU</span><span class="v ok">i5-1235U ✓</span></div>
+            <div class="spec-row"><span class="k">RAM</span><span class="v ok">16 GB DDR4</span></div>
+            <div class="spec-row"><span class="k">Storage</span><span class="v ok">512 GB SSD</span></div>
+            <div class="spec-row"><span class="k">Display</span><span class="v">14" 1920×1200</span></div>
+            <div class="spec-row"><span class="k">Battery</span><span class="v warn">— not detected</span></div>
+            <div class="spec-row"><span class="k">Seller</span><span class="v">laptop_lover · 4.5★</span></div>
+          </div>
+          <div class="flag-mini">
+            <h4>Flag this listing</h4>
+            <div class="cats">
+              <button class="active" onclick="pickMiniCat(this, 1)">🔧 Scraper</button>
+              <button onclick="pickMiniCat(this, 1)">👤 Seller</button>
+              <button onclick="pickMiniCat(this, 1)">📌 Other</button>
+            </div>
+            <div class="comps">
+              <label onclick="toggleMiniComp(this, 1)"><input type="checkbox" hidden><span class="ico">🖥️</span>MB</label>
+              <label onclick="toggleMiniComp(this, 1)"><input type="checkbox" hidden><span class="ico">⚙️</span>CPU</label>
+              <label onclick="toggleMiniComp(this, 1)"><input type="checkbox" hidden><span class="ico">🎮</span>GPU</label>
+              <label onclick="toggleMiniComp(this, 1)"><input type="checkbox" hidden><span class="ico">💾</span>RAM</label>
+              <label onclick="toggleMiniComp(this, 1)"><input type="checkbox" hidden><span class="ico">💿</span>SSD</label>
+            </div>
+            <textarea placeholder="What's wrong? (optional)"></textarea>
+            <div class="actions">
+              <span class="count" id="mini-count-1">0 selected</span>
+              <button class="btn btn-secondary" onclick="toggleRow(1)">Cancel</button>
+              <button class="btn btn-primary" id="mini-submit-1" disabled>Submit flag</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="listing-card" data-id="2">
+    <div class="row" onclick="toggleRow(2)">
+      <div class="thumb">🎮</div>
+      <div class="info">
+        <div class="title">RTX 3060 Gaming PC Bundle — Ryzen 5 5600X / 16GB</div>
+        <div class="meta">ss.com · Jelgava · Custom build · 3 days ago · #cmp_8e2b1f9c</div>
+      </div>
+      <div class="price">€780</div>
+      <div class="chevron">▾</div>
+    </div>
+    <div class="expand">
+      <div class="expand-inner">
+        <div class="expand-divider"></div>
+        <div class="expand-grid">
+          <div class="specs-list">
+            <div class="spec-row"><span class="k">CPU</span><span class="v ok">R5 5600X ✓</span></div>
+            <div class="spec-row"><span class="k">GPU</span><span class="v ok">RTX 3060 ✓</span></div>
+            <div class="spec-row"><span class="k">RAM</span><span class="v ok">16 GB DDR4</span></div>
+            <div class="spec-row"><span class="k">Storage</span><span class="v warn">— not detected</span></div>
+            <div class="spec-row"><span class="k">Seller</span><span class="v">gamer_jelgava · 4.2★</span></div>
+          </div>
+          <div class="flag-mini">
+            <h4>Flag this listing</h4>
+            <div class="cats">
+              <button class="active" onclick="pickMiniCat(this, 2)">🔧 Scraper</button>
+              <button onclick="pickMiniCat(this, 2)">👤 Seller</button>
+              <button onclick="pickMiniCat(this, 2)">📌 Other</button>
+            </div>
+            <div class="comps">
+              <label onclick="toggleMiniComp(this, 2)"><input type="checkbox" hidden><span class="ico">🖥️</span>MB</label>
+              <label onclick="toggleMiniComp(this, 2)"><input type="checkbox" hidden><span class="ico">⚙️</span>CPU</label>
+              <label onclick="toggleMiniComp(this, 2)"><input type="checkbox" hidden><span class="ico">🎮</span>GPU</label>
+              <label onclick="toggleMiniComp(this, 2)"><input type="checkbox" hidden><span class="ico">💾</span>RAM</label>
+              <label onclick="toggleMiniComp(this, 2)"><input type="checkbox" hidden><span class="ico">💿</span>SSD</label>
+            </div>
+            <textarea placeholder="What's wrong? (optional)"></textarea>
+            <div class="actions">
+              <span class="count" id="mini-count-2">0 selected</span>
+              <button class="btn btn-secondary" onclick="toggleRow(2)">Cancel</button>
+              <button class="btn btn-primary" id="mini-submit-2" disabled>Submit flag</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+function toggleRow(id) {
+  const card = document.querySelector(`.listing-card[data-id="${id}"]`);
+  card.classList.toggle('open');
+}
+function pickMiniCat(btn, id) {
+  const parent = btn.closest('.flag-mini');
+  parent.querySelectorAll('.cats button').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+function toggleMiniComp(label, id) {
+  const cb = label.querySelector('input');
+  cb.checked = !cb.checked;
+  label.classList.toggle('checked', cb.checked);
+  const card = document.querySelector(`.listing-card[data-id="${id}"]`);
+  const count = card.querySelectorAll('.comps input:checked').length;
+  card.querySelector(`#mini-count-${id}`).textContent = `${count} selected`;
+  card.querySelector(`#mini-submit-${id}`).disabled = count === 0;
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Console v2 — Compare Tray · SS-Crawler</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: #f5f5f7; color: #1c1c1e;
+  min-height: 100vh;
+}
+.wrap { max-width: 1400px; margin: 0 auto; padding: 24px 20px 200px; }
+.head { display: flex; align-items: baseline; gap: 14px; margin-bottom: 20px; }
+h1 { font-size: 28px; font-weight: 800; }
+.head p { color: #6e6e73; font-size: 13px; }
+.v-tag { background: linear-gradient(135deg, #06b6d4, #3b82f6); color: white; font-size: 11px; font-weight: 800; padding: 3px 9px; border-radius: 5px; }
+
+.filter-bar {
+  display: flex; gap: 10px; flex-wrap: wrap; align-items: center;
+  padding: 14px 18px; background: white; border-radius: 12px;
+  border: 1px solid #e5e5ea; margin-bottom: 18px;
+}
+.filter-group { display: flex; align-items: center; gap: 6px; }
+.filter-group label { font-size: 11px; font-weight: 600; color: #6e6e73; text-transform: uppercase; letter-spacing: .04em; }
+.filter-group select, .filter-group input {
+  padding: 6px 10px; border: 1px solid #d1d1d6; border-radius: 6px;
+  background: white; font-size: 13px; outline: none; font-family: inherit;
+}
+.filter-group input { width: 90px; }
+.filter-clear { margin-left: auto; padding: 6px 12px; background: transparent; border: 1px solid #d1d1d6; border-radius: 6px; font-size: 12px; cursor: pointer; color: #6e6e73; }
+
+.grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 14px;
+}
+.card {
+  background: white; border: 2px solid transparent; border-radius: 14px;
+  padding: 16px; cursor: pointer; transition: all .2s; position: relative;
+}
+.card:hover { border-color: #06b6d4; transform: translateY(-2px); box-shadow: 0 12px 24px -10px rgba(6,182,212,.25); }
+.card.selected { border-color: #06b6d4; background: linear-gradient(135deg, #ecfeff, white); }
+.card .check {
+  position: absolute; top: 12px; right: 12px;
+  width: 24px; height: 24px; border-radius: 50%; border: 2px solid #d1d1d6;
+  display: grid; place-items: center; font-size: 12px; font-weight: 800; color: white;
+  background: white; transition: all .15s;
+}
+.card.selected .check { background: #06b6d4; border-color: #06b6d4; }
+.card .img { width: 100%; aspect-ratio: 16/10; background: #f5f5f7; border-radius: 8px; display: grid; place-items: center; font-size: 48px; margin-bottom: 12px; }
+.card .brand { display: inline-block; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 10px; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 4px; }
+.card .name { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
+.card .meta { font-size: 11px; color: #6e6e73; margin-bottom: 10px; }
+.card .price-row { display: flex; align-items: baseline; gap: 8px; }
+.card .price { font-size: 22px; font-weight: 800; }
+.card .save { font-size: 11px; color: #34c759; font-weight: 700; }
+.card .stats { display: flex; gap: 8px; margin-top: 10px; padding-top: 10px; border-top: 1px solid #f5f5f7; }
+.card .stat { font-size: 10.5px; color: #6e6e73; }
+.card .stat strong { color: #1c1c1e; }
+.card .badge {
+  position: absolute; top: 12px; left: 12px;
+  background: linear-gradient(135deg, #fbbf24, #f59e0b); color: #1c1c1e;
+  font-size: 9px; font-weight: 800; padding: 3px 7px; border-radius: 4px;
+  text-transform: uppercase; letter-spacing: .06em;
+}
+
+.b-brand-playstation { background: #3b82f6; color: white; }
+.b-brand-xbox { background: #10b981; color: white; }
+.b-brand-nintendo { background: #ef4444; color: white; }
+.b-brand-retro { background: #a78bfa; color: white; }
+
+/* COMPARE TRAY */
+.tray {
+  position: fixed; bottom: 0; left: 0; right: 0;
+  background: white; border-top: 1px solid #e5e5ea;
+  box-shadow: 0 -10px 30px rgba(0,0,0,.1);
+  z-index: 50; transition: all .3s;
+}
+.tray.empty { transform: translateY(100%); }
+.tray-inner { max-width: 1400px; margin: 0 auto; padding: 14px 20px; display: flex; align-items: center; gap: 14px; }
+.tray-label { font-size: 12px; font-weight: 700; color: #6e6e73; text-transform: uppercase; letter-spacing: .06em; flex-shrink: 0; }
+.tray-slots { display: flex; gap: 10px; flex: 1; }
+.tray-slot {
+  flex: 1; min-width: 0;
+  background: #f5f5f7; border: 2px dashed #d1d1d6; border-radius: 10px;
+  padding: 10px 12px; display: flex; align-items: center; gap: 10px;
+  min-height: 56px;
+}
+.tray-slot.filled { background: #ecfeff; border-color: #06b6d4; border-style: solid; }
+.tray-slot .ico { font-size: 24px; flex-shrink: 0; }
+.tray-slot .info { flex: 1; min-width: 0; }
+.tray-slot .nm { font-size: 12px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.tray-slot .pr { font-size: 11px; color: #06b6d4; font-weight: 700; }
+.tray-slot .x { background: none; border: none; color: #6e6e73; cursor: pointer; font-size: 14px; padding: 0 4px; }
+.tray-actions { display: flex; gap: 8px; flex-shrink: 0; }
+.btn { padding: 10px 18px; border-radius: 8px; font-size: 13px; font-weight: 700; cursor: pointer; border: none; }
+.btn-primary { background: #06b6d4; color: white; }
+.btn-primary:hover { background: #0891b2; }
+.btn-primary:disabled { background: #d1d1d6; cursor: not-allowed; }
+.btn-secondary { background: #f5f5f7; color: #1c1c1e; }
+.tray-count { font-size: 11px; color: #6e6e73; font-weight: 600; }
+
+/* COMPARE MODAL */
+.compare-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.5); z-index: 200; display: none; align-items: center; justify-content: center; padding: 20px; }
+.compare-overlay.open { display: flex; }
+.compare {
+  background: white; border-radius: 16px; max-width: 1100px; width: 100%; max-height: 90vh; overflow-y: auto;
+  box-shadow: 0 25px 60px rgba(0,0,0,.3); animation: cmpIn .25s;
+}
+@keyframes cmpIn { from { opacity: 0; transform: scale(.96); } to { opacity: 1; transform: scale(1); } }
+.cmp-head { display: flex; align-items: center; padding: 18px 24px; border-bottom: 1px solid #e5e5ea; }
+.cmp-head h3 { font-size: 18px; font-weight: 800; flex: 1; }
+.cmp-head button { background: #f5f5f7; border: none; width: 32px; height: 32px; border-radius: 6px; cursor: pointer; font-size: 16px; }
+.cmp-grid { display: grid; grid-template-columns: 140px repeat(auto-fit, minmax(220px, 1fr)); }
+.cmp-cell { padding: 14px 18px; border-bottom: 1px solid #f5f5f7; }
+.cmp-cell.lbl { font-weight: 700; color: #6e6e73; font-size: 12px; text-transform: uppercase; letter-spacing: .04em; }
+.cmp-cell.head { padding: 18px; border-bottom: 1px solid #e5e5ea; text-align: center; background: #fafafa; }
+.cmp-cell.head .ico { font-size: 36px; margin-bottom: 6px; }
+.cmp-cell.head .nm { font-size: 13px; font-weight: 700; margin-bottom: 2px; }
+.cmp-cell.head .pr { font-size: 16px; font-weight: 800; color: #06b6d4; }
+.cmp-cell .winner { color: #34c759; font-weight: 700; }
+.cmp-cell .loser { color: #f87171; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="head">
+    <h1>🎮 Consoles <span class="v-tag">v2 — Compare Tray</span></h1>
+    <p>Click 2–4 listings to add them to the compare tray · E-commerce style</p>
+  </div>
+
+  <div class="filter-bar">
+    <div class="filter-group"><label>Brand</label><select><option>All</option><option>PlayStation</option><option>Xbox</option><option>Nintendo</option><option>Retro</option></select></div>
+    <div class="filter-group"><label>Min €</label><input type="number" placeholder="0"></div>
+    <div class="filter-group"><label>Max €</label><input type="number" placeholder="1000"></div>
+    <div class="filter-group"><label>Sort</label><select><option>Best deal</option><option>Newest</option><option>Price low→high</option><option>Price high→low</option></select></div>
+    <button class="filter-clear">Reset</button>
+  </div>
+
+  <div class="grid" id="grid"></div>
+</div>
+
+<div class="tray empty" id="tray">
+  <div class="tray-inner">
+    <span class="tray-label">Compare</span>
+    <div class="tray-slots" id="slots">
+      <div class="tray-slot" data-slot="0"><span style="color:#a1a1aa;font-size:12px;width:100%;text-align:center;">+ Click a card to compare</span></div>
+      <div class="tray-slot" data-slot="1"><span style="color:#a1a1aa;font-size:12px;width:100%;text-align:center;">+</span></div>
+      <div class="tray-slot" data-slot="2"><span style="color:#a1a1aa;font-size:12px;width:100%;text-align:center;">+</span></div>
+      <div class="tray-slot" data-slot="3"><span style="color:#a1a1aa;font-size:12px;width:100%;text-align:center;">+</span></div>
+    </div>
+    <span class="tray-count" id="count">0 / 4</span>
+    <div class="tray-actions">
+      <button class="btn btn-secondary" onclick="clearAll()">Clear</button>
+      <button class="btn btn-primary" id="compare-btn" onclick="openCompare()" disabled>Compare →</button>
+    </div>
+  </div>
+</div>
+
+<div class="compare-overlay" id="cmp-overlay" onclick="if(event.target===this)closeCompare()">
+  <div class="compare">
+    <div class="cmp-head">
+      <h3>⚖ Side-by-side comparison</h3>
+      <button onclick="closeCompare()">✕</button>
+    </div>
+    <div class="cmp-grid" id="cmp-grid"></div>
+  </div>
+</div>
+
+<script>
+const LISTINGS = [
+  { id: 1, brand: 'PlayStation', brandClass: 'b-brand-playstation', name: 'PS5 Disc Edition', ico: '🎮', price: 445, avg: 487, percentile: 91, save: 8, meta: 'Rīga · 2d ago', cond: 'Like new' },
+  { id: 2, brand: 'Xbox',        brandClass: 'b-brand-xbox',        name: 'Xbox Series X 1TB', ico: '🟢', price: 520, avg: 487, percentile: 58, save: 0, meta: 'Jelgava · 4h ago', cond: 'New' },
+  { id: 3, brand: 'Nintendo',    brandClass: 'b-brand-nintendo',    name: 'Switch OLED White', ico: '🔴', price: 290, avg: 305, percentile: 76, save: 5, meta: 'Rīga · 1d ago', cond: 'Like new' },
+  { id: 4, brand: 'PlayStation', brandClass: 'b-brand-playstation', name: 'PS4 Pro 1TB Star Wars Ed.', ico: '⭐', price: 229, avg: 180, percentile: 32, save: 0, meta: 'Jelgava · 3d ago', cond: 'Good', special: true },
+  { id: 5, brand: 'Nintendo',    brandClass: 'b-brand-nintendo',    name: 'Switch Lite Yellow', ico: '🟡', price: 120, avg: 165, percentile: 92, save: 27, meta: 'Rīga · 5d ago', cond: 'Good' },
+  { id: 6, brand: 'PlayStation', brandClass: 'b-brand-playstation', name: 'PS5 Digital Edition', ico: '🎮', price: 380, avg: 400, percentile: 70, save: 5, meta: 'Valmiera · 1d ago', cond: 'Like new' },
+  { id: 7, brand: 'Xbox',        brandClass: 'b-brand-xbox',        name: 'Xbox Series S 512GB', ico: '🟢', price: 320, avg: 205, percentile: 0,  save: 0, meta: 'Daugavpils · 2d ago', cond: 'New', special: false },
+  { id: 8, brand: 'PlayStation', brandClass: 'b-brand-playstation', name: 'PS4 Slim 500GB',     ico: '🕹️', price: 75, avg: 130, percentile: 96, save: 42, meta: 'Jelgava · 1w ago', cond: 'Used' },
+  { id: 9, brand: 'Retro',       brandClass: 'b-brand-retro',       name: 'PS3 Super Slim 250GB',ico: '📦', price: 45, avg: 75, percentile: 88, save: 40, meta: 'Valmiera · 1w ago', cond: 'Used' },
+  { id: 10, brand: 'Nintendo',   brandClass: 'b-brand-nintendo',    name: 'Game Boy Advance SP', ico: '🎯', price: 65, avg: 80, percentile: 78, save: 19, meta: 'Rīga · 2w ago', cond: 'Used' },
+];
+
+const selected = []; // up to 4 ids
+
+function render() {
+  const grid = document.getElementById('grid');
+  grid.innerHTML = LISTINGS.map(l => `
+    <div class="card ${selected.includes(l.id) ? 'selected' : ''}" onclick="toggle(${l.id})">
+      ${l.special ? '<div class="badge">⭐ Special</div>' : ''}
+      <div class="check">${selected.includes(l.id) ? '✓' : ''}</div>
+      <div class="img">${l.ico}</div>
+      <span class="brand ${l.brandClass}">${l.brand}</span>
+      <div class="name">${l.name}</div>
+      <div class="meta">${l.meta} · ${l.cond}</div>
+      <div class="price-row">
+        <div class="price">€${l.price}</div>
+        ${l.save > 0 ? `<div class="save">−${l.save}%</div>` : ''}
+      </div>
+      <div class="stats">
+        <span class="stat">avg <strong>€${l.avg}</strong></span>
+        <span class="stat">p<sub>${l.percentile}</sub></span>
+        <span class="stat">${l.cond}</span>
+      </div>
+    </div>
+  `).join('');
+  updateTray();
+}
+
+function toggle(id) {
+  const idx = selected.indexOf(id);
+  if (idx >= 0) selected.splice(idx, 1);
+  else if (selected.length < 4) selected.push(id);
+  else { alert('Max 4 items in compare tray'); return; }
+  render();
+}
+
+function updateTray() {
+  const tray = document.getElementById('tray');
+  const slots = document.querySelectorAll('.tray-slot');
+  slots.forEach((s, i) => {
+    const id = selected[i];
+    if (id) {
+      const l = LISTINGS.find(x => x.id === id);
+      s.classList.add('filled');
+      s.innerHTML = `<div class="ico">${l.ico}</div><div class="info"><div class="nm">${l.name}</div><div class="pr">€${l.price}</div></div><button class="x" onclick="event.stopPropagation();toggle(${id})">✕</button>`;
+    } else {
+      s.classList.remove('filled');
+      s.innerHTML = `<span style="color:#a1a1aa;font-size:12px;width:100%;text-align:center;">+</span>`;
+    }
+  });
+  document.getElementById('count').textContent = `${selected.length} / 4`;
+  document.getElementById('compare-btn').disabled = selected.length < 2;
+  tray.classList.toggle('empty', selected.length === 0);
+}
+
+function clearAll() { selected.length = 0; render(); }
+
+function openCompare() {
+  const items = selected.map(id => LISTINGS.find(x => x.id === id));
+  const g = document.getElementById('cmp-grid');
+  const bestPrice = Math.min(...items.map(i => i.price));
+  const bestSave = Math.max(...items.map(i => i.save));
+  const bestAvg = Math.max(...items.map(i => i.avg));
+  const rows = [
+    { type: 'head' },
+    { lbl: 'Price',      get: i => `€${i.price}`,     win: i => i.price === bestPrice },
+    { lbl: 'Avg',        get: i => `€${i.avg}`,       win: i => i.avg === bestAvg },
+    { lbl: 'Save',       get: i => i.save > 0 ? `−${i.save}%` : '—', win: i => i.save === bestSave },
+    { lbl: 'Percentile', get: i => `${i.percentile}`, win: i => i.percentile > 80 },
+    { lbl: 'Condition',  get: i => i.cond },
+    { lbl: 'Listed at',  get: i => i.meta },
+    { lbl: 'Deal Score', get: i => i.save > 30 ? '🔥 Hot' : i.save > 10 ? '👍 Good' : '😐 Fair' },
+  ];
+  let html = '';
+  // header row
+  html += '<div class="cmp-cell lbl"></div>';
+  items.forEach(i => { html += `<div class="cmp-cell head"><div class="ico">${i.ico}</div><div class="nm">${i.name}</div><div class="pr">€${i.price}</div></div>`; });
+  rows.slice(1).forEach(r => {
+    html += `<div class="cmp-cell lbl">${r.lbl}</div>`;
+    items.forEach(i => {
+      const w = r.win && r.win(i);
+      html += `<div class="cmp-cell">${w ? `<span class="winner">${r.get(i)} ✓</span>` : r.get(i)}</div>`;
+    });
+  });
+  g.innerHTML = html;
+  document.getElementById('cmp-overlay').classList.add('open');
+}
+function closeCompare() { document.getElementById('cmp-overlay').classList.remove('open'); }
+
+render();
+</script>
+</body>
+</html>

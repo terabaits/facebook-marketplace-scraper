@@ -1,0 +1,503 @@
+<!--
+  GPU page palette demo — same structure as /gpu, but with all colors
+  driven by CSS variables so a single palette override re-skins the page.
+  Loaded by /gpu-palette{1..5} routes.
+-->
+<!DOCTYPE html>
+<html lang="lv">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GPU Listings — {{ palette_name }} palette · SS-Crawler</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+  /* ===== PALETTE TOKENS (overridden per route) ===== */
+  --c-bg:           #0f1120;
+  --c-surface:      #1a1a2e;
+  --c-surface-2:    #232342;
+  --c-surface-3:    #2a2a4a;
+  --c-border:       #3a3a5a;
+  --c-text:         #e0e0e0;
+  --c-text-dim:     #a0a0b0;
+  --c-text-mute:    #888;
+  --c-accent:       #667eea;
+  --c-accent-2:     #764ba2;
+  --c-accent-glow:  rgba(102,126,234,.35);
+  --c-accent-bg:    rgba(102,126,234,.12);
+  --c-accent-border:rgba(102,126,234,.4);
+  --c-success:      #16a34a;
+  --c-warning:      #f59e0b;
+  --c-danger:       #e74c3c;
+  /* Brand colors stay consistent (vendor badges) */
+  --c-nvidia:       #76b900;
+  --c-amd:          #ed1c24;
+  --c-intel:        #0071c5;
+}
+
+/* === Per-palette override (injected by route) === */
+{{ palette_style|safe }}
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background: var(--c-bg);
+  color: var(--c-text);
+  font-size: 14px;
+  line-height: 1.5;
+  min-height: 100vh;
+}
+.container { max-width: 1500px; margin: 0 auto; padding: 20px 24px 60px; }
+
+/* === Header === */
+.header { display: flex; align-items: center; justify-content: space-between; padding: 14px 0 20px; border-bottom: 1px solid var(--c-border); margin-bottom: 22px; }
+.header h1 { font-size: 22px; font-weight: 800; letter-spacing: -.01em; }
+.header h1 .accent { background: linear-gradient(90deg, var(--c-accent) 0%, var(--c-accent-2) 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.palette-tag { display: inline-block; font-size: 10px; font-weight: 700; letter-spacing: .1em; padding: 4px 10px; border-radius: 14px; background: var(--c-accent-bg); color: var(--c-accent); border: 1px solid var(--c-accent-border); margin-left: 10px; vertical-align: middle; }
+.palette-nav { display: flex; gap: 4px; align-items: center; }
+.palette-nav a { padding: 4px 9px; border-radius: 6px; font-size: 11px; font-weight: 600; color: var(--c-text-mute); text-decoration: none; background: var(--c-surface); border: 1px solid var(--c-border); }
+.palette-nav a:hover { color: var(--c-text); border-color: var(--c-accent); }
+.palette-nav a.active { background: var(--c-accent); color: #fff; border-color: var(--c-accent); }
+.back-link { font-size: 11px; color: var(--c-text-mute); text-decoration: none; padding: 6px 12px; border: 1px solid var(--c-border); border-radius: 14px; }
+.back-link:hover { color: var(--c-text); border-color: var(--c-accent); }
+
+/* === Stats section === */
+.stats-section { background: var(--c-surface); border: 1px solid var(--c-border); border-radius: 12px; padding: 16px; margin-bottom: 22px; }
+.stats-grid { display: grid; grid-template-columns: 1fr 3fr; gap: 18px; }
+.stats-side { display: flex; flex-direction: column; gap: 8px; }
+.stats-side-box { background: var(--c-bg); border: 1px solid var(--c-border); border-radius: 10px; padding: 12px 14px; }
+.stats-side-label { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: .08em; color: var(--c-text-mute); margin-bottom: 4px; }
+.stats-side-value { font-size: 18px; font-weight: 800; letter-spacing: -.01em; }
+.stats-side-value.accent { background: linear-gradient(90deg, var(--c-accent) 0%, var(--c-accent-2) 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.stats-main { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.stat-card { background: var(--c-bg); border: 1px solid var(--c-border); border-radius: 10px; padding: 14px; min-height: 130px; }
+.stat-card h4 { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: var(--c-text-mute); margin-bottom: 10px; }
+.stat-card .bar-row { display: flex; align-items: center; gap: 8px; margin-bottom: 5px; font-size: 12px; }
+.stat-card .bar { flex: 1; height: 8px; background: var(--c-surface-3); border-radius: 4px; overflow: hidden; }
+.stat-card .bar > div { height: 100%; background: linear-gradient(90deg, var(--c-accent) 0%, var(--c-accent-2) 100%); border-radius: 4px; }
+.stat-card .bar-label { width: 80px; color: var(--c-text-dim); font-size: 11px; }
+.stat-card .bar-value { width: 50px; text-align: right; font-variant-numeric: tabular-nums; font-weight: 600; }
+
+/* === Filter bar === */
+.filter-bar { display: flex; align-items: center; gap: 10px; padding: 12px 14px; background: var(--c-surface); border: 1px solid var(--c-border); border-radius: 12px; margin-bottom: 18px; flex-wrap: wrap; }
+.filter-icon { width: 38px; height: 38px; border-radius: 10px; background: var(--c-surface-2); border: 1px solid var(--c-border); display: grid; place-items: center; cursor: pointer; transition: all .15s; position: relative; color: var(--c-text-dim); }
+.filter-icon.active { background: var(--c-accent-bg); border-color: var(--c-accent); color: var(--c-accent); box-shadow: 0 0 12px var(--c-accent-glow); }
+.filter-icon:hover { color: var(--c-text); }
+.filter-icon.staff-only:not(.active) { opacity: .5; }
+.filter-icon svg { width: 18px; height: 18px; }
+.filter-divider { width: 1px; height: 24px; background: var(--c-border); }
+.vendor-icon { width: 38px; height: 38px; border-radius: 10px; display: grid; place-items: center; font-size: 11px; font-weight: 800; color: #fff; cursor: pointer; border: 2px solid transparent; transition: all .15s; }
+.vendor-icon.nvidia { background: rgba(118,185,0,.15); color: var(--c-nvidia); }
+.vendor-icon.amd { background: rgba(237,28,36,.15); color: var(--c-amd); }
+.vendor-icon.intel { background: rgba(0,113,197,.15); color: var(--c-intel); }
+.vendor-icon.active { border-color: currentColor; box-shadow: 0 0 12px currentColor; }
+
+/* === Listings table === */
+.listings-wrap { background: var(--c-surface); border: 1px solid var(--c-border); border-radius: 12px; overflow: hidden; }
+.listings-header { padding: 14px 18px; border-bottom: 1px solid var(--c-border); display: flex; align-items: center; justify-content: space-between; }
+.listings-header h3 { font-size: 14px; font-weight: 700; }
+.listings-header .count { font-size: 12px; color: var(--c-text-mute); font-variant-numeric: tabular-nums; }
+.listings-table { width: 100%; border-collapse: collapse; }
+.listings-table th { padding: 10px 12px; text-align: left; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; color: var(--c-text-mute); background: var(--c-surface-2); border-bottom: 1px solid var(--c-border); }
+.listings-table th.numeric, .listings-table td.numeric { text-align: right; }
+.listings-table td { padding: 12px; border-bottom: 1px solid var(--c-border); font-size: 13px; vertical-align: middle; }
+.listings-table tr:hover td { background: var(--c-surface-2); }
+.listings-table tr:last-child td { border-bottom: none; }
+.listing-thumb { width: 64px; height: 64px; background: var(--c-surface-3); border-radius: 8px; overflow: hidden; display: grid; place-items: center; }
+.listing-thumb img { width: 100%; height: 100%; object-fit: cover; }
+.listing-thumb .ph { font-size: 22px; color: var(--c-text-mute); }
+.model-cell { display: flex; flex-direction: column; gap: 2px; }
+.model-cell .model-name { font-weight: 700; font-size: 14px; }
+.model-cell .model-meta { font-size: 10.5px; color: var(--c-text-mute); }
+.vendor-tag { display: inline-block; font-size: 9.5px; font-weight: 800; padding: 3px 7px; border-radius: 4px; letter-spacing: .04em; }
+.vendor-tag.nvidia { background: rgba(118,185,0,.18); color: var(--c-nvidia); }
+.vendor-tag.amd { background: rgba(237,28,36,.18); color: var(--c-amd); }
+.vendor-tag.intel { background: rgba(0,113,197,.18); color: var(--c-intel); }
+.price-cell { display: flex; flex-direction: column; gap: 2px; align-items: flex-end; }
+.price-cell .price { font-size: 15px; font-weight: 800; font-variant-numeric: tabular-nums; }
+.price-cell .price-old { font-size: 10.5px; color: var(--c-text-mute); text-decoration: line-through; }
+.price-cell .drop { display: inline-block; font-size: 10px; font-weight: 700; padding: 2px 6px; border-radius: 4px; background: var(--c-danger); color: #fff; }
+.market-pos { display: flex; flex-direction: column; gap: 3px; align-items: center; }
+.market-pos .pos-label { font-size: 11px; font-weight: 700; }
+.market-pos .pos-label.above { color: var(--c-success); }
+.market-pos .pos-label.below { color: var(--c-warning); }
+.market-pos .pos-bar { width: 80px; height: 5px; background: var(--c-surface-3); border-radius: 3px; overflow: hidden; }
+.market-pos .pos-bar > div { height: 100%; border-radius: 3px; }
+.market-pos .pos-bar.above > div { background: var(--c-success); }
+.market-pos .pos-bar.below > div { background: var(--c-warning); }
+.perf-tile { display: flex; flex-direction: column; align-items: center; padding: 4px 8px; background: var(--c-surface-2); border: 1px solid var(--c-border); border-radius: 6px; }
+.perf-tile .label { font-size: 9px; color: var(--c-text-mute); text-transform: uppercase; letter-spacing: .05em; }
+.perf-tile .value { font-size: 14px; font-weight: 800; font-variant-numeric: tabular-nums; }
+.compare-check { -webkit-appearance: none; appearance: none; width: 22px; height: 22px; border: 2.5px solid var(--c-accent); border-radius: 5px; background: var(--c-accent-bg); cursor: pointer; transition: all .2s; }
+.compare-check:checked { background: var(--c-accent); box-shadow: 0 0 10px var(--c-accent-glow); }
+.action-btn { background: var(--c-accent); color: #fff; border: none; padding: 7px 12px; border-radius: 6px; font-size: 12px; font-weight: 600; cursor: pointer; }
+.action-btn:hover { filter: brightness(1.1); }
+
+/* === Popup === */
+.modal-backdrop { position: fixed; inset: 0; background: rgba(0,0,0,.6); backdrop-filter: blur(4px); z-index: 200; display: none; }
+.modal-backdrop.open { display: block; }
+.modal { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 90%; max-width: 560px; max-height: 90vh; overflow: auto; background: var(--c-surface); border: 1px solid var(--c-border); border-radius: 14px; z-index: 201; display: none; box-shadow: 0 30px 80px rgba(0,0,0,.5); }
+.modal.open { display: block; }
+.modal-header { display: flex; align-items: center; justify-content: space-between; padding: 16px 18px; border-bottom: 1px solid var(--c-border); }
+.modal-header h3 { font-size: 15px; font-weight: 700; }
+.modal-close { background: none; border: none; color: var(--c-text-dim); cursor: pointer; font-size: 20px; }
+.modal-body { padding: 18px; }
+.modal-row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid var(--c-border); font-size: 13px; }
+.modal-row:last-child { border-bottom: none; }
+.modal-row .lbl { color: var(--c-text-mute); }
+.modal-row .val { font-weight: 600; }
+.flag-row { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border: 1px solid var(--c-border); border-radius: 8px; cursor: pointer; }
+.flag-row.selected { border-color: var(--c-danger); background: rgba(231,76,60,.06); }
+.flag-row .reason-title { font-weight: 600; font-size: 12.5px; }
+.flag-row .reason-desc { font-size: 10.5px; color: var(--c-text-mute); margin-top: 2px; }
+.modal-footer { padding: 12px 18px; border-top: 1px solid var(--c-border); display: flex; gap: 8px; justify-content: flex-end; }
+.btn { padding: 8px 12px; border-radius: 8px; font-size: 12px; font-weight: 600; background: var(--c-surface-2); color: var(--c-text); border: 1px solid var(--c-border); cursor: pointer; }
+.btn.primary { background: var(--c-accent); color: #fff; border-color: var(--c-accent); }
+.btn.danger { background: var(--c-danger); color: #fff; border-color: var(--c-danger); }
+.flag-desc { width: 100%; min-height: 60px; padding: 10px; border-radius: 8px; background: var(--c-bg); border: 1px solid var(--c-border); color: var(--c-text); font-size: 12.5px; outline: none; resize: vertical; font-family: inherit; margin-top: 8px; }
+
+.loading, .empty { padding: 30px; text-align: center; color: var(--c-text-mute); }
+.skel { background: var(--c-surface-2); border-radius: 4px; height: 14px; animation: pulse 1.4s infinite; }
+@keyframes pulse { 0%, 100% { opacity: .4; } 50% { opacity: 1; } }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="header">
+    <h1>GPU sludinājumi <span class="accent">SS-Crawler</span> <span class="palette-tag">{{ palette_name }}</span></h1>
+    <div class="palette-nav">
+      <a href="/gpu-palette1" class="{% if palette_id==1 %}active{% endif %}">Indigo</a>
+      <a href="/gpu-palette2" class="{% if palette_id==2 %}active{% endif %}">Aurora</a>
+      <a href="/gpu-palette3" class="{% if palette_id==3 %}active{% endif %}">Sunset</a>
+      <a href="/gpu-palette4" class="{% if palette_id==4 %}active{% endif %}">Midnight</a>
+      <a href="/gpu-palette5" class="{% if palette_id==5 %}active{% endif %}">Frost</a>
+      <span style="width: 1px; height: 18px; background: var(--c-border); margin: 0 4px;"></span>
+      <a href="/gpu-palette6" class="{% if palette_id==6 %}active{% endif %}">Slate</a>
+      <a href="/gpu-palette7" class="{% if palette_id==7 %}active{% endif %}">Stone</a>
+      <a href="/gpu-palette8" class="{% if palette_id==8 %}active{% endif %}">Pearl</a>
+      <a href="/gpu-palette9" class="{% if palette_id==9 %}active{% endif %}">Graphite</a>
+      <a href="/gpu-palette10" class="{% if palette_id==10 %}active{% endif %}">Onyx</a>
+    </div>
+  </div>
+
+  <!-- Stats section -->
+  <div class="stats-section">
+    <div class="stats-grid">
+      <div class="stats-side">
+        <div class="stats-side-box">
+          <div class="stats-side-label">Kopā sludinājumi</div>
+          <div class="stats-side-value accent" id="kpiTotal">—</div>
+        </div>
+        <div class="stats-side-box">
+          <div class="stats-side-label">Vidējā cena</div>
+          <div class="stats-side-value" id="kpiAvg">—</div>
+        </div>
+        <div class="stats-side-box">
+          <div class="stats-side-label">Labākais darījums</div>
+          <div class="stats-side-value accent" id="kpiBest">—</div>
+        </div>
+      </div>
+      <div class="stats-main">
+        <div class="stat-card">
+          <h4>VRAM (pēc sludinājumiem)</h4>
+          <div id="vramBars"><div class="loading">…</div></div>
+        </div>
+        <div class="stat-card">
+          <h4>Veiktspēja (3D Mark)</h4>
+          <div id="perfBars"><div class="loading">…</div></div>
+        </div>
+        <div class="stat-card">
+          <h4>Populārākie modeļi</h4>
+          <div id="modelBars"><div class="loading">…</div></div>
+        </div>
+        <div class="stat-card">
+          <h4>Cenu sadalījums</h4>
+          <div id="priceBars"><div class="loading">…</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Filter bar -->
+  <div class="filter-bar">
+    <span class="filter-icon active" title="Tikai aktīvie">
+      <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3" fill="currentColor"/></svg>
+    </span>
+    <span class="filter-icon active" title="Augsta ticamība">
+      <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+    </span>
+    <span class="filter-icon" title="Tikai ar cenas kritumu">
+      <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 17l6-6 4 4 8-8M14 7h7v7"/></svg>
+    </span>
+    <span class="filter-icon" title="Rādīt vidējo cenu">
+      <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 3v18h18M7 14l4-4 4 4 5-5"/></svg>
+    </span>
+    <span class="filter-icon" title="Izmantot aktīvo vidējo">
+      <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 1v6M12 17v6M4.22 4.22l4.24 4.24M15.54 15.54l4.24 4.24M1 12h6M17 12h6M4.22 19.78l4.24-4.24M15.54 8.46l4.24-4.24"/></svg>
+    </span>
+    <div class="filter-divider"></div>
+    <span class="vendor-icon nvidia active" title="NVIDIA">N</span>
+    <span class="vendor-icon amd active" title="AMD">A</span>
+    <span class="vendor-icon intel active" title="Intel">I</span>
+  </div>
+
+  <!-- Listings -->
+  <div class="listings-wrap">
+    <div class="listings-header">
+      <h3>Sludinājumi</h3>
+      <span class="count" id="count">— ielādē…</span>
+    </div>
+    <table class="listings-table">
+      <thead>
+        <tr>
+          <th style="width: 80px;"></th>
+          <th>Modelis</th>
+          <th>Avots</th>
+          <th class="numeric">Cena</th>
+          <th class="numeric">Tirgus pozīcija</th>
+          <th class="numeric">Veiktspēja</th>
+          <th style="width: 80px;">Salīdzināt</th>
+          <th style="width: 80px;"></th>
+        </tr>
+      </thead>
+      <tbody id="tbody">
+        <tr><td colspan="8" class="loading">Ielādē…</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+
+<!-- Listing detail + flag modal -->
+<div class="modal-backdrop" id="modalBackdrop" onclick="closeModal()"></div>
+<div class="modal" id="detailModal">
+  <div class="modal-header">
+    <h3 id="detailTitle">Sludinājums</h3>
+    <button class="modal-close" onclick="closeModal()">×</button>
+  </div>
+  <div class="modal-body" id="detailBody"></div>
+  <div class="modal-footer">
+    <button class="btn" onclick="openFlag()">🚩 Ziņot</button>
+    <a class="btn primary" id="detailLink" target="_blank">Atvērt avotā →</a>
+  </div>
+</div>
+<div class="modal" id="flagModal" style="max-width: 460px;">
+  <div class="modal-header">
+    <h3>🚩 Ziņot par problēmu</h3>
+    <button class="modal-close" onclick="closeFlag()">×</button>
+  </div>
+  <div class="modal-body">
+    <div id="flagReasons">
+      <label class="flag-row" style="margin-bottom: 6px;"><input type="radio" name="fr" value="duplicate" /><div><div class="reason-title">Dublēts</div><div class="reason-desc">Šis pats sludinājums parādās vairākas reizes</div></div></label>
+      <label class="flag-row" style="margin-bottom: 6px;"><input type="radio" name="fr" value="wrong-model" /><div><div class="reason-title">Nepareizs modelis</div><div class="reason-desc">Modelis neatbilst attēlam vai aprakstam</div></div></label>
+      <label class="flag-row" style="margin-bottom: 6px;"><input type="radio" name="fr" value="wrong-price" /><div><div class="reason-title">Nepareiza cena</div><div class="reason-desc">Cena neatbilst realitātei</div></div></label>
+      <label class="flag-row" style="margin-bottom: 6px;"><input type="radio" name="fr" value="sold-out" /><div><div class="reason-title">Pārdots</div><div class="reason-desc">Sludinājums vairs nav aktīvs</div></div></label>
+      <label class="flag-row" style="margin-bottom: 6px;"><input type="radio" name="fr" value="spam" /><div><div class="reason-title">Spams</div><div class="reason-desc">Aizdomīgs saturs</div></div></label>
+    </div>
+    <textarea class="flag-desc" id="flagDesc" placeholder="Papildu komentārs…"></textarea>
+  </div>
+  <div class="modal-footer">
+    <button class="btn" onclick="closeFlag()">Atcelt</button>
+    <button class="btn danger" onclick="submitFlag()">Iesniegt</button>
+  </div>
+</div>
+
+<script>
+let ALL = [];
+let CURRENT = null;
+
+function fmtEur(n) { return n == null ? '—' : '€' + (Math.round(n*100)/100).toFixed(2); }
+function vendorOf(m) {
+  const s = (m||'').toUpperCase();
+  if (s.includes('GTX') || s.includes('RTX') || s.includes('GEFORCE')) return 'NVIDIA';
+  if (s.includes('RADEON') || s.includes('RX ')) return 'AMD';
+  return 'Intel';
+}
+
+async function load() {
+  try {
+    const r = await fetch('/api/gpus?per_page=200');
+    const j = await r.json();
+    ALL = (j.results || j || []).map(normalize);
+  } catch (e) {
+    ALL = mock();
+  }
+  renderKPIs();
+  renderBars();
+  renderListings();
+}
+function normalize(l) {
+  return {
+    id: l.listing_id || l.id,
+    gpu_model: l.gpu_model,
+    vendor: l.vendor || vendorOf(l.gpu_model),
+    current_price_eur: parseFloat(l.price_eur) || null,
+    price_eur: l.price_eur != null ? parseFloat(l.price_eur) : null,
+    source: l.source || 'ss.com',
+    last_seen: l.first_seen_at || l.date_posted,
+    is_active: l.is_active !== false,
+    confidence: parseFloat(l.confidence_score ?? l.confidence) || 0,
+    image_url: l.image_url,
+    url: l.listing_url || l.url,
+    g3d_mark: l.g3d_mark,
+    vram_gb: l.vram_gb,
+    has_price_decreased: l.has_price_decreased
+  };
+}
+function mock() {
+  const out = [];
+  const models = ['GeForce RTX 4090','GeForce RTX 4080','GeForce RTX 4070 Ti','GeForce RTX 4070','GeForce RTX 4060 Ti','GeForce RTX 4060','GeForce GTX 1660 Super','Radeon RX 7900 XTX','Radeon RX 7800 XT','Radeon RX 7700 XT','Radeon RX 6700 XT','Radeon RX 580','Intel Arc A770','Intel Arc A580'];
+  for (let i = 0; i < 18; i++) {
+    const m = models[i % models.length];
+    const price = 100 + Math.floor(Math.random() * 1500);
+    out.push({
+      id: 'mock-'+i, gpu_model: m, vendor: vendorOf(m),
+      current_price_eur: price, price_eur: price, source: ['ss.com','mohito.lv','andelem.lv'][i%3],
+      last_seen: new Date(Date.now()-i*3600000).toISOString(), is_active: true, confidence: 0.6 + Math.random()*0.4,
+      image_url: '', url: '#', g3d_mark: 500 + Math.floor(Math.random()*18000), vram_gb: [4,6,8,10,12,16,24][i%7],
+      has_price_decreased: Math.random() < 0.3
+    });
+  }
+  return out;
+}
+
+function renderKPIs() {
+  const active = ALL.filter(l => l.is_active !== false);
+  const prices = active.map(l => l.current_price_eur).filter(p => p > 0);
+  const avg = prices.length ? prices.reduce((a,b)=>a+b,0)/prices.length : 0;
+  const best = active.filter(l => l.current_price_eur > 0).sort((a,b)=>(a.current_price_eur||99999)-(b.current_price_eur||99999))[0];
+  document.getElementById('kpiTotal').textContent = active.length.toLocaleString('lv-LV');
+  document.getElementById('kpiAvg').textContent = fmtEur(avg);
+  document.getElementById('kpiBest').textContent = best ? `${best.gpu_model.split(' ').slice(-1)} · ${fmtEur(best.current_price_eur)}` : '—';
+  document.getElementById('count').textContent = `${active.length} atrasti`;
+}
+
+function renderBars() {
+  const active = ALL.filter(l => l.is_active !== false);
+  // VRAM distribution
+  const vramGroups = {};
+  active.forEach(l => { if (l.vram_gb) vramGroups[l.vram_gb] = (vramGroups[l.vram_gb]||0) + 1; });
+  const vramEntries = Object.entries(vramGroups).sort((a,b)=>+a[0]-+b[0]).slice(0, 5);
+  const vramMax = Math.max(...vramEntries.map(e=>e[1]), 1);
+  document.getElementById('vramBars').innerHTML = vramEntries.map(([gb, n]) => `
+    <div class="bar-row"><span class="bar-label">${gb} GB</span><div class="bar"><div style="width: ${(n/vramMax)*100}%"></div></div><span class="bar-value">${n}</span></div>
+  `).join('') || '<div class="empty">Nav datu</div>';
+
+  // Performance
+  const perfGroups = { 'Top 10%': 0, 'Top 25%': 0, 'Top 50%': 0, 'Bottom 50%': 0 };
+  active.forEach(l => {
+    if (!l.g3d_mark) return;
+    if (l.g3d_mark > 20000) perfGroups['Top 10%']++;
+    else if (l.g3d_mark > 15000) perfGroups['Top 25%']++;
+    else if (l.g3d_mark > 8000) perfGroups['Top 50%']++;
+    else perfGroups['Bottom 50%']++;
+  });
+  const perfEntries = Object.entries(perfGroups);
+  const perfMax = Math.max(...perfEntries.map(e=>e[1]), 1);
+  document.getElementById('perfBars').innerHTML = perfEntries.map(([tier, n]) => `
+    <div class="bar-row"><span class="bar-label">${tier}</span><div class="bar"><div style="width: ${(n/perfMax)*100}%"></div></div><span class="bar-value">${n}</span></div>
+  `).join('') || '<div class="empty">Nav datu</div>';
+
+  // Models
+  const modelCounts = {};
+  active.forEach(l => { if (l.gpu_model) modelCounts[l.gpu_model] = (modelCounts[l.gpu_model]||0) + 1; });
+  const models = Object.entries(modelCounts).sort((a,b)=>b[1]-a[1]).slice(0, 5);
+  const modelMax = Math.max(...models.map(m=>m[1]), 1);
+  document.getElementById('modelBars').innerHTML = models.map(([m, n]) => `
+    <div class="bar-row"><span class="bar-label" style="width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${m}</span><div class="bar"><div style="width: ${(n/modelMax)*100}%"></div></div><span class="bar-value">${n}</span></div>
+  `).join('') || '<div class="empty">Nav datu</div>';
+
+  // Price ranges
+  const priceGroups = { '<€200': 0, '€200-500': 0, '€500-1000': 0, '>€1000': 0 };
+  active.forEach(l => {
+    const p = l.current_price_eur || 0;
+    if (p < 200) priceGroups['<€200']++;
+    else if (p < 500) priceGroups['€200-500']++;
+    else if (p < 1000) priceGroups['€500-1000']++;
+    else priceGroups['>€1000']++;
+  });
+  const priceEntries = Object.entries(priceGroups);
+  const priceMax = Math.max(...priceEntries.map(p=>p[1]), 1);
+  document.getElementById('priceBars').innerHTML = priceEntries.map(([range, n]) => `
+    <div class="bar-row"><span class="bar-label">${range}</span><div class="bar"><div style="width: ${(n/priceMax)*100}%"></div></div><span class="bar-value">${n}</span></div>
+  `).join('') || '<div class="empty">Nav datu</div>';
+}
+
+function renderListings() {
+  const tbody = document.getElementById('tbody');
+  const list = ALL.filter(l => l.is_active !== false).slice(0, 12);
+  if (!list.length) { tbody.innerHTML = '<tr><td colspan="8" class="empty">Nav datu</td></tr>'; return; }
+  tbody.innerHTML = list.map(l => {
+    const v = l.vendor || 'Intel';
+    const drop = l.has_price_decreased;
+    const marketPct = l.current_price_eur < 300 ? 90 : l.current_price_eur < 700 ? 65 : l.current_price_eur < 1200 ? 40 : 20;
+    return `
+    <tr onclick="openDetail('${l.id}')">
+      <td><div class="listing-thumb">${l.image_url ? `<img src="${l.image_url}" onerror="this.outerHTML='<span class=ph>🎮</span>'" />` : '<span class="ph">🎮</span>'}</div></td>
+      <td><div class="model-cell"><span class="model-name">${l.gpu_model || '—'}</span><span class="model-meta">${l.vram_gb ? l.vram_gb + ' GB VRAM' : ''} · ${l.confidence ? Math.round(l.confidence*100)+'%' : ''} confidence</span></div></td>
+      <td><span class="vendor-tag ${v.toLowerCase()}">${v}</span></td>
+      <td class="numeric"><div class="price-cell"><span class="price">${fmtEur(l.current_price_eur)}</span>${drop ? '<span class="drop">↓ KRITUMS</span>' : ''}</div></td>
+      <td class="numeric"><div class="market-pos"><span class="pos-label above">Top ${100-marketPct}%</span><div class="pos-bar above"><div style="width: ${marketPct}%"></div></div></div></td>
+      <td class="numeric"><div class="perf-tile"><span class="label">3D</span><span class="value">${l.g3d_mark ? l.g3d_mark.toLocaleString('lv-LV') : '—'}</span></div></td>
+      <td><input type="checkbox" class="compare-check" onclick="event.stopPropagation()" /></td>
+      <td><button class="action-btn" onclick="event.stopPropagation(); openDetail('${l.id}')">Skatīt</button></td>
+    </tr>`;
+  }).join('');
+}
+
+function openDetail(id) {
+  const l = ALL.find(x => x.id === id);
+  if (!l) return;
+  CURRENT = l;
+  document.getElementById('detailTitle').textContent = l.gpu_model;
+  document.getElementById('detailBody').innerHTML = `
+    <div style="display: flex; gap: 16px; margin-bottom: 14px;">
+      <div class="listing-thumb" style="width: 110px; height: 110px;">${l.image_url ? `<img src="${l.image_url}" onerror="this.outerHTML='<span class=ph>🎮</span>'" />` : '<span class="ph">🎮</span>'}</div>
+      <div style="flex: 1;">
+        <div style="font-size: 22px; font-weight: 800; margin-bottom: 4px;">${fmtEur(l.current_price_eur)}</div>
+        <span class="vendor-tag ${l.vendor.toLowerCase()}" style="margin-top: 4px;">${l.vendor}</span>
+      </div>
+    </div>
+    <div class="modal-row"><span class="lbl">Avots</span><span class="val">${l.source}</span></div>
+    <div class="modal-row"><span class="lbl">VRAM</span><span class="val">${l.vram_gb ? l.vram_gb + ' GB' : '—'}</span></div>
+    <div class="modal-row"><span class="lbl">3D Mark</span><span class="val">${l.g3d_mark ? l.g3d_mark.toLocaleString('lv-LV') : '—'}</span></div>
+    <div class="modal-row"><span class="lbl">Ticamība</span><span class="val">${Math.round((l.confidence||0)*100)}%</span></div>
+  `;
+  const link = document.getElementById('detailLink');
+  link.href = l.url || '#';
+  link.style.display = l.url && l.url !== '#' ? 'inline-flex' : 'none';
+  document.getElementById('modalBackdrop').classList.add('open');
+  document.getElementById('detailModal').classList.add('open');
+}
+function closeModal() {
+  document.getElementById('modalBackdrop').classList.remove('open');
+  document.getElementById('detailModal').classList.remove('open');
+}
+function openFlag() {
+  document.querySelectorAll('input[name="fr"]').forEach(i => i.checked = false);
+  document.querySelectorAll('.flag-row').forEach(el => el.classList.remove('selected'));
+  document.getElementById('flagDesc').value = '';
+  document.getElementById('detailModal').classList.remove('open');
+  document.getElementById('flagModal').classList.add('open');
+  document.getElementById('modalBackdrop').classList.add('open');
+}
+function closeFlag() {
+  document.getElementById('flagModal').classList.remove('open');
+  if (CURRENT) document.getElementById('detailModal').classList.add('open');
+  else document.getElementById('modalBackdrop').classList.remove('open');
+}
+function submitFlag() {
+  const reason = document.querySelector('input[name="fr"]:checked')?.value;
+  if (!reason) return;
+  if (CURRENT) fetch('/api/flags', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({listing_id: CURRENT.id, reason, description: document.getElementById('flagDesc').value}) }).catch(()=>null);
+  closeFlag();
+  closeModal();
+}
+document.querySelectorAll('input[name="fr"]').forEach(input => input.addEventListener('change', () => {
+  document.querySelectorAll('.flag-row').forEach(el => el.classList.remove('selected'));
+  input.closest('.flag-row').classList.add('selected');
+}));
+
+load();
+</script>
+</body>
+</html>

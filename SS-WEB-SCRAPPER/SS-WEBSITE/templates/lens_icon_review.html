@@ -1,0 +1,538 @@
+{% extends "base.html" %}
+
+{% block title %}Lens Icon Review - SS-Crawler{% endblock %}
+
+{% block extra_css %}
+    body > .container { max-width: 1600px; }
+
+    .page-header {
+        display: flex; justify-content: space-between; align-items: flex-end;
+        flex-wrap: wrap; gap: 1rem; margin-bottom: 1rem;
+    }
+    .page-header h1 { margin: 0; }
+    .page-header .lede { color: var(--text-mute, #6b7280); font-size: 13px; margin-top: 4px; }
+
+    /* Summary cards */
+    .summary-grid {
+        display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px;
+        margin-bottom: 1.25rem;
+    }
+    @media (max-width: 800px) { .summary-grid { grid-template-columns: 1fr 1fr; } }
+    .stat-card {
+        background: var(--card-bg, #1a1d2b);
+        border: 1px solid var(--card-border, #2a2e3e);
+        border-radius: 12px; padding: 16px 18px;
+        position: relative; overflow: hidden;
+    }
+    .stat-card .label {
+        font-size: 11px; font-weight: 600; color: var(--text-mute, #6b7280);
+        text-transform: uppercase; letter-spacing: .04em; margin-bottom: 6px;
+    }
+    .stat-card .value { font-size: 28px; font-weight: 800; color: var(--text, #f1f5f9); line-height: 1.1; }
+    .stat-card.good .value { color: #4ade80; }
+    .stat-card.bad .value { color: #f87171; }
+    .stat-card.rework .value { color: #fbbf24; }
+    .stat-card .sub { font-size: 11.5px; color: var(--text-dim, #94a3b8); margin-top: 4px; }
+
+    /* Filter bar */
+    .filter-bar {
+        display: flex; flex-wrap: wrap; gap: 8px; align-items: center;
+        background: var(--card-bg, #1a1d2b);
+        border: 1px solid var(--card-border, #2a2e3e);
+        border-radius: 12px; padding: 12px 16px; margin-bottom: 14px;
+    }
+    .filter-bar select, .filter-bar input[type=search] {
+        padding: 6px 10px; border: 1px solid var(--card-border, #2a2e3e); border-radius: 6px;
+        background: var(--input-bg, #0f1117); color: var(--text, #f1f5f9);
+        font-size: 12.5px; outline: none; min-width: 110px;
+    }
+    .filter-bar input[type=search] { min-width: 220px; }
+    .filter-bar select:focus, .filter-bar input:focus { border-color: #6366f1; }
+    .filter-bar .fg { display: flex; align-items: center; gap: 6px; }
+    .filter-bar .fg label { font-size: 10.5px; font-weight: 700; color: var(--text-mute, #6b7280); text-transform: uppercase; letter-spacing: .04em; }
+    .filter-bar .sep { width: 1px; height: 20px; background: var(--card-border, #2a2e3e); }
+
+    /* Icon comparison card */
+    .icon-card {
+        background: var(--card-bg, #1a1d2b);
+        border: 1px solid var(--card-border, #2a2e3e);
+        border-radius: 12px;
+        padding: 18px;
+        transition: border-color .15s, box-shadow .15s;
+    }
+    .icon-card:hover { border-color: #6366f1; }
+    .icon-card.has-rework { border-color: #fbbf24; box-shadow: 0 0 0 1px rgba(251,191,36,.20); }
+    .icon-card.all-good { border-color: rgba(74,222,128,.50); }
+    .icon-card.all-bad { border-color: rgba(248,113,113,.50); }
+    .icon-card-header {
+        display: flex; justify-content: space-between; align-items: center;
+        margin-bottom: 14px; padding-bottom: 12px;
+        border-bottom: 1px solid var(--card-border, #2a2e3e);
+    }
+    .icon-card-title {
+        font-size: 15px; font-weight: 800; color: var(--text, #f1f5f9);
+        font-family: ui-monospace, 'SF Mono', Consolas, monospace;
+    }
+    .icon-card-stats {
+        font-size: 11.5px; color: var(--text-dim, #94a3b8);
+    }
+
+    .icon-row {
+        display: grid; grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
+    }
+    .icon-cell {
+        background: rgba(255,255,255,.02);
+        border: 2px solid var(--card-border, #2a2e3e);
+        border-radius: 10px;
+        padding: 12px;
+        text-align: center;
+        transition: border-color .15s, background .15s;
+        position: relative;
+    }
+    .icon-cell:hover { background: rgba(99,102,241,.05); }
+    .icon-cell.is-good { border-color: #4ade80; background: rgba(74,222,128,.06); }
+    .icon-cell.is-bad { border-color: #f87171; background: rgba(248,113,113,.06); }
+    .icon-cell.is-rework { border-color: #fbbf24; background: rgba(251,191,36,.08); }
+    .icon-cell.is-skip { border-color: rgba(107,114,128,.50); background: rgba(107,114,128,.04); }
+    .icon-cell .source-label {
+        font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: .06em;
+        color: var(--text-mute, #6b7280); margin-bottom: 6px;
+    }
+    .icon-cell .icon-wrap {
+        width: 100%; aspect-ratio: 1/1;
+        background: #fff; border-radius: 8px;
+        display: grid; place-items: center;
+        margin-bottom: 10px;
+        padding: 6px;
+    }
+    [data-theme="dark"] .icon-cell .icon-wrap { background: #f5f5f5; }
+    .icon-cell .icon-wrap svg { width: 100%; height: 100%; }
+
+    .icon-cell .mark-row {
+        display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px;
+        margin-bottom: 6px;
+    }
+    .icon-cell .mark-btn {
+        padding: 5px 0; font-size: 14px;
+        background: rgba(255,255,255,.04); border: 1px solid var(--card-border, #2a2e3e);
+        border-radius: 5px; cursor: pointer;
+        transition: all .12s;
+    }
+    .icon-cell .mark-btn:hover { background: rgba(99,102,241,.18); }
+    .icon-cell .mark-btn.active-good { background: rgba(74,222,128,.25); border-color: #4ade80; }
+    .icon-cell .mark-btn.active-bad { background: rgba(248,113,113,.25); border-color: #f87171; }
+    .icon-cell .mark-btn.active-rework { background: rgba(251,191,36,.25); border-color: #fbbf24; }
+    .icon-cell .mark-btn.active-skip { background: rgba(107,114,128,.25); border-color: #6b7280; }
+
+    .icon-cell .comment-input {
+        width: 100%; padding: 5px 7px; font-size: 11px;
+        background: var(--input-bg, #0f1117); color: var(--text, #f1f5f9);
+        border: 1px solid var(--card-border, #2a2e3e); border-radius: 5px;
+        resize: vertical; min-height: 28px; max-height: 80px;
+        font-family: inherit;
+    }
+    .icon-cell .comment-input:focus { outline: none; border-color: #6366f1; }
+
+    .icon-cell .save-row {
+        display: flex; justify-content: space-between; align-items: center;
+        margin-top: 6px; gap: 6px;
+    }
+    .icon-cell .save-btn {
+        padding: 4px 10px; font-size: 11px; font-weight: 700;
+        background: #6366f1; color: white; border: none; border-radius: 5px;
+        cursor: pointer;
+    }
+    .icon-cell .save-btn:hover { background: #4f46e5; }
+    .icon-cell .save-btn:disabled { background: #4b5563; cursor: not-allowed; }
+    .icon-cell .save-btn.saved { background: #4ade80; }
+    .icon-cell .clear-btn {
+        padding: 4px 8px; font-size: 11px; font-weight: 600;
+        background: transparent; color: var(--text-dim, #9ca3af);
+        border: 1px solid var(--card-border, #2a2e3e); border-radius: 5px;
+        cursor: pointer;
+    }
+    .icon-cell .clear-btn:hover { color: #f87171; border-color: #f87171; }
+
+    /* Grid of cards */
+    .cards-grid {
+        display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px;
+    }
+    @media (max-width: 1100px) { .cards-grid { grid-template-columns: 1fr; } }
+
+    /* Status dot */
+    .icon-cell .status-dot {
+        position: absolute; top: 6px; right: 6px;
+        width: 8px; height: 8px; border-radius: 50%;
+        background: var(--card-border, #2a2e3e);
+    }
+    .icon-cell.has-review .status-dot { background: #4ade80; }
+
+    /* Empty state */
+    .empty-state {
+        text-align: center; padding: 60px 20px;
+        color: var(--text-mute, #6b7280);
+    }
+
+    /* Pending rework panel */
+    .pending-panel {
+        background: rgba(251,191,36,.06);
+        border: 1px solid rgba(251,191,36,.30);
+        border-radius: 12px;
+        padding: 16px 18px;
+        margin-bottom: 14px;
+    }
+    .pending-panel h3 {
+        font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em;
+        color: #fbbf24; margin: 0 0 10px;
+    }
+    .pending-list {
+        display: flex; flex-direction: column; gap: 4px;
+        max-height: 200px; overflow-y: auto;
+    }
+    .pending-item {
+        font-size: 12.5px; padding: 6px 10px; background: rgba(255,255,255,.03);
+        border-radius: 6px;
+        display: flex; justify-content: space-between; align-items: center;
+    }
+    .pending-item code {
+        color: #f1f5f9; font-weight: 700; font-size: 11.5px;
+        background: rgba(0,0,0,.3); padding: 1px 6px; border-radius: 3px;
+    }
+    .pending-item .src { font-size: 10.5px; color: var(--text-mute, #6b7280); }
+    .pending-item .comment { font-size: 11px; color: var(--text-dim, #9ca3af); }
+{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+    <div>
+        <h1>🔍 Lens Icon Review</h1>
+        <div class="lede">Compare all 3 icon variants per lens model. Mark 👍 good / 👎 bad / 🔧 needs rework. Marks persist so the assistant can pull them later.</div>
+    </div>
+    <div style="display:flex; gap:8px;">
+        <a href="/lenses" class="action-btn" style="text-decoration:none; padding:8px 14px; background:transparent; border:1px solid var(--card-border, #2a2e3e); border-radius:8px; color:var(--text-dim, #9ca3af); font-weight:600; font-size:13px;">← Back to Lenses</a>
+    </div>
+</div>
+
+<div class="summary-grid" id="summary-grid">
+    <div class="stat-card"><div class="label">Total Models</div><div class="value" id="s-total">—</div><div class="sub" id="s-sub">— variants each</div></div>
+    <div class="stat-card good"><div class="label">👍 Marked Good</div><div class="value" id="s-good">—</div><div class="sub">across all variants</div></div>
+    <div class="stat-card bad"><div class="label">👎 Marked Bad</div><div class="value" id="s-bad">—</div><div class="sub">across all variants</div></div>
+    <div class="stat-card rework"><div class="label">🔧 Needs Rework</div><div class="value" id="s-rework">—</div><div class="sub" id="s-rework-sub">queued for the assistant</div></div>
+</div>
+
+<div class="pending-panel" id="pending-panel" style="display:none;">
+    <h3>🔧 Pending rework — assistant should pull these next</h3>
+    <div class="pending-list" id="pending-list"></div>
+</div>
+
+<div class="filter-bar">
+    <div class="fg">
+        <label>Filter</label>
+        <select id="filter-status" onchange="render()">
+            <option value="all">All</option>
+            <option value="pending">Pending (no review)</option>
+            <option value="rework">🔧 Needs rework</option>
+            <option value="good">👍 Good</option>
+            <option value="bad">👎 Bad</option>
+        </select>
+    </div>
+    <div class="fg">
+        <label>Search</label>
+        <input type="search" id="filter-search" placeholder="lens model…" oninput="render()">
+    </div>
+    <span class="sep"></span>
+    <span id="results-count" style="color: var(--text-mute, #6b7280); font-size: 12px;">— models</span>
+</div>
+
+<div class="cards-grid" id="cards-grid">
+    <div class="empty-state"><div style="font-size: 36px; margin-bottom: 8px; opacity: .4;">⏳</div>Loading icons…</div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<!-- The 3 icon libraries all declare `const lensIcons = {...}` at the top
+     level, so we cannot <script src=…> them together — the second file
+     would throw a SyntaxError. Instead we fetch each one and evaluate it
+     inside an IIFE with a rebound `const`, then capture the result. -->
+<script>
+window.__iconLibs = { simple: {}, detailed: {}, realistic: {} };
+
+async function loadIconLib(url, slotName) {
+    const res = await fetch(url, { cache: 'no-store' });
+    if (!res.ok) throw new Error('Failed to load ' + url);
+    const code = await res.text();
+    // Eval inside an IIFE that returns the lensIcons map. The `const` lives
+    // only in the IIFE's scope, so each call is independent.
+    const factory = new Function('"use strict"; ' + code + '; return (typeof lensIcons !== "undefined") ? lensIcons : {};');
+    try {
+        window.__iconLibs[slotName] = factory();
+    } catch (e) {
+        console.error('Failed to load', slotName, e);
+    }
+}
+</script>
+
+<script>
+(async () => {
+    await Promise.all([
+        loadIconLib('{{ url_for("static", filename="lens-icons.js") }}?v=2',           'simple'),
+        loadIconLib('{{ url_for("static", filename="lens-icons-detailed.js") }}?v=2',  'detailed'),
+        loadIconLib('{{ url_for("static", filename="lens-icons-realistic.js") }}?v=2', 'realistic'),
+    ]);
+    await window.__loadLensReviews();
+    window.__renderLensReview();
+})();
+</script>
+
+<script>
+(function() {
+    // Helper: read iconLibs from window at call time (NOT captured at IIFE
+    // init time, because the libs are loaded async after this IIFE runs).
+    function getIconLibs() { return window.__iconLibs || { simple: {}, detailed: {}, realistic: {} }; }
+    function getSortedKeys() {
+        const lib = getIconLibs();
+        const allKeys = new Set();
+        Object.values(lib).forEach(L => {
+            if (L && typeof L === 'object') Object.keys(L).forEach(k => allKeys.add(k));
+        });
+        return Array.from(allKeys).sort((a, b) => {
+            const brandA = a.split('_')[0];
+            const brandB = b.split('_')[0];
+            if (brandA !== brandB) return brandA.localeCompare(brandB);
+            return a.localeCompare(b);
+        });
+    }
+
+    let reviews = {};
+    function reviewKey(lensKey, source) { return lensKey + '::' + source; }
+
+    async function loadReviews() {
+        try {
+            const r = await fetch('/api/lens-icon-reviews');
+            const data = await r.json();
+            const list = data.reviews || [];
+            for (const rev of list) {
+                reviews[reviewKey(rev.lens_key, rev.icon_source)] = rev;
+            }
+        } catch (e) {
+            console.error('Failed to load reviews:', e);
+        }
+    }
+
+    function escapeHtml(s) {
+        if (s == null) return '';
+        return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+    }
+
+    function prettyLabel(key) { return key.replace(/_/g, ' '); }
+
+    function ratingsCount() {
+        const c = { good: 0, bad: 0, rework: 0, skip: 0 };
+        for (const k in reviews) {
+            const r = reviews[k].rating;
+            if (c[r] !== undefined) c[r]++;
+        }
+        return c;
+    }
+
+    function updateSummary() {
+        const sortedKeys = getSortedKeys();
+        document.getElementById('s-total').textContent = sortedKeys.length;
+        const c = ratingsCount();
+        document.getElementById('s-good').textContent = c.good;
+        document.getElementById('s-bad').textContent = c.bad;
+        document.getElementById('s-rework').textContent = c.rework;
+        document.getElementById('s-rework-sub').textContent =
+            c.rework ? `${c.rework} icon${c.rework === 1 ? '' : 's'} queued for the assistant` : 'none yet — start marking';
+
+        const pending = [];
+        for (const k in reviews) {
+            if (reviews[k].rating === 'rework') {
+                const [lens_key, icon_source] = k.split('::');
+                pending.push({ lens_key, icon_source, ...reviews[k] });
+            }
+        }
+        const panel = document.getElementById('pending-panel');
+        const list = document.getElementById('pending-list');
+        if (pending.length === 0) {
+            panel.style.display = 'none';
+        } else {
+            panel.style.display = 'block';
+            list.innerHTML = pending.map(p => `
+                <div class="pending-item">
+                    <div>
+                        <code>${escapeHtml(p.lens_key)}</code>
+                        <span class="src">${escapeHtml(p.icon_source)}</span>
+                        ${p.comment ? `<div class="comment">"${escapeHtml(p.comment)}"</div>` : ''}
+                    </div>
+                    <span style="color: #fbbf24; font-size: 11px;">🔧 rework</span>
+                </div>
+            `).join('');
+        }
+    }
+
+    function cellHtml(lensKey, source) {
+        const lib = getIconLibs();
+        const libSrc = lib[source] || {};
+        const svg = libSrc[lensKey];
+        const rev = reviews[reviewKey(lensKey, source)];
+        const rating = rev ? rev.rating : null;
+        const comment = rev ? (rev.comment || '') : '';
+        const cellClass = rating ? `is-${rating}` : '';
+        const statusDot = rating ? 'has-review' : '';
+
+        return `
+            <div class="icon-cell ${cellClass} ${statusDot}" data-lens-key="${escapeHtml(lensKey)}" data-source="${source}">
+                <span class="status-dot"></span>
+                <div class="source-label">${source}</div>
+                <div class="icon-wrap">${svg || '<div style="font-size:48px;color:#999;">📷</div>'}</div>
+                <div class="mark-row">
+                    <button class="mark-btn ${rating === 'good' ? 'active-good' : ''}" data-mark="good" title="Looks great">👍</button>
+                    <button class="mark-btn ${rating === 'bad' ? 'active-bad' : ''}" data-mark="bad" title="Looks wrong">👎</button>
+                    <button class="mark-btn ${rating === 'rework' ? 'active-rework' : ''}" data-mark="rework" title="Needs rework">🔧</button>
+                    <button class="mark-btn ${rating === 'skip' ? 'active-skip' : ''}" data-mark="skip" title="Skip / undecided">⏭</button>
+                </div>
+                <textarea class="comment-input" placeholder="What should change? (optional)">${escapeHtml(comment)}</textarea>
+                <div class="save-row">
+                    <button class="clear-btn" data-clear="1">Clear</button>
+                    <button class="save-btn" data-save="1">Save</button>
+                </div>
+            </div>
+        `;
+    }
+
+    function cardHtml(lensKey) {
+        return `
+            <div class="icon-card" data-lens-key="${escapeHtml(lensKey)}">
+                <div class="icon-card-header">
+                    <div class="icon-card-title">${escapeHtml(prettyLabel(lensKey))}</div>
+                    <div class="icon-card-stats">${(reviews[reviewKey(lensKey,'simple')] ? '👍' : '·')}${(reviews[reviewKey(lensKey,'detailed')] ? '👍' : '·')}${(reviews[reviewKey(lensKey,'realistic')] ? '👍' : '·')}</div>
+                </div>
+                <div class="icon-row">
+                    ${cellHtml(lensKey, 'simple')}
+                    ${cellHtml(lensKey, 'detailed')}
+                    ${cellHtml(lensKey, 'realistic')}
+                </div>
+            </div>
+        `;
+    }
+
+    function applyFilter(keys) {
+        const status = document.getElementById('filter-status').value;
+        const search = (document.getElementById('filter-search').value || '').toLowerCase().trim();
+        return keys.filter(k => {
+            if (search && !k.toLowerCase().includes(search)) return false;
+            if (status === 'all') return true;
+            if (status === 'pending') {
+                return !reviews[reviewKey(k, 'simple')] && !reviews[reviewKey(k, 'detailed')] && !reviews[reviewKey(k, 'realistic')];
+            }
+            return ['simple', 'detailed', 'realistic'].some(src => {
+                const rev = reviews[reviewKey(k, src)];
+                return rev && rev.rating === status;
+            });
+        });
+    }
+
+    function render() {
+        const sortedKeys = getSortedKeys();
+        const filtered = applyFilter(sortedKeys);
+        const grid = document.getElementById('cards-grid');
+        if (!filtered.length) {
+            grid.innerHTML = '<div class="empty-state"><div style="font-size: 36px; margin-bottom: 8px; opacity: .4;">🔍</div><div class="em-title" style="font-size:15px;font-weight:700;">No models match the filter</div></div>';
+        } else {
+            grid.innerHTML = filtered.map(cardHtml).join('');
+        }
+        document.getElementById('results-count').textContent = `${filtered.length} of ${sortedKeys.length} models`;
+        updateSummary();
+    }
+
+    document.getElementById('cards-grid').addEventListener('click', async (e) => {
+        const cell = e.target.closest('.icon-cell');
+        if (!cell) return;
+        const lensKey = cell.dataset.lensKey;
+        const source = cell.dataset.source;
+
+        if (e.target.matches('[data-mark]')) {
+            const rating = e.target.dataset.mark;
+            const textarea = cell.querySelector('.comment-input');
+            const comment = textarea.value.trim();
+            await saveReview(lensKey, source, rating, comment, cell);
+            return;
+        }
+        if (e.target.matches('[data-clear]')) {
+            await clearReview(lensKey, source, cell);
+            return;
+        }
+        if (e.target.matches('[data-save]')) {
+            const existing = reviews[reviewKey(lensKey, source)];
+            const rating = existing ? existing.rating : 'good';
+            const textarea = cell.querySelector('.comment-input');
+            const comment = textarea.value.trim();
+            await saveReview(lensKey, source, rating, comment, cell);
+        }
+    });
+
+    async function saveReview(lensKey, source, rating, comment, cell) {
+        const btn = cell.querySelector('[data-save]');
+        btn.disabled = true; btn.textContent = '…';
+        try {
+            const r = await fetch('/api/lens-icon-reviews', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ lens_key: lensKey, icon_source: source, rating, comment }),
+            });
+            const out = await r.json();
+            if (!r.ok || !out.success) throw new Error(out.error || `HTTP ${r.status}`);
+            reviews[reviewKey(lensKey, source)] = { lens_key: lensKey, icon_source: source, rating, comment };
+            btn.textContent = '✓ Saved';
+            btn.classList.add('saved');
+            setTimeout(() => { btn.classList.remove('saved'); btn.textContent = 'Save'; btn.disabled = false; }, 1200);
+            cell.className = `icon-cell is-${rating} has-review`;
+            cell.querySelectorAll('.mark-btn').forEach(b => {
+                b.className = 'mark-btn' + (b.dataset.mark === rating ? ` active-${rating}` : '');
+            });
+            updateSummary();
+            const card = cell.closest('.icon-card');
+            if (card) {
+                const stats = card.querySelector('.icon-card-stats');
+                stats.textContent = `${reviews[reviewKey(lensKey,'simple')] ? '👍' : '·'}${reviews[reviewKey(lensKey,'detailed')] ? '👍' : '·'}${reviews[reviewKey(lensKey,'realistic')] ? '👍' : '·'}`;
+            }
+        } catch (e) {
+            btn.textContent = 'Error';
+            setTimeout(() => { btn.textContent = 'Save'; btn.disabled = false; }, 1500);
+            alert('Save failed: ' + e.message);
+        }
+    }
+
+    async function clearReview(lensKey, source, cell) {
+        if (!reviews[reviewKey(lensKey, source)]) return;
+        try {
+            const r = await fetch('/api/lens-icon-reviews', {
+                method: 'DELETE',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ lens_key: lensKey, icon_source: source }),
+            });
+            if (!r.ok) throw new Error('HTTP ' + r.status);
+            delete reviews[reviewKey(lensKey, source)];
+            cell.className = 'icon-cell';
+            cell.querySelectorAll('.mark-btn').forEach(b => b.className = 'mark-btn');
+            cell.querySelector('.comment-input').value = '';
+            updateSummary();
+            const card = cell.closest('.icon-card');
+            if (card) {
+                const stats = card.querySelector('.icon-card-stats');
+                stats.textContent = `${reviews[reviewKey(lensKey,'simple')] ? '👍' : '·'}${reviews[reviewKey(lensKey,'detailed')] ? '👍' : '·'}${reviews[reviewKey(lensKey,'realistic')] ? '👍' : '·'}`;
+            }
+        } catch (e) {
+            alert('Clear failed: ' + e.message);
+        }
+    }
+
+    window.__renderLensReview = render;
+    window.__loadLensReviews = loadReviews;
+})();
+</script>
+{% endblock %}

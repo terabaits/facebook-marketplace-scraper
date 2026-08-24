@@ -640,7 +640,9 @@ let draggedFromColumn = null;
 
 async function loadBoard() {
     try {
-        const response = await fetch('/api/project-board');
+        // cache: 'no-store' ensures the browser always fetches the latest
+        // board state (no 30s stale cache from the previous loadBoard).
+        const response = await fetch('/api/project-board', { cache: 'no-store' });
         boardData = await response.json();
         renderBoard();
         updateStats();

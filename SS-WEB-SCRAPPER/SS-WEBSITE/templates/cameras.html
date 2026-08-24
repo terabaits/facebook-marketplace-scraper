@@ -67,7 +67,7 @@
     </div>
     
     <!-- Camera Listings Table -->
-    <div id="listings-container">
+    <div class="modern-panel" id="listings-container">
         <div class="loading">Loading camera listings...</div>
     </div>
 </div>
@@ -363,166 +363,198 @@ async function loadCameras() {
     }
 }
 
-// Show camera detail popup
+// Show camera detail popup — reworked to match the modern monitor/RAM popup design.
 async function showCameraDetail(listingId) {
     try {
-        const response = await fetch('/api/camera-listing-details/' + encodeURIComponent(listingId));
-        const data = await response.json();
-        
-        // Check for error or if listing not found
-        if (data.error) {
-            alert('Error: ' + data.error);
+        // Reuse the shared listing modal that lives in base.html so the look is consistent.
+        const modal = document.getElementById('shared-listing-modal');
+        const content = document.getElementById('shared-listing-content');
+        const title = document.getElementById('shared-listing-title');
+        if (!modal) { alert('Shared modal missing'); return; }
+        title.textContent = 'Loading…';
+        content.innerHTML = '<div class="loading">Loading camera details…</div>';
+        modal.classList.add('active');
+
+        const escapeHtml = (s) => String(s == null ? '' : s)
+            .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+
+        // Pull detail + price history in parallel
+        const [detailsRes, history] = await Promise.all([
+            fetch('/api/camera-listing-details/' + encodeURIComponent(listingId)).then(r => r.ok ? r.json() : null).catch(() => null),
+            fetch('/api/price-history/' + encodeURIComponent(listingId)).then(r => r.ok ? r.json() : []).catch(() => []),
+        ]);
+        if (!detailsRes || detailsRes.error) {
+            content.innerHTML = '<div class="error">' + (detailsRes?.error || 'Failed to load listing') + '</div>';
             return;
         }
-        
-        if (!data.listing) {
-            alert('Error: Listing not found');
-            return;
-        }
-        
-        const listing = data.listing;
-        
-        // Build lenses HTML with enhanced display
-        let lensesHtml = '';
-        const lenses = data.lenses || [];
-        if (lenses.length > 0) {
-            lensesHtml = `
-                <h4 style="margin-top: 1.5rem; margin-bottom: 0.75rem;">🔭 Detected Lenses (${lenses.length})</h4>
-                <div style="background: var(--card-bg); padding: 1rem; border-radius: 8px;">
-                    <p style="font-size: 0.85rem; color: #888; margin-bottom: 1rem;">
-                        <em>${lenses.some(l => l.match_source === 'database') ? 'Lenses linked from this listing. ' : ''}Lenses detected from listing title and description that may be compatible with this camera.</em>
-                    </p>
-                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 0.75rem;">
-                        ${lenses.map(lens => `
-                            <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 0.75rem; border-radius: 8px; color: white;">
-                                <div style="font-weight: 600; margin-bottom: 0.25rem;">${lens.slug ? `<a href="/lenses?model=${encodeURIComponent(lens.slug)}" target="_blank" style="color: white; text-decoration: underline;">${lens.name}</a>` : lens.name}</div>
-                                ${lens.brand ? `<div style="font-size: 0.75rem; opacity: 0.9;">Brand: ${lens.brand}</div>` : ''}
-                                ${lens.mount_type ? `<div style="font-size: 0.75rem; opacity: 0.9;">Mount: ${lens.mount_type}</div>` : ''}
-                                ${lens.focal_length ? `<div style="font-size: 0.75rem; opacity: 0.9;">Focal: ${lens.focal_length}</div>` : ''}
-                                ${lens.aperture ? `<div style="font-size: 0.75rem; opacity: 0.9;">Aperture: ${lens.aperture}</div>` : ''}
-                                ${lens.estimated_value ? `<div style="font-size: 0.75rem; margin-top: 0.5rem; padding-top: 0.5rem; border-top: 1px solid rgba(255,255,255,0.3); color: #90EE90;">Est. Value: €${lens.estimated_value}</div>` : ''}
-                            </div>
-                        `).join('')}
+        const listing = detailsRes.listing;
+        if (!listing) { content.innerHTML = '<div class="error">Listing not found</div>'; return; }
+
+        const cleanTitle = (raw) => {
+            if (!raw) return '';
+            return String(raw)
+                .replace(/SS\.COM[^,]*,\s*Cena\s*\d+([.,]\d+)?\s*€\.?\s*/i, '')
+                .replace(/SS\.COM[^,]*,\s*/i, '')
+                .replace(/^\s+|\s+$/g, '');
+        };
+        const cleaned = cleanTitle(listing.title) || `${listing.camera_brand || ''} ${listing.camera_model || ''}`.trim() || 'Camera';
+        title.textContent = cleaned;
+
+        const imgPath = listing.local_image_path ? String(listing.local_image_path).replace(/\\/g, '/') : null;
+        const imgUrl = imgPath ? `/images/${imgPath}` : listing.image_url;
+        const price = parseFloat(listing.price_eur) || 0;
+        const datePosted = listing.date_posted ? new Date(listing.date_posted).toLocaleDateString() : '—';
+
+        // ---- Detected lenses ----
+        const lenses = detailsRes.lenses || [];
+        const detectedLensesHtml = lenses.length > 0 ? `
+            <div class="ram-popup-stats" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));">
+                ${lenses.slice(0, 4).map(l => `
+                    <div class="ram-stat-mini" style="background: linear-gradient(135deg, rgba(99,102,241,0.08), rgba(139,92,246,0.08)); border-color: rgba(99,102,241,0.2);">
+                        <div class="ram-stat-mini-h">🔭 Detected Lens</div>
+                        <div class="ram-stat-mini-v" style="font-size:0.95rem;">${escapeHtml(l.name || l.lens_name || 'Unknown')}</div>
+                        ${l.brand ? `<div class="ram-stat-mini-m">${escapeHtml(l.brand)}</div>` : ''}
+                        ${l.focal_length ? `<div class="ram-stat-mini-m">${escapeHtml(l.focal_length)}</div>` : ''}
+                        ${l.mount_type ? `<div class="ram-stat-mini-m">Mount: ${escapeHtml(l.mount_type)}</div>` : ''}
+                        ${l.aperture ? `<div class="ram-stat-mini-m">Aperture: ${escapeHtml(l.aperture)}</div>` : ''}
+                        ${l.estimated_value ? `<div class="ram-stat-mini-d below">Est. value €${Number(l.estimated_value).toFixed(0)}</div>` : ''}
                     </div>
-                </div>
-            `;
-        } else {
-            // Camera body listings often don't include a lens; don't show a "not detected" block.
-            lensesHtml = '';
-        }
-        
-        // Build cost analysis HTML
+                `).join('')}
+            </div>` : `
+            <div class="ram-popup-empty">
+                <div style="font-size:1.1rem;margin-bottom:0.25rem;">📷 Body only</div>
+                No lens detected in title/description. ${listing.camera_mount ? `Compatible mount: <strong>${escapeHtml(listing.camera_mount)}</strong>.` : ''}
+            </div>`;
+
+        // ---- Camera reference spec grid ----
+        const specRow = (k, v) => v ? `<div class="rp-spec"><span class="rp-spec-k">${escapeHtml(k)}</span><span class="rp-spec-v">${escapeHtml(String(v))}</span></div>` : '';
+        const referenceHtml = `
+            <div class="ram-popup-spec-grid">
+                ${specRow('Brand', listing.camera_brand)}
+                ${specRow('Model', listing.camera_model)}
+                ${specRow('Mount', listing.camera_mount)}
+                ${specRow('Sensor', listing.sensor_type || listing.megapixels)}
+                ${specRow('Megapixels', listing.megapixels)}
+                ${specRow('Year', listing.release_year)}
+                ${specRow('FPS', listing.fps)}
+                ${specRow('ISO', listing.iso)}
+                ${specRow('Video', listing.video_specs)}
+                ${specRow('Storage', listing.storage)}
+                ${specRow('Battery', listing.battery)}
+                ${specRow('Screen', listing.screen)}
+            </div>`;
+
+        // ---- Cost analysis (from existing endpoint) ----
+        const cost = detailsRes.cost_breakdown;
         let costHtml = '';
-        if (data.cost_breakdown) {
-            const cost = data.cost_breakdown;
-            const savingsAmount = cost.savings_indication;
-            const isGoodDeal = savingsAmount && savingsAmount > 0;
-            
+        if (cost) {
+            const savings = cost.savings_indication;
+            const isGoodDeal = savings != null && savings > 0;
+            const fmtEur = (n) => '€' + Number(n || 0).toFixed(0);
+            const diffChipText = isGoodDeal
+                ? '−€' + Math.abs(savings).toFixed(0) + ' below market value'
+                : '+€' + Math.abs(savings).toFixed(0) + ' above market value';
+            const diffChipClass = isGoodDeal ? 'below' : 'above';
             costHtml = `
-                <h4 style="margin-top: 1.5rem; margin-bottom: 0.75rem;">💰 Cost Analysis</h4>
-                <div style="background: linear-gradient(135deg, ${isGoodDeal ? '#27ae60' : '#667eea'} 0%, ${isGoodDeal ? '#229954' : '#764ba2'} 100%); padding: 1rem; border-radius: 8px; color: white;">
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
-                        <div>
-                            <div style="font-size: 0.8rem; opacity: 0.8;">Camera Value</div>
-                            <div style="font-size: 1.25rem; font-weight: bold;">€${cost.camera_value || 0}</div>
-                        </div>
-                        <div>
-                            <div style="font-size: 0.8rem; opacity: 0.8;">Lenses Value</div>
-                            <div style="font-size: 1.25rem; font-weight: bold;">€${cost.lenses_value || 0}</div>
-                        </div>
-                        <div>
-                            <div style="font-size: 0.8rem; opacity: 0.8;">Total Market Value</div>
-                            <div style="font-size: 1.25rem; font-weight: bold;">€${cost.total_market_value || 0}</div>
-                        </div>
-                        <div>
-                            <div style="font-size: 0.8rem; opacity: 0.8;">Listing Price</div>
-                            <div style="font-size: 1.25rem; font-weight: bold;">€${cost.listing_price || 0}</div>
-                        </div>
-                    </div>
-                    ${savingsAmount !== null && savingsAmount !== undefined ? `
-                        <div style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid rgba(255,255,255,0.3);">
-                            <div style="font-size: 0.9rem;">
-                                ${isGoodDeal 
-                                    ? `<span style="font-weight: bold; color: #90EE90;">✅ Good Deal! Save €${savingsAmount.toFixed(2)} vs Market Value</span>`
-                                    : `<span style="font-weight: bold; color: #FFB6C1;">⚠️ €${Math.abs(savingsAmount).toFixed(2)} above market average</span>`
-                                }
-                            </div>
-                        </div>
-                    ` : ''}
+                <div class="ram-popup-stats" style="grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));">
+                    <div class="ram-stat-mini"><div class="ram-stat-mini-h">📷 Camera value</div><div class="ram-stat-mini-v">${fmtEur(cost.camera_value)}</div></div>
+                    <div class="ram-stat-mini"><div class="ram-stat-mini-h">🔭 Lens value</div><div class="ram-stat-mini-v">${fmtEur(cost.lenses_value)}</div></div>
+                    <div class="ram-stat-mini"><div class="ram-stat-mini-h">📦 Market total</div><div class="ram-stat-mini-v">${fmtEur(cost.total_market_value)}</div></div>
+                    <div class="ram-stat-mini"><div class="ram-stat-mini-h">💰 Listing</div><div class="ram-stat-mini-v">${fmtEur(cost.listing_price)}</div><div class="ram-stat-mini-d ${diffChipClass}">${escapeHtml(diffChipText)}</div></div>
                 </div>
-            `;
+                <div style="margin-top:0.5rem;font-size:0.78rem;color:var(--ram-text-dim);">
+                    ${isGoodDeal
+                        ? '✅ <strong style="color:#16a34a;">Good deal</strong> — listing is below estimated market value.'
+                        : '⚠️ <strong style="color:#ef4444;">Above market</strong> — listing is above the estimated market value.'}
+                </div>`;
+        } else {
+            costHtml = '<div class="ram-popup-empty">No cost breakdown available for this listing.</div>';
         }
-        
-        const modalHtml = `
-            <div id="camera-detail-modal" class="modal-overlay active" style="z-index: 1000;">
-                <div class="modal" style="max-width: 900px; max-height: 90vh; overflow-y: auto;">
-                    <div class="modal-header" style="position: sticky; top: 0; background: var(--card-bg); z-index: 10;">
-                        <h3>${listing.title || 'Camera Details'}</h3>
-                        <button class="modal-close" onclick="closeCameraDetail()">&times;</button>
+
+        // ---- Price history ----
+        const fmtDate = (d) => {
+            if (!d) return '—';
+            const x = new Date(d);
+            return isNaN(x.getTime()) ? '—' : x.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: '2-digit' });
+        };
+        const historyHtml = history && history.length > 0 ? `
+            <div class="ram-popup-history">
+                ${history.slice(0, 12).map(h => `
+                    <div class="ram-popup-history-card current">
+                        <div class="rh-price">€${Number(h.price_eur).toFixed(0)}</div>
+                        <div class="rh-date">${fmtDate(h.recorded_at)}</div>
                     </div>
-                    <div style="padding: 1.5rem;">
-                        ${listing.image_url ? `<img src="${listing.image_url}" style="width: 100%; max-height: 300px; object-fit: contain; margin-bottom: 1rem; border-radius: 8px;">` : ''}
-                        
-                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
-                            <div><strong>Price:</strong> <span class="price">€${listing.price_eur}</span></div>
-                            <div><strong>Location:</strong> ${listing.seller_location || 'N/A'}</div>
-                            <div><strong>Date:</strong> ${listing.date_posted ? new Date(listing.date_posted).toLocaleDateString() : 'N/A'}</div>
-                            <div><strong>Status:</strong> ${listing.is_active ? '<span class="badge badge-success">Active</span>' : '<span class="badge badge-danger">Inactive</span>'}</div>
-                        </div>
-                        
-                        <h4 style="margin-top: 1.5rem; margin-bottom: 0.75rem;">📝 Description</h4>
-                        <div style="background: var(--card-bg); padding: 1rem; border-radius: 8px; max-height: 200px; overflow-y: auto;">
-                            ${listing.description || 'No description available.'}
-                        </div>
-                        
-                        ${lensesHtml}
-                        ${costHtml}
-                        
-                        <div style="margin-top: 1.5rem; text-align: center; display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
-                            <a href="${listing.listing_url}" target="_blank" class="btn" style="font-size: 1rem; padding: 0.75rem 2rem;">View Original Listing →</a>
-                            <button class="btn btn-secondary" onclick="showCameraHistory('${listing.listing_id}')" style="font-size: 1rem; padding: 0.75rem 2rem;">View History</button>
-                            <button class="btn" style="font-size: 1rem; padding: 0.75rem 2rem; background: #e74c3c;" onclick="showFlagSection('${listing.listing_id}')">🚩 Flag Listing</button>
-                        </div>
-                        
-                        <!-- Floating Flag Section -->
-                        <div class="flag-section floating-flag-section" id="flag-section-${listing.listing_id}" style="display: none; margin-top: 1.5rem;">
-                            <div class="flag-section-header" onclick="toggleFlagSection('${listing.listing_id}')">
-                                <span>🚩 Flag This Listing</span>
-                                <span class="flag-toggle-icon">▼</span>
-                            </div>
-                            <div class="flag-section-content">
-                                <textarea id="flag-comment-${listing.listing_id}" placeholder="Enter reason (e.g., Scam, Wrong specs, Sold)" rows="1" oninput="autoResizeTextarea(this)" style="width: 100%; padding: 0.75rem; border: 2px solid #e74c3c; border-radius: 8px; margin-bottom: 0.75rem; font-family: inherit;"></textarea>
-                                <div class="flag-actions" style="display: flex; gap: 0.5rem; justify-content: flex-end;">
-                                    <button class="btn btn-small" onclick="submitFlag('${listing.listing_id}')" style="background: #e74c3c;">Submit Flag</button>
-                                    <button class="btn btn-small btn-secondary" onclick="hideFlagSection('${listing.listing_id}')">{{ t('Cancel') }}</button>
-                                </div>
-                            </div>
-                        </div>
+                `).join('')}
+            </div>` : '<div class="ram-popup-empty">No price snapshots yet — this listing has only one recorded price.</div>';
+
+        // ---- Render ----
+        const html = `
+            <div class="ram-popup-grid">
+                <div class="ram-popup-left">
+                    <div class="ram-popup-img" onclick="${imgUrl ? `window.open('${escapeHtml(imgUrl)}','_blank')` : ''}">
+                        ${imgUrl
+                            ? `<img src="${escapeHtml(imgUrl)}" alt="${escapeHtml(cleaned)}" loading="lazy" onerror="this.parentElement.innerHTML='<div style=font-size:64px>📷</div>'">`
+                            : '<div style="font-size:64px;">📷</div>'}
+                    </div>
+                    <div class="ram-popup-price-block">
+                        <div class="ram-popup-price">€${price.toFixed(0)}</div>
+                        <div class="ram-popup-price-sub">${escapeHtml(listing.seller_location || '—')} · ${datePosted}</div>
+                        ${cost && cost.savings_indication != null
+                            ? (() => {
+                                const s = cost.savings_indication;
+                                if (s < 0) return `<div class="ram-popup-vs-avg"><span class="vs-avg below">−€${Math.abs(s).toFixed(0)} below market</span></div>`;
+                                if (s > 0) return `<div class="ram-popup-vs-avg"><span class="vs-avg above">+€${Math.abs(s).toFixed(0)} above market</span></div>`;
+                                return `<div class="ram-popup-vs-avg"><span class="vs-avg">= market value</span></div>`;
+                            })()
+                            : ''}
+                    </div>
+                </div>
+                <div class="ram-popup-right">
+                    <h3 class="ram-popup-h">📝 Listing</h3>
+                    <div class="ram-popup-rows">
+                        <div class="rp-row"><span class="rp-k">Title</span><span class="rp-v">${escapeHtml(cleaned)}</span></div>
+                        ${(listing.title && listing.title !== cleaned) ? `<div class="rp-row" style="opacity:0.6;font-size:0.75rem;"><span class="rp-k">Raw</span><span class="rp-v">${escapeHtml(listing.title)}</span></div>` : ''}
+                        <div class="rp-row"><span class="rp-k">Camera</span><span class="rp-v">${escapeHtml((listing.camera_brand || '') + ' ' + (listing.camera_model || ''))}</span></div>
+                        <div class="rp-row"><span class="rp-k">Location</span><span class="rp-v">${escapeHtml(listing.seller_location || '—')}</span></div>
+                        <div class="rp-row"><span class="rp-k">Posted</span><span class="rp-v">${datePosted}</span></div>
+                        <div class="rp-row"><span class="rp-k">Status</span><span class="rp-v">${listing.is_active ? '🟢 Active' : '⚪ Inactive'}</span></div>
+                    </div>
+                    <div class="ram-popup-actions">
+                        ${listing.listing_url ? `<a href="${escapeHtml(listing.listing_url)}" target="_blank" rel="noopener" class="ram-popup-btn primary">View on ss.com ↗</a>` : ''}
+                        <button class="ram-popup-btn" onclick="showFlagSection('${escapeHtml(listing.listing_id)}')">🚩 Flag</button>
                     </div>
                 </div>
             </div>
+
+            <h3 class="ram-popup-h" style="margin-top:18px;">📷 Camera Reference</h3>
+            ${referenceHtml}
+
+            <h3 class="ram-popup-h" style="margin-top:18px;">🔭 Detected Lenses <span class="ram-popup-h-meta">${lenses.length} match${lenses.length === 1 ? '' : 'es'}</span></h3>
+            ${detectedLensesHtml}
+
+            <h3 class="ram-popup-h" style="margin-top:18px;">💰 Cost Analysis</h3>
+            ${costHtml}
+
+            <h3 class="ram-popup-h" style="margin-top:18px;">📈 Price History <span class="ram-popup-h-meta">${history.length} snapshot${history.length === 1 ? '' : 's'}</span></h3>
+            ${historyHtml}
+
+            ${listing.description ? `
+                <h3 class="ram-popup-h" style="margin-top:18px;">📄 Description</h3>
+                <div class="ram-popup-desc">${escapeHtml(listing.description)}</div>
+            ` : ''}
         `;
-        
-        // Remove existing modal if present
-        const existingModal = document.getElementById('camera-detail-modal');
-        if (existingModal) existingModal.remove();
-        
-        document.body.insertAdjacentHTML('beforeend', modalHtml);
-        
-        // Close on outside click
-        document.getElementById('camera-detail-modal').addEventListener('click', function(e) {
-            if (e.target === this) closeCameraDetail();
-        });
-        
+        content.innerHTML = html;
     } catch (error) {
         console.error('Error loading camera details:', error);
-        alert('Failed to load listing details');
+        const content = document.getElementById('shared-listing-content');
+        if (content) content.innerHTML = '<div class="error">Failed to load listing details: ' + error.message + '</div>';
     }
 }
 
 function closeCameraDetail() {
-    const modal = document.getElementById('camera-detail-modal');
-    if (modal) modal.remove();
+    const modal = document.getElementById('shared-listing-modal');
+    if (modal) modal.classList.remove('active');
 }
 
 // Flag section functions
@@ -736,6 +768,49 @@ document.getElementById('brand-filter').addEventListener('change', () => {
 </script>
 
 <style>
+/* === Modern listings panel (matches cases/PSU design) === */
+.modern-panel {
+    background: var(--card-bg, #ffffff);
+    border: 1px solid var(--card-border, #e5e7eb);
+    border-radius: 12px;
+    padding: 0;
+    overflow: hidden;
+    margin-top: 1rem;
+    box-shadow: 0 1px 3px rgba(0,0,0,.04);
+}
+[data-theme="dark"] .modern-panel {
+    background: var(--card-bg, #1a1d2b);
+    border-color: var(--card-border, #2a2e3e);
+}
+.modern-panel table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.modern-panel thead th {
+    text-align: left; font-size: 10.5px; font-weight: 700; text-transform: uppercase; letter-spacing: .04em;
+    color: var(--text-secondary, #6b7280); padding: 10px 12px;
+    border-bottom: 1px solid var(--card-border, #e5e7eb);
+    background: rgba(0,0,0,.02);
+}
+.modern-panel tbody tr {
+    border-bottom: 1px solid rgba(0,0,0,.04);
+    cursor: pointer; transition: background .12s;
+}
+.modern-panel tbody tr:hover { background: rgba(99,102,241,.06); }
+.modern-panel td { padding: 10px 12px; vertical-align: middle; }
+.modern-panel .listing-thumb {
+    width: 60px; height: 60px; border-radius: 8px; object-fit: cover;
+    background: rgba(0,0,0,.04);
+}
+.modern-panel .listing-thumb-placeholder {
+    width: 60px; height: 60px; border-radius: 8px;
+    display: grid; place-items: center; font-size: 22px; color: var(--text-secondary, #6b7280);
+    background: rgba(0,0,0,.04);
+}
+.modern-panel .price { font-weight: 800; color: #16a34a; font-size: 14px; }
+.modern-panel .badge-info {
+    background: rgba(99,102,241,.18); color: #4f46e5;
+    padding: 2px 7px; border-radius: 6px; font-size: 11px; font-weight: 600;
+}
+[data-theme="dark"] .modern-panel .badge-info { color: #a5b4fc; }
+
 /* Camera page specific styles */
 .listing-thumb-placeholder {
     background: linear-gradient(135deg, #e74c3c 0%, #f39c12 100%);

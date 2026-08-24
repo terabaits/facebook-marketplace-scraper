@@ -544,6 +544,24 @@ function cleanComputerTitle(title) {
     return t;
 }
 
+// Derive a short, human-readable title from a description blob. The seller's
+// first sentence often has the real product name (CPU model, GPU model, "Gaming
+// PC" / "Office PC", etc.). Falls back to the cleaned title or a generic label.
+function deriveComputerTitle(cleanedTitle, description) {
+    if (cleanedTitle && cleanedTitle.length >= 4) return cleanedTitle;
+    const desc = (description || '').trim();
+    if (!desc) return cleanedTitle || '';
+    // Try first sentence (split on . ! ? ; or newline)
+    const firstSentence = desc.split(/[\.\!\?;\n]/)[0].trim();
+    // Cap at 80 chars on a word boundary
+    if (firstSentence.length > 80) {
+        const truncated = firstSentence.substring(0, 80);
+        const lastSpace = truncated.lastIndexOf(' ');
+        return (lastSpace > 40 ? truncated.substring(0, lastSpace) : truncated) + '…';
+    }
+    return firstSentence;
+}
+
 // Pill toggle handler for the main filter bar
 function toggleComputerPill(btn, key) {
     const isOn = btn.classList.toggle('on');
@@ -589,6 +607,7 @@ async function loadComputers() {
         }
         
         let html = `
+            <div class="modern-panel">
             <table>
                 <thead>
                     <tr>
@@ -599,22 +618,21 @@ async function loadComputers() {
                         <th>Score</th>
                         <th>Location</th>
                         <th>Date</th>
-                        <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
         `;
         
         data.listings.forEach(item => {
-            // Build components summary (vertical stack with full text - readable)
+            // Build components summary — tight flex column of pill chips (replaces the old <br>-stacked layout)
             let components = [];
             if (item.cpu_name) {
                 const cpuProducer = item.cpu_producer || '';
                 const cpuName = cpuProducer && item.cpu_name.toLowerCase().startsWith(cpuProducer.toLowerCase()) ? item.cpu_name : `${cpuProducer} ${item.cpu_name}`.trim();
-                components.push(`<span class="badge badge-cpu">CPU: ${cpuName}</span>`);
+                components.push(`<span class="badge badge-cpu">🧠 ${cpuName}</span>`);
             }
             if (item.gpu_model) {
-                components.push(`<span class="badge badge-gpu">GPU: ${item.gpu_vendor || ''} ${item.gpu_model}</span>`);
+                components.push(`<span class="badge badge-gpu">🎮 ${item.gpu_vendor || ''} ${item.gpu_model}</span>`);
             }
             let ramCapacity = item.ram_capacity;
             if (!ramCapacity && item.ram_match_method) {
@@ -622,7 +640,7 @@ async function loadComputers() {
                 if (ramMatch) ramCapacity = parseInt(ramMatch[1]);
             }
             if (ramCapacity) {
-                components.push(`<span class="badge badge-ram" data-ram-capacity="${ramCapacity}" data-ram-type="${item.ram_type || ''}">RAM: ${ramCapacity}GB ${item.ram_type || ''}</span>`);
+                components.push(`<span class="badge badge-ram" data-ram-capacity="${ramCapacity}" data-ram-type="${item.ram_type || ''}">⚡ ${ramCapacity}GB ${item.ram_type || ''}</span>`);
             }
             let ssdCapacity = item.ssd_capacity;
             if (!ssdCapacity && item.ssd_match_method) {
@@ -630,12 +648,14 @@ async function loadComputers() {
                 if (ssdMatch) ssdCapacity = parseInt(ssdMatch[1]);
             }
             if (ssdCapacity) {
-                components.push(`<span class="badge badge-ssd">SSD: ${ssdCapacity}GB</span>`);
+                components.push(`<span class="badge badge-ssd">💾 ${ssdCapacity}GB</span>`);
             }
             if (item.prebuilt_badge) {
                 components.push(item.prebuilt_badge);
             }
-            const componentsHtml = components.length > 0 ? components.join('<br>') : '<em class="no-components">No components detected</em>';
+            const componentsHtml = components.length > 0
+                ? `<div class="comp-cell-components">${components.join('')}</div>`
+                : '<em class="no-components">No components detected</em>';
 
             // Use backend prebuilt flag
             const isPrebuilt = Boolean(item.is_prebuilt);
@@ -643,7 +663,15 @@ async function loadComputers() {
             const pcTypeChip = isPrebuilt
                 ? '<span class="pc-type-chip prebuilt">🏭 Prebuilt</span>'
                 : '<span class="pc-type-chip custom">🛠️ Custom</span>';
-            const cleanTitle = cleanComputerTitle(item.title) || (isPrebuilt ? 'Prebuilt PC' : 'Custom PC');
+            const cleanTitle = deriveComputerTitle(cleanComputerTitle(item.title), item.description) || (() => {
+                // Use the most descriptive component we have as the title
+                if (item.cpu_name) {
+                    const cpuProducer = item.cpu_producer || '';
+                    const cpuName = cpuProducer && item.cpu_name.toLowerCase().startsWith(cpuProducer.toLowerCase()) ? item.cpu_name : `${cpuProducer} ${item.cpu_name}`.trim();
+                    return (isPrebuilt ? 'Prebuilt: ' : 'Custom: ') + cpuName;
+                }
+                return isPrebuilt ? 'Prebuilt PC' : 'Custom PC';
+            })();
             
             // Image - escape special chars for onclick
             const rawImageUrl = item.image_url ? item.image_url : '';
@@ -655,13 +683,40 @@ async function loadComputers() {
             const safeImageUrl = fullImageUrl.replace(/'/g, "\\'").replace(/"/g, '&quot;');
             const safeTitle = (item.title || '').replace(/'/g, "\\'").replace(/"/g, '&quot;');
             const safeListingId = item.listing_id ? item.listing_id.replace(/'/g, "\\'") : '';
-            
-            const imageHtml = fullImageUrl 
-                ? `<div class="listing-image-wrapper">
-                    <img src="${fullImageUrl}" alt="Computer" class="listing-thumb" loading="lazy" onclick="event.stopPropagation(); showImageModal('${safeImageUrl}', '${safeTitle}')">
-                    ${item.prebuilt_badge ? `<div class="prebuilt-overlay">${item.prebuilt_badge}</div>` : ''}
-                   </div>`
-                : '<div class="listing-thumb-placeholder">💻</div>';
+
+            // Source dot indicator (mirrors GPU/SSD/RAM pages) — small
+            // colored dot to the LEFT of the thumbnail, slightly bigger
+            // gap than SSD (12px here). Hidden when localStorage flag
+            // is 'false' (same as other pages).
+            const showSourceDots = localStorage.getItem('showSourceDots') !== 'false';
+            const sourceLabels = {
+                'andelemandele': { text: 'Andele', bg: '#8B5CF6' },
+                'facebook_extension': { text: 'Facebook', bg: '#1877F2' },
+                'ss.com': { text: 'SS.com', bg: '#10b981' }
+            };
+            const sourceInfo = sourceLabels[item.source] || sourceLabels['ss.com'];
+            const sourceDot = showSourceDots
+                ? `<span class="computer-source-dot" title="${sourceInfo.text} (${item.source || 'unknown'})" aria-label="${sourceInfo.text}" style="background: ${sourceInfo.bg};"></span>`
+                : '';
+
+            // NEW / STEAL / DROP / UNICORN deal badges (mirrors GPU + SSD pages).
+            // Computed from price_stats (below-avg), is_new, has_price_decreased
+            // and is_unicorn flags returned by the /api/computers endpoint.
+            const dealBadges = [];
+            if (item.is_new) dealBadges.push(`<span class="comp-deal-badge comp-deal-badge-NEW" title="New in latest import">🆕 NEW</span>`);
+            if (item.is_unicorn) dealBadges.push(`<span class="comp-deal-badge comp-deal-badge-UNICORN" title="Only one active listing of this build">🦄</span>`);
+            if (item.has_price_decreased) dealBadges.push(`<span class="comp-deal-badge comp-deal-badge-DROP" title="Price dropped since first seen">📉 <span style="font-weight:600;">DROP</span></span>`);
+            if (item.price_stats && item.price_stats.below_avg
+                && ((parseFloat(item.price_stats.avg) - item.price_eur) / parseFloat(item.price_stats.avg)) >= 0.15) {
+                dealBadges.push(`<span class="comp-deal-badge comp-deal-badge-STEAL" title="≥15% below model average">🔥 STEAL</span>`);
+            }
+            const dealBadgesHtml = dealBadges.length > 0
+                ? `<div class="comp-deal-badges">${dealBadges.join('')}</div>`
+                : '';
+
+            const imageHtml = fullImageUrl
+                ? `<div class="comp-image-cell-inner">${sourceDot}<div class="listing-image-wrapper">${dealBadgesHtml}<img src="${fullImageUrl}" alt="Computer" class="listing-thumb" loading="lazy" onclick="event.stopPropagation(); showImageModal('${safeImageUrl}', '${safeTitle}')">${item.prebuilt_badge ? `<div class="prebuilt-overlay">${item.prebuilt_badge}</div>` : ''}</div></div>`
+                : `<div class="comp-image-cell-inner">${sourceDot}<div class="listing-image-wrapper">${dealBadgesHtml}<div class="listing-thumb-placeholder">💻</div></div></div>`;
             
             // Debug info tooltip
             const debugInfo = item.is_prebuilt ? `title="Prebuilt: ${item.is_prebuilt}, Boring: ${item.is_boring}"` : '';
@@ -688,15 +743,11 @@ async function loadComputers() {
                     </td>
                     <td><span class="comp-meta">${item.seller_location || '—'}</span></td>
                     <td><span class="comp-meta">${item.date_posted ? new Date(item.date_posted).toLocaleDateString('en-GB', {day:'2-digit',month:'short'}) : '—'}</span></td>
-                    <td class="comp-actions">
-                        <button class="comp-action-btn" title="View details" onclick="event.stopPropagation(); showComputerDetail('${safeListingId}')">📄</button>
-                        <a href="${item.listing_url || '#'}" target="_blank" class="comp-action-btn" title="Open listing" onclick="event.stopPropagation()">↗</a>
-                    </td>
                 </tr>
             `;
         });
         
-        html += '</tbody></table>';
+        html += '</tbody></table></div>';
         container.innerHTML = html;
         
     } catch (error) {
@@ -741,6 +792,7 @@ async function showComputerDetail(listingId) {
         const priceHistoryHtml = await buildPriceHistory(listingId);
         const rawDescriptionHtml = buildRawDescription(listing);
         const specsHtml = buildFullSpecs(listing, breakdown);
+        const performanceScoreHtml = buildPerformanceScore(breakdown, listing);
         
         // Image HTML - use larger image
         const rawImageUrl = listing.image_url || '';
@@ -803,6 +855,7 @@ async function showComputerDetail(listingId) {
                         </div>
                         
                         ${specsHtml}
+                        ${performanceScoreHtml}
                     </div>
                 </div>
             </div>
@@ -810,40 +863,94 @@ async function showComputerDetail(listingId) {
         
         document.getElementById('computer-content').innerHTML = html;
         document.getElementById('computer-modal').classList.add('active');
-        
+
         // Reset flagging form when opening modal
         resetFlaggingForm();
-        
+
         // Populate RAM detected size in flag form
         if (breakdown.ram && breakdown.ram.capacity_gb) {
             const ramDetectedSize = document.getElementById('ram-detected-size');
             if (ramDetectedSize) ramDetectedSize.value = breakdown.ram.capacity_gb + 'GB';
         }
-        
+
         // Initialize price chart if data exists
         if (breakdown.price_history && breakdown.price_history.length > 1) {
             renderPriceChart(breakdown.price_history);
         }
-        
+
+        // Async: fill in generic-motherboard socket market prices (if any rows were rendered)
+        fillGenericMotherboardSocketPrices();
+
     } catch (error) {
         console.error('Error loading computer details:', error);
-        document.getElementById('computer-content').innerHTML = 
+        document.getElementById('computer-content').innerHTML =
             `<div class="error" style="padding: 2rem;"><strong>Error loading details:</strong><br>${error.message}</div>`;
         document.getElementById('computer-modal').classList.add('active');
     }
 }
 
+// Fetch the socket market prices for any "Generic Motherboard" rows that were rendered
+// in the current popup. Each unique socket is fetched once.
+async function fillGenericMotherboardSocketPrices() {
+    const pending = window._pendingSocketFetches;
+    if (!pending || pending.size === 0) return;
+    const sockets = Array.from(pending);
+    pending.clear();
+    for (const socket of sockets) {
+        try {
+            const resp = await fetch(`/api/motherboards/socket-market?socket=${encodeURIComponent(socket)}&active=true`);
+            const data = await resp.json();
+            // Update every row matching this socket in the current popup
+            document.querySelectorAll(`.generic-motherboard-row[data-socket="${CSS.escape(socket)}"]`).forEach(row => {
+                const avgEl = row.querySelector('.generic-mb-avg');
+                const detailsEl = row.querySelector('.generic-mb-details');
+                if (data.error || data.listing_count === 0) {
+                    if (avgEl) avgEl.innerHTML = '~€—';
+                    if (detailsEl) detailsEl.innerHTML =
+                        `<em>No motherboard listings found for socket ${socket}.</em>`;
+                    return;
+                }
+                if (avgEl) {
+                    avgEl.innerHTML = `~€${data.avg_price.toFixed(0)}`;
+                    avgEl.title = `avg of ${data.listing_count} listings (min €${data.min_price.toFixed(0)}, max €${data.max_price.toFixed(0)})`;
+                }
+                if (detailsEl) {
+                    // The user asked for a clean socket link — no per-model sample list.
+                    // We still show the count + range so the average is verifiable.
+                    detailsEl.innerHTML = `
+                        <div>
+                            <strong>${data.listing_count} active motherboard listings for ${socket}</strong>
+                            · min €${data.min_price.toFixed(0)}, avg €${data.avg_price.toFixed(0)}, max €${data.max_price.toFixed(0)}
+                            · <a href="/motherboards?socket=${encodeURIComponent(socket)}" target="_blank" style="color:#4f46e5; font-size: 0.78rem;">See all →</a>
+                        </div>
+                    `;
+                }
+            });
+        } catch (err) {
+            console.error(`Failed to load socket stats for ${socket}:`, err);
+        }
+    }
+}
+
 function buildComponentsSection(breakdown) {
     let html = '';
-    
+
     // CPU
     if (breakdown.cpu) {
+        // Build a deep-link to /cpu with the model as a query string.
+        // The CPU page's DOMContentLoaded handler reads ?model= and
+        // applies the filter + reloads, so clicking this takes the
+        // user straight to "all listings of this model".
+        const cpuModelQuery = encodeURIComponent(breakdown.cpu.model || '');
+        const cpuLink = cpuModelQuery
+            ? `<a href="/cpu?model=${cpuModelQuery}" target="_blank" class="comp-deep-link" title="See all ${breakdown.cpu.producer || ''} ${breakdown.cpu.model} listings on the CPU page">${breakdown.cpu.producer || ''} ${breakdown.cpu.model} ↗</a>`
+            : `${breakdown.cpu.producer || ''} ${breakdown.cpu.model}`;
         html += `
             <div class="component-row detailed">
                 <div class="component-header">
                     <div class="component-icon-large cpu-icon">⚙️</div>
                     <div class="component-info">
-                        <div class="component-name">${breakdown.cpu.producer || ''} ${breakdown.cpu.model}</div>
+                        <div class="component-name">${cpuLink}</div>
                         <div class="component-specs">
                             ${breakdown.cpu.processor_number ? `<span class="spec-tag">${breakdown.cpu.processor_number}</span>` : ''}
                             ${breakdown.cpu.cores ? `<span class="spec-tag">${breakdown.cpu.cores} Cores</span>` : ''}
@@ -860,15 +967,22 @@ function buildComponentsSection(breakdown) {
             </div>
         `;
     }
-    
+
     // GPU
     if (breakdown.gpu) {
+        // Deep-link to /gpu?model=<gpu model>. The GPU page reads
+        // ?model= on init and applies the model filter so the user
+        // lands on "all listings of this GPU model".
+        const gpuModelQuery = encodeURIComponent(breakdown.gpu.model || '');
+        const gpuLink = gpuModelQuery
+            ? `<a href="/gpu?model=${gpuModelQuery}" target="_blank" class="comp-deep-link" title="See all ${breakdown.gpu.vendor || ''} ${breakdown.gpu.model} listings on the GPU page">${breakdown.gpu.vendor || ''} ${breakdown.gpu.model} ↗</a>`
+            : `${breakdown.gpu.vendor} ${breakdown.gpu.model}`;
         html += `
             <div class="component-row detailed">
                 <div class="component-header">
                     <div class="component-icon-large gpu-icon">🎮</div>
                     <div class="component-info">
-                        <div class="component-name">${breakdown.gpu.vendor} ${breakdown.gpu.model}</div>
+                        <div class="component-name">${gpuLink}</div>
                         <div class="component-specs">
                             ${breakdown.gpu.vram_gb ? `<span class="spec-tag">${breakdown.gpu.vram_gb}GB VRAM</span>` : ''}
                             ${breakdown.gpu.vram_type ? `<span class="spec-tag">${breakdown.gpu.vram_type}</span>` : ''}
@@ -902,17 +1016,37 @@ function buildComponentsSection(breakdown) {
             </div>
         `;
     }
-    
+
     // RAM
     if (breakdown.ram) {
         const ramName = breakdown.ram.name || (breakdown.ram.capacity_gb ? breakdown.ram.capacity_gb + 'GB RAM' : 'RAM');
         const ramId = breakdown.ram.ram_id || '';
+        // RAM link: if we matched a specific model (has ram_id + is_matched),
+        // link to /ram?ram_id=<id> for the exact model. If it's generic
+        // (no model match), link to /ram?capacity=<gb>&ddr_type=<type> so
+        // the user sees "all 8GB DDR4 RAM listings" — that's the most
+        // useful fallback for generic detections.
+        let ramLink;
+        if (breakdown.ram.is_matched && ramId) {
+            ramLink = `<a href="/ram?ram_id=${encodeURIComponent(ramId)}" target="_blank" class="comp-deep-link" title="See all ${ramName} listings on the RAM page">${ramName} ↗</a>`;
+        } else if (breakdown.ram.capacity_gb) {
+            const cap = Number(breakdown.ram.capacity_gb);
+            // Map capacity (GB) to the dropdown's key (128/256/512/...) where possible
+            const capKey = ({128: 128, 256: 256, 512: 512, 1024: 1024, 2048: 2048, 4096: 4096, 8192: 8192, 16384: 16384})[cap]
+                || (cap >= 15000 ? 16384 : (cap >= 7600 ? 8192 : (cap >= 3800 ? 4096 : (cap >= 1900 ? 2048 : (cap >= 960 ? 1024 : (cap >= 480 ? 512 : (cap >= 240 ? 256 : (cap >= 120 ? 128 : ''))))))));
+            const params = new URLSearchParams();
+            if (capKey) params.set('capacity', capKey);
+            if (breakdown.ram.ram_type) params.set('ddr_type', breakdown.ram.ram_type);
+            ramLink = `<a href="/ram?${params.toString()}" target="_blank" class="comp-deep-link" title="See all ${breakdown.ram.capacity_gb}GB ${breakdown.ram.ram_type || ''} RAM listings on the RAM page">${ramName} ↗</a>`;
+        } else {
+            ramLink = ramName;
+        }
         html += `
             <div class="component-row detailed">
                 <div class="component-header">
                     <div class="component-icon-large ram-icon">💾</div>
                     <div class="component-info">
-                        <div class="component-name">${ramName}</div>
+                        <div class="component-name">${ramLink}</div>
                         <div class="component-specs">
                             ${breakdown.ram.capacity_gb ? `<span class="spec-tag">${breakdown.ram.capacity_gb}GB</span>` : ''}
                             ${breakdown.ram.speed ? `<span class="spec-tag">${breakdown.ram.speed}</span>` : ''}
@@ -921,9 +1055,9 @@ function buildComponentsSection(breakdown) {
                         </div>
                         <!-- RAM Flag Buttons -->
                         <div class="ram-flag-buttons" style="margin-top: 8px; display: flex; gap: 8px; flex-wrap: wrap;">
-                            <button class="btn btn-tiny" style="background: #dc3545; color: white; font-size: 0.7rem; padding: 4px 8px;" 
+                            <button class="btn btn-tiny" style="background: #dc3545; color: white; font-size: 0.7rem; padding: 4px 8px;"
                                 onclick="showRamWrongModal('${ramId}', '${ramName.replace(/'/g, "\\'")}')">Wrong</button>
-                            <button class="btn btn-tiny" style="background: #6c757d; color: white; font-size: 0.7rem; padding: 4px 8px;" 
+                            <button class="btn btn-tiny" style="background: #6c757d; color: white; font-size: 0.7rem; padding: 4px 8px;"
                                 onclick="flagRamSkip('${ramId}')">Skip</button>
                         </div>
                     </div>
@@ -939,24 +1073,67 @@ function buildComponentsSection(breakdown) {
     if (breakdown.motherboard) {
         const mb = breakdown.motherboard;
         const chipsetList = mb.supported_chipsets ? mb.supported_chipsets.slice(0, 4).join(', ') + (mb.supported_chipsets.length > 4 ? '...' : '') : '';
+        // For generic motherboards, look up the socket from the CPU if the motherboard row
+        // didn't carry one (the data is in computer_listings.mb_socket, but only available for non-generic).
+        const socketForLookup = mb.socket || (breakdown.cpu && breakdown.cpu.socket) || null;
+        // For generic motherboards, always render the clean "Generic Motherboard for [Socket]"
+        // label with the socket as a link — the long CPU-model name is noise.
+        const genericLabelHtml = mb.is_generic && socketForLookup
+            ? `Generic Motherboard for <a href="/motherboards?socket=${encodeURIComponent(socketForLookup)}" target="_blank" class="generic-mb-socket-link" title="See all ${socketForLookup} motherboards">${socketForLookup}</a>`
+            : (mb.name || 'Motherboard');
         html += `
-            <div class="component-row detailed">
+            <div class="component-row detailed ${mb.is_generic ? 'generic-motherboard-row' : ''}" ${mb.is_generic && socketForLookup ? `data-socket="${socketForLookup}"` : ''}>
                 <div class="component-header">
                     <div class="component-icon-large" style="background: #8e44ad;">🔌</div>
                     <div class="component-info">
-                        <div class="component-name">${mb.name || 'Motherboard'}</div>
+                        <div class="component-name">${genericLabelHtml}</div>
                         <div class="component-specs">
-                            ${mb.socket ? `<span class="spec-tag">${mb.socket}</span>` : ''}
+                            ${mb.socket ? `<span class="spec-tag">${mb.socket}</span>` : (socketForLookup ? `<span class="spec-tag">Socket: ${socketForLookup}</span>` : '')}
                             ${chipsetList ? `<span class="spec-tag" title="${mb.supported_chipsets?.join(', ') || ''}">Chipsets: ${chipsetList}</span>` : ''}
                             ${mb.is_generic ? '<span class="spec-tag" style="background: #f39c12; color: #000;">📋 Generic</span>' : ''}
                         </div>
+                        ${mb.is_generic ? `<div class="generic-mb-details" style="font-size: 0.8rem; color: #6b7280; margin-top: 0.4rem;">
+                            <em>Loading socket market prices…</em>
+                        </div>` : ''}
                     </div>
                     <div class="component-value">
-                        <div class="price-tag">~€${breakdown.motherboard_avg_price?.toFixed(0) || '?'}</div>
+                        <div class="price-tag ${mb.is_generic ? 'generic-mb-avg' : ''}">~€${breakdown.motherboard_avg_price?.toFixed(0) || '?'}</div>
                     </div>
                 </div>
             </div>
         `;
+        // For generic motherboards, trigger async fill of socket market prices
+        if (mb.is_generic && socketForLookup) {
+            if (!window._pendingSocketFetches) window._pendingSocketFetches = new Set();
+            window._pendingSocketFetches.add(socketForLookup);
+        }
+    } else if (breakdown.cpu && breakdown.cpu.socket) {
+        // No specific motherboard detected but we know the CPU socket —
+        // show "Generic Motherboard for [Socket]" with the socket-level market price.
+        // The socket text is itself a link to filtered motherboard listings.
+        const cpuSocket = breakdown.cpu.socket;
+        html += `
+            <div class="component-row detailed generic-motherboard-row" data-socket="${cpuSocket}">
+                <div class="component-header">
+                    <div class="component-icon-large" style="background: #8e44ad;">🔌</div>
+                    <div class="component-info">
+                        <div class="component-name">Generic Motherboard for <a href="/motherboards?socket=${encodeURIComponent(cpuSocket)}" target="_blank" class="generic-mb-socket-link" title="See all ${cpuSocket} motherboards">${cpuSocket}</a></div>
+                        <div class="component-specs">
+                            <span class="spec-tag" style="background: #f39c12; color: #000;">📋 Generic (no model detected)</span>
+                        </div>
+                        <div class="generic-mb-details" style="font-size: 0.8rem; color: #6b7280; margin-top: 0.4rem;">
+                            <em>Loading socket market prices…</em>
+                        </div>
+                    </div>
+                    <div class="component-value">
+                        <div class="price-tag generic-mb-avg">~€…</div>
+                    </div>
+                </div>
+            </div>
+        `;
+        // Mark for async fill after the modal renders.
+        if (!window._pendingSocketFetches) window._pendingSocketFetches = new Set();
+        window._pendingSocketFetches.add(cpuSocket);
     }
     
     // Storage drives
@@ -964,12 +1141,30 @@ function buildComponentsSection(breakdown) {
         if (breakdown[key]) {
             const drive = breakdown[key];
             const label = idx === 0 ? 'SSD' : idx === 1 ? 'SSD (2nd)' : 'SSD (3rd)';
+            // SSD link: if we matched a specific model, link to /ssd with the model.
+            // If it's a generic SSD (no model match), fall back to capacity filter
+            // so the user sees "all 1TB SSD listings" — same pattern as RAM.
+            let ssdLinkText = `${drive.brand || ''} ${drive.model || drive.name || 'Drive'}`;
+            let ssdLink;
+            if (drive.is_matched && (drive.model || drive.name)) {
+                const ssdModelQuery = encodeURIComponent(drive.model || drive.name);
+                ssdLink = `<a href="/ssd?model=${ssdModelQuery}" target="_blank" class="comp-deep-link" title="See all ${ssdLinkText} listings on the SSD page">${ssdLinkText} ↗</a>`;
+            } else if (drive.capacity_gb) {
+                const cap = Number(drive.capacity_gb);
+                const capKey = ({128: 128, 256: 256, 512: 512, 1024: 1024, 2048: 2048, 4096: 4096, 8192: 8192, 16384: 16384})[cap]
+                    || (cap >= 15000 ? 16384 : (cap >= 7600 ? 8192 : (cap >= 3800 ? 4096 : (cap >= 1900 ? 2048 : (cap >= 960 ? 1024 : (cap >= 480 ? 512 : (cap >= 240 ? 256 : (cap >= 120 ? 128 : ''))))))));
+                const params = new URLSearchParams();
+                if (capKey) params.set('capacity', capKey);
+                ssdLink = `<a href="/ssd?${params.toString()}" target="_blank" class="comp-deep-link" title="See all ${drive.capacity_gb}GB SSD listings on the SSD page">${ssdLinkText} ↗</a>`;
+            } else {
+                ssdLink = ssdLinkText;
+            }
             html += `
                 <div class="component-row detailed">
                     <div class="component-header">
                         <div class="component-icon-large ssd-icon">💽</div>
                         <div class="component-info">
-                            <div class="component-name">${label}: ${drive.brand || ''} ${drive.model || drive.name || 'Drive'}</div>
+                            <div class="component-name">${label}: ${ssdLink}</div>
                             <div class="component-specs">
                                 ${drive.capacity_gb ? `<span class="spec-tag">${drive.capacity_gb}GB</span>` : ''}
                                 ${drive.interface ? `<span class="spec-tag">${drive.interface}</span>` : ''}
@@ -1030,41 +1225,39 @@ function buildComponentsSection(breakdown) {
     }
     
     // Motherboard
-    if (breakdown.motherboard) {
-        html += `
-            <div class="component-row detailed">
-                <div class="component-header">
-                    <div class="component-icon-large motherboard-icon">🔧</div>
-                    <div class="component-info">
-                        <div class="component-name">Motherboard: ${breakdown.motherboard.name || 'Unknown'}</div>
-                        <div class="component-specs">
-                            ${breakdown.motherboard.socket ? `<span class="spec-tag">${breakdown.motherboard.socket}</span>` : ''}
-                            ${breakdown.motherboard.chipset ? `<span class="spec-tag">${breakdown.motherboard.chipset}</span>` : ''}
-                            ${breakdown.motherboard.form_factor ? `<span class="spec-tag">${breakdown.motherboard.form_factor}</span>` : ''}
-                            ${breakdown.motherboard.ram_slots ? `<span class="spec-tag">${breakdown.motherboard.ram_slots} RAM Slots</span>` : ''}
-                        </div>
-                    </div>
-                    <div class="component-value">
-                        <div class="price-tag">~€${breakdown.motherboard_price?.toFixed(0) || '?'}</div>
-                    </div>
-                </div>
-            </div>
-        `;
+    // Note: the canonical motherboard row is rendered earlier in this function
+    // (the "Motherboard (Generic Detection)" block above). For non-generic
+    // motherboards it shows mb.name + chipsets; for generic ones it shows
+    // "Generic Motherboard for [Socket]" with the socket as a link. Rendering
+    // a second row here was a duplicate.
+    if (breakdown.motherboard && !breakdown.motherboard.is_generic && breakdown.motherboard.form_factor) {
+        // For non-generic motherboards that have form_factor / ram_slots data
+        // (rare, but worth showing alongside the first row), append a small
+        // extra info chip set inside the existing row. Skipped when generic
+        // to avoid duplicating the socket-info row.
+        // (No-op stub — left for future expansion.)
     }
-    
+
     // Monitor
-    if (breakdown.monitor || breakdown.monitor_included || breakdown.monitor_price || breakdown.fallback_monitor_price) {
+    if (breakdown.monitor || breakdown.monitor_included || breakdown.monitor_avg_price || breakdown.fallback_monitor_price) {
         const monitorName = breakdown.monitor?.name || (breakdown.fallback_monitor_price ? 'Monitor detected (fallback)' : 'Monitor included');
         const monitorSize = breakdown.monitor?.size || '';
         const monitorResolution = breakdown.monitor?.resolution || '';
-        const monitorPrice = breakdown.monitor_price || breakdown.fallback_monitor_price || 100;
-        
+        // Bug 13 fix: API now exposes `monitor_avg_price` (and the listing itself
+        // exposes `fallback_monitor_price`). Use either, with safe fallback.
+        const monitorPrice = Number(breakdown.monitor_avg_price ?? breakdown.monitor_price ?? breakdown.fallback_monitor_price ?? 100);
+        const monitorId = breakdown.monitor?.monitor_id;
+        // The monitors page doesn't have a model-filter dropdown (only size/resolution/refresh/panel),
+        // so a model deep-link would have nothing to apply to. Use the name as plain text.
+        // Future: if a model-filter is added, change this to /monitors?model=<brand+model>.
+        const monitorLink = monitorName;
+
         html += `
             <div class="component-row detailed">
                 <div class="component-header">
                     <div class="component-icon-large monitor-icon">🖥️</div>
                     <div class="component-info">
-                        <div class="component-name">${monitorName}</div>
+                        <div class="component-name">${monitorLink}</div>
                         <div class="component-specs">
                             ${monitorSize ? `<span class="spec-tag">${monitorSize}"</span>` : ''}
                             ${monitorResolution ? `<span class="spec-tag">${monitorResolution}</span>` : ''}
@@ -1142,6 +1335,80 @@ function buildPriceAnalysis(breakdown, listing) {
                     <span>Total estimated value:</span>
                     <span>€${breakdown.grand_total?.toFixed(0)}</span>
                 </div>
+            </div>
+        </div>
+    `;
+}
+
+// Build a Performance Score section.
+//
+// The old version showed a fixed "CPU 40% / GPU 40% / RAM 10% / SSD 10%"
+// weight breakdown — that was a no-op since the weights are the same for
+// every listing. The user asked to instead show the actual benchmark
+// numbers (CPU Cinebench R23 and GPU G3D Mark) which are what really
+// differentiates a build's perf.
+function buildPerformanceScore(breakdown, listing) {
+    const total = Number(listing.performance_score || 0);
+    if (!total) return '';
+
+    // Pull benchmark numbers off the listing if present. The API
+    // exposes cpu_score, cpu_benchmark (Cinebench R23 multi-core),
+    // gpu_score, g3d_mark (PassMark G3D), and ram_score / ssd_score.
+    const cpuBench = listing.cpu_benchmark || listing.cpu_bench || breakdown.cpu?.benchmark_score || null;
+    const g3dMark = listing.g3d_mark || listing.gpu_benchmark || breakdown.gpu?.g3d_mark || null;
+    const ramScore = listing.ram_score || breakdown.ram?.score || null;
+    const ssdScore = listing.ssd_score || breakdown.ssd?.score || null;
+
+    // Tier label
+    let tier = 'Entry', tierColor = '#6b7280';
+    if (total >= 60) { tier = 'Enthusiast'; tierColor = '#dc2626'; }
+    else if (total >= 35) { tier = 'High-End'; tierColor = '#f59e0b'; }
+    else if (total >= 18) { tier = 'Mid-Range'; tierColor = '#10b981'; }
+    else if (total >= 8) { tier = 'Budget'; tierColor = '#3b82f6'; }
+
+    // Helper: format a benchmark value nicely
+    const fmtBench = (n) => (n == null ? '—' : Number(n).toLocaleString());
+
+    // Build the benchmark cards. We always show CPU + GPU (the two
+    // metrics that actually drive the total). RAM/SSD scores are
+    // shown only if the API returned them.
+    const cards = [
+        {icon: '⚙️', label: 'CPU benchmark', name: breakdown.cpu ? `${breakdown.cpu.producer || ''} ${breakdown.cpu.model}` : '—',
+         value: fmtBench(cpuBench), suffix: cpuBench ? 'Cinebench R23' : '', color: '#667eea'},
+        {icon: '🎮', label: 'GPU G3D Mark', name: breakdown.gpu ? `${breakdown.gpu.vendor || ''} ${breakdown.gpu.model}` : '—',
+         value: fmtBench(g3dMark), suffix: g3dMark ? 'PassMark' : '', color: '#764ba2'},
+    ];
+    if (ramScore) {
+        cards.push({icon: '💾', label: 'RAM score', name: breakdown.ram ? (breakdown.ram.name || `${breakdown.ram.capacity_gb}GB ${breakdown.ram.ram_type || ''}`) : '—',
+                     value: fmtBench(ramScore), suffix: '', color: '#f59e0b'});
+    }
+    if (ssdScore) {
+        cards.push({icon: '💽', label: 'SSD score', name: breakdown.ssd ? `${breakdown.ssd.brand || ''} ${breakdown.ssd.model || ''}`.trim() || '—' : '—',
+                     value: fmtBench(ssdScore), suffix: '', color: '#10b981'});
+    }
+
+    return `
+        <div class="detail-section performance-score-section">
+            <h4 class="section-title">⚡ Performance Score</h4>
+            <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 0.75rem;">
+                <div style="font-size: 1.8rem; font-weight: 700; color: ${tierColor};">${total.toFixed(1)}</div>
+                <div style="flex: 1;">
+                    <div style="font-size: 0.85rem; color: #374151; font-weight: 600;">
+                        ${tier} <span style="color:#6b7280; font-weight:400;">(${(total/100*100).toFixed(0)}/100 scale)</span>
+                    </div>
+                    <div style="font-size: 0.7rem; color: #6b7280;">
+                        ${listing.value_score ? `💎 Value score: ${Number(listing.value_score).toFixed(2)} (performance / price)` : 'Price not available for value score'}
+                    </div>
+                </div>
+            </div>
+            <div class="perf-bench-grid">
+                ${cards.map(c => `
+                    <div class="perf-bench-card" style="border-left: 3px solid ${c.color};">
+                        <div class="perf-bench-label">${c.icon} ${c.label}</div>
+                        <div class="perf-bench-value" style="color: ${c.color};">${c.value}${c.suffix ? ` <span class="perf-bench-suffix">${c.suffix}</span>` : ''}</div>
+                        <div class="perf-bench-name" title="${c.name}">${c.name}</div>
+                    </div>
+                `).join('')}
             </div>
         </div>
     `;
@@ -2178,16 +2445,17 @@ document.addEventListener('DOMContentLoaded', function() {
 /* Component Filters Section */
 .component-filters-section {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    padding: 1.5rem;
+    padding: 0.5rem;
     border-radius: 12px;
-    margin-bottom: 2rem;
+    margin-top: 0rem;
+    margin-bottom: 0rem;
 }
 
 .component-filters-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 1rem;
+    margin: 0 0 0 0;
     flex-wrap: wrap;
     gap: 0.5rem;
 }
@@ -2406,8 +2674,8 @@ document.addEventListener('DOMContentLoaded', function() {
 .component-row.detailed {
     background: var(--section-bg);
     border: 1px solid var(--card-border);
-    border-radius: 10px;
-    padding: 1rem;
+    border-radius: 8px;
+    padding: 0.5rem 0.75rem;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
@@ -2418,19 +2686,19 @@ document.addEventListener('DOMContentLoaded', function() {
 
 .component-header {
     display: flex;
-    align-items: flex-start;
-    gap: 1rem;
+    align-items: center;
+    gap: 0.6rem;
 }
 
 .component-icon-large {
-    width: 48px;
-    height: 48px;
+    width: 36px;
+    height: 36px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.5rem;
+    font-size: 1.2rem;
     background: var(--section-bg);
-    border-radius: 10px;
+    border-radius: 8px;
     flex-shrink: 0;
 }
 
@@ -2449,9 +2717,23 @@ document.addEventListener('DOMContentLoaded', function() {
 
 .component-name {
     font-weight: 600;
-    font-size: 0.95rem;
+    font-size: 0.9rem;
     color: var(--text-color);
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.25rem;
+}
+
+/* Deep-link to category page (CPU/GPU/RAM/SSD) — same look as
+   .generic-mb-socket-link but with a clear "open in new tab" cue
+   so users know clicking the component name will open another page. */
+.comp-deep-link {
+    color: var(--text-color);
+    text-decoration: none;
+    border-bottom: 1px dashed var(--ram-primary, #6366f1);
+    transition: color 0.12s ease, border-color 0.12s ease;
+}
+.comp-deep-link:hover {
+    color: var(--ram-primary, #6366f1);
+    border-bottom-style: solid;
 }
 
 .component-specs {
@@ -2855,6 +3137,59 @@ document.addEventListener('DOMContentLoaded', function() {
     position: relative;
     display: inline-block;
 }
+
+/* Source dot sits to the LEFT of the thumbnail, vertically centered.
+   Bumped gap to 12px (a touch bigger than SSD's 8px) so the dot
+   breathes on the larger computer thumbnails. */
+.comp-image-cell-inner {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+}
+.computer-source-dot {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    min-width: 10px;
+    border-radius: 50%;
+    box-shadow: 0 0 0 2px var(--card-bg, #ffffff), 0 1px 3px rgba(0,0,0,0.4);
+    flex-shrink: 0;
+    transition: transform 0.12s ease, box-shadow 0.12s ease;
+    cursor: help;
+}
+.computer-source-dot:hover {
+    transform: scale(1.35);
+    box-shadow: 0 0 0 2px var(--card-bg, #ffffff), 0 0 8px currentColor;
+}
+
+/* NEW / STEAL / DROP / UNICORN deal badges (mirrors GPU + SSD pages).
+   .comp-deal-badges sits in the top-right of the image so the deal
+   badge stack doesn't overlap the source dot. */
+.comp-deal-badges {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    z-index: 5;
+}
+.comp-deal-badge {
+    font-size: 0.6rem;
+    font-weight: 700;
+    padding: 1px 5px;
+    border-radius: 3px;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    line-height: 1.4;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.3);
+    white-space: nowrap;
+}
+.comp-deal-badge-NEW      { background: linear-gradient(135deg, #3b82f6, #1d4ed8); color: white; }
+.comp-deal-badge-STEAL    { background: var(--ram-error, #ef4444); color: white; box-shadow: 0 0 6px rgba(239,68,68,0.5); }
+.comp-deal-badge-DROP     { background: linear-gradient(135deg, #16a34a, #15803d); color: white; }
+.comp-deal-badge-UNICORN  { background: rgba(245, 158, 11, 0.18); border: 1px solid rgba(245, 158, 11, 0.45); color: #b45309; padding: 2px 5px; font-size: 0.85rem; }
 
 .listing-thumb {
     width: 80px;
@@ -3429,6 +3764,17 @@ document.addEventListener('DOMContentLoaded', function() {
     color: rgba(255,255,255,0.8);
 }
 
+/* Dark-mode contrast for the flag category name (item 14).
+   The default color (var(--text-color)) is too pale against the
+   dark gradient flag-category-btn background, making the labels
+   hard to read. Force a high-contrast slate. */
+[data-theme="dark"] .flag-category-btn .category-name {
+    color: #f1f5f9;
+}
+[data-theme="dark"] .flag-category-btn.selected .category-name {
+    color: #ffffff;
+}
+
 /* Add Listing Modal */
 .add-listing-modal {
     max-width: 400px;
@@ -3703,6 +4049,163 @@ document.addEventListener('DOMContentLoaded', function() {
     background: var(--comp-primary);
     color: white;
     border-color: var(--comp-primary);
+}
+
+/* Modern panel — rounded table with hover states and dark-mode support */
+.modern-panel {
+    background: var(--card-bg, #fff);
+    border-radius: 12px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+    overflow: hidden;
+    border: 1px solid var(--card-border, rgba(99,102,241,0.10));
+}
+
+/* Generic motherboard socket link (in popup) */
+.generic-mb-socket-link {
+    color: #8e44ad;
+    text-decoration: underline dotted;
+    text-underline-offset: 3px;
+    font-weight: 600;
+    transition: color 0.15s, text-decoration-color 0.15s;
+}
+.generic-mb-socket-link:hover {
+    color: #c026d3;
+    text-decoration-style: solid;
+}
+[data-theme="dark"] .generic-mb-socket-link { color: #c084fc; }
+[data-theme="dark"] .generic-mb-socket-link:hover { color: #d8b4fe; }
+[data-theme="dark"] .modern-panel {
+    box-shadow: 0 1px 3px rgba(0,0,0,0.4);
+    border-color: rgba(255,255,255,0.08);
+}
+.modern-panel table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.modern-panel th, .modern-panel td { padding: 10px 12px; text-align: left; vertical-align: middle; }
+.modern-panel thead th {
+    background: var(--section-bg, #f8f9fa);
+    font-weight: 600;
+    color: var(--text-muted, #6b7280);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    border-bottom: 1px solid var(--card-border, rgba(99,102,241,0.18));
+}
+.modern-panel tbody tr {
+    border-bottom: 1px solid var(--card-border, rgba(99,102,241,0.08));
+    transition: background 0.15s;
+}
+.modern-panel tbody tr:last-child { border-bottom: none; }
+.modern-panel tbody tr.clickable:hover { background: rgba(99,102,241,0.05); cursor: pointer; }
+.modern-panel tbody tr.clickable:active { background: rgba(99,102,241,0.10); }
+[data-theme="dark"] .modern-panel tbody tr { border-color: rgba(255,255,255,0.06); }
+[data-theme="dark"] .modern-panel tbody tr.clickable:hover { background: rgba(99,102,241,0.10); }
+[data-theme="dark"] .modern-panel tbody tr.clickable:active { background: rgba(99,102,241,0.15); }
+
+/* Compact components column — wrap chips in a tight flex container */
+.comp-cell-components {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+    min-width: 220px;
+}
+.comp-cell-components .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 3px 8px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 600;
+    line-height: 1.3;
+    white-space: nowrap;
+}
+
+/* Performance Score section in computer popup. Replaces the old
+   fixed-weight 40/40/10/10 bar chart (which was a no-op for every
+   listing) with actual benchmark cards: CPU Cinebench R23, GPU G3D
+   Mark, plus RAM/SSD scores if the API returns them. */
+.performance-score-section {
+    margin-top: 1rem;
+}
+.perf-bench-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+}
+.perf-bench-card {
+    background: var(--comp-bg, #f8f9fa);
+    border-radius: 6px;
+    padding: 0.5rem 0.6rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+}
+.perf-bench-label {
+    font-size: 0.72rem;
+    color: #6b7280;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+}
+.perf-bench-value {
+    font-size: 1.1rem;
+    font-weight: 700;
+    line-height: 1.1;
+}
+.perf-bench-suffix {
+    font-size: 0.7rem;
+    font-weight: 500;
+    color: #6b7280;
+    margin-left: 2px;
+}
+.perf-bench-name {
+    font-size: 0.7rem;
+    color: #6b7280;
+    font-style: italic;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+}
+[data-theme="dark"] .perf-bench-card { background: #2a2a3a; }
+[data-theme="dark"] .perf-bench-label { color: #94a3b8; }
+[data-theme="dark"] .perf-bar-container { background: rgba(255,255,255,0.08); }
+[data-theme="dark"] .perf-label { color: #e0e0e0; }
+[data-theme="dark"] .perf-component-name { color: #9ca3af; }
+
+/* Pretty scrollbar for the computer popup */
+.computer-detail-layout::-webkit-scrollbar,
+.detail-section::-webkit-scrollbar {
+    width: 10px;
+}
+.computer-detail-layout::-webkit-scrollbar-track,
+.detail-section::-webkit-scrollbar-track { background: transparent; }
+.computer-detail-layout::-webkit-scrollbar-thumb,
+.detail-section::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    border-radius: 10px;
+    border: 2px solid transparent;
+    background-clip: padding-box;
+}
+.computer-detail-layout::-webkit-scrollbar-thumb:hover,
+.detail-section::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(135deg, #4f46e5, #5b21b6);
+    background-clip: padding-box;
+}
+.computer-detail-layout,
+.detail-section {
+    scrollbar-width: thin;
+    scrollbar-color: #667eea transparent;
+}
+[data-theme="dark"] .computer-detail-layout,
+[data-theme="dark"] .detail-section {
+    scrollbar-color: #a78bfa transparent;
+}
+[data-theme="dark"] .computer-detail-layout::-webkit-scrollbar-thumb,
+[data-theme="dark"] .detail-section::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, #a78bfa, #6d28d9);
+    background-clip: padding-box;
 }
 </style>
 {% endblock %}

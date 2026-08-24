@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Computer Modal v2 — Right Drawer · SS-Crawler</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; background: #0f1120; color: #e0e0e0; min-height: 100vh; padding: 20px; }
+.page-bg { max-width: 900px; margin: 0 auto; }
+.demo-header { padding: 8px 0 16px; border-bottom: 1px solid #232342; margin-bottom: 16px; }
+.demo-header h1 { font-size: 18px; font-weight: 800; }
+.demo-header .v-tag { display: inline-block; font-size: 10px; padding: 2px 8px; background: #10e0a0; color: #052e1f; border-radius: 10px; margin-left: 8px; vertical-align: middle; font-weight: 700; }
+.demo-header p { font-size: 12px; color: #98a0b5; margin-top: 4px; }
+.listing-card { display: flex; gap: 14px; padding: 14px; background: #1a1a2e; border: 1px solid #232342; border-radius: 10px; margin-bottom: 12px; cursor: pointer; transition: all .15s; }
+.listing-card:hover { border-color: #10e0a0; }
+.listing-card .thumb { width: 70px; height: 70px; background: #232342; border-radius: 6px; flex-shrink: 0; display: grid; place-items: center; font-size: 28px; }
+.listing-card .info { flex: 1; }
+.listing-card .title { font-weight: 700; font-size: 14px; margin-bottom: 4px; }
+.listing-card .meta { font-size: 11px; color: #98a0b5; }
+.listing-card .open-btn { background: #10e0a0; color: #052e1f; border: none; padding: 8px 12px; border-radius: 6px; font-size: 12px; font-weight: 700; cursor: pointer; align-self: center; }
+
+/* === RIGHT DRAWER === */
+.backdrop { position: fixed; inset: 0; background: rgba(0,0,0,.55); backdrop-filter: blur(3px); z-index: 100; display: none; opacity: 0; transition: opacity .25s; }
+.backdrop.open { display: block; opacity: 1; }
+.drawer {
+  position: fixed; top: 0; right: 0; width: 460px; max-width: 100vw; height: 100vh;
+  background: #131826; border-left: 1px solid #2a2a4a; z-index: 101;
+  display: flex; flex-direction: column;
+  transform: translateX(100%); transition: transform .3s cubic-bezier(.32, .72, 0, 1);
+  box-shadow: -20px 0 60px rgba(0,0,0,.5);
+}
+.drawer.open { transform: translateX(0); }
+
+.drawer-head { padding: 16px 20px; border-bottom: 1px solid #232342; display: flex; gap: 14px; align-items: center; flex-shrink: 0; }
+.drawer-img { width: 64px; height: 64px; background: #232342; border-radius: 10px; display: grid; place-items: center; font-size: 30px; flex-shrink: 0; }
+.drawer-title { flex: 1; min-width: 0; }
+.drawer-title h2 { font-size: 16px; font-weight: 700; margin-bottom: 4px; }
+.drawer-title .sub { font-size: 11px; color: #98a0b5; }
+.drawer-close { width: 32px; height: 32px; border-radius: 8px; background: #232342; border: none; color: #98a0b5; cursor: pointer; font-size: 16px; }
+.drawer-close:hover { background: #2a2a4a; color: #e0e0e0; }
+
+.drawer-tabs { display: flex; border-bottom: 1px solid #232342; flex-shrink: 0; }
+.drawer-tab { flex: 1; padding: 12px; font-size: 12px; font-weight: 600; color: #98a0b5; background: transparent; border: none; cursor: pointer; border-bottom: 2px solid transparent; }
+.drawer-tab.active { color: #10e0a0; border-bottom-color: #10e0a0; }
+
+.drawer-body { flex: 1; overflow-y: auto; padding: 18px 20px; }
+
+.detail-card { background: #1a1a2e; border: 1px solid #232342; border-radius: 10px; padding: 14px; margin-bottom: 12px; }
+.detail-row { display: flex; justify-content: space-between; padding: 6px 0; font-size: 13px; }
+.detail-row .label { color: #98a0b5; }
+.detail-row .value { font-weight: 600; }
+
+.comp-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 12px; }
+.comp-card { padding: 10px 12px; background: #1a1a2e; border: 1px solid #232342; border-radius: 8px; }
+.comp-card .name { font-size: 10px; color: #98a0b5; text-transform: uppercase; letter-spacing: .05em; margin-bottom: 2px; }
+.comp-card .val { font-size: 13px; font-weight: 600; }
+
+.flag-section { background: #1a1a2e; border: 1px solid #f59e0b; border-radius: 10px; padding: 14px; margin-top: 14px; }
+.flag-title { font-size: 13px; font-weight: 700; color: #f59e0b; margin-bottom: 10px; display: flex; align-items: center; gap: 6px; }
+.flag-cat { display: flex; gap: 6px; margin-bottom: 10px; }
+.flag-cat button { flex: 1; padding: 7px; border-radius: 7px; background: #0f1120; border: 1px solid #2a2a4a; color: #98a0b5; font-size: 11px; font-weight: 600; cursor: pointer; }
+.flag-cat button.active { background: #f59e0b22; border-color: #f59e0b; color: #fbbf24; }
+.flag-comp { display: flex; flex-wrap: wrap; gap: 5px; }
+.flag-comp label { display: flex; align-items: center; gap: 5px; padding: 6px 9px; background: #0f1120; border: 1px solid #2a2a4a; border-radius: 6px; font-size: 11px; cursor: pointer; }
+.flag-comp label.checked { background: #f59e0b22; border-color: #f59e0b; color: #fbbf24; }
+.flag-text { width: 100%; padding: 10px; border-radius: 7px; background: #0f1120; border: 1px solid #2a2a4a; color: #e0e0e0; font-size: 12.5px; margin-top: 10px; outline: none; font-family: inherit; resize: vertical; min-height: 60px; }
+
+.drawer-foot { padding: 14px 20px; border-top: 1px solid #232342; display: flex; gap: 8px; flex-shrink: 0; background: #0f1120; }
+.btn { flex: 1; padding: 12px; border-radius: 8px; font-size: 13px; font-weight: 600; border: none; cursor: pointer; }
+.btn-secondary { background: #232342; color: #98a0b5; }
+.btn-secondary:hover { background: #2a2a4a; }
+.btn-flag { background: #f59e0b; color: #1a1a2e; }
+.btn-flag:hover { background: #fbbf24; }
+.btn-flag:disabled { opacity: .4; cursor: not-allowed; }
+</style>
+</head>
+<body>
+<div class="page-bg">
+  <div class="demo-header">
+    <h1>🖥️ Computers Page <span class="v-tag">v2 · Right Drawer</span></h1>
+    <p>Slides in from the right at 460px wide. Tabs at top, scroll body, sticky footer. Background context stays visible on the left.</p>
+  </div>
+  <div class="listing-card" onclick="openDrawer()">
+    <div class="thumb">🖥️</div>
+    <div class="info">
+      <div class="title">Gaming PC — RTX 4070 + Ryzen 7 5800X</div>
+      <div class="meta">Rīga · ss.com · 2 dienas atpakaļ · €1,250</div>
+    </div>
+    <button class="open-btn">Atvērt drawer</button>
+  </div>
+  <div class="listing-card" onclick="openDrawer()">
+    <div class="thumb">💻</div>
+    <div class="info">
+      <div class="title">Workstation — i7-12700K + 64GB</div>
+      <div class="meta">Jelgava · ss.com · 1 nedēļa atpakaļ · €890</div>
+    </div>
+    <button class="open-btn">Atvērt drawer</button>
+  </div>
+</div>
+
+<div class="backdrop" id="backdrop" onclick="closeDrawer()"></div>
+
+<div class="drawer" id="drawer">
+  <div class="drawer-head">
+    <div class="drawer-img">🖥️</div>
+    <div class="drawer-title">
+      <h2>Gaming PC — RTX 4070 + Ryzen 7 5800X</h2>
+      <div class="sub">Rīga · ss.com · €1,250</div>
+    </div>
+    <button class="drawer-close" onclick="closeDrawer()">×</button>
+  </div>
+  <div class="drawer-tabs">
+    <button class="drawer-tab active" onclick="switchTab(this, 'details')">📋 Detaļas</button>
+    <button class="drawer-tab" onclick="switchTab(this, 'components')">🔧 Komponentes</button>
+    <button class="drawer-tab" onclick="switchTab(this, 'flag')">🚩 Ziņot</button>
+  </div>
+  <div class="drawer-body" id="tabDetails">
+    <div class="detail-card">
+      <div class="detail-row"><span class="label">Cena</span><span class="value">€1,250</span></div>
+      <div class="detail-row"><span class="label">Atrašanās vieta</span><span class="value">Rīga</span></div>
+      <div class="detail-row"><span class="label">Avots</span><span class="value">ss.com</span></div>
+      <div class="detail-row"><span class="label">Pievienots</span><span class="value">2 dienas atpakaļ</span></div>
+      <div class="detail-row"><span class="label">Ticamība</span><span class="value" style="color: #10e0a0;">92%</span></div>
+      <div class="detail-row"><span class="label">Saite</span><span class="value" style="color: #10e0a0; font-size: 11px;">ss.com/msg/abc123</span></div>
+    </div>
+    <div style="padding: 12px; background: #1a1a2e; border: 1px solid #232342; border-radius: 10px; font-size: 12px; color: #98a0b5; line-height: 1.5;">
+      Pilns datora apraksts: jaudīga spēļu konfigurācija ar RTX 4070 grafisko karti un Ryzen 7 5800X procesoru. 32GB DDR4 RAM un 1TB NVMe SSD nodrošina ātru darbību. Komplektā ietilpst...
+    </div>
+  </div>
+  <div class="drawer-body" id="tabComponents" style="display: none;">
+    <div class="comp-grid">
+      <div class="comp-card"><div class="name">CPU</div><div class="val">Ryzen 7 5800X</div></div>
+      <div class="comp-card"><div class="name">GPU</div><div class="val">RTX 4070</div></div>
+      <div class="comp-card"><div class="name">RAM</div><div class="val">32GB DDR4</div></div>
+      <div class="comp-card"><div class="name">SSD</div><div class="val">1TB NVMe</div></div>
+      <div class="comp-card" style="grid-column: span 2;"><div class="name">Motherboard</div><div class="val">ASUS B550 TUF Gaming</div></div>
+      <div class="comp-card" style="grid-column: span 2; opacity: .5;"><div class="name">PSU</div><div class="val">Nav atrasts</div></div>
+    </div>
+  </div>
+  <div class="drawer-body" id="tabFlag" style="display: none;">
+    <div class="flag-section">
+      <div class="flag-title">🚩 Kaut kas nepareizi?</div>
+      <label style="font-size: 11px; color: #98a0b5; font-weight: 600; margin-bottom: 6px; display: block;">Problēmas kategorija</label>
+      <div class="flag-cat">
+        <button class="active" onclick="selectCat(this)">🔧 Scraper</button>
+        <button onclick="selectCat(this)">👤 Pārdevējs</button>
+        <button onclick="selectCat(this)">📌 Cits</button>
+      </div>
+      <label style="font-size: 11px; color: #98a0b5; font-weight: 600; margin: 10px 0 6px; display: block;">Problēmas komponentes</label>
+      <div class="flag-comp" id="comp">
+        <label><input type="checkbox" onchange="toggleComp(this)" />🖥️ MB</label>
+        <label><input type="checkbox" onchange="toggleComp(this)" />⚙️ CPU</label>
+        <label><input type="checkbox" onchange="toggleComp(this)" />🎮 GPU</label>
+        <label><input type="checkbox" onchange="toggleComp(this)" />💾 RAM</label>
+        <label><input type="checkbox" onchange="toggleComp(this)" />💽 SSD</label>
+      </div>
+      <textarea class="flag-text" placeholder="Aprakstiet problēmu…"></textarea>
+    </div>
+  </div>
+  <div class="drawer-foot">
+    <button class="btn btn-secondary" onclick="closeDrawer()">Aizvērt</button>
+    <button class="btn btn-flag" id="flagBtn" disabled>🚩 Iesniegt ziņojumu</button>
+  </div>
+</div>
+
+<script>
+let compCount = 0;
+function openDrawer() {
+  document.getElementById('backdrop').classList.add('open');
+  document.getElementById('drawer').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeDrawer() {
+  document.getElementById('drawer').classList.remove('open');
+  document.getElementById('backdrop').classList.remove('open');
+  document.body.style.overflow = '';
+}
+function switchTab(btn, name) {
+  btn.parentNode.querySelectorAll('button').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  ['tabDetails', 'tabComponents', 'tabFlag'].forEach(id => document.getElementById(id).style.display = 'none');
+  document.getElementById('tab' + name.charAt(0).toUpperCase() + name.slice(1)).style.display = 'block';
+}
+function selectCat(btn) { btn.parentNode.querySelectorAll('button').forEach(b => b.classList.remove('active')); btn.classList.add('active'); }
+function toggleComp(label) {
+  label.classList.toggle('checked', label.querySelector('input').checked);
+  compCount = document.querySelectorAll('#comp input:checked').length;
+  document.getElementById('flagBtn').disabled = compCount === 0;
+}
+</script>
+</body>
+</html>

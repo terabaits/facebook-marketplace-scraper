@@ -153,32 +153,52 @@
     </div>
 </div>
 
-<!-- Admin page toggles -->
+<!-- Admin page toggles — per-role defaults -->
 <div class="card" style="margin-bottom: 1.5rem;">
-    <h3>{{ t('Admin Page Toggles') }}</h3>
-    <p style="color: var(--text-secondary); font-size: 0.9rem; margin-top: 0.25rem;">{{ t('Display switches that affect listing pages across the site.') }}</p>
-    <div id="admin-toggles-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 0.75rem; margin-top: 1rem;">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; flex-wrap: wrap; gap: 0.5rem;">
+        <h3 style="margin: 0;">{{ t('Admin Page Toggles') }}</h3>
+        <div style="display: flex; gap: 0.5rem;">
+            <button class="btn btn-small" onclick="resetAllToggles()">{{ t('Reset all to default') }}</button>
+            <button class="btn btn-primary btn-small" onclick="saveAllToggleDefaults()">{{ t('Save toggle defaults') }}</button>
+        </div>
+    </div>
+    <p style="color: var(--text-secondary); font-size: 0.9rem; margin: 0 0 0.75rem;">{{ t('Each toggle can be enabled per role. A user with a higher role inherits its own column; the user\'s browser localStorage still wins as a per-user override.') }}</p>
+    <div style="overflow-x: auto;">
+        <table class="data-table role-access-matrix" id="toggle-matrix-table">
+            <thead>
+                <tr>
+                    <th style="text-align: left;">{{ t('Toggle') }}</th>
+                    {% for role in roles %}
+                    <th style="text-align: center; text-transform: capitalize;">{{ role }}</th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for t in toggle_definitions %}
+                <tr data-toggle-row="{{ t.key }}">
+                    <td style="font-weight: 500;">
+                        {{ t.label }}
+                        <span style="color: var(--text-secondary); font-size: 0.8rem; font-weight: normal;">({{ t.applies_to }})</span>
+                    </td>
+                    {% for role in roles %}
+                    <td style="text-align: center;">
+                        <label class="role-page-chip" title="{{ role }}: {{ t.key }}">
+                            <input type="checkbox" class="toggle-default-{{ role }}" value="{{ t.key }}" aria-label="{{ role }}: {{ t.key }}">
+                        </label>
+                    </td>
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <p style="color: var(--text-secondary); font-size: 0.85rem; margin-top: 0.75rem;">{{ t('Per-user overrides still work: edit any toggle in the list below for your own browser only.') }}</p>
+    <div id="admin-toggles-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 0.75rem; margin-top: 0.5rem;">
+        {% for t in toggle_definitions %}
         <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
-            <input type="checkbox" data-toggle="showListingId"> {{ t('Show listing IDs') }}
+            <input type="checkbox" data-toggle="{{ t.key }}" data-default="{{ t.default|lower }}"> {{ t.label }} <span style="color: var(--text-secondary); font-size: 0.75rem; margin-left: auto;">({{ t.applies_to }})</span>
         </label>
-        <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
-            <input type="checkbox" data-toggle="showGPUId"> {{ t('Show GPU matched ID') }}
-        </label>
-        <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
-            <input type="checkbox" data-toggle="showSourceDots"> {{ t('Show source dots') }}
-        </label>
-        <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
-            <input type="checkbox" data-toggle="showSummaryFields"> {{ t('Show summary fields') }}
-        </label>
-        <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
-            <input type="checkbox" data-toggle="showDeleteButtons"> {{ t('Show delete buttons') }}
-        </label>
-        <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
-            <input type="checkbox" data-toggle="showGeForceInGPUName"> {{ t('Show "GeForce" in NVIDIA names') }}
-        </label>
-        <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
-            <input type="checkbox" data-toggle="enableRAMColumnCustomization"> {{ t('Enable RAM column customization') }}
-        </label>
+        {% endfor %}
     </div>
 </div>
 
@@ -444,14 +464,106 @@
         }
     }
 
-    // Admin page toggles
+    // Admin page toggles — role matrix + per-user localStorage
+    //
+    // Flow:
+    //  1. On page load, fetch /api/admin/toggle-matrix and tick the matrix
+    //     boxes per role. Save button POSTs the matrix back.
+    //  2. The lower "your browser" boxes (per-user) read localStorage
+    //     first; if no override, fall back to the current user's role
+    //     default so behavior is consistent across devices.
+    //  3. Changing a per-user box writes localStorage only — it does NOT
+    //     change the role default. Use "Save toggle defaults" for that.
+    let toggleMatrix = {};   // {role: {key: bool}}
+    let toggleMeta   = [];   // [{key, label, applies_to}, ...]
+
+    async function loadToggleMatrix() {
+        try {
+            const resp = await fetch('/api/admin/toggle-matrix');
+            if (!resp.ok) return;
+            const data = await resp.json();
+            toggleMatrix = data.matrix || {};
+            toggleMeta   = data.toggles || [];
+            // Tick the matrix checkboxes
+            for (const role of roles) {
+                const roleMap = toggleMatrix[role] || {};
+                for (const [key, enabled] of Object.entries(roleMap)) {
+                    const cb = document.querySelector(
+                        `.toggle-default-${CSS.escape(role)}[value="${key}"]`
+                    );
+                    if (cb) cb.checked = !!enabled;
+                }
+            }
+        } catch (e) {
+            console.warn('loadToggleMatrix failed:', e);
+        }
+    }
+
+    function readToggleMatrixFromForm() {
+        // Build {role: {key: bool}} from the matrix checkboxes
+        const out = {};
+        for (const role of roles) {
+            out[role] = {};
+            document.querySelectorAll(`.toggle-default-${CSS.escape(role)}:checked`).forEach(cb => {
+                out[role][cb.value] = true;
+            });
+            // Also include unchecked ones (so the server can save false)
+            document.querySelectorAll(`.toggle-default-${CSS.escape(role)}:not(:checked)`).forEach(cb => {
+                out[role][cb.value] = false;
+            });
+        }
+        return out;
+    }
+
+    async function saveAllToggleDefaults() {
+        const toggles = readToggleMatrixFromForm();
+        const resp = await fetch('/api/admin/toggle-defaults', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({toggles})
+        });
+        if (resp.ok) {
+            showToast(t('Toggle defaults saved'), 'success');
+            toggleMatrix = toggles;
+        } else {
+            const data = await resp.json().catch(() => ({}));
+            showToast(data.error || t('Failed to save'), 'error');
+        }
+    }
+
+    function resetAllToggles() {
+        if (!confirm(t('Reset all toggles to the global default?'))) return;
+        // Re-tick the matrix from the current loaded values (server state)
+        for (const role of roles) {
+            const roleMap = toggleMatrix[role] || {};
+            for (const [key, enabled] of Object.entries(roleMap)) {
+                const cb = document.querySelector(
+                    `.toggle-default-${CSS.escape(role)}[value="${key}"]`
+                );
+                if (cb) cb.checked = !!enabled;
+            }
+        }
+    }
+
     function initAdminToggles() {
+        // Per-user boxes: localStorage override wins; else use the role
+        // default injected by the server via window.userToggleDefaults.
+        const userDefaults = window.userToggleDefaults || {};
         document.querySelectorAll('#admin-toggles-grid input[data-toggle]').forEach(cb => {
             const key = cb.dataset.toggle;
-            const val = localStorage.getItem(key);
-            let def = true;
-            if (key === 'showDeleteButtons') def = false;
-            cb.checked = val !== null ? (val === 'true') : def;
+            const stored = localStorage.getItem(key);
+            if (stored !== null) {
+                cb.checked = stored === 'true';
+            } else {
+                // Use server-injected role default; fall back to canonical default
+                let def = true;
+                if (Object.prototype.hasOwnProperty.call(userDefaults, key)) {
+                    def = !!userDefaults[key];
+                } else if (cb.dataset.default) {
+                    def = cb.dataset.default === 'true';
+                }
+                cb.checked = def;
+            }
             cb.addEventListener('change', () => {
                 localStorage.setItem(key, cb.checked);
             });
@@ -783,9 +895,18 @@
         return div.innerHTML;
     }
 
+    // Inject the server-side role defaults so initAdminToggles can
+    // fall back to them when there's no localStorage override yet.
+    window.userToggleDefaults = {{ user_toggle_defaults | tojson }};
+
     // Initialize after base.html has defined t() and translations
     document.addEventListener('DOMContentLoaded', () => {
-        initAdminToggles();
+        // Load the role × toggle matrix (admin only) so the matrix
+        // checkboxes are pre-ticked.
+        loadToggleMatrix().then(() => {
+            // After matrix is loaded, also init the per-user boxes
+            initAdminToggles();
+        });
         const savedTab = localStorage.getItem('admin_active_tab') || 'flagged';
         switchAdminTab(savedTab);
         document.getElementById('spreads-active-only')?.addEventListener('change', loadPriceSpreads);

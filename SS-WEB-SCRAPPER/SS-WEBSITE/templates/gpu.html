@@ -36,11 +36,14 @@
         display: flex !important;
     }
 
-    /* Image column - centered thumbnail */
+    /* Image column - centered thumbnail. The cell hosts a 10px source
+       dot + 6px gap + 72px image + 18px horizontal padding ≈ 106px, so
+       we set an explicit pixel width of 112px (table-layout: fixed
+       ignores min-width reliably). */
     .gpu-listings-table th:nth-child(1),
     .gpu-listings-table td:nth-child(1) {
-        width: 5.5%;
-        min-width: 84px;
+        width: 112px;
+        min-width: 112px;
         text-align: center !important;
         vertical-align: middle;
     }
@@ -358,28 +361,61 @@
     .filter-icon-btn.vendor-intel { border-color: #0071c5; color: #0071c5; background: rgba(0,113,197,0.12); }
     .filter-icon-btn.vendor-intel.active { background: linear-gradient(135deg, #0071c5 0%, #004e88 100%); border-color: #004e88; color: #fff; }
 
-    /* Smaller vendor icons, shown inline next to the Model dropdown */
-    .vendor-icon-bar.filter-icon-bar { gap: 6px; vertical-align: middle; }
+    /* Smaller vendor icons, shown inline next to the Model label */
+    .vendor-icon-bar.filter-icon-bar {
+        gap: 4px;
+        vertical-align: middle;
+        display: inline-flex;
+        align-items: center;
+        margin: 0 0.5rem;
+    }
     .vendor-icon-bar .filter-icon-btn {
-        width: 30px;
-        height: 30px;
-        border-radius: 8px;
-        border-width: 1.5px;
+        width: 22px;
+        height: 22px;
+        border-radius: 6px;
+        border-width: 1px;
+        padding: 0;
     }
     .vendor-icon-bar .filter-icon-btn svg {
-        width: 16px;
-        height: 16px;
+        width: 12px;
+        height: 12px;
     }
     .vendor-icon-bar .filter-icon-btn:hover,
     .vendor-icon-bar .filter-icon-btn:focus-visible {
-        transform: translateY(-2px) scale(1.08);
+        transform: translateY(-1px) scale(1.08);
     }
 
-    /* Keep model dropdown width constant (at least as wide as the AMD list) */
-    #model-filter {
-        min-width: 260px;
-        width: auto;
+    /* Model picker — "Model:" label + vendor icons stay on the first row;
+       the model dropdown sits on its own row below them, matching the
+       rest of the filters' visual rhythm. base.html forces this label
+       to `flex-direction: row !important` (it was added for the laptop
+       page), so we need the same specificity (`.filters label...`) to
+       override it back to `column`. */
+    .filters label.model-filter-label,
+    .model-filter-label {
+        display: inline-flex !important;
+        flex-direction: column !important;
+        align-items: flex-start;
+        gap: 0.35rem;
+        background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+        border: 1px solid #00d4ff;
+        border-radius: 14px;
+        padding: 0.45rem 0.85rem 0.6rem;
+        height: fit-content;
+        align-self: center;
+        white-space: normal;
+        flex-wrap: nowrap;
     }
+    .model-filter-row1 {
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+        flex-wrap: nowrap;
+        white-space: nowrap;
+    }
+    .model-filter-label > .filter-icon-bar { margin: 0; }
+    .model-filter-label > select.model-filter-select { min-width: 200px; background: rgba(0,0,0,0.3); border: 1px solid #00d4ff44; color: #fff; padding: 4px 8px; border-radius: 6px; font-size: 0.85rem; }
+    .model-filter-label > .model-filter-row1 > span:first-child { color: #00d4ff; font-weight: 500; font-size: 0.875rem; }
 
     @keyframes iconGlow {
         from { box-shadow: 0 0 8px rgba(118, 75, 162, 0.55), 0 0 18px rgba(102, 126, 234, 0.35); }
@@ -396,6 +432,33 @@
         border: 0;
         clip: rect(0, 0, 0, 0);
         pointer-events: none;
+    }
+
+    /* Compact filter spacing — GPU page only, just spacing.
+       `!important` is needed to beat inline style="...padding: 0.5rem 1rem" on
+       the gradient card labels and inline style="...margin-top: 4px" on their
+       inner divs. Without it, external CSS loses to inline specificity. */
+    .section .filters {
+        gap: 0.4rem 0.5rem !important;
+        margin-bottom: 1rem !important;
+    }
+    .section .filters > label {
+        gap: 0.15rem !important;
+        font-size: 0.8125rem !important;
+    }
+    .section .filters > label[style*="background: linear-gradient"] {
+        padding: 0.3rem 0.6rem !important;
+    }
+    .section .filters > label[style*="background: linear-gradient"] > div {
+        margin-top: 1px !important;
+    }
+    .section .filters select,
+    .section .filters input[type="number"],
+    .section .filters input[type="search"] {
+        padding: 0.3rem 0.5rem !important;
+    }
+    #model-filter {
+        min-width: 180px !important;
     }
 {% endblock %}
 
@@ -434,6 +497,7 @@ let priceChart = null;
 let historyChart = null;
 let mostSoldChart = null;
 let topPerformersChart = null;
+let topValueChart = null;
 
 // Load additional statistics
 
@@ -910,7 +974,7 @@ function filterByModel(vendor, model) {
     </div>
 
     <!-- Performance / Price Charts -->
-    <div style="display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 1.5rem; margin-top: 1.5rem;" class="gpu-charts-grid">
+    <div style="display: grid; grid-template-columns: 2fr 1fr 1fr 1fr 1fr; gap: 1.5rem; margin-top: 1.5rem;" class="gpu-charts-grid">
         <div style="background: var(--card-bg); border-radius: 8px; padding: 1rem; border: 1px solid var(--card-border);">
             <h3 style="margin-bottom: 1rem;">💹 Price vs G3D Performance</h3>
             <div class="perf-chart-box">
@@ -935,13 +999,55 @@ function filterByModel(vendor, model) {
                 <canvas id="gpu-top-performers-chart"></canvas>
             </div>
         </div>
+        <div style="background: var(--card-bg); border-radius: 8px; padding: 1rem; border: 1px solid var(--card-border);">
+            <h3 style="margin-bottom: 1rem;">💰 Top Performers (€/G3D)</h3>
+            <div class="perf-chart-box">
+                <canvas id="gpu-top-value-chart"></canvas>
+            </div>
+        </div>
     </div>
 
-    <!-- Average Price by Month -->
+    <!-- Average Price by Month — with user-pickable model set -->
     <div style="background: var(--card-bg); border-radius: 8px; padding: 1rem; border: 1px solid var(--card-border); margin-top: 1.5rem;">
-        <h3 style="margin-bottom: 1rem;">📅 Average GPU Price by Month (filtered listings)</h3>
+        <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1rem;">
+            <h3 style="margin: 0;">📅 Average GPU Price by Month (active + inactive, excludes flagged & unmatched)</h3>
+            <div style="display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap;">
+                <span style="font-size: 0.85rem; color: var(--text-muted, #6b7280);">Models:</span>
+                <span id="monthly-model-pill-count" style="font-weight:700; padding:2px 8px; background: rgba(102,126,234,0.15); color:#667eea; border-radius:12px; font-size:0.8rem;">all</span>
+                <button type="button" class="btn btn-small" id="monthly-pick-btn" style="background: linear-gradient(135deg, #667eea, #764ba2); color: white; border: none;">✏️ Pick models</button>
+                <button type="button" class="btn btn-small" id="monthly-reset-btn" style="background: linear-gradient(135deg, #6366f1, #8b5cf6); color: white; border: none; font-weight: 600; box-shadow: 0 1px 3px rgba(99, 102, 241, 0.35);">🔄 Reset to all</button>
+            </div>
+        </div>
+        <div id="monthly-model-pills" style="display: flex; gap: 0.4rem; flex-wrap: wrap; margin-bottom: 0.75rem; min-height: 8px;"></div>
         <div class="perf-chart-box">
             <canvas id="gpu-monthly-avg-chart"></canvas>
+        </div>
+        <small id="monthly-empty-hint" style="display: none; color: var(--text-muted, #6b7280); margin-top: 0.5rem;">
+            No models selected. <a href="#" onclick="document.getElementById('monthly-reset-btn').click(); return false;">Reset to all</a> to see the full chart.
+        </small>
+    </div>
+
+    <!-- Modal: pick which GPU models to show in the monthly chart -->
+    <div id="monthly-pick-modal" class="modal-overlay" style="display: none; z-index: 2500;">
+        <div class="modal" style="max-width: 640px; max-height: 80vh; display: flex; flex-direction: column;">
+            <div class="modal-header">
+                <h3>Pick GPU models for the chart</h3>
+                <button class="modal-close" onclick="closeMonthlyPick()">×</button>
+            </div>
+            <div style="padding: 1rem 1.5rem 0.5rem;">
+                <input type="text" id="monthly-pick-search" placeholder="🔍 Search GPU models…" style="width: 100%; padding: 0.5rem 0.75rem; border: 1px solid #d1d5db; border-radius: 6px; font-size: 0.9rem;">
+                <div style="display: flex; gap: 0.5rem; margin-top: 0.5rem; flex-wrap: wrap;">
+                    <button type="button" class="btn btn-small" onclick="monthlyPickAll(true)" style="background:#10b981; color:white;">Select all</button>
+                    <button type="button" class="btn btn-small" onclick="monthlyPickAll(false)" style="background:#6b7280; color:white;">Clear</button>
+                    <button type="button" class="btn btn-small" onclick="monthlyPickTopN(5)" style="background:#f59e0b; color:white;">Top 5 most listed</button>
+                </div>
+                <small style="display: block; color: #6b7280; margin-top: 0.5rem;">Your selection is saved per-browser. Next time you open this page, the same models will be charted.</small>
+            </div>
+            <div id="monthly-pick-list" style="flex: 1; overflow-y: auto; padding: 0.5rem 1.5rem 1.5rem;"></div>
+            <div style="padding: 1rem 1.5rem; border-top: 1px solid #e5e7eb; display: flex; gap: 0.5rem; justify-content: flex-end;">
+                <button class="btn btn-small btn-secondary" onclick="closeMonthlyPick()">Cancel</button>
+                <button class="btn btn-small" style="background: linear-gradient(135deg, #667eea, #764ba2); color: white;" onclick="applyMonthlyPick()">Apply</button>
+            </div>
         </div>
     </div>
 
@@ -1016,30 +1122,32 @@ function filterByModel(vendor, model) {
             <input type="checkbox" id="show-avg-price" onchange="loadListings()" class="hidden-filter">
             <input type="checkbox" id="use-active-avg" onchange="loadListings()" class="hidden-filter">
             <input type="hidden" id="vendor-filter" value="all">
-            <label>
-                Model:
-                <div class="filter-icon-bar vendor-icon-bar" id="vendor-icon-bar">
-                    <button type="button" class="filter-icon-btn vendor-nvidia" data-vendor="NVIDIA" title="NVIDIA" onclick="selectGPUVendor('NVIDIA')">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-                            <rect x="2.5" y="5" width="19" height="14" rx="2.5"/>
-                            <path d="M12 8c-3.5 0-6 2-6 4s2.5 4 6 4 6-2 6-4-2.5-4-6-4z"/>
-                            <circle cx="12" cy="12" r="2.5" fill="currentColor" stroke="none"/>
-                        </svg>
-                    </button>
-                    <button type="button" class="filter-icon-btn vendor-amd" data-vendor="AMD" title="AMD" onclick="selectGPUVendor('AMD')">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-                            <rect x="3" y="3" width="18" height="18" rx="2"/>
-                            <path d="M8 8l8 8M16 8L8 16"/>
-                        </svg>
-                    </button>
-                    <button type="button" class="filter-icon-btn vendor-intel" data-vendor="Intel" title="Intel" onclick="selectGPUVendor('Intel')">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
-                            <ellipse cx="12" cy="12" rx="10" ry="6"/>
-                            <text x="12" y="15" text-anchor="middle" font-size="6.5" font-weight="700" fill="currentColor" stroke="none">Intel</text>
-                        </svg>
-                    </button>
-                </div>
-                <select id="model-filter" onchange="onModelChange()">
+            <label class="model-filter-label">
+                <span class="model-filter-row1">
+                    <span>Model:</span>
+                    <span class="filter-icon-bar vendor-icon-bar" id="vendor-icon-bar">
+                        <button type="button" class="filter-icon-btn vendor-nvidia" data-vendor="NVIDIA" title="NVIDIA" onclick="selectGPUVendor('NVIDIA')">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="2.5" y="5" width="19" height="14" rx="2.5"/>
+                                <path d="M12 8c-3.5 0-6 2-6 4s2.5 4 6 4 6-2 6-4-2.5-4-6-4z"/>
+                                <circle cx="12" cy="12" r="2.5" fill="currentColor" stroke="none"/>
+                            </svg>
+                        </button>
+                        <button type="button" class="filter-icon-btn vendor-amd" data-vendor="AMD" title="AMD" onclick="selectGPUVendor('AMD')">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="3" y="3" width="18" height="18" rx="2"/>
+                                <path d="M8 8l8 8M16 8L8 16"/>
+                            </svg>
+                        </button>
+                        <button type="button" class="filter-icon-btn vendor-intel" data-vendor="Intel" title="Intel" onclick="selectGPUVendor('Intel')">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+                                <ellipse cx="12" cy="12" rx="10" ry="6"/>
+                                <text x="12" y="15" text-anchor="middle" font-size="6.5" font-weight="700" fill="currentColor" stroke="none">Intel</text>
+                            </svg>
+                        </button>
+                    </span>
+                </span>
+                <select id="model-filter" class="model-filter-select" onchange="onModelChange()">
                     <option value="all">All Models</option>
                 </select>
             </label>
@@ -1137,7 +1245,7 @@ function filterByModel(vendor, model) {
 
 <!-- Listing Detail Modal -->
 <div id="listing-modal" class="modal-overlay">
-    <div class="modal" style="max-width: 1000px;">
+    <div class="modal gpu-listing-modal" style="max-width: 1000px;">
         <div class="modal-header">
             <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
                 <h3 id="listing-title">{{ t('Listing Details') }}</h3>
@@ -1149,7 +1257,7 @@ function filterByModel(vendor, model) {
                 </div>
             </div>
         </div>
-        <div id="listing-content">
+        <div id="listing-content" class="gpu-listing-content">
             <div id="listing-comparison"></div>
         </div>
     </div>
@@ -1253,7 +1361,8 @@ async function loadListings() {
     if (unicornFilter === 'exclude') params.append('unicorn', 'exclude');
 
     try {
-        const response = await fetch('/api/gpus?' + params.toString());
+        const url = addHideUnmatchedParam('/api/gpus?' + params.toString());
+        const response = await fetch(url);
         const listings = await response.json();
 
         const container = document.getElementById('listings-container');
@@ -1368,15 +1477,18 @@ async function loadListings() {
             // Check for NEW, FIRST, STEAL and BUY indicators
             // NEW: Only show for listings from the current import (not in previous import)
             let isNewListing = item.is_new === true;
+            // Collect badges in a single row (no <br>) so they don't split across multiple lines.
+            // Smaller font + nowrap so they fit in the 80x80 image overlay.
+            const dealBadges = [];
 
             if (isNewListing) {
                 // New listing from current import - show NEW badge
-                dealBadge += `<span class="badge" style="background: #3b82f6; color: white; font-weight: bold;" title="New listing from current import!">🆕 NEW</span><br>`;
+                dealBadges.push(`<span class="badge" style="background: linear-gradient(135deg, #3b82f6, #1d4ed8); color: white; font-weight: 800; font-size: 0.72rem; padding: 3px 8px; white-space: nowrap; border-radius: 4px; box-shadow: 0 1px 3px rgba(59,130,246,0.4);" title="New listing from current import!">🆕 NEW</span>`);
             }
 
             if (isFirstModelEver && modelKey) {
                 // First model ever discovered - show FIRST badge
-                dealBadge += `<span class="badge" style="background: #9333ea; color: white; font-weight: bold;" title="First time this model appears!">✨ FIRST</span><br>`;
+                dealBadges.push(`<span class="badge" style="background: linear-gradient(135deg, #9333ea, #6b21a8); color: white; font-weight: 800; font-size: 0.72rem; padding: 3px 8px; white-space: nowrap; border-radius: 4px; box-shadow: 0 1px 3px rgba(147,51,234,0.4);" title="First time this model appears!">✨ FIRST</span>`);
             }
 
             if (!isNewListing && item.price_stats && item.price_stats.below_avg) {
@@ -1387,7 +1499,7 @@ async function loadListings() {
 
                 // Must be at least 15% below average to be a STEAL
                 if (savingsPct >= 15) {
-                    dealBadge += `<span class="badge" style="background: #dc2626; color: white; font-weight: bold;" title="Price is ${savingsPct.toFixed(0)}% below average!">🔥 STEAL</span><br>`;
+                    dealBadges.push(`<span class="badge" style="background: linear-gradient(135deg, #dc2626, #991b1b); color: white; font-weight: 800; font-size: 0.72rem; padding: 3px 8px; white-space: nowrap; border-radius: 4px; box-shadow: 0 1px 3px rgba(220,38,38,0.4);" title="Price is ${savingsPct.toFixed(0)}% below average!">🔥 STEAL</span>`);
                 }
             }
 
@@ -1395,12 +1507,25 @@ async function loadListings() {
             // Only show BUY if there's actual price history with different prices
             let isAllTimeLowest = false;
 
-            // Check if price decreased
+            // Check if price decreased — show a compact "Price drop" icon badge
+            // over the image. Long text (e.g. "Price drop", "↓ €10") was getting
+            // clipped inside the 72px thumbnail overlay, so we use a tight
+            // icon-only badge with the full amount in the title tooltip. The
+            // visible amount also lives in the price cell for quick scanning.
+            let priceDropAmount = null;
             if (item.has_price_decreased) {
                 const lastChange = item.price_changes?.[0];
                 if (lastChange && lastChange.change < 0) {
-                    priceDecreasedBadge = `<span class="badge badge-success" title="Price dropped by €${Math.abs(lastChange.change).toFixed(2)}">↓ Price Drop</span><br>`;
+                    priceDropAmount = Math.abs(lastChange.change);
+                    dealBadges.push(`<span class="badge price-drop-badge" style="background: linear-gradient(135deg, #16a34a, #15803d); color: white; font-weight: 800; font-size: 0.7rem; padding: 2px 5px; line-height: 1.1; white-space: nowrap; border-radius: 4px; box-shadow: 0 1px 3px rgba(22,163,74,0.4); display: inline-flex; align-items: center; gap: 2px;" title="Price dropped by €${priceDropAmount.toFixed(2)}">📉 <span style="font-size: 0.62rem; font-weight: 600;">DROP</span></span>`);
                 }
+            }
+
+            // Wrap in a single-row flex container; the old code used <br> + a
+            // column-flex wrapper which forced each badge onto its own line.
+            // nowrap keeps them on a single row inside the 80x80 image overlay.
+            if (dealBadges.length > 0) {
+                dealBadge = `<div class="deal-badge-row" style="display: flex; flex-direction: row; flex-wrap: nowrap; gap: 4px; align-items: center; justify-content: flex-end; overflow: hidden; max-width: 100%;">${dealBadges.join('')}</div>`;
             }
 
             if (item.price_stats) {
@@ -1440,17 +1565,20 @@ async function loadListings() {
                          titleLower.includes('oc') || titleLower.includes('overclock') || titleLower.includes('overclocked');
             const ocBadge = hasOC ? `&nbsp;<span title="Overclocked Edition" style="font-size: 0.65rem; font-weight: bold; color: #ff3333; text-shadow: 0 0 4px #ff3333, 0 0 8px #ff3333; animation: glow 1.5s ease-in-out infinite alternate;">OC</span>` : '';
 
-            // Source dot indicator (small colored dot only, no text) - check if enabled in settings
+            // Source dot indicator (small colored dot to the LEFT of the
+            // thumbnail, no text — just the colored circle plus a tooltip).
+            // Renders as a flex sibling of the <img> so it sits cleanly
+            // outside the thumbnail bounds.
             const showSourceDots = localStorage.getItem('showSourceDots') !== 'false';
             let sourceDot = '';
             const sourceLabels = {
                 'andelemandele': { text: 'Andele', bg: '#8B5CF6' },
-                'facebook_extension': { text: 'FB', bg: '#1877F2' },
-                'ss.com': { text: 'SS', bg: '#10b981' }
+                'facebook_extension': { text: 'Facebook', bg: '#1877F2' },
+                'ss.com': { text: 'SS.com', bg: '#10b981' }
             };
             const sourceInfo = sourceLabels[item.source] || sourceLabels['ss.com'];
             if (showSourceDots) {
-                sourceDot = `<span class="source-dot" title="${sourceInfo.text}" style="display: inline-block; width: 12px; height: 12px; background: ${sourceInfo.bg}; border-radius: 50%; cursor: pointer; box-shadow: 0 0 6px ${sourceInfo.bg}; flex-shrink: 0; border: 2px solid rgba(255,255,255,0.25);"></span>`;
+                sourceDot = `<span class="source-dot" title="${sourceInfo.text} (${item.source || 'unknown'})" aria-label="${sourceInfo.text}" style="display: inline-block; width: 10px; height: 10px; min-width: 10px; background: ${sourceInfo.bg}; border-radius: 50%; box-shadow: 0 0 0 2px var(--card-bg, #1a1a2e), 0 1px 3px rgba(0,0,0,0.4); flex-shrink: 0;"></span>`;
             }
 
             const rowClass = 'clickable';
@@ -1465,18 +1593,23 @@ async function loadListings() {
                 ? `/images/${item.local_image_path}`
                 : item.image_url;
 
-            // Deal badges overlay on image
-            const imageOverlayBadges = (dealBadge || priceDecreasedBadge)
-                ? `<div style="position: absolute; top: 4px; right: 4px; display: flex; flex-direction: column; gap: 4px; z-index: 10;">${dealBadge}${priceDecreasedBadge}</div>`
+            // Deal badges overlay on image — pinned to top-right of the image
+            // with consistent spacing. The flex row keeps all badges on one
+            // line, anchored to the right edge of the image regardless of
+            // how many badges the listing has.
+            const imageOverlayBadges = dealBadge
+                ? `<div class="image-deal-badges" style="position: absolute; top: 6px; right: 6px; z-index: 10; max-width: calc(100% - 12px); display: flex; flex-direction: row; flex-wrap: nowrap; gap: 4px; justify-content: flex-end; align-items: center;">${dealBadge}</div>`
                 : '';
 
             html += `
                 <tr class="${rowClass}" ${clickHandler} title="Click to view listing details">
-                    <td class="listing-image-cell text-center" style="position: relative;">
-                        <div style="position: relative; display: inline-block;">
-                            ${showSourceDots ? `<div style="position: absolute; left: -12px; top: 50%; transform: translateY(-50%); z-index: 10;">${sourceDot}</div>` : ''}
-                            ${imageOverlayBadges}
-                            ${imageUrl ? `<img src="${imageUrl}" alt="${gpuName}" class="listing-thumb" loading="lazy" onclick="event.stopPropagation(); showImageModal('${imageClickUrl}', '${gpuName}')">` : '<div class="listing-thumb-placeholder">📷</div>'}
+                    <td class="listing-image-cell text-center" style="position: relative; padding: 6px 6px 6px 12px;">
+                        <div style="position: relative; display: inline-flex; align-items: center; gap: 6px;">
+                            ${showSourceDots ? sourceDot : ''}
+                            <div style="position: relative; display: inline-block;">
+                                ${imageOverlayBadges}
+                                ${imageUrl ? `<img src="${imageUrl}" alt="${gpuName}" class="listing-thumb" loading="lazy" onclick="event.stopPropagation(); showImageModal('${imageClickUrl}', '${gpuName}')">` : '<div class="listing-thumb-placeholder">📷</div>'}
+                            </div>
                         </div>
                     </td>
                     <td class="text-center" style="display: table-cell; vertical-align: middle;">
@@ -1493,7 +1626,7 @@ async function loadListings() {
                     <td style="position: relative; padding: 0.75rem 0.5rem;">
                         <div style="display: inline-flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
                             <span class="${priceClass}" style="font-size: 1.15rem; font-weight: 700; ${item.price_stats ? (item.price_stats.below_avg ? 'color: #16a34a;' : 'color: #000000;') : ''}">€${item.price_eur}</span>
-                            ${priceIndicator ? priceIndicator : ''}
+                            ${priceDropAmount !== null ? `<span title="Last price change" style="background: linear-gradient(135deg, #16a34a, #15803d); color: white; font-size: 0.7rem; padding: 2px 6px; border-radius: 4px; font-weight: 700; margin-left: 0.25rem;">↓ €${priceDropAmount.toFixed(0)}</span>` : ''}
                             ${showAvgPrice && item.price_stats ? `<span style="color: #888; font-size: 0.75rem;">avg €${item.price_stats.avg}</span>` : ''}
                         </div>
                     </td>
@@ -1511,10 +1644,11 @@ async function loadListings() {
                             ${item.is_unicorn ? `
                                 <span class="unicorn-badge" title="Only one listing of this model in all history!">🦄 UNICORN</span>
                             ` : (item.price_stats ? `
-                                <div style="font-size: 0.875rem;">
-                                    Avg: €${item.price_stats.avg}<br>
-                                    Range: €${item.price_stats.min} - €${item.price_stats.max}
+                                <div style="font-size: 0.875rem; display: flex; align-items: center; justify-content: center; gap: 0.4rem; flex-wrap: wrap;">
+                                    <span>Avg: €${item.price_stats.avg}</span>
+                                    ${priceIndicator ? priceIndicator : ''}
                                 </div>
+                                <div style="font-size: 0.75rem; color: #6b7280;">Range: €${item.price_stats.min} - €${item.price_stats.max}</div>
                                 <div class="price-bar" title="Price percentile: ${item.price_stats.percentile}%">
                                     <div class="price-bar-fill" style="width: ${item.price_stats.percentile}%"></div>
                                 </div>
@@ -1588,6 +1722,7 @@ async function loadListings() {
         updatePriceChart(listings);
         updateMonthlyAvgChart(listings);
         updateTopPerformersChart();
+        updateTopValueChart();
         document.getElementById('source-distribution').innerHTML = buildSourceDistributionHtml(listings);
 
     } catch (error) {
@@ -1662,13 +1797,185 @@ function buildSourceDistributionHtml(listings) {
 
 let monthlyAvgChart = null;
 
-function updateMonthlyAvgChart(listings) {
+// === Monthly chart: user-pickable model set (persisted in localStorage) ===
+const MONTHLY_PREF_KEY = 'gpu_monthly_selected_models';
+let monthlyAvailableModels = [];   // [{model, count}, ...]
+let monthlySelectedModels = null;  // null = all (default); [] = none; [...] = specific
+let monthlyPendingSelection = null;
+
+function loadMonthlyPref() {
+    try {
+        const raw = localStorage.getItem(MONTHLY_PREF_KEY);
+        if (raw === null) return null;  // first visit — default "all"
+        const parsed = JSON.parse(raw);
+        return Array.isArray(parsed) ? parsed : null;
+    } catch (e) {
+        return null;
+    }
+}
+function saveMonthlyPref(models) {
+    try {
+        if (models === null || models === undefined) {
+            localStorage.removeItem(MONTHLY_PREF_KEY);
+        } else {
+            localStorage.setItem(MONTHLY_PREF_KEY, JSON.stringify(models));
+        }
+    } catch (e) { /* ignore */ }
+}
+
+function openMonthlyPick() {
+    if (monthlyAvailableModels.length === 0) {
+        // Populate from the most-recent chart render. As a fallback, build
+        // the list from the most-recent listings fetched.
+        const recent = (window.__lastChartListings || []);
+        const byModel = {};
+        recent.forEach(it => {
+            const m = (it.gpu_model || it.title || 'Unknown').replace(/\b(GeForce|Radeon|AMD|NVIDIA|Intel)\s*/gi, '').trim() || 'Unknown';
+            byModel[m] = (byModel[m] || 0) + 1;
+        });
+        monthlyAvailableModels = Object.entries(byModel).map(([model, count]) => ({model, count})).sort((a,b)=>b.count-a.count);
+    }
+    monthlyPendingSelection = monthlySelectedModels === null
+        ? monthlyAvailableModels.map(m => m.model)  // default = all
+        : [...monthlySelectedModels];
+
+    renderMonthlyPickList('');
+    document.getElementById('monthly-pick-modal').style.display = 'flex';
+    document.getElementById('monthly-pick-search').value = '';
+    document.getElementById('monthly-pick-search').focus();
+}
+
+function closeMonthlyPick() {
+    document.getElementById('monthly-pick-modal').style.display = 'none';
+    monthlyPendingSelection = null;
+}
+
+function renderMonthlyPickList(filter) {
+    const list = document.getElementById('monthly-pick-list');
+    if (!list) return;
+    const filt = (filter || '').toLowerCase();
+    const items = monthlyAvailableModels.filter(m => !filt || m.model.toLowerCase().includes(filt));
+    if (items.length === 0) {
+        list.innerHTML = `<div style="padding: 1rem; color: #6b7280; text-align: center;">No models found.</div>`;
+        return;
+    }
+    list.innerHTML = items.map(m => {
+        const checked = monthlyPendingSelection.includes(m.model) ? 'checked' : '';
+        return `<label class="monthly-pick-item" data-model="${m.model.replace(/"/g,'&quot;')}">
+            <input type="checkbox" data-model="${m.model.replace(/"/g,'&quot;')}" ${checked} onchange="onMonthlyPickToggle(this)" style="width: 18px; height: 18px; cursor: pointer;">
+            <span class="monthly-pick-item-name">${m.model}</span>
+            <span class="monthly-pick-item-count">${m.count} listings</span>
+        </label>`;
+    }).join('');
+}
+
+function onMonthlyPickToggle(cb) {
+    const model = cb.getAttribute('data-model');
+    if (cb.checked) {
+        if (!monthlyPendingSelection.includes(model)) monthlyPendingSelection.push(model);
+    } else {
+        monthlyPendingSelection = monthlyPendingSelection.filter(m => m !== model);
+    }
+}
+
+function monthlyPickAll(state) {
+    if (state) {
+        const filt = document.getElementById('monthly-pick-search').value.toLowerCase();
+        const visible = monthlyAvailableModels.filter(m => !filt || m.model.toLowerCase().includes(filt)).map(m => m.model);
+        const merged = new Set([...(monthlyPendingSelection || []), ...visible]);
+        monthlyPendingSelection = Array.from(merged);
+    } else {
+        const filt = document.getElementById('monthly-pick-search').value.toLowerCase();
+        const visible = monthlyAvailableModels.filter(m => !filt || m.model.toLowerCase().includes(filt)).map(m => m.model);
+        monthlyPendingSelection = (monthlyPendingSelection || []).filter(m => !visible.includes(m));
+    }
+    renderMonthlyPickList(document.getElementById('monthly-pick-search').value);
+}
+
+function monthlyPickTopN(n) {
+    monthlyPendingSelection = monthlyAvailableModels.slice(0, n).map(m => m.model);
+    renderMonthlyPickList(document.getElementById('monthly-pick-search').value);
+}
+
+function applyMonthlyPick() {
+    // null = all; [] = none (no models selected); [...] = exact set
+    monthlySelectedModels = monthlyPendingSelection === null
+        ? null
+        : [...monthlyPendingSelection];
+    saveMonthlyPref(monthlySelectedModels);
+    closeMonthlyPick();
+    updateMonthlyPills();
+    updateMonthlyAvgChart(window.__lastChartListings || []);
+}
+
+function resetMonthlyPick() {
+    monthlySelectedModels = null;
+    saveMonthlyPref(null);
+    updateMonthlyPills();
+    updateMonthlyAvgChart(window.__lastChartListings || []);
+}
+
+function updateMonthlyPills() {
+    const container = document.getElementById('monthly-model-pills');
+    const count = document.getElementById('monthly-model-pick-count') || document.getElementById('monthly-model-pill-count');
+    if (!container) return;
+    if (monthlySelectedModels === null) {
+        container.innerHTML = '';
+        if (count) count.textContent = 'all';
+    } else {
+        container.innerHTML = monthlySelectedModels.slice(0, 8).map(m =>
+            `<span style="background: rgba(102,126,234,0.12); color:#4f46e5; padding:3px 8px; border-radius:12px; font-size:0.75rem; font-weight:500;">${m}</span>`
+        ).join('') + (monthlySelectedModels.length > 8 ? `<span style="color:#6b7280; font-size:0.75rem; padding:3px 6px;">+${monthlySelectedModels.length - 8} more</span>` : '');
+        if (count) count.textContent = `${monthlySelectedModels.length}`;
+    }
+}
+
+async function updateMonthlyAvgChart(listings) {
+    // The monthly chart pulls its OWN data: active=false so both active
+    // and inactive listings are included, and hide_unmatched=1 to drop
+    // items the matcher couldn't tag to a reference row. The picker
+    // still uses the table's filtered listings (passed in as `listings`)
+    // so the available-models list mirrors what the user can browse.
+    window.__lastChartListings = listings || [];
+
     const ctx = document.getElementById('gpu-monthly-avg-chart');
     if (!ctx) return;
 
-    // Collect months
+    // Refresh the available-models list (drives the picker) from the
+    // table's filtered listings so the picker options match the table.
+    const byModelForPicker = {};
+    (listings || []).forEach(item => {
+        const m = (item.gpu_model || item.title || 'Unknown').replace(/\b(GeForce|Radeon|AMD|NVIDIA|Intel)\s*/gi, '').trim() || 'Unknown';
+        byModelForPicker[m] = (byModelForPicker[m] || 0) + 1;
+    });
+    monthlyAvailableModels = Object.entries(byModelForPicker)
+        .map(([model, count]) => ({model, count}))
+        .sort((a, b) => b.count - a.count);
+
+    updateMonthlyPills();
+
+    // Pull the chart's own dataset: include both active and inactive,
+    // drop flagged + unmatched. The endpoint caps at 10000 by default
+    // which is plenty for monthly aggregation.
+    let chartListings = [];
+    try {
+        const params = new URLSearchParams();
+        params.append('active', 'false');
+        params.append('time', 'all_time');
+        params.append('limit', '10000');
+        params.append('hide_unmatched', '1');
+        const resp = await fetch('/api/gpus?' + params.toString());
+        const data = await resp.json();
+        chartListings = Array.isArray(data) ? data : (data.listings || []);
+    } catch (e) {
+        console.error('Failed to load chart listings:', e);
+        return;
+    }
+    window.__lastChartListingsFull = chartListings;
+
+    // Collect months from the chart's own dataset
     const months = Array.from(new Set(
-        listings.map(item => {
+        chartListings.map(item => {
             const d = item.date_posted || item.first_seen_at;
             return d ? new Date(d).toISOString().slice(0, 7) : null;
         }).filter(Boolean)
@@ -1678,29 +1985,33 @@ function updateMonthlyAvgChart(listings) {
     const labels = months.map(m => { const [y, mon] = m.split('-'); return `${mon}/${y}`; });
     const monthIndex = Object.fromEntries(months.map((m, i) => [m, i]));
 
-    // Group by GPU model, then by month, collecting prices + G3D scores
+    // Group by GPU model, then by month, collecting prices
     const byModel = {};
-    const monthlyG3d = {};
-    listings.forEach(item => {
+    chartListings.forEach(item => {
         const d = item.date_posted || item.first_seen_at;
         if (!d) return;
         const month = new Date(d).toISOString().slice(0, 7);
         const idx = monthIndex[month];
         const model = (item.gpu_model || item.title || 'Unknown').replace(/\b(GeForce|Radeon|AMD|NVIDIA|Intel)\s*/gi, '').trim() || 'Unknown';
-        const price = parseFloat(item.price_eur) || 0;
-        const g3d = parseFloat(item.g3d_mark) || 0;
 
-        if (!byModel[model]) byModel[model] = { months: {}, g3dValues: [] };
+        // Apply the user's selected-models filter. `null` = show all.
+        if (monthlySelectedModels !== null && !monthlySelectedModels.includes(model)) {
+            return;
+        }
+
+        const price = parseFloat(item.price_eur) || 0;
+        if (price <= 0) return;
+
+        if (!byModel[model]) byModel[model] = { months: {} };
         if (!byModel[model].months[idx]) byModel[model].months[idx] = [];
         byModel[model].months[idx].push(price);
-        if (g3d > 0) byModel[model].g3dValues.push(g3d);
-
-        if (g3d > 0) {
-            if (!monthlyG3d[idx]) monthlyG3d[idx] = { sum: 0, count: 0 };
-            monthlyG3d[idx].sum += g3d;
-            monthlyG3d[idx].count += 1;
-        }
     });
+
+    // Show "no models selected" hint when the user has picked an empty set
+    const emptyHint = document.getElementById('monthly-empty-hint');
+    if (emptyHint) {
+        emptyHint.style.display = (monthlySelectedModels !== null && monthlySelectedModels.length === 0) ? 'block' : 'none';
+    }
 
     const palette = ['#667eea', '#10b981', '#f59e0b', '#ef4444', '#8B5CF6', '#06b6d4', '#ec4899', '#84cc16', '#f97316', '#6366f1', '#14b8a6', '#f43f5e', '#a855f7', '#22c55e', '#eab308'];
 
@@ -1710,13 +2021,9 @@ function updateMonthlyAvgChart(listings) {
             y: prices.reduce((a, b) => a + b, 0) / prices.length,
             count: prices.length
         })).sort((a, b) => a.x - b.x);
-        const avgG3d = info.g3dValues.length
-            ? Math.round(info.g3dValues.reduce((a, b) => a + b, 0) / info.g3dValues.length)
-            : null;
         return {
             label: model,
             data: points,
-            g3d: avgG3d,
             borderColor: palette[idx % palette.length],
             backgroundColor: palette[idx % palette.length],
             showLine: true,
@@ -1728,33 +2035,6 @@ function updateMonthlyAvgChart(listings) {
             yAxisID: 'y'
         };
     });
-
-    // Add a single average-G3D line on a secondary axis
-    const g3dPoints = months.map((m, i) => {
-        const bucket = monthlyG3d[i];
-        return {
-            x: i,
-            y: bucket ? Math.round(bucket.sum / bucket.count) : null,
-            count: bucket ? bucket.count : 0
-        };
-    }).filter(p => p.y !== null);
-
-    if (g3dPoints.length > 0) {
-        datasets.push({
-            label: 'Avg G3D Mark',
-            data: g3dPoints,
-            borderColor: '#f59e0b',
-            backgroundColor: '#f59e0b',
-            borderDash: [6, 4],
-            showLine: true,
-            spanGaps: false,
-            tension: 0.3,
-            pointRadius: 5,
-            pointHoverRadius: 7,
-            borderWidth: 2,
-            yAxisID: 'y-g3d'
-        });
-    }
 
     if (monthlyAvgChart) monthlyAvgChart.destroy();
     monthlyAvgChart = new Chart(ctx, {
@@ -1772,26 +2052,14 @@ function updateMonthlyAvgChart(listings) {
                     callbacks: {
                         label: (ctx) => {
                             const p = ctx.raw;
-                            if (ctx.dataset.label === 'Avg G3D Mark') {
-                                const noun = p.count === 1 ? 'listing' : 'listings';
-                                return `Avg G3D Mark: ${Number(p.y).toFixed(0)} (${p.count} ${noun})`;
-                            }
                             const noun = p.count === 1 ? 'listing' : 'listings';
-                            const g3dPart = ctx.dataset.g3d ? ` | G3D ${ctx.dataset.g3d}` : '';
-                            return `${ctx.dataset.label}: Avg €${Number(p.y).toFixed(0)} (${p.count} ${noun}${g3dPart})`;
+                            return `${ctx.dataset.label}: Avg €${Number(p.y).toFixed(0)} (${p.count} ${noun})`;
                         }
                     }
                 }
             },
             scales: {
                 y: { beginAtZero: false, title: { display: true, text: 'Average Price (€)' } },
-                'y-g3d': {
-                    type: 'linear',
-                    position: 'right',
-                    title: { display: true, text: 'G3D Mark' },
-                    grid: { drawOnChartArea: false },
-                    beginAtZero: false
-                },
                 x: {
                     type: 'linear',
                     position: 'bottom',
@@ -1866,6 +2134,72 @@ async function updateTopPerformersChart() {
         });
     } catch (err) {
         console.error('Failed to update top performers chart:', err);
+    }
+}
+
+// Top Performers (€/G3D) — inverse of the G3D/€ chart. Lower €/G3D
+// means the same G3D performance costs less, so we sort ascending and
+// highlight the best (top 3) in green.
+async function updateTopValueChart() {
+    const ctx = document.getElementById('gpu-top-value-chart');
+    if (!ctx) return;
+
+    try {
+        const params = new URLSearchParams();
+        params.append('active', 'false');
+        params.append('time', 'all_time');
+        params.append('limit', '10000');
+        const response = await fetch('/api/gpus?' + params.toString());
+        const data = await response.json();
+        const listings = Array.isArray(data) ? data : (data.listings || []);
+
+        // €/G3D = price_eur / g3d_mark. Lower is better value.
+        const top = listings
+            .filter(l => Number(l.g3d_mark) > 0 && Number(l.price_eur) > 0)
+            .map(l => ({ ...l, ratio: Number(l.price_eur) / Number(l.g3d_mark) }))
+            .sort((a, b) => a.ratio - b.ratio)
+            .slice(0, 10);
+
+        if (topValueChart) topValueChart.destroy();
+        topValueChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: top.map(l => {
+                    const model = (l.gpu_model || l.title || '').replace(/\b(GeForce|Radeon|AMD|NVIDIA|Intel)\s*/gi, '').trim();
+                    return `${l.vendor || ''} ${model}`.trim();
+                }),
+                datasets: [{
+                    label: '€/G3D',
+                    data: top.map(l => l.ratio),
+                    backgroundColor: top.map((_, i) => i < 3 ? 'rgba(16, 185, 129, 0.85)' : 'rgba(245, 158, 11, 0.6)'),
+                    borderColor: top.map((_, i) => i < 3 ? 'rgba(16, 185, 129, 1)' : 'rgba(245, 158, 11, 0.8)'),
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                indexAxis: 'y',
+                responsive: true,
+                maintainAspectRatio: false,
+                animation: false,
+                scales: {
+                    x: { title: { display: true, text: '€ per G3D point (lower is better)' } }
+                },
+                plugins: {
+                    title: { display: true, text: '💰 Top Performers (€/G3D) — best value' },
+                    legend: { display: false },
+                    tooltip: {
+                        callbacks: {
+                            label: (ctx) => {
+                                const l = top[ctx.dataIndex];
+                                return `€${Number(l.price_eur).toFixed(0)} · €${l.ratio.toFixed(4)}/G3D · G3D ${Number(l.g3d_mark).toLocaleString()}`;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    } catch (err) {
+        console.error('Failed to update top value chart:', err);
     }
 }
 
@@ -2112,6 +2446,112 @@ async function showListingDetail(listingId) {
                 </div>
             </div>
 
+            <!-- ===== Price Analysis Section =====
+                 Shows every value the price-stats query computes (current,
+                 min, avg, max + their counts) plus a few derived metrics
+                 (range, diff vs avg, % off highest) that are cheap to
+                 compute and useful at a glance. -->
+            <div class="price-analysis-section">
+                <div class="pa-header">
+                    <span class="pa-icon">📈</span>
+                    <strong class="pa-title">Price Analysis</strong>
+                    ${current.gpu_model ? `<span class="pa-subtitle">— ${current.gpu_model}</span>` : ''}
+                </div>
+                <div class="price-analysis-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 0.75rem;">
+                    <div class="pa-stat pa-current">
+                        <div class="pa-label">Current</div>
+                        <div class="pa-value">€${Number(current.price_eur).toFixed(0)}</div>
+                    </div>
+                    ${current.price_stats ? (() => {
+                        const cur = Number(current.price_eur) || 0;
+                        const mn = Number(current.price_stats.min || 0);
+                        const av = Number(current.price_stats.avg || 0);
+                        const mx = Number(current.price_stats.max || 0);
+                        const range = (mn && mx) ? (mx - mn) : 0;
+                        const diffAvg = (av && cur) ? (cur - av) : 0;
+                        const pctAvg = av ? (diffAvg / av * 100) : 0;
+                        const pctOffMax = mx ? ((mx - cur) / mx * 100) : 0;
+                        const diffColor = (n) => n < 0 ? '#16a34a' : (n > 0 ? '#dc2626' : '#9ca3af');
+                        return `
+                            <div class="pa-stat pa-min">
+                                <div class="pa-label">Lowest ever</div>
+                                <div class="pa-value">€${mn.toFixed(0)}</div>
+                                <div class="pa-sub">${current.price_stats.min_count || 0}× seen</div>
+                            </div>
+                            <div class="pa-stat pa-avg">
+                                <div class="pa-label">Avg ever</div>
+                                <div class="pa-value">€${av.toFixed(0)}</div>
+                                <div class="pa-sub">${current.price_stats.avg_count || 0} listings</div>
+                            </div>
+                            <div class="pa-stat pa-max">
+                                <div class="pa-label">Highest ever</div>
+                                <div class="pa-value">€${mx.toFixed(0)}</div>
+                                <div class="pa-sub">${current.price_stats.max_count || 0}× seen</div>
+                            </div>
+                            <div class="pa-stat pa-range">
+                                <div class="pa-label">Range (max - min)</div>
+                                <div class="pa-value">€${range.toFixed(0)}</div>
+                                <div class="pa-sub">Historical spread</div>
+                            </div>
+                            <div class="pa-stat pa-vs-avg">
+                                <div class="pa-label">vs Avg</div>
+                                <div class="pa-value" style="color: ${diffColor(diffAvg)};">${diffAvg >= 0 ? '+' : ''}€${diffAvg.toFixed(0)}</div>
+                                <div class="pa-sub">${pctAvg >= 0 ? '+' : ''}${pctAvg.toFixed(1)}%</div>
+                            </div>
+                            <div class="pa-stat pa-vs-max">
+                                <div class="pa-label">% off Highest</div>
+                                <div class="pa-value" style="color: ${pctOffMax > 0 ? '#16a34a' : '#9ca3af'};">${pctOffMax.toFixed(1)}%</div>
+                                <div class="pa-sub">Headroom to peak</div>
+                            </div>
+                        `;
+                    })() : `
+                        <div class="pa-stat pa-min"><div class="pa-label">Lowest ever</div><div class="pa-value" style="color:#9ca3af">—</div></div>
+                        <div class="pa-stat pa-avg"><div class="pa-label">Avg ever</div><div class="pa-value" style="color:#9ca3af">—</div></div>
+                        <div class="pa-stat pa-max"><div class="pa-label">Highest ever</div><div class="pa-value" style="color:#9ca3af">—</div></div>
+                        <div class="pa-stat pa-range"><div class="pa-label">Range</div><div class="pa-value" style="color:#9ca3af">—</div></div>
+                        <div class="pa-stat pa-vs-avg"><div class="pa-label">vs Avg</div><div class="pa-value" style="color:#9ca3af">—</div></div>
+                        <div class="pa-stat pa-vs-max"><div class="pa-label">% off Highest</div><div class="pa-value" style="color:#9ca3af">—</div></div>
+                    `}
+                </div>
+            </div>
+
+            <!-- Price history table — sits right after Price Analysis so
+                 users see the full pricing story (current, lowest, avg,
+                 highest, full history rows) without scrolling past the
+                 description. We render only the actual history records
+                 (the current price is already shown in the popup header
+                 and in the Price Analysis card above). -->
+            <div class="ph-wrap">
+                <h4 class="ph-title">📜 Price History <span style="font-size: 0.8rem; font-weight: 400; color: #6b7280;">— current €${Number(current.price_eur).toFixed(0)}</span></h4>
+                ${history.length === 0
+                    ? `<div class="description-box">No price changes recorded yet — this is the first snapshot.</div>`
+                    : `<table class="analytics-table price-history-table">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>{{ t('Price') }}</th>
+                                <th>Change</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${history.map((h, i) => {
+                                const prevPrice = history[i + 1]?.price_eur;
+                                const change = prevPrice ? h.price_eur - prevPrice : 0;
+                                const changeClass = change < 0 ? 'price-diff-positive' : change > 0 ? 'price-diff-negative' : '';
+                                return `
+                                    <tr>
+                                        <td>${h.recorded_at ? new Date(h.recorded_at).toLocaleDateString() : 'N/A'}</td>
+                                        <td>€${h.price_eur}</td>
+                                        <td class="${changeClass}">
+                                            ${change !== 0 ? `${change < 0 ? '↓' : '↑'} €${Math.abs(change).toFixed(2)}` : '-'}
+                                        </td>
+                                    </tr>
+                                `;
+                            }).join('')}
+                        </tbody>
+                    </table>`}
+            </div>
+
             <div style="margin-bottom: 1rem;">
                 <strong>Description:</strong>
                 <div class="description-box">
@@ -2142,40 +2582,10 @@ async function showListingDetail(listingId) {
             `;
         }
 
-        // Price history table
-        comparisonHtml += `
-            <h4 style="margin-top: 1.5rem;">Price History</h4>
-            <table class="analytics-table">
-                <thead>
-                    <tr>
-                        <th>Date</th>
-                        <th>{{ t('Price') }}</th>
-                        <th>Change</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>${current.date_posted ? new Date(current.date_posted).toLocaleDateString() : new Date().toLocaleDateString()}</td>
-                        <td class="price">€${current.price_eur}</td>
-                        <td>-</td>
-                    </tr>
-                    ${history.map((h, i) => {
-                        const prevPrice = history[i + 1]?.price_eur;
-                        const change = prevPrice ? h.price_eur - prevPrice : 0;
-                        const changeClass = change < 0 ? 'price-diff-positive' : change > 0 ? 'price-diff-negative' : '';
-                        return `
-                            <tr>
-                                <td>${h.recorded_at ? new Date(h.recorded_at).toLocaleDateString() : 'N/A'}</td>
-                                <td>€${h.price_eur}</td>
-                                <td class="${changeClass}">
-                                    ${change !== 0 ? `${change < 0 ? '↓' : '↑'} €${Math.abs(change).toFixed(2)}` : '-'}
-                                </td>
-                            </tr>
-                        `;
-                    }).join('')}
-                </tbody>
-            </table>
+        // (Price history table is rendered earlier, right after Price
+        // Analysis, so users see the full pricing story above the fold.)
 
+        comparisonHtml += `
             <!-- Add Model History Section if this listing has a matched GPU model -->
             ${current.matched_gpu_id ? `
                 <div style="margin-top: 2rem;">
@@ -2192,6 +2602,13 @@ async function showListingDetail(listingId) {
 
         document.getElementById('listing-comparison').innerHTML = comparisonHtml;
         document.getElementById('listing-modal').classList.add('active');
+        // Lock background scroll so the page underneath doesn't move
+        // when the user scrolls the modal. Save scroll position so we
+        // can restore it on close.
+        const savedY = window.scrollY || window.pageYOffset || 0;
+        document.body.style.setProperty('--modal-scroll-y', `-${savedY}px`);
+        document.body.classList.add('modal-open');
+        document.documentElement.classList.add('modal-open');
 
     } catch (error) {
         console.error('Error loading listing details:', error);
@@ -2290,6 +2707,19 @@ function toggleDescription(currentId, prevId) {
 
 function closeListingModal() {
     document.getElementById('listing-modal').classList.remove('active');
+    document.body.classList.remove('modal-open');
+    document.documentElement.classList.remove('modal-open');
+    // Restore the saved scroll position. The body was pinned with
+    // `top: -<scrollY>px` while the modal was open, so removing the
+    // class would jump to 0; read the negative top we set and add it
+    // back to scrollY.
+    const pinned = getComputedStyle(document.body).top;  // e.g. "-1811px"
+    const m = (pinned || '').match(/(-?\d+(?:\.\d+)?)/);
+    if (m) {
+        const restoredY = -parseFloat(m[1]);
+        document.body.style.removeProperty('--modal-scroll-y');
+        window.scrollTo(0, restoredY);
+    }
 }
 
 // Close modal on outside click
@@ -2298,6 +2728,20 @@ document.getElementById('listing-modal').addEventListener('click', function(e) {
         closeListingModal();
     }
 });
+// Forward wheel events from the modal-overlay (dark backdrop) to the
+// modal content so the user can scroll the popup regardless of whether
+// the cursor is on the modal itself or on the side margins. Without
+// this, scrolling on the dark backdrop does nothing.
+document.getElementById('listing-modal').addEventListener('wheel', function(e) {
+    const modal = this.querySelector('.gpu-listing-modal');
+    if (!modal) return;
+    if (e.target.closest('.gpu-listing-modal') === modal) return; // already inside
+    // Only intercept vertical wheel; let horizontal scroll pass through
+    if (Math.abs(e.deltaY) < 1) return;
+    const before = modal.scrollTop;
+    modal.scrollTop += e.deltaY;
+    if (modal.scrollTop !== before) e.preventDefault();
+}, { passive: false });
 
 // Close history modal on outside click
 document.getElementById('history-modal').addEventListener('click', function(e) {
@@ -2714,29 +3158,57 @@ function showFlagModalWithCategories(listingId, title) {
     if (existingModal) existingModal.remove();
 
     const safeId = String(listingId).replace(/'/g, "\\'").replace(/"/g, '&quot;');
+    const safeTitle = String(title || listingId).replace(/</g, '&lt;').replace(/>/g, '&gt;');
+
+    // Pre-fill the auto-generated comment with the listing title so the
+    // user has something to edit. We also pass the current matched GPU
+    // info through, if available, so the wrong-model correction box
+    // can be hidden when the listing has no matched GPU.
+    const currentGpu = (currentGpuListing && currentGpuListing.matched_gpu_id)
+        ? `${currentGpuListing.matched_gpu_id} · ${currentGpuListing.gpu_model || ''}`
+        : '';
 
     const modalHtml = `
         <div id="flag-modal" class="modal-overlay active" style="z-index: 2000;">
-            <div class="modal" style="max-width: 500px;">
+            <div class="modal" style="max-width: 560px;">
                 <div class="modal-header">
                     <h3>🚩 Flag Listing</h3>
                     <button class="modal-close" onclick="closeFlagModal()">×</button>
                 </div>
                 <div style="padding: 1.5rem;">
-                    <p style="margin-bottom: 1rem;"><strong>Listing:</strong> ${title || listingId}</p>
+                    <p style="margin-bottom: 1rem; color: #6b7280; font-size: 0.85rem;">
+                        <strong style="color: #1f2937;">Listing:</strong> ${safeTitle}
+                        ${currentGpu ? `<br><strong style="color: #1f2937;">Currently matched to:</strong> <code>${currentGpu}</code>` : ''}
+                    </p>
 
                     <div class="form-group" style="margin-bottom: 1rem;">
                         <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Flag Category:</label>
-                        <select id="flag-category" style="width: 100%; padding: 0.5rem; border: 1px solid #ddd; border-radius: 6px;">
-                            <option value="IGNORE">IGNORE - Hide from listings</option>
-                            <option value="SKIP">SKIP - Skip in future scrapes</option>
-                            <option value="SCRAPPER">SCRAPPER - Scraper issue</option>
+                        <select id="flag-category" style="width: 100%; padding: 0.5rem; border: 1px solid #ddd; border-radius: 6px;" onchange="onFlagCategoryChange()">
+                            <option value="IGNORE">IGNORE — Hide from listings</option>
+                            <option value="SKIP">SKIP — Skip in future scrapes</option>
+                            <option value="SCRAPPER">SCRAPPER — Scraper issue</option>
+                            <option value="WRONG_MODEL">WRONG_MODEL — Matched to the wrong GPU</option>
+                            <option value="SPAM">SPAM — Spam / fake listing</option>
+                            <option value="SOLD">SOLD — Already sold</option>
+                            <option value="DUPLICATE">DUPLICATE — Same item listed multiple times</option>
+                            <option value="OTHER">OTHER — Custom reason</option>
                         </select>
                     </div>
 
+                    <div id="flag-wrong-model-section" style="display: none; margin-bottom: 1rem; padding: 0.85rem 1rem; background: #fff7ed; border: 1px solid #fdba74; border-radius: 8px;">
+                        <div style="font-weight: 600; color: #9a3412; margin-bottom: 0.5rem;">🛠️ Correct the GPU match</div>
+                        <div style="display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap;">
+                            <label style="font-size: 0.9rem;">Correct GPU ID:</label>
+                            <input type="number" id="flag-correct-gpu-id" min="1" placeholder="e.g. 324" style="width: 90px; padding: 0.4rem 0.5rem; border: 1px solid #fdba74; border-radius: 6px; font-family: monospace;">
+                            <button type="button" class="btn btn-small" style="background: #ea580c; color: white;" onclick="lookupGpuForFlag()">Look up</button>
+                            <span id="flag-correct-gpu-name" style="color: #9a3412; font-weight: 600;"></span>
+                        </div>
+                        <small style="color: #9a3412; display: block; margin-top: 0.4rem;">Submitting this flag will auto-write "Should be GPU ID X" into the comment.</small>
+                    </div>
+
                     <div class="form-group" style="margin-bottom: 1rem;">
-                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Reason:</label>
-                        <textarea id="flag-reason" placeholder="Enter reason (e.g., Scam, Wrong specs, Sold)"
+                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Reason / comment:</label>
+                        <textarea id="flag-reason" placeholder="Enter reason (auto-filled for you — edit as needed)"
                             style="width: 100%; padding: 0.75rem; border: 2px solid #e74c3c; border-radius: 8px; font-family: inherit; resize: vertical;"
                             rows="3"></textarea>
                     </div>
@@ -2755,6 +3227,63 @@ function showFlagModalWithCategories(listingId, title) {
     document.getElementById('flag-modal').addEventListener('click', function(e) {
         if (e.target === this) closeFlagModal();
     });
+
+    // Show the wrong-model section if there's a current GPU match
+    if (currentGpu) {
+        onFlagCategoryChange();
+    }
+}
+
+// Show/hide the wrong-model section based on the selected category
+function onFlagCategoryChange() {
+    const sel = document.getElementById('flag-category');
+    const wrong = document.getElementById('flag-wrong-model-section');
+    if (!sel || !wrong) return;
+    const isWrongModel = sel.value === 'WRONG_MODEL';
+    wrong.style.display = isWrongModel ? 'block' : 'none';
+    // Auto-generate a comment for wrong-model flags
+    if (isWrongModel) {
+        const ta = document.getElementById('flag-reason');
+        const gpuIdField = document.getElementById('flag-correct-gpu-id');
+        if (ta && gpuIdField) {
+            // Update the comment whenever the GPU ID changes
+            gpuIdField.oninput = function() {
+                if (gpuIdField.value) {
+                    const resolvedName = document.getElementById('flag-correct-gpu-name')?.textContent || '';
+                    const idPart = `Should be GPU ID ${gpuIdField.value}`;
+                    ta.value = resolvedName ? `${idPart} (${resolvedName})` : idPart;
+                }
+            };
+        }
+    }
+}
+
+// Look up a GPU ID and show its name in the wrong-model correction box
+async function lookupGpuForFlag() {
+    const idField = document.getElementById('flag-correct-gpu-id');
+    const nameSpan = document.getElementById('flag-correct-gpu-name');
+    const reasonField = document.getElementById('flag-reason');
+    if (!idField || !nameSpan) return;
+    const id = parseInt(idField.value, 10);
+    if (!id || id <= 0) {
+        nameSpan.textContent = 'Enter a GPU ID first';
+        return;
+    }
+    try {
+        const r = await fetch(`/api/gpu-models/${id}`);
+        if (!r.ok) {
+            nameSpan.textContent = '❌ not found';
+            return;
+        }
+        const data = await r.json();
+        const label = `${data.vendor || ''} ${data.model_name || data.model || ''}`.trim();
+        nameSpan.textContent = `→ ${label}`;
+        if (reasonField) {
+            reasonField.value = `Should be GPU ID ${id} (${label})`;
+        }
+    } catch (e) {
+        nameSpan.textContent = 'Error: ' + e.message;
+    }
 }
 
 function closeFlagModal() {
@@ -2778,12 +3307,27 @@ function removeListingRow(listingId) {
 async function submitFlagFromModal(listingId) {
     const categorySelect = document.getElementById('flag-category');
     const reasonInput = document.getElementById('flag-reason');
+    const correctGpuField = document.getElementById('flag-correct-gpu-id');
 
     const category = categorySelect ? categorySelect.value : 'IGNORE';
-    const reason = reasonInput ? reasonInput.value.trim() : '';
+    let reason = reasonInput ? reasonInput.value.trim() : '';
+
+    // For WRONG_MODEL flags, append the corrected GPU ID to the comment so
+    // the reason auto-captures which model it should have been.
+    if (category === 'WRONG_MODEL' && correctGpuField && correctGpuField.value) {
+        const correctedId = correctGpuField.value;
+        const resolvedName = document.getElementById('flag-correct-gpu-name')?.textContent || '';
+        const idPart = `Should be GPU ID ${correctedId}`;
+        if (resolvedName && !reason.includes(idPart)) {
+            reason = reason ? `${reason} (${idPart})` : (resolvedName.includes(idPart) ? resolvedName : `${idPart} (${resolvedName})`);
+        } else if (!reason) {
+            reason = idPart;
+        }
+        if (reasonInput) reasonInput.value = reason;
+    }
 
     if (!reason) {
-        alert('Please enter a reason for flagging');
+        showToast('Please enter a reason for flagging', 'warn');
         return;
     }
 
@@ -2801,13 +3345,13 @@ async function submitFlagFromModal(listingId) {
 
         const data = await response.json();
         if (data.success) {
-            alert('✅ Listing flagged successfully!');
+            // 1. Auto-close the flag modal
             closeFlagModal();
 
-            // Remove the row immediately so the listing disappears from the page
+            // 2. Remove the row from the listings list immediately (with fade)
             removeListingRow(listingId);
 
-            // Update the flag button in the modal
+            // 3. Update the flag button in the GPU detail modal
             if (listingId === currentGPUListingId) {
                 const btn = document.getElementById('flag-listing-btn');
                 if (btn) {
@@ -2815,16 +3359,45 @@ async function submitFlagFromModal(listingId) {
                     btn.style.background = '#28a745';
                     btn.disabled = true;
                 }
+                // Optionally close the detail modal too
+                const detailModal = document.getElementById('listing-modal');
+                if (detailModal) detailModal.remove();
             }
 
+            // 4. Show success toast (non-blocking)
+            showToast('✅ Listing flagged and removed', 'success');
+
+            // 5. Reload listings in background to update any stats
             loadListings();
         } else {
-            alert('Error: ' + (data.error || 'Failed to flag listing'));
+            showToast('Error: ' + (data.error || 'Failed to flag listing'), 'error');
         }
     } catch (error) {
         console.error('Error flagging listing:', error);
-        alert('Failed to flag listing. Please try again.');
+        showToast('Failed to flag listing. Please try again.', 'error');
     }
+}
+
+// Lightweight non-blocking toast notification (replaces alert())
+function showToast(message, kind) {
+    kind = kind || 'info';
+    const palette = {
+        success: { bg: '#16a34a', icon: '✅' },
+        error:   { bg: '#dc2626', icon: '❌' },
+        warn:    { bg: '#f59e0b', icon: '⚠️' },
+        info:    { bg: '#3b82f6', icon: 'ℹ️' }
+    };
+    const p = palette[kind] || palette.info;
+    const el = document.createElement('div');
+    el.style.cssText = `position: fixed; bottom: 24px; right: 24px; z-index: 5000; padding: 0.85rem 1.1rem; background: ${p.bg}; color: white; border-radius: 8px; box-shadow: 0 6px 20px rgba(0,0,0,0.25); font-weight: 500; display: flex; align-items: center; gap: 0.5rem; animation: slideIn 0.3s ease; max-width: 360px;`;
+    el.innerHTML = `<span style="font-size: 1.1rem;">${p.icon}</span><span>${message}</span>`;
+    document.body.appendChild(el);
+    setTimeout(() => {
+        el.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(10px)';
+        setTimeout(() => el.remove(), 300);
+    }, 3500);
 }
 
 // Unicorn filter state
@@ -2889,16 +3462,271 @@ function goToCompare() {
 // Load on page load
 document.addEventListener('DOMContentLoaded', () => {
     initFilterIcons();
+
+    // Read URL params on first load so deep-links from the Computers popup
+    // (e.g. /gpu?model=GeForce%20RTX%204090) auto-apply the filter.
+    // We do this BEFORE loadListings so the table populates with the
+    // right filter on the first paint, not after a flash of "all".
+    try {
+        const _urlParams = new URLSearchParams(window.location.search);
+        const _modelParam = _urlParams.get('model');
+        if (_modelParam) {
+            const sel = document.getElementById('model-filter');
+            if (sel) {
+                // Add the URL-supplied model as an option if it isn't already
+                // there, then select it. loadGpuModels() will repopulate
+                // options shortly after, but the URL filter survives that.
+                let found = false;
+                for (const opt of sel.options) {
+                    if (opt.value === _modelParam) { found = true; break; }
+                }
+                if (!found) {
+                    const opt = document.createElement('option');
+                    opt.value = _modelParam;
+                    opt.textContent = _modelParam;
+                    sel.appendChild(opt);
+                }
+                sel.value = _modelParam;
+            }
+        }
+    } catch (e) { console.warn('GPU URL param init failed:', e); }
+
     loadListings();
     loadGpuModels();
     loadMostSoldModels();
     loadGPUStatistics();
     loadPerformanceCharts();
+
+    // === Monthly chart model picker wiring ===
+    // Load the persisted selection (default = null = "all")
+    monthlySelectedModels = loadMonthlyPref();
+    updateMonthlyPills();
+
+    const pickBtn = document.getElementById('monthly-pick-btn');
+    if (pickBtn) pickBtn.addEventListener('click', openMonthlyPick);
+    const resetBtn = document.getElementById('monthly-reset-btn');
+    if (resetBtn) resetBtn.addEventListener('click', resetMonthlyPick);
+    const searchInput = document.getElementById('monthly-pick-search');
+    if (searchInput) {
+        let timer = null;
+        searchInput.addEventListener('input', function() {
+            clearTimeout(timer);
+            const q = searchInput.value;
+            timer = setTimeout(() => renderMonthlyPickList(q), 120);
+        });
+    }
+    const pickModal = document.getElementById('monthly-pick-modal');
+    if (pickModal) {
+        pickModal.addEventListener('click', function(e) {
+            if (e.target === pickModal) closeMonthlyPick();
+        });
+    }
 });
 
 </script>
 
 <style>
+/* === GPU listing detail modal: spacing & typography === */
+/* Reworked the generic .modal styles for a more breathable, premium look:
+   larger radius, more vertical padding, clearer section rhythm, and a
+   subtle gradient backdrop so the modal stands out from the page without
+   feeling heavy. The Price Analysis section gets its own dark-mode
+   palette tuned for legibility (brighter text, deeper gradient, accent
+   borders that pop instead of disappearing). */
+.gpu-listing-modal {
+    border-radius: 18px !important;
+    /* Preserve overflow-y: auto from .modal so the modal scrolls when
+       content (Price History table, etc.) is taller than 92vh. */
+    overflow-y: auto;
+    overflow-x: hidden;
+    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.35), 0 0 0 1px rgba(255, 255, 255, 0.05);
+    max-height: 92vh;
+    /* Smooth, accessible scrolling — make wheel/touch scroll always
+       reach the modal even if the cursor is over the backdrop area
+       (e.g., left/right of the centered modal). */
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-gutter: stable;
+}
+/* When the listing modal is open, lock body + html scroll so background
+   page doesn't move while user is interacting with the popup. */
+body.modal-open,
+html.modal-open {
+    overflow: hidden;
+}
+/* Belt-and-suspenders: when the body has modal-open, fix it in place
+   so even browsers that let window.scrollBy through can't move the
+   page underneath the modal. The JS sets --modal-scroll-y to preserve
+   the scroll position so closing the modal restores the view. */
+body.modal-open {
+    position: fixed;
+    top: var(--modal-scroll-y, 0);
+    left: 0;
+    right: 0;
+    width: 100%;
+}
+.gpu-listing-modal .modal-header {
+    border-radius: 18px 18px 0 0;
+}
+.gpu-listing-modal .modal-header {
+    padding: 1.25rem 1.75rem 1rem;
+    border-bottom: 1px solid var(--table-border, rgba(0, 0, 0, 0.08));
+    background: linear-gradient(180deg, rgba(102, 126, 234, 0.08) 0%, transparent 100%);
+}
+[data-theme="dark"] .gpu-listing-modal .modal-header {
+    background: linear-gradient(180deg, rgba(129, 140, 248, 0.12) 0%, transparent 100%);
+    border-bottom-color: rgba(255, 255, 255, 0.08);
+}
+.gpu-listing-modal .modal-header h3 {
+    margin: 0;
+    font-size: 1.15rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+}
+.gpu-listing-content {
+    padding: 1.5rem 1.75rem 1.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+.gpu-listing-content .listing-detail-image {
+    max-height: 320px;
+    object-fit: contain;
+    border-radius: 12px;
+    background: var(--card-bg, #f8f9fa);
+    padding: 8px;
+    border: 1px solid var(--table-border, rgba(0, 0, 0, 0.06));
+}
+[data-theme="dark"] .gpu-listing-content .listing-detail-image {
+    background: rgba(0, 0, 0, 0.25);
+    border-color: rgba(255, 255, 255, 0.06);
+}
+/* Source dot visible in both themes */
+.source-dot {
+    transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+.source-dot:hover {
+    transform: scale(1.35);
+    box-shadow: 0 0 0 2px var(--card-bg, #1a1a2e), 0 0 8px currentColor;
+}
+
+/* === Monthly Pick Modal list items (theme-aware) === */
+.monthly-pick-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.4rem 0.6rem;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.1s;
+    color: var(--text-color, #1f2937);
+    background: transparent;
+}
+.monthly-pick-item:hover {
+    background: var(--table-row-hover-bg, rgba(102, 126, 234, 0.08));
+}
+.monthly-pick-item-name {
+    flex: 1;
+    color: inherit;
+}
+.monthly-pick-item-count {
+    font-size: 0.8rem;
+    color: var(--text-muted, #6b7280);
+}
+
+/* === Price Analysis Section in listing detail modal === */
+.price-analysis-section {
+    background: linear-gradient(135deg, #eef2ff 0%, #f5f3ff 100%);
+    border: 1px solid #c7d2fe;
+    border-radius: 14px;
+    padding: 1.15rem 1.35rem 1.25rem;
+    margin: 0;
+    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+}
+[data-theme="dark"] .price-analysis-section {
+    /* Deeper, warmer dark gradient so the section reads as a distinct card
+       on the modal backdrop, with an indigo border that glows slightly. */
+    background: linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #1e293b 100%);
+    border-color: #6366f1;
+    box-shadow: inset 0 0 0 1px rgba(99, 102, 241, 0.18);
+}
+.pa-stat {
+    background: rgba(255, 255, 255, 0.65);
+    border: 1px solid rgba(199, 210, 254, 0.5);
+    border-radius: 10px;
+    padding: 0.7rem 0.9rem;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.pa-stat:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08);
+}
+[data-theme="dark"] .pa-stat {
+    background: linear-gradient(180deg, rgba(99, 102, 241, 0.15) 0%, rgba(99, 102, 241, 0.05) 100%);
+    border-color: rgba(129, 140, 248, 0.45);
+}
+[data-theme="dark"] .pa-stat:hover {
+    box-shadow: 0 4px 16px rgba(99, 102, 241, 0.3);
+}
+.pa-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.85rem;
+    padding-bottom: 0.65rem;
+    border-bottom: 1px solid rgba(199, 210, 254, 0.45);
+}
+[data-theme="dark"] .pa-header {
+    border-bottom-color: rgba(129, 140, 248, 0.3);
+}
+.pa-icon { font-size: 1.15rem; line-height: 1; }
+.pa-title {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #1e293b;
+    letter-spacing: -0.01em;
+}
+[data-theme="dark"] .pa-title { color: #f1f5f9; }
+.pa-subtitle {
+    color: #6b7280;
+    font-size: 0.85rem;
+    font-weight: 400;
+}
+[data-theme="dark"] .pa-subtitle { color: #94a3b8; }
+.pa-label {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #4b5563;
+    font-weight: 700;
+}
+[data-theme="dark"] .pa-label { color: #cbd5e1; }
+.pa-value {
+    font-size: 1.4rem;
+    font-weight: 800;
+    color: #1f2937;
+    line-height: 1.1;
+    margin-top: 2px;
+}
+[data-theme="dark"] .pa-value { color: #f8fafc; }
+.pa-sub {
+    font-size: 0.7rem;
+    color: #6b7280;
+    margin-top: 2px;
+}
+[data-theme="dark"] .pa-sub { color: #94a3b8; }
+/* Accent left borders — keep the meaning (current=indigo, low=green,
+   avg=amber, high=red) but brighten each on dark mode so the stripe is
+   actually visible against the deep gradient backdrop. */
+.pa-current { border-left: 4px solid #667eea; }
+.pa-min     { border-left: 4px solid #16a34a; }
+.pa-avg     { border-left: 4px solid #f59e0b; }
+.pa-max     { border-left: 4px solid #ef4444; }
+[data-theme="dark"] .pa-current { border-left-color: #a5b4fc; }
+[data-theme="dark"] .pa-min     { border-left-color: #4ade80; }
+[data-theme="dark"] .pa-avg     { border-left-color: #fbbf24; }
+[data-theme="dark"] .pa-max     { border-left-color: #f87171; }
+
 /* Description box dark mode fix */
 .description-box {
     background: #f8f9fa;

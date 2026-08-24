@@ -1,0 +1,240 @@
+{% extends "base.html" %}
+
+{% block title %}Lens Compare - SS-Crawler{% endblock %}
+
+{% block extra_css %}
+.compare-checkbox-styled {
+    width: 24px;
+    height: 24px;
+    accent-color: #667eea;
+    cursor: pointer;
+    border-radius: 6px;
+    box-shadow: 0 0 6px rgba(102, 126, 234, 0.4);
+    transition: transform 0.15s ease;
+}
+.compare-checkbox-styled:hover {
+    transform: scale(1.1);
+}
+.lens-compare-col {
+    text-align: center;
+    min-width: 200px;
+    padding: 12px 14px;
+    vertical-align: middle;
+}
+.lens-compare-icon {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 8px auto;
+    display: block;
+}
+.lens-compare-name {
+    font-weight: 600;
+    font-size: 0.95rem;
+    margin-bottom: 2px;
+    line-height: 1.25;
+}
+.lens-compare-brand {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+.lens-compare-best {
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.15), rgba(118, 75, 162, 0.15)) !important;
+    font-weight: 700;
+    color: #4f46e5;
+}
+[data-theme="dark"] .lens-compare-best {
+    color: #a5b4fc;
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.25), rgba(168, 85, 247, 0.25)) !important;
+}
+.lens-compare-table th {
+    text-align: center;
+    padding: 14px 12px;
+    background: var(--card-bg);
+    border-bottom: 2px solid var(--card-border);
+}
+.lens-compare-table th:first-child {
+    text-align: left;
+    background: transparent;
+}
+.lens-compare-table td:first-child {
+    font-weight: 600;
+    background: var(--card-bg);
+    text-align: left;
+}
+{% endblock %}
+
+{% block content %}
+<div class="section">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
+        <h2>📷 Lens Compare</h2>
+        <a href="/lenses" class="btn btn-small">← Back to Lens listings</a>
+    </div>
+
+    <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">
+        Compare up to 4 lens models side-by-side. Tip: open the "History" panel for any lens and pick "Add to compare" to populate this page.
+    </p>
+
+    <div id="compare-container">
+        <div class="loading">Loading comparison...</div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='lens-icons-realistic.js') }}?v=2"></script>
+<script>
+const urlParams = new URLSearchParams(window.location.search);
+let ids = (urlParams.get('ids') || urlParams.get('lenses') || '').split(',').map(s => s.trim()).filter(Boolean);
+
+if (ids.length === 0) {
+    try {
+        const stored = localStorage.getItem('lens_compare_ids');
+        if (stored) ids = JSON.parse(stored);
+    } catch (e) {}
+}
+
+function fmtPrice(value) {
+    const n = Number(value);
+    return Number.isFinite(n) ? `€${n.toFixed(0)}` : '—';
+}
+
+function fmtRange(min, max) {
+    if (min == null && max == null) return '—';
+    if (min == null) return `€${Number(max).toFixed(0)}`;
+    if (max == null) return `€${Number(min).toFixed(0)}`;
+    return `€${Number(min).toFixed(0)}–€${Number(max).toFixed(0)}`;
+}
+
+async function loadComparison() {
+    const container = document.getElementById('compare-container');
+    if (ids.length < 2) {
+        container.innerHTML = `
+            <div class="error">
+                Select 2–4 lens models to compare. You can:
+                <ul style="margin-top: 0.5rem; padding-left: 1.5rem;">
+                    <li>Click the <strong>History</strong> button on a lens row, then add it to compare</li>
+                    <li>Or pass <code>?ids=slug1,slug2,slug3</code> in the URL</li>
+                </ul>
+            </div>`;
+        return;
+    }
+
+    try {
+        // Fetch all models (lightweight aggregate, keyed by matched_lens_id)
+        const response = await fetch('/api/lens-models');
+        const models = await response.json();
+        const selected = ids.map(slug => models.find(m => m.matched_lens_id === slug)).filter(Boolean);
+
+        if (selected.length < 2) {
+            container.innerHTML = `
+                <div class="error">
+                    Could not find enough lens models. The IDs you provided may not exist in the database.
+                    <br><br>Provided: <code>${ids.join(', ')}</code>
+                </div>`;
+            return;
+        }
+
+        // Build comparison rows
+        const rows = [
+            { label: 'Brand', field: m => m.brand || '—', best: (vs) => vs.filter(v => v.brand).map(v => v.brand)[0] ? 'shared' : null },
+            { label: 'Mount', field: m => m.mount || '—' },
+            { label: 'Focal length', field: m => m.focal_length ? `${m.focal_length} mm` : '—' },
+            { label: 'Max aperture', field: m => m.aperture ? `f/${m.aperture}` : '—', best: 'min' },
+            { label: 'Active listings', field: m => `<strong>${m.active_listings ?? 0}</strong>`, best: 'max' },
+            { label: 'Average price', field: m => fmtPrice(m.avg_price), best: 'min' },
+            { label: 'Price range', field: m => fmtRange(m.min_price, m.max_price) },
+            { label: 'Min price', field: m => fmtPrice(m.min_price), best: 'min' },
+            { label: 'Max price', field: m => fmtPrice(m.max_price) },
+            { label: 'Spread (max−min)', field: m => (m.max_price != null && m.min_price != null) ? fmtPrice(m.max_price - m.min_price) : '—' },
+        ];
+
+        // Build table
+        let html = '<div style="overflow-x: auto;"><table class="lens-compare-table modern-panel"><thead><tr>';
+        html += '<th style="text-align:left;">Feature</th>';
+        selected.forEach(m => {
+            const slug = m.matched_lens_id;
+            const lensName = slug.replace(/_/g, ' ');
+            const icon = typeof getLensIcon === 'function' ? getLensIcon(lensName) : '';
+            html += `<th class="lens-compare-col">
+                <div class="lens-compare-icon">${icon}</div>
+                <div class="lens-compare-name">${lensName}</div>
+                <div class="lens-compare-brand">${m.brand || ''} ${m.mount ? '· ' + m.mount : ''}</div>
+            </th>`;
+        });
+        html += '</tr></thead><tbody>';
+
+        rows.forEach(row => {
+            html += `<tr><td>${row.label}</td>`;
+
+            // For 'best' rows, highlight the winner
+            let bestIdx = -1;
+            if (row.best === 'min' || row.best === 'max') {
+                let bestVal = row.best === 'min' ? Infinity : -Infinity;
+                selected.forEach((m, i) => {
+                    const v = Number(m[row.label === 'Active listings' ? 'active_listings' :
+                                       row.label === 'Average price' ? 'avg_price' :
+                                       row.label === 'Max aperture' ? 'aperture' :
+                                       row.label === 'Min price' ? 'min_price' : NaN]);
+                    if (!Number.isFinite(v)) return;
+                    if (row.best === 'min' && v < bestVal) { bestVal = v; bestIdx = i; }
+                    if (row.best === 'max' && v > bestVal) { bestVal = v; bestIdx = i; }
+                });
+            }
+
+            selected.forEach((m, i) => {
+                const cls = i === bestIdx ? ' class="lens-compare-best"' : '';
+                html += `<td${cls}>${row.field(m)}</td>`;
+            });
+            html += '</tr>';
+        });
+
+        // Links row
+        html += '<tr><td>View listings</td>';
+        selected.forEach(m => {
+            const slug = m.matched_lens_id;
+            html += `<td><a href="/lenses?model=${encodeURIComponent(slug)}" class="btn btn-small">View →</a></td>`;
+        });
+        html += '</tr>';
+
+        html += '</tbody></table></div>';
+
+        // Summary cards
+        const cheapest = selected.reduce((min, m) => (m.min_price != null && (min.min_price == null || m.min_price < min.min_price)) ? m : min, selected[0]);
+        const priciest = selected.reduce((max, m) => (m.max_price != null && (max.max_price == null || m.max_price > max.max_price)) ? m : max, selected[0]);
+        const mostListings = selected.reduce((max, m) => (m.active_listings || 0) > (max.active_listings || 0) ? m : max, selected[0]);
+
+        html += `<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem;margin-top:1.5rem;">`;
+        if (cheapest && cheapest.min_price != null) {
+            html += `<div style="background:var(--card-bg);border-radius:8px;padding:1rem;border:1px solid var(--card-border);">
+                <div style="color:var(--text-secondary);font-size:0.85rem;">💰 Cheapest current listing</div>
+                <strong>${(cheapest.matched_lens_id || '').replace(/_/g, ' ')}</strong>
+                <div style="font-size:1.15em;font-weight:700;color:#10b981;">${fmtPrice(cheapest.min_price)}</div>
+            </div>`;
+        }
+        if (mostListings && mostListings.active_listings) {
+            html += `<div style="background:var(--card-bg);border-radius:8px;padding:1rem;border:1px solid var(--card-border);">
+                <div style="color:var(--text-secondary);font-size:0.85rem;">📊 Most active listings</div>
+                <strong>${(mostListings.matched_lens_id || '').replace(/_/g, ' ')}</strong>
+                <div style="font-size:1.15em;font-weight:700;">${mostListings.active_listings}</div>
+            </div>`;
+        }
+        if (priciest && priciest.max_price != null) {
+            html += `<div style="background:var(--card-bg);border-radius:8px;padding:1rem;border:1px solid var(--card-border);">
+                <div style="color:var(--text-secondary);font-size:0.85rem;">💎 Top-of-market</div>
+                <strong>${(priciest.matched_lens_id || '').replace(/_/g, ' ')}</strong>
+                <div style="font-size:1.15em;font-weight:700;">${fmtPrice(priciest.max_price)}</div>
+            </div>`;
+        }
+        html += `</div>`;
+
+        container.innerHTML = html;
+    } catch (error) {
+        container.innerHTML = `<div class="error">Failed to load comparison: ${error.message}</div>`;
+    }
+}
+
+loadComparison();
+</script>
+{% endblock %}

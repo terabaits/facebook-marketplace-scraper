@@ -317,7 +317,55 @@
     border-color: #667eea !important;
 }
 
-/* Model history popup */
+/* Model history popup (v2) */
+[data-theme="dark"] #model-history-popup,
+[data-theme="dark"] #model-history-popup .mhp-header,
+[data-theme="dark"] #model-history-popup .mhp-kpi,
+[data-theme="dark"] #model-history-popup .mhp-list-row,
+[data-theme="dark"] #model-history-popup .mhp-footer {
+    background: #16213e !important;
+    border-color: #0f3460 !important;
+}
+[data-theme="dark"] #model-history-popup .mhp-title,
+[data-theme="dark"] #model-history-popup .kpi-value,
+[data-theme="dark"] #model-history-popup .mhp-list-price {
+    color: #e0e0e0 !important;
+}
+[data-theme="dark"] #model-history-popup .mhp-sub,
+[data-theme="dark"] #model-history-popup .kpi-label,
+[data-theme="dark"] #model-history-popup .kpi-sub,
+[data-theme="dark"] #model-history-popup .mhp-list-meta,
+[data-theme="dark"] #model-history-popup .mhp-section-title,
+[data-theme="dark"] #model-history-popup .mhp-spark-axis,
+[data-theme="dark"] #model-history-popup .mhp-insight {
+    color: #94a3b8 !important;
+}
+[data-theme="dark"] #model-history-popup .mhp-close {
+    color: #94a3b8 !important;
+    border-color: #0f3460 !important;
+}
+[data-theme="dark"] #model-history-popup .mhp-close:hover {
+    color: #ef4444 !important;
+    background: rgba(239,68,68,0.08) !important;
+}
+[data-theme="dark"] #model-history-popup .mhp-kpi.deal-glow {
+    background: rgba(16,185,129,0.1) !important;
+    border-color: rgba(16,185,129,0.4) !important;
+}
+[data-theme="dark"] #model-history-popup .mhp-kpi.overpriced {
+    background: rgba(239,68,68,0.08) !important;
+    border-color: rgba(239,68,68,0.4) !important;
+}
+[data-theme="dark"] #model-history-popup .mhp-spark-dot.current {
+    stroke: #16213e !important;
+}
+[data-theme="dark"] #model-history-popup .mhp-badge.seen {
+    background: #0f3460 !important;
+    color: #94a3b8 !important;
+    border-color: #0f3460 !important;
+}
+
+/* Keep the legacy .model-history-popup rules in case other pages use them. */
 [data-theme="dark"] .model-history-popup {
     background: #16213e !important;
     border-color: #0f3460 !important;
@@ -358,4 +406,47 @@
 /* Chart title */
 [data-theme="dark"] .chartjs-title {
     color: #e0e0e0 !important;
+}
+
+/* ============================================
+   AVG RAM PRICE BY CAPACITY & TYPE — TREND CHART
+   ============================================ */
+
+/* Section heading color in dark mode */
+[data-theme="dark"] .ram-trends h3 {
+    color: #e0e0e0 !important;
+}
+
+/* Trend capacity chips — match main DDR chip hover/active styling */
+[data-theme="dark"] #trend-capacity-chips button {
+    background: transparent;
+    border-color: #0f3460;
+    color: #94a3b8;
+}
+[data-theme="dark"] #trend-capacity-chips button:hover {
+    border-color: #667eea;
+    color: #e0e0e0;
+}
+[data-theme="dark"] #trend-capacity-chips button.active {
+    background: #667eea;
+    color: #ffffff;
+    border-color: #667eea;
+}
+
+/* Trend DDR status pill */
+[data-theme="dark"] .trend-ddr-pill {
+    background: #16213e !important;
+    border-color: #0f3460 !important;
+    color: #cbd5e1 !important;
+}
+[data-theme="dark"] .trend-ddr-pill.ddr-d3-pill { color: #fca5a5 !important; border-color: rgba(239, 68, 68, 0.5) !important; }
+[data-theme="dark"] .trend-ddr-pill.ddr-d3-pill::before { background: #fca5a5 !important; }
+[data-theme="dark"] .trend-ddr-pill.ddr-d4-pill { color: #93c5fd !important; border-color: rgba(59, 130, 246, 0.5) !important; }
+[data-theme="dark"] .trend-ddr-pill.ddr-d4-pill::before { background: #93c5fd !important; }
+[data-theme="dark"] .trend-ddr-pill.ddr-d5-pill { color: #c4b5fd !important; border-color: rgba(139, 92, 246, 0.5) !important; }
+[data-theme="dark"] .trend-ddr-pill.ddr-d5-pill::before { background: #c4b5fd !important; }
+
+/* Trend caption (subtle stats below chart) */
+[data-theme="dark"] .trend-cap-caption {
+    color: #94a3b8 !important;
 }

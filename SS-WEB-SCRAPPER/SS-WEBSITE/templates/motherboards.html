@@ -78,12 +78,81 @@
     display: block;
     margin: 0 auto;
 }
+
+/* Modern panel — rounded table with hover states and dark-mode support (mirrors SSD page) */
+.modern-panel {
+    background: var(--card-bg, #fff);
+    border-radius: 12px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+    overflow: hidden;
+    border: 1px solid var(--card-border, rgba(99,102,241,0.10));
+}
+[data-theme="dark"] .modern-panel {
+    box-shadow: 0 1px 3px rgba(0,0,0,0.4);
+    border-color: rgba(255,255,255,0.08);
+}
+.modern-panel table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.modern-panel th, .modern-panel td { padding: 10px 12px; text-align: left; vertical-align: middle; }
+.modern-panel thead th {
+    background: var(--section-bg, #f8f9fa);
+    font-weight: 600;
+    color: var(--text-muted, #6b7280);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    border-bottom: 1px solid var(--card-border, rgba(99,102,241,0.18));
+}
+.modern-panel tbody tr {
+    border-bottom: 1px solid var(--card-border, rgba(99,102,241,0.08));
+    transition: background 0.15s;
+}
+.modern-panel tbody tr:last-child { border-bottom: none; }
+.modern-panel tbody tr.clickable:hover { background: rgba(99,102,241,0.05); cursor: pointer; }
+.modern-panel tbody tr.clickable:active { background: rgba(99,102,241,0.10); }
+[data-theme="dark"] .modern-panel tbody tr { border-color: rgba(255,255,255,0.06); }
+[data-theme="dark"] .modern-panel tbody tr.clickable:hover { background: rgba(99,102,241,0.10); }
+[data-theme="dark"] .modern-panel tbody tr.clickable:active { background: rgba(99,102,241,0.15); }
 {% endblock %}
 
 {% block content %}
 <div class="section">
     <h2>🔧 Motherboard Listings</h2>
     
+    <!-- Pick a CPU to find compatible motherboards -->
+    <div class="cpu-picker-section" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 12px; padding: 1rem 1.25rem; margin-bottom: 1rem; color: white; box-shadow: 0 4px 16px rgba(102,126,234,0.25);">
+        <div style="display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap;">
+            <div style="font-size: 1.1rem; font-weight: 700;">🔌 Pick a CPU</div>
+            <div style="flex: 1; min-width: 240px; position: relative;">
+                <input type="text" id="cpu-picker-input" placeholder="Type a CPU name (e.g. i5-12600K, Ryzen 5 5600X)…" style="width: 100%; padding: 0.6rem 0.9rem; border: 1px solid rgba(255,255,255,0.4); border-radius: 8px; background: rgba(255,255,255,0.95); color: #1f2937; font-size: 0.95rem;">
+                <div id="cpu-picker-results" style="display: none; position: absolute; top: 100%; left: 0; right: 0; z-index: 50; background: white; color: #1f2937; border-radius: 8px; box-shadow: 0 8px 32px rgba(0,0,0,0.25); max-height: 320px; overflow-y: auto; margin-top: 4px;"></div>
+            </div>
+            <button type="button" id="cpu-picker-clear" class="btn" style="background: rgba(255,255,255,0.2); color: white; border: 1px solid rgba(255,255,255,0.4); padding: 0.5rem 0.9rem; display: none;">✕ Clear</button>
+        </div>
+        <div id="cpu-picker-selected" style="display: none; margin-top: 0.75rem; padding: 0.75rem 1rem; background: rgba(255,255,255,0.15); border-radius: 8px;">
+            <div style="display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap;">
+                <div style="font-size: 1.5rem;">🔌</div>
+                <div style="flex: 1;">
+                    <div style="font-weight: 700; font-size: 1.05rem;" id="cpu-picker-selected-name">—</div>
+                    <div style="opacity: 0.85; font-size: 0.85rem;" id="cpu-picker-selected-meta">—</div>
+                </div>
+                <div style="display: flex; gap: 1.5rem; align-items: center;">
+                    <div style="text-align: center;">
+                        <div style="font-size: 0.7rem; opacity: 0.85; text-transform: uppercase; letter-spacing: 0.5px;">Socket</div>
+                        <div style="font-weight: 800; font-size: 1.05rem;" id="cpu-picker-selected-socket">—</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 0.7rem; opacity: 0.85; text-transform: uppercase; letter-spacing: 0.5px;">Motherboards</div>
+                        <div style="font-weight: 800; font-size: 1.05rem;" id="cpu-picker-selected-count">—</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 0.7rem; opacity: 0.85; text-transform: uppercase; letter-spacing: 0.5px;">Avg Price</div>
+                        <div style="font-weight: 800; font-size: 1.05rem;" id="cpu-picker-selected-avg">—</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="filters">
         <span style="font-weight: 600; margin-right: 0.5rem;">Filters:</span>
         <label>
@@ -156,6 +225,12 @@
     <div id="listings-table">
         <div class="loading">Loading listings...</div>
     </div>
+
+    <!-- Motherboards loading overlay (mirrors gpu.html's #gpu-loading-overlay) -->
+    <div id="motherboards-loading-overlay" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.35); z-index: 2000; justify-content: center; align-items: center; flex-direction: column;">
+        <div style="width: 48px; height: 48px; border: 4px solid rgba(255,255,255,0.2); border-top-color: #00d4ff; border-radius: 50%; animation: spin 1s linear infinite;"></div>
+        <div style="margin-top: 12px; color: #fff; font-weight: 500;">Loading motherboards...</div>
+    </div>
 </div>
 
 <div class="section">
@@ -192,6 +267,11 @@ let allChipsets = [];
 
 // Fetch listings
 async function fetchListings() {
+    // Show loading overlay for any user-initiated reload. The first
+    // load on page boot also gets one so the UI doesn't show stale
+    // rows while the request is in flight.
+    const overlay = document.getElementById('motherboards-loading-overlay');
+    if (overlay) overlay.classList.add('active');
     const activeOnly = document.getElementById('active-only').checked;
     const minConfidence = document.getElementById('min-confidence').value;
     const timeFilter = document.getElementById('time-filter').value;
@@ -200,7 +280,7 @@ async function fetchListings() {
     const chipset = document.getElementById('chipset-filter')?.value;
     const socket = document.getElementById('socket-filter')?.value;
     const vendor = document.getElementById('vendor-filter')?.value;
-    
+
     const params = new URLSearchParams({
         active: activeOnly,
         min_confidence: minConfidence,
@@ -208,18 +288,21 @@ async function fetchListings() {
         sort: sortBy,
         order: sortOrder
     });
-    
+
     if (chipset) params.append('chipset', chipset);
     if (socket) params.append('socket', socket);
     if (vendor) params.append('vendor', vendor);
-    
+
     try {
         const response = await fetch(`/api/motherboards?${params}`);
         const data = await response.json();
         renderListings(data);
     } catch (error) {
-        document.getElementById('listings-table').innerHTML = 
+        document.getElementById('listings-table').innerHTML =
             `<div class="error">Error loading listings: ${error.message}</div>`;
+    } finally {
+        // Always hide the loading overlay, even on error
+        if (overlay) overlay.classList.remove('active');
     }
 }
 
@@ -374,47 +457,55 @@ function renderListings(listings) {
     const totalPrice = listings.reduce((sum, item) => sum + (Number(item.price_eur) || 0), 0);
 
     const html = `
+        <div class="modern-panel">
         <table>
             <thead>
                 <tr>
-                    <th>Image</th>
-                    <th>Title</th>
-                    <th>Matched Model</th>
-                    <th>{{ t('Socket') }}</th>
-                    <th>Form Factor</th>
-                    <th>Chipset</th>
-                    <th>{{ t('Price') }}</th>
-                    <th>{{ t('Date Posted') }}</th>
-                    <th>Location</th>
-                    <th>Actions</th>
+                    <th style="text-align: center;">Image</th>
+                    <th style="text-align: center;">Listing</th>
+                    <th style="text-align: center;">Matched Model</th>
+                    <th style="text-align: center;">{{ t('Socket') }}</th>
+                    <th style="text-align: center;">Form Factor</th>
+                    <th style="text-align: center;">Chipset</th>
+                    <th style="text-align: center;">{{ t('Price') }}</th>
+                    <th style="text-align: center;">{{ t('Date Posted') }}</th>
+                    <th style="text-align: center;">Location</th>
+                    <th style="text-align: center;">Actions</th>
                 </tr>
             </thead>
             <tbody>
                 ${listings.map(item => {
                     const dealBadge = computeMotherboardDealBadges(item);
+                    // Clean the raw SS.COM title (strip "SS.COM Komplektējošie datoriem - Sistēmplates, Cena XX €.," prefix).
+                    const cleanTitle = (item.title || '')
+                        .replace(/^SS\.COM[^,]*,\s*Cena\s+\d+\s*€\s*\.?,?\s*/i, '')
+                        .replace(/\s+-\s+Sludinājumi\s*$/i, '')
+                        .trim() || item.title || '';
+                    const shortClean = cleanTitle.length > 60 ? cleanTitle.substring(0, 60) + '…' : cleanTitle;
                     return `
-                    <tr style="cursor: pointer;" onclick="showListingDetail('${item.listing_id}')">
+                    <tr class="clickable" onclick="showListingDetail('${item.listing_id}')">
                         <td class="listing-image-cell" onclick="event.stopPropagation()" style="position: relative;">
                             ${dealBadge ? `<div style="position: absolute; top: 4px; right: 4px; display: flex; flex-direction: column; gap: 4px; z-index: 10;">${dealBadge}</div>` : ''}
                             ${item.local_image_path || item.image_url ? (() => {
                                 const rowImgPath = item.local_image_path ? item.local_image_path.replace(/\\/g, '/') : null;
                                 const rowImgUrl = rowImgPath ? `/images/${rowImgPath}` : item.image_url;
-                                return `<img src="${rowImgUrl}" alt="${item.title}" class="listing-thumb" onerror="this.src='${item.image_url || ''}'; this.onerror=null;" onclick="event.stopPropagation(); showImageModal('${rowImgUrl.replace(/'/g, "\\'")}', '${item.title.replace(/'/g, "\\'")}')">`;
-                            })() : '<div class="listing-thumb-placeholder">📷</div>'}
-                        </td>                    <td title="${item.description || ''}">${item.title.substring(0, 60)}${item.title.length > 60 ? '...' : ''}</td>
-                    <td>
-                        <strong>${item.brand || '-'} ${item.motherboard_model || '-'}</strong>
-                        ${item.confidence_score ? `<br><small class="${getConfidenceClass(item.confidence_score)}">${(item.confidence_score * 100).toFixed(0)}% confidence</small>` : ''}
-                    </td>
-                    <td>${item.socket || '-'}</td>
-                    <td>${item.form_factor || '-'}</td>
-                    <td>${item.chipset || '-'}</td>
-                    <td class="price">€${item.price_eur ? Number(item.price_eur).toFixed(2) : '0.00'}</td>
-                    <td>${new Date(item.date_posted).toLocaleDateString()}</td>
-                    <td>${item.seller_location || '-'}</td>
-                        <td onclick="event.stopPropagation()">
+                                return `<img src="${rowImgUrl}" alt="${(cleanTitle || '').replace(/'/g, "\\'")}" class="listing-thumb" onerror="this.src='${item.image_url || ''}'; this.onerror=null;" onclick="event.stopPropagation(); showImageModal('${rowImgUrl.replace(/'/g, "\\'")}', '${(cleanTitle || '').replace(/'/g, "\\'")}')">`;
+                            })() : '<div class="listing-thumb-placeholder">🔌</div>'}
+                        </td>
+                        <td title="${(item.description || '').replace(/"/g, '&quot;')}" style="text-align: center;">${shortClean}</td>
+                        <td style="text-align: center;">
+                            <strong>${item.brand || '-'} ${item.motherboard_model || '-'}</strong>
+                            ${item.confidence_score ? `<br><small class="${getConfidenceClass(item.confidence_score)}">${(item.confidence_score * 100).toFixed(0)}% confidence</small>` : ''}
+                        </td>
+                        <td style="text-align: center;">${item.socket || '-'}</td>
+                        <td style="text-align: center;">${item.form_factor || '-'}</td>
+                        <td style="text-align: center;">${item.chipset || '-'}</td>
+                        <td class="price" style="text-align: center;">€${item.price_eur ? Number(item.price_eur).toFixed(2) : '0.00'}</td>
+                        <td style="text-align: center;">${new Date(item.date_posted).toLocaleDateString()}</td>
+                        <td style="text-align: center;">${item.seller_location || '-'}</td>
+                        <td onclick="event.stopPropagation()" style="text-align: center;">
                             ${renderPriceDecreaseBadge(item)}
-                            <a href="${item.listing_url}" target="_blank" class="btn btn-small">View</a>
+                            <a href="${item.listing_url}" target="_blank" class="btn btn-small" style="text-decoration: none;">View →</a>
                             ${renderHistoryButton(item.listing_id, item.history?.length > 0)}
                         </td>
                     </tr>
@@ -430,6 +521,7 @@ function renderListings(listings) {
                 </tr>
             </tfoot>` : ''}
         </table>
+        </div>
     `;
 
     document.getElementById('listings-table').innerHTML = html;
@@ -752,9 +844,76 @@ async function showListingDetail(listingId) {
             <div style="margin-bottom: 1rem;">
                 <strong>Price:</strong> <span class="price" style="font-size: 1.25rem;">€${current.price_eur}</span>
             </div>
-            
+
             ${localStorage.getItem('motherboardShowListingId') === 'true' ? `<div style="margin-bottom: 1rem;" class="listing-id-field"><strong>Listing ID:</strong> <code>${current.listing_id}</code></div>` : ''}
-            
+
+            <!-- Price Analysis Section (model / socket / cheapest) -->
+            <div class="price-analysis-section" style="background: linear-gradient(135deg, #f0f4ff 0%, #faf5ff 100%); border: 1px solid #c7d2fe; border-radius: 12px; padding: 1rem 1.25rem; margin-bottom: 1.5rem;">
+                <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.75rem;">
+                    <span style="font-size: 1.1rem;">📈</span>
+                    <strong style="color: #1f2937;">Price Analysis</strong>
+                    ${current.mb_model ? `<span style="color: #6b7280; font-size: 0.85rem;">— ${current.brand} ${current.mb_model}</span>` : ''}
+                </div>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 0.75rem;">
+                    <div style="background: rgba(255,255,255,0.6); border-left: 4px solid #667eea; border-radius: 8px; padding: 0.6rem 0.85rem;">
+                        <div style="font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.5px; color: #6b7280; font-weight: 600;">Current</div>
+                        <div style="font-size: 1.4rem; font-weight: 800; color: #1f2937; line-height: 1.1; margin-top: 2px;">€${Number(current.price_eur).toFixed(0)}</div>
+                    </div>
+                    ${current.price_stats ? `
+                        <div style="background: rgba(255,255,255,0.6); border-left: 4px solid #16a34a; border-radius: 8px; padding: 0.6rem 0.85rem;">
+                            <div style="font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.5px; color: #6b7280; font-weight: 600;">Cheapest ever</div>
+                            <div style="font-size: 1.4rem; font-weight: 800; color: #1f2937; line-height: 1.1; margin-top: 2px;">€${Number(current.price_stats.min || 0).toFixed(0)}</div>
+                        </div>
+                        <div style="background: rgba(255,255,255,0.6); border-left: 4px solid #f59e0b; border-radius: 8px; padding: 0.6rem 0.85rem;">
+                            <div style="font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.5px; color: #6b7280; font-weight: 600;">Avg ever</div>
+                            <div style="font-size: 1.4rem; font-weight: 800; color: #1f2937; line-height: 1.1; margin-top: 2px;">€${Number(current.price_stats.avg || 0).toFixed(0)}</div>
+                        </div>
+                    ` : `
+                        <div style="background: rgba(255,255,255,0.6); border-left: 4px solid #16a34a; border-radius: 8px; padding: 0.6rem 0.85rem;">
+                            <div style="font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.5px; color: #6b7280; font-weight: 600;">Cheapest ever</div>
+                            <div style="font-size: 1.4rem; font-weight: 800; color: #9ca3af; line-height: 1.1; margin-top: 2px;">—</div>
+                        </div>
+                        <div style="background: rgba(255,255,255,0.6); border-left: 4px solid #f59e0b; border-radius: 8px; padding: 0.6rem 0.85rem;">
+                            <div style="font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.5px; color: #6b7280; font-weight: 600;">Avg ever</div>
+                            <div style="font-size: 1.4rem; font-weight: 800; color: #9ca3af; line-height: 1.1; margin-top: 2px;">—</div>
+                        </div>
+                    `}
+                    ${current.socket ? `
+                        <div style="background: rgba(255,255,255,0.6); border-left: 4px solid #8b5cf6; border-radius: 8px; padding: 0.6rem 0.85rem;">
+                            <div style="font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.5px; color: #6b7280; font-weight: 600;">Socket</div>
+                            <div style="font-size: 1.4rem; font-weight: 800; color: #1f2937; line-height: 1.1; margin-top: 2px;">${current.socket}</div>
+                        </div>
+                    ` : ''}
+                </div>
+                ${current.price_stats ? (() => {
+                    const cur = Number(current.price_eur);
+                    const avg = Number(current.price_stats.avg || 0);
+                    const min = Number(current.price_stats.min || 0);
+                    const max = Number(current.price_stats.max || 0);
+                    const vsAvg = avg > 0 ? ((cur - avg) / avg * 100) : 0;
+                    const range = max - min;
+                    const curPos = range > 0 ? ((cur - min) / range * 100) : 50;
+                    const avgPos = range > 0 ? ((avg - min) / range * 100) : 50;
+                    const barColor = vsAvg < -10 ? '#16a34a' : (vsAvg > 10 ? '#dc2626' : '#f59e0b');
+                    return `
+                        <div style="margin-top: 1rem; padding-top: 0.75rem; border-top: 1px dashed #c7d2fe;">
+                            <div style="font-size: 0.78rem; color: #6b7280; margin-bottom: 0.5rem; display: flex; justify-content: space-between;">
+                                <span>Where this price sits in the historical range</span>
+                                <span style="font-weight: 600; color: ${barColor};">${vsAvg > 0 ? '+' : ''}${vsAvg.toFixed(0)}% vs avg</span>
+                            </div>
+                            <div style="position: relative; height: 14px; background: #e5e7eb; border-radius: 8px; overflow: hidden;">
+                                <div style="position: absolute; left: ${curPos}%; top: -3px; bottom: -3px; width: 4px; background: ${barColor}; border-radius: 2px; box-shadow: 0 0 6px ${barColor};" title="Current"></div>
+                                <div style="position: absolute; left: ${avgPos}%; top: 4px; bottom: 4px; width: 2px; background: #6b7280;" title="Avg"></div>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; font-size: 0.7rem; color: #9ca3af; margin-top: 4px;">
+                                <span>min €${min.toFixed(0)}</span>
+                                <span>max €${max.toFixed(0)}</span>
+                            </div>
+                        </div>
+                    `;
+                })() : ''}
+            </div>
+
             <div style="margin-bottom: 1rem;">
                 <strong>Location:</strong> ${current.seller_location || '-'}
             </div>
@@ -1012,18 +1171,149 @@ document.addEventListener('DOMContentLoaded', function() {
     if (socketFilter) {
         socketFilter.addEventListener('change', handleSocketChange);
     }
-    
+
     var chipsetFilter = document.getElementById('chipset-filter');
     if (chipsetFilter) {
         chipsetFilter.addEventListener('change', fetchListings);
     }
-    
+
     // Attach vendor filter listener
     var vendorFilter = document.getElementById('vendor-filter');
     if (vendorFilter) {
         vendorFilter.addEventListener('change', handleVendorChange);
     }
-    
+
+    // === CPU picker ===
+    var cpuInput = document.getElementById('cpu-picker-input');
+    var cpuResults = document.getElementById('cpu-picker-results');
+    var cpuSelected = document.getElementById('cpu-picker-selected');
+    var cpuSelectedName = document.getElementById('cpu-picker-selected-name');
+    var cpuSelectedMeta = document.getElementById('cpu-picker-selected-meta');
+    var cpuSelectedSocket = document.getElementById('cpu-picker-selected-socket');
+    var cpuSelectedCount = document.getElementById('cpu-picker-selected-count');
+    var cpuSelectedAvg = document.getElementById('cpu-picker-selected-avg');
+    var cpuPickerClear = document.getElementById('cpu-picker-clear');
+    var cpuPickerTimer = null;
+    var selectedCpuSocket = '';
+    var selectedCpuId = '';
+
+    if (cpuInput) {
+        cpuInput.addEventListener('input', function() {
+            var q = cpuInput.value.trim();
+            clearTimeout(cpuPickerTimer);
+            if (q.length < 2) {
+                cpuResults.style.display = 'none';
+                return;
+            }
+            cpuPickerTimer = setTimeout(function() { searchCpu(q); }, 200);
+        });
+        cpuInput.addEventListener('focus', function() {
+            if (cpuInput.value.trim().length >= 2) {
+                searchCpu(cpuInput.value.trim());
+            }
+        });
+        // Close on outside click
+        document.addEventListener('click', function(e) {
+            if (!cpuInput.contains(e.target) && !cpuResults.contains(e.target)) {
+                cpuResults.style.display = 'none';
+            }
+        });
+    }
+
+    function searchCpu(q) {
+        fetch(`/api/motherboards/cpu-socket-lookup?name=${encodeURIComponent(q)}&limit=12`)
+            .then(r => r.json())
+            .then(data => {
+                if (!data.matches || data.matches.length === 0) {
+                    cpuResults.innerHTML = '<div style="padding: 0.75rem 1rem; color: #6b7280; font-size: 0.9rem;">No CPUs found. Try a shorter or different name.</div>';
+                    cpuResults.style.display = 'block';
+                    return;
+                }
+                cpuResults.innerHTML = data.matches.map(c => {
+                    var meta = [];
+                    if (c.cores) meta.push(`${c.cores}c`);
+                    if (c.threads) meta.push(`${c.threads}t`);
+                    if (c.tdp_w) meta.push(`${c.tdp_w}W`);
+                    return `<div class="cpu-picker-item" data-id="${c.id}" data-socket="${(c.socket||'').replace(/"/g,'&quot;')}" data-name="${(c.brand+' '+c.model).replace(/"/g,'&quot;')}" style="padding: 0.7rem 1rem; cursor: pointer; border-bottom: 1px solid #f1f5f9; transition: background 0.1s;">
+                        <div style="font-weight: 600; color: #1f2937;">${c.brand} ${c.model}</div>
+                        <div style="font-size: 0.8rem; color: #6b7280; margin-top: 2px;">Socket: <strong>${c.socket || '?'}</strong>${meta.length ? ' · ' + meta.join(' · ') : ''}</div>
+                    </div>`;
+                }).join('');
+                cpuResults.style.display = 'block';
+                // Wire up clicks
+                cpuResults.querySelectorAll('.cpu-picker-item').forEach(function(item) {
+                    item.addEventListener('mouseenter', function() { item.style.background = '#f1f5f9'; });
+                    item.addEventListener('mouseleave', function() { item.style.background = 'white'; });
+                    item.addEventListener('click', function() {
+                        var id = item.getAttribute('data-id');
+                        var socket = item.getAttribute('data-socket');
+                        var name = item.getAttribute('data-name');
+                        selectCpu(id, socket, name);
+                    });
+                });
+            })
+            .catch(err => {
+                console.error('CPU search failed:', err);
+            });
+    }
+
+    function selectCpu(id, socket, name) {
+        if (!socket) {
+            alert('This CPU has no socket info on file.');
+            return;
+        }
+        selectedCpuSocket = socket;
+        selectedCpuId = id;  // Store for socket-market call (Bug 18 chipset filter)
+        cpuResults.style.display = 'none';
+        cpuInput.value = name;
+        cpuSelected.style.display = 'block';
+        cpuPickerClear.style.display = 'inline-block';
+        cpuSelectedName.textContent = name;
+        cpuSelectedMeta.textContent = 'Loading…';
+        cpuSelectedSocket.textContent = socket;
+        cpuSelectedCount.textContent = '…';
+        cpuSelectedAvg.textContent = '…';
+
+        // Apply the socket filter
+        if (socketFilter) {
+            socketFilter.value = socket;
+            handleSocketChange();
+        }
+
+        // Fetch socket market — pass cpu id so the API can filter chipsets
+        // by generation (Bug 18: i7-6700 search would otherwise include
+        // H310/B360 which are physically compatible LGA 1151 but only
+        // work with 8th/9th gen CPUs).
+        fetch(`/api/motherboards/socket-market?socket=${encodeURIComponent(socket)}&cpu=${encodeURIComponent(id)}`)
+            .then(r => r.json())
+            .then(data => {
+                if (data.error) throw new Error(data.error);
+                var chipSuffix = data.chipset_filter
+                    ? ` (gen ${data.cpu_generation} · ${data.chipset_filter.length} compatible chipsets)`
+                    : '';
+                cpuSelectedMeta.textContent = `${data.listing_count} compatible motherboards listed${chipSuffix}`;
+                cpuSelectedCount.textContent = data.listing_count;
+                cpuSelectedAvg.textContent = data.avg_price ? `€${Number(data.avg_price).toFixed(0)}` : '—';
+            })
+            .catch(err => {
+                cpuSelectedMeta.textContent = 'Error: ' + err.message;
+            });
+    }
+
+    if (cpuPickerClear) {
+        cpuPickerClear.addEventListener('click', function() {
+            cpuInput.value = '';
+            cpuSelected.style.display = 'none';
+            cpuPickerClear.style.display = 'none';
+            selectedCpuSocket = '';
+        selectedCpuId = '';
+            if (socketFilter) {
+                socketFilter.value = '';
+                handleSocketChange();
+            }
+        });
+    }
+
     // Attach active-only checkbox listener  
     var activeOnly = document.getElementById('active-only');
     if (activeOnly) {

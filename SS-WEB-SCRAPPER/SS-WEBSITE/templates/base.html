@@ -39,6 +39,8 @@
             --bar-bg: #e5e7eb;
             --code-bg: #f5f5f5;
             --code-text: #333;
+            --primary: #4f46e5;
+            --primary-hover: #4338ca;
         }
 
         [data-theme="dark"] {
@@ -60,6 +62,8 @@
             --desc-warn-bg: #3d3d1a;
             --desc-warn-border: #f39c12;
             --desc-success-bg: #1a3d1a;
+            --primary: #818cf8;
+            --primary-hover: #a5b4fc;
             --desc-success-border: #27ae60;
             --link-color: #93c5fd;
             --link-hover-color: #bfdbfe;
@@ -418,6 +422,17 @@
             color: #666;
         }
 
+        /* Model filter label needs to keep its children on a single row
+           (label text + vendor icons + select). Override the default
+           column direction with !important so the global rule can't push
+           the children onto separate lines. */
+        .filters label.model-filter-label {
+            flex-direction: row !important;
+            align-items: center;
+            flex-wrap: nowrap;
+            white-space: nowrap;
+        }
+
         [data-theme="dark"] .filters label {
             color: #aaa;
         }
@@ -487,6 +502,30 @@
             max-height: 90vh;
             overflow-y: auto;
             box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            /* Custom scrollbar (item 15) - wide rounded thumb, slim
+               track, soft color so it matches the dark/light theme
+               without being jarring. WebKit + Firefox covered. */
+            scrollbar-width: thin;
+            scrollbar-color: rgba(99, 102, 241, 0.55) transparent;
+        }
+        .modal::-webkit-scrollbar { width: 10px; }
+        .modal::-webkit-scrollbar-track {
+            background: transparent;
+            margin: 6px 0;
+        }
+        .modal::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, rgba(99,102,241,0.6), rgba(139,92,246,0.6));
+            border-radius: 10px;
+            border: 2px solid transparent;
+            background-clip: padding-box;
+        }
+        .modal::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(180deg, rgba(99,102,241,0.85), rgba(139,92,246,0.85));
+            background-clip: padding-box;
+        }
+        [data-theme="dark"] .modal::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, rgba(129,140,248,0.7), rgba(167,139,250,0.7));
+            background-clip: padding-box;
         }
 
         .modal-header {
@@ -806,6 +845,30 @@
             max-height: 90vh;
             overflow-y: auto;
             box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            /* Custom scrollbar (item 15) - wide rounded thumb, slim
+               track, soft color so it matches the dark/light theme
+               without being jarring. WebKit + Firefox covered. */
+            scrollbar-width: thin;
+            scrollbar-color: rgba(99, 102, 241, 0.55) transparent;
+        }
+        .modal::-webkit-scrollbar { width: 10px; }
+        .modal::-webkit-scrollbar-track {
+            background: transparent;
+            margin: 6px 0;
+        }
+        .modal::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, rgba(99,102,241,0.6), rgba(139,92,246,0.6));
+            border-radius: 10px;
+            border: 2px solid transparent;
+            background-clip: padding-box;
+        }
+        .modal::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(180deg, rgba(99,102,241,0.85), rgba(139,92,246,0.85));
+            background-clip: padding-box;
+        }
+        [data-theme="dark"] .modal::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, rgba(129,140,248,0.7), rgba(167,139,250,0.7));
+            background-clip: padding-box;
         }
 
         .modal-header {
@@ -1245,6 +1308,593 @@
                 transform: none !important;
             }
         }
+
+        /* ============ Shared listing-detail popup (reworked) ============ */
+        /* Used by RAM, Camera, Monitor, and any future page that wants the */
+        /* modern 2-column image+spec layout with price history, market       */
+        /* context, and detected accessories.                                  */
+        .ram-popup-grid {
+            display: grid;
+            grid-template-columns: minmax(220px, 280px) 1fr;
+            gap: 18px;
+            align-items: start;
+        }
+        @media (max-width: 720px) {
+            .ram-popup-grid { grid-template-columns: 1fr; }
+        }
+        .ram-popup-img {
+            background: var(--ram-bg-soft, #f8fafc);
+            border-radius: 10px;
+            overflow: hidden;
+            aspect-ratio: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: zoom-in;
+            border: 1px solid var(--ram-border, rgba(0,0,0,0.08));
+        }
+        .ram-popup-img img { width: 100%; height: 100%; object-fit: contain; }
+        .ram-popup-price-block {
+            margin-top: 12px;
+            text-align: center;
+            padding: 12px;
+            background: var(--ram-bg-soft, #f8fafc);
+            border-radius: 8px;
+            border: 1px solid var(--ram-border, rgba(0,0,0,0.06));
+        }
+        .ram-popup-price {
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: var(--ram-primary, #6366f1);
+        }
+        .ram-popup-price-sub {
+            font-size: 0.72rem;
+            color: var(--ram-text-dim, #64748b);
+            margin-top: 2px;
+        }
+        .ram-popup-vs-avg { margin-top: 6px; font-size: 0.78rem; font-weight: 700; }
+        .ram-popup-vs-avg .vs-avg.below { color: #16a34a; }
+        .ram-popup-vs-avg .vs-avg.above { color: #ef4444; }
+        .ram-popup-vs-avg .vs-avg { color: var(--ram-text-dim); }
+        .ram-popup-h {
+            margin: 0 0 8px 0 !important;
+            font-size: 0.95rem !important;
+            font-weight: 700;
+            color: var(--ram-text, #1e293b);
+            display: flex;
+            align-items: baseline;
+            gap: 8px;
+        }
+        .ram-popup-h-meta {
+            font-weight: 500;
+            font-size: 0.78rem;
+            color: var(--ram-text-dim, #64748b);
+        }
+        .ram-popup-rows { font-size: 0.85rem; line-height: 1.6; }
+        .rp-row { display: grid; grid-template-columns: 110px 1fr; gap: 8px; }
+        .rp-k { color: var(--ram-text-dim, #64748b); }
+        .rp-v { word-break: break-word; }
+        .ram-popup-actions { margin-top: 14px; display: flex; gap: 6px; flex-wrap: wrap; }
+        .ram-popup-btn {
+            padding: 6px 12px;
+            border-radius: 6px;
+            border: 1px solid var(--ram-border, rgba(0,0,0,0.12));
+            background: var(--ram-bg-soft, #f8fafc);
+            color: var(--ram-text, #1e293b);
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: background 0.15s ease;
+        }
+        .ram-popup-btn:hover { background: var(--ram-border, rgba(0,0,0,0.08)); }
+        .ram-popup-btn.primary {
+            background: var(--ram-primary, #6366f1);
+            color: white;
+            border-color: var(--ram-primary, #6366f1);
+        }
+        .ram-popup-btn.primary:hover { background: #4f46e5; }
+        .ram-popup-spec-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 8px;
+            background: var(--ram-bg-soft, #f8fafc);
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid var(--ram-border, rgba(0,0,0,0.06));
+        }
+        .rp-spec { display: flex; flex-direction: column; gap: 2px; }
+        .rp-spec-k { font-size: 0.7rem; color: var(--ram-text-dim, #64748b); text-transform: uppercase; letter-spacing: 0.3px; font-weight: 600; }
+        .rp-spec-v { font-size: 0.9rem; font-weight: 700; color: var(--ram-text, #1e293b); }
+        .ram-popup-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 10px;
+        }
+        .ram-stat-mini {
+            background: var(--ram-bg-soft, #f8fafc);
+            border: 1px solid var(--ram-border, rgba(0,0,0,0.06));
+            border-radius: 8px;
+            padding: 10px 12px;
+        }
+        .ram-stat-mini-h {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            color: var(--ram-text-dim, #64748b);
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        .ram-stat-mini-v {
+            font-size: 1.05rem;
+            font-weight: 800;
+            color: var(--ram-text, #1e293b);
+        }
+        .ram-stat-mini-m {
+            font-size: 0.7rem;
+            color: var(--ram-text-dim, #64748b);
+            margin-top: 2px;
+        }
+        .ram-stat-mini-d {
+            font-size: 0.75rem;
+            font-weight: 700;
+            margin-top: 4px;
+        }
+        .ram-stat-mini-d.below { color: #16a34a; }
+        .ram-stat-mini-d.above { color: #ef4444; }
+        .ram-popup-history {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+            gap: 8px;
+        }
+        .ram-popup-history-card {
+            background: var(--ram-bg-soft, #f8fafc);
+            border: 1px solid var(--ram-border, rgba(0,0,0,0.08));
+            border-radius: 8px;
+            padding: 8px 10px;
+            text-align: center;
+            position: relative;
+        }
+        .ram-popup-history-card.current {
+            background: rgba(99,102,241,0.08);
+            border-color: var(--ram-primary, #6366f1);
+            box-shadow: 0 0 0 2px rgba(99,102,241,0.15);
+        }
+        .rh-price { font-weight: 800; font-size: 0.95rem; color: var(--ram-text, #1e293b); }
+        .rh-date { font-size: 0.7rem; color: var(--ram-text-dim, #64748b); margin-top: 2px; }
+        .rh-tag {
+            position: absolute;
+            top: -6px; right: -6px;
+            background: var(--ram-primary, #6366f1);
+            color: white;
+            font-size: 0.6rem;
+            font-weight: 800;
+            padding: 2px 6px;
+            border-radius: 8px;
+            letter-spacing: 0.4px;
+        }
+        .ram-popup-empty {
+            font-size: 0.85rem;
+            color: var(--ram-text-dim, #64748b);
+            padding: 8px 12px;
+            background: var(--ram-bg-soft, #f8fafc);
+            border-radius: 8px;
+            border: 1px dashed var(--ram-border, rgba(0,0,0,0.1));
+        }
+        .ram-popup-desc {
+            font-size: 0.85rem;
+            line-height: 1.6;
+            color: var(--ram-text, #1e293b);
+            background: var(--ram-bg-soft, #f8fafc);
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid var(--ram-border, rgba(0,0,0,0.06));
+            white-space: pre-wrap;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        /* Dark mode tuning for shared popup */
+        [data-theme="dark"] .ram-popup-img,
+        [data-theme="dark"] .ram-popup-price-block,
+        [data-theme="dark"] .ram-popup-spec-grid,
+        [data-theme="dark"] .ram-stat-mini,
+        [data-theme="dark"] .ram-popup-history-card,
+        [data-theme="dark"] .ram-popup-empty,
+        [data-theme="dark"] .ram-popup-desc {
+            background: #0f172a;
+            border-color: rgba(255,255,255,0.06);
+        }
+        [data-theme="dark"] .ram-popup-price,
+        [data-theme="dark"] .ram-popup-h,
+        [data-theme="dark"] .rp-spec-v,
+        [data-theme="dark"] .ram-stat-mini-v,
+        [data-theme="dark"] .rh-price { color: #e2e8f0; }
+        [data-theme="dark"] .ram-popup-btn { background: #1e293b; color: #e2e8f0; border-color: rgba(255,255,255,0.1); }
+        [data-theme="dark"] .ram-popup-btn:hover { background: #334155; }
+
+        /* === Redesigned dashboard === */
+        /* Dashboard filter bar — pick pages + a single model */
+        .dash-filter-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.4rem;
+            align-items: center;
+            margin-bottom: 0.55rem;
+            position: relative;
+        }
+        .dash-filter-row:last-child { margin-bottom: 0; }
+        .dash-filter-label {
+            font-weight: 600;
+            color: var(--text-color);
+            margin-right: 0.4rem;
+            font-size: 0.9rem;
+        }
+        .dash-filter-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+            padding: 0.3rem 0.7rem;
+            font-size: 0.82rem;
+            font-weight: 500;
+            border: 1px solid var(--table-border);
+            border-radius: 999px;
+            background: var(--card-bg, #ffffff);
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: background-color 0.12s, color 0.12s, border-color 0.12s;
+        }
+        .dash-filter-chip:hover {
+            border-color: var(--primary);
+            color: var(--text-color);
+        }
+        .dash-filter-chip.on {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: #fff;
+        }
+        .dash-filter-chip.dash-all-chip,
+        .dash-filter-chip.dash-none-chip {
+            background: rgba(99,102,241,0.08);
+            border-color: rgba(99,102,241,0.18);
+            color: var(--primary);
+            font-weight: 600;
+        }
+        [data-theme="dark"] .dash-filter-chip {
+            background: #1e293b;
+            border-color: rgba(255,255,255,0.10);
+            color: #94a3b8;
+        }
+        [data-theme="dark"] .dash-filter-chip.on {
+            background: var(--primary);
+            color: #fff;
+        }
+        .dash-model-chip { padding-right: 0.4rem; }
+        .dash-model-clear {
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: inherit;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            padding: 0 0.35rem;
+            margin-left: 0.2rem;
+            border-radius: 50%;
+            line-height: 1;
+        }
+        .dash-filter-clear {
+            background: #fee2e2;
+            color: #b91c1c;
+            border: 1px solid #fecaca;
+            border-radius: 6px;
+            padding: 0.3rem 0.7rem;
+            font-size: 0.8rem;
+            cursor: pointer;
+        }
+        [data-theme="dark"] .dash-filter-clear {
+            background: rgba(239,68,68,0.18);
+            border-color: rgba(239,68,68,0.4);
+            color: #fca5a5;
+        }
+        #dash-model-input {
+            padding: 0.3rem 0.6rem;
+            border: 1px solid var(--table-border);
+            border-radius: 6px;
+            font-size: 0.85rem;
+            background: var(--card-bg, #fff);
+            color: var(--text-color);
+        }
+        #dash-model-input:focus {
+            outline: none;
+            border-color: var(--primary, #4f46e5);
+            box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.15);
+        }
+        .dash-model-suggestions {
+            position: absolute;
+            z-index: 100;
+            margin-top: 2px;
+            background: var(--card-bg, #fff);
+            border: 1px solid var(--table-border);
+            border-radius: 8px;
+            box-shadow: 0 8px 24px rgba(15, 23, 42, 0.18);
+            min-width: 360px;
+            max-width: 540px;
+            max-height: 360px;
+            overflow-y: auto;
+            padding: 0.3rem;
+        }
+        [data-theme="dark"] .dash-model-suggestions {
+            background: #1f2937;
+            border-color: #374151;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+        }
+        .dash-model-suggestion {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            width: 100%;
+            padding: 0.45rem 0.6rem;
+            border: none;
+            background: transparent;
+            color: var(--text-color);
+            text-align: left;
+            font-size: 0.85rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-family: inherit;
+        }
+        .dash-model-suggestion:hover,
+        .dash-model-suggestion:focus {
+            background: rgba(79, 70, 229, 0.10);
+            outline: none;
+        }
+        [data-theme="dark"] .dash-model-suggestion:hover,
+        [data-theme="dark"] .dash-model-suggestion:focus {
+            background: rgba(129, 140, 248, 0.15);
+        }
+        .dash-model-suggestion-cat {
+            font-size: 1rem;
+            flex-shrink: 0;
+            width: 1.4rem;
+            text-align: center;
+        }
+        .dash-model-suggestion-label {
+            flex: 1;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        .dash-model-suggestion-meta {
+            color: var(--muted-color, #6b7280);
+            font-family: 'SF Mono', 'Cascadia Mono', Consolas, monospace;
+            font-size: 0.75rem;
+            flex-shrink: 0;
+        }
+        .dash-hero {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        .dash-hero-card {
+            position: relative;
+            padding: 1.25rem 1.5rem;
+            border-radius: 14px;
+            color: white;
+            overflow: hidden;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .dash-hero-card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(0,0,0,0.16); }
+        .dash-hero-card .dash-hero-icon { font-size: 1.6rem; opacity: 0.85; margin-bottom: 0.25rem; display: block; }
+        .dash-hero-card .dash-hero-label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.6px; opacity: 0.85; font-weight: 600; }
+        .dash-hero-card .dash-hero-value { font-size: 1.85rem; font-weight: 800; line-height: 1.1; margin-top: 0.4rem; }
+        .dash-hero-card .dash-hero-sub { font-size: 0.75rem; opacity: 0.85; margin-top: 0.25rem; }
+        .dash-hero-card.gradient-purple { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        .dash-hero-card.gradient-green { background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); }
+        .dash-hero-card.gradient-orange { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); }
+        .dash-hero-card.gradient-blue { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); }
+        .dash-hero-card.gradient-gold { background: linear-gradient(135deg, #f7971e 0%, #ffd200 100%); }
+        .dash-hero-card.gradient-teal { background: linear-gradient(135deg, #0d9488 0%, #14b8a6 100%); }
+
+        .dash-grid-2 { display: grid; grid-template-columns: 1.4fr 1fr; gap: 1.5rem; margin-bottom: 1.5rem; }
+        .dash-grid-2 > .section { margin-bottom: 0; }
+        @media (max-width: 1024px) { .dash-grid-2 { grid-template-columns: 1fr; } }
+
+        .cat-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+            gap: 0.85rem;
+        }
+        .cat-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            padding: 1rem 1rem 0.85rem;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 1px 3px var(--shadow);
+        }
+        .cat-card:hover { transform: translateY(-2px); box-shadow: 0 4px 12px var(--shadow-hover); }
+        .cat-card .cat-icon {
+            position: absolute;
+            top: 0.85rem;
+            right: 0.85rem;
+            font-size: 1.6rem;
+            opacity: 0.35;
+        }
+        .cat-card .cat-name {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            color: var(--text-muted, #6b7280);
+            font-weight: 700;
+        }
+        .cat-card .cat-count {
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: var(--text-color);
+            margin-top: 0.2rem;
+        }
+        .cat-card .cat-avg {
+            font-size: 0.78rem;
+            color: var(--text-muted, #6b7280);
+            margin-top: 0.4rem;
+        }
+        .cat-card .cat-upside {
+            margin-top: 0.6rem;
+            padding-top: 0.6rem;
+            border-top: 1px dashed var(--card-border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.75rem;
+        }
+        .cat-card .cat-upside-label { color: var(--text-muted, #6b7280); }
+        .cat-card .cat-upside-value { font-weight: 700; color: #16a34a; }
+        .cat-card.cat-gpu { border-top: 3px solid #667eea; }
+        .cat-card.cat-cpu { border-top: 3px solid #764ba2; }
+        .cat-card.cat-ssd { border-top: 3px solid #f59e0b; }
+        .cat-card.cat-ram { border-top: 3px solid #ef4444; }
+        .cat-card.cat-psu { border-top: 3px solid #10b981; }
+        .cat-card.cat-case { border-top: 3px solid #a855f7; }
+        .cat-card.cat-motherboard { border-top: 3px solid #ec4899; }
+        .cat-card.cat-monitor { border-top: 3px solid #14b8a6; }
+        .cat-card.cat-camera { border-top: 3px solid #f97316; }
+        .cat-card.cat-lens { border-top: 3px solid #f43f5e; }
+        .cat-card.cat-console { border-top: 3px solid #6366f1; }
+
+        .chart-tall { height: 320px; position: relative; }
+        .chart-medium { height: 240px; position: relative; }
+        .chart-short { height: 180px; position: relative; }
+
+        .deals-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+        }
+        .deals-table th, .deals-table td {
+            padding: 0.5rem 0.6rem;
+            text-align: left;
+            border-bottom: 1px solid var(--table-border, #eee);
+        }
+        .deals-table th {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-muted, #6b7280);
+            font-weight: 700;
+        }
+        .deals-table .deal-thumb {
+            width: 44px; height: 44px;
+            object-fit: cover;
+            border-radius: 6px;
+            background: #f1f5f9;
+        }
+        .deals-table .deal-thumb-placeholder {
+            display: inline-flex; align-items: center; justify-content: center;
+            width: 44px; height: 44px; border-radius: 6px;
+            background: var(--card-border); color: var(--text-muted);
+        }
+        .deals-table .pct-pill {
+            display: inline-block;
+            padding: 0.15rem 0.5rem;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 0.75rem;
+        }
+        .deals-table .pct-pill.up { background: #dcfce7; color: #166534; }
+        .deals-table .pct-pill.down { background: #fee2e2; color: #991b1b; }
+        [data-theme="dark"] .deals-table .pct-pill.up { background: rgba(34,197,94,0.18); color: #86efac; }
+        [data-theme="dark"] .deals-table .pct-pill.down { background: rgba(239,68,68,0.18); color: #fca5a5; }
+        .deals-table tr:hover { background: rgba(99,102,241,0.04); }
+        .deals-table a { color: var(--text-color); text-decoration: none; }
+        .deals-table a:hover { text-decoration: underline; }
+
+        .dash-section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 0.75rem;
+        }
+        .dash-section-header h2 { margin: 0; }
+        .dash-section-header .dash-section-sub {
+            color: var(--text-muted, #6b7280);
+            font-size: 0.85rem;
+        }
+        .dash-scroll-x { overflow-x: auto; }
+        .dash-flex-row { display: flex; gap: 1.5rem; flex-wrap: wrap; }
+        .dash-flex-row > .section { flex: 1; min-width: 320px; margin-bottom: 0; }
+
+        .match-bar {
+            height: 4px; background: var(--card-border); border-radius: 2px; margin-top: 0.35rem; overflow: hidden;
+        }
+        .match-bar > span { display: block; height: 100%; background: linear-gradient(90deg, #16a34a, #4ade80); }
+        [data-theme="dark"] .cat-card { background: rgba(255,255,255,0.03); }
+        [data-theme="dark"] .cat-card .cat-count { color: #f1f5f9; }
+        [data-theme="dark"] .cat-card .cat-upside-value { color: #4ade80; }
+        [data-theme="dark"] .deals-table tr:hover { background: rgba(255,255,255,0.04); }
+        [data-theme="dark"] .match-bar { background: rgba(255,255,255,0.08); }
+
+        /* ---- Filter icon button (shared) ----
+           Originally only on gpu.html; now defined globally so any
+           category page (GPU, SSD, ...) can use the same pattern. Each
+           page picks its own color scheme via a modifier class
+           (e.g., .filter-icon-btn.interface-nvme) without redefining
+           the base look. */
+        .filter-icon-bar {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            vertical-align: middle;
+        }
+        .filter-icon-btn {
+            position: relative;
+            width: 42px;
+            height: 42px;
+            border: 2px solid #667eea;
+            border-radius: 12px;
+            background: rgba(102, 126, 234, 0.08);
+            color: #667eea;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            outline: none;
+            padding: 0;
+            flex: 0 0 auto;
+        }
+        .filter-icon-btn:hover,
+        .filter-icon-btn:focus-visible {
+            transform: translateY(-3px) scale(1.1);
+            border-color: #764ba2;
+            background: rgba(118, 75, 162, 0.18);
+            color: #764ba2;
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.35);
+        }
+        .filter-icon-btn.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-color: #764ba2;
+            color: #fff;
+            animation: iconGlow 1.6s ease-in-out infinite alternate;
+        }
+        .filter-icon-btn svg {
+            width: 22px;
+            height: 22px;
+            pointer-events: none;
+        }
+        @keyframes iconGlow {
+            from { box-shadow: 0 4px 12px rgba(102, 126, 234, 0.5); }
+            to   { box-shadow: 0 6px 22px rgba(118, 75, 162, 0.75); }
+        }
+        /* Shared spinner animation for loading overlays (GPU, SSD,
+           motherboards, ...). Page-level overlays just reference
+           `animation: spin 1s linear infinite` and the rule applies. */
+        @keyframes spin { to { transform: rotate(360deg); } }
+        [data-theme="dark"] .filter-icon-btn {
+            background: rgba(102, 126, 234, 0.18);
+        }
     </style>
 </head>
 <body>
@@ -1307,6 +1957,10 @@
     localStorage.setItem('ss_lang', currentLang);
     window.translations = translations;
     window.currentLang = currentLang;
+
+    // Server-injected toggle defaults (per-role, layered with per-user
+    // localStorage overrides). Read by addHideUnmatchedParam() below.
+    window.userToggleDefaults = {{ user_toggle_defaults | tojson }};
     const LANG_NAMES = {en: 'EN', lv: 'LV'};
     const LANG_ICONS = {en: '🇬🇧', lv: '🇱🇻'};
 
@@ -1359,12 +2013,18 @@
 
     async function renderAuthNav() {
         try {
-            const resp = await fetch('/api/auth/me', {credentials: 'same-origin'});
+            // cache: 'no-store' bypasses any HTTP/browser cache so the
+            // nav reflects the current session immediately after login/logout.
+            // The endpoint returns 200 with {authenticated: false, user: null}
+            // when no user is logged in — this avoids 4xx console noise
+            // (browsers log all 4xx responses to the console by design).
+            const resp = await fetch('/api/auth/me', {credentials: 'same-origin', cache: 'no-store'});
             const container = document.getElementById('auth-nav');
             const wikiLink = document.getElementById('nav-wiki');
             if (!container) return;
-            if (resp.ok) {
-                const user = await resp.json();
+            const data = await resp.json();
+            const user = data && data.user;
+            if (user) {
                 const isAdmin = user.role === 'admin';
                 if (wikiLink) wikiLink.style.display = isAdmin ? 'inline' : 'none';
                 container.innerHTML = `
@@ -1511,6 +2171,102 @@
             closeSharedListingModal();
         }
     });
+
+    // Global toast helper — used by admin / GPU / motherboard pages.
+    // Replaces the old `alert(...)` calls with a non-blocking, auto-
+    // dismissing bottom-right notification. Four kinds: success, error,
+    // warn, info.
+    (function() {
+        if (window.showToast) return;
+        const palette = {
+            success: {bg: '#16a34a', icon: '✅'},
+            error:   {bg: '#dc2626', icon: '❌'},
+            warn:    {bg: '#f59e0b', icon: '⚠️'},
+            info:    {bg: '#3b82f6', icon: 'ℹ️'}
+        };
+        window.showToast = function(message, kind) {
+            const p = palette[kind] || palette.info;
+            const el = document.createElement('div');
+            el.style.cssText = [
+                'position: fixed', 'bottom: 24px', 'right: 24px',
+                'z-index: 5000', 'min-width: 240px', 'max-width: 360px',
+                'padding: 0.75rem 1rem', 'border-radius: 8px',
+                'background: ' + p.bg, 'color: #fff',
+                'box-shadow: 0 6px 20px rgba(0,0,0,0.25)',
+                'display: flex', 'align-items: center', 'gap: 0.5rem',
+                'font-size: 0.95rem', 'line-height: 1.3',
+                'animation: toastSlideIn 0.25s ease-out',
+                'cursor: pointer'
+            ].join(';');
+            el.innerHTML = '<span style="font-size: 1.1rem;">' + p.icon + '</span>' +
+                           '<span style="flex: 1;">' + (message || '') + '</span>';
+            el.addEventListener('click', () => el.remove());
+            // Inject the slide-in animation if not already present
+            if (!document.getElementById('toast-style')) {
+                const style = document.createElement('style');
+                style.id = 'toast-style';
+                style.textContent = '@keyframes toastSlideIn{from{transform:translateY(20px);opacity:0}to{transform:translateY(0);opacity:1}}';
+                document.head.appendChild(style);
+            }
+            document.body.appendChild(el);
+            setTimeout(() => {
+                el.style.transition = 'opacity 0.3s, transform 0.3s';
+                el.style.opacity = '0';
+                el.style.transform = 'translateY(10px)';
+                setTimeout(() => el.remove(), 350);
+            }, 3500);
+        };
+    })();
+
+    // Global HTML escape helper. Per-page templates often define their
+    // own `escapeHtml`; this one is the universal fallback so the
+    // dashboard filter bar (and any future shared widget) can use it
+    // without redefining it.
+    if (typeof window.escapeHtml !== 'function') {
+        window.escapeHtml = function(text) {
+            if (text === null || text === undefined) return '';
+            return String(text)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#39;');
+        };
+    }
+
+    // Global helper: add ?hide_unmatched=1 to listing API URLs if the
+    // user's `hideUnmatchedListings` toggle is on. Each listing page
+    // can wrap its fetch() with this:
+    //     fetch(addHideUnmatchedParam('/api/cases?limit=200'))
+    // The toggle value comes from the server-injected
+    // `user_toggle_defaults` (role default) and is overridden by the
+    // per-user localStorage key `hideUnmatchedListings` (set in the
+    // admin panel's "per-user" section).
+    (function() {
+        if (window.addHideUnmatchedParam) return;
+        function resolveHideUnmatched() {
+            // 1. URL param wins
+            const url = new URL(window.location.href);
+            const urlParam = url.searchParams.get('hide_unmatched');
+            if (urlParam !== null) return urlParam === '1' || urlParam === 'true';
+            // 2. Per-user localStorage override
+            const stored = localStorage.getItem('hideUnmatchedListings');
+            if (stored !== null) return stored === 'true';
+            // 3. Server-injected role default
+            const def = (window.userToggleDefaults || {}).hideUnmatchedListings;
+            return !!def;
+        }
+        window.shouldHideUnmatched = resolveHideUnmatched;
+        window.addHideUnmatchedParam = function(url) {
+            if (!resolveHideUnmatched()) return url;
+            // Don't override an explicit hide_unmatched=0
+            if (/[?&]hide_unmatched=0(&|$)/.test(url)) return url;
+            const sep = url.includes('?') ? '&' : '?';
+            // If hide_unmatched=1 is already in the URL, leave it
+            if (/[?&]hide_unmatched=1(&|$)/.test(url)) return url;
+            return url + sep + 'hide_unmatched=1';
+        };
+    })();
     </script>
 
     {% block scripts %}{% endblock %}

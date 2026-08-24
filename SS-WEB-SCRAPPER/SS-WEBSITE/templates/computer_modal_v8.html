@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Computer Modal v8 — Tabbed Modal · SS-Crawler</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: #f5f5f7; color: #1c1c1e;
+  min-height: 100vh; padding: 20px;
+}
+.page-bg { max-width: 1000px; margin: 0 auto; }
+.demo-header { padding: 8px 0 16px; border-bottom: 1px solid #e5e5ea; margin-bottom: 16px; }
+.demo-header h1 { font-size: 18px; font-weight: 800; }
+.demo-header .v-tag { display: inline-block; font-size: 10px; padding: 2px 8px; background: #ff3b30; color: white; border-radius: 10px; margin-left: 8px; vertical-align: middle; }
+.demo-header p { font-size: 12px; color: #6e6e73; margin-top: 4px; }
+.listing-card { display: flex; gap: 14px; padding: 14px; border: 1px solid #e5e5ea; border-radius: 10px; margin-bottom: 12px; cursor: pointer; transition: all .15s; background: white; }
+.listing-card:hover { border-color: #ff3b30; }
+.listing-card .thumb { width: 60px; height: 60px; background: #f5f5f7; border-radius: 6px; flex-shrink: 0; display: grid; place-items: center; font-size: 24px; }
+.listing-card .info { flex: 1; }
+.listing-card .title { font-weight: 700; font-size: 13px; margin-bottom: 4px; }
+.listing-card .meta { font-size: 11px; color: #6e6e73; }
+.listing-card .price { font-weight: 800; font-size: 14px; color: #34c759; }
+.listing-card .open-btn { background: #ff3b30; color: white; border: none; padding: 8px 12px; border-radius: 6px; font-size: 11px; font-weight: 600; cursor: pointer; align-self: center; }
+
+/* === TABBED MODAL === */
+.tb-backdrop { position: fixed; inset: 0; background: rgba(0,0,0,.4); backdrop-filter: blur(4px); z-index: 100; display: none; }
+.tb-backdrop.open { display: block; }
+.tb {
+  position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+  width: 820px; height: 620px; max-width: 94vw; max-height: 92vh;
+  background: white; border-radius: 14px; z-index: 101; display: none;
+  box-shadow: 0 25px 60px rgba(0,0,0,.25);
+  flex-direction: column; overflow: hidden;
+}
+.tb.open { display: flex; animation: tbIn .25s ease-out; }
+@keyframes tbIn { from { opacity: 0; transform: translate(-50%, -45%); } to { opacity: 1; transform: translate(-50%, -50%); } }
+
+.tb-header {
+  display: flex; align-items: center; gap: 14px;
+  padding: 12px 18px; border-bottom: 1px solid #e5e5ea; flex-shrink: 0;
+  background: linear-gradient(180deg, #fafafa 0%, white 100%);
+}
+.tb-ico { width: 44px; height: 44px; background: #f5f5f7; border-radius: 8px; display: grid; place-items: center; font-size: 24px; }
+.tb-titles { flex: 1; }
+.tb-titles h3 { font-size: 15px; font-weight: 700; margin-bottom: 2px; }
+.tb-titles p { font-size: 11px; color: #6e6e73; }
+.tb-close { width: 30px; height: 30px; border-radius: 6px; background: #f5f5f7; border: none; color: #6e6e73; cursor: pointer; font-size: 16px; }
+.tb-close:hover { background: #e5e5ea; }
+
+.tb-tabs {
+  display: flex; gap: 0; padding: 0 18px; background: white;
+  border-bottom: 1px solid #e5e5ea; flex-shrink: 0;
+  position: relative;
+}
+.tb-tab {
+  padding: 12px 16px; font-size: 13px; font-weight: 600; color: #6e6e73;
+  cursor: pointer; position: relative; display: flex; align-items: center; gap: 6px;
+  border-bottom: 2px solid transparent; transition: all .15s;
+}
+.tb-tab:hover { color: #1c1c1e; }
+.tb-tab.active { color: #ff3b30; }
+.tb-tab.active::after {
+  content: ''; position: absolute; left: 12px; right: 12px; bottom: -1px;
+  height: 2px; background: #ff3b30; border-radius: 1px;
+}
+.tb-tab .badge {
+  background: #f5f5f7; color: #6e6e73; font-size: 10px; font-weight: 700;
+  padding: 1px 6px; border-radius: 8px; min-width: 18px; text-align: center;
+}
+.tb-tab.active .badge { background: #ff3b30; color: white; }
+.tb-tab.warn .badge { background: #ff9500; color: white; }
+
+.tb-body { flex: 1; overflow-y: auto; padding: 20px 24px; }
+.tb-pane { display: none; animation: paneIn .2s; }
+.tb-pane.active { display: block; }
+@keyframes paneIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+
+/* Specs pane */
+.specs-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 24px; }
+.spec-item { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #f5f5f7; font-size: 13px; }
+.spec-item .k { color: #6e6e73; }
+.spec-item .v { font-weight: 600; }
+.spec-item .v.ok { color: #34c759; }
+.spec-item .v.warn { color: #ff9500; }
+
+.specs-section { margin-top: 20px; }
+.specs-section h4 { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: #6e6e73; margin-bottom: 8px; }
+.specs-img {
+  width: 100%; aspect-ratio: 16/8; background: linear-gradient(135deg, #f5f5f7, #e5e5ea);
+  border-radius: 10px; display: grid; place-items: center; font-size: 64px;
+  margin-bottom: 16px;
+}
+
+/* Components pane */
+.comp-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; }
+.comp-card {
+  background: #f5f5f7; border: 2px solid transparent; border-radius: 10px;
+  padding: 14px 12px; text-align: center; transition: all .15s;
+}
+.comp-card:hover { background: #ececf0; }
+.comp-card.warn { border-color: #ff9500; background: #fff8e6; }
+.comp-card .ic { font-size: 28px; margin-bottom: 6px; }
+.comp-card .nm { font-weight: 700; font-size: 13px; margin-bottom: 2px; }
+.comp-card .st { font-size: 10.5px; color: #6e6e73; }
+.comp-card.warn .st { color: #ff9500; font-weight: 600; }
+
+/* Flag pane */
+.flag-block { background: #f5f5f7; border-radius: 10px; padding: 16px; }
+.flag-block h4 { font-size: 13px; font-weight: 700; margin-bottom: 10px; }
+.flag-cats { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; margin-bottom: 12px; }
+.flag-cats button { padding: 10px 8px; background: white; border: 1.5px solid #e5e5ea; border-radius: 8px; font-size: 12px; font-weight: 600; cursor: pointer; }
+.flag-cats button.active { background: #ff3b30; color: white; border-color: #ff3b30; }
+.flag-comps { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; margin-bottom: 12px; }
+.flag-comps label { display: flex; flex-direction: column; align-items: center; padding: 10px 4px; background: white; border: 1.5px solid #e5e5ea; border-radius: 8px; font-size: 10.5px; cursor: pointer; gap: 4px; font-weight: 600; }
+.flag-comps label .ic { font-size: 18px; }
+.flag-comps label.checked { background: #fff0f0; border-color: #ff3b30; color: #ff3b30; }
+.flag-msg { width: 100%; padding: 10px 12px; background: white; border: 1.5px solid #e5e5ea; border-radius: 8px; font-size: 12.5px; font-family: inherit; outline: none; min-height: 70px; resize: vertical; }
+.flag-msg:focus { border-color: #ff3b30; }
+
+/* History pane */
+.timeline { position: relative; padding-left: 20px; }
+.timeline::before { content: ''; position: absolute; left: 6px; top: 4px; bottom: 4px; width: 2px; background: #e5e5ea; }
+.tl-item { position: relative; padding: 0 0 18px 12px; font-size: 13px; }
+.tl-item::before { content: ''; position: absolute; left: -19px; top: 4px; width: 12px; height: 12px; background: white; border: 2px solid #ff3b30; border-radius: 50%; }
+.tl-item.muted::before { border-color: #c7c7cc; }
+.tl-item .when { font-size: 11px; color: #6e6e73; margin-bottom: 2px; }
+.tl-item .who { font-weight: 600; }
+.tl-item .what { color: #1c1c1e; }
+
+.tb-footer {
+  padding: 12px 18px; background: #fafafa; border-top: 1px solid #e5e5ea;
+  display: flex; gap: 8px; align-items: center; flex-shrink: 0;
+}
+.tb-footer .helper { font-size: 11px; color: #6e6e73; flex: 1; }
+.tb-btn {
+  padding: 9px 16px; border-radius: 8px; font-size: 12.5px; font-weight: 600; cursor: pointer;
+  border: 1px solid #e5e5ea; background: white; color: #1c1c1e;
+}
+.tb-btn:hover { background: #f5f5f7; }
+.tb-btn.primary { background: #ff3b30; color: white; border-color: #ff3b30; }
+.tb-btn.primary:hover { background: #d70015; }
+.tb-btn.primary:disabled { opacity: .4; cursor: not-allowed; }
+.tb-btn .kbd { background: rgba(0,0,0,.1); padding: 1px 5px; border-radius: 3px; font-size: 10px; margin-left: 4px; }
+</style>
+</head>
+<body>
+<div class="page-bg">
+  <div class="demo-header">
+    <h1>Computer Listings <span class="v-tag">v8 — Tabbed Modal</span></h1>
+    <p>4 tabs: Specs · Components · Flag · History · macOS/iOS aesthetic</p>
+  </div>
+
+  <div class="listing-card" onclick="openTb()">
+    <div class="thumb">🖥️</div>
+    <div class="info">
+      <div class="title">Gaming PC — RTX 4070 / i7-13700K / 32GB DDR5</div>
+      <div class="meta">ss.com · Rīga · Custom build · 2 days ago</div>
+    </div>
+    <div class="price">€1,850</div>
+    <button class="open-btn">Open</button>
+  </div>
+</div>
+
+<div class="tb-backdrop" id="tb-bd" onclick="closeTb()"></div>
+<div class="tb" id="tb">
+  <div class="tb-header">
+    <div class="tb-ico">🖥️</div>
+    <div class="tb-titles">
+      <h3>Gaming PC — RTX 4070 / i7-13700K / 32GB DDR5</h3>
+      <p>ss.com · Rīga · Custom build · #cmp_a7f3e2c1</p>
+    </div>
+    <button class="tb-close" onclick="closeTb()">✕</button>
+  </div>
+
+  <div class="tb-tabs">
+    <div class="tb-tab active" onclick="showTab(0, this)">📋 Specs</div>
+    <div class="tb-tab warn" onclick="showTab(1, this)">🧩 Components <span class="badge">3</span></div>
+    <div class="tb-tab" onclick="showTab(2, this)">🚩 Flag <span class="badge">0</span></div>
+    <div class="tb-tab" onclick="showTab(3, this)">📜 History</div>
+  </div>
+
+  <div class="tb-body">
+    <!-- Specs -->
+    <div class="tb-pane active" data-pane="0">
+      <div class="specs-img">🖥️</div>
+      <div class="specs-section">
+        <h4>Hardware</h4>
+        <div class="specs-grid">
+          <div class="spec-item"><span class="k">Motherboard</span><span class="v">ASUS ROG B760-F</span></div>
+          <div class="spec-item"><span class="k">CPU</span><span class="v ok">i7-13700K ✓</span></div>
+          <div class="spec-item"><span class="k">GPU</span><span class="v ok">RTX 4070 ✓</span></div>
+          <div class="spec-item"><span class="k">RAM</span><span class="v">32 GB DDR5-5600</span></div>
+          <div class="spec-item"><span class="k">Storage</span><span class="v">1 TB NVMe</span></div>
+          <div class="spec-item"><span class="k">PSU</span><span class="v warn">— not detected</span></div>
+        </div>
+      </div>
+      <div class="specs-section">
+        <h4>Seller & Location</h4>
+        <div class="specs-grid">
+          <div class="spec-item"><span class="k">Username</span><span class="v">rig_builder_riga</span></div>
+          <div class="spec-item"><span class="k">Rating</span><span class="v ok">4.8 ★ (47)</span></div>
+          <div class="spec-item"><span class="k">Location</span><span class="v">Rīga, LV</span></div>
+          <div class="spec-item"><span class="k">Posted</span><span class="v">2024-12-04</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Components -->
+    <div class="tb-pane" data-pane="1">
+      <div class="comp-cards">
+        <div class="comp-card"><div class="ic">🖥️</div><div class="nm">Motherboard</div><div class="st">detected</div></div>
+        <div class="comp-card warn"><div class="ic">⚙️</div><div class="nm">CPU</div><div class="st">⚠ needs review</div></div>
+        <div class="comp-card warn"><div class="ic">🎮</div><div class="nm">GPU</div><div class="st">⚠ possible misdetect</div></div>
+        <div class="comp-card"><div class="ic">💾</div><div class="nm">RAM</div><div class="st">detected</div></div>
+        <div class="comp-card warn"><div class="ic">💿</div><div class="nm">SSD</div><div class="st">⚠ size unclear</div></div>
+        <div class="comp-card"><div class="ic">🔌</div><div class="nm">PSU</div><div class="st">missing</div></div>
+        <div class="comp-card"><div class="ic">❄️</div><div class="nm">Cooling</div><div class="st">detected</div></div>
+        <div class="comp-card"><div class="ic">🖼️</div><div class="nm">Case</div><div class="st">detected</div></div>
+      </div>
+    </div>
+
+    <!-- Flag -->
+    <div class="tb-pane" data-pane="2">
+      <div class="flag-block">
+        <h4>🚩 Report an issue</h4>
+        <div class="flag-cats">
+          <button class="active" onclick="pickTbCat(this)">🔧 Scraper</button>
+          <button onclick="pickTbCat(this)">👤 Seller</button>
+          <button onclick="pickTbCat(this)">📌 Other</button>
+        </div>
+        <div class="flag-comps">
+          <label onclick="pickTbComp(this)"><input type="checkbox" hidden><span class="ic">🖥️</span>MB</label>
+          <label onclick="pickTbComp(this)"><input type="checkbox" hidden><span class="ic">⚙️</span>CPU</label>
+          <label onclick="pickTbComp(this)"><input type="checkbox" hidden><span class="ic">🎮</span>GPU</label>
+          <label onclick="pickTbComp(this)"><input type="checkbox" hidden><span class="ic">💾</span>RAM</label>
+          <label onclick="pickTbComp(this)"><input type="checkbox" hidden><span class="ic">💿</span>SSD</label>
+        </div>
+        <textarea class="flag-msg" placeholder="Describe the issue (optional)..."></textarea>
+      </div>
+    </div>
+
+    <!-- History -->
+    <div class="tb-pane" data-pane="3">
+      <div class="timeline">
+        <div class="tl-item">
+          <div class="when">2 days ago</div>
+          <div><span class="who">rig_builder_riga</span> · <span class="what">posted listing</span></div>
+        </div>
+        <div class="tl-item muted">
+          <div class="when">1 day ago</div>
+          <div><span class="who">scraper-bot</span> · <span class="what">indexed, 3 components flagged for review</span></div>
+        </div>
+        <div class="tl-item">
+          <div class="when">12 hours ago</div>
+          <div><span class="who">admin</span> · <span class="what">approved GPU detection</span></div>
+        </div>
+        <div class="tl-item muted">
+          <div class="when">4 hours ago</div>
+          <div><span class="who">user_8472</span> · <span class="what">viewed listing 3 times</span></div>
+        </div>
+        <div class="tl-item">
+          <div class="when">just now</div>
+          <div><span class="who">you</span> · <span class="what">opened this modal</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tb-footer">
+    <span class="helper" id="tb-helper">4 tabs · Tab ⇄ to switch</span>
+    <button class="tb-btn" onclick="closeTb()">Close <span class="kbd">Esc</span></button>
+    <button class="tb-btn primary" id="tb-submit" disabled onclick="alert('flag submitted')">Submit flag <span class="kbd">⌘↵</span></button>
+  </div>
+</div>
+
+<script>
+function openTb() {
+  document.getElementById('tb-bd').classList.add('open');
+  document.getElementById('tb').classList.add('open');
+  showTab(0, document.querySelector('.tb-tab'));
+}
+function closeTb() {
+  document.getElementById('tb-bd').classList.remove('open');
+  document.getElementById('tb').classList.remove('open');
+}
+function showTab(idx, el) {
+  document.querySelectorAll('.tb-tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  document.querySelectorAll('.tb-pane').forEach(p => p.classList.remove('active'));
+  document.querySelector(`.tb-pane[data-pane="${idx}"]`).classList.add('active');
+  const submit = document.getElementById('tb-submit');
+  submit.style.display = idx === 2 ? 'block' : 'none';
+  document.getElementById('tb-helper').textContent = idx === 0 ? 'Hardware specs and seller info' :
+    idx === 1 ? '3 components need attention' :
+    idx === 2 ? 'Select components and add details' :
+    'Activity timeline for this listing';
+}
+function pickTbCat(btn) {
+  document.querySelectorAll('.flag-cats button').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+function pickTbComp(label) {
+  const cb = label.querySelector('input');
+  cb.checked = !cb.checked;
+  label.classList.toggle('checked', cb.checked);
+  const count = document.querySelectorAll('.flag-comps input:checked').length;
+  document.getElementById('tb-submit').disabled = count === 0;
+}
+document.addEventListener('keydown', e => {
+  if (!document.getElementById('tb').classList.contains('open')) return;
+  if (e.key === 'Escape') closeTb();
+  if ((e.metaKey || e.ctrlKey) && e.key === 'ArrowRight') { e.preventDefault(); const tabs = document.querySelectorAll('.tb-tab'); const i = Array.from(tabs).findIndex(t => t.classList.contains('active')); tabs[(i+1) % tabs.length].click(); }
+  if ((e.metaKey || e.ctrlKey) && e.key === 'ArrowLeft') { e.preventDefault(); const tabs = document.querySelectorAll('.tb-tab'); const i = Array.from(tabs).findIndex(t => t.classList.contains('active')); tabs[(i-1+tabs.length) % tabs.length].click(); }
+});
+</script>
+</body>
+</html>

@@ -204,28 +204,35 @@ class GPUMatcher:
         if vram_mb and len(candidates) > 1:
             best_candidate = None
             best_score = 0.0
-            
-            # Check if listing has specific suffix (XT, Ti, Super, etc.)
-            has_xt = ' xt ' in f' {normalized} '
-            has_ti = ' ti ' in f' {normalized} '
-            has_super = 'super' in normalized
-            
+
+            # Suffix detection: look for variant tokens in the normalized text.
+            # We need to handle text without spaces (e.g. "asus7900xtx" → "xtx"
+            # at the end is the XTX indicator, not "xt" with spaces around it).
+            has_xt  = re.search(r'\bxt\b',  normalized) is not None
+            has_xtx = re.search(r'\bxtx\b', normalized) is not None
+            has_ti  = re.search(r'\bti\b',  normalized) is not None
+            has_super = re.search(r'\bsuper\b', normalized) is not None
+
             for gpu, name_score in candidates:
                 vram_score = self._get_vram_match_score(gpu.vram_gb, vram_mb)
-                
-                # Suffix matching bonus - if listing has XT/Ti/Super, prefer GPU with same suffix
+
+                # Suffix matching bonus - if listing has XT/Ti/Super/XTX, prefer
+                # GPU with same suffix. XTX gets priority over XT when both are
+                # present in the listing text (so "Asus 7900Xtx" → XTX, not XT).
                 suffix_bonus = 0.0
                 gpu_norm = normalize_text(gpu.model)
-                if has_xt and 'xt' in gpu_norm:
+                if has_xtx and 'xtx' in gpu_norm:
+                    suffix_bonus = 0.15
+                elif has_xt and 'xt' in gpu_norm and 'xtx' not in gpu_norm:
                     suffix_bonus = 0.1
                 elif has_ti and 'ti' in gpu_norm:
                     suffix_bonus = 0.1
                 elif has_super and 'super' in gpu_norm:
                     suffix_bonus = 0.1
-                
+
                 # Weight: name match 70%, VRAM match 30%, plus suffix bonus
                 combined_score = (name_score * 0.7) + (vram_score * 0.3) + suffix_bonus
-                
+
                 if combined_score > best_score:
                     best_score = combined_score
                     best_candidate = (gpu, name_score, vram_score)

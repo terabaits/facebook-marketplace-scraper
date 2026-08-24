@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Computer Modal v5 — Flag Wizard · SS-Crawler</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: #fafafa; color: #18181b;
+  min-height: 100vh; padding: 20px;
+}
+.page-bg { max-width: 1000px; margin: 0 auto; }
+.demo-header { padding: 8px 0 16px; border-bottom: 1px solid #e4e4e7; margin-bottom: 16px; }
+.demo-header h1 { font-size: 18px; font-weight: 800; }
+.demo-header .v-tag { display: inline-block; font-size: 10px; padding: 2px 8px; background: #06b6d4; color: white; border-radius: 10px; margin-left: 8px; vertical-align: middle; }
+.demo-header p { font-size: 12px; color: #71717a; margin-top: 4px; }
+.listing-card { display: flex; gap: 14px; padding: 14px; border: 1px solid #e4e4e7; border-radius: 10px; margin-bottom: 12px; cursor: pointer; transition: all .15s; background: white; }
+.listing-card:hover { border-color: #06b6d4; transform: translateY(-1px); box-shadow: 0 6px 16px -8px rgba(6,182,212,.3); }
+.listing-card .thumb { width: 60px; height: 60px; background: #f4f4f5; border-radius: 6px; flex-shrink: 0; display: grid; place-items: center; font-size: 24px; }
+.listing-card .info { flex: 1; }
+.listing-card .title { font-weight: 700; font-size: 13px; margin-bottom: 4px; }
+.listing-card .meta { font-size: 11px; color: #71717a; }
+.listing-card .price { font-weight: 800; font-size: 14px; color: #059669; }
+.listing-card .open-btn { background: #06b6d4; color: white; border: none; padding: 8px 12px; border-radius: 6px; font-size: 11px; font-weight: 600; cursor: pointer; align-self: center; }
+.listing-card .open-btn:hover { background: #0891b2; }
+
+/* === WIZARD === */
+.wiz-backdrop { position: fixed; inset: 0; background: rgba(0,0,0,.45); backdrop-filter: blur(3px); z-index: 100; display: none; }
+.wiz-backdrop.open { display: block; }
+.wiz {
+  position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+  width: 540px; max-width: 92vw; max-height: 90vh;
+  background: white; border-radius: 16px; z-index: 101; display: none;
+  box-shadow: 0 25px 60px rgba(0,0,0,.25);
+  flex-direction: column; overflow: hidden;
+}
+.wiz.open { display: flex; animation: wizIn .25s ease-out; }
+@keyframes wizIn { from { opacity: 0; transform: translate(-50%, -45%); } to { opacity: 1; transform: translate(-50%, -50%); } }
+
+.wiz-progress {
+  display: flex; align-items: center; justify-content: center; gap: 0;
+  padding: 18px 24px 14px; background: white; border-bottom: 1px solid #f4f4f5;
+  position: relative;
+}
+.wiz-step-dot {
+  width: 28px; height: 28px; border-radius: 50%;
+  background: #f4f4f5; color: #a1a1aa; font-size: 12px; font-weight: 700;
+  display: grid; place-items: center; transition: all .25s;
+  border: 2px solid #e4e4e7;
+}
+.wiz-step-dot.done { background: #06b6d4; color: white; border-color: #06b6d4; }
+.wiz-step-dot.active { background: white; color: #06b6d4; border-color: #06b6d4; transform: scale(1.1); box-shadow: 0 0 0 4px rgba(6,182,212,.15); }
+.wiz-step-line { flex: 0 0 60px; height: 2px; background: #e4e4e7; margin: 0 -2px; }
+.wiz-step-line.done { background: #06b6d4; }
+
+.wiz-head { padding: 4px 24px 12px; }
+.wiz-head h2 { font-size: 18px; font-weight: 800; margin-bottom: 4px; }
+.wiz-head p { font-size: 12.5px; color: #71717a; }
+
+.wiz-body { flex: 1; padding: 0 24px 18px; overflow-y: auto; }
+
+.wiz-pane { display: none; }
+.wiz-pane.active { display: block; animation: paneIn .25s; }
+@keyframes paneIn { from { opacity: 0; transform: translateX(8px); } to { opacity: 1; transform: translateX(0); } }
+
+.wiz-cat-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-top: 8px; }
+.wiz-cat-card {
+  padding: 18px 12px; border: 2px solid #e4e4e7; border-radius: 12px;
+  cursor: pointer; transition: all .15s; text-align: center; background: white;
+}
+.wiz-cat-card:hover { border-color: #06b6d4; transform: translateY(-2px); }
+.wiz-cat-card.selected { border-color: #06b6d4; background: #ecfeff; }
+.wiz-cat-card .ico { font-size: 28px; margin-bottom: 6px; }
+.wiz-cat-card .nm { font-weight: 700; font-size: 13px; margin-bottom: 2px; }
+.wiz-cat-card .ds { font-size: 10.5px; color: #71717a; }
+
+.wiz-comp-list { display: flex; flex-direction: column; gap: 8px; margin-top: 8px; }
+.wiz-comp-row {
+  display: flex; align-items: center; gap: 12px;
+  padding: 12px 14px; border: 2px solid #e4e4e7; border-radius: 10px;
+  cursor: pointer; transition: all .15s;
+}
+.wiz-comp-row:hover { border-color: #06b6d4; }
+.wiz-comp-row.selected { border-color: #06b6d4; background: #ecfeff; }
+.wiz-comp-row .ic { font-size: 22px; }
+.wiz-comp-row .nm { font-weight: 600; font-size: 13px; flex: 1; }
+.wiz-comp-row .ch { width: 22px; height: 22px; border: 2px solid #d4d4d8; border-radius: 6px; display: grid; place-items: center; }
+.wiz-comp-row.selected .ch { background: #06b6d4; border-color: #06b6d4; color: white; }
+
+.wiz-msg-box {
+  background: #f4f4f5; border-radius: 8px; padding: 12px 14px;
+  font-size: 12.5px; line-height: 1.6; margin-top: 8px;
+  font-family: "JetBrains Mono", Consolas, monospace;
+  white-space: pre-wrap; color: #3f3f46; min-height: 80px;
+}
+.wiz-msg-box .tag { background: #06b6d4; color: white; padding: 1px 6px; border-radius: 3px; font-size: 10.5px; }
+
+.wiz-textarea {
+  width: 100%; margin-top: 10px; padding: 10px 12px;
+  border: 2px solid #e4e4e7; border-radius: 8px;
+  font-size: 12.5px; font-family: inherit; outline: none; resize: vertical; min-height: 70px;
+}
+.wiz-textarea:focus { border-color: #06b6d4; }
+
+.wiz-confirm { text-align: center; padding: 8px 0; }
+.wiz-confirm .ok-circle {
+  width: 64px; height: 64px; border-radius: 50%; background: #d1fae5;
+  display: grid; place-items: center; margin: 8px auto 14px; font-size: 32px;
+  animation: pop .35s cubic-bezier(.34, 1.56, .64, 1);
+}
+@keyframes pop { from { transform: scale(0); } to { transform: scale(1); } }
+.wiz-confirm h3 { font-size: 18px; font-weight: 800; margin-bottom: 4px; }
+.wiz-confirm p { font-size: 12.5px; color: #71717a; }
+.wiz-confirm .summary { background: #f4f4f5; border-radius: 8px; padding: 10px 14px; margin-top: 14px; text-align: left; font-size: 12px; }
+.wiz-confirm .summary div { display: flex; justify-content: space-between; padding: 4px 0; }
+.wiz-confirm .summary div span:first-child { color: #71717a; }
+.wiz-confirm .summary div span:last-child { font-weight: 600; }
+
+.wiz-footer {
+  padding: 14px 24px; background: #fafafa; border-top: 1px solid #e4e4e7;
+  display: flex; align-items: center; gap: 10px; flex-shrink: 0;
+}
+.wiz-footer .helper { font-size: 11px; color: #71717a; flex: 1; }
+.wiz-btn {
+  padding: 10px 18px; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer;
+  border: 1px solid #e4e4e7; background: white; color: #18181b;
+  display: flex; align-items: center; gap: 6px;
+}
+.wiz-btn:hover { background: #f4f4f5; }
+.wiz-btn.primary { background: #06b6d4; color: white; border-color: #06b6d4; }
+.wiz-btn.primary:hover { background: #0891b2; }
+.wiz-btn.primary:disabled { opacity: .5; cursor: not-allowed; }
+.wiz-btn .kbd { background: rgba(0,0,0,.1); padding: 1px 5px; border-radius: 3px; font-size: 10px; }
+.wiz-btn.primary .kbd { background: rgba(255,255,255,.2); }
+
+.wiz-context {
+  position: fixed; top: 50%; left: calc(50% + 290px); transform: translateY(-50%);
+  width: 240px; background: white; border-radius: 12px; padding: 14px;
+  border: 1px solid #e4e4e7; z-index: 101; display: none;
+  box-shadow: 0 8px 24px rgba(0,0,0,.08);
+}
+.wiz-context.open { display: block; }
+.wiz-context h4 { font-size: 11px; text-transform: uppercase; letter-spacing: .08em; color: #71717a; margin-bottom: 8px; }
+.wiz-context .mini-card { display: flex; gap: 10px; }
+.wiz-context .mini-card .img { width: 50px; height: 50px; background: #f4f4f5; border-radius: 6px; display: grid; place-items: center; font-size: 20px; }
+.wiz-context .mini-card .info { flex: 1; font-size: 11px; }
+.wiz-context .mini-card .info .ttl { font-weight: 700; font-size: 12px; margin-bottom: 2px; line-height: 1.3; }
+.wiz-context .mini-card .info .pr { color: #059669; font-weight: 700; margin-top: 2px; }
+.wiz-context .tip { font-size: 10.5px; color: #71717a; margin-top: 10px; padding-top: 10px; border-top: 1px solid #f4f4f5; line-height: 1.5; }
+</style>
+</head>
+<body>
+<div class="page-bg">
+  <div class="demo-header">
+    <h1>Computer Listings <span class="v-tag">v5 — Flag Wizard</span></h1>
+    <p>4-step guided flow · Category → Components → Message → Confirm · Typeform-style</p>
+  </div>
+
+  <div class="listing-card" onclick="openWiz(0)">
+    <div class="thumb">🖥️</div>
+    <div class="info">
+      <div class="title">Gaming PC — RTX 4070 / i7-13700K / 32GB DDR5</div>
+      <div class="meta">ss.com · Rīga · Custom build · 2 days ago</div>
+    </div>
+    <div class="price">€1,850</div>
+    <button class="open-btn">Flag this</button>
+  </div>
+</div>
+
+<div class="wiz-backdrop" id="wiz-bd" onclick="closeWiz()"></div>
+<div class="wiz" id="wiz">
+  <div class="wiz-progress">
+    <div class="wiz-step-dot active" data-step="1">1</div>
+    <div class="wiz-step-line"></div>
+    <div class="wiz-step-dot" data-step="2">2</div>
+    <div class="wiz-step-line"></div>
+    <div class="wiz-step-dot" data-step="3">3</div>
+    <div class="wiz-step-line"></div>
+    <div class="wiz-step-dot" data-step="4">4</div>
+  </div>
+
+  <div class="wiz-head">
+    <h2 id="wiz-title">Choose a category</h2>
+    <p id="wiz-sub">What kind of issue are you reporting?</p>
+  </div>
+
+  <div class="wiz-body">
+    <!-- Step 1: Category -->
+    <div class="wiz-pane active" data-pane="1">
+      <div class="wiz-cat-grid">
+        <div class="wiz-cat-card" onclick="selectCat(this, 'SCRAPER')">
+          <div class="ico">🔧</div>
+          <div class="nm">Scraper issue</div>
+          <div class="ds">Component detection problem</div>
+        </div>
+        <div class="wiz-cat-card" onclick="selectCat(this, 'SELLER')">
+          <div class="ico">👤</div>
+          <div class="nm">Seller issue</div>
+          <div class="ds">Profile or behavior problem</div>
+        </div>
+        <div class="wiz-cat-card" onclick="selectCat(this, 'OTHER')">
+          <div class="ico">📌</div>
+          <div class="nm">Other</div>
+          <div class="ds">Miscellaneous issue</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 2: Components -->
+    <div class="wiz-pane" data-pane="2">
+      <div class="wiz-comp-list">
+        <div class="wiz-comp-row" onclick="toggleRow(this)">
+          <div class="ic">🖥️</div>
+          <div class="nm">Motherboard</div>
+          <div class="ch">✓</div>
+        </div>
+        <div class="wiz-comp-row" onclick="toggleRow(this)">
+          <div class="ic">⚙️</div>
+          <div class="nm">CPU</div>
+          <div class="ch">✓</div>
+        </div>
+        <div class="wiz-comp-row" onclick="toggleRow(this)">
+          <div class="ic">🎮</div>
+          <div class="nm">GPU</div>
+          <div class="ch">✓</div>
+        </div>
+        <div class="wiz-comp-row" onclick="toggleRow(this)">
+          <div class="ic">💾</div>
+          <div class="nm">RAM</div>
+          <div class="ch">✓</div>
+        </div>
+        <div class="wiz-comp-row" onclick="toggleRow(this)">
+          <div class="ic">💿</div>
+          <div class="nm">SSD</div>
+          <div class="ch">✓</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 3: Message -->
+    <div class="wiz-pane" data-pane="3">
+      <div class="wiz-msg-box" id="wiz-msg">Hi! Flagging this listing — the following component(s) have detection issues:</div>
+      <textarea class="wiz-textarea" id="wiz-textarea" placeholder="Add additional comments (optional)..."></textarea>
+    </div>
+
+    <!-- Step 4: Confirm -->
+    <div class="wiz-pane" data-pane="4">
+      <div class="wiz-confirm">
+        <div class="ok-circle">✓</div>
+        <h3>Flag submitted</h3>
+        <p>Thanks for helping keep the data clean.</p>
+        <div class="summary">
+          <div><span>Listing</span><span>cmp_a7f3e2c1</span></div>
+          <div><span>Category</span><span id="sum-cat">SCRAPER</span></div>
+          <div><span>Components</span><span id="sum-comp">2 selected</span></div>
+          <div><span>Status</span><span>queued for review</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="wiz-footer">
+    <span class="helper" id="wiz-helper">Pick one to continue</span>
+    <button class="wiz-btn" onclick="backStep()">← Back</button>
+    <button class="wiz-btn primary" id="wiz-next" onclick="nextStep()" disabled>Next <span class="kbd">↵</span></button>
+  </div>
+</div>
+
+<div class="wiz-context" id="wiz-context">
+  <h4>You're flagging</h4>
+  <div class="mini-card">
+    <div class="img">🖥️</div>
+    <div class="info">
+      <div class="ttl">Gaming PC — RTX 4070</div>
+      <div class="meta" style="color: #71717a;">ss.com · Rīga</div>
+      <div class="pr">€1,850</div>
+    </div>
+  </div>
+  <div class="tip">You can change this at any time by closing this dialog and flagging a different listing.</div>
+</div>
+
+<script>
+let step = 1;
+let selectedCat = null;
+let selectedComps = [];
+
+const titles = {
+  1: { t: 'Choose a category', s: 'What kind of issue are you reporting?' },
+  2: { t: 'Which components?', s: 'Select the ones that have problems.' },
+  3: { t: 'Add a message', s: 'We\'ll generate one for you — feel free to edit.' },
+  4: { t: 'All set!', s: 'Review and confirm your flag.' }
+};
+
+function openWiz() {
+  document.getElementById('wiz-bd').classList.add('open');
+  document.getElementById('wiz').classList.add('open');
+  document.getElementById('wiz-context').classList.add('open');
+  step = 1;
+  selectedCat = null;
+  selectedComps = [];
+  showStep();
+}
+function closeWiz() {
+  document.getElementById('wiz-bd').classList.remove('open');
+  document.getElementById('wiz').classList.remove('open');
+  document.getElementById('wiz-context').classList.remove('open');
+  document.querySelectorAll('.wiz-cat-card').forEach(c => c.classList.remove('selected'));
+  document.querySelectorAll('.wiz-comp-row').forEach(r => r.classList.remove('selected'));
+}
+function showStep() {
+  document.getElementById('wiz-title').textContent = titles[step].t;
+  document.getElementById('wiz-sub').textContent = titles[step].s;
+  document.querySelectorAll('.wiz-pane').forEach(p => p.classList.remove('active'));
+  document.querySelector(`.wiz-pane[data-pane="${step}"]`).classList.add('active');
+  document.querySelectorAll('.wiz-step-dot').forEach((d, i) => {
+    d.classList.toggle('active', i + 1 === step);
+    d.classList.toggle('done', i + 1 < step);
+  });
+  document.querySelectorAll('.wiz-step-line').forEach((l, i) => {
+    l.classList.toggle('done', i + 1 < step);
+  });
+  const next = document.getElementById('wiz-next');
+  if (step === 4) {
+    next.textContent = 'Done ✓';
+    next.innerHTML = 'Done ✓';
+    next.disabled = false;
+  } else if (step === 3) {
+    next.innerHTML = 'Submit <span class="kbd">↵</span>';
+    next.disabled = false;
+  } else {
+    next.innerHTML = 'Next <span class="kbd">↵</span>';
+    next.disabled = !canAdvance();
+  }
+  document.querySelector('.wiz-footer button:first-of-type').style.visibility = step === 1 ? 'hidden' : 'visible';
+  document.getElementById('wiz-helper').textContent = step === 4 ? 'You\'re done!' : (step === 1 ? 'Pick one to continue' : (step === 2 ? `${selectedComps.length} selected` : 'Optional: add more detail'));
+}
+function canAdvance() {
+  if (step === 1) return !!selectedCat;
+  if (step === 2) return selectedComps.length > 0;
+  return true;
+}
+function selectCat(card, cat) {
+  selectedCat = cat;
+  document.querySelectorAll('.wiz-cat-card').forEach(c => c.classList.remove('selected'));
+  card.classList.add('selected');
+  document.getElementById('wiz-next').disabled = false;
+}
+function toggleRow(row) {
+  const nm = row.querySelector('.nm').textContent;
+  row.classList.toggle('selected');
+  if (row.classList.contains('selected')) {
+    if (!selectedComps.includes(nm)) selectedComps.push(nm);
+  } else {
+    selectedComps = selectedComps.filter(c => c !== nm);
+  }
+  document.getElementById('wiz-next').disabled = !canAdvance();
+  if (step === 2) document.getElementById('wiz-helper').textContent = `${selectedComps.length} selected`;
+}
+function nextStep() {
+  if (step === 4) { closeWiz(); return; }
+  if (step === 3) {
+    document.getElementById('sum-cat').textContent = selectedCat;
+    document.getElementById('sum-comp').textContent = selectedComps.join(', ');
+  }
+  step++;
+  showStep();
+}
+function backStep() {
+  if (step > 1) { step--; showStep(); }
+}
+document.addEventListener('keydown', e => {
+  if (!document.getElementById('wiz').classList.contains('open')) return;
+  if (e.key === 'Escape') closeWiz();
+  if (e.key === 'Enter' && !document.getElementById('wiz-next').disabled) { e.preventDefault(); nextStep(); }
+});
+</script>
+</body>
+</html>

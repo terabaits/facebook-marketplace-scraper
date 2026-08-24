@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Console v5 — Latvia Map · SS-Crawler</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: linear-gradient(180deg, #f0f9ff 0%, #e0f2fe 100%);
+  color: #0c4a6e; min-height: 100vh; padding: 24px 20px;
+}
+.wrap { max-width: 1400px; margin: 0 auto; }
+.head { display: flex; align-items: baseline; gap: 14px; margin-bottom: 18px; }
+h1 { font-size: 28px; font-weight: 800; color: #0c4a6e; }
+.head p { color: #0369a1; font-size: 13px; }
+.v-tag { background: linear-gradient(135deg, #0ea5e9, #06b6d4); color: white; font-size: 11px; font-weight: 800; padding: 3px 9px; border-radius: 5px; }
+
+.layout { display: grid; grid-template-columns: 1fr 360px; gap: 18px; }
+
+/* MAP */
+.map-wrap {
+  background: white; border-radius: 16px; padding: 20px;
+  box-shadow: 0 4px 16px rgba(14,165,233,.1);
+  border: 1px solid #bae6fd;
+}
+.map-stats {
+  display: flex; gap: 18px; margin-bottom: 14px; padding-bottom: 12px; border-bottom: 1px solid #e0f2fe;
+}
+.map-stat { display: flex; flex-direction: column; }
+.map-stat .v { font-size: 18px; font-weight: 800; color: #0c4a6e; }
+.map-stat .l { font-size: 10px; color: #0369a1; text-transform: uppercase; letter-spacing: .04em; }
+
+.map-svg {
+  width: 100%; aspect-ratio: 7/11; max-height: 640px;
+  background: linear-gradient(180deg, #f0f9ff, #e0f2fe);
+  border-radius: 10px; border: 1px solid #bae6fd;
+  position: relative; overflow: hidden;
+}
+.map-svg svg { width: 100%; height: 100%; }
+
+.legend { display: flex; gap: 12px; margin-top: 12px; flex-wrap: wrap; }
+.legend-item { display: flex; align-items: center; gap: 6px; font-size: 11px; color: #0c4a6e; }
+.legend-dot { width: 10px; height: 10px; border-radius: 50%; }
+
+.pin { cursor: pointer; transition: all .2s; }
+.pin:hover { r: 9; }
+.pin-label { font-size: 10px; font-weight: 700; fill: #0c4a6e; pointer-events: none; }
+.pin-count { font-size: 8px; fill: white; text-anchor: middle; pointer-events: none; font-weight: 700; }
+
+/* LIST PANEL */
+.panel { background: white; border-radius: 16px; padding: 18px; border: 1px solid #bae6fd; box-shadow: 0 4px 16px rgba(14,165,233,.1); display: flex; flex-direction: column; max-height: 80vh; }
+.panel h3 { font-size: 14px; font-weight: 800; margin-bottom: 10px; }
+.panel-search { width: 100%; padding: 8px 10px; border: 1px solid #bae6fd; border-radius: 8px; font-size: 12px; outline: none; margin-bottom: 10px; }
+.panel-search:focus { border-color: #0ea5e9; }
+.list { flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; padding-right: 4px; }
+.list::-webkit-scrollbar { width: 6px; }
+.list::-webkit-scrollbar-thumb { background: #bae6fd; border-radius: 3px; }
+
+.listing {
+  background: #f0f9ff; border: 1px solid #e0f2fe; border-radius: 10px;
+  padding: 10px 12px; cursor: pointer; transition: all .15s; display: flex; gap: 10px; align-items: center;
+}
+.listing:hover, .listing.active { background: white; border-color: #0ea5e9; transform: translateX(2px); }
+.listing .ico { font-size: 24px; flex-shrink: 0; }
+.listing .info { flex: 1; min-width: 0; }
+.listing .nm { font-size: 12px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.listing .meta { font-size: 10px; color: #0369a1; }
+.listing .pr { font-size: 14px; font-weight: 800; color: #0c4a6e; }
+
+/* RADIUS */
+.radius-control {
+  position: absolute; bottom: 16px; left: 16px;
+  background: white; padding: 10px 12px; border-radius: 8px;
+  border: 1px solid #bae6fd; box-shadow: 0 2px 8px rgba(0,0,0,.1);
+  font-size: 11px; z-index: 5;
+}
+.radius-control label { display: block; font-weight: 700; color: #0c4a6e; margin-bottom: 4px; }
+.radius-control input[type=range] { width: 160px; }
+.radius-control .val { font-weight: 800; color: #0ea5e9; }
+
+/* POPUP */
+.popup {
+  position: absolute; background: white; border: 1px solid #bae6fd; border-radius: 10px;
+  padding: 12px; box-shadow: 0 8px 24px rgba(0,0,0,.15); z-index: 10;
+  pointer-events: none; min-width: 200px; opacity: 0; transition: opacity .2s;
+}
+.popup.show { opacity: 1; pointer-events: auto; }
+.popup h4 { font-size: 13px; font-weight: 800; margin-bottom: 6px; }
+.popup .count { font-size: 11px; color: #0369a1; margin-bottom: 8px; }
+.popup .row { display: flex; justify-content: space-between; font-size: 11px; padding: 2px 0; }
+.popup .row strong { color: #0c4a6e; }
+
+@media (max-width: 900px) { .layout { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="head">
+    <h1>🎮 Latvia Map <span class="v-tag">v5 — Geographic</span></h1>
+    <p>Click a city to see consoles for sale there · Pins show count</p>
+  </div>
+
+  <div class="layout">
+    <div class="map-wrap">
+      <div class="map-stats">
+        <div class="map-stat"><div class="v">487</div><div class="l">Listings</div></div>
+        <div class="map-stat"><div class="v">14</div><div class="l">Cities</div></div>
+        <div class="map-stat"><div class="v">Rīga</div><div class="l">Most active</div></div>
+        <div class="map-stat"><div class="v">€267</div><div class="l">Avg price</div></div>
+      </div>
+
+      <div class="map-svg">
+        <svg viewBox="0 0 700 1100" preserveAspectRatio="xMidYMid meet">
+          <!-- Latvia outline (stylized) -->
+          <path d="M 220 80 L 380 60 L 480 120 L 540 200 L 560 320 L 540 420 L 560 540 L 580 660 L 540 780 L 480 880 L 400 950 L 320 1020 L 240 1000 L 180 920 L 140 820 L 120 700 L 100 580 L 120 460 L 100 340 L 140 220 L 180 140 Z"
+                fill="#bae6fd" stroke="#0ea5e9" stroke-width="2.5" opacity="0.5" />
+          <!-- Baltic sea label -->
+          <text x="60" y="500" font-size="14" font-weight="700" fill="#0284c7" opacity=".4" transform="rotate(-90 60 500)">Baltic Sea</text>
+          <text x="350" y="560" font-size="32" font-weight="900" fill="#0c4a6e" opacity=".18" text-anchor="middle">LATVIJA</text>
+
+          <!-- City pins: x, y, name, count, brand mix -->
+          <!-- Each pin is a colored circle with count inside; brand mix is which color -->
+
+          <!-- Rīga (largest) -->
+          <g class="pin" data-city="riga" onclick="showCity('riga')">
+            <circle cx="380" cy="380" r="22" fill="#0ea5e9" stroke="white" stroke-width="3" opacity="0.3" />
+            <circle cx="380" cy="380" r="13" fill="#0ea5e9" stroke="white" stroke-width="3" />
+            <text class="pin-count" x="380" y="384">312</text>
+            <text class="pin-label" x="380" y="360" text-anchor="middle">Rīga</text>
+          </g>
+
+          <!-- Jūrmala -->
+          <g class="pin" data-city="jurmala" onclick="showCity('jurmala')">
+            <circle cx="340" cy="360" r="11" fill="#3b82f6" stroke="white" stroke-width="2.5" />
+            <text class="pin-count" x="340" y="364">28</text>
+            <text class="pin-label" x="340" y="340" text-anchor="middle">Jūrmala</text>
+          </g>
+
+          <!-- Jelgava -->
+          <g class="pin" data-city="jelgava" onclick="showCity('jelgava')">
+            <circle cx="350" cy="440" r="11" fill="#10b981" stroke="white" stroke-width="2.5" />
+            <text class="pin-count" x="350" y="444">42</text>
+            <text class="pin-label" x="350" y="466" text-anchor="middle">Jelgava</text>
+          </g>
+
+          <!-- Valmiera -->
+          <g class="pin" data-city="valmiera" onclick="showCity('valmiera')">
+            <circle cx="380" cy="220" r="10" fill="#ef4444" stroke="white" stroke-width="2.5" />
+            <text class="pin-count" x="380" y="224">22</text>
+            <text class="pin-label" x="380" y="200" text-anchor="middle">Valmiera</text>
+          </g>
+
+          <!-- Daugavpils -->
+          <g class="pin" data-city="daugavpils" onclick="showCity('daugavpils')">
+            <circle cx="490" cy="620" r="11" fill="#10b981" stroke="white" stroke-width="2.5" />
+            <text class="pin-count" x="490" y="624">35</text>
+            <text class="pin-label" x="490" y="645" text-anchor="middle">Daugavpils</text>
+          </g>
+
+          <!-- Liepāja -->
+          <g class="pin" data-city="liepaja" onclick="showCity('liepaja')">
+            <circle cx="180" cy="780" r="10" fill="#3b82f6" stroke="white" stroke-width="2.5" />
+            <text class="pin-count" x="180" y="784">18</text>
+            <text class="pin-label" x="180" y="760" text-anchor="middle">Liepāja</text>
+          </g>
+
+          <!-- Ventspils -->
+          <g class="pin" data-city="ventspils" onclick="showCity('ventspils')">
+            <circle cx="180" cy="540" r="9" fill="#3b82f6" stroke="white" stroke-width="2.5" />
+            <text class="pin-count" x="180" y="544">12</text>
+            <text class="pin-label" x="180" y="520" text-anchor="middle">Ventspils</text>
+          </g>
+
+          <!-- Jēkabpils -->
+          <g class="pin" data-city="jekabpils" onclick="showCity('jekabpils')">
+            <circle cx="430" cy="540" r="8" fill="#a78bfa" stroke="white" stroke-width="2.5" />
+            <text class="pin-count" x="430" y="544">9</text>
+            <text class="pin-label" x="430" y="520" text-anchor="middle">Jēkabpils</text>
+          </g>
+
+          <!-- Rēzekne -->
+          <g class="pin" data-city="rezekne" onclick="showCity('rezekne')">
+            <circle cx="510" cy="700" r="8" fill="#a78bfa" stroke="white" stroke-width="2.5" />
+            <text class="pin-count" x="510" y="704">5</text>
+            <text class="pin-label" x="510" y="724" text-anchor="middle">Rēzekne</text>
+          </g>
+
+          <!-- Cēsis -->
+          <g class="pin" data-city="cesis" onclick="showCity('cesis')">
+            <circle cx="420" cy="280" r="7" fill="#3b82f6" stroke="white" stroke-width="2.5" />
+            <text class="pin-count" x="420" y="284">4</text>
+            <text class="pin-label" x="420" y="265" text-anchor="middle">Cēsis</text>
+          </g>
+
+          <div class="radius-control">
+            <label>Haggling radius: <span class="val" id="radius-val">30 km</span></label>
+            <input type="range" min="10" max="200" value="30" oninput="document.getElementById('radius-val').textContent=this.value+' km'">
+          </div>
+        </svg>
+      </div>
+
+      <div class="legend">
+        <div class="legend-item"><div class="legend-dot" style="background:#3b82f6"></div>PlayStation</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#10b981"></div>Xbox</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#ef4444"></div>Nintendo</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#a78bfa"></div>Retro / Mixed</div>
+        <div class="legend-item" style="margin-left:auto;color:#0369a1;">⌃ Bigger pin = more listings</div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h3 id="panel-title">All Cities</h3>
+      <input type="text" class="panel-search" placeholder="Search listings..." oninput="filterList(this.value)">
+      <div class="list" id="list"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+const CITIES = {
+  riga:       { name: 'Rīga',       list: [
+    { ico: '🎮', nm: 'PS5 Disc Edition',  meta: 'Like new · 2d', pr: 445 },
+    { ico: '🔴', nm: 'Switch OLED',      meta: 'Like new · 1d', pr: 290 },
+    { ico: '🟢', nm: 'Xbox Series S',    meta: 'New · 3d',     pr: 180 },
+    { ico: '🕹️', nm: 'PS4 Pro 1TB',     meta: 'Good · 5d',    pr: 220 },
+    { ico: '🟡', nm: 'Switch Lite',      meta: 'Good · 1w',    pr: 120 },
+  ]},
+  jurmala:    { name: 'Jūrmala',    list: [
+    { ico: '🕹️', nm: 'PS4 Slim 500GB',  meta: 'Good · 4d',    pr: 90 },
+    { ico: '🎮', nm: 'PS3 Slim',         meta: 'Used · 2w',    pr: 55 },
+  ]},
+  jelgava:    { name: 'Jelgava',    list: [
+    { ico: '🟢', nm: 'Xbox Series X 1TB', meta: 'New · 4h',    pr: 520 },
+    { ico: '⭐', nm: 'PS4 Pro Star Wars', meta: 'Good · 3d',   pr: 229 },
+    { ico: '🕹️', nm: 'PS4 Slim 500GB',   meta: 'Used · 1w',   pr: 75 },
+  ]},
+  valmiera:   { name: 'Valmiera',   list: [
+    { ico: '🎮', nm: 'PS5 Digital',       meta: 'Like new · 1d', pr: 380 },
+    { ico: '📦', nm: 'PS3 Super Slim',   meta: 'Used · 1w',    pr: 45 },
+  ]},
+  daugavpils: { name: 'Daugavpils', list: [
+    { ico: '🟢', nm: 'Xbox Series S 512GB', meta: 'New · 2d', pr: 320 },
+    { ico: '🟢', nm: 'Xbox One X',         meta: 'Good · 5d', pr: 200 },
+  ]},
+  liepaja:    { name: 'Liepāja',    list: [
+    { ico: '📱', nm: 'PSP Slim',          meta: 'Used · 2w',    pr: 50 },
+    { ico: '🎮', nm: 'PS3 Fat',           meta: 'Used · 1m',    pr: 65 },
+  ]},
+  ventspils:  { name: 'Ventspils',  list: [
+    { ico: '🕹️', nm: 'PS2 Slim',          meta: 'Used · 3w',    pr: 40 },
+  ]},
+  jekabpils:  { name: 'Jēkabpils',  list: [
+    { ico: '🎯', nm: 'GBA SP',            meta: 'Used · 1m',    pr: 65 },
+    { ico: '📦', nm: 'PS1 original',      meta: 'Used · 1m',    pr: 35 },
+  ]},
+  rezekne:    { name: 'Rēzekne',    list: [
+    { ico: '📱', nm: 'PSP Street',        meta: 'Used · 3w',    pr: 35 },
+  ]},
+  cesis:      { name: 'Cēsis',      list: [
+    { ico: '🕹️', nm: 'PS2 Slim',          meta: 'Used · 1m',    pr: 40 },
+  ]},
+};
+
+const allListings = [];
+Object.entries(CITIES).forEach(([key, c]) => {
+  c.list.forEach(l => allListings.push({ ...l, city: c.name, key }));
+});
+
+function showCity(key) {
+  const c = CITIES[key];
+  document.querySelectorAll('.pin').forEach(p => p.classList.remove('active-pin'));
+  document.querySelector(`[data-city="${key}"] circle`).setAttribute('stroke', '#facc15');
+  setTimeout(() => document.querySelector(`[data-city="${key}"] circle`).setAttribute('stroke', 'white'), 1200);
+  document.getElementById('panel-title').textContent = c.name + ' (' + c.list.length + ')';
+  document.getElementById('list').innerHTML = c.list.map(l => `
+    <div class="listing">
+      <div class="ico">${l.ico}</div>
+      <div class="info"><div class="nm">${l.nm}</div><div class="meta">${l.meta}</div></div>
+      <div class="pr">€${l.pr}</div>
+    </div>
+  `).join('');
+}
+
+function filterList(q) {
+  const ql = q.toLowerCase();
+  const filtered = allListings.filter(l => l.nm.toLowerCase().includes(ql) || l.meta.toLowerCase().includes(ql) || l.city.toLowerCase().includes(ql));
+  document.getElementById('panel-title').textContent = q ? `Search "${q}" (${filtered.length})` : 'All Cities';
+  document.getElementById('list').innerHTML = filtered.slice(0, 30).map(l => `
+    <div class="listing" onclick="showCity('${l.key}')">
+      <div class="ico">${l.ico}</div>
+      <div class="info"><div class="nm">${l.nm}</div><div class="meta">${l.city} · ${l.meta}</div></div>
+      <div class="pr">€${l.pr}</div>
+    </div>
+  `).join('') || '<div class="empty">No matches</div>';
+}
+
+// initial: show all
+document.getElementById('panel-title').textContent = `All Cities (${allListings.length})`;
+document.getElementById('list').innerHTML = allListings.slice(0, 20).map(l => `
+  <div class="listing" onclick="showCity('${l.key}')">
+    <div class="ico">${l.ico}</div>
+    <div class="info"><div class="nm">${l.nm}</div><div class="meta">${l.city} · ${l.meta}</div></div>
+    <div class="pr">€${l.pr}</div>
+  </div>
+`).join('');
+</script>
+</body>
+</html>

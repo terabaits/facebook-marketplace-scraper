@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Computer Modal v7 — Picture-in-Picture · SS-Crawler</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: linear-gradient(135deg, #1e1b4b 0%, #312e81 100%);
+  color: #e0e7ff; min-height: 100vh; padding: 20px;
+}
+.page-bg { max-width: 1100px; margin: 0 auto; }
+.demo-header { padding: 8px 0 16px; border-bottom: 1px solid rgba(255,255,255,.1); margin-bottom: 16px; }
+.demo-header h1 { font-size: 18px; font-weight: 800; color: #f5f3ff; }
+.demo-header .v-tag { display: inline-block; font-size: 10px; padding: 2px 8px; background: #a78bfa; color: #1e1b4b; border-radius: 10px; margin-left: 8px; vertical-align: middle; }
+.demo-header p { font-size: 12px; color: #c7d2fe; margin-top: 4px; }
+.listing-card { display: flex; gap: 14px; padding: 14px; border: 1px solid rgba(255,255,255,.1); border-radius: 10px; margin-bottom: 12px; cursor: pointer; transition: all .15s; background: rgba(255,255,255,.05); backdrop-filter: blur(4px); }
+.listing-card:hover { border-color: #a78bfa; background: rgba(167,139,250,.1); }
+.listing-card .thumb { width: 60px; height: 60px; background: rgba(255,255,255,.1); border-radius: 6px; flex-shrink: 0; display: grid; place-items: center; font-size: 24px; }
+.listing-card .info { flex: 1; }
+.listing-card .title { font-weight: 700; font-size: 13px; margin-bottom: 4px; }
+.listing-card .meta { font-size: 11px; color: #c7d2fe; }
+.listing-card .price { font-weight: 800; font-size: 14px; color: #4ade80; }
+.listing-card .open-btn { background: #a78bfa; color: #1e1b4b; border: none; padding: 8px 12px; border-radius: 6px; font-size: 11px; font-weight: 700; cursor: pointer; align-self: center; }
+.listing-card .open-btn:hover { background: #c4b5fd; }
+
+/* === PICTURE-IN-PICTURE === */
+.pip {
+  position: fixed; bottom: 24px; right: 24px;
+  width: 340px; height: 440px;
+  background: white; color: #1e1b4b; border-radius: 14px;
+  box-shadow: 0 20px 60px rgba(0,0,0,.4), 0 0 0 1px rgba(255,255,255,.2);
+  z-index: 200; display: none; flex-direction: column;
+  overflow: hidden;
+  animation: pipIn .35s cubic-bezier(.34, 1.56, .64, 1);
+}
+.pip.open { display: flex; }
+@keyframes pipIn { from { opacity: 0; transform: translateY(40px) scale(.9); } to { opacity: 1; transform: translateY(0) scale(1); } }
+
+.pip-bar {
+  display: flex; align-items: center; gap: 8px;
+  padding: 8px 10px; background: linear-gradient(180deg, #1e1b4b 0%, #312e81 100%);
+  color: white; cursor: move; flex-shrink: 0;
+  border-radius: 14px 14px 0 0;
+}
+.pip-bar .pip-label { font-size: 10px; font-weight: 700; padding: 2px 6px; background: rgba(255,255,255,.15); border-radius: 4px; }
+.pip-bar .pip-title { font-size: 12px; font-weight: 600; flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.pip-bar .pip-actions { display: flex; gap: 2px; }
+.pip-bar button {
+  width: 24px; height: 24px; border: none; background: transparent;
+  color: white; cursor: pointer; border-radius: 4px; font-size: 14px;
+  display: grid; place-items: center;
+}
+.pip-bar button:hover { background: rgba(255,255,255,.2); }
+
+.pip-body { flex: 1; overflow-y: auto; padding: 12px 14px; }
+
+.pip-img {
+  width: 100%; aspect-ratio: 16/10; background: linear-gradient(135deg, #f5f3ff 0%, #ede9fe 100%);
+  border-radius: 8px; display: grid; place-items: center; font-size: 48px;
+  margin-bottom: 10px; position: relative;
+}
+.pip-img .pip-badge {
+  position: absolute; top: 8px; right: 8px;
+  background: rgba(30,27,75,.9); color: white; font-size: 9px; font-weight: 700;
+  padding: 3px 6px; border-radius: 4px; text-transform: uppercase; letter-spacing: .04em;
+}
+
+.pip-h { font-size: 13px; font-weight: 800; line-height: 1.3; margin-bottom: 4px; color: #1e1b4b; }
+.pip-meta { font-size: 10.5px; color: #6366f1; margin-bottom: 8px; }
+.pip-price-row { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 10px; padding-bottom: 10px; border-bottom: 1px solid #f5f3ff; }
+.pip-price { font-size: 18px; font-weight: 800; color: #059669; }
+.pip-price-lbl { font-size: 10px; color: #6366f1; }
+.pip-specs { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; margin-bottom: 10px; }
+.pip-spec { display: flex; align-items: center; gap: 4px; padding: 5px 6px; background: #f5f3ff; border-radius: 5px; font-size: 10.5px; }
+.pip-spec .ic { font-size: 12px; }
+.pip-spec .v { font-weight: 700; }
+
+.pip-mini-flag {
+  background: #fef3c7; border: 1px solid #fde68a; border-radius: 8px; padding: 8px 10px;
+  margin-top: 4px;
+}
+.pip-mini-flag h5 { font-size: 10.5px; font-weight: 700; color: #b45309; margin-bottom: 6px; display: flex; align-items: center; gap: 4px; }
+.pip-mini-flag h5::before { content: '🚩'; }
+.pip-mini-flag .pills { display: flex; gap: 3px; flex-wrap: wrap; }
+.pip-mini-flag .pill { padding: 3px 7px; background: white; border: 1px solid #fde68a; border-radius: 10px; font-size: 9.5px; font-weight: 600; cursor: pointer; color: #b45309; }
+.pip-mini-flag .pill.on { background: #f59e0b; color: white; border-color: #f59e0b; }
+
+.pip-footer { padding: 10px 12px; background: #fafafa; border-top: 1px solid #e0e7ff; display: flex; gap: 6px; flex-shrink: 0; }
+.pip-footer .btn { flex: 1; padding: 8px 10px; border-radius: 7px; font-size: 11.5px; font-weight: 700; cursor: pointer; border: none; }
+.pip-footer .flag { background: #f59e0b; color: white; }
+.pip-footer .flag:hover { background: #d97706; }
+.pip-footer .full { background: #1e1b4b; color: white; }
+.pip-footer .full:hover { background: #312e81; }
+.pip-footer .x { background: #e0e7ff; color: #1e1b4b; flex: 0 0 36px; }
+
+.pip-hint {
+  position: fixed; bottom: 8px; left: 50%; transform: translateX(-50%);
+  font-size: 10px; color: rgba(255,255,255,.4);
+}
+</style>
+</head>
+<body>
+<div class="page-bg">
+  <div class="demo-header">
+    <h1>Computer Listings <span class="v-tag">v7 — Picture-in-Picture</span></h1>
+    <p>Floating mini-window · Bottom-right by default · Draggable · Click ▶ to expand</p>
+  </div>
+
+  <div class="listing-card" onclick="openPip(0)">
+    <div class="thumb">🖥️</div>
+    <div class="info">
+      <div class="title">Gaming PC — RTX 4070 / i7-13700K / 32GB DDR5</div>
+      <div class="meta">ss.com · Rīga · Custom build · 2 days ago</div>
+    </div>
+    <div class="price">€1,850</div>
+    <button class="open-btn">Pop out ↗</button>
+  </div>
+  <div class="listing-card" onclick="openPip(1)">
+    <div class="thumb">💻</div>
+    <div class="info">
+      <div class="title">Lenovo ThinkPad T14 Gen 3 — i5 / 16GB / 512GB SSD</div>
+      <div class="meta">ss.com · Liepāja · Prebuilt · 1 week ago</div>
+    </div>
+    <div class="price">€620</div>
+    <button class="open-btn">Pop out ↗</button>
+  </div>
+</div>
+
+<div class="pip" id="pip">
+  <div class="pip-bar" id="pip-bar">
+    <span class="pip-label">PiP</span>
+    <span class="pip-title" id="pip-title">Gaming PC</span>
+    <div class="pip-actions">
+      <button title="Expand" onclick="expandPip()">⤢</button>
+      <button title="Close" onclick="closePip()">✕</button>
+    </div>
+  </div>
+  <div class="pip-body">
+    <div class="pip-img">
+      <span class="pip-badge">CUSTOM</span>
+      <span id="pip-ico">🖥️</span>
+    </div>
+    <div class="pip-h" id="pip-h">Gaming PC — RTX 4070 / i7-13700K / 32GB DDR5</div>
+    <div class="pip-meta" id="pip-meta">ss.com · Rīga · #cmp_a7f3e2c1</div>
+    <div class="pip-price-row">
+      <div>
+        <div class="pip-price" id="pip-price">€1,850</div>
+        <div class="pip-price-lbl">asking price</div>
+      </div>
+      <div style="text-align: right; font-size: 10.5px; color: #6366f1;">
+        <div>posted 2d ago</div>
+        <div>👤 rig_builder_riga · 4.8★</div>
+      </div>
+    </div>
+    <div class="pip-specs">
+      <div class="pip-spec"><span class="ic">⚙️</span><span class="v">i7-13700K</span></div>
+      <div class="pip-spec"><span class="ic">🎮</span><span class="v">RTX 4070</span></div>
+      <div class="pip-spec"><span class="ic">💾</span><span class="v">32GB DDR5</span></div>
+      <div class="pip-spec"><span class="ic">💿</span><span class="v">1TB NVMe</span></div>
+    </div>
+    <div class="pip-mini-flag">
+      <h5>Quick flag — pick components</h5>
+      <div class="pills">
+        <span class="pill" onclick="togglePill(this)">🖥️ MB</span>
+        <span class="pill on" onclick="togglePill(this)">⚙️ CPU</span>
+        <span class="pill on" onclick="togglePill(this)">🎮 GPU</span>
+        <span class="pill" onclick="togglePill(this)">💾 RAM</span>
+        <span class="pill" onclick="togglePill(this)">💿 SSD</span>
+      </div>
+    </div>
+  </div>
+  <div class="pip-footer">
+    <button class="btn flag" onclick="alert('flag flow')">🚩 Flag</button>
+    <button class="btn full" onclick="alert('open full modal')">Open full ↗</button>
+    <button class="btn x" onclick="closePip()">✕</button>
+  </div>
+</div>
+
+<div class="pip-hint">Try the mini-window: drag the bar, pick components, expand or close</div>
+
+<script>
+const listings = [
+  { ico: '🖥️', h: 'Gaming PC — RTX 4070 / i7-13700K / 32GB DDR5', meta: 'ss.com · Rīga · #cmp_a7f3e2c1', price: '€1,850', title: 'Gaming PC' },
+  { ico: '💻', h: 'Lenovo ThinkPad T14 Gen 3 — i5 / 16GB / 512GB SSD', meta: 'ss.com · Liepāja · #cmp_3b9d4f2a', price: '€620', title: 'ThinkPad T14' }
+];
+
+function openPip(i) {
+  const l = listings[i];
+  document.getElementById('pip-ico').textContent = l.ico;
+  document.getElementById('pip-h').textContent = l.h;
+  document.getElementById('pip-meta').textContent = l.meta;
+  document.getElementById('pip-price').textContent = l.price;
+  document.getElementById('pip-title').textContent = l.title;
+  document.getElementById('pip').classList.add('open');
+  document.getElementById('pip').style.bottom = '24px';
+  document.getElementById('pip').style.right = '24px';
+  document.getElementById('pip').style.top = 'auto';
+  document.getElementById('pip').style.left = 'auto';
+}
+function closePip() { document.getElementById('pip').classList.remove('open'); }
+function expandPip() { alert('Expanding to full modal...'); }
+function togglePill(p) { p.classList.toggle('on'); }
+
+// drag
+let dragging = false, ox, oy, sx, sy;
+document.getElementById('pip-bar').addEventListener('mousedown', e => {
+  dragging = true;
+  const r = document.getElementById('pip').getBoundingClientRect();
+  ox = e.clientX - r.left; oy = e.clientY - r.top;
+  e.preventDefault();
+});
+document.addEventListener('mousemove', e => {
+  if (!dragging) return;
+  const pip = document.getElementById('pip');
+  pip.style.left = (e.clientX - ox) + 'px';
+  pip.style.top = (e.clientY - oy) + 'px';
+  pip.style.right = 'auto'; pip.style.bottom = 'auto';
+});
+document.addEventListener('mouseup', () => dragging = false);
+</script>
+</body>
+</html>

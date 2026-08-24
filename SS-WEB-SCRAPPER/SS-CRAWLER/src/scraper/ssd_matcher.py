@@ -489,6 +489,27 @@ class SSDMatcher:
 
         return SSDMatchResult()
 
+    def match(self, title: str, full_text: str = '') -> 'SSDMatchResult':
+        """Drop-in alias for the unified matcher API used by Andele scraper.
+
+        Other matchers (GPU/CPU/RAM) expose ``match(title, full_text)`` which
+        is what the andele scraper calls. ``match_listing`` takes a capacity
+        int as the second arg, so the Andele path was raising
+        ``'SSDMatcher' object has no attribute 'match'`` and every Andele
+        SSD was silently dropped from the DB.
+
+        Behaviour matches the other matchers:
+        - combine ``title`` + ``full_text`` so the matcher sees the model
+          number even when Andele's product-data title is generic
+        - extract capacity from the combined text via ``_extract_capacity``
+        - defer to ``match_listing`` for the actual scoring
+        """
+        search_text = (title or '').strip()
+        if full_text:
+            search_text = f"{search_text} {full_text}".strip()
+        extracted = self._extract_capacity(search_text) if search_text else None
+        return self.match_listing(search_text, extracted)
+
     def get_ssd_by_id(self, ssd_id: int) -> Optional[SSDReference]:
         """Get an SSD by its ID."""
         for ssd in self.ssds:

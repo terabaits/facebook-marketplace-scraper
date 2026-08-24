@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Console v4 — Deal Feed · SS-Crawler</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: #0a0a0a; color: #fafafa;
+  min-height: 100vh; padding: 20px;
+}
+.wrap { max-width: 720px; margin: 0 auto; }
+.head { display: flex; align-items: baseline; gap: 14px; margin-bottom: 16px; }
+h1 { font-size: 28px; font-weight: 800; }
+.head p { color: #71717a; font-size: 13px; }
+.v-tag { background: linear-gradient(135deg, #10b981, #06b6d4); color: #0a0a0a; font-size: 11px; font-weight: 800; padding: 3px 9px; border-radius: 5px; }
+
+.chips {
+  display: flex; gap: 8px; overflow-x: auto; padding-bottom: 4px;
+  margin-bottom: 16px; scrollbar-width: none;
+}
+.chips::-webkit-scrollbar { display: none; }
+.chip {
+  flex-shrink: 0; padding: 8px 14px; background: #18181b; border: 1px solid #27272a;
+  border-radius: 20px; font-size: 12px; font-weight: 600; cursor: pointer; white-space: nowrap;
+}
+.chip.active { background: #fafafa; color: #0a0a0a; border-color: #fafafa; }
+
+.feed { display: flex; flex-direction: column; gap: 14px; }
+
+.post {
+  background: #18181b; border: 1px solid #27272a; border-radius: 16px;
+  padding: 18px; position: relative; transition: all .2s;
+}
+.post:hover { border-color: #3f3f46; }
+.post.hot { border-color: rgba(239,68,68,.4); background: linear-gradient(180deg, rgba(239,68,68,.05), #18181b); }
+.post.great-deal { border-color: rgba(16,185,129,.4); background: linear-gradient(180deg, rgba(16,185,129,.05), #18181b); }
+
+.deal-stamp {
+  position: absolute; top: -10px; right: 18px;
+  font-size: 10px; font-weight: 800; padding: 4px 10px; border-radius: 12px;
+  text-transform: uppercase; letter-spacing: .08em;
+}
+.stamp-hot { background: #ef4444; color: white; box-shadow: 0 4px 12px rgba(239,68,68,.4); }
+.stamp-deal { background: #10b981; color: white; box-shadow: 0 4px 12px rgba(16,185,129,.4); }
+.stamp-fair { background: #3f3f46; color: #a1a1aa; }
+.stamp-skip { background: #27272a; color: #71717a; }
+
+.deal-score {
+  position: absolute; top: 16px; right: 16px;
+  text-align: right;
+}
+.deal-score .num { font-size: 28px; font-weight: 800; line-height: 1; }
+.deal-score .lbl { font-size: 9px; text-transform: uppercase; letter-spacing: .08em; color: #71717a; }
+.deal-score.hot .num { color: #ef4444; }
+.deal-score.great .num { color: #10b981; }
+.deal-score.fair .num { color: #a1a1aa; }
+.deal-score.skip .num { color: #52525b; }
+
+.post-head { display: flex; gap: 14px; margin-bottom: 12px; }
+.post-img { width: 88px; height: 88px; background: linear-gradient(135deg, #27272a, #3f3f46); border-radius: 12px; display: grid; place-items: center; font-size: 44px; flex-shrink: 0; }
+.post-info { flex: 1; min-width: 0; }
+.post-brand { display: inline-block; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 10px; margin-bottom: 4px; }
+.brand-playstation { background: rgba(59,130,246,.2); color: #60a5fa; }
+.brand-xbox { background: rgba(16,185,129,.2); color: #34d399; }
+.brand-nintendo { background: rgba(239,68,68,.2); color: #f87171; }
+.brand-retro { background: rgba(167,139,250,.2); color: #c4b5fd; }
+.post-name { font-size: 16px; font-weight: 700; line-height: 1.2; margin-bottom: 4px; }
+.post-meta { font-size: 11.5px; color: #71717a; }
+
+.price-block { display: flex; align-items: baseline; gap: 10px; margin: 12px 0; padding: 12px 0; border-top: 1px solid #27272a; border-bottom: 1px solid #27272a; }
+.price-main { font-size: 30px; font-weight: 800; }
+.price-avg { font-size: 12px; color: #71717a; }
+.price-avg strong { color: #d4d4d8; font-weight: 700; }
+.price-save { font-size: 13px; font-weight: 800; color: #10b981; }
+.price-save.bad { color: #ef4444; }
+.price-percentile { font-size: 10px; color: #71717a; }
+
+.spark-wrap { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
+.spark-label { font-size: 10px; color: #71717a; text-transform: uppercase; letter-spacing: .06em; }
+.spark { flex: 1; height: 30px; display: flex; align-items: flex-end; gap: 1px; }
+.spark .b { flex: 1; background: #3f3f46; border-radius: 1px; min-height: 2px; transition: all .2s; }
+.spark .b.deal { background: linear-gradient(180deg, #10b981, #047857); }
+.spark .b.hot { background: linear-gradient(180deg, #ef4444, #b91c1c); }
+.spark:hover .b { background: #52525b; }
+
+.post-actions { display: flex; gap: 8px; }
+.post-actions button {
+  flex: 1; padding: 10px; border-radius: 10px; font-size: 12px; font-weight: 700; cursor: pointer; border: 1px solid #27272a; background: transparent; color: #d4d4d8;
+  display: flex; align-items: center; justify-content: center; gap: 4px;
+}
+.post-actions button:hover { background: #27272a; }
+.post-actions .save:hover { border-color: #facc15; color: #facc15; }
+.post-actions .flag:hover { border-color: #f87171; color: #f87171; }
+.post-actions .open:hover { border-color: #38bdf8; color: #38bdf8; }
+.post-actions .snipe:hover { background: #ef4444; color: white; border-color: #ef4444; }
+
+.empty { text-align: center; padding: 60px 20px; color: #71717a; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="head">
+    <h1>🎮 Deal Feed <span class="v-tag">v4 — Algorithmic</span></h1>
+    <p>Ranked by deal score · Best opportunities first</p>
+  </div>
+
+  <div class="chips">
+    <div class="chip active" onclick="pickChip(this, 'all')">🔥 All</div>
+    <div class="chip" onclick="pickChip(this, 'ps')">PlayStation</div>
+    <div class="chip" onclick="pickChip(this, 'xbox')">Xbox</div>
+    <div class="chip" onclick="pickChip(this, 'nint')">Nintendo</div>
+    <div class="chip" onclick="pickChip(this, 'retro')">Retro</div>
+    <div class="chip" onclick="pickChip(this, 'hot')">Hot (&gt;30% off)</div>
+    <div class="chip" onclick="pickChip(this, 'special')">⭐ Special Ed.</div>
+  </div>
+
+  <div class="feed" id="feed"></div>
+</div>
+
+<script>
+const POSTS = [
+  { id: 1, brand: 'ps', name: 'PS4 Slim 500GB', ico: '🕹️', price: 75, avg: 130, save: 42, percentile: 96, vol: 46, cond: 'Used', meta: 'Jelgava · 1w ago', conf: 0.90, special: false },
+  { id: 2, brand: 'ps', name: 'PS3 Super Slim 250GB', ico: '📦', price: 45, avg: 75, save: 40, percentile: 88, vol: 22, cond: 'Used', meta: 'Valmiera · 1w ago', conf: 0.85, special: false },
+  { id: 3, brand: 'ps', name: 'PSP Slim', ico: '📱', price: 50, avg: 70, save: 29, percentile: 70, vol: 11, cond: 'Used', meta: 'Liepāja · 2w ago', conf: 0.80, special: false },
+  { id: 4, brand: 'nint', name: 'Switch Lite Yellow', ico: '🟡', price: 120, avg: 165, save: 27, percentile: 92, vol: 24, cond: 'Good', meta: 'Rīga · 5d ago', conf: 0.85, special: false },
+  { id: 5, brand: 'nint', name: 'Game Boy Advance SP', ico: '🎯', price: 65, avg: 80, save: 19, percentile: 78, vol: 15, cond: 'Used', meta: 'Rīga · 2w ago', conf: 0.80, special: false },
+  { id: 6, brand: 'xbox', name: 'Xbox One X 1TB', ico: '🟢', price: 180, avg: 220, save: 18, percentile: 65, vol: 28, cond: 'Good', meta: 'Rīga · 4d ago', conf: 0.85, special: false },
+  { id: 7, brand: 'ps', name: 'PS5 Disc Edition', ico: '🎮', price: 445, avg: 487, save: 8, percentile: 91, vol: 69, cond: 'Like new', meta: 'Rīga · 2d ago', conf: 0.95, special: false },
+  { id: 8, brand: 'nint', name: 'Switch OLED White', ico: '🔴', price: 290, avg: 305, save: 5, percentile: 76, vol: 39, cond: 'Like new', meta: 'Rīga · 1d ago', conf: 0.95, special: false },
+  { id: 9, brand: 'ps', name: 'PS5 Digital Edition', ico: '🎮', price: 380, avg: 400, save: 5, percentile: 70, vol: 41, cond: 'Like new', meta: 'Valmiera · 1d ago', conf: 0.90, special: false },
+  { id: 10, brand: 'xbox', name: 'Xbox Series X 1TB', ico: '🟢', price: 520, avg: 487, save: 0, percentile: 58, vol: 32, cond: 'New', meta: 'Jelgava · 4h ago', conf: 0.90, special: false },
+  { id: 11, brand: 'xbox', name: 'Xbox Series S 512GB', ico: '🟢', price: 320, avg: 205, save: -56, percentile: 0, vol: 30, cond: 'New', meta: 'Daugavpils · 2d ago', conf: 0.90, special: false },
+  { id: 12, brand: 'ps', name: 'PS4 Pro 1TB Star Wars Ed.', ico: '⭐', price: 229, avg: 180, save: -27, percentile: 32, vol: 18, cond: 'Good', meta: 'Jelgava · 3d ago', conf: 0.90, special: true },
+];
+
+function dealScore(p) {
+  if (p.save >= 30) return { tier: 'hot', label: '🔥 Hot deal', score: 95 - p.save * 0.5 };
+  if (p.save >= 10) return { tier: 'great', label: 'Great deal', score: 80 - p.save * 1.2 };
+  if (p.save >= 0) return { tier: 'fair', label: 'Fair', score: 60 - p.save * 4 };
+  return { tier: 'skip', label: 'Skip', score: Math.max(0, 30 + p.save) };
+}
+
+function sparkBars(save) {
+  const cls = save >= 30 ? 'hot' : save >= 10 ? 'deal' : '';
+  return Array.from({length: 14}, (_, i) => {
+    const h = 20 + Math.sin(i * 0.5) * 25 + Math.random() * 35;
+    return `<div class="b ${cls}" style="height:${Math.max(8, h)}%"></div>`;
+  }).join('');
+}
+
+function render(filter) {
+  let list = POSTS.slice();
+  if (filter === 'ps') list = list.filter(p => p.brand === 'ps');
+  if (filter === 'xbox') list = list.filter(p => p.brand === 'xbox');
+  if (filter === 'nint') list = list.filter(p => p.brand === 'nint');
+  if (filter === 'retro') list = list.filter(p => p.brand === 'ps' || p.brand === 'nint' || p.brand === 'xbox').filter(p => p.vol < 25);
+  if (filter === 'hot') list = list.filter(p => p.save >= 30);
+  if (filter === 'special') list = list.filter(p => p.special);
+
+  list.sort((a, b) => dealScore(b).score - dealScore(a).score);
+
+  const f = document.getElementById('feed');
+  if (!list.length) { f.innerHTML = '<div class="empty">No matching consoles</div>'; return; }
+  f.innerHTML = list.map(p => {
+    const d = dealScore(p);
+    const isHot = d.tier === 'hot' || d.tier === 'great';
+    return `
+    <div class="post ${isHot ? 'great-deal' : ''}">
+      <div class="deal-score ${d.tier}">
+        <div class="num">${Math.round(d.score)}</div>
+        <div class="lbl">${d.label}</div>
+      </div>
+      <div class="post-head">
+        <div class="post-img">${p.ico}</div>
+        <div class="post-info">
+          <span class="post-brand brand-${p.brand}">${p.brand.toUpperCase()}${p.special ? ' · ⭐ Special' : ''}</span>
+          <div class="post-name">${p.name}</div>
+          <div class="post-meta">${p.meta} · ${p.cond} · conf ${p.conf}</div>
+        </div>
+      </div>
+      <div class="price-block">
+        <div class="price-main">€${p.price}</div>
+        <div class="price-avg">avg <strong>€${p.avg}</strong></div>
+        <div class="price-save ${p.save < 0 ? 'bad' : ''}">${p.save >= 0 ? '−' : '+'}${Math.abs(p.save)}%</div>
+        <div style="margin-left:auto;text-align:right;">
+          <div class="price-percentile">p${p.percentile}</div>
+          <div class="price-percentile">${p.vol} listings</div>
+        </div>
+      </div>
+      <div class="spark-wrap">
+        <span class="spark-label">30d</span>
+        <div class="spark">${sparkBars(p.save)}</div>
+      </div>
+      <div class="post-actions">
+        <button class="save" onclick="alert('Saved!')">★ Save</button>
+        <button class="open" onclick="alert('Open modal')">View</button>
+        <button class="flag" onclick="alert('Flag')">🚩</button>
+        <button class="snipe" onclick="alert('Snipe alert!')">⚡ Snipe</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function pickChip(el, filter) {
+  document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  render(filter);
+}
+
+render('all');
+</script>
+</body>
+</html>

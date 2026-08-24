@@ -121,6 +121,25 @@ class CasesScraper(BaseScraper):
             if self.config.scraper.max_pages and page > self.config.scraper.max_pages:
                 break
 
+        # Deactivate listings that weren't seen in this session (or any recent one).
+        # Matches the pattern from engine.py:247 and cpu_scraper.py:236 — the cases
+        # scraper was the only secondary scraper missing this step, so any case /
+        # PSU row that wasn't found in this run but is older than stale_after_days
+        # gets flipped to is_active=false here.
+        try:
+            with get_session() as session:
+                stale_count = ListingRepository.mark_stale(
+                    session,
+                    days=self.config.scraper.stale_after_days,
+                )
+                if stale_count:
+                    logger.info(
+                        f"🗑️ Marked {stale_count} listings as stale "
+                        f"(not seen for {self.config.scraper.stale_after_days}+ days)"
+                    )
+        except Exception as e:
+            logger.error(f"mark_stale failed after case scrape: {e}")
+
         return listings
 
     def scrape_listing(self, listing_id: str, url: str) -> Optional[Dict[str, Any]]:

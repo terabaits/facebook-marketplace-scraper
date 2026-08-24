@@ -297,52 +297,90 @@
     }
 
     
-    /* ===== Grid size control ===== */
-    .laptop-grid-control {
+    /* ===== Grid size control (subtle, inline with active filters) ===== */
+    .laptop-active-filters-row {
         display: flex;
         align-items: center;
         gap: 0.75rem;
         margin: 0 0 1rem;
-        padding: 0.75rem 1rem;
-        background: var(--card-bg);
-        border: 1px solid var(--card-border, rgba(255,255,255,0.06));
-        border-radius: 12px;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        min-height: 1.5rem;
     }
-    .laptop-grid-control-label {
-        font-size: 0.85rem;
-        font-weight: 600;
+    .laptop-active-filters {
+        flex: 1;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.4rem;
+        align-items: center;
+        font-size: 0.8rem;
         color: var(--text-secondary);
     }
-    .laptop-grid-size-options {
-        display: flex;
-        gap: 0.4rem;
+    .laptop-grid-size-control {
+        margin-left: auto;
+        position: relative;
+        display: inline-flex;
+        align-items: center;
     }
-    .laptop-grid-size-btn {
-        width: 32px;
-        height: 32px;
+    .laptop-grid-size-toggle {
+        width: 28px;
+        height: 28px;
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        border-radius: 8px;
+        border-radius: 6px;
         border: 1px solid var(--table-border);
-        background: var(--input-bg, transparent);
+        background: transparent;
         color: var(--text-secondary);
-        font-size: 0.85rem;
+        cursor: pointer;
+        transition: background 0.15s, color 0.15s, border-color 0.15s;
+        padding: 0;
+    }
+    .laptop-grid-size-toggle:hover {
+        border-color: var(--primary, #667eea);
+        color: var(--primary, #667eea);
+        background: rgba(102,126,234,0.08);
+    }
+    .laptop-grid-size-toggle svg {
+        width: 16px;
+        height: 16px;
+    }
+    .laptop-grid-size-menu {
+        display: none;
+        position: absolute;
+        right: 0;
+        top: calc(100% + 6px);
+        background: var(--card-bg);
+        border: 1px solid var(--card-border);
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        padding: 0.35rem;
+        gap: 0.3rem;
+        z-index: 50;
+    }
+    .laptop-grid-size-menu.open {
+        display: flex;
+    }
+    .laptop-grid-size-option {
+        width: 28px;
+        height: 28px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 6px;
+        border: 1px solid transparent;
+        background: transparent;
+        color: var(--text-secondary);
+        font-size: 0.8rem;
         font-weight: 600;
         cursor: pointer;
-        transition: background 0.15s, color 0.15s, border-color 0.15s, transform 0.1s;
+        transition: background 0.12s, color 0.12s;
     }
-    .laptop-grid-size-btn:hover {
-        border-color: var(--primary, #667eea);
+    .laptop-grid-size-option:hover {
+        background: var(--badge-bg);
         color: var(--text-color);
-        transform: translateY(-1px);
     }
-    .laptop-grid-size-btn.active {
+    .laptop-grid-size-option.active {
         background: var(--primary, #667eea);
-        border-color: var(--primary, #667eea);
         color: #fff;
-        box-shadow: 0 2px 8px rgba(102,126,234,0.35);
     }
 
     .laptop-grid {
@@ -851,7 +889,11 @@
         flex-direction: column;
         position: absolute;
         top: calc(100% + 8px);
-        left: 0;
+        right: 0;  /* right-align to the trigger so the wide popup doesn't
+                     overflow the viewport and force horizontal scroll.
+                     The CPU filter is the 5th of 8 chips in the filter row,
+                     so a left-aligned 820px popup would extend ~490px past
+                     the viewport on a 1440px screen. */
         z-index: 100;
         background: var(--card-bg);
         border: 1px solid var(--card-border, rgba(255,255,255,0.08));
@@ -867,7 +909,7 @@
             0 0 0 1px rgba(0,0,0,0.04);
         opacity: 0;
         transform: translateY(-6px) scale(0.98);
-        transform-origin: top left;
+        transform-origin: top right;
         transition: opacity 0.15s ease, transform 0.15s ease;
         pointer-events: none;
     }
@@ -1015,6 +1057,19 @@
         color: var(--text-color);
         border-color: var(--primary, #667eea);
     }
+    /* Recent-gen quick-toggle (bolt icon) */
+    .cpu-recent-toggle {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.35rem;
+    }
+    .cpu-recent-toggle svg { width: 12px; height: 12px; }
+    .cpu-recent-toggle.active {
+        background: var(--primary, #667eea);
+        color: #fff;
+        border-color: var(--primary, #667eea);
+        box-shadow: 0 2px 6px rgba(102, 126, 234, 0.4);
+    }
 
     /* Body (scrollable CPU list) */
     .cpu-popup-body {
@@ -1078,14 +1133,37 @@
     .cpu-vendor-actions {
         flex-shrink: 0;
     }
-        padding: 8px 6px 6px;
-        font-size: 0.75rem;
-        font-weight: 700;
-        color: var(--text-color);
+    /* Per-vendor accent (company colors) */
+    .cpu-vendor-section {
+        --vendor-color: #8a8f98;
+        border-left: 3px solid var(--vendor-color);
+        padding-left: 6px;
+        border-radius: 8px;
+    }
+    .cpu-vendor-section[data-vendor="Intel"] { --vendor-color: #0071c5; }
+    .cpu-vendor-section[data-vendor="AMD"] { --vendor-color: #ed1c24; }
+    .cpu-vendor-section[data-vendor="Snapdragon"] { --vendor-color: #3253dc; }
+    .cpu-vendor-section[data-vendor="Mac"] { --vendor-color: #a2aaad; }
+    /* Dark mode: Intel shifts toward cyan, AMD toward orange */
+    [data-theme="dark"] .cpu-vendor-section[data-vendor="Intel"] { --vendor-color: #00c3ff; }
+    [data-theme="dark"] .cpu-vendor-section[data-vendor="AMD"] { --vendor-color: #f0501e; }
+    .cpu-vendor-name {
+        font-size: 0.78rem;
+        font-weight: 800;
+        color: var(--vendor-color);
         text-transform: uppercase;
         letter-spacing: 0.08em;
         user-select: none;
     }
+    /* Recent-generation badge (last 5 gens, Intel/AMD) */
+    .cpu-recent-badge {
+        display: inline-flex;
+        align-items: center;
+        color: var(--vendor-color, #8a8f98);
+        flex-shrink: 0;
+        opacity: 0.9;
+    }
+    .cpu-recent-badge svg { width: 11px; height: 11px; }
     .cpu-vendor-dot {
         width: 8px;
         height: 8px;
@@ -1484,16 +1562,7 @@
                 </div>
             </div>
         </div>
-    {# ===== Grid size control ===== #}
-    <div class="laptop-grid-control">
-        <span class="laptop-grid-control-label">Grid columns:</span>
-        <div class="laptop-grid-size-options">
-            <button class="laptop-grid-size-btn active" data-cols="4" onclick="setGridSize(4)">4</button>
-            <button class="laptop-grid-size-btn" data-cols="5" onclick="setGridSize(5)">5</button>
-            <button class="laptop-grid-size-btn" data-cols="6" onclick="setGridSize(6)">6</button>
-            <button class="laptop-grid-size-btn" data-cols="7" onclick="setGridSize(7)">7</button>
-        </div>
-    </div>
+    
 
     </div>
 
@@ -1586,6 +1655,10 @@
                             </select>
                         </div>
                         <div class="cpu-toolbar-spacer"></div>
+                        <button class="cpu-toolbar-btn cpu-recent-toggle" id="cpu-recent-toggle" type="button" onclick="toggleRecentCpus(this)" title="Select all Intel/AMD CPUs from the last 5 generations">
+                            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M13 2 4 14h6l-1 8 9-12h-6l1-8z"/></svg>
+                            <span>Last 5 gens</span>
+                        </button>
                         <button class="cpu-toolbar-btn" type="button" onclick="clearAllCpus()">Clear all</button>
                     </div>
                     <div class="cpu-popup-body" id="cpu-options-list">
@@ -1725,7 +1798,25 @@
         </div>
     </div>
 
-    <div id="active-filters" class="laptop-active-filters"></div>
+    <div class="laptop-active-filters-row">
+        <div id="active-filters" class="laptop-active-filters"></div>
+        <div class="laptop-grid-size-control">
+            <button class="laptop-grid-size-toggle" onclick="toggleGridSizeMenu(event)" title="Grid columns">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <rect x="3" y="3" width="7" height="7"/>
+                    <rect x="14" y="3" width="7" height="7"/>
+                    <rect x="14" y="14" width="7" height="7"/>
+                    <rect x="3" y="14" width="7" height="7"/>
+                </svg>
+            </button>
+            <div class="laptop-grid-size-menu" id="grid-size-menu">
+                <button class="laptop-grid-size-option" data-cols="4" onclick="setGridSize(4)">4</button>
+                <button class="laptop-grid-size-option" data-cols="5" onclick="setGridSize(5)">5</button>
+                <button class="laptop-grid-size-option" data-cols="6" onclick="setGridSize(6)">6</button>
+                <button class="laptop-grid-size-option" data-cols="7" onclick="setGridSize(7)">7</button>
+            </div>
+        </div>
+    </div>
 
     <!-- Similar listings modal -->
     <div id="similar-modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); z-index:1000; align-items:center; justify-content:center;">
@@ -2274,7 +2365,7 @@
                     ? `<span class="seller-badge ${(item.seller_type || '').toLowerCase()}">${item.seller_type || ''}</span>`
                     : ''}
                 ${thumbUrl
-                    ? `<img src="${thumbUrl}" alt="${title.replace(/'/g, "\\'")}" class="laptop-card-image" loading="lazy">`
+                    ? `<img src="${thumbUrl}" alt="${title.replace(/'/g, "\\'")}" class="laptop-card-image" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'laptop-card-placeholder',textContent:'💻'}))">`
                     : `<div class="laptop-card-placeholder">💻</div>`
                 }
                 <div class="laptop-card-body">
@@ -2404,6 +2495,10 @@
                 container.innerHTML = '<div class="laptop-grid" id="laptop-grid"></div>';
                 grid = document.getElementById('laptop-grid');
             }
+
+            // Preserve the selected grid column count across reloads/filter changes
+            const savedCols = parseInt(localStorage.getItem('laptopGridColumns') || '4');
+            grid.style.setProperty('--grid-columns', savedCols);
 
             grid.insertAdjacentHTML('beforeend', listings.map(renderLaptopCard).join(''));
             hasMore = listings.length === pageSize && currentListings.length < totalListings;
@@ -2548,6 +2643,30 @@
         return 'Other';
     }
 
+    /**
+     * True when the CPU belongs to one of the last 5 generations.
+     * Intel: 10th-14th gen (iX-1#### 5-digit models) or any Core Ultra.
+     * AMD: Ryzen 5000/6000/7000/8000/9000 series.
+     */
+    function isRecentCpu(model, vendor) {
+        const n = String(model || '').toLowerCase();
+        if (vendor === 'Intel') {
+            if (n.includes('core ultra')) return true;
+            const m = n.match(/(?:core\s+)?i\s*([3579])\s*[-\s]?(\d{3,5})/);
+            if (m) {
+                const num = m[2];
+                const gen = num.length === 5 ? parseInt(num.slice(0, 2), 10) : parseInt(num.slice(0, 1), 10);
+                return gen >= 10;
+            }
+            return false;
+        }
+        if (vendor === 'AMD') {
+            const m = n.match(/\b(\d{4})\b/);
+            return m ? parseInt(m[1], 10) >= 5000 : false;
+        }
+        return false;
+    }
+
     function renderCPUOptions() {
         const wrapper = document.getElementById('cpu-options-list');
         const sortMode = document.getElementById('cpu-sort-mode').value;
@@ -2637,6 +2756,9 @@
                 classes[cls].forEach(({count}) => { vendorListingCount += count; });
             });
             const dotColor = vendorColor[vendor] || '#888';
+            const recentBadge = `<span class="cpu-recent-badge" title="Latest 5 generations">
+                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M13 2 4 14h6l-1 8 9-12h-6l1-8z"/></svg>
+            </span>`;
             // Vendor-level selected count — used for the "Select all" state.
             const allVendorSelected = options.filter(o => o.vendor === vendor)
                 .every(o => selectedRefIds.has(o.ref_id));
@@ -2710,6 +2832,7 @@
                                 <polyline points="20 6 9 17 4 12"/>
                             </svg>
                             <span class="cpu-option-name">${model}</span>
+                            ${isRecentCpu(model, vendor) ? recentBadge : ''}
                             <span class="cpu-option-count">${count}</span>
                         </label>`;
                 });
@@ -2728,12 +2851,14 @@
                 updatePopupFooter();
                 // Vendor-level select-all button reflects partial state
                 syncVendorSelectAllState(e.target.closest('.cpu-vendor-section'));
+                syncRecentToggleBtn();
             });
         });
         // Re-apply the current search filter
         filterCPUOptionsBySearch();
         updateCPUFilterLabel();
         updatePopupFooter();
+        syncRecentToggleBtn();
     }
 
     /**
@@ -2742,7 +2867,10 @@
      */
     function toggleCpuVendor(header) {
         const section = header.closest('.cpu-vendor-section');
-        if (section) section.classList.toggle('collapsed');
+        if (!section) return;
+        const willExpand = !section.classList.contains('expanded');
+        section.classList.toggle('expanded', willExpand);
+        section.classList.toggle('collapsed', !willExpand);
     }
 
     /**
@@ -2786,6 +2914,73 @@
         const checked = section.querySelectorAll('.cpu-option input[type=checkbox]:checked');
         pill.classList.toggle('checked', checked.length === inputs.length);
         pill.querySelector('span:last-child').textContent = (checked.length === inputs.length) ? 'All selected' : 'Select all';
+    }
+
+    /**
+     * Select / deselect every Intel & AMD CPU from the last 5 generations.
+     * Wired to the bolt button in the CPU popup toolbar.
+     */
+    function toggleRecentCpus(btn) {
+        const wrapper = document.getElementById('cpu-options-list');
+        if (!wrapper) return;
+        const recentBoxes = [];
+        wrapper.querySelectorAll('.cpu-option input[type=checkbox]').forEach(cb => {
+            const lbl = cb.closest('.cpu-option');
+            const sec = cb.closest('.cpu-vendor-section');
+            const vendor = sec ? sec.dataset.vendor : '';
+            if ((vendor === 'Intel' || vendor === 'AMD') && lbl && isRecentCpu(lbl.dataset.cpu, vendor)) {
+                recentBoxes.push(cb);
+            }
+        });
+        if (!recentBoxes.length) return;
+        const willSelect = !recentBoxes.every(cb => cb.checked);
+        recentBoxes.forEach(cb => {
+            cb.checked = willSelect;
+            const lbl = cb.closest('.cpu-option');
+            if (lbl) lbl.classList.toggle('checked', willSelect);
+        });
+        if (willSelect) {
+            // Expand Intel/AMD sections so the selection is visible
+            wrapper.querySelectorAll('.cpu-vendor-section').forEach(sec => {
+                const v = sec.dataset.vendor;
+                if (v === 'Intel' || v === 'AMD') {
+                    sec.classList.add('expanded');
+                    sec.classList.remove('collapsed');
+                    sec.querySelectorAll('.cpu-class-block').forEach(b => {
+                        if (b.querySelector('.cpu-option.checked')) {
+                            b.classList.add('expanded');
+                            b.classList.remove('collapsed');
+                        }
+                    });
+                }
+            });
+        }
+        wrapper.querySelectorAll('.cpu-vendor-section').forEach(syncVendorSelectAllState);
+        syncRecentToggleBtn();
+        loadLaptops();
+        updateCPUFilterLabel();
+        updatePopupFooter();
+    }
+
+    /** Reflect the recent-gen toggle state (all recent CPUs selected?). */
+    function syncRecentToggleBtn() {
+        const btn = document.getElementById('cpu-recent-toggle');
+        const wrapper = document.getElementById('cpu-options-list');
+        if (!btn || !wrapper) return;
+        let total = 0, checked = 0;
+        wrapper.querySelectorAll('.cpu-option input[type=checkbox]').forEach(cb => {
+            const lbl = cb.closest('.cpu-option');
+            const sec = cb.closest('.cpu-vendor-section');
+            const vendor = sec ? sec.dataset.vendor : '';
+            if ((vendor === 'Intel' || vendor === 'AMD') && lbl && isRecentCpu(lbl.dataset.cpu, vendor)) {
+                total++;
+                if (cb.checked) checked++;
+            }
+        });
+        btn.classList.toggle('active', total > 0 && checked === total);
+        btn.title = (total > 0 && checked === total)
+            ? `All ${total} recent-gen CPUs selected — click to deselect`
+            : `Select all Intel/AMD CPUs from the last 5 generations (${checked}/${total} selected)`;
     }
 
     function filterCPUOptionsBySearch() {
@@ -2858,7 +3053,10 @@
 
     function toggleCpuClass(header) {
         const block = header.closest('.cpu-class-block');
-        if (block) block.classList.toggle('expanded');
+        if (!block) return;
+        const willExpand = !block.classList.contains('expanded');
+        block.classList.toggle('expanded', willExpand);
+        block.classList.toggle('collapsed', !willExpand);
     }
 
     function toggleCpuClassAll(btn) {
@@ -2944,8 +3142,18 @@
                 select.appendChild(option);
             }
         });
-        if (current && Array.from(select.options).some(o => o.value === current)) {
-            select.value = current;
+        // Prefer the persisted brand from localStorage if it is now available,
+        // since restoreFilters() could not select it before options existed.
+        let target = current;
+        try {
+            const raw = localStorage.getItem(LS_KEY);
+            if (raw) {
+                const pb = JSON.parse(raw).brand;
+                if (pb && Array.from(select.options).some(o => o.value === pb)) target = pb;
+            }
+        } catch (e) {}
+        if (target && Array.from(select.options).some(o => o.value === target)) {
+            select.value = target;
         }
     }
 
@@ -2966,8 +3174,21 @@
                     opt.textContent = city;
                     select.appendChild(opt);
                 });
-                // Restore the previously selected city if it's still in the list
-                if (currentValue) select.value = currentValue;
+                // Restore the persisted city if it's still in the list.
+                // restoreFilters() runs before these options exist, so the
+                // <select>.value assignment silently failed; re-apply here.
+                let restoreVal = currentValue;
+                try {
+                    const raw = localStorage.getItem(LS_KEY);
+                    if (raw) {
+                        const st = JSON.parse(raw);
+                        const persisted = (id === 'city-filter') ? st.city : st.excludeCity;
+                        if (persisted) restoreVal = persisted;
+                    }
+                } catch (e) {}
+                if (restoreVal && Array.from(select.options).some(o => o.value === restoreVal)) {
+                    select.value = restoreVal;
+                }
             });
         } catch (e) {
             console.error('Failed to load city options', e);
@@ -3279,12 +3500,6 @@
         if (e.target.id === 'similar-modal') closeSimilarModal();
     });
 
-function toggleGridSize() {
-    const grid = document.querySelector('.laptop-grid');
-    const current = getComputedStyle(grid).getPropertyValue('--grid-columns');
-    const newGrid = current === '4' ? '3' : '4';
-    document.querySelector('.laptop-grid').style.setProperty('--grid-columns', newGrid);
-}
 
 function setGridSize(cols) {
     const grid = document.querySelector('.laptop-grid');
@@ -3292,29 +3507,28 @@ function setGridSize(cols) {
         grid.style.setProperty('--grid-columns', cols);
         localStorage.setItem('laptopGridColumns', cols);
     }
-    document.querySelectorAll('.laptop-grid-size-btn').forEach(btn => {
+    document.querySelectorAll('.laptop-grid-size-option').forEach(btn => {
         btn.classList.toggle('active', parseInt(btn.dataset.cols) === cols);
     });
+    // Close the menu after selection
+    const menu = document.getElementById('grid-size-menu');
+    if (menu) menu.classList.remove('open');
 }
 
-function initGridSize() {
-    const savedCols = localStorage.getItem('laptopGridColumns') || '4';
-    setGridSize(parseInt(savedCols));
+function toggleGridSizeMenu(event) {
+    if (event) event.stopPropagation();
+    const menu = document.getElementById('grid-size-menu');
+    if (menu) menu.classList.toggle('open');
 }
 
-// Initialize grid size on page load
-document.addEventListener('DOMContentLoaded', initGridSize);
-
-function setGridSize(cols) {
-    const grid = document.querySelector('.laptop-grid');
-    if (grid) {
-        grid.style.setProperty('--grid-columns', cols);
-        localStorage.setItem('laptopGridColumns', cols);
+// Close grid size menu when clicking outside
+document.addEventListener('click', (e) => {
+    const menu = document.getElementById('grid-size-menu');
+    const toggle = document.querySelector('.laptop-grid-size-toggle');
+    if (menu && toggle && !menu.contains(e.target) && !toggle.contains(e.target)) {
+        menu.classList.remove('open');
     }
-    document.querySelectorAll('.laptop-grid-size-btn').forEach(btn => {
-        btn.classList.toggle('active', parseInt(btn.dataset.cols) === cols);
-    });
-}
+});
 
 function initGridSize() {
     const savedCols = localStorage.getItem('laptopGridColumns') || '4';

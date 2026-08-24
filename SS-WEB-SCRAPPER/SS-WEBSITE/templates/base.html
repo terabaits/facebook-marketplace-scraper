@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}{{ t('SS-Crawler Dashboard') }}{% endblock %}</title>
+    <title>{% block title %}{{ t('Techstati') }}{% endblock %}</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="/static/css/dark-mode.css">
     <style>
@@ -41,6 +41,14 @@
             --code-text: #333;
             --primary: #4f46e5;
             --primary-hover: #4338ca;
+            /* Aliases — many page templates use `var(--text, ...)` and
+               `var(--text-dim, ...)` instead of `--text-color`. Without
+               these aliases the fallback always wins, so colors were
+               frozen at the dark-mode values and the text was invisible
+               on light pages (e.g. PSU/Cases modal headers). */
+            --text: #1f2937;
+            --text-dim: #6b7280;
+            --text-mute: #6b7280;
         }
 
         [data-theme="dark"] {
@@ -77,6 +85,9 @@
             --modal-border: #0f3460;
             --modal-text-color: #e0e0e0;
             --code-text: #e0e0e0;
+            --text: #f1f5f9;
+            --text-dim: #9ca3af;
+            --text-mute: #6b7280;
         }
 
         body {
@@ -86,21 +97,32 @@
             transition: background 0.3s, color 0.3s;
         }
 
+        /* === Navbar layout (single-row, info-dense) ===
+           The previous layout had TWO rows: brand+utilities on top,
+           nav links below. That left a huge empty middle on the brand
+           row and made the navbar ~108px tall. The new layout puts
+           EVERYTHING on one row: brand (left) → nav links (flex-grow
+           to fill) → utilities (right). When the viewport is too
+           narrow to fit all 16 nav links, the nav-links container
+           wraps to a second row. Vertical padding tightened to
+           0.5rem 1.25rem so the navbar sits at ~62px on a 1400px
+           viewport (40% shorter). */
         .navbar {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            padding: 1rem 1.5rem;
+            padding: 0.4rem 1.25rem;
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
             display: flex;
-            flex-direction: column;
-            gap: 0.75rem;
+            align-items: center;
+            flex-wrap: wrap;  /* wrap to 2 rows when content overflows */
+            gap: 0.35rem 0.5rem;
         }
 
         .navbar-top {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 0.75rem;
+            display: contents;
+            /* The brand, nav-links, and utilities are direct children
+               of .navbar in the HTML, so the .navbar-top wrapper is
+               just a passthrough — keeps the old class working for
+               any future scoping without affecting layout. */
         }
 
         .navbar h1 {
@@ -110,44 +132,435 @@
             margin: 0;
         }
 
+        /* === Brand (logo + wordmark) ===
+           Replaces the old `🔍 Techstati` h1 with a custom neon-owl
+           logo (SVG) + the wordmark.
+
+           Design intent (per graphics-design-specialist skill):
+             - Visual hierarchy: owl silhouette is the primary identity,
+               wordmark is the secondary anchor.
+             - The owl sits on a DARK CIRCULAR "screen" — this is how
+               real neon signs work (neon needs a dark surface to glow
+               on). It also gives the logo a contained brand-mark feel
+               and high contrast against the purple navbar.
+             - Body stroke is solid WHITE for WCAG-AAA contrast against
+               the dark screen, regardless of theme. The neon vibe
+               comes from the cyan eye-pupils + the outer glow in
+               dark mode, not from a gradient on a similar-tinted bg.
+             - Theme adaptation: same owl silhouette in both modes, but
+               the dark screen goes from "navy + cyan border" in light
+               mode to "deeper navy + glowing violet border" in dark
+               mode. Strong outer glow only in dark mode.
+             - The owl uses 5 distinct visual elements: ear tufts,
+               hexagonal head, brow accents, eyes (with cyan data-point
+               pupils), and beak. Each is a separate path so CSS can
+               color/animate them independently if needed later. */
+        .brand {
+            display: inline-flex !important;
+            align-items: center;
+            gap: 0.6rem;
+            margin: 0 !important;
+            font-size: 1.35rem;
+            line-height: 1;
+            flex-shrink: 0;  /* never shrink the brand */
+        }
+        .brand-logo {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 42px;
+            height: 42px;
+            flex-shrink: 0;
+            /* Optical alignment — drop the logo so the wordmark
+               baseline feels right next to the owl. */
+            margin-top: -2px;
+        }
+        .brand-logo svg {
+            display: block;
+            width: 100%;
+            height: 100%;
+            overflow: visible;  /* let the glow render past the box */
+        }
+        .brand-text {
+            color: inherit;
+            font-weight: 700;
+            letter-spacing: -0.01em;
+            white-space: nowrap;
+        }
+
+        /* === Brand shape + screen styling ===
+           The SVG sets `fill` and `stroke` on the shape group by
+           default (so the logo renders correctly even before CSS
+           loads). CSS below refines the look per theme. */
+        .brand-screen {
+            /* Dark "neon screen" — gives high contrast for the
+               white owl body to pop against. Slightly transparent
+               navy so it doesn't feel like a hard sticker on the
+               purple navbar. */
+            fill: rgba(15, 23, 42, 0.85);
+            stroke: rgba(0, 212, 255, 0.55);
+            stroke-width: 1.2;
+            transition: fill 0.3s ease, stroke 0.3s ease;
+        }
+        .brand-shape {
+            stroke: #ffffff;
+            fill: none;
+            stroke-width: 2.8;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            transition: filter 0.3s ease;
+        }
+        .brand-eye-pupil {
+            fill: url(#brand-eye-fill);
+        }
+        .brand-eye-core {
+            /* Tiny white core in each eye — adds a "data point" sparkle
+               and reinforces the "tech" theme. */
+            fill: #ffffff;
+        }
+        /* Dark mode: deeper screen + glowing border + outer halo on
+           the whole logo so the neon really pops on a dark page. */
+        [data-theme="dark"] .brand-screen {
+            fill: rgba(2, 6, 23, 0.95);
+            stroke: rgba(124, 58, 237, 0.85);
+        }
+        [data-theme="dark"] .brand-logo svg {
+            filter: drop-shadow(0 0 8px rgba(0, 212, 255, 0.55))
+                    drop-shadow(0 0 18px rgba(124, 58, 237, 0.4));
+        }
+
+        .brand-text {
+            color: #ffffff;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.15);
+        }
+        /* Hover: subtle tilt for a little personality */
+        .brand-logo:hover svg {
+            transform: rotate(-6deg) scale(1.05);
+            transition: transform 0.2s ease;
+        }
+        .brand-logo svg {
+            transition: transform 0.2s ease, filter 0.3s ease;
+        }
+        /* Responsive: keep layout the same — the navbar naturally
+           wraps to 2 rows when content is too wide for one row.
+           Tighter padding/font on small screens. */
+        @media (max-width: 600px) {
+            .brand-logo { width: 36px; height: 36px; }
+            .brand { font-size: 1.15rem; gap: 0.5rem; }
+            .navbar { padding: 0.4rem 0.75rem; }
+            .nav-links a, .nav-utilities a { font-size: 0.8rem; padding: 0.3rem 0.55rem; }
+        }
+
+        /* === Brand popover menu ===
+           Click the logo → menu pops out below with user info,
+           profile/admin/unmatched/logout, language toggle, and
+           color mode toggle. The nav-utilities inline buttons
+           are removed from the navbar — everything user-related
+           lives here, freeing the navbar for just brand + nav links. */
+        .brand {
+            /* Make the brand clickable like a button */
+            cursor: pointer;
+            background: transparent;
+            border: 0;
+            padding: 0;
+            color: white;
+            font: inherit;
+            position: relative;  /* anchor for the popover */
+            z-index: 1001;  /* sit above the backdrop so clicking the
+                               brand to close the menu still works */
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .brand:focus-visible {
+            outline: 2px solid rgba(255, 255, 255, 0.7);
+            outline-offset: 4px;
+            border-radius: 6px;
+        }
+        /* The little chevron hint that the brand is clickable */
+        .brand-chevron {
+            margin-left: 0.15rem;
+            opacity: 0.75;
+            transition: transform 0.2s ease, opacity 0.2s ease;
+            font-size: 0.85em;
+            line-height: 1;
+        }
+        .brand[aria-expanded="true"] .brand-chevron {
+            transform: rotate(180deg);
+            opacity: 1;
+        }
+
+        /* The popover panel itself */
+        .brand-menu {
+            position: absolute;
+            top: calc(100% + 0.6rem);
+            left: 0;
+            min-width: 260px;
+            max-width: 320px;
+            background: var(--card-bg, #ffffff);
+            color: var(--text-color, #1f2937);
+            border: 1px solid var(--card-border, rgba(0, 0, 0, 0.1));
+            border-radius: 12px;
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25),
+                        0 2px 8px rgba(0, 0, 0, 0.1);
+            padding: 0.5rem;
+            z-index: 1000;
+            /* Hidden by default — JavaScript adds `.brand-menu-open`
+               to .brand to trigger the show animation. The transform
+               origin sits at the top-left where the logo is, so the
+               menu "unfolds" out of the logo. */
+            opacity: 0;
+            transform: scale(0.92) translateY(-6px);
+            transform-origin: top left;
+            pointer-events: none;
+            transition: opacity 0.18s ease, transform 0.18s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .brand[aria-expanded="true"] .brand-menu {
+            opacity: 1;
+            transform: scale(1) translateY(0);
+            pointer-events: auto;
+        }
+        /* Dark mode: deeper card with a glowing border */
+        [data-theme="dark"] .brand-menu {
+            background: #1a1f2e;
+            color: #e2e8f0;
+            border-color: rgba(0, 212, 255, 0.25);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5),
+                        0 0 0 1px rgba(0, 212, 255, 0.1) inset;
+        }
+
+        /* Header inside the menu: user info */
+        .brand-menu-header {
+            padding: 0.7rem 0.8rem 0.6rem;
+            border-bottom: 1px solid var(--card-border, rgba(0, 0, 0, 0.08));
+            margin-bottom: 0.4rem;
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+        }
+        [data-theme="dark"] .brand-menu-header {
+            border-bottom-color: rgba(255, 255, 255, 0.08);
+        }
+        .brand-menu-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 0.95rem;
+            flex-shrink: 0;
+            text-transform: uppercase;
+        }
+        .brand-menu-avatar.guest {
+            background: rgba(0, 0, 0, 0.15);
+            color: var(--text-secondary, #6b7280);
+        }
+        [data-theme="dark"] .brand-menu-avatar.guest {
+            background: rgba(255, 255, 255, 0.1);
+            color: #94a3b8;
+        }
+        .brand-menu-user {
+            min-width: 0;
+            flex: 1;
+        }
+        .brand-menu-name {
+            font-weight: 600;
+            font-size: 0.9rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .brand-menu-role {
+            font-size: 0.72rem;
+            color: var(--text-secondary, #6b7280);
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            margin-top: 1px;
+        }
+
+        /* Menu items (links + buttons) */
+        .brand-menu-item {
+            display: flex;
+            align-items: center;
+            gap: 0.65rem;
+            padding: 0.55rem 0.8rem;
+            border-radius: 8px;
+            color: inherit;
+            text-decoration: none;
+            font-size: 0.88rem;
+            line-height: 1.2;
+            cursor: pointer;
+            border: 0;
+            background: transparent;
+            width: 100%;
+            text-align: left;
+            transition: background-color 0.15s ease, color 0.15s ease;
+        }
+        .brand-menu-item:hover,
+        .brand-menu-item:focus-visible {
+            background: rgba(102, 126, 234, 0.12);
+            color: #667eea;
+            outline: none;
+        }
+        [data-theme="dark"] .brand-menu-item:hover,
+        [data-theme="dark"] .brand-menu-item:focus-visible {
+            background: rgba(0, 212, 255, 0.12);
+            color: #67e8f9;
+        }
+        .brand-menu-item-icon {
+            width: 18px;
+            height: 18px;
+            flex-shrink: 0;
+            opacity: 0.75;
+        }
+        .brand-menu-item:hover .brand-menu-item-icon,
+        .brand-menu-item:focus-visible .brand-menu-item-icon {
+            opacity: 1;
+        }
+        .brand-menu-item.primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            font-weight: 600;
+            margin-bottom: 0.3rem;
+        }
+        .brand-menu-item.primary:hover,
+        .brand-menu-item.primary:focus-visible {
+            background: linear-gradient(135deg, #5a6fd6 0%, #6a4291 100%);
+            color: white;
+        }
+        .brand-menu-divider {
+            height: 1px;
+            background: var(--card-border, rgba(0, 0, 0, 0.08));
+            margin: 0.35rem 0;
+        }
+        [data-theme="dark"] .brand-menu-divider {
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        /* Toggle rows (language, dark mode) */
+        .brand-menu-toggle {
+            display: flex;
+            align-items: center;
+            gap: 0.65rem;
+            padding: 0.55rem 0.8rem;
+            border-radius: 8px;
+            font-size: 0.88rem;
+        }
+        .brand-menu-toggle-icon {
+            width: 18px;
+            height: 18px;
+            flex-shrink: 0;
+            opacity: 0.75;
+        }
+        .brand-menu-toggle-label {
+            flex: 1;
+        }
+        .brand-menu-toggle-control {
+            display: inline-flex;
+            background: rgba(0, 0, 0, 0.08);
+            border-radius: 999px;
+            padding: 2px;
+            gap: 2px;
+        }
+        [data-theme="dark"] .brand-menu-toggle-control {
+            background: rgba(255, 255, 255, 0.08);
+        }
+        .brand-menu-toggle-option {
+            border: 0;
+            background: transparent;
+            color: inherit;
+            font-size: 0.78rem;
+            padding: 0.2rem 0.55rem;
+            border-radius: 999px;
+            cursor: pointer;
+            line-height: 1;
+            transition: background-color 0.15s ease, color 0.15s ease;
+        }
+        .brand-menu-toggle-option.active {
+            background: var(--card-bg, #ffffff);
+            color: #667eea;
+            font-weight: 600;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+        }
+        [data-theme="dark"] .brand-menu-toggle-option.active {
+            background: rgba(0, 212, 255, 0.2);
+            color: #67e8f9;
+        }
+
+        /* Backdrop for click-outside-to-close */
+        .brand-menu-backdrop {
+            position: fixed;
+            inset: 0;
+            background: transparent;
+            z-index: 999;
+            display: none;
+        }
+        .brand-menu-backdrop.open {
+            display: block;
+        }
+
+        /* On small screens, the menu pops up centered like a modal
+           so it's easier to reach on touch devices */
+        @media (max-width: 480px) {
+            .brand-menu {
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%) scale(0.92);
+                width: calc(100vw - 2rem);
+                max-width: 320px;
+            }
+            .brand[aria-expanded="true"] .brand-menu {
+                transform: translate(-50%, -50%) scale(1);
+            }
+        }
+
         .nav-utilities {
             display: flex;
             align-items: center;
-            gap: 0.75rem;
+            gap: 0.5rem;
+            flex-shrink: 0;  /* never shrink the utilities */
         }
 
         .nav-links {
             display: flex;
+            flex: 1 1 auto;  /* take available space; allow shrink */
             flex-wrap: wrap;
             align-items: center;
             justify-content: center;
-            gap: 0.5rem 0.75rem;
+            gap: 0.2rem 0.3rem;
+            min-width: 0;
         }
 
         .nav-links a, #auth-nav a, .nav-utilities a {
             color: white;
             text-decoration: none;
-            opacity: 0.95;
+            opacity: 0.92;
             transition: opacity 0.2s, background-color 0.2s, transform 0.15s;
-            padding: 0.35rem 0.7rem;
-            border-radius: 20px;
-            background: rgba(255,255,255,0.15);
+            padding: 0.4rem 0.75rem;
+            border-radius: 18px;
+            background: rgba(255,255,255,0.14);
             font-size: 0.9rem;
-            line-height: 1;
+            line-height: 1.2;
+            font-weight: 500;
             white-space: nowrap;
         }
 
         .nav-links a:hover, #auth-nav a:hover, .nav-utilities a:hover {
             opacity: 1;
-            background: rgba(255,255,255,0.3);
+            background: rgba(255,255,255,0.28);
             transform: translateY(-1px);
             text-decoration: none;
         }
 
         .nav-links a.active, #auth-nav a.active, .nav-utilities a.active {
-            font-weight: bold;
+            font-weight: 600;
             opacity: 1;
-            background: rgba(255,255,255,0.4);
+            background: rgba(255,255,255,0.35);
+            box-shadow: 0 0 0 1px rgba(255,255,255,0.4) inset;
         }
 
         .staff-only { display: none !important; }
@@ -156,14 +569,15 @@
             background: rgba(255,255,255,0.2);
             border: 1px solid rgba(255,255,255,0.3);
             color: white;
-            padding: 0.5rem 1rem;
+            padding: 0.3rem 0.6rem;
             border-radius: 20px;
             cursor: pointer;
-            font-size: 0.875rem;
+            font-size: 0.8rem;
             display: flex;
             align-items: center;
-            gap: 0.5rem;
+            gap: 0.35rem;
             transition: all 0.3s;
+            line-height: 1;
         }
 
         .dark-mode-toggle:hover, .lang-toggle:hover {
@@ -546,6 +960,15 @@
 
         .modal-content {
             padding: 1.5rem;
+        }
+        /* Body of the modal (where listing/component content goes). The
+           GPU/CPU/PSU pages already use `.modal-body`; some pages
+           (motherboards, lenses) used a bare id without the class.
+           This rule makes BOTH work — anything inside a `.modal`
+           that's not the header or close button gets padding. */
+        .modal-body,
+        .modal > div:not(.modal-header):not(.modal-close) {
+            padding: 1.25rem 1.5rem;
         }
 
         .price-history-chart {
@@ -1696,6 +2119,99 @@
         .dash-hero-card.gradient-gold { background: linear-gradient(135deg, #f7971e 0%, #ffd200 100%); }
         .dash-hero-card.gradient-teal { background: linear-gradient(135deg, #0d9488 0%, #14b8a6 100%); }
 
+        /* === Total Profit Potential box ===
+           Sits ABOVE the standard hero cards. Spans the full width of
+           the hero grid (grid-column: 1 / -1) and shows the
+           buy→resell flow in one line: Spend → Get = Profit (+ ROI%).
+           Designed to answer the buyer's #1 question at a glance. */
+        .dash-profit-box {
+            grid-column: 1 / -1;
+            position: relative;
+            padding: 1.5rem 1.75rem;
+            border-radius: 14px;
+            color: white;
+            background: linear-gradient(135deg, #1e3a8a 0%, #7c3aed 50%, #db2777 100%);
+            box-shadow: 0 8px 24px rgba(124, 58, 237, 0.25);
+            overflow: hidden;
+            margin-bottom: 0.25rem;
+        }
+        .dash-profit-box::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at 80% 20%, rgba(255,255,255,0.08), transparent 50%);
+            pointer-events: none;
+        }
+        .dash-profit-icon {
+            font-size: 1.5rem;
+            display: inline-block;
+            margin-right: 0.4rem;
+            vertical-align: middle;
+        }
+        .dash-profit-label {
+            display: inline-block;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            font-weight: 700;
+            opacity: 0.95;
+            vertical-align: middle;
+        }
+        .dash-profit-flow {
+            display: flex;
+            align-items: stretch;
+            gap: 1rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+        .dash-profit-cell {
+            flex: 1 1 180px;
+            background: rgba(255,255,255,0.12);
+            border: 1px solid rgba(255,255,255,0.18);
+            border-radius: 10px;
+            padding: 0.75rem 1rem;
+            min-width: 0;
+        }
+        .dash-profit-cell.highlight {
+            background: rgba(255,255,255,0.22);
+            border-color: rgba(255,255,255,0.45);
+            box-shadow: 0 0 0 1px rgba(255,255,255,0.15) inset;
+        }
+        .dash-profit-cell-label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            font-weight: 700;
+            opacity: 0.85;
+        }
+        .dash-profit-cell-value {
+            font-size: 1.75rem;
+            font-weight: 800;
+            line-height: 1.1;
+            margin-top: 0.25rem;
+            font-variant-numeric: tabular-nums;
+        }
+        .dash-profit-cell-sub {
+            font-size: 0.72rem;
+            opacity: 0.85;
+            margin-top: 0.2rem;
+        }
+        .dash-profit-arrow {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            opacity: 0.7;
+            padding: 0 0.25rem;
+            flex: 0 0 auto;
+        }
+        @media (max-width: 720px) {
+            .dash-profit-box { padding: 1.25rem 1.25rem; }
+            .dash-profit-cell-value { font-size: 1.4rem; }
+            .dash-profit-arrow { display: none; }
+        }
+
         .dash-grid-2 { display: grid; grid-template-columns: 1.4fr 1fr; gap: 1.5rem; margin-bottom: 1.5rem; }
         .dash-grid-2 > .section { margin-bottom: 0; }
         @media (max-width: 1024px) { .dash-grid-2 { grid-template-columns: 1fr; } }
@@ -1910,37 +2426,130 @@
     </div>
     <nav class="navbar">
         <div class="navbar-top">
-            <h1>🔍 {{ t('SS-Crawler Dashboard') }}</h1>
-            <div class="nav-utilities">
-                <span id="auth-nav"></span>
-                <button class="lang-toggle" onclick="toggleLanguage()" title="{{ t('Switch language') }}">
-                    <span id="lang-icon">🇱🇻</span>
-                    <span id="lang-text">LV</span>
-                </button>
-                <button class="dark-mode-toggle" onclick="toggleDarkMode()" title="Toggle Dark Mode">
-                    <span id="dark-mode-icon">🌙</span>
-                    <span id="dark-mode-text">{{ t('Dark') }}</span>
-                </button>
+            <h1 class="brand" id="brand-button" type="button" role="button" tabindex="0"
+                aria-haspopup="menu" aria-expanded="false" aria-controls="brand-menu"
+                title="Open user menu">
+                <span class="brand-logo" aria-hidden="true">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="42" height="42" role="img" aria-label="Techstati">
+                        <defs>
+                            <!-- Cyan radial gradient for the eye pupils.
+                                 The "data point" tech feel: bright cyan
+                                 core fading to deep teal. -->
+                            <radialGradient id="brand-eye-fill" cx="0.5" cy="0.5" r="0.5">
+                                <stop offset="0%" stop-color="#a5f3fc"/>
+                                <stop offset="55%" stop-color="#22d3ee"/>
+                                <stop offset="100%" stop-color="#0e7490"/>
+                            </radialGradient>
+                        </defs>
+
+                        <!-- Dark circular "screen" — the neon canvas. -->
+                        <circle class="brand-screen" cx="32" cy="32" r="30"
+                                fill="rgba(15,23,42,0.85)"
+                                stroke="rgba(0,212,255,0.55)" stroke-width="1.2"/>
+
+                        <!-- Owl body: solid white stroke for max contrast. -->
+                        <g class="brand-shape" fill="none" stroke="#ffffff" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M 16 19 L 20 7 L 26 21"/>
+                            <path d="M 48 19 L 44 7 L 38 21"/>
+                            <path d="M 18 19 L 12 28 L 12 40 Q 12 50 22 55 L 42 55 Q 52 50 52 40 L 52 28 L 46 19 Q 32 14 18 19 Z"/>
+                            <path d="M 17 27 L 24 24" stroke-width="2.2"/>
+                            <path d="M 47 27 L 40 24" stroke-width="2.2"/>
+                            <circle cx="24" cy="34" r="7"/>
+                            <circle cx="24" cy="34" r="3.4" class="brand-eye-pupil" stroke="none"/>
+                            <circle cx="24" cy="34" r="1.1" class="brand-eye-core" stroke="none"/>
+                            <circle cx="40" cy="34" r="7"/>
+                            <circle cx="40" cy="34" r="3.4" class="brand-eye-pupil" stroke="none"/>
+                            <circle cx="40" cy="34" r="1.1" class="brand-eye-core" stroke="none"/>
+                            <path d="M 32 40 L 28 48 L 36 48 Z" fill="#ffffff" stroke="none"/>
+                        </g>
+                    </svg>
+                </span>
+                <span class="brand-text">{{ t('Techstati') }}</span>
+                <span class="brand-chevron" aria-hidden="true">▾</span>
+
+                <!-- === Brand popover menu ===
+                     Hidden by default. JS toggles aria-expanded on .brand
+                     to show/hide. Contents are populated by the auth
+                     fetch (see initBrandMenu). For now we ship a
+                     guest-state skeleton and let JS swap it. -->
+                <div class="brand-menu" id="brand-menu" role="menu" aria-labelledby="brand-button">
+                    <div class="brand-menu-header" id="brand-menu-header">
+                        <div class="brand-menu-avatar guest" id="brand-menu-avatar">·</div>
+                        <div class="brand-menu-user">
+                            <div class="brand-menu-name" id="brand-menu-name">Guest</div>
+                            <div class="brand-menu-role" id="brand-menu-role">Not signed in</div>
+                        </div>
+                    </div>
+                    <a href="/login" class="brand-menu-item primary" role="menuitem" id="brand-menu-login">
+                        <svg class="brand-menu-item-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+                        <span>{{ t('Sign in') }}</span>
+                    </a>
+                    <div id="brand-menu-user-section" style="display: none;">
+                        <a href="/profile" class="brand-menu-item" role="menuitem" id="brand-menu-profile">
+                            <svg class="brand-menu-item-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                            <span>{{ t('Profile') }}</span>
+                        </a>
+                        <a href="/admin" class="brand-menu-item" role="menuitem" id="brand-menu-admin" style="display: none;">
+                            <svg class="brand-menu-item-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1l3 6 6 1-4.5 4.5L18 19l-6-3-6 3 1.5-6.5L3 8l6-1z"/></svg>
+                            <span>{{ t('Admin') }}</span>
+                        </a>
+                        <a href="/unmatched" class="brand-menu-item" role="menuitem" id="brand-menu-unmatched" style="display: none;">
+                            <svg class="brand-menu-item-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+                            <span>{{ t('Unmatched') }}</span>
+                        </a>
+                        <a href="/logout" class="brand-menu-item" role="menuitem" id="brand-menu-logout">
+                            <svg class="brand-menu-item-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+                            <span>{{ t('Logout') }}</span>
+                        </a>
+                    </div>
+                    <div class="brand-menu-divider" id="brand-menu-quicklinks-divider"></div>
+                    <a href="/" class="brand-menu-item" role="menuitem" id="brand-menu-dashboard">
+                        <svg class="brand-menu-item-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+                        <span>{{ t('Dashboard') }}</span>
+                    </a>
+                    <a href="/wiki" class="brand-menu-item" role="menuitem" id="brand-menu-wiki" style="display: none;">
+                        <svg class="brand-menu-item-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+                        <span>{{ t('Wiki') }}</span>
+                    </a>
+                    <div class="brand-menu-divider"></div>
+                    <div class="brand-menu-toggle">
+                        <svg class="brand-menu-toggle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+                        <span class="brand-menu-toggle-label">{{ t('Language') }}</span>
+                        <div class="brand-menu-toggle-control" role="group" aria-label="Language">
+                            <button type="button" class="brand-menu-toggle-option" data-lang="en" role="menuitem">EN</button>
+                            <button type="button" class="brand-menu-toggle-option" data-lang="lv" role="menuitem">LV</button>
+                        </div>
+                    </div>
+                    <div class="brand-menu-toggle">
+                        <svg class="brand-menu-toggle-icon" id="brand-menu-theme-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+                        <span class="brand-menu-toggle-label">{{ t('Theme') }}</span>
+                        <div class="brand-menu-toggle-control" role="group" aria-label="Theme">
+                            <button type="button" class="brand-menu-toggle-option" data-theme-opt="light" role="menuitem">{{ t('Light') }}</button>
+                            <button type="button" class="brand-menu-toggle-option" data-theme-opt="dark" role="menuitem">{{ t('Dark') }}</button>
+                        </div>
+                    </div>
+                </div>
+            </h1>
+            <div class="nav-links">
+                <a href="/gpu">{{ t('GPUs') }}</a>
+                <a href="/cpu">{{ t('CPUs') }}</a>
+                <a href="/computers">{{ t('Computers') }}</a>
+                <a href="/laptops">{{ t('Laptops') }}</a>
+                <a href="/motherboards">{{ t('Motherboards') }}</a>
+                <a href="/monitors">{{ t('Monitors') }}</a>
+                <a href="/ram">{{ t('RAM') }}</a>
+                <a href="/cameras">{{ t('Cameras') }}</a>
+                <a href="/lenses">{{ t('Lenses') }}</a>
+                <a href="/ssd">{{ t('SSDs') }}</a>
+                <a href="/psu">{{ t('PSUs') }}</a>
+                <a href="/cases">{{ t('Cases') }}</a>
+                <a href="/consoles">{{ t('Consoles') }}</a>
+                <a href="/pc-builder">{{ t('PC Builder') }}</a>
+                <a href="/models">{{ t('Models') }}</a>
             </div>
         </div>
-        <div class="nav-links">
-            <a href="/">{{ t('Dashboard') }}</a>
-            <a href="/gpu">{{ t('GPUs') }}</a>
-            <a href="/cpu">{{ t('CPUs') }}</a>
-            <a href="/computers">{{ t('Computers') }}</a>
-            <a href="/motherboards">{{ t('Motherboards') }}</a>
-            <a href="/monitors">{{ t('Monitors') }}</a>
-            <a href="/ram">{{ t('RAM') }}</a>
-            <a href="/cameras">{{ t('Cameras') }}</a>
-            <a href="/lenses">{{ t('Lenses') }}</a>
-            <a href="/ssd">{{ t('SSDs') }}</a>
-            <a href="/psu">{{ t('PSUs') }}</a>
-            <a href="/cases">{{ t('Cases') }}</a>
-            <a href="/consoles">{{ t('Consoles') }}</a>
-            <a href="/pc-builder">{{ t('PC Builder') }}</a>
-            <a href="/models">{{ t('Models') }}</a>
-            <a href="/wiki" id="nav-wiki">{{ t('Wiki') }}</a>
-        </div>
+        <!-- Invisible backdrop for click-outside-to-close on the menu -->
+        <div class="brand-menu-backdrop" id="brand-menu-backdrop" tabindex="-1" aria-hidden="true"></div>
     </nav>
 
     <div class="container">
@@ -1989,6 +2598,21 @@
         if (icon) icon.textContent = LANG_ICONS[currentLang] || '🇬🇧';
         if (text) text.textContent = LANG_NAMES[currentLang] || 'EN';
         document.documentElement.lang = currentLang;
+        // Keep the in-menu language toggle in sync
+        if (typeof syncMenuToggles === 'function') syncMenuToggles();
+    }
+
+    // Theme helpers — used by both the old inline dark-mode-toggle
+    // (if any) and the new menu's theme buttons.
+    function setTheme(theme) {
+        if (theme !== 'light' && theme !== 'dark') return;
+        document.documentElement.setAttribute('data-theme', theme);
+        localStorage.setItem('theme', theme);
+        const icon = document.getElementById('dark-mode-icon');
+        const text = document.getElementById('dark-mode-text');
+        if (icon) icon.textContent = theme === 'dark' ? '☀️' : '🌙';
+        if (text) text.textContent = theme === 'dark' ? t('Light') : t('Dark');
+        if (typeof syncMenuToggles === 'function') syncMenuToggles();
     }
 
     function t(key) {
@@ -2011,41 +2635,167 @@
         if (btn) btn.textContent = t('Dark');
     }
 
-    async function renderAuthNav() {
+    async function populateBrandMenu() {
         try {
             // cache: 'no-store' bypasses any HTTP/browser cache so the
-            // nav reflects the current session immediately after login/logout.
-            // The endpoint returns 200 with {authenticated: false, user: null}
-            // when no user is logged in — this avoids 4xx console noise
-            // (browsers log all 4xx responses to the console by design).
+            // menu reflects the current session immediately after login/logout.
             const resp = await fetch('/api/auth/me', {credentials: 'same-origin', cache: 'no-store'});
-            const container = document.getElementById('auth-nav');
-            const wikiLink = document.getElementById('nav-wiki');
-            if (!container) return;
             const data = await resp.json();
             const user = data && data.user;
+            const avatar = document.getElementById('brand-menu-avatar');
+            const name = document.getElementById('brand-menu-name');
+            const role = document.getElementById('brand-menu-role');
+            const loginItem = document.getElementById('brand-menu-login');
+            const userSection = document.getElementById('brand-menu-user-section');
+            const adminItem = document.getElementById('brand-menu-admin');
+            const unmatchedItem = document.getElementById('brand-menu-unmatched');
+            const wikiItem = document.getElementById('brand-menu-wiki');
+            if (!avatar || !name) return;
             if (user) {
                 const isAdmin = user.role === 'admin';
-                if (wikiLink) wikiLink.style.display = isAdmin ? 'inline' : 'none';
-                container.innerHTML = `
-                    <span style="color: white; font-size: 0.875rem;">${user.username} (${user.role})</span>
-                    <a href="/profile">Profile</a>
-                    ${isAdmin ? '<a href="/admin">Admin</a><a href="/unmatched">Unmatched</a>' : ''}
-                    <a href="/logout">Logout</a>
-                `;
+                // User info header
+                avatar.classList.remove('guest');
+                avatar.textContent = (user.username || '?').charAt(0);
+                name.textContent = user.username || 'User';
+                role.textContent = user.role || 'user';
+                // Show user items, hide login
+                if (loginItem) loginItem.style.display = 'none';
+                if (userSection) userSection.style.display = 'block';
+                if (adminItem) adminItem.style.display = isAdmin ? 'flex' : 'none';
+                if (unmatchedItem) unmatchedItem.style.display = isAdmin ? 'flex' : 'none';
+                // Wiki in the popover menu (visible to admins only)
+                if (wikiItem) wikiItem.style.display = isAdmin ? 'flex' : 'none';
             } else {
-                if (wikiLink) wikiLink.style.display = 'none';
-                container.innerHTML = '<a href="/login">Login</a>';
+                // Guest state
+                avatar.classList.add('guest');
+                avatar.textContent = '·';
+                name.textContent = t('Guest');
+                role.textContent = t('Not signed in');
+                if (loginItem) loginItem.style.display = 'flex';
+                if (userSection) userSection.style.display = 'none';
+                if (wikiItem) wikiItem.style.display = 'none';
             }
         } catch (e) {
-            console.error('Auth nav error', e);
+            console.error('Brand menu populate error', e);
         }
+    }
+
+    // === Brand popover menu open/close ===
+    // The brand <h1> doubles as a button. Clicking it (or pressing
+    // Enter/Space when focused) opens the popover. Click outside or
+    // Escape closes it. The menu animates in from the top-left so
+    // it feels like it "unfolds" out of the logo.
+    function isBrandMenuOpen() {
+        const brand = document.getElementById('brand-button');
+        return brand && brand.getAttribute('aria-expanded') === 'true';
+    }
+    function openBrandMenu() {
+        const brand = document.getElementById('brand-button');
+        const backdrop = document.getElementById('brand-menu-backdrop');
+        if (!brand) return;
+        brand.setAttribute('aria-expanded', 'true');
+        if (backdrop) backdrop.classList.add('open');
+        // Sync language + theme toggle buttons to current state
+        syncMenuToggles();
+        // Focus the first menu item for keyboard users
+        const firstItem = brand.querySelector('.brand-menu-item, .brand-menu-toggle-option');
+        if (firstItem) {
+            // setTimeout lets the open transition start so the focus
+            // indicator doesn't get clipped by the closing animation
+            setTimeout(() => firstItem.focus(), 50);
+        }
+    }
+    function closeBrandMenu() {
+        const brand = document.getElementById('brand-button');
+        const backdrop = document.getElementById('brand-menu-backdrop');
+        if (!brand) return;
+        brand.setAttribute('aria-expanded', 'false');
+        if (backdrop) backdrop.classList.remove('open');
+        // Return focus to the brand button so keyboard users don't get lost
+        brand.focus();
+    }
+    function toggleBrandMenu() {
+        if (isBrandMenuOpen()) closeBrandMenu();
+        else openBrandMenu();
+    }
+    function syncMenuToggles() {
+        // Highlight the active language option
+        document.querySelectorAll('.brand-menu-toggle-option[data-lang]').forEach(btn => {
+            btn.classList.toggle('active', btn.getAttribute('data-lang') === currentLang);
+        });
+        // Highlight the active theme option
+        const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
+        document.querySelectorAll('.brand-menu-toggle-option[data-theme-opt]').forEach(btn => {
+            btn.classList.toggle('active', btn.getAttribute('data-theme-opt') === currentTheme);
+        });
+    }
+
+    function initBrandMenu() {
+        const brand = document.getElementById('brand-button');
+        const backdrop = document.getElementById('brand-menu-backdrop');
+        if (!brand) return;
+        // Click on the brand toggles the menu
+        brand.addEventListener('click', (e) => {
+            e.preventDefault();
+            toggleBrandMenu();
+        });
+        // Keyboard support on the brand button itself
+        brand.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                toggleBrandMenu();
+            } else if (e.key === 'Escape' && isBrandMenuOpen()) {
+                e.preventDefault();
+                closeBrandMenu();
+            }
+        });
+        // Click on backdrop closes the menu
+        if (backdrop) {
+            backdrop.addEventListener('click', closeBrandMenu);
+        }
+        // Escape key anywhere closes the menu
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && isBrandMenuOpen()) {
+                e.preventDefault();
+                closeBrandMenu();
+            }
+        });
+        // Language toggle buttons inside the menu
+        document.querySelectorAll('.brand-menu-toggle-option[data-lang]').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                const lang = btn.getAttribute('data-lang');
+                setLanguage(lang);
+                syncMenuToggles();
+            });
+        });
+        // Theme toggle buttons inside the menu
+        document.querySelectorAll('.brand-menu-toggle-option[data-theme-opt]').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                const theme = btn.getAttribute('data-theme-opt');
+                setTheme(theme);
+                syncMenuToggles();
+            });
+        });
+        // Click on a menu link should close the menu before navigating
+        document.querySelectorAll('.brand-menu a.brand-menu-item').forEach(a => {
+            a.addEventListener('click', () => {
+                // Close on the next tick so the link's default action
+                // (navigation) fires first
+                setTimeout(closeBrandMenu, 0);
+            });
+        });
     }
 
     function initCommon() {
         updateLangToggle();
         translatePage();
-        renderAuthNav();
+        initBrandMenu();
+        populateBrandMenu();
+        syncMenuToggles();
     }
 
     initCommon();
@@ -2086,13 +2836,7 @@
 
     function toggleDarkMode() {
         const currentTheme = document.documentElement.getAttribute('data-theme');
-        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-        document.documentElement.setAttribute('data-theme', newTheme);
-        localStorage.setItem('theme', newTheme);
-        const icon = document.getElementById('dark-mode-icon');
-        const text = document.getElementById('dark-mode-text');
-        if (icon) icon.textContent = newTheme === 'dark' ? '☀️' : '🌙';
-        if (text) text.textContent = newTheme === 'dark' ? t('Light') : t('Dark');
+        setTheme(currentTheme === 'dark' ? 'light' : 'dark');
     }
 
     function initDarkMode() {
@@ -2102,6 +2846,9 @@
         const text = document.getElementById('dark-mode-text');
         if (icon) icon.textContent = savedTheme === 'dark' ? '☀️' : '🌙';
         if (text) text.textContent = savedTheme === 'dark' ? t('Light') : t('Dark');
+        // Sync the menu's theme toggle (may be hidden if menu is closed,
+        // but the active class will be ready when the menu opens)
+        if (typeof syncMenuToggles === 'function') syncMenuToggles();
     }
 
     initDarkMode();

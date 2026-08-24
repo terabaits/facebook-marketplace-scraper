@@ -115,10 +115,15 @@
         display: grid; place-items: center; font-size: 26px; flex-shrink: 0; object-fit: cover;
     }
     .listings-table .thumb.placeholder { color: var(--text-mute, #6b7280); }
-    .listings-table .psu-name { font-weight: 700; color: var(--text, #f1f5f9); }
+    .listings-table .psu-name { font-weight: 700; color: var(--text-color, #1f2937); }
     .listings-table .psu-meta { font-size: 11px; color: var(--text-mute, #6b7280); margin-top: 2px; }
     .listings-table .price { font-weight: 800; color: #4ade80; font-size: 14px; }
     .listings-table .price-meta { font-size: 10.5px; color: var(--text-mute, #6b7280); margin-top: 2px; }
+    /* Light-mode: PSU name uses dark text (the page background is
+       light, so the dark-mode #f1f5f9 fallback would be invisible).
+       Price stays green but a darker shade for AA contrast on white. */
+    [data-theme="light"] .listings-table .psu-name { color: #0f172a; }
+    [data-theme="light"] .listings-table .price { color: #15803d; }
     .listings-table .deal-save { color: #facc15; font-size: 10.5px; font-weight: 700; margin-left: 4px; }
     .listings-table .deal-save.bad { color: #f87171; }
     .listings-table .wattage { font-weight: 700; color: #fbbf24; }
@@ -139,6 +144,30 @@
     .badge-mod { background: rgba(20,184,166,.18); color: #5eead4; }
     .badge-inactive { background: rgba(107,114,128,.18); color: #9ca3af; }
 
+    /* Light-mode overrides — the soft tints above (rgba + bright
+       text) are designed for dark backgrounds. In light mode they
+       wash out. Swap to saturated backgrounds with dark text. */
+    [data-theme="light"] .badge-high,
+    [data-theme="light"] .badge-eff {
+        background: #dcfce7; color: #166534;
+    }
+    [data-theme="light"] .badge-med {
+        background: #fef3c7; color: #92400e;
+    }
+    [data-theme="light"] .badge-low {
+        background: #fee2e2; color: #991b1b;
+    }
+    [data-theme="light"] .badge-mature,
+    [data-theme="light"] .badge-mfr {
+        background: #e0e7ff; color: #3730a3;
+    }
+    [data-theme="light"] .badge-mod {
+        background: #ccfbf1; color: #115e59;
+    }
+    [data-theme="light"] .badge-inactive {
+        background: #e5e7eb; color: #4b5563;
+    }
+
     /* Detail modal */
     .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.7); backdrop-filter: blur(4px); z-index: 100; display: none; align-items: center; justify-content: center; padding: 20px; }
     .modal-overlay.active { display: flex; }
@@ -156,7 +185,14 @@
     .detail-row { display: flex; justify-content: space-between; padding: 5px 0; border-bottom: 1px solid rgba(255,255,255,.05); font-size: 13px; }
     .detail-row:last-child { border-bottom: none; }
     .detail-row .k { color: var(--text-dim, #9ca3af); }
-    .detail-row .v { font-weight: 600; color: var(--text, #f1f5f9); }
+    .detail-row .v { font-weight: 600; color: var(--text-color, #1f2937); }
+    /* Light-mode overrides — the soft 3% background and the gray
+       labels were tuned for dark mode. Bump to readable values on
+       light pages. */
+    [data-theme="light"] .detail-section { background: #f8fafc; border-color: #e2e8f0; }
+    [data-theme="light"] .detail-row { border-bottom-color: #e5e7eb; }
+    [data-theme="light"] .detail-row .k { color: #64748b; }
+    [data-theme="light"] .detail-row .v { color: #0f172a; }
     .detail-img { width: 100%; aspect-ratio: 16/10; background: rgba(255,255,255,.04); border-radius: 10px; display: grid; place-items: center; font-size: 64px; overflow: hidden; margin-bottom: 12px; cursor: zoom-in; }
     .detail-img img { width: 100%; height: 100%; object-fit: contain; }
     .detail-price-block { display: flex; align-items: baseline; gap: 10px; padding: 14px; background: linear-gradient(135deg, rgba(34,197,94,.1), rgba(34,197,94,.04)); border: 1px solid rgba(34,197,94,.2); border-radius: 10px; margin-bottom: 12px; }

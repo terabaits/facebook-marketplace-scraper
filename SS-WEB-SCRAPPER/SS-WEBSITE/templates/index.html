@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}{{ t('SS-Crawler Dashboard') }} — {{ t('Market Overview') }}{% endblock %}
+{% block title %}{{ t('Techstati') }} — {{ t('Market Overview') }}{% endblock %}
 
 {% block content %}
 <!-- ===== DASHBOARD FILTER BAR ===== -->
@@ -255,7 +255,42 @@ const charts = {};
 // Render hero KPI cards
 function renderHero(totals) {
     const hero = document.getElementById('dash-hero');
+    // Profit box: "Spend" = market value (sum of all active listing
+    // prices). "Get" = market value + category-max upside (the most
+    // aggressive but achievable target — assumes every listing sells
+    // at the highest price its category has ever seen). "Profit" =
+    // upside. "ROI" = profit / spend. These four numbers answer the
+    // most common buyer question: "If I bought everything right now,
+    // how much could I make?"
+    const spend = Number(totals.active_value) || 0;
+    const upside = Number(totals.upside_max) || 0;
+    const revenue = spend + upside;
+    const roiPct = spend > 0 ? (upside / spend) * 100 : 0;
+    const profitSign = upside >= 0 ? '+' : '−';
     hero.innerHTML = `
+        <div class="dash-profit-box">
+            <div class="dash-profit-icon">📈</div>
+            <div class="dash-profit-label">{{ t('Total Profit Potential') }}</div>
+            <div class="dash-profit-flow">
+                <div class="dash-profit-cell">
+                    <div class="dash-profit-cell-label">{{ t('Spend') }}</div>
+                    <div class="dash-profit-cell-value">${fmtEur(spend, {compact:true})}</div>
+                    <div class="dash-profit-cell-sub">{{ t('Buy every active listing') }}</div>
+                </div>
+                <div class="dash-profit-arrow">→</div>
+                <div class="dash-profit-cell">
+                    <div class="dash-profit-cell-label">{{ t('Get') }}</div>
+                    <div class="dash-profit-cell-value">${fmtEur(revenue, {compact:true})}</div>
+                    <div class="dash-profit-cell-sub">{{ t('Resell at category max') }}</div>
+                </div>
+                <div class="dash-profit-arrow">=</div>
+                <div class="dash-profit-cell highlight">
+                    <div class="dash-profit-cell-label">{{ t('Profit') }}</div>
+                    <div class="dash-profit-cell-value">${profitSign}${fmtEur(Math.abs(upside), {compact:true})}</div>
+                    <div class="dash-profit-cell-sub">${roiPct.toFixed(1)}% {{ t('ROI') }}</div>
+                </div>
+            </div>
+        </div>
         <div class="dash-hero-card gradient-purple">
             <span class="dash-hero-icon">📦</span>
             <div class="dash-hero-label">{{ t('Active Listings') }}</div>

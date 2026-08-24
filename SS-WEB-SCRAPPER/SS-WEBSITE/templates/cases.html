@@ -133,9 +133,14 @@
         display: grid; place-items: center; font-size: 26px; flex-shrink: 0; object-fit: cover;
     }
     .listings-table .thumb.placeholder { color: var(--text-mute, #6b7280); }
-    .listings-table .case-name { font-weight: 700; color: var(--text, #f1f5f9); }
+    .listings-table .case-name { font-weight: 700; color: var(--text-color, #1f2937); }
     .listings-table .case-meta { font-size: 11px; color: var(--text-mute, #6b7280); margin-top: 2px; }
     .listings-table .price { font-weight: 800; color: #4ade80; font-size: 14px; }
+    /* Light-mode: case-name uses dark text (the page background is
+       light, so the dark-mode #f1f5f9 fallback would be invisible).
+       Price stays green but a darker shade for AA contrast on white. */
+    [data-theme="light"] .listings-table .case-name { color: #0f172a; }
+    [data-theme="light"] .listings-table .price { color: #15803d; }
     .listings-table .price-meta { font-size: 10.5px; color: var(--text-mute, #6b7280); margin-top: 2px; }
     .listings-table .deal-save { color: #facc15; font-size: 10.5px; font-weight: 700; margin-left: 4px; }
     .listings-table .deal-save.bad { color: #f87171; }
@@ -156,6 +161,34 @@
     .badge-side { background: rgba(168,85,247,.18); color: #c4b5fd; }
     .badge-color { background: rgba(244,114,182,.18); color: #f9a8d4; }
     .badge-inactive { background: rgba(107,114,128,.18); color: #9ca3af; }
+
+    /* Light-mode overrides — soft tints + bright text are unreadable
+       on light backgrounds. Swap to saturated backgrounds + dark text. */
+    [data-theme="light"] .badge-high {
+        background: #dcfce7; color: #166534;
+    }
+    [data-theme="light"] .badge-med {
+        background: #fef3c7; color: #92400e;
+    }
+    [data-theme="light"] .badge-low {
+        background: #fee2e2; color: #991b1b;
+    }
+    [data-theme="light"] .badge-mature,
+    [data-theme="light"] .badge-mfr {
+        background: #e0e7ff; color: #3730a3;
+    }
+    [data-theme="light"] .badge-type {
+        background: #ccfbf1; color: #115e59;
+    }
+    [data-theme="light"] .badge-side {
+        background: #ede9fe; color: #5b21b6;
+    }
+    [data-theme="light"] .badge-color {
+        background: #fce7f3; color: #9d174d;
+    }
+    [data-theme="light"] .badge-inactive {
+        background: #e5e7eb; color: #4b5563;
+    }
 
     /* Detail modal */
     .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.7); backdrop-filter: blur(4px); z-index: 100; display: none; align-items: center; justify-content: center; padding: 20px; }

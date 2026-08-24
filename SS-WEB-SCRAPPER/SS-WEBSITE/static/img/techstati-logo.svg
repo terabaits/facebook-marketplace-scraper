@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Techstati logo — neon owl on a dark circular "screen".
+
+  Design notes (graphics-design-specialist):
+    - Visual hierarchy: owl silhouette is the primary identity,
+      wordmark is the secondary anchor (in the navbar).
+    - The dark circle is the "neon screen" — neon needs a dark
+      surface to glow on, just like a real neon sign.
+    - Body stroke is solid WHITE for WCAG-AAA contrast against the
+      dark screen. The neon vibe comes from the cyan eye-pupils,
+      not from a gradient on a similar-tinted background.
+    - 5 distinct visual elements: ear tufts, hexagonal head,
+      brow accents (tech visor), eyes (with cyan data-point
+      pupils + white sparkle core), and a filled triangular beak.
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="Techstati logo — neon owl">
+  <title>Techstati</title>
+  <defs>
+    <!-- Cyan radial gradient for the eye pupils.
+         Bright cyan core fading to deep teal — the "data point" tech feel. -->
+    <radialGradient id="techstati-eye-fill" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0%" stop-color="#a5f3fc"/>
+      <stop offset="55%" stop-color="#22d3ee"/>
+      <stop offset="100%" stop-color="#0e7490"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Dark circular "screen" — the neon canvas.
+       Defaults here match the inline-SVG version in base.html so
+       the standalone file also renders correctly out of the box. -->
+  <circle cx="32" cy="32" r="30"
+          fill="rgba(15,23,42,0.85)"
+          stroke="rgba(0,212,255,0.55)" stroke-width="1.2"/>
+
+  <!-- Owl body: solid white stroke for max contrast against the dark screen. -->
+  <g fill="none" stroke="#ffffff" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round">
+    <!-- Ear tufts: prominent angled triangles at the top corners -->
+    <path d="M 16 19 L 20 7 L 26 21"/>
+    <path d="M 48 19 L 44 7 L 38 21"/>
+
+    <!-- Head: angular hexagon with downward taper -->
+    <path d="M 18 19 L 12 28 L 12 40 Q 12 50 22 55 L 42 55 Q 52 50 52 40 L 52 28 L 46 19 Q 32 14 18 19 Z"/>
+
+    <!-- Brow accents: short angled strokes above each eye -->
+    <path d="M 17 27 L 24 24" stroke-width="2.2"/>
+    <path d="M 47 27 L 40 24" stroke-width="2.2"/>
+
+    <!-- Eyes: BIG outer rings + cyan radial pupil + tiny white core sparkle -->
+    <circle cx="24" cy="34" r="7"/>
+    <circle cx="24" cy="34" r="3.4" fill="url(#techstati-eye-fill)" stroke="none"/>
+    <circle cx="24" cy="34" r="1.1" fill="#ffffff" stroke="none"/>
+
+    <circle cx="40" cy="34" r="7"/>
+    <circle cx="40" cy="34" r="3.4" fill="url(#techstati-eye-fill)" stroke="none"/>
+    <circle cx="40" cy="34" r="1.1" fill="#ffffff" stroke="none"/>
+
+    <!-- Beak: filled downward triangle -->
+    <path d="M 32 40 L 28 48 L 36 48 Z" fill="#ffffff" stroke="none"/>
+  </g>
+</svg>

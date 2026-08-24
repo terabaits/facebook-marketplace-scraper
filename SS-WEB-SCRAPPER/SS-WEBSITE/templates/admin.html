@@ -66,6 +66,98 @@
 .role-access-matrix th,
 .role-access-matrix td { padding: 0.4rem 0.5rem; }
 .role-access-matrix .role-page-chip { padding: 0.35rem; }
+
+/* === User-modal form styling ===
+   Prettier inputs, proper labels, and clearer spacing than the
+   previous inline-styled version. Variables tie the form into the
+   active theme automatically. */
+.form-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+.form-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    min-width: 0;
+}
+.form-field label {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--text-color);
+    letter-spacing: 0.02em;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+.form-field input[type="text"],
+.form-field input[type="email"],
+.form-field input[type="password"],
+.form-field select {
+    width: 100%;
+    padding: 0.6rem 0.75rem;
+    font-size: 0.9rem;
+    color: var(--text-color);
+    background: var(--input-bg, white);
+    border: 1px solid var(--input-border, #d1d5db);
+    border-radius: 8px;
+    outline: none;
+    transition: border-color 0.15s, box-shadow 0.15s;
+    font-family: inherit;
+    box-sizing: border-box;
+}
+.form-field input:focus,
+.form-field select:focus {
+    border-color: var(--primary, #4f46e5);
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.18);
+}
+.form-field input::placeholder {
+    color: var(--text-secondary, #9ca3af);
+    opacity: 0.8;
+}
+.form-field input:disabled {
+    background: var(--hover-bg, #f3f4f6);
+    color: var(--text-secondary, #6b7280);
+    cursor: not-allowed;
+}
+.form-required { color: #dc2626; font-weight: 700; }
+.form-hint { color: var(--text-secondary, #6b7280); font-weight: 400; font-size: 0.72rem; }
+.form-field-split {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+.form-field-checkbox {
+    align-self: end;
+    padding-bottom: 0.7rem;
+}
+.form-check {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    user-select: none;
+    font-size: 0.88rem;
+    color: var(--text-color);
+}
+.form-check input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    accent-color: var(--primary, #4f46e5);
+    cursor: pointer;
+}
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--table-border, #e5e7eb);
+}
+@media (max-width: 520px) {
+    .form-field-split { grid-template-columns: 1fr; }
+}
 {% endblock %}
 
 {% block content %}
@@ -281,49 +373,75 @@
     </div>
 </div>
 
-<!-- User modal -->
-<div id="user-modal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 100; justify-content: center; align-items: center;">
-    <div class="card" style="width: 420px; max-width: 90vw;">
-        <h3 id="user-modal-title">{{ t('New user') }}</h3>
-        <form id="user-form" style="display: flex; flex-direction: column; gap: 0.75rem; margin-top: 1rem;">
-            <input type="hidden" id="user-id">
+<!-- User modal — redesigned with proper form-field class so
+     inputs have consistent spacing, focus rings, and label
+     hierarchy. The old inline-styled form had cramped gaps and
+     unstyled inputs that were hard to read. -->
+<div id="user-modal" class="modal-overlay" style="display: none; z-index: 200;">
+    <div class="modal" style="width: 480px; max-width: 92vw;" onclick="event.stopPropagation()">
+        <div class="modal-head">
+            <h3 id="user-modal-title" style="font-size: 16px; font-weight: 700; flex: 1; color: var(--text-color);">{{ t('New user') }}</h3>
+            <button class="modal-close" onclick="closeUserModal()">×</button>
+        </div>
+        <div class="modal-body" style="padding: 1.25rem 1.5rem 1.5rem;">
+            <form id="user-form" class="form-grid">
+                <input type="hidden" id="user-id">
 
-            <label>{{ t('Username') }}
-                <input type="text" id="user-username" required style="width: 100%;">
-            </label>
-            <label>{{ t('Email') }}
-                <input type="email" id="user-email" style="width: 100%;">
-            </label>
-            <label>{{ t('Password') }}
-                <input type="password" id="user-password" style="width: 100%;">
-            </label>
-            <label>{{ t('Role') }}
-                <select id="user-role" style="width: 100%;">
-                    {% for r in roles %}
-                    <option value="{{ r }}">{{ r }}</option>
-                    {% endfor %}
-                </select>
-            </label>
-            <label>{{ t('Subscription status') }}
-                <select id="user-sub-status" style="width: 100%;">
-                    <option value="inactive">inactive</option>
-                    <option value="active">active</option>
-                    <option value="trialing">trialing</option>
-                    <option value="past_due">past_due</option>
-                    <option value="cancelled">cancelled</option>
-                </select>
-            </label>
-            <label>{{ t('Subscription tier') }}
-                <input type="text" id="user-sub-tier" style="width: 100%;">
-            </label>
-            <label style="display: inline-flex; align-items: center; gap: 0.5rem;">
-                <input type="checkbox" id="user-active" checked> {{ t('Active') }}
-            </label>
-            <div style="display: flex; gap: 0.5rem; justify-content: flex-end;">
-                <button type="button" class="btn btn-small" onclick="closeUserModal()">{{ t('Cancel') }}</button>
-                <button type="submit" class="btn btn-primary">{{ t('Save') }}</button>
-            </div>
-        </form>
+                <div class="form-field">
+                    <label for="user-username">{{ t('Username') }} <span class="form-required">*</span></label>
+                    <input type="text" id="user-username" required autocomplete="username">
+                </div>
+
+                <div class="form-field">
+                    <label for="user-email">{{ t('Email') }}</label>
+                    <input type="email" id="user-email" autocomplete="email" placeholder="user@example.com">
+                </div>
+
+                <div class="form-field">
+                    <label for="user-password">{{ t('Password') }} <span class="form-hint" id="user-password-hint">({{ t('required for new users') }})</span></label>
+                    <input type="password" id="user-password" autocomplete="new-password" placeholder="••••••••">
+                </div>
+
+                <div class="form-field form-field-split">
+                    <div class="form-field">
+                        <label for="user-role">{{ t('Role') }}</label>
+                        <select id="user-role">
+                            {% for r in roles %}
+                            <option value="{{ r }}">{{ r }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-field">
+                        <label for="user-sub-status">{{ t('Subscription status') }}</label>
+                        <select id="user-sub-status">
+                            <option value="inactive">inactive</option>
+                            <option value="active">active</option>
+                            <option value="trialing">trialing</option>
+                            <option value="past_due">past_due</option>
+                            <option value="cancelled">cancelled</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-field form-field-split">
+                    <div class="form-field">
+                        <label for="user-sub-tier">{{ t('Subscription tier') }}</label>
+                        <input type="text" id="user-sub-tier" placeholder="e.g. pro">
+                    </div>
+                    <div class="form-field form-field-checkbox">
+                        <label class="form-check" for="user-active">
+                            <input type="checkbox" id="user-active" checked>
+                            <span>{{ t('Active') }}</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn btn-small" onclick="closeUserModal()">{{ t('Cancel') }}</button>
+                    <button type="submit" class="btn btn-primary">{{ t('Save') }}</button>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 

@@ -357,30 +357,48 @@ def is_listing_new(listing_date, category):
 
 
 # Configure additional static file serving for downloaded images
+# Two env vars:
+#   IMAGES_BASE_PATH    — the directory containing category subfolders
+#                         (gpu/, cpu/, ssd/, ...). Defaults to the dev
+#                         SS-CRAWLER/images path.
+#   FACEBOOK_IMAGES_PATH — the directory containing the Facebook extension
+#                         images. On dev this lives one level up under
+#                         <project>/images/facebook; on the server set it
+#                         to the same dir as IMAGES_BASE_PATH so all images
+#                         can be in one volume.
+_IMAGES_BASE = os.environ.get(
+    'IMAGES_BASE_PATH',
+    'G:/Github/SS-WEB-SCRAPPER/SS-CRAWLER/images',  # dev default
+)
+_FACEBOOK_BASE = os.environ.get(
+    'FACEBOOK_IMAGES_PATH',
+    'G:/Github/SS-WEB-SCRAPPER/images/facebook',  # dev default
+)
+
 IMAGE_FOLDERS = {
-    'facebook': 'G:/Github/SS-WEB-SCRAPPER/images/facebook',
-    'gpu': 'G:/Github/SS-WEB-SCRAPPER/SS-CRAWLER/images/gpu',  # actual disk folder (andele/ss images)
-    'gpus': 'G:/Github/SS-WEB-SCRAPPER/SS-CRAWLER/images/gpus',  # separate plural folder
-    'andele': 'G:/Github/SS-WEB-SCRAPPER/SS-CRAWLER/images/andele',
-    'andelemandele': 'G:/Github/SS-WEB-SCRAPPER/SS-CRAWLER/images/andelemandele',
-    'computer': 'G:/Github/SS-WEB-SCRAPPER/SS-CRAWLER/images/computer',
-    'computers': 'G:/Github/SS-WEB-SCRAPPER/SS-CRAWLER/images/computers',
-    'cpu': 'G:/Github/SS-WEB-SCRAPPER/SS-CRAWLER/images/cpu',
-    'cpus': 'G:/Github/SS-WEB-SCRAPPER/SS-CRAWLER/images/cpus',
-    'ram': 'G:/Github/SS-WEB-SCRAPPER/SS-CRAWLER/images/ram',
-    'rams': 'G:/Github/SS-WEB-SCRAPPER/SS-CRAWLER/images/rams',
-    'ssd': 'G:/Github/SS-WEB-SCRAPPER/SS-CRAWLER/images/ssd',
-    'ssds': 'G:/Github/SS-WEB-SCRAPPER/SS-CRAWLER/images/ssds',
-    'consoles': 'G:/Github/SS-WEB-SCRAPPER/SS-CRAWLER/images/consoles',
-    'monitor': 'G:/Github/SS-WEB-SCRAPPER/SS-CRAWLER/images/monitor',
-    'monitors': 'G:/Github/SS-WEB-SCRAPPER/SS-CRAWLER/images/monitors',
-    'cases': 'G:/Github/SS-WEB-SCRAPPER/SS-CRAWLER/images/cases',
-    'cameras': 'G:/Github/SS-WEB-SCRAPPER/SS-CRAWLER/images/cameras',
-    'lenses': 'G:/Github/SS-WEB-SCRAPPER/SS-CRAWLER/images/lenses',
-    'laptops': 'G:/Github/SS-WEB-SCRAPPER/SS-CRAWLER/images/laptops',
-    'psu': 'G:/Github/SS-WEB-SCRAPPER/SS-CRAWLER/images/psu',
-    'psus': 'G:/Github/SS-WEB-SCRAPPER/SS-CRAWLER/images/psu',
-    'motherboards': 'G:/Github/SS-WEB-SCRAPPER/SS-CRAWLER/images/motherboards',
+    'facebook': _FACEBOOK_BASE,
+    'gpu': os.path.join(_IMAGES_BASE, 'gpu'),
+    'gpus': os.path.join(_IMAGES_BASE, 'gpus'),
+    'andele': os.path.join(_IMAGES_BASE, 'andele'),
+    'andelemandele': os.path.join(_IMAGES_BASE, 'andelemandele'),
+    'computer': os.path.join(_IMAGES_BASE, 'computer'),
+    'computers': os.path.join(_IMAGES_BASE, 'computers'),
+    'cpu': os.path.join(_IMAGES_BASE, 'cpu'),
+    'cpus': os.path.join(_IMAGES_BASE, 'cpus'),
+    'ram': os.path.join(_IMAGES_BASE, 'ram'),
+    'rams': os.path.join(_IMAGES_BASE, 'rams'),
+    'ssd': os.path.join(_IMAGES_BASE, 'ssd'),
+    'ssds': os.path.join(_IMAGES_BASE, 'ssds'),
+    'consoles': os.path.join(_IMAGES_BASE, 'consoles'),
+    'monitor': os.path.join(_IMAGES_BASE, 'monitor'),
+    'monitors': os.path.join(_IMAGES_BASE, 'monitors'),
+    'cases': os.path.join(_IMAGES_BASE, 'cases'),
+    'cameras': os.path.join(_IMAGES_BASE, 'cameras'),
+    'lenses': os.path.join(_IMAGES_BASE, 'lenses'),
+    'laptops': os.path.join(_IMAGES_BASE, 'laptops'),
+    'psu': os.path.join(_IMAGES_BASE, 'psu'),
+    'psus': os.path.join(_IMAGES_BASE, 'psu'),
+    'motherboards': os.path.join(_IMAGES_BASE, 'motherboards'),
 }
 
 @app.route('/images/<path:filename>')
@@ -1037,6 +1055,11 @@ def _dashboard_summary_impl():
 
             # Totals — same exclusion as the per-category CTE above so
             # the dashboard never counts flagged or unmatched listings.
+            # Also applies model_filter_sql so picking a model (e.g.
+            # "i7-6700") shows the correct subset instead of the
+            # full database totals. Without the filter clause, a
+            # model-filtered view would show 83 active listings
+            # even when only 5 listings match that model.
             cursor.execute(f"""
                 SELECT
                     COUNT(*) AS total_listings,
@@ -1045,7 +1068,7 @@ def _dashboard_summary_impl():
                     ROUND(AVG(price_eur)::numeric, 2) AS avg_price,
                     ROUND(SUM(price_eur) FILTER (WHERE is_active)::numeric, 2) AS active_value
                 FROM listings
-                WHERE category IN {cats_in_list}
+                WHERE category IN {cats_in_list} {model_filter_sql}
                   AND listing_id NOT IN (SELECT listing_id FROM flagged_listings)
                   AND (
                       matched_cpu_id IS NOT NULL OR
@@ -1524,6 +1547,8 @@ def _dashboard_summary_impl():
                 })
 
             # === Lifetime stats: total ever listed, currently delisted, delist rate ===
+            # Applies model_filter_sql too so lifetime numbers (and the
+            # delist rate) are accurate for the selected model.
             cursor.execute(f"""
                 SELECT
                     COUNT(*) AS lifetime_total,
@@ -1531,7 +1556,7 @@ def _dashboard_summary_impl():
                     COUNT(*) FILTER (WHERE is_active)  AS currently_active,
                     ROUND((COUNT(*) FILTER (WHERE NOT is_active)::numeric / GREATEST(COUNT(*), 1) * 100), 1) AS delist_rate
                 FROM listings
-                WHERE category IN {cats_in_list}
+                WHERE category IN {cats_in_list} {model_filter_sql}
             """)
             lifetime = dict(cursor.fetchone())
 

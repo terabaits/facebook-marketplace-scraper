@@ -392,19 +392,32 @@
        page), so we need the same specificity (`.filters label...`) to
        override it back to `column`. */
     .filters label.model-filter-label,
-    .model-filter-label {
+    .model-filter-label,
+    .filters label.gpu-filter-pill {
         display: inline-flex !important;
         flex-direction: column !important;
         align-items: flex-start;
         gap: 0.35rem;
-        background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-        border: 1px solid #00d4ff;
+        /* Theme-aware: subtle indigo-tinted card in light mode, the original
+           dark navy + cyan glow in dark mode. base.html forces
+           `flex-direction: row !important` for `.filters label`, so we
+           match its specificity (`.filters label.X`) to win the override. */
+        background: var(--card-bg);
+        border: 1px solid var(--card-border);
         border-radius: 14px;
         padding: 0.45rem 0.85rem 0.6rem;
         height: fit-content;
         align-self: center;
         white-space: normal;
         flex-wrap: nowrap;
+        box-shadow: 0 1px 2px var(--shadow);
+    }
+    [data-theme="dark"] .filters label.model-filter-label,
+    [data-theme="dark"] .model-filter-label,
+    [data-theme="dark"] .filters label.gpu-filter-pill {
+        background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+        border: 1px solid #00d4ff;
+        box-shadow: 0 0 8px rgba(0, 212, 255, 0.18);
     }
     .model-filter-row1 {
         display: flex;
@@ -412,10 +425,69 @@
         gap: 0.4rem;
         flex-wrap: nowrap;
         white-space: nowrap;
+        color: var(--text-secondary);
     }
+    [data-theme="dark"] .model-filter-row1 > span:first-child { color: #00d4ff; font-weight: 500; font-size: 0.875rem; }
+    [data-theme="light"] .model-filter-row1 > span:first-child { color: var(--primary); font-weight: 600; font-size: 0.875rem; }
     .model-filter-label > .filter-icon-bar { margin: 0; }
-    .model-filter-label > select.model-filter-select { min-width: 200px; background: rgba(0,0,0,0.3); border: 1px solid #00d4ff44; color: #fff; padding: 4px 8px; border-radius: 6px; font-size: 0.85rem; }
-    .model-filter-label > .model-filter-row1 > span:first-child { color: #00d4ff; font-weight: 500; font-size: 0.875rem; }
+    .model-filter-label > select.model-filter-select {
+        min-width: 200px;
+        background: var(--input-bg);
+        border: 1px solid var(--input-border);
+        color: var(--text-color);
+        padding: 4px 8px;
+        border-radius: 6px;
+        font-size: 0.85rem;
+    }
+    [data-theme="dark"] .model-filter-label > select.model-filter-select {
+        background: rgba(0,0,0,0.3);
+        border: 1px solid #00d4ff44;
+        color: #fff;
+    }
+    /* Filter pills (VRAM, Price Range, Rank Range) — theme-aware */
+    .filters label.gpu-filter-pill {
+        /* The .model-filter-label block above already sets the shared
+           background/border. We just add the spacing/layout bits here. */
+        border-radius: 20px;
+        padding: 0.5rem 1rem;
+    }
+    .gpu-filter-label-text {
+        font-weight: 500;
+        font-size: 0.875rem;
+        color: var(--text-secondary);
+    }
+    [data-theme="dark"] .gpu-filter-label-text { color: #00d4ff; }
+    .gpu-filter-select {
+        min-width: 110px;
+        background: var(--input-bg);
+        border: 1px solid var(--input-border);
+        color: var(--text-color);
+        padding: 4px 8px;
+        border-radius: 6px;
+        font-size: 0.85rem;
+    }
+    [data-theme="dark"] .gpu-filter-select {
+        background: rgba(0,0,0,0.3);
+        border: 1px solid #00d4ff44;
+        color: #fff;
+    }
+    .gpu-filter-input {
+        width: 70px;
+        background: var(--input-bg);
+        border: 1px solid var(--input-border);
+        border-radius: 6px;
+        padding: 4px 8px;
+        color: var(--text-color);
+        font-size: 0.85rem;
+    }
+    [data-theme="dark"] .gpu-filter-input {
+        background: rgba(0,0,0,0.3);
+        border: 1px solid #444;
+        color: #fff;
+    }
+    .gpu-filter-sep {
+        color: var(--text-secondary);
+    }
 
     @keyframes iconGlow {
         from { box-shadow: 0 0 8px rgba(118, 75, 162, 0.55), 0 0 18px rgba(102, 126, 234, 0.35); }
@@ -1010,7 +1082,7 @@ function filterByModel(vendor, model) {
     <!-- Average Price by Month — with user-pickable model set -->
     <div style="background: var(--card-bg); border-radius: 8px; padding: 1rem; border: 1px solid var(--card-border); margin-top: 1.5rem;">
         <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1rem;">
-            <h3 style="margin: 0;">📅 Average GPU Price by Month (active + inactive, excludes flagged & unmatched)</h3>
+            <h3 style="margin: 0;">📅 Average GPU Price by Month</h3>
             <div style="display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap;">
                 <span style="font-size: 0.85rem; color: var(--text-muted, #6b7280);">Models:</span>
                 <span id="monthly-model-pill-count" style="font-weight:700; padding:2px 8px; background: rgba(102,126,234,0.15); color:#667eea; border-radius:12px; font-size:0.8rem;">all</span>
@@ -1156,32 +1228,32 @@ function filterByModel(vendor, model) {
                 <span style="color: #00d4ff; font-weight: 500;">Exact Match Only</span>
                 <span style="font-size: 0.75rem; color: #888; margin-left: 4px;" title="When enabled, filters out Ti/Super variants">i</span>
             </label>
-            <label style="background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); border: 1px solid #00d4ff; border-radius: 20px; padding: 0.5rem 1rem;">
-                <span style="color: #00d4ff; font-weight: 500; font-size: 0.875rem;">💾 VRAM</span>
+            <label class="gpu-filter-pill">
+                <span class="gpu-filter-label-text">💾 VRAM</span>
                 <div style="display: flex; align-items: center; gap: 0.5rem; margin-top: 4px;">
                     <button type="button" id="vram-mode-toggle" class="vram-mode-toggle" onclick="toggleVramMode()" title="Exact size (click for ≥ selected)" aria-pressed="false">
                         <span class="vram-mode-arrow">&lt;</span>
                     </button>
                     <input type="checkbox" id="vram-min-mode" onchange="onVramModeChange()" style="display: none;">
-                    <select id="vram-filter" onchange="loadListings()" style="min-width: 110px;">
+                    <select id="vram-filter" onchange="loadListings()" class="gpu-filter-select" style="min-width: 110px;">
                         <option value="">All VRAM</option>
                     </select>
                 </div>
             </label>
-            <label style="background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); border: 1px solid #00d4ff; border-radius: 20px; padding: 0.5rem 1rem;">
-                <span style="color: #00d4ff; font-weight: 500; font-size: 0.875rem;">💶 Price Range</span>
+            <label class="gpu-filter-pill">
+                <span class="gpu-filter-label-text">💶 Price Range</span>
                 <div style="display: flex; gap: 0.5rem; align-items: center; margin-top: 4px;">
-                    <input type="number" id="price-min" placeholder="Min" style="width: 70px; background: rgba(0,0,0,0.3); border: 1px solid #444; border-radius: 6px; padding: 4px 8px; color: white; font-size: 0.85rem;" onchange="loadListings()">
-                    <span style="color: #888;">-</span>
-                    <input type="number" id="price-max" placeholder="Max" style="width: 70px; background: rgba(0,0,0,0.3); border: 1px solid #444; border-radius: 6px; padding: 4px 8px; color: white; font-size: 0.85rem;" onchange="loadListings()">
+                    <input type="number" id="price-min" placeholder="Min" class="gpu-filter-input" onchange="loadListings()">
+                    <span class="gpu-filter-sep">-</span>
+                    <input type="number" id="price-max" placeholder="Max" class="gpu-filter-input" onchange="loadListings()">
                 </div>
             </label>
-            <label style="background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); border: 1px solid #00d4ff; border-radius: 20px; padding: 0.5rem 1rem;">
-                <span style="color: #00d4ff; font-weight: 500; font-size: 0.875rem;">🏆 Rank Range</span>
+            <label class="gpu-filter-pill">
+                <span class="gpu-filter-label-text">🏆 Rank Range</span>
                 <div style="display: flex; gap: 0.5rem; align-items: center; margin-top: 4px;">
-                    <input type="number" id="rank-min" placeholder="Min" style="width: 70px; background: rgba(0,0,0,0.3); border: 1px solid #444; border-radius: 6px; padding: 4px 8px; color: white; font-size: 0.85rem;" onchange="loadListings()">
-                    <span style="color: #888;">-</span>
-                    <input type="number" id="rank-max" placeholder="Max" style="width: 70px; background: rgba(0,0,0,0.3); border: 1px solid #444; border-radius: 6px; padding: 4px 8px; color: white; font-size: 0.85rem;" onchange="loadListings()">
+                    <input type="number" id="rank-min" placeholder="Min" class="gpu-filter-input" onchange="loadListings()">
+                    <span class="gpu-filter-sep">-</span>
+                    <input type="number" id="rank-max" placeholder="Max" class="gpu-filter-input" onchange="loadListings()">
                 </div>
             </label>
             <label>
@@ -1798,19 +1870,27 @@ function buildSourceDistributionHtml(listings) {
 let monthlyAvgChart = null;
 
 // === Monthly chart: user-pickable model set (persisted in localStorage) ===
+// Selection states:
+//   null      = all models (user explicitly chose "all" or hit Reset)
+//   []        = none selected (chart shows the empty hint)
+//   [...]     = specific model list
+//   'top5'    = top 5 most listed (default for new visitors, in-memory only)
 const MONTHLY_PREF_KEY = 'gpu_monthly_selected_models';
+const MONTHLY_TOP5 = 'top5';
 let monthlyAvailableModels = [];   // [{model, count}, ...]
-let monthlySelectedModels = null;  // null = all (default); [] = none; [...] = specific
+let monthlySelectedModels = MONTHLY_TOP5;  // default = top 5 most listed
 let monthlyPendingSelection = null;
 
 function loadMonthlyPref() {
     try {
         const raw = localStorage.getItem(MONTHLY_PREF_KEY);
-        if (raw === null) return null;  // first visit — default "all"
+        if (raw === null) return MONTHLY_TOP5;  // first visit — default "top 5 most listed"
         const parsed = JSON.parse(raw);
-        return Array.isArray(parsed) ? parsed : null;
+        if (parsed === null) return null;        // explicit "all"
+        if (Array.isArray(parsed)) return parsed;
+        return MONTHLY_TOP5;
     } catch (e) {
-        return null;
+        return MONTHLY_TOP5;
     }
 }
 function saveMonthlyPref(models) {
@@ -1823,7 +1903,7 @@ function saveMonthlyPref(models) {
     } catch (e) { /* ignore */ }
 }
 
-function openMonthlyPick() {
+async function openMonthlyPick() {
     if (monthlyAvailableModels.length === 0) {
         // Populate from the most-recent chart render. As a fallback, build
         // the list from the most-recent listings fetched.
@@ -1835,9 +1915,31 @@ function openMonthlyPick() {
         });
         monthlyAvailableModels = Object.entries(byModel).map(([model, count]) => ({model, count})).sort((a,b)=>b.count-a.count);
     }
-    monthlyPendingSelection = monthlySelectedModels === null
-        ? monthlyAvailableModels.map(m => m.model)  // default = all
-        : [...monthlySelectedModels];
+    // For the "top 5" default, fetch the same top 5 the chart uses so
+    // the checkboxes match. Fall back to the table-derived list if the
+    // API call fails.
+    if (monthlySelectedModels === null) {
+        monthlyPendingSelection = monthlyAvailableModels.map(m => m.model);
+    } else if (monthlySelectedModels === MONTHLY_TOP5) {
+        try {
+            const resp = await fetch('/api/gpu-model-stats?use_active_avg=false');
+            const data = await resp.json();
+            const counts = {};
+            (data.models || []).forEach(m => {
+                const stripped = m.model.replace(/\b(GeForce|Radeon|AMD|NVIDIA|Intel)\s*/gi, '').trim();
+                if (!stripped) return;
+                counts[stripped] = (counts[stripped] || 0) + (m.count || 0);
+            });
+            monthlyPendingSelection = Object.entries(counts)
+                .sort((a, b) => b[1] - a[1])
+                .slice(0, 5)
+                .map(([m]) => m);
+        } catch (e) {
+            monthlyPendingSelection = monthlyAvailableModels.slice(0, 5).map(m => m.model);
+        }
+    } else {
+        monthlyPendingSelection = [...monthlySelectedModels];
+    }
 
     renderMonthlyPickList('');
     document.getElementById('monthly-pick-modal').style.display = 'flex';
@@ -1893,8 +1995,28 @@ function monthlyPickAll(state) {
 }
 
 function monthlyPickTopN(n) {
-    monthlyPendingSelection = monthlyAvailableModels.slice(0, n).map(m => m.model);
-    renderMonthlyPickList(document.getElementById('monthly-pick-search').value);
+    // Try to use the same data source as the "Most Listed" widget so
+    // what the user sees in the picker matches what the chart will plot.
+    fetch('/api/gpu-model-stats?use_active_avg=false')
+        .then(r => r.json())
+        .then(data => {
+            const counts = {};
+            (data.models || []).forEach(m => {
+                const stripped = m.model.replace(/\b(GeForce|Radeon|AMD|NVIDIA|Intel)\s*/gi, '').trim();
+                if (!stripped) return;
+                counts[stripped] = (counts[stripped] || 0) + (m.count || 0);
+            });
+            monthlyPendingSelection = Object.entries(counts)
+                .sort((a, b) => b[1] - a[1])
+                .slice(0, n)
+                .map(([m]) => m);
+            renderMonthlyPickList(document.getElementById('monthly-pick-search').value);
+        })
+        .catch(err => {
+            console.error('monthlyPickTopN fetch failed, falling back:', err);
+            monthlyPendingSelection = monthlyAvailableModels.slice(0, n).map(m => m.model);
+            renderMonthlyPickList(document.getElementById('monthly-pick-search').value);
+        });
 }
 
 function applyMonthlyPick() {
@@ -1922,6 +2044,11 @@ function updateMonthlyPills() {
     if (monthlySelectedModels === null) {
         container.innerHTML = '';
         if (count) count.textContent = 'all';
+    } else if (monthlySelectedModels === MONTHLY_TOP5) {
+        // Top-5 pill content is filled in by the caller once byModel
+        // is built. Here we just set the count badge.
+        if (count) count.textContent = `top 5`;
+        return;  // caller will render the pill content with the right top 5
     } else {
         container.innerHTML = monthlySelectedModels.slice(0, 8).map(m =>
             `<span style="background: rgba(102,126,234,0.12); color:#4f46e5; padding:3px 8px; border-radius:12px; font-size:0.75rem; font-weight:500;">${m}</span>`
@@ -1994,11 +2121,6 @@ async function updateMonthlyAvgChart(listings) {
         const idx = monthIndex[month];
         const model = (item.gpu_model || item.title || 'Unknown').replace(/\b(GeForce|Radeon|AMD|NVIDIA|Intel)\s*/gi, '').trim() || 'Unknown';
 
-        // Apply the user's selected-models filter. `null` = show all.
-        if (monthlySelectedModels !== null && !monthlySelectedModels.includes(model)) {
-            return;
-        }
-
         const price = parseFloat(item.price_eur) || 0;
         if (price <= 0) return;
 
@@ -2007,10 +2129,69 @@ async function updateMonthlyAvgChart(listings) {
         byModel[model].months[idx].push(price);
     });
 
+    // Apply the user's selected-models filter.
+    //   null     = show all
+    //   []       = show none (empty set)
+    //   [...]    = show only these models
+    //   'top5'   = show the 5 most-listed models (uses the same data as
+    //              the "Most Listed" widget, /api/gpu-model-stats, so
+    //              the two stay in sync. The picker's "Top 5" button
+    //              also uses this endpoint.)
+    let activeSet = null;
+    if (monthlySelectedModels === null) {
+        activeSet = null;  // all
+    } else if (Array.isArray(monthlySelectedModels)) {
+        activeSet = monthlySelectedModels.length === 0 ? new Set() : new Set(monthlySelectedModels);
+    } else if (monthlySelectedModels === MONTHLY_TOP5) {
+        // Fetch the same top-5 source as the "Most Listed" widget so
+        // both say the same thing. Group by stripped model name (sum
+        // across VRAMs) since the chart doesn't differentiate VRAMs.
+        try {
+            const statsResp = await fetch('/api/gpu-model-stats?use_active_avg=false');
+            const stats = await statsResp.json();
+            const counts = {};
+            (stats.models || []).forEach(m => {
+                const stripped = m.model.replace(/\b(GeForce|Radeon|AMD|NVIDIA|Intel)\s*/gi, '').trim();
+                if (!stripped) return;
+                counts[stripped] = (counts[stripped] || 0) + (m.count || 0);
+            });
+            const top5 = Object.entries(counts)
+                .sort((a, b) => b[1] - a[1])
+                .slice(0, 5)
+                .map(([m]) => m);
+            activeSet = new Set(top5);
+        } catch (e) {
+            console.error('Top 5 fetch failed, falling back to chart counts:', e);
+            // Fallback to chart's own data
+            const counts = Object.entries(byModel)
+                .map(([model, info]) => [model, Object.values(info.months).reduce((a, b) => a + b.length, 0)])
+                .sort((a, b) => b[1] - a[1])
+                .slice(0, 5)
+                .map(([model]) => model);
+            activeSet = new Set(counts);
+        }
+    }
+    if (activeSet !== null) {
+        Object.keys(byModel).forEach(model => {
+            if (!activeSet.has(model)) delete byModel[model];
+        });
+    }
+
+    // If we're in the 'top 5' default, render the pill row now that we
+    // know the actual top-5 (same set as the chart will plot).
+    if (monthlySelectedModels === MONTHLY_TOP5 && activeSet instanceof Set) {
+        const pillContainer = document.getElementById('monthly-model-pills');
+        if (pillContainer) {
+            pillContainer.innerHTML = Array.from(activeSet).map(m =>
+                `<span style="background: rgba(245,158,11,0.18); color:#b45309; padding:3px 8px; border-radius:12px; font-size:0.75rem; font-weight:500;">⭐ ${m}</span>`
+            ).join('');
+        }
+    }
+
     // Show "no models selected" hint when the user has picked an empty set
     const emptyHint = document.getElementById('monthly-empty-hint');
     if (emptyHint) {
-        emptyHint.style.display = (monthlySelectedModels !== null && monthlySelectedModels.length === 0) ? 'block' : 'none';
+        emptyHint.style.display = (Array.isArray(monthlySelectedModels) && monthlySelectedModels.length === 0) ? 'block' : 'none';
     }
 
     const palette = ['#667eea', '#10b981', '#f59e0b', '#ef4444', '#8B5CF6', '#06b6d4', '#ec4899', '#84cc16', '#f97316', '#6366f1', '#14b8a6', '#f43f5e', '#a855f7', '#22c55e', '#eab308'];

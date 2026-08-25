@@ -264,6 +264,402 @@
     }
     .laptop-active-filters > .laf-chip button:hover { opacity: 1; }
 
+    /* "View on ss.com" custom button inside the listing popup */
+    .laptop-sscom-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.45rem;
+        padding: 0.55rem 1rem;
+        background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+        color: #fff !important;
+        border: none;
+        border-radius: 8px;
+        font-weight: 600;
+        font-size: 0.88rem;
+        text-decoration: none !important;
+        box-shadow: 0 2px 8px rgba(245, 158, 11, 0.32);
+        transition: transform 0.15s, box-shadow 0.15s, filter 0.15s;
+        cursor: pointer;
+    }
+    .laptop-sscom-btn:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 14px rgba(245, 158, 11, 0.48);
+        filter: brightness(1.05);
+    }
+    .laptop-sscom-btn:active {
+        transform: translateY(0);
+        box-shadow: 0 2px 6px rgba(245, 158, 11, 0.32);
+    }
+    .laptop-sscom-btn svg { flex-shrink: 0; }
+
+    /* ---- Similar listings modal — improved UI ---- */
+    .laptop-similar-modal { padding: 0; }
+    .laptop-similar-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0.85rem 1.1rem;
+        border-bottom: 1px solid var(--table-border, rgba(0,0,0,0.08));
+    }
+    [data-theme="dark"] .laptop-similar-header {
+        border-bottom-color: rgba(255,255,255,0.08);
+    }
+    .laptop-similar-icon {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 32px;
+        height: 32px;
+        border-radius: 8px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: #fff;
+    }
+    .laptop-similar-sub {
+        margin: 0.85rem 1.1rem 0.65rem;
+        color: var(--text-secondary, #6b7280);
+        font-size: 0.85rem;
+        line-height: 1.4;
+    }
+    .laptop-similar-quickbar {
+        display: flex;
+        gap: 0.4rem;
+        padding: 0 1.1rem 0.65rem;
+        border-bottom: 1px solid var(--table-border, rgba(0,0,0,0.06));
+        flex-wrap: wrap;
+    }
+    [data-theme="dark"] .laptop-similar-quickbar {
+        border-bottom-color: rgba(255,255,255,0.06);
+    }
+    .laptop-similar-quickbtn {
+        background: rgba(102, 126, 234, 0.10);
+        border: 1px solid rgba(102, 126, 234, 0.30);
+        color: var(--text-color, #1f2937);
+        padding: 0.3rem 0.7rem;
+        border-radius: 6px;
+        font-size: 0.78rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background 0.12s;
+    }
+    .laptop-similar-quickbtn:hover {
+        background: rgba(102, 126, 234, 0.22);
+    }
+    .laptop-similar-options {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0.5rem;
+        padding: 0.85rem 1.1rem;
+        max-height: 50vh;
+        overflow-y: auto;
+    }
+    @media (max-width: 600px) {
+        .laptop-similar-options { grid-template-columns: 1fr; }
+    }
+    .laptop-similar-card {
+        position: relative;
+        display: flex;
+        align-items: center;
+        gap: 0.55rem;
+        padding: 0.55rem 0.7rem;
+        background: var(--card-bg, #f8f9fa);
+        border: 1px solid var(--card-border, rgba(0,0,0,0.08));
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background 0.12s, border-color 0.12s, transform 0.12s;
+    }
+    [data-theme="dark"] .laptop-similar-card {
+        background: rgba(255,255,255,0.04);
+        border-color: rgba(255,255,255,0.08);
+    }
+    .laptop-similar-card:hover {
+        background: rgba(102, 126, 234, 0.10);
+        border-color: rgba(102, 126, 234, 0.40);
+    }
+    .laptop-similar-card:has(input:checked) {
+        background: linear-gradient(135deg, rgba(102,126,234,0.12) 0%, rgba(118,75,162,0.12) 100%);
+        border-color: rgba(102, 126, 234, 0.55);
+    }
+    [data-theme="dark"] .laptop-similar-card:has(input:checked) {
+        background: linear-gradient(135deg, rgba(102,126,234,0.18) 0%, rgba(118,75,162,0.18) 100%);
+    }
+    .laptop-similar-card input[type="checkbox"] {
+        margin: 0;
+        width: 16px;
+        height: 16px;
+        accent-color: #667eea;
+        flex-shrink: 0;
+        cursor: pointer;
+    }
+    .laptop-similar-card-icon {
+        font-size: 1.1rem;
+        flex-shrink: 0;
+    }
+    .laptop-similar-card-body {
+        display: flex;
+        flex-direction: column;
+        min-width: 0;
+        flex: 1;
+    }
+    .laptop-similar-card-label {
+        font-size: 0.7rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        font-weight: 700;
+        color: var(--text-muted, #6b7280);
+    }
+    .laptop-similar-card-value {
+        font-size: 0.85rem;
+        font-weight: 600;
+        color: var(--text-color, #1f2937);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    .laptop-similar-core-badge {
+        position: absolute;
+        top: 4px;
+        right: 6px;
+        font-size: 0.6rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        padding: 1px 5px;
+        border-radius: 999px;
+        background: rgba(102, 126, 234, 0.20);
+        color: #4f46e5;
+    }
+    [data-theme="dark"] .laptop-similar-core-badge {
+        background: rgba(118, 75, 162, 0.30);
+        color: #c4b5fd;
+    }
+    .laptop-similar-empty {
+        color: var(--text-muted, #6b7280);
+        font-style: italic;
+        padding: 1rem;
+        text-align: center;
+    }
+    .laptop-similar-footer {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0.85rem 1.1rem;
+        border-top: 1px solid var(--table-border, rgba(0,0,0,0.08));
+        gap: 0.75rem;
+        flex-wrap: wrap;
+    }
+    [data-theme="dark"] .laptop-similar-footer {
+        border-top-color: rgba(255,255,255,0.08);
+    }
+    .laptop-similar-count {
+        font-size: 0.78rem;
+        color: var(--text-muted, #6b7280);
+        font-weight: 600;
+    }
+    .laptop-similar-apply {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+        border: none !important;
+        color: #fff !important;
+        font-weight: 600 !important;
+    }
+
+    /* ---- Analytics row (brand / CPU / display+RAM charts) ---- */
+    .laptop-analytics-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 0.85rem;
+        margin-bottom: 1rem;
+    }
+    @media (max-width: 1100px) {
+        .laptop-analytics-row { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 700px) {
+        .laptop-analytics-row { grid-template-columns: 1fr; }
+    }
+    .laptop-chart-card {
+        background: var(--card-bg, #f8f9fa);
+        border: 1px solid var(--card-border, rgba(0,0,0,0.08));
+        border-radius: 12px;
+        padding: 0.85rem 1rem;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+    }
+    [data-theme="dark"] .laptop-chart-card {
+        background: rgba(255,255,255,0.04);
+        border-color: rgba(255,255,255,0.08);
+        box-shadow: 0 1px 3px rgba(0,0,0,0.4);
+    }
+    .laptop-chart-card h3 {
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+        margin: 0 0 0.5rem;
+        font-size: 0.92rem;
+        font-weight: 700;
+        color: var(--text-color, #1f2937);
+    }
+    .laptop-chart-card h3 svg { color: #667eea; }
+    .laptop-chart-card .chart-container {
+        height: 220px;
+        position: relative;
+    }
+    .laptop-dual-chart {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0.5rem;
+    }
+    .laptop-dual-chart .chart-container {
+        height: 200px;
+    }
+
+    /* ---- View mode (grid/list) toggle ---- */
+    .laptop-view-controls {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        flex-shrink: 0;
+    }
+    .laptop-view-toggle {
+        display: inline-flex;
+        background: var(--card-bg, #f8f9fa);
+        border: 1px solid var(--table-border, rgba(0,0,0,0.10));
+        border-radius: 8px;
+        padding: 2px;
+        gap: 2px;
+    }
+    [data-theme="dark"] .laptop-view-toggle {
+        background: rgba(255,255,255,0.04);
+        border-color: rgba(255,255,255,0.10);
+    }
+    .laptop-view-btn {
+        background: transparent;
+        border: none;
+        color: var(--text-muted, #6b7280);
+        padding: 0.4rem 0.55rem;
+        border-radius: 6px;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        transition: background 0.15s, color 0.15s;
+    }
+    .laptop-view-btn:hover {
+        color: var(--text-color, #1f2937);
+    }
+    .laptop-view-btn.active {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: #fff;
+    }
+    .laptop-view-btn svg {
+        width: 16px;
+        height: 16px;
+    }
+
+    /* ---- List view: compact rows ---- */
+    .laptop-list {
+        display: flex;
+        flex-direction: column;
+        gap: 0.4rem;
+    }
+    .laptop-row {
+        display: grid;
+        grid-template-columns: 60px 90px minmax(180px, 2fr) minmax(120px, 1fr) 60px minmax(120px, 1.2fr) 70px 90px 90px 90px 110px;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.55rem 0.7rem;
+        background: var(--card-bg, #f8f9fa);
+        border: 1px solid var(--table-border, rgba(0,0,0,0.08));
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background 0.12s, border-color 0.12s, transform 0.12s;
+        font-size: 0.85rem;
+    }
+    [data-theme="dark"] .laptop-row {
+        background: rgba(255,255,255,0.04);
+        border-color: rgba(255,255,255,0.06);
+    }
+    .laptop-row:hover {
+        background: rgba(102, 126, 234, 0.10);
+        border-color: rgba(102, 126, 234, 0.40);
+        transform: translateX(2px);
+    }
+    .laptop-row-thumb {
+        width: 60px;
+        height: 60px;
+        border-radius: 6px;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: var(--card-bg, #fff);
+    }
+    [data-theme="dark"] .laptop-row-thumb {
+        background: rgba(0,0,0,0.30);
+    }
+    .laptop-row-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+    .laptop-row-thumb-fb {
+        font-size: 1.5rem;
+    }
+    .laptop-row-price {
+        font-weight: 800;
+        color: #16a34a;
+        font-size: 0.95rem;
+        text-align: right;
+    }
+    [data-theme="dark"] .laptop-row-price {
+        color: #4ade80;
+    }
+    .laptop-row-title {
+        font-weight: 600;
+        color: var(--text-color, #1f2937);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+    }
+    .laptop-row-title-text {
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    .laptop-row-meta {
+        color: var(--text-muted, #6b7280);
+        font-size: 0.78rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    .laptop-row-spec {
+        color: var(--text-color, #1f2937);
+        font-size: 0.78rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    .laptop-row-loc, .laptop-row-date {
+        color: var(--text-muted, #6b7280);
+        font-size: 0.75rem;
+        white-space: nowrap;
+    }
+    .laptop-row-actions {
+        text-align: right;
+    }
+    @media (max-width: 1100px) {
+        .laptop-row { grid-template-columns: 50px 80px 2fr 1fr 60px 1fr 80px 90px; }
+        .laptop-row-spec:nth-child(8), .laptop-row-date { display: none; }
+    }
+    @media (max-width: 700px) {
+        .laptop-row { grid-template-columns: 50px 80px 2fr 1fr 80px; gap: 0.4rem; padding: 0.5rem; }
+        .laptop-row-spec:nth-child(5),
+        .laptop-row-spec:nth-child(6),
+        .laptop-row-spec:nth-child(7),
+        .laptop-row-loc,
+        .laptop-row-actions { display: none; }
+    }
+
     /* Hide the legacy "Brand: <select>" wrapper inside the panel — we re-style it */
     .laptop-filter-panel select,
     .laptop-filter-panel input[type="text"],
@@ -1562,8 +1958,36 @@
                 </div>
             </div>
         </div>
-    
 
+
+    </div>
+
+    {# ===== Analytics row: brand popularity, top CPUs, display/RAM distribution ===== #}
+    <div class="laptop-analytics-row" id="laptop-analytics-row">
+        <div class="laptop-chart-card">
+            <h3>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" width="18" height="18"><path d="M3 3v18h18"/><rect x="7" y="13" width="3" height="5" rx="0.5"/><rect x="12" y="9" width="3" height="9" rx="0.5"/><rect x="17" y="5" width="3" height="13" rx="0.5"/></svg>
+                Top Brands by Listings
+            </h3>
+            <div class="chart-container"><canvas id="laptop-brand-chart"></canvas></div>
+        </div>
+        <div class="laptop-chart-card">
+            <h3>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" width="18" height="18"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/><line x1="20" y1="9" x2="23" y2="9"/><line x1="20" y1="14" x2="23" y2="14"/><line x1="1" y1="9" x2="4" y2="9"/><line x1="1" y1="14" x2="4" y2="14"/></svg>
+                Top CPUs
+            </h3>
+            <div class="chart-container"><canvas id="laptop-cpu-chart"></canvas></div>
+        </div>
+        <div class="laptop-chart-card">
+            <h3>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" width="18" height="18"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+                Display &amp; RAM Distribution
+            </h3>
+            <div class="laptop-dual-chart">
+                <div class="chart-container"><canvas id="laptop-display-chart"></canvas></div>
+                <div class="chart-container"><canvas id="laptop-ram-chart"></canvas></div>
+            </div>
+        </div>
     </div>
 
     {# ===== Filter panel ===== #}
@@ -1800,38 +2224,73 @@
 
     <div class="laptop-active-filters-row">
         <div id="active-filters" class="laptop-active-filters"></div>
-        <div class="laptop-grid-size-control">
-            <button class="laptop-grid-size-toggle" onclick="toggleGridSizeMenu(event)" title="Grid columns">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                    <rect x="3" y="3" width="7" height="7"/>
-                    <rect x="14" y="3" width="7" height="7"/>
-                    <rect x="14" y="14" width="7" height="7"/>
-                    <rect x="3" y="14" width="7" height="7"/>
-                </svg>
-            </button>
-            <div class="laptop-grid-size-menu" id="grid-size-menu">
-                <button class="laptop-grid-size-option" data-cols="4" onclick="setGridSize(4)">4</button>
-                <button class="laptop-grid-size-option" data-cols="5" onclick="setGridSize(5)">5</button>
-                <button class="laptop-grid-size-option" data-cols="6" onclick="setGridSize(6)">6</button>
-                <button class="laptop-grid-size-option" data-cols="7" onclick="setGridSize(7)">7</button>
+        <div class="laptop-view-controls">
+            <div class="laptop-view-toggle" role="group" aria-label="View mode">
+                <button type="button" class="laptop-view-btn active" data-mode="grid" id="laptop-view-grid" onclick="setLaptopViewMode('grid')" title="Grid view" aria-pressed="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <rect x="3" y="3" width="7" height="7"/>
+                        <rect x="14" y="3" width="7" height="7"/>
+                        <rect x="14" y="14" width="7" height="7"/>
+                        <rect x="3" y="14" width="7" height="7"/>
+                    </svg>
+                </button>
+                <button type="button" class="laptop-view-btn" data-mode="list" id="laptop-view-list" onclick="setLaptopViewMode('list')" title="List view" aria-pressed="false">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <line x1="8" y1="6" x2="21" y2="6"/>
+                        <line x1="8" y1="12" x2="21" y2="12"/>
+                        <line x1="8" y1="18" x2="21" y2="18"/>
+                        <line x1="3" y1="6" x2="3.01" y2="6"/>
+                        <line x1="3" y1="12" x2="3.01" y2="12"/>
+                        <line x1="3" y1="18" x2="3.01" y2="18"/>
+                    </svg>
+                </button>
+            </div>
+            <div class="laptop-grid-size-control">
+                <button class="laptop-grid-size-toggle" onclick="toggleGridSizeMenu(event)" title="Grid columns">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <rect x="3" y="3" width="7" height="7"/>
+                        <rect x="14" y="3" width="7" height="7"/>
+                        <rect x="14" y="14" width="7" height="7"/>
+                        <rect x="3" y="14" width="7" height="7"/>
+                    </svg>
+                </button>
+                <div class="laptop-grid-size-menu" id="grid-size-menu">
+                    <button class="laptop-grid-size-option" data-cols="4" onclick="setGridSize(4)">4</button>
+                    <button class="laptop-grid-size-option" data-cols="5" onclick="setGridSize(5)">5</button>
+                    <button class="laptop-grid-size-option" data-cols="6" onclick="setGridSize(6)">6</button>
+                    <button class="laptop-grid-size-option" data-cols="7" onclick="setGridSize(7)">7</button>
+                </div>
             </div>
         </div>
     </div>
 
     <!-- Similar listings modal -->
     <div id="similar-modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); z-index:1000; align-items:center; justify-content:center;">
-        <div class="modal" style="max-width:480px;">
-            <div class="modal-header">
-                <h3>Show similar listings</h3>
+        <div class="modal laptop-similar-modal" style="max-width:560px;">
+            <div class="modal-header laptop-similar-header">
+                <div style="display:flex; align-items:center; gap:0.6rem;">
+                    <span class="laptop-similar-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="22" height="22"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+                    </span>
+                    <h3 style="margin:0;">Show similar listings</h3>
+                </div>
                 <button class="modal-close" onclick="closeSimilarModal()">&times;</button>
             </div>
-            <p style="margin-bottom:1rem; color:var(--text-secondary); font-size:0.9rem;">Pick which specs must match. Uncheck a spec to ignore it.</p>
-            <div id="similar-options" style="display:grid; gap:0.6rem; margin-bottom:1.5rem;">
+            <p class="laptop-similar-sub">Pick which specs must match. Uncheck a spec to ignore it.</p>
+            <div class="laptop-similar-quickbar">
+                <button type="button" class="laptop-similar-quickbtn" onclick="similarToggleAll(true)">Select all</button>
+                <button type="button" class="laptop-similar-quickbtn" onclick="similarToggleAll(false)">Clear all</button>
+                <button type="button" class="laptop-similar-quickbtn" onclick="similarSelectCore()">Core only</button>
+            </div>
+            <div id="similar-options" class="laptop-similar-options">
                 <!-- populated dynamically -->
             </div>
-            <div style="display:flex; justify-content:flex-end; gap:0.75rem;">
-                <button class="btn btn-small" onclick="closeSimilarModal()">{{ t('Cancel') }}</button>
-                <button class="btn btn-primary" onclick="applySimilarFilter()">Show similar</button>
+            <div class="laptop-similar-footer">
+                <span class="laptop-similar-count" id="similar-count">0 selected</span>
+                <div style="display:flex; justify-content:flex-end; gap:0.75rem;">
+                    <button class="btn btn-small" onclick="closeSimilarModal()">{{ t('Cancel') }}</button>
+                    <button class="btn btn-primary laptop-similar-apply" onclick="applySimilarFilter()">Show similar</button>
+                </div>
             </div>
         </div>
     </div>
@@ -1859,6 +2318,11 @@
     let debounceTimer;
     let allCpuOptions = [];
     let currentListings = [];
+    // Analytics chart instances (lazily created; destroyed on refresh)
+    let laptopBrandChart = null;
+    let laptopCpuChart = null;
+    let laptopDisplayChart = null;
+    let laptopRamChart = null;
     let similarTarget = null;
 
     // ---- Custom SVG icon set for the spec popup ----
@@ -1980,7 +2444,10 @@
                     }
                 }
                 if (item.listing_url) {
-                    html += `<p><a href="${item.listing_url}" target="_blank" rel="noopener">${t('View on ss.com')} →</a></p>`;
+                    html += `<p style="margin: 0.5rem 0 1rem;"><a href="${item.listing_url}" target="_blank" rel="noopener" class="laptop-sscom-btn" title="Open this listing on ss.com in a new tab">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                        <span>${t('View on ss.com')}</span>
+                    </a></p>`;
                 }
                 // Helper: only push [label, value] when value is truthy.
                 // Avoids the "destructuring null" TypeError we'd get from a
@@ -2338,9 +2805,252 @@
         } catch (e) { /* leave as "—" */ }
     }
 
+    // Analytics: load the laptop-analytics endpoint and render four charts.
+    // Charts are destroyed before re-creating so we don't pile up instances
+    // (Chart.js holds GPU memory; not freeing them shows up after a few
+    // toggles between dark and light mode).
+    async function loadLaptopAnalytics() {
+        const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+        // Use a strong, fully opaque color for chart text so labels stay
+        // readable on the gray card background in light mode (Chart.js
+        // ignores parent CSS variables, so we set them explicitly here).
+        const textColor = isDark ? '#e8e8f0' : '#1f2937';
+        const gridColor = isDark ? 'rgba(255,255,255,0.10)' : 'rgba(0,0,0,0.10)';
+        const tooltipBg = isDark ? 'rgba(26, 26, 46, 0.95)' : 'rgba(0, 0, 0, 0.85)';
+
+        // The analytics endpoint mirrors the listings filter contract, so we
+        // send exactly the same params the user is currently filtering the
+        // listings to. The four charts (top brands, top CPUs, display
+        // distribution, RAM distribution) then re-render to match the table.
+        const filters = getLaptopFilterValues();
+        const params = buildLaptopParams(filters);
+
+        let data;
+        try {
+            const res = await fetch('/api/laptop-analytics?' + params.toString());
+            if (!res.ok) return;
+            data = await res.json();
+            if (data.error) {
+                console.warn('laptop-analytics error:', data.error);
+                return;
+            }
+        } catch (e) {
+            console.warn('laptop-analytics fetch failed', e);
+            return;
+        }
+
+        // ---- Brand chart (horizontal bar, sorted desc) ----
+        const brandLabels = (data.top_brands || []).map(b => b.brand);
+        const brandCounts = (data.top_brands || []).map(b => b.count);
+        const brandAvgs = (data.top_brands || []).map(b => b.avg_price);
+        const brandCanvas = document.getElementById('laptop-brand-chart');
+        if (brandCanvas && brandLabels.length) {
+            if (laptopBrandChart) laptopBrandChart.destroy();
+            laptopBrandChart = new Chart(brandCanvas.getContext('2d'), {
+                type: 'bar',
+                data: {
+                    labels: brandLabels,
+                    datasets: [{
+                        label: 'Listings',
+                        data: brandCounts,
+                        backgroundColor: 'rgba(102, 126, 234, 0.7)',
+                        borderColor: 'rgba(102, 126, 234, 1)',
+                        borderWidth: 1,
+                        borderRadius: 4
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            backgroundColor: tooltipBg,
+                            callbacks: {
+                                afterLabel: (ctx) => {
+                                    const idx = ctx.dataIndex;
+                                    const avg = brandAvgs[idx] || 0;
+                                    return `Avg price: €${avg.toFixed(0)}`;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            ticks: { color: textColor, precision: 0 },
+                            grid: { color: gridColor }
+                        },
+                        y: {
+                            ticks: { color: textColor, font: { size: 11 } },
+                            grid: { display: false }
+                        }
+                    }
+                }
+            });
+        }
+
+        // ---- CPU chart (horizontal bar) ----
+        const cpuLabels = (data.top_cpus || []).slice(0, 10).map(c => c.label);
+        const cpuCounts = (data.top_cpus || []).slice(0, 10).map(c => c.count);
+        const cpuCanvas = document.getElementById('laptop-cpu-chart');
+        if (cpuCanvas && cpuLabels.length) {
+            if (laptopCpuChart) laptopCpuChart.destroy();
+            // Color by vendor: Intel blue, AMD red, Apple gray, Snapdragon purple
+            const cpuColors = (data.top_cpus || []).slice(0, 10).map(c => {
+                if (c.cpu_brand === 'Apple') return 'rgba(110, 110, 115, 0.7)';
+                if (c.cpu_brand === 'AMD') return 'rgba(237, 28, 36, 0.7)';
+                if (c.cpu_brand === 'Qualcomm') return 'rgba(50, 83, 220, 0.7)';
+                return 'rgba(0, 113, 197, 0.7)';
+            });
+            laptopCpuChart = new Chart(cpuCanvas.getContext('2d'), {
+                type: 'bar',
+                data: {
+                    labels: cpuLabels,
+                    datasets: [{
+                        label: 'Listings',
+                        data: cpuCounts,
+                        backgroundColor: cpuColors,
+                        borderColor: cpuColors.map(c => c.replace('0.7', '1')),
+                        borderWidth: 1,
+                        borderRadius: 4
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            backgroundColor: tooltipBg,
+                            callbacks: {
+                                afterLabel: (ctx) => {
+                                    const cpu = (data.top_cpus || [])[ctx.dataIndex];
+                                    return cpu && cpu.avg_price ? `Avg price: €${cpu.avg_price.toFixed(0)}` : '';
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            ticks: { color: textColor, precision: 0 },
+                            grid: { color: gridColor }
+                        },
+                        y: {
+                            ticks: { color: textColor, font: { size: 10 } },
+                            grid: { display: false }
+                        }
+                    }
+                }
+            });
+        }
+
+        // ---- Display distribution chart (doughnut) ----
+        const displayCanvas = document.getElementById('laptop-display-chart');
+        if (displayCanvas) {
+            const buckets = data.display_buckets || [];
+            const labels = buckets.map(b => b.bucket);
+            const counts = buckets.map(b => b.count);
+            const colors = ['#3b82f6', '#10b981', '#f59e0b', '#8b5cf6', '#ec4899', '#06b6d4', '#64748b'];
+            if (laptopDisplayChart) laptopDisplayChart.destroy();
+            laptopDisplayChart = new Chart(displayCanvas.getContext('2d'), {
+                type: 'doughnut',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        data: counts,
+                        backgroundColor: colors.slice(0, labels.length),
+                        borderWidth: 2,
+                        borderColor: isDark ? '#1a1a2e' : '#fff'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'right',
+                            labels: { color: textColor, font: { size: 10 }, boxWidth: 10, padding: 6 }
+                        },
+                        tooltip: {
+                            backgroundColor: tooltipBg,
+                            callbacks: {
+                                label: (ctx) => {
+                                    const total = ctx.dataset.data.reduce((a, b) => a + b, 0);
+                                    const pct = total ? ((ctx.raw / total) * 100).toFixed(0) : 0;
+                                    return `${ctx.label}: ${ctx.raw} (${pct}%)`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // ---- RAM distribution chart (doughnut) ----
+        const ramCanvas = document.getElementById('laptop-ram-chart');
+        if (ramCanvas) {
+            const buckets = data.ram_buckets || [];
+            const labels = buckets.map(b => b.bucket);
+            const counts = buckets.map(b => b.count);
+            const colors = ['#94a3b8', '#06b6d4', '#10b981', '#3b82f6', '#8b5cf6', '#64748b'];
+            if (laptopRamChart) laptopRamChart.destroy();
+            laptopRamChart = new Chart(ramCanvas.getContext('2d'), {
+                type: 'doughnut',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        data: counts,
+                        backgroundColor: colors.slice(0, labels.length),
+                        borderWidth: 2,
+                        borderColor: isDark ? '#1a1a2e' : '#fff'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'right',
+                            labels: { color: textColor, font: { size: 10 }, boxWidth: 10, padding: 6 }
+                        },
+                        tooltip: {
+                            backgroundColor: tooltipBg,
+                            callbacks: {
+                                label: (ctx) => {
+                                    const total = ctx.dataset.data.reduce((a, b) => a + b, 0);
+                                    const pct = total ? ((ctx.raw / total) * 100).toFixed(0) : 0;
+                                    return `${ctx.label}: ${ctx.raw} (${pct}%)`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+    }
+
     function debounceLoadLaptops() {
         clearTimeout(debounceTimer);
-        debounceTimer = setTimeout(loadLaptops, 300);
+        debounceTimer = setTimeout(() => {
+            loadLaptops();
+            // Refresh the analytics charts with the same (now-current) filter
+            // state. Debounced together with the listings call so a rapid
+            // keystroke in price/gpu input only fires one analytics request.
+            debounceLoadLaptopAnalytics();
+        }, 300);
+    }
+
+    // Separate debouncer for the analytics charts so the initial page load
+    // (which calls loadLaptopAnalytics directly) and the filter-driven
+    // refresh (debounced alongside loadLaptops) don't fight for the timer.
+    let analyticsDebounceTimer;
+    function debounceLoadLaptopAnalytics() {
+        clearTimeout(analyticsDebounceTimer);
+        analyticsDebounceTimer = setTimeout(loadLaptopAnalytics, 350);
     }
 
     function renderLaptopCard(item) {
@@ -2391,63 +3101,162 @@
         `;
     }
 
+    // Compact row renderer for list view (one row per listing, table-like)
+    function renderLaptopRow(item) {
+        const thumbUrl = item.local_image_path
+            ? `/images/${item.local_image_path.replace(/\\/g, '/')}`
+            : item.image_url;
+        const rawTitle = item.title || 'Unknown laptop';
+        const title = cleanLaptopTitle(rawTitle);
+        const brandModel = [item.brand, item.model].filter(Boolean).join(' ');
+        const display = item.display_size ? `${item.display_size}"` : '';
+        const cpu = getDisplayCpu(item);
+        const ram = item.ram_gb ? `${item.ram_gb} GB` : '';
+        const storage = [item.storage_gb ? `${item.storage_gb} GB` : '', item.storage_type || ''].filter(Boolean).join(' ');
+        const gpu = item.gpu_raw || '';
+        const dateStr = (item.date_posted || item.first_seen_at || item.created_at)
+            ? new Date(item.date_posted || item.first_seen_at || item.created_at).toLocaleDateString()
+            : 'N/A';
+        const sellerType = (item.seller_type || '').toLowerCase();
+        const sellerBadge = sellerType && sellerType !== 'private'
+            ? `<span class="seller-badge ${sellerType}">${item.seller_type}</span>`
+            : '';
+
+        return `
+            <div class="laptop-row" onclick="showSharedListingDetail('${item.listing_id}', true)">
+                <div class="laptop-row-thumb">
+                    ${thumbUrl
+                        ? `<img src="${thumbUrl}" alt="${title.replace(/'/g, "\\'")}" class="laptop-row-img" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'laptop-row-thumb-fb',textContent:'💻'}))">`
+                        : `<div class="laptop-row-thumb-fb">💻</div>`
+                    }
+                </div>
+                <div class="laptop-row-price">€${item.price_eur}</div>
+                <div class="laptop-row-title">
+                    ${item.laptop_ref_valid ? '<span class="valid-badge valid-badge-sm">✓</span> ' : ''}
+                    ${sellerBadge}
+                    <span class="laptop-row-title-text">${title}</span>
+                </div>
+                <div class="laptop-row-meta">${brandModel || '—'}</div>
+                <div class="laptop-row-spec">${display || '—'}</div>
+                <div class="laptop-row-spec">${cpu || '—'}</div>
+                <div class="laptop-row-spec">${ram || '—'}</div>
+                <div class="laptop-row-spec">${storage || '—'}</div>
+                <div class="laptop-row-loc">${item.seller_location || '—'}</div>
+                <div class="laptop-row-date">${dateStr}</div>
+                <div class="laptop-row-actions" onclick="event.stopPropagation()">
+                    <button class="btn btn-small" onclick="openSimilarModal('${item.listing_id}')" title="Find similar laptops">Similar</button>
+                </div>
+            </div>
+        `;
+    }
+
+    // Switch between grid and list view
+    function setLaptopViewMode(mode) {
+        if (mode !== 'grid' && mode !== 'list') mode = 'grid';
+        localStorage.setItem('laptopViewMode', mode);
+        document.getElementById('laptop-view-grid')?.classList.toggle('active', mode === 'grid');
+        document.getElementById('laptop-view-list')?.classList.toggle('active', mode === 'list');
+        document.getElementById('laptop-view-grid')?.setAttribute('aria-pressed', mode === 'grid' ? 'true' : 'false');
+        document.getElementById('laptop-view-list')?.setAttribute('aria-pressed', mode === 'list' ? 'true' : 'false');
+        const grid = document.getElementById('laptop-grid');
+        const list = document.getElementById('laptop-list');
+        if (mode === 'list') {
+            if (grid) grid.style.display = 'none';
+            if (list) list.style.display = '';
+        } else {
+            if (grid) grid.style.display = '';
+            if (list) list.style.display = 'none';
+        }
+    }
+
+    // Read the current state of every filter element on the page.
+    // Returns a plain object so the same values can be projected into
+    // (a) the listings API call and (b) the analytics API call — both
+    // should reflect exactly what the user is currently filtering to.
+    // The boolean toggles (active-only, macbook-only, etc.) are returned
+    // as booleans; the caller decides whether to send them as `true`/`false`
+    // or omit them entirely.
+    function getLaptopFilterValues() {
+        const selectedCpuRefIds = Array.from(document.querySelectorAll('#cpu-options input[data-cpu-ref-id]:checked')).map(cb => cb.dataset.cpuRefId);
+        const selectedCpus = Array.from(document.querySelectorAll('#cpu-options input[type=checkbox]:checked:not([data-cpu-ref-id])')).map(cb => cb.value);
+        return {
+            active: isToggleOn('active-only'),
+            exclude_flagged: isToggleOn('exclude-flagged'),
+            include_perekups: isToggleOn('include-perekups'),
+            include_lombards: isToggleOn('include-lombards'),
+            sort: document.getElementById('sort-by').value,
+            order: document.getElementById('sort-order').value,
+            time: document.getElementById('time-filter').value,
+            brand: document.getElementById('brand-filter').value,
+            city: document.getElementById('city-filter').value,
+            exclude_city: document.getElementById('exclude-city-filter').value,
+            material: document.getElementById('material-filter').value,
+            refresh_rate_min: document.getElementById('refresh-rate-filter').value,
+            cpu_ref_ids: selectedCpuRefIds,
+            cpus: selectedCpus,
+            gpu: document.getElementById('gpu-filter').value,
+            min_price: document.getElementById('min-price').value,
+            max_price: document.getElementById('max-price').value,
+            ram_min: document.getElementById('ram-min').value,
+            ram_max: document.getElementById('ram-max').value,
+            storage_min: document.getElementById('storage-min').value,
+            storage_max: document.getElementById('storage-max').value,
+            storage_type: document.getElementById('storage-type').value,
+            display_size_min: document.getElementById('display-size-min').value,
+            display_size_max: document.getElementById('display-size-max').value,
+            display_size: document.getElementById('display-size').value,
+            macbook_only: isToggleOn('macbook-only'),
+            model: document.getElementById('model-filter').value
+        };
+    }
+
+    // Project a filter-values object into a URLSearchParams instance.
+    // `extra` lets the caller append listing-only params (limit, offset)
+    // without re-typing them.
+    function buildLaptopParams(filters, extra = {}) {
+        const params = new URLSearchParams();
+        if (filters.active !== undefined) params.append('active', filters.active);
+        if (filters.exclude_flagged !== undefined) params.append('exclude_flagged', filters.exclude_flagged);
+        if (filters.include_perekups !== undefined) params.append('include_perekups', filters.include_perekups);
+        if (filters.include_lombards !== undefined) params.append('include_lombards', filters.include_lombards);
+        if (filters.sort) params.append('sort', filters.sort);
+        if (filters.order) params.append('order', filters.order);
+        if (filters.time) params.append('time', filters.time);
+        if (filters.brand) params.append('brand', filters.brand);
+        if (filters.city) params.append('city', filters.city);
+        if (filters.exclude_city) params.append('exclude_city', filters.exclude_city);
+        if (filters.material) params.append('material', filters.material);
+        if (filters.refresh_rate_min) params.append('refresh_rate_min', filters.refresh_rate_min);
+        (filters.cpu_ref_ids || []).forEach(id => params.append('cpu_ref_id', id));
+        (filters.cpus || []).forEach(c => params.append('cpu', c));
+        if (filters.gpu) params.append('gpu', filters.gpu);
+        if (filters.min_price) params.append('min_price', filters.min_price);
+        if (filters.max_price) params.append('max_price', filters.max_price);
+        if (filters.ram_min) params.append('ram_min', filters.ram_min);
+        if (filters.ram_max) params.append('ram_max', filters.ram_max);
+        if (filters.storage_min) params.append('storage_min', filters.storage_min);
+        if (filters.storage_max) params.append('storage_max', filters.storage_max);
+        if (filters.storage_type) params.append('storage_type', filters.storage_type);
+        if (filters.display_size_min) params.append('display_size_min', filters.display_size_min);
+        if (filters.display_size_max) params.append('display_size_max', filters.display_size_max);
+        if (filters.display_size) params.append('display_size', filters.display_size);
+        if (filters.macbook_only) params.append('macbook_only', 'true');
+        else params.append('exclude_macbooks', 'true');
+        if (filters.model) params.append('model', filters.model);
+        for (const [k, v] of Object.entries(extra)) {
+            if (v !== undefined && v !== null) params.append(k, v);
+        }
+        return params;
+    }
+
     async function loadLaptops(page = 0) {
         const append = page > 0;
         currentPage = page;
-        const params = new URLSearchParams();
-        params.append('active', isToggleOn('active-only'));
-        params.append('exclude_flagged', isToggleOn('exclude-flagged'));
-        params.append('include_perekups', isToggleOn('include-perekups'));
-        params.append('include_lombards', isToggleOn('include-lombards'));
-        params.append('sort', document.getElementById('sort-by').value);
-        params.append('order', document.getElementById('sort-order').value);
-        params.append('time', document.getElementById('time-filter').value);
-        params.append('limit', pageSize);
-        params.append('offset', page * pageSize);
-
-        const brand = document.getElementById('brand-filter').value;
-        if (brand) params.append('brand', brand);
-        const city = document.getElementById('city-filter').value;
-        if (city) params.append('city', city);
-        const excludeCity = document.getElementById('exclude-city-filter').value;
-        if (excludeCity) params.append('exclude_city', excludeCity);
-        const material = document.getElementById('material-filter').value;
-        if (material) params.append('material', material);
-        const refreshMin = document.getElementById('refresh-rate-filter').value;
-        if (refreshMin) params.append('refresh_rate_min', refreshMin);
-        // Two parallel CPU filter channels: cpu_ref_id (FK match, preferred) and
-        // cpu (legacy ILIKE on cpu_raw) for older flow.
-        const selectedCpuRefIds = Array.from(document.querySelectorAll('#cpu-options input[data-cpu-ref-id]:checked')).map(cb => cb.dataset.cpuRefId);
-        selectedCpuRefIds.forEach(id => params.append('cpu_ref_id', id));
-        const selectedCpus = Array.from(document.querySelectorAll('#cpu-options input[type=checkbox]:checked:not([data-cpu-ref-id])')).map(cb => cb.value);
-        selectedCpus.forEach(cpu => params.append('cpu', cpu));
-        const gpu = document.getElementById('gpu-filter').value;
-        if (gpu) params.append('gpu', gpu);
-        const minPrice = document.getElementById('min-price').value;
-        if (minPrice) params.append('min_price', minPrice);
-        const maxPrice = document.getElementById('max-price').value;
-        if (maxPrice) params.append('max_price', maxPrice);
-        const ramMin = document.getElementById('ram-min').value;
-        if (ramMin) params.append('ram_min', ramMin);
-        const ramMax = document.getElementById('ram-max').value;
-        if (ramMax) params.append('ram_max', ramMax);
-        const storageMin = document.getElementById('storage-min').value;
-        if (storageMin) params.append('storage_min', storageMin);
-        const storageMax = document.getElementById('storage-max').value;
-        if (storageMax) params.append('storage_max', storageMax);
-        const storageType = document.getElementById('storage-type').value;
-        if (storageType) params.append('storage_type', storageType);
-        const displaySizeMin = document.getElementById('display-size-min').value;
-        if (displaySizeMin) params.append('display_size_min', displaySizeMin);
-        const displaySizeMax = document.getElementById('display-size-max').value;
-        if (displaySizeMax) params.append('display_size_max', displaySizeMax);
-        const displaySize = document.getElementById('display-size').value;
-        if (displaySize) params.append('display_size', displaySize);
-        const macbookOnly = isToggleOn('macbook-only');
-        if (macbookOnly) params.append('macbook_only', 'true');
-        else params.append('exclude_macbooks', 'true');
-        const modelFilter = document.getElementById('model-filter').value;
-        if (modelFilter) params.append('model', modelFilter);
+        const filters = getLaptopFilterValues();
+        const params = buildLaptopParams(filters, {
+            limit: pageSize,
+            offset: page * pageSize
+        });
 
         saveFilters();
 
@@ -2491,16 +3300,26 @@
             }
 
             let grid = document.getElementById('laptop-grid');
-            if (!grid) {
-                container.innerHTML = '<div class="laptop-grid" id="laptop-grid"></div>';
+            let list = document.getElementById('laptop-list');
+            const viewMode = localStorage.getItem('laptopViewMode') || 'grid';
+            if (!grid || !list) {
+                container.innerHTML = '<div class="laptop-grid" id="laptop-grid"></div><div class="laptop-list" id="laptop-list" style="display:none;"></div>';
                 grid = document.getElementById('laptop-grid');
+                list = document.getElementById('laptop-list');
             }
 
             // Preserve the selected grid column count across reloads/filter changes
             const savedCols = parseInt(localStorage.getItem('laptopGridColumns') || '4');
             grid.style.setProperty('--grid-columns', savedCols);
 
-            grid.insertAdjacentHTML('beforeend', listings.map(renderLaptopCard).join(''));
+            // Apply view mode on every render
+            setLaptopViewMode(viewMode);
+
+            if (viewMode === 'list') {
+                list.insertAdjacentHTML('beforeend', listings.map(renderLaptopRow).join(''));
+            } else {
+                grid.insertAdjacentHTML('beforeend', listings.map(renderLaptopCard).join(''));
+            }
             hasMore = listings.length === pageSize && currentListings.length < totalListings;
         } catch (error) {
             if (!append) {
@@ -2512,6 +3331,13 @@
         } finally {
             isLoading = false;
             if (sentinel) sentinel.style.display = hasMore ? 'flex' : 'none';
+            // Refresh the analytics charts alongside the listings whenever the
+            // user is on the first page (a filter change always reloads page 0
+            // with !append). Pagination events use append=true and shouldn't
+            // re-fetch analytics, so we skip them here.
+            if (!append) {
+                debounceLoadLaptopAnalytics();
+            }
         }
     }
 
@@ -3199,6 +4025,7 @@
         restoreFilters();
         syncToggleButtons();
         loadLaptopStats();
+        loadLaptopAnalytics();
         loadCityOptions();
         loadCPUOptions().then(() => {
             updateCPUFilterLabel();
@@ -3413,24 +4240,65 @@
         if (!item) return;
         similarTarget = item;
         const container = document.getElementById('similar-options');
+
+        // Group specs into "Core" (high-signal: brand+model+CPU+RAM) and
+        // "Secondary" (everything else). All checked by default; user can
+        // uncheck anything via the cards.
+        const coreKeys = new Set(['brand', 'model', 'cpu_raw', 'ram_gb']);
+        const SPEC_ICON_MAP = {
+            brand: '🏷️', model: '💻', cpu_raw: '🧠', gpu_raw: '🎮',
+            ram_gb: '🧩', storage_gb: '💾', storage_type: '💽', display_size: '📐'
+        };
         const specs = [
-            { key: 'brand', label: 'Brand', value: item.brand || '' },
-            { key: 'model', label: 'Model', value: item.model || '' },
-            { key: 'cpu_raw', label: 'CPU', value: getDisplayCpu(item) },
-            { key: 'gpu_raw', label: 'GPU', value: item.gpu_raw || '' },
-            { key: 'ram_gb', label: 'RAM', value: item.ram_gb ? `${item.ram_gb} GB` : '' },
-            { key: 'storage_gb', label: 'Storage size', value: item.storage_gb ? `${item.storage_gb} GB` : '' },
+            { key: 'brand',        label: 'Brand',        value: item.brand || '' },
+            { key: 'model',        label: 'Model',        value: item.model || '' },
+            { key: 'cpu_raw',      label: 'CPU',          value: getDisplayCpu(item) },
+            { key: 'ram_gb',       label: 'RAM',          value: item.ram_gb ? `${item.ram_gb} GB` : '' },
+            { key: 'gpu_raw',      label: 'GPU',          value: item.gpu_raw || '' },
+            { key: 'storage_gb',   label: 'Storage size', value: item.storage_gb ? `${item.storage_gb} GB` : '' },
             { key: 'storage_type', label: 'Storage type', value: item.storage_type || '' },
-            { key: 'display_size', label: 'Display', value: item.display_size ? `${item.display_size}"` : '' }
+            { key: 'display_size', label: 'Display',      value: item.display_size ? `${item.display_size}"` : '' }
         ].filter(s => s.value);
 
-        container.innerHTML = specs.map((s, i) => `
-            <label style="display:flex; align-items:center; gap:0.5rem; cursor:pointer;">
-                <input type="checkbox" id="similar-${s.key}" value="${s.key}" checked>
-                <span><strong>${s.label}</strong>: ${s.value}</span>
-            </label>
-        `).join('') || '<p>No usable specs for this listing.</p>';
+        if (specs.length === 0) {
+            container.innerHTML = '<p class="laptop-similar-empty">No usable specs for this listing.</p>';
+            document.getElementById('similar-count').textContent = '0 selected';
+        } else {
+            container.innerHTML = specs.map((s, i) => `
+                <label class="laptop-similar-card ${coreKeys.has(s.key) ? 'is-core' : 'is-secondary'}" for="similar-${s.key}">
+                    <input type="checkbox" id="similar-${s.key}" value="${s.key}" checked
+                           onchange="updateSimilarCount()">
+                    <span class="laptop-similar-card-icon">${SPEC_ICON_MAP[s.key] || '•'}</span>
+                    <span class="laptop-similar-card-body">
+                        <span class="laptop-similar-card-label">${s.label}</span>
+                        <span class="laptop-similar-card-value">${s.value}</span>
+                    </span>
+                    ${coreKeys.has(s.key) ? '<span class="laptop-similar-core-badge">Core</span>' : ''}
+                </label>
+            `).join('');
+            updateSimilarCount();
+        }
         document.getElementById('similar-modal').style.display = 'flex';
+    }
+
+    function updateSimilarCount() {
+        const all = document.querySelectorAll('#similar-options input[type="checkbox"]');
+        const checked = document.querySelectorAll('#similar-options input[type="checkbox"]:checked');
+        const counter = document.getElementById('similar-count');
+        if (counter) counter.textContent = `${checked.length} of ${all.length} spec${all.length === 1 ? '' : 's'} selected`;
+    }
+
+    function similarToggleAll(checked) {
+        document.querySelectorAll('#similar-options input[type="checkbox"]').forEach(cb => cb.checked = checked);
+        updateSimilarCount();
+    }
+
+    function similarSelectCore() {
+        const coreKeys = new Set(['brand', 'model', 'cpu_raw', 'ram_gb']);
+        document.querySelectorAll('#similar-options input[type="checkbox"]').forEach(cb => {
+            cb.checked = coreKeys.has(cb.value);
+        });
+        updateSimilarCount();
     }
 
     function closeSimilarModal() {
@@ -3537,5 +4405,11 @@ function initGridSize() {
 
 // Initialize grid size on page load
 document.addEventListener('DOMContentLoaded', initGridSize);
+
+// Initialize view mode (grid/list) on page load
+document.addEventListener('DOMContentLoaded', () => {
+    const savedMode = localStorage.getItem('laptopViewMode') || 'grid';
+    setLaptopViewMode(savedMode);
+});
 </script>
 {% endblock %}

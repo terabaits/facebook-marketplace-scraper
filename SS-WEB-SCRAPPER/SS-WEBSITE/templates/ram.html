@@ -215,6 +215,51 @@
 .ram-filterbar .filter-chips button.on:hover {
     background: #4f46e5;
 }
+
+/* MHz mode toggle (mirror of GPU's VRAM toggle): round red button with `<` arrow.
+   When `.min-mode` is set, the button pulses to indicate "≥ selected" mode is active. */
+.ram-filterbar .mhz-mode-toggle {
+    background: transparent;
+    border: 1px solid #e74c3c;
+    color: #e74c3c;
+    border-radius: 50%;
+    width: 26px;
+    height: 26px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: transform 0.25s ease, background 0.2s ease, box-shadow 0.2s ease;
+    flex-shrink: 0;
+    padding: 0;
+}
+.ram-filterbar .mhz-mode-toggle:hover {
+    background: rgba(231, 76, 60, 0.12);
+}
+.ram-filterbar .mhz-mode-toggle.min-mode {
+    background: rgba(231, 76, 60, 0.18);
+    box-shadow: 0 0 8px rgba(231, 76, 60, 0.35);
+    animation: mhz-toggle-pulse 1.2s ease-in-out infinite;
+}
+@keyframes mhz-toggle-pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.12); }
+}
+.ram-filterbar .mhz-mode-toggle .mhz-mode-arrow {
+    font-weight: bold;
+    font-size: 0.95rem;
+    line-height: 1;
+}
+.ram-filterbar .mhz-filter-select {
+    min-width: 130px;
+    padding: 0.32rem 0.55rem;
+    border-radius: 6px;
+    border: 1px solid var(--ram-border, rgba(99,102,241,0.18));
+    background: var(--ram-bg-soft, rgba(255,255,255,0.95));
+    color: var(--ram-text, #1f2937);
+    font-size: 0.85rem;
+    cursor: pointer;
+}
 .ram-filterbar select, .ram-filterbar input[type="text"] {
     background: var(--ram-bg-soft);
     border: 1px solid var(--ram-border);
@@ -451,30 +496,32 @@
 }
 .ram-cell-image .deal-badge-stack {
     position: absolute;
-    top: 12px;   /* moved 10px lower from 2px to give the source dot breathing room */
-    left: 2px;
+    top: 0.4rem;
+    left: 0.4rem;
     display: flex;
     flex-direction: column;
-    gap: 2px;
+    gap: 0.25rem;
     z-index: 2;
 }
 .ram-cell-image .deal-badge-stack .badge {
-    font-size: 0.6rem;
+    font-size: 0.7rem;
     font-weight: 700;
-    padding: 1px 5px;
-    border-radius: 3px;
+    padding: 0.18rem 0.45rem;
+    border-radius: 4px;
     text-transform: uppercase;
-    letter-spacing: 0.3px;
-    line-height: 1.4;
+    letter-spacing: 0.4px;
+    line-height: 1.3;
+    color: white;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.35);
+    white-space: nowrap;
 }
 .ram-cell-image .deal-badge-stack .badge.steal {
-    background: var(--ram-error);
-    color: white;
-    box-shadow: 0 0 6px rgba(239,68,68,0.5);
+    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.35), 0 0 6px rgba(239,68,68,0.45);
 }
 .ram-cell-image .deal-badge-stack .badge.is-new {
-    background: var(--ram-success);
-    color: white;
+    background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.35), 0 0 6px rgba(34,197,94,0.35);
 }
 
 /* 🦄 Unicorn badge — cool & glowing */
@@ -1379,6 +1426,17 @@
         </div>
     </div>
 
+    <div class="ram-charts-row">
+        <div class="ram-chart-card">
+            <h3>Listings by Speed (MHz)</h3>
+            <div class="chart-container"><canvas id="mhzCountChart"></canvas></div>
+        </div>
+        <div class="ram-chart-card">
+            <h3>Avg Price by Speed (MHz)</h3>
+            <div class="chart-container"><canvas id="mhzAvgPriceChart"></canvas></div>
+        </div>
+    </div>
+
     <!-- ========== TOP DEALS STRIP ========== -->
     <div class="ram-deals-strip" id="top-deals-section" style="display: none;">
         <h3>🔥 Top deals — price ≥ 15% below model average</h3>
@@ -1420,6 +1478,29 @@
         </div>
 
         <div class="filter-group">
+            <span class="filter-label">Speed</span>
+            <div style="display: flex; align-items: center; gap: 0.4rem;">
+                <button type="button" id="mhz-mode-toggle" class="mhz-mode-toggle min-mode" onclick="toggleMhzMode()" title="Currently ≥ selected (click for exact match)" aria-pressed="true">
+                    <span class="mhz-mode-arrow">&lt;</span>
+                </button>
+                <input type="checkbox" id="mhz-min-mode" checked onchange="onMhzModeChange()" style="display: none;">
+                <select id="mhz-filter" onchange="filterByMHz(this.value)" class="mhz-filter-select">
+                    <option value="all">All</option>
+                    <option value="1600">1600 MHz</option>
+                    <option value="2400">2400 MHz</option>
+                    <option value="2666">2666 MHz</option>
+                    <option value="3200">3200 MHz</option>
+                    <option value="3600">3600 MHz</option>
+                    <option value="4800">4800 MHz</option>
+                    <option value="5200">5200 MHz</option>
+                    <option value="5600">5600 MHz</option>
+                    <option value="6000">6000 MHz</option>
+                    <option value="6400">6400 MHz</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="filter-group">
             <span class="filter-label">Capacity</span>
             <select id="capacity-filter" onchange="onMainCapacityChange()">
                 <option value="all">All</option>
@@ -1448,8 +1529,6 @@
             <input type="text" id="ram-id-filter" class="ram-id-input" placeholder="e.g. 189"
                    onchange="loadListings()" onkeyup="if(event.key==='Enter') loadListings()">
         </div>
-
-        <button class="export-btn" onclick="exportToCSV()">📥 Export CSV</button>
     </div>
 
     <!-- ========== LISTINGS TABLE ========== -->
@@ -1501,11 +1580,14 @@ let useAllRAMsForStats = false;
 let useActiveOnly = false;      // toggled by filter pill (default OFF so all RAM listings show on load)
 let useHighConfidence = false;   // toggled by filter pill
 let currentDDRFilter = 'all';
+let currentMHzFilter = 'all';
 let avgPriceByDDRChart = null;
 let capacityDistChart = null;
 let ramAvgPriceChart = null;
 let ramAvgPeriod = 'week'; // 'week' or 'month'
 let priceByCapTypeChart = null;
+let mhzCountChart = null;
+let mhzAvgPriceChart = null;
 let trendCapacity = '16';   // '4' | '8' | '16' | '32' | '64' | 'all' — default 16 GB
 
 // DDR palette — mirrors the model-history-popup ddr-d3/d4/d5 border colors
@@ -1748,6 +1830,40 @@ function filterByDDR(ddrType, btn) {
     // Update chip active state
     document.querySelectorAll('#ddr-filter-chips button').forEach(b => b.classList.remove('active'));
     if (btn) btn.classList.add('active');
+    loadListings();
+}
+
+// Filter listings by RAM speed (MHz). Uses a `<select>` dropdown + `<` button
+// to toggle between "exact" and "≥ selected" mode (same UX as the GPU's VRAM
+// filter). The current mode is reflected by the `.min-mode` class on the
+// toggle button: when on, listings with parsed speed >= the selected value
+// are shown; when off, only listings whose parsed speed equals the value
+// are shown.
+function filterByMHz(mhz) {
+    currentMHzFilter = mhz || 'all';
+    loadListings();
+}
+
+// Toggle the speed filter mode (≥ / exact) and refresh the listings.
+// Default state matches the original chip behaviour: ≥ selected (min mode).
+function toggleMhzMode() {
+    const checkbox = document.getElementById('mhz-min-mode');
+    if (checkbox) {
+        checkbox.checked = !checkbox.checked;
+        onMhzModeChange();
+    }
+}
+
+function onMhzModeChange() {
+    const checkbox = document.getElementById('mhz-min-mode');
+    const btn = document.getElementById('mhz-mode-toggle');
+    if (!checkbox || !btn) return;
+    const isMin = checkbox.checked;
+    btn.classList.toggle('min-mode', isMin);
+    btn.setAttribute('aria-pressed', isMin ? 'true' : 'false');
+    btn.title = isMin
+        ? 'Currently ≥ selected (click for exact match)'
+        : 'Currently exact match (click for ≥)';
     loadListings();
 }
 
@@ -2678,6 +2794,14 @@ async function loadListings() {
     params.append('order', sortOrder);
     if (highConfidence) params.append('min_confidence', '0.70');
     if (currentDDRFilter !== 'all') params.append('ddr_type', currentDDRFilter);
+    if (currentMHzFilter !== 'all') {
+        params.append('speed', currentMHzFilter);
+        // Send the speed mode so the backend can switch between >= and exact.
+        // Default is 'min' (>=) to preserve the chip-based behaviour where
+        // selecting "3200" matched DDR4-3200, DDR4-3600, DDR5-3200, etc.
+        const mhzMinMode = document.getElementById('mhz-min-mode')?.checked !== false;
+        params.append('speed_mode', mhzMinMode ? 'min' : 'exact');
+    }
     if (capacityFilter !== 'all') params.append('capacity', capacityFilter);
     if (ramIdFilter) params.append('ram_id', ramIdFilter);
     
@@ -2764,6 +2888,8 @@ async function loadListings() {
         updateRAMAvgPriceChart(statsSource);
         updateDDRStats(statsSource);
         updatePriceByCapTypeChart(statsSource);
+        updateMHzCountChart(statsSource);
+        updateMHzAvgPriceChart(statsSource);
 
         // Update top deals (based on currently visible listings)
         renderTopDeals();
@@ -2956,6 +3082,221 @@ function updateCapacityDistribution(listings) {
                 }
             },
             cutout: '50%'
+        }
+    });
+}
+
+// Update listings-by-MHz bar chart
+// Groups listings by their speed (parsed from item.speed via parseRamSpeedMhz).
+// Bars are color-coded by DDR generation (DDR3 red, DDR4 blue, DDR5 purple, other gray).
+function updateMHzCountChart(listings) {
+    const ctx = document.getElementById('mhzCountChart');
+    if (!ctx) return;
+
+    if (mhzCountChart) {
+        mhzCountChart.destroy();
+    }
+
+    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+    const textColor = isDark ? '#e0e0e0' : '#333';
+    const gridColor = isDark ? '#444' : '#eee';
+
+    // Bucket: { mhz: { count, ddr: { DDR3: 0, DDR4: 0, DDR5: 0, Other: 0 } } }
+    const buckets = {};
+    listings.forEach(item => {
+        const mhz = parseRamSpeedMhz(item.speed);
+        if (!mhz || mhz < 100) return;  // skip junk speeds
+        const t = item.ddr_type || item.ram_type || 'Other';
+        const ddrKey = ['DDR3', 'DDR4', 'DDR5'].includes(t) ? t : 'Other';
+        if (!buckets[mhz]) buckets[mhz] = { count: 0, ddr: { DDR3: 0, DDR4: 0, DDR5: 0, Other: 0 } };
+        buckets[mhz].count++;
+        buckets[mhz].ddr[ddrKey]++;
+    });
+
+    if (Object.keys(buckets).length === 0) {
+        // Render an empty placeholder so the canvas doesn't look broken
+        const ctx2d = ctx.getContext('2d');
+        ctx2d.clearRect(0, 0, ctx.width, ctx.height);
+        ctx2d.fillStyle = isDark ? '#888' : '#aaa';
+        ctx2d.font = '14px system-ui, sans-serif';
+        ctx2d.textAlign = 'center';
+        ctx2d.fillText('No speed data available', ctx.width / 2, 30);
+        return;
+    }
+
+    // Sort speeds ascending for the x-axis
+    const labels = Object.keys(buckets).map(m => parseInt(m)).sort((a, b) => a - b);
+
+    const DDR_COLORS = { DDR3: '#ef4444', DDR4: '#3b82f6', DDR5: '#8b5cf6', Other: '#94a3b8' };
+    const ddrTypes = ['DDR3', 'DDR4', 'DDR5', 'Other'];
+
+    // Stacked bar: per-MHz, each DDR generation as a segment
+    const datasets = ddrTypes.map(t => ({
+        label: t === 'Other' ? 'Other' : t,
+        data: labels.map(mhz => buckets[mhz].ddr[t] || 0),
+        backgroundColor: DDR_COLORS[t],
+        borderColor: isDark ? '#2d2d2d' : '#fff',
+        borderWidth: 1,
+        stack: 'ddr'
+    }));
+
+    mhzCountChart = new Chart(ctx, {
+        type: 'bar',
+        data: { labels: labels.map(m => m + ' MHz'), datasets: datasets },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'top',
+                    labels: { color: textColor, boxWidth: 14, padding: 8 }
+                },
+                tooltip: {
+                    backgroundColor: isDark ? 'rgba(26, 26, 46, 0.95)' : 'rgba(0, 0, 0, 0.8)',
+                    titleColor: isDark ? '#e0e0e0' : '#fff',
+                    bodyColor: isDark ? '#e0e0e0' : '#fff',
+                    borderColor: isDark ? '#0f3460' : 'transparent',
+                    borderWidth: isDark ? 1 : 0,
+                    callbacks: {
+                        footer: (items) => {
+                            const total = items.reduce((a, b) => a + b.parsed.y, 0);
+                            return 'Total: ' + total + ' listings';
+                        }
+                    }
+                }
+            },
+            scales: {
+                x: {
+                    stacked: true,
+                    ticks: { color: textColor, maxRotation: 45, minRotation: 0 },
+                    grid: { color: gridColor }
+                },
+                y: {
+                    stacked: true,
+                    beginAtZero: true,
+                    title: { display: true, text: 'Listings', color: textColor },
+                    ticks: { color: textColor, precision: 0 },
+                    grid: { color: gridColor }
+                }
+            }
+        }
+    });
+}
+
+// Update avg-price-by-MHz line chart
+// X axis = parsed MHz, Y axis = average price across all listings at that speed.
+// Helps spot sweet spots (e.g. DDR4-3200 vs DDR4-3600 price gap).
+function updateMHzAvgPriceChart(listings) {
+    const ctx = document.getElementById('mhzAvgPriceChart');
+    if (!ctx) return;
+
+    if (mhzAvgPriceChart) {
+        mhzAvgPriceChart.destroy();
+    }
+
+    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+    const textColor = isDark ? '#e0e0e0' : '#333';
+    const gridColor = isDark ? '#444' : '#eee';
+
+    // Bucket: { mhz: { sumPrice, count } }
+    const buckets = {};
+    listings.forEach(item => {
+        const mhz = parseRamSpeedMhz(item.speed);
+        const price = parseFloat(item.price_eur);
+        if (!mhz || mhz < 100 || !price || price <= 0) return;
+        if (!buckets[mhz]) buckets[mhz] = { sumPrice: 0, count: 0 };
+        buckets[mhz].sumPrice += price;
+        buckets[mhz].count++;
+    });
+
+    if (Object.keys(buckets).length === 0) {
+        const ctx2d = ctx.getContext('2d');
+        ctx2d.clearRect(0, 0, ctx.width, ctx.height);
+        ctx2d.fillStyle = isDark ? '#888' : '#aaa';
+        ctx2d.font = '14px system-ui, sans-serif';
+        ctx2d.textAlign = 'center';
+        ctx2d.fillText('No speed data available', ctx.width / 2, 30);
+        return;
+    }
+
+    const labels = Object.keys(buckets).map(m => parseInt(m)).sort((a, b) => a - b);
+    const avgPrices = labels.map(m => buckets[m].sumPrice / buckets[m].count);
+    const counts = labels.map(m => buckets[m].count);
+
+    mhzAvgPriceChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: labels.map(m => m + ' MHz'),
+            datasets: [{
+                label: 'Avg Price (€)',
+                data: avgPrices,
+                borderColor: '#f59e0b',
+                backgroundColor: isDark ? 'rgba(245, 158, 11, 0.18)' : 'rgba(245, 158, 11, 0.12)',
+                pointBackgroundColor: '#f59e0b',
+                pointBorderColor: '#f59e0b',
+                pointRadius: 6,
+                pointHoverRadius: 8,
+                fill: true,
+                tension: 0.35,
+                yAxisID: 'y'
+            }, {
+                label: 'Listings',
+                data: counts,
+                borderColor: '#6366f1',
+                backgroundColor: isDark ? 'rgba(99, 102, 241, 0.18)' : 'rgba(99, 102, 241, 0.12)',
+                pointBackgroundColor: '#6366f1',
+                pointBorderColor: '#6366f1',
+                pointRadius: 4,
+                fill: false,
+                tension: 0.25,
+                yAxisID: 'y1'
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            interaction: { mode: 'index', intersect: false },
+            plugins: {
+                legend: {
+                    position: 'top',
+                    labels: { color: textColor }
+                },
+                tooltip: {
+                    backgroundColor: isDark ? 'rgba(26, 26, 46, 0.95)' : 'rgba(0, 0, 0, 0.8)',
+                    titleColor: isDark ? '#e0e0e0' : '#fff',
+                    bodyColor: isDark ? '#e0e0e0' : '#fff',
+                    borderColor: isDark ? '#0f3460' : 'transparent',
+                    borderWidth: isDark ? 1 : 0,
+                    callbacks: {
+                        label: (ctx) => {
+                            if (ctx.dataset.yAxisID === 'y') {
+                                return 'Avg Price: €' + ctx.parsed.y.toFixed(2);
+                            }
+                            return 'Listings: ' + ctx.parsed.y;
+                        }
+                    }
+                }
+            },
+            scales: {
+                x: {
+                    ticks: { color: textColor, maxRotation: 45, minRotation: 0 },
+                    grid: { color: gridColor }
+                },
+                y: {
+                    beginAtZero: true,
+                    position: 'left',
+                    title: { display: true, text: 'Avg Price (€)', color: textColor },
+                    ticks: { color: textColor, callback: (v) => '€' + v },
+                    grid: { color: gridColor }
+                },
+                y1: {
+                    beginAtZero: true,
+                    position: 'right',
+                    title: { display: true, text: 'Listings', color: textColor },
+                    ticks: { color: textColor, precision: 0 },
+                    grid: { drawOnChartArea: false }
+                }
+            }
         }
     });
 }

@@ -69,6 +69,90 @@
     color: #e0e0e0;
 }
 
+/* Price Analysis Section — theme-aware, replaces hardcoded light gradient */
+.price-analysis-section {
+    background: linear-gradient(135deg, #f0f4ff 0%, #faf5ff 100%);
+    border: 1px solid #c7d2fe;
+    border-radius: 12px;
+    padding: 1rem 1.25rem;
+    margin-bottom: 1.5rem;
+}
+[data-theme="dark"] .price-analysis-section {
+    background: linear-gradient(135deg, #1f2540 0%, #2a1f3d 100%);
+    border-color: rgba(139, 92, 246, 0.32);
+}
+.price-analysis-section .pa-title {
+    color: #1f2937;
+    font-weight: 700;
+}
+[data-theme="dark"] .price-analysis-section .pa-title {
+    color: var(--text-color, #e0e0e0);
+}
+.price-analysis-section .pa-sub {
+    color: #6b7280;
+    font-size: 0.85rem;
+}
+[data-theme="dark"] .price-analysis-section .pa-sub {
+    color: var(--text-muted, #cbd5e1);
+}
+.price-analysis-section .pa-card {
+    background: rgba(255, 255, 255, 0.6);
+    border-radius: 8px;
+    padding: 0.6rem 0.85rem;
+}
+[data-theme="dark"] .price-analysis-section .pa-card {
+    background: rgba(255, 255, 255, 0.04);
+}
+.price-analysis-section .pa-label {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #6b7280;
+    font-weight: 600;
+}
+[data-theme="dark"] .price-analysis-section .pa-label {
+    color: var(--text-muted, #cbd5e1);
+}
+.price-analysis-section .pa-value {
+    font-size: 1.4rem;
+    font-weight: 800;
+    color: #1f2937;
+    line-height: 1.1;
+    margin-top: 2px;
+}
+[data-theme="dark"] .price-analysis-section .pa-value {
+    color: var(--text-color, #e0e0e0);
+}
+.price-analysis-section .pa-value-muted {
+    color: #9ca3af;
+}
+[data-theme="dark"] .price-analysis-section .pa-value-muted {
+    color: var(--text-muted, #cbd5e1);
+    opacity: 0.5;
+}
+.price-analysis-section .pa-footnote {
+    color: #6b7280;
+}
+[data-theme="dark"] .price-analysis-section .pa-footnote {
+    color: var(--text-muted, #cbd5e1);
+}
+.price-analysis-section .pa-bar-track {
+    background: #e5e7eb;
+    border-radius: 8px;
+    overflow: hidden;
+    position: relative;
+    height: 14px;
+}
+[data-theme="dark"] .price-analysis-section .pa-bar-track {
+    background: rgba(255, 255, 255, 0.08);
+}
+.price-analysis-section .pa-bar-divider {
+    border-top: 1px dashed #c7d2fe;
+}
+[data-theme="dark"] .price-analysis-section .pa-bar-divider {
+    border-top-color: rgba(139, 92, 246, 0.32);
+}
+
 .listing-image-cell {
     position: relative;
     text-align: center;
@@ -95,12 +179,17 @@
 .modern-panel th, .modern-panel td { padding: 10px 12px; text-align: left; vertical-align: middle; }
 .modern-panel thead th {
     background: var(--section-bg, #f8f9fa);
-    font-weight: 600;
-    color: var(--text-muted, #6b7280);
-    font-size: 11px;
+    font-weight: 700;
+    color: var(--text-color, #1f2937);
+    font-size: 11.5px;
     text-transform: uppercase;
-    letter-spacing: 0.4px;
-    border-bottom: 1px solid var(--card-border, rgba(99,102,241,0.18));
+    letter-spacing: 0.6px;
+    border-bottom: 2px solid var(--card-border, rgba(99,102,241,0.32));
+}
+[data-theme="dark"] .modern-panel thead th {
+    background: rgba(255, 255, 255, 0.04);
+    color: var(--text-color, #e0e0e0);
+    border-bottom-color: rgba(139, 92, 246, 0.45);
 }
 .modern-panel tbody tr {
     border-bottom: 1px solid var(--card-border, rgba(99,102,241,0.08));
@@ -118,35 +207,39 @@
 <div class="section">
     <h2>🔧 Motherboard Listings</h2>
     
-    <!-- Pick a CPU to find compatible motherboards -->
-    <div class="cpu-picker-section" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 12px; padding: 1rem 1.25rem; margin-bottom: 1rem; color: white; box-shadow: 0 4px 16px rgba(102,126,234,0.25);">
-        <div style="display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap;">
-            <div style="font-size: 1.1rem; font-weight: 700;">🔌 Pick a CPU</div>
-            <div style="flex: 1; min-width: 240px; position: relative;">
-                <input type="text" id="cpu-picker-input" placeholder="Type a CPU name (e.g. i5-12600K, Ryzen 5 5600X)…" style="width: 100%; padding: 0.6rem 0.9rem; border: 1px solid rgba(255,255,255,0.4); border-radius: 8px; background: rgba(255,255,255,0.95); color: #1f2937; font-size: 0.95rem;">
+    <!-- Pick a CPU to find compatible motherboards (compact, chip-style quick filter) -->
+    <div class="cpu-picker-section" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 12px; padding: 0.6rem 0.85rem; margin-bottom: 0.75rem; color: white; box-shadow: 0 4px 16px rgba(102,126,234,0.25);">
+        <div style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
+            <div style="display: flex; align-items: center; gap: 0.4rem; flex-shrink: 0;">
+                <span style="display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px; background: rgba(255,255,255,0.18); border-radius: 5px;">
+                    <svg viewBox="0 0 24 24" fill="currentColor" width="13" height="13"><path d="M9 2v2H7a3 3 0 0 0-3 3v2H2v2h2v2H2v2h2v2a3 3 0 0 0 3 3h2v2h2v-2h2v2h2v-2h2v2h2v-2a3 3 0 0 0 3-3v-2h2v-2h-2v-2h2V9h-2V7a3 3 0 0 0-3-3h-2V2h-2v2h-2V2h-2v2H9V2H9zm0 4h6a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1z"/></svg>
+                </span>
+                <span style="font-size: 0.92rem; font-weight: 700; white-space: nowrap;">Pick a CPU</span>
+            </div>
+            <div style="flex: 1; min-width: 200px; position: relative;">
+                <input type="text" id="cpu-picker-input" placeholder="e.g. i5-12600K, Ryzen 5 5600X…" style="width: 100%; padding: 0.4rem 0.7rem; border: 1px solid rgba(255,255,255,0.4); border-radius: 7px; background: rgba(255,255,255,0.95); color: #1f2937; font-size: 0.85rem;">
                 <div id="cpu-picker-results" style="display: none; position: absolute; top: 100%; left: 0; right: 0; z-index: 50; background: white; color: #1f2937; border-radius: 8px; box-shadow: 0 8px 32px rgba(0,0,0,0.25); max-height: 320px; overflow-y: auto; margin-top: 4px;"></div>
             </div>
-            <button type="button" id="cpu-picker-clear" class="btn" style="background: rgba(255,255,255,0.2); color: white; border: 1px solid rgba(255,255,255,0.4); padding: 0.5rem 0.9rem; display: none;">✕ Clear</button>
+            <button type="button" id="cpu-picker-clear" class="btn" style="background: rgba(255,255,255,0.2); color: white; border: 1px solid rgba(255,255,255,0.4); padding: 0.35rem 0.7rem; font-size: 0.8rem; display: none;">✕ Clear</button>
         </div>
-        <div id="cpu-picker-selected" style="display: none; margin-top: 0.75rem; padding: 0.75rem 1rem; background: rgba(255,255,255,0.15); border-radius: 8px;">
-            <div style="display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap;">
-                <div style="font-size: 1.5rem;">🔌</div>
-                <div style="flex: 1;">
-                    <div style="font-weight: 700; font-size: 1.05rem;" id="cpu-picker-selected-name">—</div>
-                    <div style="opacity: 0.85; font-size: 0.85rem;" id="cpu-picker-selected-meta">—</div>
+        <div id="cpu-picker-selected" style="display: none; margin-top: 0.5rem; padding: 0.5rem 0.75rem; background: rgba(255,255,255,0.15); border-radius: 7px;">
+            <div style="display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap;">
+                <div style="flex: 1; min-width: 180px;">
+                    <div style="font-weight: 700; font-size: 0.92rem;" id="cpu-picker-selected-name">—</div>
+                    <div style="opacity: 0.85; font-size: 0.75rem;" id="cpu-picker-selected-meta">—</div>
                 </div>
-                <div style="display: flex; gap: 1.5rem; align-items: center;">
-                    <div style="text-align: center;">
-                        <div style="font-size: 0.7rem; opacity: 0.85; text-transform: uppercase; letter-spacing: 0.5px;">Socket</div>
-                        <div style="font-weight: 800; font-size: 1.05rem;" id="cpu-picker-selected-socket">—</div>
+                <div style="display: flex; gap: 1rem; align-items: center; flex-wrap: wrap;">
+                    <div style="text-align: center;" title="CPU socket">
+                        <div style="font-size: 0.62rem; opacity: 0.85; text-transform: uppercase; letter-spacing: 0.5px;">Socket</div>
+                        <div style="font-weight: 800; font-size: 0.95rem;" id="cpu-picker-selected-socket">—</div>
                     </div>
-                    <div style="text-align: center;">
-                        <div style="font-size: 0.7rem; opacity: 0.85; text-transform: uppercase; letter-spacing: 0.5px;">Motherboards</div>
-                        <div style="font-weight: 800; font-size: 1.05rem;" id="cpu-picker-selected-count">—</div>
+                    <div style="text-align: center;" title="Compatible motherboards listed">
+                        <div style="font-size: 0.62rem; opacity: 0.85; text-transform: uppercase; letter-spacing: 0.5px;">Boards</div>
+                        <div style="font-weight: 800; font-size: 0.95rem;" id="cpu-picker-selected-count">—</div>
                     </div>
-                    <div style="text-align: center;">
-                        <div style="font-size: 0.7rem; opacity: 0.85; text-transform: uppercase; letter-spacing: 0.5px;">Avg Price</div>
-                        <div style="font-weight: 800; font-size: 1.05rem;" id="cpu-picker-selected-avg">—</div>
+                    <div style="text-align: center;" title="Average price of compatible motherboards">
+                        <div style="font-size: 0.62rem; opacity: 0.85; text-transform: uppercase; letter-spacing: 0.5px;">Avg €</div>
+                        <div style="font-weight: 800; font-size: 0.95rem;" id="cpu-picker-selected-avg">—</div>
                     </div>
                 </div>
             </div>
@@ -848,40 +941,40 @@ async function showListingDetail(listingId) {
             ${localStorage.getItem('motherboardShowListingId') === 'true' ? `<div style="margin-bottom: 1rem;" class="listing-id-field"><strong>Listing ID:</strong> <code>${current.listing_id}</code></div>` : ''}
 
             <!-- Price Analysis Section (model / socket / cheapest) -->
-            <div class="price-analysis-section" style="background: linear-gradient(135deg, #f0f4ff 0%, #faf5ff 100%); border: 1px solid #c7d2fe; border-radius: 12px; padding: 1rem 1.25rem; margin-bottom: 1.5rem;">
+            <div class="price-analysis-section">
                 <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.75rem;">
                     <span style="font-size: 1.1rem;">📈</span>
-                    <strong style="color: #1f2937;">Price Analysis</strong>
-                    ${current.mb_model ? `<span style="color: #6b7280; font-size: 0.85rem;">— ${current.brand} ${current.mb_model}</span>` : ''}
+                    <strong class="pa-title">Price Analysis</strong>
+                    ${current.mb_model ? `<span class="pa-sub">— ${current.brand} ${current.mb_model}</span>` : ''}
                 </div>
                 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 0.75rem;">
-                    <div style="background: rgba(255,255,255,0.6); border-left: 4px solid #667eea; border-radius: 8px; padding: 0.6rem 0.85rem;">
-                        <div style="font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.5px; color: #6b7280; font-weight: 600;">Current</div>
-                        <div style="font-size: 1.4rem; font-weight: 800; color: #1f2937; line-height: 1.1; margin-top: 2px;">€${Number(current.price_eur).toFixed(0)}</div>
+                    <div class="pa-card" style="border-left: 4px solid #667eea;">
+                        <div class="pa-label">Current</div>
+                        <div class="pa-value">€${Number(current.price_eur).toFixed(0)}</div>
                     </div>
                     ${current.price_stats ? `
-                        <div style="background: rgba(255,255,255,0.6); border-left: 4px solid #16a34a; border-radius: 8px; padding: 0.6rem 0.85rem;">
-                            <div style="font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.5px; color: #6b7280; font-weight: 600;">Cheapest ever</div>
-                            <div style="font-size: 1.4rem; font-weight: 800; color: #1f2937; line-height: 1.1; margin-top: 2px;">€${Number(current.price_stats.min || 0).toFixed(0)}</div>
+                        <div class="pa-card" style="border-left: 4px solid #16a34a;">
+                            <div class="pa-label">Cheapest ever</div>
+                            <div class="pa-value">€${Number(current.price_stats.min || 0).toFixed(0)}</div>
                         </div>
-                        <div style="background: rgba(255,255,255,0.6); border-left: 4px solid #f59e0b; border-radius: 8px; padding: 0.6rem 0.85rem;">
-                            <div style="font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.5px; color: #6b7280; font-weight: 600;">Avg ever</div>
-                            <div style="font-size: 1.4rem; font-weight: 800; color: #1f2937; line-height: 1.1; margin-top: 2px;">€${Number(current.price_stats.avg || 0).toFixed(0)}</div>
+                        <div class="pa-card" style="border-left: 4px solid #f59e0b;">
+                            <div class="pa-label">Avg ever</div>
+                            <div class="pa-value">€${Number(current.price_stats.avg || 0).toFixed(0)}</div>
                         </div>
                     ` : `
-                        <div style="background: rgba(255,255,255,0.6); border-left: 4px solid #16a34a; border-radius: 8px; padding: 0.6rem 0.85rem;">
-                            <div style="font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.5px; color: #6b7280; font-weight: 600;">Cheapest ever</div>
-                            <div style="font-size: 1.4rem; font-weight: 800; color: #9ca3af; line-height: 1.1; margin-top: 2px;">—</div>
+                        <div class="pa-card" style="border-left: 4px solid #16a34a;">
+                            <div class="pa-label">Cheapest ever</div>
+                            <div class="pa-value pa-value-muted">—</div>
                         </div>
-                        <div style="background: rgba(255,255,255,0.6); border-left: 4px solid #f59e0b; border-radius: 8px; padding: 0.6rem 0.85rem;">
-                            <div style="font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.5px; color: #6b7280; font-weight: 600;">Avg ever</div>
-                            <div style="font-size: 1.4rem; font-weight: 800; color: #9ca3af; line-height: 1.1; margin-top: 2px;">—</div>
+                        <div class="pa-card" style="border-left: 4px solid #f59e0b;">
+                            <div class="pa-label">Avg ever</div>
+                            <div class="pa-value pa-value-muted">—</div>
                         </div>
                     `}
                     ${current.socket ? `
-                        <div style="background: rgba(255,255,255,0.6); border-left: 4px solid #8b5cf6; border-radius: 8px; padding: 0.6rem 0.85rem;">
-                            <div style="font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.5px; color: #6b7280; font-weight: 600;">Socket</div>
-                            <div style="font-size: 1.4rem; font-weight: 800; color: #1f2937; line-height: 1.1; margin-top: 2px;">${current.socket}</div>
+                        <div class="pa-card" style="border-left: 4px solid #8b5cf6;">
+                            <div class="pa-label">Socket</div>
+                            <div class="pa-value">${current.socket}</div>
                         </div>
                     ` : ''}
                 </div>
@@ -896,16 +989,16 @@ async function showListingDetail(listingId) {
                     const avgPos = range > 0 ? ((avg - min) / range * 100) : 50;
                     const barColor = vsAvg < -10 ? '#16a34a' : (vsAvg > 10 ? '#dc2626' : '#f59e0b');
                     return `
-                        <div style="margin-top: 1rem; padding-top: 0.75rem; border-top: 1px dashed #c7d2fe;">
-                            <div style="font-size: 0.78rem; color: #6b7280; margin-bottom: 0.5rem; display: flex; justify-content: space-between;">
+                        <div class="pa-bar-divider" style="margin-top: 1rem; padding-top: 0.75rem;">
+                            <div class="pa-footnote" style="font-size: 0.78rem; margin-bottom: 0.5rem; display: flex; justify-content: space-between;">
                                 <span>Where this price sits in the historical range</span>
                                 <span style="font-weight: 600; color: ${barColor};">${vsAvg > 0 ? '+' : ''}${vsAvg.toFixed(0)}% vs avg</span>
                             </div>
-                            <div style="position: relative; height: 14px; background: #e5e7eb; border-radius: 8px; overflow: hidden;">
+                            <div class="pa-bar-track">
                                 <div style="position: absolute; left: ${curPos}%; top: -3px; bottom: -3px; width: 4px; background: ${barColor}; border-radius: 2px; box-shadow: 0 0 6px ${barColor};" title="Current"></div>
                                 <div style="position: absolute; left: ${avgPos}%; top: 4px; bottom: 4px; width: 2px; background: #6b7280;" title="Avg"></div>
                             </div>
-                            <div style="display: flex; justify-content: space-between; font-size: 0.7rem; color: #9ca3af; margin-top: 4px;">
+                            <div class="pa-footnote" style="display: flex; justify-content: space-between; font-size: 0.7rem; margin-top: 4px;">
                                 <span>min €${min.toFixed(0)}</span>
                                 <span>max €${max.toFixed(0)}</span>
                             </div>
@@ -1175,6 +1268,44 @@ document.addEventListener('DOMContentLoaded', function() {
     var chipsetFilter = document.getElementById('chipset-filter');
     if (chipsetFilter) {
         chipsetFilter.addEventListener('change', fetchListings);
+    }
+
+    // === URL query params → filters on load ===
+    // Used by the /api/motherboards/lookup deep-link from the Computers
+    // page (e.g. clicking "MSI PRO H610M-E ↗" → ?chipset=H610).
+    // The chipset/socket dropdowns are populated async by fetchChipsets()
+    // — we hook the next chip-set refresh to re-apply the URL value
+    // (updateChipsetDropdown preserves currentSelection only when the
+    // option exists, so we wait for the option to be added first).
+    var urlParams = new URLSearchParams(window.location.search);
+    var urlChipset = urlParams.get('chipset');
+    var urlSocket = urlParams.get('socket');
+    var urlModel = urlParams.get('model');
+    if (urlModel) {
+        // No direct "model" filter dropdown, but the search box doubles
+        // as a model search. Populate it so the user sees what's
+        // being filtered. fetchListings() below will read it.
+        var searchInput = document.getElementById('search-input');
+        if (searchInput) searchInput.value = urlModel;
+    }
+    if (urlSocket && socketFilter) {
+        socketFilter.value = urlSocket;
+    }
+    // Watch the chipset dropdown for the H610 option to appear, then
+    // re-apply the value and re-fetch listings. Disconnect after first
+    // match so the MutationObserver doesn't leak.
+    if (urlChipset && chipsetFilter) {
+        var applyChipsetWhenReady = function () {
+            if (chipsetFilter.querySelector('option[value="' + urlChipset + '"]')) {
+                chipsetFilter.value = urlChipset;
+                chipsetFilter.dispatchEvent(new Event('change'));
+                chipsetObserver.disconnect();
+            }
+        };
+        var chipsetObserver = new MutationObserver(applyChipsetWhenReady);
+        chipsetObserver.observe(chipsetFilter, { childList: true, subtree: true });
+        // Also try once now in case the options are already loaded
+        applyChipsetWhenReady();
     }
 
     // Attach vendor filter listener

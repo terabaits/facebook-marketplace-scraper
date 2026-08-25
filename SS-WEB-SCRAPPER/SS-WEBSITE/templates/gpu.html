@@ -1278,6 +1278,19 @@ function filterByModel(vendor, model) {
             <button type="button" id="unicorn-toggle" class="filter-icon-btn" onclick="toggleUnicorn()" title="Show only unicorn deals" aria-pressed="false">
                 🦄
             </button>
+            <div style="position: relative; display: inline-block;">
+                <button type="button" id="column-settings-btn" class="filter-icon-btn" onclick="toggleColumnSettings(event)" title="Show/hide and reorder columns" aria-pressed="false">
+                    ☰
+                </button>
+                <div id="column-settings-dropdown" class="column-settings-dropdown" style="display: none; min-width: 240px;">
+                    <h4 style="margin: 0 0 0.5rem 0; font-size: 0.85rem; color: var(--text-color);">📋 Columns <small style="opacity: 0.7; font-weight: 400;">(drag to reorder)</small></h4>
+                    <div id="column-options-list"></div>
+                    <div style="display: flex; gap: 0.4rem; margin-top: 0.5rem; padding-top: 0.5rem; border-top: 1px solid var(--table-border);">
+                        <button type="button" class="ram-popup-btn" style="flex: 1; font-size: 0.78rem;" onclick="showAllColumns()">Show All</button>
+                        <button type="button" class="ram-popup-btn" style="flex: 1; font-size: 0.78rem;" onclick="resetColumnOrder()">Defaults</button>
+                    </div>
+                </div>
+            </div>
             <label>
                 Source:
                 <select id="source-filter" onchange="loadListings()">
@@ -1471,22 +1484,22 @@ async function loadListings() {
             <table class="gpu-listings-table">
                 <thead>
                     <tr>
-                        <th class="text-center">Image</th>
-                        <th>{{ t('Brand') }}</th>
-                        <th>{{ t('GPU') }}</th>
-                        <th>{{ t('VRAM') }}</th>
-                        <th>Year</th>
-                        <th>{{ t('Price') }}</th>
-                        <th>MSRP</th>
-                        <th title="PassMark G3D Mark">G3D</th>
-                        <th title="Performance / Price: G3D Mark per Euro">€/G3D</th>
-                        <th title="PassMark G2D Mark">G2D</th>
-                        <th title="Performance rank based on G3D">Rank</th>
-                        <th>Market Position</th>
-                        <th>Location</th>
-                        <th>Date</th>
-                        <th>Actions</th>
-                        <th style="text-align: center;"><input type="checkbox" id="select-all-compare" title="Select all visible for compare" onclick="toggleSelectAllCompare(event)"></th>
+                        <th class="text-center" data-col-id="col-image">Image</th>
+                        <th data-col-id="col-brand">{{ t('Brand') }}</th>
+                        <th data-col-id="col-gpu">{{ t('GPU') }}</th>
+                        <th data-col-id="col-vram">{{ t('VRAM') }}</th>
+                        <th data-col-id="col-year">Year</th>
+                        <th data-col-id="col-price">{{ t('Price') }}</th>
+                        <th data-col-id="col-msrp">MSRP</th>
+                        <th data-col-id="col-g3d" title="PassMark G3D Mark">G3D</th>
+                        <th data-col-id="col-perf-price" title="Performance / Price: G3D Mark per Euro">€/G3D</th>
+                        <th data-col-id="col-g2d" title="PassMark G2D Mark">G2D</th>
+                        <th data-col-id="col-rank" title="Performance rank based on G3D">Rank</th>
+                        <th data-col-id="col-market">Market Position</th>
+                        <th data-col-id="col-location">Location</th>
+                        <th data-col-id="col-date">Date</th>
+                        <th data-col-id="col-actions">Actions</th>
+                        <th data-col-id="col-compare" style="text-align: center;"><input type="checkbox" id="select-all-compare" title="Select all visible for compare" onclick="toggleSelectAllCompare(event)"></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -3704,6 +3717,242 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
+// === Column visibility + drag-to-reorder ===
+// One per <th> in the listings table. `required` cols are always shown
+// and can't be dragged. Order is persisted to localStorage.
+const COLUMNS = [
+    { id: 'col-image',       label: 'Image',          required: true  },
+    { id: 'col-brand',       label: 'Brand',          required: false },
+    { id: 'col-gpu',         label: 'GPU',            required: true  },
+    { id: 'col-vram',        label: 'VRAM',           required: false },
+    { id: 'col-year',        label: 'Year',           required: false },
+    { id: 'col-price',       label: 'Price',          required: true  },
+    { id: 'col-msrp',        label: 'MSRP',           required: false },
+    { id: 'col-g3d',         label: 'G3D',            required: false },
+    { id: 'col-perf-price',  label: '€/G3D',          required: false },
+    { id: 'col-g2d',         label: 'G2D',            required: false },
+    { id: 'col-rank',        label: 'Rank',           required: false },
+    { id: 'col-market',      label: 'Market Position', required: false },
+    { id: 'col-location',    label: 'Location',       required: false },
+    { id: 'col-date',        label: 'Date',           required: false },
+    { id: 'col-actions',     label: 'Actions',        required: true  },
+    { id: 'col-compare',     label: 'Compare',        required: false },
+];
+
+function loadColumnOrder() {
+    try {
+        const raw = localStorage.getItem('gpu_column_order');
+        if (raw) {
+            const ids = JSON.parse(raw);
+            const valid = ids.filter(id => COLUMNS.some(c => c.id === id));
+            // Append any missing cols (e.g. after COLUMNS was updated)
+            COLUMNS.forEach(c => { if (!valid.includes(c.id)) valid.push(c.id); });
+            return valid;
+        }
+    } catch (e) {}
+    return COLUMNS.map(c => c.id);
+}
+
+function saveColumnOrder(order) {
+    try { localStorage.setItem('gpu_column_order', JSON.stringify(order)); } catch (e) {}
+}
+
+function loadColumnHidden() {
+    try {
+        const raw = localStorage.getItem('gpu_column_hidden');
+        if (raw) return JSON.parse(raw);
+    } catch (e) {}
+    return {};
+}
+
+function saveColumnHidden(hidden) {
+    try { localStorage.setItem('gpu_column_hidden', JSON.stringify(hidden)); } catch (e) {}
+}
+
+function isColumnHidden(id) {
+    const col = COLUMNS.find(c => c.id === id);
+    if (col && col.required) return false; // required cols always visible
+    return !!loadColumnHidden()[id];
+}
+
+function setColumnHidden(id, hidden) {
+    const cur = loadColumnHidden();
+    if (hidden) cur[id] = true; else delete cur[id];
+    saveColumnHidden(cur);
+}
+
+function applyColumnState() {
+    const order = loadColumnOrder();
+    const headerRow = document.querySelector('.gpu-listings-table thead tr, #listings-container thead tr, table thead tr');
+    if (!headerRow) return;
+    // Reorder + toggle visibility on each <th>
+    const ths = [...headerRow.querySelectorAll('th')];
+    const thById = {};
+    ths.forEach((th, idx) => {
+        // try data attribute or text content fallback
+        const id = th.dataset.colId || COLUMNS[idx]?.id;
+        if (id) thById[id] = th;
+    });
+    // Reorder by appending in saved order
+    order.forEach(id => {
+        const th = thById[id];
+        if (th) headerRow.appendChild(th);
+    });
+    // Apply visibility
+    ths.forEach(th => {
+        const id = th.dataset.colId;
+        if (id && isColumnHidden(id)) th.style.display = 'none';
+        else th.style.display = '';
+    });
+    // Mirror on body cells (same index)
+    const bodyRows = document.querySelectorAll('table tbody tr');
+    bodyRows.forEach(row => {
+        const cells = [...row.querySelectorAll('td')];
+        ths.forEach((th, idx) => {
+            const id = th.dataset.colId;
+            const cell = cells[idx];
+            if (cell && id) {
+                cell.style.display = isColumnHidden(id) ? 'none' : '';
+            }
+        });
+        // Reorder cells to match header order
+        order.forEach((id, i) => {
+            const th = thById[id];
+            if (th) {
+                const idx = ths.indexOf(th);
+                const cell = cells[idx];
+                if (cell) row.appendChild(cell);
+            }
+        });
+    });
+}
+
+function buildColumnOptions() {
+    const container = document.getElementById('column-options-list');
+    if (!container) return;
+    const order = loadColumnOrder();
+    const ordered = order.map(id => COLUMNS.find(c => c.id === id)).filter(Boolean);
+    container.innerHTML = ordered.map(col => {
+        const hidden = isColumnHidden(col.id);
+        return `<div class="column-option ${col.required ? 'required' : ''}" draggable="${!col.required}" data-col-id="${col.id}">
+            <span class="drag-handle" title="Drag to reorder">⋮⋮</span>
+            <input type="checkbox" id="col-check-${col.id}" ${hidden ? '' : 'checked'} ${col.required ? 'disabled' : ''}>
+            <label for="col-check-${col.id}" style="flex: 1; cursor: pointer; user-select: none; font-size: 0.82rem;">${col.label}${col.required ? ' <span style="opacity: 0.6; font-size: 0.7rem;">(required)</span>' : ''}</label>
+        </div>`;
+    }).join('');
+    setupColumnDragDrop();
+    setupColumnCheckboxes();
+}
+
+function setupColumnCheckboxes() {
+    document.querySelectorAll('.column-option input[type="checkbox"]').forEach(cb => {
+        cb.addEventListener('change', () => {
+            const opt = cb.closest('.column-option');
+            const id = opt.dataset.colId;
+            setColumnHidden(id, !cb.checked);
+            applyColumnState();
+        });
+    });
+}
+
+function setupColumnDragDrop() {
+    const container = document.getElementById('column-options-list');
+    if (!container) return;
+    let draggedId = null;
+    container.querySelectorAll('.column-option').forEach(opt => {
+        if (opt.classList.contains('required')) return;
+        opt.addEventListener('dragstart', e => {
+            draggedId = opt.dataset.colId;
+            opt.classList.add('dragging');
+            e.dataTransfer.effectAllowed = 'move';
+        });
+        opt.addEventListener('dragend', () => {
+            opt.classList.remove('dragging');
+            container.querySelectorAll('.column-option').forEach(o => {
+                o.classList.remove('drag-over-top');
+                o.classList.remove('drag-over-bottom');
+            });
+            draggedId = null;
+        });
+        opt.addEventListener('dragover', e => {
+            e.preventDefault();
+            if (!draggedId || opt.dataset.colId === draggedId) return;
+            const rect = opt.getBoundingClientRect();
+            const midpoint = rect.top + rect.height / 2;
+            opt.classList.toggle('drag-over-top', e.clientY < midpoint);
+            opt.classList.toggle('drag-over-bottom', e.clientY >= midpoint);
+        });
+        opt.addEventListener('dragleave', () => {
+            opt.classList.remove('drag-over-top');
+            opt.classList.remove('drag-over-bottom');
+        });
+        opt.addEventListener('drop', e => {
+            e.preventDefault();
+            if (!draggedId || opt.dataset.colId === draggedId) return;
+            const rect = opt.getBoundingClientRect();
+            const insertBefore = e.clientY < rect.top + rect.height / 2;
+            const draggedOpt = container.querySelector(`.column-option[data-col-id="${draggedId}"]`);
+            if (!draggedOpt) return;
+            if (insertBefore) container.insertBefore(draggedOpt, opt);
+            else container.insertBefore(draggedOpt, opt.nextSibling);
+            // Persist new order
+            const newOrder = [...container.querySelectorAll('.column-option')].map(o => o.dataset.colId);
+            saveColumnOrder(newOrder);
+            applyColumnState();
+        });
+    });
+}
+
+function toggleColumnSettings(e) {
+    if (e) { e.stopPropagation(); e.preventDefault(); }
+    const dd = document.getElementById('column-settings-dropdown');
+    const btn = document.getElementById('column-settings-btn');
+    if (!dd || !btn) return;
+    const isOpen = dd.style.display === 'block';
+    if (isOpen) {
+        dd.style.display = 'none';
+        btn.setAttribute('aria-pressed', 'false');
+    } else {
+        buildColumnOptions();
+        dd.style.display = 'block';
+        btn.setAttribute('aria-pressed', 'true');
+        // Position below the button
+        const rect = btn.getBoundingClientRect();
+        dd.style.position = 'absolute';
+        dd.style.top = (rect.bottom + 6) + 'px';
+        dd.style.left = (rect.right - 250) + 'px';
+        // Click outside to close
+        setTimeout(() => {
+            document.addEventListener('click', function closeCS(e) {
+                if (dd.contains(e.target) || btn.contains(e.target)) return;
+                dd.style.display = 'none';
+                btn.setAttribute('aria-pressed', 'false');
+                document.removeEventListener('click', closeCS);
+            });
+        }, 50);
+    }
+}
+
+function showAllColumns() {
+    saveColumnHidden({});
+    applyColumnState();
+    buildColumnOptions();
+}
+
+function resetColumnOrder() {
+    saveColumnOrder(COLUMNS.map(c => c.id));
+    saveColumnHidden({});
+    applyColumnState();
+    buildColumnOptions();
+}
+
+// Apply saved column state after the table is rendered
+const _origRenderFullTable = window.renderFullTable;
+window.renderFullTable = function() {
+    if (_origRenderFullTable) _origRenderFullTable.apply(this, arguments);
+    setTimeout(applyColumnState, 50);
+};
+
 </script>
 
 <style>
@@ -4051,6 +4300,28 @@ body.modal-open {
 [data-theme="dark"] .column-settings-footer button.btn-primary:hover {
     background: #5a6fd6;
 }
+
+/* === Column settings dropdown: drag handle + option row === */
+.column-option {
+    display: flex; align-items: center; gap: 0.4rem;
+    padding: 0.35rem 0.5rem; border-radius: 4px;
+    cursor: default;
+    background: transparent;
+    border: 1px solid transparent;
+    transition: background 0.12s;
+}
+.column-option:hover { background: rgba(99, 102, 241, 0.06); }
+.column-option.dragging { opacity: 0.5; background: rgba(99, 102, 241, 0.18); border-color: rgba(99, 102, 241, 0.4); }
+.column-option.drag-over-top { box-shadow: inset 0 2px 0 #667eea; }
+.column-option.drag-over-bottom { box-shadow: inset 0 -2px 0 #667eea; }
+.column-option .drag-handle {
+    cursor: grab; color: #888; font-size: 0.95rem; user-select: none;
+    padding: 0 2px; line-height: 1;
+}
+.column-option .drag-handle:active { cursor: grabbing; }
+.column-option input[type="checkbox"] { margin: 0; cursor: pointer; }
+.column-option label { cursor: pointer; user-select: none; }
+.column-option.required .drag-handle { visibility: hidden; }
 
 /* Console icon container styles */
 .console-icon-container {

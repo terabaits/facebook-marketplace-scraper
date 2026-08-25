@@ -1106,6 +1106,47 @@ body.drag-mode-active .drag-mode-hint {
 .market-percentile.pricier .market-percentile-detail { color: #991b1b; }
 [data-theme="dark"] .market-percentile.pricier .market-percentile-detail { color: #fecaca; }
 
+/* === Per-model price history chart (inside the popup) === */
+.market-price-history {
+    margin-top: 0.85rem;
+    padding: 0.75rem 0.85rem;
+    background: var(--modal-box-bg, #f8f9fa);
+    border-radius: 8px;
+    border: 1px solid var(--modal-border, rgba(0,0,0,0.08));
+}
+[data-theme="dark"] .market-price-history {
+    background: rgba(255,255,255,0.03);
+    border-color: rgba(255,255,255,0.08);
+}
+.market-price-history-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.5rem;
+    margin-bottom: 0.4rem;
+    flex-wrap: wrap;
+}
+.market-price-history-title {
+    font-weight: 700;
+    font-size: 0.92rem;
+    color: var(--text-color, #1f2937);
+}
+.market-price-history-meta {
+    font-size: 0.75rem;
+    color: var(--text-muted, #6b7280);
+}
+.market-price-history-canvas {
+    position: relative;
+    height: 160px;
+}
+.market-price-history-empty {
+    font-size: 0.82rem;
+    color: var(--text-muted, #6b7280);
+    text-align: center;
+    padding: 1.5rem 0.5rem;
+    font-style: italic;
+}
+
 /* === Fix #6: Flag button styling (used in popup + table) === */
 .flag-btn {
     display: inline-flex;
@@ -1365,19 +1406,28 @@ body.drag-mode-active .drag-mode-hint {
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
         <h2 class="component-filters-header">{{ t('CPU Listings') }}</h2>
         <div class="filters component-filters-section" style="margin: 0;">
-            <span style="font-weight: 600; margin-right: 0.5rem;">Filters:</span>
-            <label>
-                <input type="checkbox" id="active-only" checked onchange="loadListings()">
-                Active only
-            </label>
-            <label class="{% if not is_staff %}staff-only{% endif %}">
-                <input type="checkbox" id="high-confidence" checked onchange="loadListings()">
-                High confidence (≥70%)
-            </label>
-            <label>
-                <input type="checkbox" id="show-avg-price" onchange="loadListings()">
-                Show avg price
-            </label>
+            <div class="filter-icon-bar">
+                <button type="button" class="filter-icon-btn" id="cpu-active-only-btn"
+                        data-target="active-only"
+                        title="{{ t('Active only') }}" aria-pressed="true"
+                        onclick="toggleFilterIcon(this, 'active-only')">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                        <circle cx="12" cy="12" r="3"/>
+                    </svg>
+                </button>
+                <button type="button" class="filter-icon-btn {% if not is_staff %}staff-only{% endif %}"
+                        id="cpu-high-confidence-btn" data-target="high-confidence"
+                        title="{{ t('High confidence (≥70%)') }}" aria-pressed="true"
+                        onclick="toggleFilterIcon(this, 'high-confidence')">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                        <polyline points="9 12 12 15 16 10"/>
+                    </svg>
+                </button>
+            </div>
+            <input type="checkbox" id="active-only" checked onchange="loadListings()" class="hidden-filter">
+            <input type="checkbox" id="high-confidence" checked onchange="loadListings()" class="hidden-filter">
             <label>
                 Vendor:
                 <select id="vendor-filter" onchange="updateModelFilter(); loadListings()">
@@ -1509,6 +1559,10 @@ let historyChart = null;
 // Cache for current listings data
 let currentListingsData = [];
 let showAvgPriceGlobal = false;  // Global variable for show average price toggle
+// Per-model price-over-time chart instances, keyed by canvas id. Cleared
+// every time we render a new popup so we don't pile up old Chart.js
+// instances when the user clicks multiple listings in a row.
+let cpuPriceHistoryCharts = [];
 
 // SS.com stores thumbnails as .t.jpg but serves the full gallery image as .800.jpg.
 // Normalize a remote image URL so popups and table clicks use the full-size version.
@@ -1980,7 +2034,12 @@ function renderTableHeader() {
                 </th>`;
             }
             default: {
-                const minWidth = col.id === 'col-price' ? 'min-width: 140px;' : '';
+                // Market Position is the longest cell text (avg + range + bar) so it
+                // gets a slightly wider min-width to avoid wrapping. Price column has
+                // its own generous min-width from earlier.
+                const minWidth = col.id === 'col-price' ? 'min-width: 140px;'
+                            : col.id === 'col-market' ? 'min-width: 170px;'
+                            : '';
                 return `<th data-col="${col.id}" class="column-header${hiddenClass}" style="${thStyle}${minWidth}">
                     <span class="header-text">${col.label}</span>
                 </th>`;
@@ -2102,12 +2161,12 @@ function renderTableRow(item) {
                     ${hasPriceChange ? `<br><small style="color: ${item.price_eur < item.history[0].price_eur ? '#e74c3c' : '#27ae60'};">Was: €${item.history[0].price_eur} ${item.price_eur < item.history[0].price_eur ? '↓' : '↑'}</small>` : ''}
                 </td>`;
             case 'col-price-perf':
-                return `<td data-col="col-price-perf" class="${hiddenClass}" style="font-size: 0.85rem; ${style}">
+                return `<td data-col="col-price-perf" class="${hiddenClass}" style="font-size: 0.85rem; text-align: center; ${style}">
                     ${item.price_per_r23 ? `€${item.price_per_r23}/R23k<br>` : ''}
                     ${item.price_per_passmark ? `€${item.price_per_passmark}/PMk` : '-'}
                 </td>`;
             case 'col-benchmarks':
-                return `<td data-col="col-benchmarks" class="${hiddenClass}" style="font-size: 0.85rem; ${style}">
+                return `<td data-col="col-benchmarks" class="${hiddenClass}" style="font-size: 0.85rem; text-align: center; ${style}">
                     ${item.benchmarks ? `
                         ${item.benchmarks.r23_multi ? `R23: ${item.benchmarks.r23_multi.toLocaleString()}<br>` : ''}
                         ${item.benchmarks.r26_multi ? `R26: ${item.benchmarks.r26_multi.toLocaleString()}<br>` : ''}
@@ -2115,18 +2174,18 @@ function renderTableRow(item) {
                     ` : '-'}
                 </td>`;
             case 'col-market':
-                return `<td data-col="col-market" class="${hiddenClass}" ${style}>
+                return `<td data-col="col-market" class="${hiddenClass} col-market-cell" ${style}>
                     ${item.is_unicorn ? `
                         <span style="background: linear-gradient(135deg, #9333ea, #c084fc); color: white; font-size: 0.75rem; padding: 4px 8px; border-radius: 12px; font-weight: bold; display: inline-block;" title="Only one listing of this model in all history!">🦄 UNICORN</span>
                     ` : (item.price_stats ? `
-                        <div style="font-size: 0.875rem;">
+                        <div style="font-size: 0.875rem; text-align: center;">
                             Avg: €${item.price_stats.avg}<br>
                             Range: €${item.price_stats.min} - €${item.price_stats.max}
                         </div>
                         <div class="price-bar" title="Price percentile: ${item.price_stats.percentile}%">
                             <div class="price-bar-fill" style="width: ${item.price_stats.percentile}%"></div>
                         </div>
-                    ` : '<small>No price data</small>')}
+                    ` : '<small style="display:block; text-align:center;">No price data</small>')}
                 </td>`;
             case 'col-location':
                 return `<td data-col="col-location" class="${hiddenClass}" ${style}>${item.seller_location || 'N/A'}</td>`;
@@ -2795,7 +2854,9 @@ async function loadListings() {
 
     const activeOnly = document.getElementById('active-only').checked;
     const highConfidence = document.getElementById('high-confidence').checked;
-    showAvgPriceGlobal = document.getElementById('show-avg-price').checked;  // Update global variable
+    // `show avg price` toggle was removed from the filter bar (now always off).
+    // Keep the global pinned to false so any code that reads it still works.
+    showAvgPriceGlobal = false;
     const sortBy = document.getElementById('sort-by').value;
     const sortOrder = document.getElementById('sort-order').value;
     const timeFilter = document.getElementById('time-filter').value;
@@ -3224,6 +3285,29 @@ async function openListingDetails(listingId) {
             </div>
         `;
 
+        // Price over time (per-model, last 24 months) — small Chart.js line
+        // chart inside the Market Price Analysis card. The container uses
+        // a unique id derived from the listing id so multiple popups (rare
+        // but possible) don't collide. If the model has fewer than 2 months
+        // of data we skip the chart entirely.
+        const matchedCpuId = current.matched_cpu_id;
+        if (matchedCpuId) {
+            const chartId = `cpu-price-history-${listingId}`.replace(/[^a-zA-Z0-9-_]/g, '_');
+            html += `
+                <div class="market-price-history" data-matched-cpu-id="${matchedCpuId}" data-chart-id="${chartId}">
+                    <div class="market-price-history-header">
+                        <span class="market-price-history-title">📉 Price over time</span>
+                        <span class="market-price-history-meta">${escapeHtml(modelName)} · last 24 months</span>
+                    </div>
+                    <div class="market-price-history-canvas">
+                        <canvas id="${chartId}"></canvas>
+                    </div>
+                </div>
+            `;
+            // Fetch + render after the modal renders, so the canvas has layout
+            cpuPriceHistoryCharts.push({ chartId, matchedCpuId, listingId });
+        }
+
         // CPU-specific info (now combined with the price/location block above — no duplicate here)
 
         // Description box (styled like GPU/Console)
@@ -3300,6 +3384,10 @@ async function openListingDetails(listingId) {
         document.getElementById('listing-content').innerHTML = html;
         document.getElementById('listing-modal').classList.add('active');
 
+        // Once the modal is on screen, fetch + render the queued
+        // per-model price-history charts. The chart canvases already
+        // exist in `html`; we only fill them now.
+        renderPendingPriceHistoryCharts();
     } catch (error) {
         console.error('Error loading listing details:', error);
         alert('Failed to load listing details');
@@ -3307,6 +3395,18 @@ async function openListingDetails(listingId) {
 }
 
 function closeListingModal() {
+    // Destroy any price-history Chart.js instances the modal held so
+    // they don't leak GPU memory across popup opens.
+    if (typeof cpuPriceHistoryCharts !== 'undefined' && Array.isArray(cpuPriceHistoryCharts)) {
+        // Anything still pending means the chart never got rendered.
+        // Anything in the canvas DOM has already been instantiated by
+        // Chart.getChart(canvas) and we walk the canvases to clean up.
+        document.querySelectorAll('#listing-modal canvas[id^="cpu-price-history-"]').forEach(c => {
+            const inst = Chart.getChart(c);
+            if (inst) inst.destroy();
+        });
+        cpuPriceHistoryCharts = [];
+    }
     document.getElementById('listing-modal').classList.remove('active');
 }
 
@@ -3465,6 +3565,95 @@ async function showModelHistory(modelId, modelName) {
 
 function closeModal() {
     document.getElementById('history-modal').classList.remove('active');
+}
+
+// Fetch + render the per-model price-over-time chart(s) that the popup
+// just added. We collect any pending chart descriptors into
+// `cpuPriceHistoryCharts` during popup render, then drain the queue
+// here after the modal is on screen. This keeps the popup render
+// synchronous (no awaits inside the html string) and the chart work
+// out of the critical path.
+async function renderPendingPriceHistoryCharts() {
+    if (!cpuPriceHistoryCharts || cpuPriceHistoryCharts.length === 0) return;
+    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+    const textColor = isDark ? '#e8e8f0' : '#1f2937';
+    const gridColor = isDark ? 'rgba(255,255,255,0.10)' : 'rgba(0,0,0,0.10)';
+    const tooltipBg = isDark ? 'rgba(26, 26, 46, 0.95)' : 'rgba(0, 0, 0, 0.85)';
+
+    for (const { chartId, matchedCpuId, listingId } of cpuPriceHistoryCharts) {
+        const canvas = document.getElementById(chartId);
+        if (!canvas) continue;
+        try {
+            const res = await fetch(`/api/cpus/price-history-by-model?matched_cpu_id=${matchedCpuId}&months=24`);
+            if (!res.ok) continue;
+            const payload = await res.json();
+            const series = (payload && payload.series) || [];
+            if (series.length < 2) {
+                // Not enough history to draw a line — replace the canvas
+                // with a short note so the card doesn't show an empty chart.
+                const wrap = canvas.parentElement;
+                if (wrap) {
+                    wrap.innerHTML = `<div class="market-price-history-empty">Only ${series.length} month of price history — need at least 2 to draw a trend.</div>`;
+                }
+                continue;
+            }
+            // Mark the current listing's month on the chart with a dot, so the
+            // user can see where in the trend this price sits.
+            const currentPrice = window._cpuPopupCurrentPrice || null;
+
+            new Chart(canvas.getContext('2d'), {
+                type: 'line',
+                data: {
+                    labels: series.map(s => s.month),
+                    datasets: [{
+                        label: 'Avg price (€)',
+                        data: series.map(s => s.avg_price),
+                        borderColor: '#f59e0b',
+                        backgroundColor: isDark ? 'rgba(245, 158, 11, 0.15)' : 'rgba(245, 158, 11, 0.10)',
+                        pointBackgroundColor: series.map(s => (currentPrice !== null && Math.abs(s.avg_price - currentPrice) < 0.01) ? '#dc2626' : '#f59e0b'),
+                        pointBorderColor: series.map(s => (currentPrice !== null && Math.abs(s.avg_price - currentPrice) < 0.01) ? '#dc2626' : '#f59e0b'),
+                        pointRadius: series.map(s => (currentPrice !== null && Math.abs(s.avg_price - currentPrice) < 0.01) ? 6 : 3),
+                        borderWidth: 2,
+                        fill: true,
+                        tension: 0.3
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            backgroundColor: tooltipBg,
+                            titleColor: isDark ? '#e0e0e0' : '#fff',
+                            bodyColor: isDark ? '#e0e0e0' : '#fff',
+                            callbacks: {
+                                afterLabel: (ctx) => {
+                                    const r = series[ctx.dataIndex];
+                                    return r && r.listing_count != null ? `${r.listing_count} listing${r.listing_count === 1 ? '' : 's'}` : '';
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            ticks: { color: textColor, maxRotation: 0, autoSkip: true, maxTicksLimit: 6 },
+                            grid: { color: gridColor }
+                        },
+                        y: {
+                            beginAtZero: false,
+                            ticks: { color: textColor, callback: (v) => '€' + v },
+                            grid: { color: gridColor }
+                        }
+                    }
+                }
+            });
+        } catch (e) {
+            console.warn('cpu price-history fetch failed', e);
+        }
+    }
+    // Drain the queue
+    cpuPriceHistoryCharts = [];
 }
 
 window.autoFitHistoryChart = function() {
@@ -4380,7 +4569,38 @@ window.initWidgetSystem = function() {
 })();
 
 // ==========================================================
+// Filter icon-bar helpers (same pattern as GPU page).
+// Each .filter-icon-btn[data-target=foo] drives a hidden <input id="foo">
+// with value "true"/"false". The CSS-only `default-on` dot is just a hint
+// when the button is OFF (i.e. the default is off).
+function cpuToggleFilterIcon(btn, checkboxId) {
+    const cb = document.getElementById(checkboxId);
+    if (!cb) return;
+    cb.checked = !cb.checked;
+    cpuUpdateFilterIconState(btn, cb.checked);
+    cb.dispatchEvent(new Event('change'));
+}
+
+function cpuUpdateFilterIconState(btn, isActive) {
+    if (isActive) {
+        btn.classList.add('active');
+        btn.setAttribute('aria-pressed', 'true');
+    } else {
+        btn.classList.remove('active');
+        btn.setAttribute('aria-pressed', 'false');
+    }
+}
+
 document.addEventListener('DOMContentLoaded', function() {
+    // Initialise the icon-bar buttons to reflect the underlying checkbox
+    // state on first load. Without this the buttons would render as
+    // "inactive" even when the matching checkbox is checked.
+    document.querySelectorAll('.filter-icon-btn[data-target]').forEach(btn => {
+        const id = btn.dataset.target;
+        const cb = document.getElementById(id);
+        if (cb) cpuUpdateFilterIconState(btn, cb.checked);
+    });
+
     // Read URL params on first load so deep-links from the Computers popup
     // (e.g. /cpu?model=i7-6700) auto-apply the filter. The CPU page
     // rebuilds #model-filter options inside loadListings (via

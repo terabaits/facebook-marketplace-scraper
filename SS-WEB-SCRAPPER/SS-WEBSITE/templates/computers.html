@@ -47,6 +47,11 @@
             <div class="stat-value" id="stat-avg-price">-</div>
         </div>
         <div class="stat-card">
+            <h3>Avg Components / Build</h3>
+            <div class="stat-value" id="stat-avg-components">-</div>
+            <div class="stat-sub" id="stat-avg-components-sub"></div>
+        </div>
+        <div class="stat-card">
             <h3>With CPU/GPU</h3>
             <div class="stat-value" id="stat-with-cpu-gpu">-</div>
         </div>
@@ -513,12 +518,34 @@ async function loadStats() {
         const response = await fetch('/api/computers/stats');
         const data = await response.json();
         console.log('Stats response:', data);
-        
+
         if (data.success) {
             document.getElementById('stat-total').textContent = data.stats.total;
             document.getElementById('stat-active').textContent = data.stats.active;
             document.getElementById('stat-avg-price').textContent = '€' + (data.stats.avg_price || 0).toFixed(0);
             document.getElementById('stat-with-cpu-gpu').textContent = (data.stats.with_cpu || 0) + ' / ' + (data.stats.with_gpu || 0);
+
+            // New: avg component value per listing (sum of detected CPU/GPU/RAM/SSD/MB/PSU/Case/monitor)
+            // + sub-line showing the avg delta between the listing's asking price and the
+            // computed component value (positive = "paying for assembly", negative = "below parts").
+            const avgCompEl = document.getElementById('stat-avg-components');
+            const avgCompSubEl = document.getElementById('stat-avg-components-sub');
+            if (avgCompEl) {
+                const avgComponents = data.stats.avg_components_total || 0;
+                avgCompEl.textContent = '€' + Math.round(avgComponents);
+            }
+            if (avgCompSubEl) {
+                const delta = data.stats.avg_listing_vs_components;
+                const compCount = data.stats.component_count || 0;
+                if (delta === null || delta === undefined || !compCount) {
+                    avgCompSubEl.textContent = 'no component data yet';
+                } else {
+                    const sign = delta >= 0 ? '+' : '−';
+                    const abs = Math.abs(Math.round(delta));
+                    const verdict = delta >= 0 ? 'assembly premium' : 'under parts';
+                    avgCompSubEl.textContent = `${sign}€${abs} avg · ${verdict} · ${compCount} listings`;
+                }
+            }
         } else {
             console.error('Stats error:', data.error);
             document.getElementById('stat-total').textContent = 'Error';
@@ -627,8 +654,16 @@ async function loadComputers() {
             // Build components summary — tight flex column of pill chips (replaces the old <br>-stacked layout)
             let components = [];
             if (item.cpu_name) {
-                const cpuProducer = item.cpu_producer || '';
-                const cpuName = cpuProducer && item.cpu_name.toLowerCase().startsWith(cpuProducer.toLowerCase()) ? item.cpu_name : `${cpuProducer} ${item.cpu_name}`.trim();
+                // Bug fix: the cpu_reference.cpu_name field already includes
+                // the producer (e.g. "Intel Core i3-12100F"), so naively
+                // prepending producer renders "Intel Intel Core i3-12100F".
+                // Use the model as-is when it already starts with the
+                // producer; otherwise prepend.
+                const cpuProducer = (item.cpu_producer || '').trim();
+                const rawName = (item.cpu_name || '').trim();
+                const cpuName = cpuProducer && rawName.toLowerCase().startsWith(cpuProducer.toLowerCase())
+                    ? rawName
+                    : `${cpuProducer} ${rawName}`.replace(/\s+/g, ' ').trim();
                 components.push(`<span class="badge badge-cpu">🧠 ${cpuName}</span>`);
             }
             if (item.gpu_model) {
@@ -657,17 +692,25 @@ async function loadComputers() {
                 ? `<div class="comp-cell-components">${components.join('')}</div>`
                 : '<em class="no-components">No components detected</em>';
 
-            // Use backend prebuilt flag
+            // Use backend prebuilt flag. Bug fix: only render the chip when
+            // the listing is prebuilt — "Custom" was the default and made every
+            // row look the same. Custom listings now show no chip at all so
+            // the prebuilt badge stands out where it actually matters.
             const isPrebuilt = Boolean(item.is_prebuilt);
             const pcType = item.pc_type || (isPrebuilt ? 'prebuilt' : 'custom');
             const pcTypeChip = isPrebuilt
                 ? '<span class="pc-type-chip prebuilt">🏭 Prebuilt</span>'
-                : '<span class="pc-type-chip custom">🛠️ Custom</span>';
+                : '';
             const cleanTitle = deriveComputerTitle(cleanComputerTitle(item.title), item.description) || (() => {
-                // Use the most descriptive component we have as the title
+                // Use the most descriptive component we have as the title.
+                // Bug fix: strip the duplicate producer (e.g. "Intel Intel
+                // Core i3-12100F") when the cpu_name already starts with it.
                 if (item.cpu_name) {
-                    const cpuProducer = item.cpu_producer || '';
-                    const cpuName = cpuProducer && item.cpu_name.toLowerCase().startsWith(cpuProducer.toLowerCase()) ? item.cpu_name : `${cpuProducer} ${item.cpu_name}`.trim();
+                    const cpuProducer = (item.cpu_producer || '').trim();
+                    const rawName = (item.cpu_name || '').trim();
+                    const cpuName = cpuProducer && rawName.toLowerCase().startsWith(cpuProducer.toLowerCase())
+                        ? rawName
+                        : `${cpuProducer} ${rawName}`.replace(/\s+/g, ' ').trim();
                     return (isPrebuilt ? 'Prebuilt: ' : 'Custom: ') + cpuName;
                 }
                 return isPrebuilt ? 'Prebuilt PC' : 'Custom PC';
@@ -737,8 +780,32 @@ async function loadComputers() {
                     <td>${componentsHtml}</td>
                     <td>
                         <div class="comp-scores">
-                            ${item.performance_score ? `<span class="comp-score perf" title="Performance score: CPU 40%, GPU 40%, RAM 10%, SSD 10%">⚡ ${item.performance_score.toFixed(1)}</span>` : ''}
-                            ${item.value_score ? `<span class="comp-score value" title="Value score = performance / price">💎 ${item.value_score.toFixed(2)}</span>` : ''}
+                            ${item.performance_score != null ? (() => {
+                                const score = Number(item.performance_score);
+                                let tier = 'Entry', tierColor = '#6b7280';
+                                if (score >= 70) { tier = 'Enthusiast'; tierColor = '#dc2626'; }
+                                else if (score >= 45) { tier = 'High-End'; tierColor = '#f59e0b'; }
+                                else if (score >= 25) { tier = 'Mid-Range'; tierColor = '#10b981'; }
+                                else if (score >= 10) { tier = 'Budget'; tierColor = '#3b82f6'; }
+                                return `
+                                    <div class="comp-score-card" title="Performance score: ${score.toFixed(1)}/100 (${tier})">
+                                        <div class="comp-score-head">
+                                            <span class="comp-score-num" style="color: ${tierColor};">${score.toFixed(1)}</span>
+                                            <span class="comp-score-label">${tier}</span>
+                                        </div>
+                                        <div class="comp-score-bar">
+                                            <div class="comp-score-bar-fill" style="width: ${Math.min(100, score)}%; background: ${tierColor};"></div>
+                                        </div>
+                                    </div>
+                                `;
+                            })() : ''}
+                            ${item.value_score ? `
+                                <div class="comp-score-card" title="Value score = performance / price (€${item.price_eur})">
+                                    <div class="comp-score-value">
+                                        💎 <b>${Number(item.value_score).toFixed(2)}</b> /€
+                                    </div>
+                                </div>
+                            ` : ''}
                         </div>
                     </td>
                     <td><span class="comp-meta">${item.seller_location || '—'}</span></td>
@@ -932,19 +999,65 @@ async function fillGenericMotherboardSocketPrices() {
     }
 }
 
+// Delegated click handler for motherboard deep-links built by
+// `buildComponentsSection`. Each link points at /api/motherboards/lookup
+// which returns the best matching /motherboards URL (model → chipset →
+// socket). We intercept the click, ask the API for the right URL, then
+// open that URL in a new tab. This way the user always lands on a
+// non-empty motherboards page even when the exact model is out of stock.
+document.addEventListener('click', async function(e) {
+    const link = e.target.closest && e.target.closest('.motherboard-lookup-link');
+    if (!link) return;
+    e.preventDefault();
+    const url = link.getAttribute('href');
+    if (!url) return;
+    const originalHtml = link.innerHTML;
+    try {
+        link.innerHTML = originalHtml.replace(/ ↗$/, ' …');
+        const resp = await fetch(url);
+        if (!resp.ok) {
+            // Fallback: just open the link as-is (browser will land on the
+            // motherboards page, possibly with no filter applied)
+            window.open(link.getAttribute('href').replace('/api/motherboards/lookup', '/motherboards') + '?' + url.split('?')[1], '_blank');
+            return;
+        }
+        const data = await resp.json();
+        const target = data && data.url ? data.url : '/motherboards';
+        window.open(target, '_blank');
+    } catch (err) {
+        console.error('Motherboard lookup failed:', err);
+        // Network error — just open the motherboards root
+        window.open('/motherboards', '_blank');
+    } finally {
+        link.innerHTML = originalHtml;
+    }
+});
+
 function buildComponentsSection(breakdown) {
     let html = '';
 
     // CPU
     if (breakdown.cpu) {
+        // Bug fix: reference rows like cpu_reference.cpu_name already include
+        // the producer ("Intel Core i3-12100F"), so a naive
+        // `${producer} ${model}` concat produces "Intel Intel Core i3-12100F".
+        // Strip the producer prefix off the model when the model already
+        // starts with it (case-insensitive). The producer is still surfaced
+        // as a separate spec chip below.
+        const cpuProducer = (breakdown.cpu.producer || '').trim();
+        let cpuModelName = (breakdown.cpu.model || '').trim();
+        if (cpuProducer && cpuModelName.toLowerCase().startsWith(cpuProducer.toLowerCase())) {
+            cpuModelName = cpuModelName.slice(cpuProducer.length).trim();
+        }
+        const cpuFullName = cpuProducer ? `${cpuProducer} ${cpuModelName}`.trim() : cpuModelName;
         // Build a deep-link to /cpu with the model as a query string.
         // The CPU page's DOMContentLoaded handler reads ?model= and
         // applies the filter + reloads, so clicking this takes the
         // user straight to "all listings of this model".
-        const cpuModelQuery = encodeURIComponent(breakdown.cpu.model || '');
+        const cpuModelQuery = encodeURIComponent(cpuModelName);
         const cpuLink = cpuModelQuery
-            ? `<a href="/cpu?model=${cpuModelQuery}" target="_blank" class="comp-deep-link" title="See all ${breakdown.cpu.producer || ''} ${breakdown.cpu.model} listings on the CPU page">${breakdown.cpu.producer || ''} ${breakdown.cpu.model} ↗</a>`
-            : `${breakdown.cpu.producer || ''} ${breakdown.cpu.model}`;
+            ? `<a href="/cpu?model=${cpuModelQuery}" target="_blank" class="comp-deep-link" title="See all ${cpuFullName} listings on the CPU page">${cpuFullName} ↗</a>`
+            : cpuFullName;
         html += `
             <div class="component-row detailed">
                 <div class="component-header">
@@ -970,12 +1083,14 @@ function buildComponentsSection(breakdown) {
 
     // GPU
     if (breakdown.gpu) {
-        // Deep-link to /gpu?model=<gpu model>. The GPU page reads
-        // ?model= on init and applies the model filter so the user
-        // lands on "all listings of this GPU model".
+        // Bug fix: previously the link went to /gpu?model=<x> which used
+        // ILIKE prefix matching and ALSO matched Ti/Super/XT variants
+        // (e.g. clicking an RTX 3070 would land on a list that also
+        // included RTX 3070 Ti). Add strict_match=true so the filter
+        // excludes the variant siblings.
         const gpuModelQuery = encodeURIComponent(breakdown.gpu.model || '');
         const gpuLink = gpuModelQuery
-            ? `<a href="/gpu?model=${gpuModelQuery}" target="_blank" class="comp-deep-link" title="See all ${breakdown.gpu.vendor || ''} ${breakdown.gpu.model} listings on the GPU page">${breakdown.gpu.vendor || ''} ${breakdown.gpu.model} ↗</a>`
+            ? `<a href="/gpu?model=${gpuModelQuery}&strict_match=true" target="_blank" class="comp-deep-link" title="See all ${breakdown.gpu.vendor || ''} ${breakdown.gpu.model} listings on the GPU page">${breakdown.gpu.vendor || ''} ${breakdown.gpu.model} ↗</a>`
             : `${breakdown.gpu.vendor} ${breakdown.gpu.model}`;
         html += `
             <div class="component-row detailed">
@@ -1031,9 +1146,16 @@ function buildComponentsSection(breakdown) {
             ramLink = `<a href="/ram?ram_id=${encodeURIComponent(ramId)}" target="_blank" class="comp-deep-link" title="See all ${ramName} listings on the RAM page">${ramName} ↗</a>`;
         } else if (breakdown.ram.capacity_gb) {
             const cap = Number(breakdown.ram.capacity_gb);
-            // Map capacity (GB) to the dropdown's key (128/256/512/...) where possible
-            const capKey = ({128: 128, 256: 256, 512: 512, 1024: 1024, 2048: 2048, 4096: 4096, 8192: 8192, 16384: 16384})[cap]
-                || (cap >= 15000 ? 16384 : (cap >= 7600 ? 8192 : (cap >= 3800 ? 4096 : (cap >= 1900 ? 2048 : (cap >= 960 ? 1024 : (cap >= 480 ? 512 : (cap >= 240 ? 256 : (cap >= 120 ? 128 : ''))))))));
+            // Bug fix: the old chain only mapped 128/256/512/1024/... and
+            // any "small" capacity (4/8/16/32/64) ended up as '' — so
+            // clicking "Generic 8GB DDR4 ↗" did NOT include the `capacity`
+            // param and the user landed on the unfiltered RAM page.
+            // The RAM page's capacity dropdown uses integer values
+            // (4/8/16/32/64+) matching r.capacity_gb directly, so just
+            // pass the number through.
+            const SMALL_CAPS = {4: 4, 8: 8, 16: 16, 32: 32, 64: 64};
+            const BIG_CAPS = {128: 128, 256: 256, 512: 512, 1024: 1024, 2048: 2048, 4096: 4096, 8192: 8192, 16384: 16384};
+            const capKey = SMALL_CAPS[cap] || BIG_CAPS[cap] || '';
             const params = new URLSearchParams();
             if (capKey) params.set('capacity', capKey);
             if (breakdown.ram.ram_type) params.set('ddr_type', breakdown.ram.ram_type);
@@ -1081,12 +1203,31 @@ function buildComponentsSection(breakdown) {
         const genericLabelHtml = mb.is_generic && socketForLookup
             ? `Generic Motherboard for <a href="/motherboards?socket=${encodeURIComponent(socketForLookup)}" target="_blank" class="generic-mb-socket-link" title="See all ${socketForLookup} motherboards">${socketForLookup}</a>`
             : (mb.name || 'Motherboard');
+
+        // For non-generic motherboards, build a clickable name that goes through
+        // the new 3-level fallback lookup: model → chipset → socket. That way
+        // clicking "MSI PRO H610M-E ↗" always lands on a non-empty page even
+        // when that exact model has no active listings.
+        let mbNameHtml;
+        if (mb.is_generic) {
+            mbNameHtml = genericLabelHtml;
+        } else {
+            // For matched motherboards, mb.name looks like "MSI PRO H610M-E".
+            // Send the model name to the lookup endpoint, fall back to the
+            // detected socket so level 3 (socket) has a starting point.
+            const mbQuery = encodeURIComponent(mb.name || '');
+            const mbSocket = encodeURIComponent(socketForLookup || '');
+            const href = mbSocket
+                ? `/api/motherboards/lookup?model=${mbQuery}&socket=${mbSocket}`
+                : `/api/motherboards/lookup?model=${mbQuery}`;
+            mbNameHtml = `<a href="${href}" target="_blank" class="comp-deep-link motherboard-lookup-link" data-mb-socket="${socketForLookup || ''}" title="See all ${mb.name || 'motherboard'} listings — falls back to chipset / socket if no exact match">${mb.name || 'Motherboard'} ↗</a>`;
+        }
         html += `
             <div class="component-row detailed ${mb.is_generic ? 'generic-motherboard-row' : ''}" ${mb.is_generic && socketForLookup ? `data-socket="${socketForLookup}"` : ''}>
                 <div class="component-header">
                     <div class="component-icon-large" style="background: #8e44ad;">🔌</div>
                     <div class="component-info">
-                        <div class="component-name">${genericLabelHtml}</div>
+                        <div class="component-name">${mbNameHtml}</div>
                         <div class="component-specs">
                             ${mb.socket ? `<span class="spec-tag">${mb.socket}</span>` : (socketForLookup ? `<span class="spec-tag">Socket: ${socketForLookup}</span>` : '')}
                             ${chipsetList ? `<span class="spec-tag" title="${mb.supported_chipsets?.join(', ') || ''}">Chipsets: ${chipsetList}</span>` : ''}
@@ -1278,16 +1419,58 @@ function buildComponentsSection(breakdown) {
 }
 
 function buildPriceAnalysis(breakdown, listing) {
-    if (!breakdown.grand_total) return '';
-    
+    if (!breakdown.grand_total && !breakdown.detected_total) return '';
+
     const priceDiff = (listing.price_eur || 0) - (breakdown.grand_total || 0);
     const isGoodDeal = priceDiff < 0;
-    const diffPercent = breakdown.grand_total > 0 
-        ? Math.abs(priceDiff / breakdown.grand_total * 100).toFixed(1) 
+    const diffPercent = breakdown.grand_total > 0
+        ? Math.abs(priceDiff / breakdown.grand_total * 100).toFixed(1)
         : 0;
-    
+
     const breakdownId = 'price-analysis-' + Math.random().toString(36).substr(2, 9);
-    
+
+    // Bug fix: the user asked to see the FULL per-component calculation,
+    // not just three summary lines. Walk the breakdown and list every
+    // detected component with its market price contribution, plus an
+    // "(estimate)" hint when the value came from a generic fallback.
+    // The CPU producer (e.g. "Intel") is stripped from the model when
+    // the model already starts with it (e.g. "Intel Core i3-12100F")
+    // so the row reads "Intel Core i3-12100F" rather than
+    // "Intel Intel Core i3-12100F".
+    const stripProducer = (producer, model) => {
+        const p = (producer || '').trim();
+        const m = (model || '').trim();
+        if (p && m.toLowerCase().startsWith(p.toLowerCase())) {
+            return { full: `${p} ${m.slice(p.length).trim()}`.replace(/\s+/g, ' ').trim(), short: m.slice(p.length).trim() };
+        }
+        return { full: `${p} ${m}`.replace(/\s+/g, ' ').trim(), short: m };
+    };
+    const cpuInfo = breakdown.cpu ? stripProducer(breakdown.cpu.producer, breakdown.cpu.model) : null;
+    const componentRows = [];
+    const componentMap = [
+        { key: 'cpu',         label: 'CPU',         icon: '⚙️', price: breakdown.cpu_avg_price, name: cpuInfo ? cpuInfo.full : null },
+        { key: 'gpu',         label: 'GPU',         icon: '🎮', price: breakdown.gpu_avg_price, name: breakdown.gpu ? `${breakdown.gpu.vendor || ''} ${breakdown.gpu.model || ''}`.replace(/\s+/g, ' ').trim() : null },
+        { key: 'ram',         label: 'RAM',         icon: '💾', price: breakdown.ram_avg_price, name: breakdown.ram ? (breakdown.ram.name || `${breakdown.ram.capacity_gb}GB ${breakdown.ram.ram_type || ''}`) : null },
+        { key: 'ssd',         label: 'SSD',         icon: '💽', price: breakdown.ssd_avg_price, name: breakdown.ssd ? (breakdown.ssd.name || `${breakdown.ssd.capacity_gb}GB SSD`) : null },
+        { key: 'ssd2',        label: 'SSD (2nd)',   icon: '💽', price: breakdown.ssd2_avg_price, name: breakdown.ssd2 ? (breakdown.ssd2.name || `${breakdown.ssd2.capacity_gb}GB SSD`) : null },
+        { key: 'ssd3',        label: 'SSD (3rd)',   icon: '💽', price: breakdown.ssd3_avg_price, name: breakdown.ssd3 ? (breakdown.ssd3.name || `${breakdown.ssd3.capacity_gb}GB SSD`) : null },
+        { key: 'motherboard', label: 'Motherboard', icon: '🔌', price: breakdown.motherboard_avg_price, name: breakdown.motherboard ? (breakdown.motherboard.name || (breakdown.motherboard.is_generic ? 'Generic' : '—')) : null },
+        { key: 'psu',         label: 'PSU',         icon: '⚡', price: breakdown.psu_avg_price, name: breakdown.psu ? (breakdown.psu.name || 'PSU') : null },
+        { key: 'case',        label: 'Case',        icon: '🖥️', price: breakdown.case_avg_price, name: breakdown.case ? (breakdown.case.name || 'Case') : null },
+        { key: 'monitor',     label: 'Monitor',     icon: '🖥️', price: breakdown.monitor_avg_price ?? breakdown.monitor_price ?? breakdown.fallback_monitor_price, name: breakdown.monitor ? (breakdown.monitor.name || 'Monitor') : (breakdown.fallback_monitor_price ? 'Monitor (fallback)' : null) },
+    ];
+    for (const c of componentMap) {
+        if (c.price == null) continue;
+        const isFallback = c.name && /generic|fallback/i.test(String(c.name));
+        componentRows.push(`
+            <div class="breakdown-row" title="${(c.name || '').replace(/"/g, '&quot;')}">
+                <span>${c.icon} ${c.label}${c.name && !isFallback ? ` <span class="breakdown-name">· ${(c.name || '').replace(/</g, '&lt;')}</span>` : ''}</span>
+                <span>€${Number(c.price).toFixed(0)}${isFallback ? ' <span class="breakdown-est">(est)</span>' : ''}</span>
+            </div>
+        `);
+    }
+    const componentRowsHtml = componentRows.join('') || '<div class="breakdown-row"><em>No components detected</em><span></span></div>';
+
     return `
         <div class="detail-section price-analysis ${isGoodDeal ? 'good-deal' : 'overpriced'}" id="${breakdownId}">
             <div class="price-analysis-header">
@@ -1305,7 +1488,7 @@ function buildPriceAnalysis(breakdown, listing) {
                 <div class="price-arrow">→</div>
                 <div class="price-item">
                     <div class="price-label">Component Value</div>
-                    <div class="price-value estimate">€${breakdown.grand_total?.toFixed(2) || '0'}</div>
+                    <div class="price-value estimate">€${breakdown.grand_total?.toFixed(0) || '0'}</div>
                 </div>
             </div>
             <div class="deal-verdict ${isGoodDeal ? 'positive' : 'negative'}">
@@ -1313,27 +1496,25 @@ function buildPriceAnalysis(breakdown, listing) {
                 <div class="verdict-text">
                     <strong>${isGoodDeal ? 'Good Deal!' : 'Overpriced'}</strong>
                     <div class="verdict-sub">
-                        ${isGoodDeal ? 'Cheaper' : 'More expensive'} by €${Math.abs(priceDiff).toFixed(0)} 
+                        ${isGoodDeal ? 'Cheaper' : 'More expensive'} by €${Math.abs(priceDiff).toFixed(0)}
                         (${diffPercent}% ${isGoodDeal ? 'below' : 'above'} component value)
                     </div>
                 </div>
             </div>
             <div class="price-breakdown summary-fields">
-                <div class="breakdown-row">
-                    <span>Detected components:</span>
+                <div class="breakdown-section-title">Component breakdown</div>
+                ${componentRowsHtml}
+                <div class="breakdown-row breakdown-subtotal">
+                    <span>Detected components (sum):</span>
                     <span>€${breakdown.detected_total?.toFixed(0) || '0'}</span>
                 </div>
-                <div class="breakdown-row">
-                    <span>Estimated missing:</span>
+                <div class="breakdown-row breakdown-subtotal">
+                    <span>Estimated missing / fallback:</span>
                     <span>€${breakdown.fallback_total?.toFixed(0) || '0'}</span>
-                </div>
-                <div class="breakdown-row">
-                    <span>Component price (value):</span>
-                    <span>€${breakdown.grand_total?.toFixed(0)}</span>
                 </div>
                 <div class="breakdown-row total">
                     <span>Total estimated value:</span>
-                    <span>€${breakdown.grand_total?.toFixed(0)}</span>
+                    <span>€${breakdown.grand_total?.toFixed(0) || '0'}</span>
                 </div>
             </div>
         </div>
@@ -1352,19 +1533,44 @@ function buildPerformanceScore(breakdown, listing) {
     if (!total) return '';
 
     // Pull benchmark numbers off the listing if present. The API
-    // exposes cpu_score, cpu_benchmark (Cinebench R23 multi-core),
-    // gpu_score, g3d_mark (PassMark G3D), and ram_score / ssd_score.
-    const cpuBench = listing.cpu_benchmark || listing.cpu_bench || breakdown.cpu?.benchmark_score || null;
-    const g3dMark = listing.g3d_mark || listing.gpu_benchmark || breakdown.gpu?.g3d_mark || null;
+    // exposes cpu_r23_multi (Cinebench R23 multi-core), cpu_passmark
+    // (PassMark CPU), gpu_g3d_mark (PassMark G3D), and ram_score / ssd_score.
+    // Prefer R23 over PassMark for the headline number since it's more
+    // representative of modern CPU performance.
+    const cpuR23 = listing.cpu_r23_multi || null;
+    const cpuPassmark = listing.cpu_passmark || null;
+    const cpuBench = cpuR23 || cpuPassmark;
+    const cpuBenchLabel = cpuR23 ? 'Cinebench R23' : (cpuPassmark ? 'PassMark' : '');
+    const g3dMark = listing.gpu_g3d_mark || listing.g3d_mark || listing.gpu_benchmark || breakdown.gpu?.g3d_mark || null;
     const ramScore = listing.ram_score || breakdown.ram?.score || null;
     const ssdScore = listing.ssd_score || breakdown.ssd?.score || null;
 
-    // Tier label
+    // Bug fix: same producer-strip pattern as buildPriceAnalysis / buildComponentsSection
+    // — the cpu_reference.cpu_name field already includes the producer (e.g.
+    // "Intel Core i3-12100F") so naively prepending the producer produces
+    // "Intel Intel Core i3-12100F". Strip the duplicate.
+    const stripCpu = (producer, model) => {
+        const p = (producer || '').trim();
+        const m = (model || '').trim();
+        if (p && m.toLowerCase().startsWith(p.toLowerCase())) {
+            return `${p} ${m.slice(p.length).trim()}`.replace(/\s+/g, ' ').trim();
+        }
+        return `${p} ${m}`.replace(/\s+/g, ' ').trim();
+    };
+    const cpuFullName = breakdown.cpu ? stripCpu(breakdown.cpu.producer, breakdown.cpu.model) : '—';
+
+    // Bug fix: tier thresholds were tuned for the old unbounded formula
+    // where scores easily exceeded 100. Re-tuned for the 0-100 scale:
+    //   >=70  Enthusiast (red)
+    //   >=45  High-End   (amber)
+    //   >=25  Mid-Range  (green)
+    //   >=10  Budget     (blue)
+    //   else  Entry      (gray)
     let tier = 'Entry', tierColor = '#6b7280';
-    if (total >= 60) { tier = 'Enthusiast'; tierColor = '#dc2626'; }
-    else if (total >= 35) { tier = 'High-End'; tierColor = '#f59e0b'; }
-    else if (total >= 18) { tier = 'Mid-Range'; tierColor = '#10b981'; }
-    else if (total >= 8) { tier = 'Budget'; tierColor = '#3b82f6'; }
+    if (total >= 70) { tier = 'Enthusiast'; tierColor = '#dc2626'; }
+    else if (total >= 45) { tier = 'High-End'; tierColor = '#f59e0b'; }
+    else if (total >= 25) { tier = 'Mid-Range'; tierColor = '#10b981'; }
+    else if (total >= 10) { tier = 'Budget'; tierColor = '#3b82f6'; }
 
     // Helper: format a benchmark value nicely
     const fmtBench = (n) => (n == null ? '—' : Number(n).toLocaleString());
@@ -1373,9 +1579,9 @@ function buildPerformanceScore(breakdown, listing) {
     // metrics that actually drive the total). RAM/SSD scores are
     // shown only if the API returned them.
     const cards = [
-        {icon: '⚙️', label: 'CPU benchmark', name: breakdown.cpu ? `${breakdown.cpu.producer || ''} ${breakdown.cpu.model}` : '—',
-         value: fmtBench(cpuBench), suffix: cpuBench ? 'Cinebench R23' : '', color: '#667eea'},
-        {icon: '🎮', label: 'GPU G3D Mark', name: breakdown.gpu ? `${breakdown.gpu.vendor || ''} ${breakdown.gpu.model}` : '—',
+        {icon: '⚙️', label: 'CPU benchmark', name: cpuFullName,
+         value: fmtBench(cpuBench), suffix: cpuBenchLabel, color: '#667eea'},
+        {icon: '🎮', label: 'GPU G3D Mark', name: breakdown.gpu ? `${breakdown.gpu.vendor || ''} ${breakdown.gpu.model}`.replace(/\s+/g, ' ').trim() : '—',
          value: fmtBench(g3dMark), suffix: g3dMark ? 'PassMark' : '', color: '#764ba2'},
     ];
     if (ramScore) {
@@ -1387,19 +1593,28 @@ function buildPerformanceScore(breakdown, listing) {
                      value: fmtBench(ssdScore), suffix: '', color: '#10b981'});
     }
 
+    // Tiered progress bar (0-100). Each segment = tier threshold.
     return `
         <div class="detail-section performance-score-section">
             <h4 class="section-title">⚡ Performance Score</h4>
-            <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 0.75rem;">
-                <div style="font-size: 1.8rem; font-weight: 700; color: ${tierColor};">${total.toFixed(1)}</div>
-                <div style="flex: 1;">
-                    <div style="font-size: 0.85rem; color: #374151; font-weight: 600;">
-                        ${tier} <span style="color:#6b7280; font-weight:400;">(${(total/100*100).toFixed(0)}/100 scale)</span>
-                    </div>
-                    <div style="font-size: 0.7rem; color: #6b7280;">
-                        ${listing.value_score ? `💎 Value score: ${Number(listing.value_score).toFixed(2)} (performance / price)` : 'Price not available for value score'}
+            <div class="perf-score-header">
+                <div class="perf-score-big" style="color: ${tierColor};">${total.toFixed(1)}<span class="perf-score-max">/100</span></div>
+                <div class="perf-score-meta">
+                    <div class="perf-tier-badge" style="background: ${tierColor};">${tier}</div>
+                    <div class="perf-score-sub">
+                        ${listing.value_score ? `💎 Value: ${Number(listing.value_score).toFixed(2)}` : ''}
                     </div>
                 </div>
+            </div>
+            <div class="perf-score-bar" title="${total.toFixed(1)}/100">
+                <div class="perf-score-bar-fill" style="width: ${Math.min(100, total)}%; background: ${tierColor};"></div>
+                <div class="perf-score-bar-tier" style="left: 10%;"></div>
+                <div class="perf-score-bar-tier" style="left: 25%;"></div>
+                <div class="perf-score-bar-tier" style="left: 45%;"></div>
+                <div class="perf-score-bar-tier" style="left: 70%;"></div>
+            </div>
+            <div class="perf-score-bar-labels">
+                <span>Entry</span><span>Budget</span><span>Mid</span><span>High</span><span>Top</span>
             </div>
             <div class="perf-bench-grid">
                 ${cards.map(c => `
@@ -2442,6 +2657,16 @@ document.addEventListener('DOMContentLoaded', function() {
     color: var(--text-color);
 }
 
+/* Sub-line for stat cards that need a second piece of context
+   (e.g. "Avg Components / Build" with the +€40 assembly premium). */
+.stat-sub {
+    font-size: 0.75rem;
+    color: var(--text-muted, #6b7280);
+    margin-top: 0.35rem;
+    line-height: 1.3;
+}
+[data-theme="dark"] .stat-sub { color: #94a3b8; }
+
 /* Component Filters Section */
 .component-filters-section {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -2904,11 +3129,45 @@ document.addEventListener('DOMContentLoaded', function() {
     padding-top: 1rem;
 }
 
+.breakdown-section-title {
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    color: var(--text-muted, #6b7280);
+    margin-bottom: 0.4rem;
+    padding-bottom: 0.3rem;
+    border-bottom: 1px dashed var(--card-border);
+}
+
 .breakdown-row {
     display: flex;
     justify-content: space-between;
-    padding: 0.4rem 0;
-    font-size: 0.9rem;
+    padding: 0.35rem 0;
+    font-size: 0.88rem;
+    gap: 0.5rem;
+}
+.breakdown-row > span:first-child {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.breakdown-name {
+    color: var(--text-muted, #6b7280);
+    font-weight: 400;
+    font-size: 0.78rem;
+    margin-left: 4px;
+}
+.breakdown-est {
+    color: #f39c12;
+    font-size: 0.7rem;
+    font-style: italic;
+}
+.breakdown-subtotal {
+    color: var(--text-muted, #6b7280);
+    font-size: 0.82rem;
 }
 
 .breakdown-row.total {
@@ -4007,21 +4266,66 @@ document.addEventListener('DOMContentLoaded', function() {
 .comp-scores {
     display: flex;
     flex-direction: column;
-    gap: 0.2rem;
-}
-.comp-score {
-    display: inline-flex;
-    align-items: center;
     gap: 0.3rem;
-    font-size: 0.7rem;
-    font-weight: 700;
-    padding: 2px 7px;
-    border-radius: 4px;
-    white-space: nowrap;
-    color: white;
+    min-width: 90px;
 }
-.comp-score.perf { background: #3498db; }
-.comp-score.value { background: #2ecc71; }
+/* Bug fix: the old score badges were tiny flat pills with no contrast
+   in either theme. The new design is a small card with a colored
+   progress bar (0-100) that shows the score tier at a glance. */
+.comp-score-card {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    padding: 5px 7px;
+    border-radius: 6px;
+    background: var(--section-bg, #f8f9fa);
+    border: 1px solid var(--card-border, rgba(99,102,241,0.18));
+}
+.comp-score-head {
+    display: flex;
+    align-items: baseline;
+    gap: 4px;
+    line-height: 1;
+}
+.comp-score-num {
+    font-size: 0.95rem;
+    font-weight: 700;
+}
+.comp-score-label {
+    font-size: 0.62rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    color: var(--text-muted, #6b7280);
+}
+.comp-score-bar {
+    position: relative;
+    height: 5px;
+    background: rgba(0,0,0,0.08);
+    border-radius: 3px;
+    overflow: hidden;
+}
+.comp-score-bar-fill {
+    height: 100%;
+    border-radius: 3px;
+    transition: width 0.3s ease;
+}
+.comp-score-tier {
+    font-size: 0.65rem;
+    font-weight: 600;
+    color: var(--text-muted, #6b7280);
+    margin-top: 1px;
+}
+.comp-score-value {
+    display: flex;
+    align-items: baseline;
+    gap: 3px;
+    font-size: 0.7rem;
+    color: var(--text-muted, #6b7280);
+}
+.comp-score-value b { color: #10b981; font-weight: 700; }
+[data-theme="dark"] .comp-score-card { background: rgba(255,255,255,0.04); }
+[data-theme="dark"] .comp-score-bar { background: rgba(255,255,255,0.10); }
 
 .comp-meta { font-size: 0.8rem; color: var(--comp-text); }
 
@@ -4080,14 +4384,22 @@ document.addEventListener('DOMContentLoaded', function() {
 }
 .modern-panel table { width: 100%; border-collapse: collapse; font-size: 13px; }
 .modern-panel th, .modern-panel td { padding: 10px 12px; text-align: left; vertical-align: middle; }
+/* Bug fix: column headers were using --text-muted (#6b7280 / #9ca3af) which
+   looked washed out on both light and dark backgrounds. Use --text-color
+   (slate-800 / light-gray) at 700 weight so the labels read clearly. */
 .modern-panel thead th {
     background: var(--section-bg, #f8f9fa);
-    font-weight: 600;
-    color: var(--text-muted, #6b7280);
+    font-weight: 700;
+    color: var(--text-color, #1f2937);
     font-size: 11px;
     text-transform: uppercase;
     letter-spacing: 0.4px;
-    border-bottom: 1px solid var(--card-border, rgba(99,102,241,0.18));
+    border-bottom: 2px solid var(--card-border, rgba(99,102,241,0.25));
+}
+[data-theme="dark"] .modern-panel thead th {
+    background: rgba(255,255,255,0.04);
+    color: #f1f5f9;
+    border-bottom-color: rgba(255,255,255,0.12);
 }
 .modern-panel tbody tr {
     border-bottom: 1px solid var(--card-border, rgba(99,102,241,0.08));
@@ -4127,6 +4439,77 @@ document.addEventListener('DOMContentLoaded', function() {
 .performance-score-section {
     margin-top: 1rem;
 }
+.perf-score-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 0.6rem;
+}
+.perf-score-big {
+    font-size: 2rem;
+    font-weight: 700;
+    line-height: 1;
+    display: flex;
+    align-items: baseline;
+    gap: 2px;
+}
+.perf-score-max {
+    font-size: 0.9rem;
+    color: var(--text-muted, #6b7280);
+    font-weight: 500;
+    margin-left: 2px;
+}
+.perf-score-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+.perf-tier-badge {
+    display: inline-block;
+    color: white;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 3px 8px;
+    border-radius: 4px;
+    width: fit-content;
+}
+.perf-score-sub {
+    font-size: 0.7rem;
+    color: var(--text-muted, #6b7280);
+}
+.perf-score-bar {
+    position: relative;
+    height: 8px;
+    background: rgba(0,0,0,0.08);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 4px;
+}
+.perf-score-bar-fill {
+    height: 100%;
+    border-radius: 4px;
+    transition: width 0.4s ease;
+}
+.perf-score-bar-tier {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    background: rgba(0,0,0,0.18);
+}
+.perf-score-bar-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.62rem;
+    color: var(--text-muted, #6b7280);
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    margin-bottom: 0.75rem;
+}
+[data-theme="dark"] .perf-score-bar { background: rgba(255,255,255,0.08); }
+[data-theme="dark"] .perf-score-bar-tier { background: rgba(255,255,255,0.20); }
 .perf-bench-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));

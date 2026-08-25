@@ -82,16 +82,23 @@ class ComputerScraper:
 
         # Strong intent signals — these override component counting because the seller explicitly
         # frames the listing as a complete, ready-to-use PC.
+        # NOTE: 'gaming pc' / 'gaming computer' / 'gaming datoru' / 'gaming dators' /
+        # 'spēļu dators' / 'игровой пк' / 'игровой компьютер' used to be in this
+        # list but were removed (2026-08-25) because Latvian sellers commonly
+        # describe their own custom-built gaming PCs as "Pārdodu jaudīgu gaming
+        # datoru" (I sell a powerful gaming computer) — which is a custom build,
+        # not a prebuilt. The markers below are now restricted to phrases that
+        # unambiguously refer to a prebuilt system unit for sale.
         strong_prebuilt_markers = [
             'gatavs dators', 'gatavs pc', 'gatava stacija', 'gatavs komplekts',
             'pilnībā gatavs', 'pilniba gatavs', 'pilnīgi gatavs', 'pilnigi gatavs',
             'izgatavots dators', 'izgatavots pc',
-            'ready pc', 'prebuilt', 'complete pc', 'gaming pc', 'gaming computer',
-            'darba stacija', 'ofisa dators', 'mājas dators', 'majas dators', 'spēļu dators', 'speļu dators',
+            'ready pc', 'prebuilt', 'complete pc',
+            'darba stacija', 'ofisa dators', 'mājas dators', 'majas dators',
             'sistēmas bloks', 'sistemas bloks', 'sistēma', 'system unit',
             'desktop pc', 'tower pc', 'pc tower', 'full pc',
             # Russian
-            'готовый пк', 'готовый компьютер', 'игровой пк', 'игровой компьютер',
+            'готовый пк', 'готовый компьютер',
             'системный блок', 'рабочая станция', 'офисный компьютер', 'домашний компьютер'
         ]
         if any(marker in text_lower for marker in strong_prebuilt_markers):

@@ -3030,6 +3030,62 @@ def get_cpu_price_history_monthly():
             return jsonify({'error': str(e)}), 500
 
 
+@app.route('/api/cpus/price-history-by-model')
+@cache_control(max_age=60)
+def get_cpu_price_history_by_model():
+    """Per-CPU-model price-over-time series, used by the listing popup's
+    Market Price Analysis card.
+
+    Aggregates `price_history` rows for every listing whose
+    `matched_cpu_id` equals the requested id, bucketed by month, and
+    returns [{month, avg_price, listing_count}, ...] sorted ascending.
+
+    Query params:
+      matched_cpu_id (int, required) — cpu_reference.id
+      months (int, default 24) — how many months back to look
+    """
+    matched_cpu_id = request.args.get('matched_cpu_id', '').strip()
+    if not matched_cpu_id or not matched_cpu_id.isdigit():
+        return jsonify({'error': 'matched_cpu_id is required and must be an integer'}), 400
+    matched_cpu_id_int = int(matched_cpu_id)
+
+    months_param = request.args.get('months', '24').strip()
+    try:
+        months = max(1, min(120, int(months_param)))
+    except ValueError:
+        months = 24
+
+    with get_db_connection() as conn:
+        cursor = conn.cursor(cursor_factory=RealDictCursor)
+        try:
+            # Cast `months` to int to avoid SQL injection via the INTERVAL
+            # arithmetic. We use `make_interval(months => %s)` so PostgreSQL
+            # treats it as an integer, not a string template.
+            cursor.execute("""
+                SELECT
+                    TO_CHAR(DATE_TRUNC('month', ph.recorded_at), 'YYYY-MM') AS month,
+                    ROUND(AVG(ph.price_eur)::numeric, 2) AS avg_price,
+                    COUNT(DISTINCT ph.listing_id) AS listing_count
+                FROM price_history ph
+                JOIN listings l ON l.listing_id = ph.listing_id
+                WHERE l.category = 'cpu'
+                  AND l.matched_cpu_id = %s
+                  AND ph.recorded_at >= NOW() - make_interval(months => %s)
+                GROUP BY DATE_TRUNC('month', ph.recorded_at)
+                ORDER BY DATE_TRUNC('month', ph.recorded_at) ASC
+            """, (matched_cpu_id_int, months))
+            rows = [convert_decimal_to_float(dict(row)) for row in cursor.fetchall()]
+            return jsonify({
+                'matched_cpu_id': matched_cpu_id_int,
+                'months': months,
+                'series': rows
+            })
+        except Exception as e:
+            return jsonify({'error': str(e), 'series': []}), 500
+        finally:
+            cursor.close()
+
+
 @app.route('/api/cpu-models')
 @cache_control(max_age=30)
 def get_cpu_models():
@@ -3868,7 +3924,19 @@ def computers_page():
 
 
 def compute_scores(listing):
-    """Compute a composite performance score and value score for a computer listing."""
+    """Compute a composite performance score and value score for a computer listing.
+
+    The score is on a 0-100 scale where:
+      - Top-end CPU (R23 ~30k / PassMark ~50k) ≈ 40 pts
+      - Top-end GPU (G3D ~30k)               ≈ 40 pts
+      - 32GB DDR5 RAM                        ≈  8 pts
+      - 4TB SSD                              ≈  8 pts
+    A perfectly maxed build scores ~96. Mid-range gaming builds land in
+    the 25-45 range. The previous formula could produce scores like
+    146 ("146/100") because the components were never scaled against a
+    100-point ceiling — `cpu_score/1000 * 15` for an i9-13900K is
+    `~480`, and 0.4 of that alone is 192. Clamp at 100.
+    """
     # CPU score: prefer Cinebench R23 multi, fall back to PassMark
     cpu_score = None
     r23_multi = listing.get('cpu_r23_multi')
@@ -3891,7 +3959,7 @@ def compute_scores(listing):
             gpu_score = float(g3d)
         except Exception:
             pass
-    # RAM score: capacity * speed factor
+    # RAM score: capacity * speed factor, capped at 8 pts (32GB DDR5)
     ram_capacity = listing.get('ram_capacity') or 0
     try:
         ram_capacity = float(ram_capacity)
@@ -3905,26 +3973,35 @@ def compute_scores(listing):
         ram_speed_factor = 1.0
     elif 'ddr3' in ram_type:
         ram_speed_factor = 0.7
-    ram_score = ram_capacity * ram_speed_factor * 50
+    # Scale: 16GB DDR4 = 8pts, 32GB DDR5 = 12pts, 64GB DDR5 = 24pts → cap 8
+    ram_raw = ram_capacity * ram_speed_factor * 0.5
+    ram_score = min(8.0, ram_raw)
 
-    # SSD score: capacity
+    # SSD score: capacity, capped at 8 pts (4TB)
     ssd_capacity = listing.get('ssd_capacity') or 0
     try:
         ssd_capacity = float(ssd_capacity)
     except Exception:
         ssd_capacity = 0
-    ssd_score = ssd_capacity * 0.5
+    # Scale: 1TB ≈ 2pts, 2TB ≈ 4pts, 4TB ≈ 8pts
+    ssd_raw = ssd_capacity / 500.0
+    ssd_score = min(8.0, ssd_raw)
 
-    # Normalize CPU and GPU to roughly comparable 0-10000 scale using common high-end values
-    cpu_normalized = 0
-    gpu_normalized = 0
+    # CPU 0-40 (R23 30000 = 40, PassMark 50000 = 40 — whichever's higher wins)
+    cpu_raw = 0
     if cpu_score:
-        # Cinebench R23 multi tops ~50k; PassMark tops ~60k. Use a log-ish scale.
-        cpu_normalized = (cpu_score / 1000.0) * 15.0
-    if gpu_score:
-        gpu_normalized = (gpu_score / 1000.0) * 12.0
+        # R23 and PassMark both ~50k at the top; pick the best projection
+        r23_norm = min(40.0, (cpu_score / 30000.0) * 40.0) if r23_multi else 0
+        pm_norm = min(40.0, (cpu_score / 50000.0) * 40.0) if passmark else 0
+        # Whichever metric is being used contributes
+        cpu_raw = max(r23_norm, pm_norm)
 
-    performance_score = round(cpu_normalized * 0.4 + gpu_normalized * 0.4 + ram_score * 0.1 + ssd_score * 0.1, 1)
+    # GPU 0-40 (G3D 30000 = 40)
+    gpu_raw = 0
+    if gpu_score:
+        gpu_raw = min(40.0, (gpu_score / 30000.0) * 40.0)
+
+    performance_score = round(min(100.0, cpu_raw + gpu_raw + ram_score + ssd_score), 1)
     price = listing.get('price_eur')
     value_score = round(performance_score / price, 3) if price and price > 0 else None
     return performance_score, value_score
@@ -5005,6 +5082,8 @@ def get_computer_stats():
                         'total': 0,
                         'active': 0,
                         'avg_price': 0,
+                        'avg_components_total': 0,
+                        'avg_listing_vs_components': 0,
                         'with_cpu': 0,
                         'with_gpu': 0
                     }
@@ -5030,6 +5109,27 @@ def get_computer_stats():
             cursor.execute("SELECT COUNT(*) as with_gpu FROM computer_listings WHERE matched_gpu_id IS NOT NULL AND is_active = true")
             with_gpu = cursor.fetchone()['with_gpu']
 
+            # New dashboard card: avg sum of component prices per active listing
+            # + avg listing-vs-components delta. components_total_eur is the
+            # backend-computed sum of CPU/GPU/RAM/SSD/MB/PSU/Case/monitor
+            # prices for the listing (NULL when no components detected).
+            cursor.execute("""
+                SELECT
+                    ROUND(AVG(components_total_eur)::numeric, 0) as avg_components_total,
+                    ROUND(AVG(CASE
+                        WHEN components_total_eur IS NOT NULL AND price_eur IS NOT NULL
+                        THEN price_eur - components_total_eur
+                        ELSE NULL
+                    END)::numeric, 0) as avg_listing_vs_components,
+                    COUNT(*) FILTER (WHERE components_total_eur IS NOT NULL) as component_count
+                FROM computer_listings
+                WHERE is_active = true
+            """)
+            comp_stats = cursor.fetchone() or {}
+            avg_components_total = float(comp_stats.get('avg_components_total') or 0)
+            avg_listing_vs_components = float(comp_stats.get('avg_listing_vs_components') or 0)
+            component_count = int(comp_stats.get('component_count') or 0)
+
             cursor.close()
 
             # Convert Decimal to float
@@ -5042,6 +5142,9 @@ def get_computer_stats():
                     'total': total,
                     'active': active,
                     'avg_price': avg_price,
+                    'avg_components_total': avg_components_total,
+                    'avg_listing_vs_components': avg_listing_vs_components,
+                    'component_count': component_count,
                     'with_cpu': with_cpu,
                     'with_gpu': with_gpu
                 }
@@ -7220,6 +7323,7 @@ def get_motherboards():
             socket_filter = request.args.get('socket', '')
             cpu_filter = request.args.get('cpu', '')  # NEW: CPU filter
             vendor_filter = request.args.get('vendor', '')  # NEW: Vendor filter (Intel/AMD)
+            model_filter = request.args.get('model', '').strip()  # NEW: motherboard model filter (used by /api/motherboards/lookup)
             time_filter = request.args.get('time', 'all_time')
             min_confidence = float(request.args.get('min_confidence', 0))
 
@@ -7310,6 +7414,13 @@ def get_motherboards():
             if socket_filter:
                 query += " AND m.socket = %s"
                 params.append(socket_filter)
+            if model_filter:
+                # Match the model name as a standalone token (case-insensitive).
+                # Use ILIKE on the full brand+model to also catch partial model
+                # strings (e.g. "PRO H610M-E" matches "MSI PRO H610M-E DDR4").
+                query += " AND ((m.brand || ' ' || m.model) ILIKE %s OR m.model ILIKE %s)"
+                params.append(f'%{model_filter}%')
+                params.append(f'%{model_filter}%')
 
             # NEW: Filter by CPU socket if CPU selected
             if cpu_socket:
@@ -7947,6 +8058,189 @@ def get_cpu_socket_lookup():
             except Exception:
                 pass
             return jsonify({'matches': [], 'error': str(e)}), 500
+
+
+@app.route('/api/motherboards/lookup')
+@cache_control(max_age=120)
+def get_motherboard_lookup():
+    """Three-level fallback for the computers-page "Detected Components"
+    motherboard deep-link.
+
+    Input:  ?model=MSI+PRO+H610M-E  (the scraped model name)
+    Output: {level, url, label, count, hint} where `level` is the
+    fallback tier the user landed on (model / chipset / socket / none).
+
+    Tries, in order:
+      1. exact motherboard model: a motherboard_models row whose
+         brand+model match the input AND has at least one active listing
+         → /motherboards?model=<x>
+      2. chipset fallback: extract a chipset token (e.g. "H610", "B550",
+         "X670E") from the input and look up listings by chipset
+         → /motherboards?chipset=H610
+      3. socket fallback: map the chipset to a known socket
+         (LGA1700, AM5, AM4, …) and look up listings by socket
+         → /motherboards?socket=LGA1700
+
+    The frontend opens the returned URL in a new tab so the user always
+    lands on a non-empty motherboards page even when the exact model is
+    out of stock or never scraped.
+    """
+    import re as _re
+
+    model_input = (request.args.get('model') or '').strip()
+    if not model_input:
+        return jsonify({'level': 'none', 'url': '/motherboards', 'label': 'All motherboards', 'count': 0, 'hint': 'No model provided'}), 400
+
+    # Normalize: collapse runs of spaces, drop the brand prefix when
+    # it's already part of the model (e.g. "MSI PRO H610M-E" → "PRO H610M-E"
+    # for the model field; we still pass the full string to the brand ILIKE).
+    full = model_input
+    cleaned = _re.sub(r'\s+', ' ', full).strip()
+
+    with get_db_connection() as conn:
+        cursor = conn.cursor(cursor_factory=RealDictCursor)
+        try:
+            # --- Level 1: exact model match ---
+            # Try to find a motherboard_models row whose brand+model ILIKE-matches
+            # the input AND has at least one active unflagged listing.
+            cursor.execute("""
+                SELECT m.id, m.brand, m.model, m.socket, m.chipset,
+                       COUNT(l.listing_id) AS listing_count
+                FROM motherboard_models m
+                LEFT JOIN listings l
+                       ON l.motherboard_model_id = m.id
+                      AND l.is_active = true
+                      AND l.category = 'motherboard'
+                      AND NOT EXISTS (SELECT 1 FROM flagged_listings fl WHERE fl.listing_id = l.listing_id)
+                WHERE (m.brand || ' ' || m.model) ILIKE %s
+                   OR m.model ILIKE %s
+                GROUP BY m.id, m.brand, m.model, m.socket, m.chipset
+                HAVING COUNT(l.listing_id) > 0
+                ORDER BY
+                    CASE WHEN LOWER(m.brand || ' ' || m.model) = LOWER(%s) THEN 0 ELSE 1 END,
+                    listing_count DESC
+                LIMIT 1
+            """, (f'%{cleaned}%', f'%{cleaned}%', cleaned))
+            row = cursor.fetchone()
+            if row:
+                model_param = encodeURIComponent(row['model']) if False else _quote_plus(row['model'])
+                cursor.close()
+                return jsonify({
+                    'level': 'model',
+                    'url': f'/motherboards?model={model_param}',
+                    'label': f'{row["brand"]} {row["model"]}',
+                    'count': int(row['listing_count'] or 0),
+                    'hint': f'{row["listing_count"]} active listings of this exact model',
+                })
+
+            # --- Level 2: chipset fallback ---
+            # Pull a chipset-shaped token out of the input. Chipsets in the
+            # data look like: H610, B550, X670E, Z790, B650, H510, A520, …
+            # The token always starts with a letter (chipset family) and
+            # is followed by 2-4 digits, optionally with a letter suffix.
+            chipset_match = _re.search(r'\b([A-Z]{1,2}\d{2,4}[A-Z]?)\b', cleaned, _re.IGNORECASE)
+            chipset = chipset_match.group(1).upper() if chipset_match else None
+            if chipset:
+                # Chipset values in the DB occasionally include the trailing
+                # "M" from the model name (e.g. "H61M" instead of "H61"),
+                # so we try the full token first and fall back to the
+                # stripped version if nothing matches.
+                chipset_candidates = [chipset]
+                if chipset.endswith('M'):
+                    chipset_candidates.append(chipset[:-1])
+                for candidate in chipset_candidates:
+                    cursor.execute("""
+                        SELECT COUNT(*) AS listing_count
+                        FROM listings l
+                        JOIN motherboard_models m ON l.motherboard_model_id = m.id
+                        WHERE m.chipset ILIKE %s
+                          AND l.is_active = true
+                          AND l.category = 'motherboard'
+                          AND NOT EXISTS (SELECT 1 FROM flagged_listings fl WHERE fl.listing_id = l.listing_id)
+                    """, (f'%{candidate}%',))
+                    row = cursor.fetchone()
+                    count = int(row['listing_count'] or 0) if row else 0
+                    if count > 0:
+                        cursor.close()
+                        return jsonify({
+                            'level': 'chipset',
+                            'url': f'/motherboards?chipset={_quote_plus(candidate)}',
+                            'label': f'All {candidate} motherboards',
+                            'count': count,
+                            'hint': f'No exact {cleaned!r} in stock — showing {count} {candidate} listings instead',
+                        })
+
+            # --- Level 3: socket fallback ---
+            # If we still have a CPU socket context (passed in via ?socket=),
+            # use that directly. Otherwise map known chipsets to sockets.
+            socket_input = (request.args.get('socket') or '').strip()
+            socket = None
+            if socket_input:
+                socket = socket_input
+            elif chipset:
+                # Curated chipset → socket map for the most common
+                # platforms. This is intentionally small — it's a
+                # best-effort fallback, not a complete DB lookup.
+                chipset_to_socket = {
+                    'H610': 'LGA1700', 'B660': 'LGA1700', 'H670': 'LGA1700',
+                    'Z690': 'LGA1700', 'B760': 'LGA1700', 'H770': 'LGA1700', 'Z790': 'LGA1700',
+                    'H510': 'LGA1200', 'B560': 'LGA1200', 'H570': 'LGA1200',
+                    'Z590': 'LGA1200', 'B460': 'LGA1200', 'H470': 'LGA1200', 'Z490': 'LGA1200',
+                    'H410': 'LGA1200',
+                    'Z390': 'LGA1151', 'Z370': 'LGA1151', 'B360': 'LGA1151',
+                    'B365': 'LGA1151', 'H370': 'LGA1151', 'H310': 'LGA1151',
+                    'B250': 'LGA1151', 'H270': 'LGA1151', 'Z270': 'LGA1151',
+                    'B150': 'LGA1151', 'H170': 'LGA1151', 'Z170': 'LGA1151', 'H110': 'LGA1151',
+                    'B550': 'AM4', 'X570': 'AM4', 'A520': 'AM4', 'B450': 'AM4',
+                    'X470': 'AM4', 'X370': 'AM4', 'B350': 'AM4', 'A320': 'AM4',
+                    'B650': 'AM5', 'X670': 'AM5', 'X670E': 'AM5', 'B650E': 'AM5',
+                    'A620': 'AM5',
+                    'X399': 'TR4', 'TRX40': 'sTRX4', 'X599': 'sWRX8',
+                }
+                socket = chipset_to_socket.get(chipset)
+
+            if socket:
+                cursor.execute("""
+                    SELECT COUNT(*) AS listing_count
+                    FROM listings l
+                    JOIN motherboard_models m ON l.motherboard_model_id = m.id
+                    WHERE m.socket = %s
+                      AND l.is_active = true
+                      AND l.category = 'motherboard'
+                      AND NOT EXISTS (SELECT 1 FROM flagged_listings fl WHERE fl.listing_id = l.listing_id)
+                """, (socket,))
+                row = cursor.fetchone()
+                count = int(row['listing_count'] or 0) if row else 0
+                if count > 0:
+                    cursor.close()
+                    return jsonify({
+                        'level': 'socket',
+                        'url': f'/motherboards?socket={_quote_plus(socket)}',
+                        'label': f'All {socket} motherboards',
+                        'count': count,
+                        'hint': f'No {chipset or cleaned!r} in stock — showing {count} {socket} listings instead',
+                    })
+
+            cursor.close()
+            return jsonify({
+                'level': 'none',
+                'url': '/motherboards',
+                'label': 'All motherboards',
+                'count': 0,
+                'hint': f'No match for {cleaned!r} — opened the full motherboards page',
+            })
+        except Exception as e:
+            try:
+                cursor.close()
+            except Exception:
+                pass
+            return jsonify({'level': 'none', 'url': '/motherboards', 'label': 'All motherboards', 'count': 0, 'hint': f'lookup error: {e}'}), 500
+
+
+def _quote_plus(value):
+    """Tiny wrapper around urllib.parse.quote_plus for URL param encoding."""
+    from urllib.parse import quote_plus
+    return quote_plus(str(value), safe='')
 
 
 @app.route('/api/motherboards/platform-stats')
@@ -8661,9 +8955,17 @@ def get_ram():
             """)
             columns = {row['column_name'] for row in cursor.fetchall()}
 
-            # Build query based on available columns
+            # Build query based on available columns.
+            # The `speed` column is text like "DDR4-3200", not an integer.
+            # We extract the trailing 3-5 digit number for numeric filtering,
+            # so a `speed=3200` filter matches DDR4-3200 / DDR5-3200 etc.
             speed_column = 'speed_mhz' if 'speed_mhz' in columns else 'speed'
             speed_field = f'r.{speed_column}'
+            speed_mhz_sql = (
+                f"CAST(NULLIF((regexp_match({speed_field}, '(\\d{{3,5}})'))[1], '') AS INTEGER)"
+                if speed_column == 'speed'
+                else f'{speed_field}::INTEGER'
+            )
 
             query = f"""
                 SELECT
@@ -8711,7 +9013,12 @@ def get_ram():
                 query += " AND r.type ILIKE %s"
                 params.append(f'%{type_filter}%')
             if speed_filter:
-                query += f" AND r.{speed_column} >= %s"
+                # `speed_mode` mirrors the VRAM filter: `min` (default, ≥ selected)
+                # or `exact` (only the chosen speed). The user can flip modes via
+                # the `<` button on the frontend.
+                speed_mode = request.args.get('speed_mode', 'min').lower()
+                op = '=' if speed_mode == 'exact' else '>='
+                query += f" AND {speed_mhz_sql} {op} %s"
                 params.append(int(speed_filter))
             if ram_id_filter:
                 try:
@@ -12120,6 +12427,356 @@ def laptop_reference_stats():
             })
         except Exception as e:
             return jsonify({'error': str(e), 'models': 0, 'valid': 0, 'with_resolution': 0}), 500
+        finally:
+            cursor.close()
+
+
+@app.route('/api/laptop-analytics')
+@cache_control(max_age=60)
+def laptop_analytics():
+    """Aggregated analytics for the laptops page charts.
+
+    Returns top brands, top CPUs, display-size distribution, and
+    RAM-size distribution by listing count. Built off the listings
+    table joined to laptop_reference for canonical brand/model and
+    laptop_reference_cpu for canonical CPU.
+
+    Filter-aware: accepts the same filter params as /api/laptops
+    (brand, city, cpu_ref_id, gpu, min_price, max_price, ram_min,
+    ram_max, storage_min, storage_max, storage_type, display_size,
+    display_size_min, display_size_max, model, material,
+    refresh_rate_min, macbook_only, exclude_macbooks) so the four
+    charts reflect whatever the user has currently filtered the
+    listings table to.
+
+    Generic CPU rows (e.g. "Intel i5", "Intel i7" with no model
+    number) are excluded from top_cpus — they crowd the chart with
+    a single "i5" / "i7" bucket that lumps 60+ distinct models
+    together. The user can still see the breakdown by clicking on
+    the listings filtered to i5/i7 instead.
+    """
+    # ---- Parse filter params (mirrors /api/laptops) ----
+    brand_filter = request.args.get('brand', '').strip()
+    city_filter = request.args.get('city', '').strip()
+    exclude_city_filter = request.args.get('exclude_city', '').strip()
+    material_filter = request.args.get('material', '').strip().lower()
+    refresh_rate_min = request.args.get('refresh_rate_min', '').strip()
+    cpu_filter_list = request.args.getlist('cpu')
+    cpu_ref_filter_list = request.args.getlist('cpu_ref_id')
+    gpu_filter = request.args.get('gpu', '').strip()
+    min_price = request.args.get('min_price', '')
+    max_price = request.args.get('max_price', '')
+    ram_min = request.args.get('ram_min', '')
+    ram_max = request.args.get('ram_max', '')
+    storage_min = request.args.get('storage_min', '')
+    storage_max = request.args.get('storage_max', '')
+    storage_type = request.args.get('storage_type', '').strip()
+    display_size = request.args.get('display_size', '').strip()
+    display_size_min = request.args.get('display_size_min', '').strip()
+    display_size_max = request.args.get('display_size_max', '').strip()
+    model_filter = request.args.get('model', '').strip()
+    include_macbooks = request.args.get('macbook_only', '').lower() == 'true'
+    exclude_macbooks = request.args.get('exclude_macbooks', '').lower() == 'true'
+
+    # Build a shared list of WHERE clauses that all four chart queries
+    # reuse. All clauses are written against `l.*` (laptop_listings) and
+    # `fl.*` (flagged_listings) so they slot into every query below.
+    filter_clauses = ["l.is_active = true", "fl.listing_id IS NULL"]
+    filter_params = []
+
+    # Brand / Apple filters. The full set of combinations mirrors
+    # /api/laptops so the two endpoints agree on what "show Dell only" or
+    # "show macbooks" means:
+    #   - include_macbooks AND brand_filter  → just the apple filter (brand is irrelevant)
+    #   - exclude_macbooks AND brand_filter  → brand filter + NOT apple
+    #   - brand_filter alone                 → brand filter only
+    #   - include_macbooks alone             → apple filter
+    #   - exclude_macbooks alone             → NOT apple
+    if include_macbooks and brand_filter:
+        filter_clauses.append("(l.brand ILIKE %s OR l.title ILIKE %s OR l.description ILIKE %s)")
+        filter_params.extend([f'%{brand_filter}%', '%apple%', '%macbook%', '%macbook%'])
+    elif exclude_macbooks and brand_filter:
+        filter_clauses.append("l.brand ILIKE %s")
+        filter_params.append(f'%{brand_filter}%')
+        filter_clauses.append("NOT (l.brand ILIKE %s OR l.title ILIKE %s OR l.description ILIKE %s)")
+        filter_params.extend(['%apple%', '%macbook%', '%macbook%'])
+    elif brand_filter:
+        filter_clauses.append("l.brand ILIKE %s")
+        filter_params.append(f'%{brand_filter}%')
+    elif include_macbooks:
+        filter_clauses.append("(l.brand ILIKE %s OR l.title ILIKE %s OR l.description ILIKE %s)")
+        filter_params.extend(['%apple%', '%macbook%', '%macbook%'])
+    elif exclude_macbooks:
+        filter_clauses.append("NOT (l.brand ILIKE %s OR l.title ILIKE %s OR l.description ILIKE %s)")
+        filter_params.extend(['%apple%', '%macbook%', '%macbook%'])
+
+    if cpu_filter_list:
+        cleaned = [c.strip() for c in cpu_filter_list if c.strip()]
+        if cleaned:
+            or_clauses = []
+            for val in cleaned:
+                or_clauses.append("l.cpu_raw ILIKE %s")
+                filter_params.append(f'%{val}%')
+            filter_clauses.append("(" + " OR ".join(or_clauses) + ")")
+
+    if cpu_ref_filter_list:
+        cleaned_ids = [int(c) for c in cpu_ref_filter_list if c.strip().isdigit()]
+        if cleaned_ids:
+            filter_clauses.append("l.cpu_reference_id = ANY(%s)")
+            filter_params.append(cleaned_ids)
+
+    if gpu_filter:
+        filter_clauses.append("l.gpu_raw ILIKE %s")
+        filter_params.append(f'%{gpu_filter}%')
+    if min_price:
+        try:
+            filter_clauses.append("l.price_eur >= %s")
+            filter_params.append(float(min_price))
+        except ValueError:
+            pass
+    if max_price:
+        try:
+            filter_clauses.append("l.price_eur <= %s")
+            filter_params.append(float(max_price))
+        except ValueError:
+            pass
+    if ram_min:
+        try:
+            filter_clauses.append("l.ram_gb >= %s")
+            filter_params.append(int(ram_min))
+        except ValueError:
+            pass
+    if ram_max:
+        try:
+            filter_clauses.append("l.ram_gb <= %s")
+            filter_params.append(int(ram_max))
+        except ValueError:
+            pass
+    if storage_min:
+        try:
+            filter_clauses.append("l.storage_gb >= %s")
+            filter_params.append(int(storage_min))
+        except ValueError:
+            pass
+    if storage_max:
+        try:
+            filter_clauses.append("l.storage_gb <= %s")
+            filter_params.append(int(storage_max))
+        except ValueError:
+            pass
+    if storage_type:
+        filter_clauses.append("l.storage_type ILIKE %s")
+        filter_params.append(f'%{storage_type}%')
+    if display_size:
+        try:
+            filter_clauses.append("NULLIF(REGEXP_REPLACE(l.display_size, '[^0-9.]', '', 'g'), '')::numeric = %s")
+            filter_params.append(float(display_size))
+        except ValueError:
+            pass
+    if display_size_min:
+        try:
+            filter_clauses.append("NULLIF(REGEXP_REPLACE(l.display_size, '[^0-9.]', '', 'g'), '')::numeric >= %s")
+            filter_params.append(float(display_size_min))
+        except ValueError:
+            pass
+    if display_size_max:
+        try:
+            filter_clauses.append("NULLIF(REGEXP_REPLACE(l.display_size, '[^0-9.]', '', 'g'), '')::numeric <= %s")
+            filter_params.append(float(display_size_max))
+        except ValueError:
+            pass
+    if model_filter:
+        filter_clauses.append("l.model ILIKE %s")
+        filter_params.append(f'%{model_filter}%')
+    if city_filter:
+        filter_clauses.append("l.seller_location = %s")
+        filter_params.append(city_filter)
+    if exclude_city_filter:
+        filter_clauses.append("(l.seller_location IS NULL OR l.seller_location <> %s)")
+        filter_params.append(exclude_city_filter)
+    if material_filter:
+        filter_clauses.append("l.material ILIKE %s")
+        filter_params.append(f'%{material_filter}%')
+    if refresh_rate_min:
+        try:
+            filter_clauses.append("l.refresh_rate_hz >= %s")
+            filter_params.append(int(refresh_rate_min))
+        except ValueError:
+            pass
+
+    # All four queries use `l.*` (laptop_listings) + `fl.*` (flagged_listings)
+    # as the FROM anchors; the filter SQL below is appended identically.
+    filter_sql = " AND ".join(filter_clauses)
+
+    with get_db_connection() as conn:
+        cursor = conn.cursor(cursor_factory=RealDictCursor)
+        try:
+            # Top brands by listing count + avg price
+            cursor.execute(f"""
+                SELECT
+                    COALESCE(lr.brand, l.brand) AS brand,
+                    COUNT(l.listing_id) AS listing_count,
+                    AVG(l.price_eur)::numeric(10, 2) AS avg_price,
+                    MIN(l.price_eur) AS min_price,
+                    MAX(l.price_eur) AS max_price
+                FROM laptop_listings l
+                LEFT JOIN laptop_reference lr ON l.laptop_reference_id = lr.id
+                LEFT JOIN flagged_listings fl ON l.listing_id = fl.listing_id AND fl.category = 'laptop'
+                WHERE {filter_sql}
+                  AND COALESCE(lr.brand, l.brand) IS NOT NULL
+                  AND COALESCE(lr.brand, l.brand) <> ''
+                GROUP BY COALESCE(lr.brand, l.brand)
+                ORDER BY listing_count DESC
+                LIMIT 12
+            """, filter_params)
+            top_brands = [
+                {
+                    'brand': r['brand'],
+                    'count': int(r['listing_count']),
+                    'avg_price': float(r['avg_price']) if r['avg_price'] else 0,
+                    'min_price': float(r['min_price']) if r['min_price'] else 0,
+                    'max_price': float(r['max_price']) if r['max_price'] else 0,
+                }
+                for r in cursor.fetchall()
+            ]
+
+            # Top CPUs by listing count (joined to laptop_reference_cpu for
+            # canonical model). The chart shows the top 15 SPECIFIC models
+            # (e.g. "i5-7300U", "Ryzen 5 5600X") so the user can see real
+            # breakdowns. Generic tier rows like "Intel i5" or "Intel i7"
+            # are excluded — they crowd the chart with one big bucket that
+            # hides the actual variety.
+            cursor.execute(f"""
+                SELECT
+                    lrc.brand AS cpu_brand,
+                    lrc.model AS cpu_model,
+                    COUNT(l.listing_id) AS listing_count,
+                    AVG(l.price_eur)::numeric(10, 2) AS avg_price
+                FROM laptop_listings l
+                JOIN laptop_reference_cpu lrc ON l.cpu_reference_id = lrc.id
+                LEFT JOIN flagged_listings fl ON l.listing_id = fl.listing_id AND fl.category = 'laptop'
+                WHERE {filter_sql}
+                  AND lrc.model IS NOT NULL AND lrc.model <> ''
+                  AND NOT (lrc.brand = 'Intel' AND lrc.model IN ('i3', 'i5', 'i7', 'i9'))
+                GROUP BY lrc.brand, lrc.model
+                ORDER BY listing_count DESC
+                LIMIT 15
+            """, filter_params)
+            top_cpus = [
+                {
+                    'cpu_brand': r['cpu_brand'],
+                    'cpu_model': r['cpu_model'],
+                    'label': f"{r['cpu_brand']} {r['cpu_model']}" if r['cpu_brand'] else r['cpu_model'],
+                    'count': int(r['listing_count']),
+                    'avg_price': float(r['avg_price']) if r['avg_price'] else 0,
+                }
+                for r in cursor.fetchall()
+            ]
+
+            # Display size distribution (group 17+ together).
+            # `display_size` is a text column (e.g. "15.6", "14"), so we cast
+            # to numeric for the comparison and trim before casting so "15.6""
+            # doesn't break the parse.
+            display_params = list(filter_params)  # params for the OUTER query
+            cursor.execute(f"""
+                WITH bucketed AS (
+                    SELECT
+                        CASE
+                            WHEN l.display_size IS NULL OR l.display_size = '' OR NULLIF(regexp_replace(l.display_size, '[^0-9.]', '', 'g'), '')::numeric = 0 THEN 'Unknown'
+                            WHEN regexp_replace(l.display_size, '[^0-9.]', '', 'g')::numeric < 13 THEN '11-12"'
+                            WHEN regexp_replace(l.display_size, '[^0-9.]', '', 'g')::numeric < 14 THEN '13"'
+                            WHEN regexp_replace(l.display_size, '[^0-9.]', '', 'g')::numeric < 15 THEN '14"'
+                            WHEN regexp_replace(l.display_size, '[^0-9.]', '', 'g')::numeric < 16 THEN '15"'
+                            WHEN regexp_replace(l.display_size, '[^0-9.]', '', 'g')::numeric < 17 THEN '16"'
+                            ELSE '17"+'
+                        END AS size_bucket,
+                        l.price_eur
+                    FROM laptop_listings l
+                    LEFT JOIN flagged_listings fl ON l.listing_id = fl.listing_id AND fl.category = 'laptop'
+                    WHERE {filter_sql}
+                )
+                SELECT
+                    size_bucket,
+                    COUNT(*) AS listing_count,
+                    AVG(price_eur)::numeric(10, 2) AS avg_price
+                FROM bucketed
+                GROUP BY size_bucket
+                ORDER BY
+                    CASE size_bucket
+                        WHEN '11-12"' THEN 1
+                        WHEN '13"' THEN 2
+                        WHEN '14"' THEN 3
+                        WHEN '15"' THEN 4
+                        WHEN '16"' THEN 5
+                        WHEN '17"+' THEN 6
+                        ELSE 7
+                    END
+            """, filter_params)
+            display_buckets = [
+                {
+                    'bucket': r['size_bucket'],
+                    'count': int(r['listing_count']),
+                    'avg_price': float(r['avg_price']) if r['avg_price'] else 0,
+                }
+                for r in cursor.fetchall()
+            ]
+
+            # RAM size distribution
+            cursor.execute(f"""
+                WITH bucketed AS (
+                    SELECT
+                        CASE
+                            WHEN l.ram_gb IS NULL OR l.ram_gb = 0 THEN 'Unknown'
+                            WHEN l.ram_gb <= 4 THEN '4 GB'
+                            WHEN l.ram_gb <= 8 THEN '8 GB'
+                            WHEN l.ram_gb <= 16 THEN '16 GB'
+                            WHEN l.ram_gb <= 32 THEN '32 GB'
+                            ELSE '64+ GB'
+                        END AS ram_bucket,
+                        l.price_eur
+                    FROM laptop_listings l
+                    LEFT JOIN flagged_listings fl ON l.listing_id = fl.listing_id AND fl.category = 'laptop'
+                    WHERE {filter_sql}
+                )
+                SELECT
+                    ram_bucket,
+                    COUNT(*) AS listing_count,
+                    AVG(price_eur)::numeric(10, 2) AS avg_price
+                FROM bucketed
+                GROUP BY ram_bucket
+                ORDER BY
+                    CASE ram_bucket
+                        WHEN '4 GB' THEN 1
+                        WHEN '8 GB' THEN 2
+                        WHEN '16 GB' THEN 3
+                        WHEN '32 GB' THEN 4
+                        WHEN '64+ GB' THEN 5
+                        ELSE 6
+                    END
+            """, filter_params)
+            ram_buckets = [
+                {
+                    'bucket': r['ram_bucket'],
+                    'count': int(r['listing_count']),
+                    'avg_price': float(r['avg_price']) if r['avg_price'] else 0,
+                }
+                for r in cursor.fetchall()
+            ]
+
+            return jsonify({
+                'top_brands': top_brands,
+                'top_cpus': top_cpus,
+                'display_buckets': display_buckets,
+                'ram_buckets': ram_buckets,
+            })
+        except Exception as e:
+            return jsonify({
+                'error': str(e),
+                'top_brands': [],
+                'top_cpus': [],
+                'display_buckets': [],
+                'ram_buckets': [],
+            }), 500
         finally:
             cursor.close()
 

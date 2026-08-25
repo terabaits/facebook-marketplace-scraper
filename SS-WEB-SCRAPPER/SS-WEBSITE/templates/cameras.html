@@ -25,7 +25,16 @@
                     <option value="asc">{{ t('Ascending') }}</option>
                 </select>
             </label>
-            <label>
+            <!-- Brand quick-filter: custom icon buttons for each brand.
+                 Clicking a brand icon toggles the #brand-filter <select>
+                 and reloads. The "All" pill resets the filter. -->
+            <div class="cam-brand-quickfilter" id="cam-brand-quickfilter">
+                <button type="button" class="cam-brand-pill" data-brand="" aria-pressed="true" title="All brands">
+                    <span class="cam-brand-pill-icon">🌐</span>
+                    <span class="cam-brand-pill-label">All</span>
+                </button>
+            </div>
+            <label style="display:none;">
                 Brand:
                 <select id="brand-filter" onchange="loadCameras()">
                     <option value="">All Brands</option>
@@ -79,6 +88,65 @@
 let cameraBrands = [];
 let cameraModels = [];
 let sensorTypes = ['Full Frame', 'APS-C', 'Micro 4/3', '1-inch', 'Medium Format'];
+
+// === Camera brand icons ===
+// Each brand has: { icon (inline SVG path data), label, color }. We use
+// inline SVG instead of a <img> so the icon picks up the current theme
+// (light/dark) and the brand color blends with the active state. Sony
+// and Canon are the two with the highest listing count on this site so
+// their logos are detailed; the others get a smaller mark.
+const CAMERA_BRAND_ICONS = {
+    'Sony': {
+        label: 'Sony',
+        color: '#FF6B00',
+        svg: '<svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M3 7l9 10 9-10v10h-3V11l-6 6.6L6 11v6H3z"/></svg>',
+    },
+    'Canon': {
+        label: 'Canon',
+        color: '#BC0024',
+        svg: '<svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2.4"/><circle cx="12" cy="12" r="3.5"/></svg>',
+    },
+    'Nikon': {
+        label: 'Nikon',
+        color: '#FFCC00',
+        svg: '<svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M3 8h18M3 16h18M5 5v14M19 5v14" stroke="currentColor" stroke-width="2.2" fill="none" stroke-linecap="round"/></svg>',
+    },
+    'Fujifilm': {
+        label: 'Fuji',
+        color: '#00A651',
+        svg: '<svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><rect x="4" y="4" width="16" height="16" rx="2" fill="none" stroke="currentColor" stroke-width="2.2"/><circle cx="12" cy="12" r="3" fill="currentColor"/></svg>',
+    },
+    'Panasonic': {
+        label: 'Pana',
+        color: '#0E5BAB',
+        svg: '<svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><circle cx="12" cy="12" r="8" fill="none" stroke="currentColor" stroke-width="2.2"/><circle cx="12" cy="12" r="3" fill="currentColor"/></svg>',
+    },
+    'Olympus': {
+        label: 'Oly',
+        color: '#1B1B1B',
+        svg: '<svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M5 19V5l7 7-7 7zm7-7l7-7v14z" fill="currentColor"/></svg>',
+    },
+    'Pentax': {
+        label: 'Ptx',
+        color: '#D52B1E',
+        svg: '<svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M12 2l9 5v10l-9 5-9-5V7z" fill="none" stroke="currentColor" stroke-width="2"/></svg>',
+    },
+    'Leica': {
+        label: 'Leica',
+        color: '#E20A17',
+        svg: '<svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><circle cx="12" cy="12" r="9" fill="currentColor"/><circle cx="12" cy="12" r="4" fill="white"/></svg>',
+    },
+};
+
+const FALLBACK_BRAND_ICON = {
+    label: 'Other',
+    color: '#64748b',
+    svg: '<svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><rect x="3" y="6" width="18" height="12" rx="2"/></svg>',
+};
+
+function brandIcon(brand) {
+    return CAMERA_BRAND_ICONS[brand] || FALLBACK_BRAND_ICON;
+}
 
 // Extract sensor type from camera title/model
 function extractSensorType(title, model) {
@@ -145,37 +213,84 @@ async function loadCameraFilters() {
     try {
         const response = await fetch('/api/camera-brands');
         const brands = await response.json();
-        
-        const brandSelect = document.getElementById('brand-filter');
-        if (brands && brands.length > 0) {
-            cameraBrands = brands;
-            brands.forEach(brand => {
-                const option = document.createElement('option');
-                option.value = brand;
-                option.textContent = brand;
-                brandSelect.appendChild(option);
-            });
-        }
+        populateBrandPills(brands && brands.length ? brands : null);
     } catch (error) {
         console.error('Error loading camera brands:', error);
-        // Fallback to common brands
-        cameraBrands = ['Canon', 'Nikon', 'Sony', 'Panasonic', 'Fujifilm', 'Olympus', 'Pentax'];
-        const brandSelect = document.getElementById('brand-filter');
-        cameraBrands.forEach(brand => {
-            const option = document.createElement('option');
-            option.value = brand;
-            option.textContent = brand;
-            brandSelect.appendChild(option);
-        });
+        populateBrandPills(null);
     }
-    
+
     // Load sensor types
     const sensorSelect = document.getElementById('sensor-filter');
-    sensorTypes.forEach(sensor => {
-        const option = document.createElement('option');
-        option.value = sensor;
-        option.textContent = sensor;
-        sensorSelect.appendChild(option);
+    if (sensorSelect) {
+        sensorSelect.innerHTML = '<option value="">All Sensors</option>';
+        sensorTypes.forEach(sensor => {
+            const option = document.createElement('option');
+            option.value = sensor;
+            option.textContent = sensor;
+            sensorSelect.appendChild(option);
+        });
+    }
+}
+
+// Populate the brand quick-filter pill row.
+// We keep the underlying <select id="brand-filter"> in sync so the rest
+// of the code (which reads .value) doesn't change.
+function populateBrandPills(brands) {
+    const container = document.getElementById('cam-brand-quickfilter');
+    const select = document.getElementById('brand-filter');
+    if (!container || !select) return;
+
+    // Reset select to just the "All" option
+    select.innerHTML = '<option value="">All Brands</option>';
+
+    if (!brands || brands.length === 0) {
+        brands = ['Canon', 'Nikon', 'Sony', 'Panasonic', 'Fujifilm', 'Olympus', 'Pentax'];
+    }
+    cameraBrands = brands;
+
+    brands.forEach(brand => {
+        const opt = document.createElement('option');
+        opt.value = brand;
+        opt.textContent = brand;
+        select.appendChild(opt);
+    });
+
+    // Wipe everything except the first "All" pill
+    while (container.children.length > 1) container.removeChild(container.lastChild);
+
+    // Add a pill per brand with custom inline SVG icon and brand color
+    brands.forEach(brand => {
+        const meta = brandIcon(brand);
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'cam-brand-pill';
+        btn.dataset.brand = brand;
+        btn.title = `Filter by ${meta.label || brand}`;
+        btn.setAttribute('aria-pressed', 'false');
+        btn.style.setProperty('--cam-brand-color', meta.color);
+        btn.innerHTML = `
+            <span class="cam-brand-pill-icon" style="color: ${meta.color};">${meta.svg}</span>
+            <span class="cam-brand-pill-label">${escapeHtml(meta.label || brand)}</span>
+        `;
+        btn.addEventListener('click', () => {
+            // Toggle: clicking the same pill clears the filter
+            const wasActive = btn.getAttribute('aria-pressed') === 'true';
+            select.value = wasActive ? '' : brand;
+            syncBrandPillState();
+            loadCameras();
+        });
+        container.appendChild(btn);
+    });
+    syncBrandPillState();
+}
+
+function syncBrandPillState() {
+    const select = document.getElementById('brand-filter');
+    if (!select) return;
+    const selected = select.value;
+    document.querySelectorAll('.cam-brand-pill').forEach(btn => {
+        const brand = btn.dataset.brand || '';
+        btn.setAttribute('aria-pressed', brand === selected ? 'true' : 'false');
     });
 }
 
@@ -272,7 +387,6 @@ async function loadCameras() {
                         <th>{{ t('Price') }}</th>
                         <th>Camera</th>
                         <th>Sensor</th>
-                        <th>Lenses</th>
                         <th>Location</th>
                         <th>Market Position</th>
                         <th>Date</th>
@@ -289,28 +403,34 @@ async function loadCameras() {
                 ? `<img src="${item.image_url}" alt="Camera" class="listing-thumb" loading="lazy">`
                 : '<div class="listing-thumb-placeholder">📸</div>';
             
-            // Camera info badge
+            // Camera info: brand + model on the same line, brand bold
             let cameraInfo = '';
             if (item.camera_brand) {
-                cameraInfo = `<span class="badge badge-success">${item.camera_brand}</span>`;
-                if (item.camera_model) {
-                    cameraInfo += `<br><small>${item.camera_model.substring(0, 30)}${item.camera_model.length > 30 ? '...' : ''}</small>`;
-                }
+                const brandHtml = `<span class="cam-row-brand">${escapeHtml(item.camera_brand)}</span>`;
+                const modelHtml = item.camera_model
+                    ? ` <span class="cam-row-model">${escapeHtml(item.camera_model.substring(0, 30))}${item.camera_model.length > 30 ? '…' : ''}</span>`
+                    : '';
+                cameraInfo = `<div class="cam-row-camera">${brandHtml}${modelHtml}</div>`;
             } else {
                 cameraInfo = '<em style="color: #999;">Unknown</em>';
             }
-            
+
             // Extract sensor type
             const sensorType = item.sensor_type || extractSensorType(item.title, item.camera_model);
-            const sensorBadge = sensorType !== 'Unknown' 
+            const sensorBadge = sensorType !== 'Unknown'
                 ? `<span class="badge" style="background: #3498db; color: white;">${sensorType}</span>`
                 : `<span class="badge" style="background: #95a5a6;">Unknown</span>`;
-            
-            // Lenses count
+
+            // Lenses count → now appears as a small inline pill UNDER the brand/model
             const lensesCount = item.detected_lenses ? item.detected_lenses.length : 0;
-            const lensesBadge = lensesCount > 0 
-                ? `<span class="badge" style="background: #e74c3c; color: white;">${lensesCount} lens${lensesCount > 1 ? 'es' : ''}</span>`
+            const lensesBadge = lensesCount > 0
+                ? `<div class="cam-row-lenses-pill" title="Detected lenses sold with this camera body">📷 ${lensesCount} lens${lensesCount > 1 ? 'es' : ''}</div>`
                 : '';
+            if (lensesBadge && item.camera_brand) {
+                cameraInfo += lensesBadge;
+            } else if (lensesBadge) {
+                cameraInfo = lensesBadge + cameraInfo;
+            }
             
             const safeListingId = item.listing_id ? item.listing_id.replace(/'/g, "\\'").replace(/"/g, '&quot;') : '';
             const safeTitle = item.title ? item.title.replace(/'/g, "\\'").replace(/"/g, '&quot;') : '';
@@ -328,7 +448,6 @@ async function loadCameras() {
                     <td><span class="price">€${item.price_eur}</span></td>
                     <td>${cameraInfo}</td>
                     <td>${sensorBadge}</td>
-                    <td>${lensesBadge}</td>
                     <td>${item.seller_location || 'N/A'}</td>
                     <td style="text-align: center;">
                         ${item.is_unicorn ? `
@@ -407,20 +526,30 @@ async function showCameraDetail(listingId) {
         const datePosted = listing.date_posted ? new Date(listing.date_posted).toLocaleDateString() : '—';
 
         // ---- Detected lenses ----
+        // The detected lens has either a numeric `id` (from lens_reference)
+        // or a `slug` (lens_name). The lenses page accepts ?model=<name>
+        // so the slug works as a deep-link.
         const lenses = detailsRes.lenses || [];
         const detectedLensesHtml = lenses.length > 0 ? `
             <div class="ram-popup-stats" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));">
-                ${lenses.slice(0, 4).map(l => `
-                    <div class="ram-stat-mini" style="background: linear-gradient(135deg, rgba(99,102,241,0.08), rgba(139,92,246,0.08)); border-color: rgba(99,102,241,0.2);">
-                        <div class="ram-stat-mini-h">🔭 Detected Lens</div>
-                        <div class="ram-stat-mini-v" style="font-size:0.95rem;">${escapeHtml(l.name || l.lens_name || 'Unknown')}</div>
+                ${lenses.slice(0, 4).map(l => {
+                    const lensName = l.name || l.lens_name || 'Unknown';
+                    const lensSlug = l.slug || l.lens_name || lensName.replace(/\s+/g, '_');
+                    const href = `/lenses?model=${encodeURIComponent(lensSlug)}`;
+                    return `
+                    <a class="ram-stat-mini cam-lens-card" href="${href}"
+                       style="background: linear-gradient(135deg, rgba(99,102,241,0.08), rgba(139,92,246,0.08)); border-color: rgba(99,102,241,0.2); text-decoration: none; color: inherit; display: block; cursor: pointer; transition: transform .15s, box-shadow .15s;"
+                       title="Open this lens in the Lenses page">
+                        <div class="ram-stat-mini-h">🔭 Detected Lens <span style="float:right; font-size:0.7rem; opacity:0.65;">↗</span></div>
+                        <div class="ram-stat-mini-v" style="font-size:0.95rem;">${escapeHtml(lensName)}</div>
                         ${l.brand ? `<div class="ram-stat-mini-m">${escapeHtml(l.brand)}</div>` : ''}
                         ${l.focal_length ? `<div class="ram-stat-mini-m">${escapeHtml(l.focal_length)}</div>` : ''}
                         ${l.mount_type ? `<div class="ram-stat-mini-m">Mount: ${escapeHtml(l.mount_type)}</div>` : ''}
                         ${l.aperture ? `<div class="ram-stat-mini-m">Aperture: ${escapeHtml(l.aperture)}</div>` : ''}
                         ${l.estimated_value ? `<div class="ram-stat-mini-d below">Est. value €${Number(l.estimated_value).toFixed(0)}</div>` : ''}
-                    </div>
-                `).join('')}
+                    </a>
+                    `;
+                }).join('')}
             </div>` : `
             <div class="ram-popup-empty">
                 <div style="font-size:1.1rem;margin-bottom:0.25rem;">📷 Body only</div>
@@ -810,6 +939,81 @@ document.getElementById('brand-filter').addEventListener('change', () => {
     padding: 2px 7px; border-radius: 6px; font-size: 11px; font-weight: 600;
 }
 [data-theme="dark"] .modern-panel .badge-info { color: #a5b4fc; }
+
+/* Camera row: brand + model on the same line, brand bold. The lens
+   count is a small red pill that lives UNDER the brand/model, so the
+   "Camera" cell reads as one coherent "camera package" unit. */
+.cam-row-camera {
+    display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.4rem;
+    font-size: 13px; line-height: 1.3;
+}
+.cam-row-brand {
+    font-weight: 800;
+    color: var(--text-color, #1f2937);
+    letter-spacing: 0.01em;
+}
+.cam-row-model {
+    font-weight: 400;
+    color: var(--text-secondary, #4b5563);
+}
+[data-theme="dark"] .cam-row-brand { color: #f1f5f9; }
+[data-theme="dark"] .cam-row-model { color: #cbd5e1; }
+.cam-row-lenses-pill {
+    display: inline-flex; align-items: center; gap: 3px;
+    font-size: 10.5px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.04em;
+    background: rgba(231, 76, 60, 0.12);
+    color: #c0392b;
+    padding: 2px 7px; border-radius: 999px;
+    margin-top: 4px;
+}
+[data-theme="dark"] .cam-row-lenses-pill {
+    background: rgba(231, 76, 60, 0.22);
+    color: #ff8a73;
+}
+
+/* Detected-lens cards inside the camera popup — hover lift to invite
+   the user to click through to the Lenses page. */
+.cam-lens-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(99, 102, 241, 0.25);
+    border-color: rgba(99, 102, 241, 0.45) !important;
+}
+
+/* Camera brand quick-filter pills. Each pill is colored with the
+   brand's own color (set via --cam-brand-color CSS variable on the
+   element). The active state fills the pill with that color. */
+.cam-brand-quickfilter {
+    display: inline-flex; gap: 0.35rem; align-items: center;
+    flex-wrap: wrap; margin: 0 0.4rem;
+}
+.cam-brand-pill {
+    display: inline-flex; align-items: center; gap: 0.35rem;
+    padding: 0.35rem 0.7rem;
+    background: var(--card-bg, #ffffff);
+    border: 1px solid var(--card-border, #e5e7eb);
+    border-radius: 999px;
+    color: var(--text-color, #1f2937);
+    font-size: 0.78rem; font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.15s, box-shadow 0.15s, background 0.15s, border-color 0.15s;
+}
+.cam-brand-pill:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+    border-color: var(--cam-brand-color, #667eea);
+}
+.cam-brand-pill[aria-pressed="true"] {
+    background: var(--cam-brand-color, #667eea);
+    color: white;
+    border-color: var(--cam-brand-color, #667eea);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+.cam-brand-pill-icon {
+    font-size: 1.05rem;
+    line-height: 1;
+}
+.cam-brand-pill-label { white-space: nowrap; }
 
 /* Camera page specific styles */
 .listing-thumb-placeholder {

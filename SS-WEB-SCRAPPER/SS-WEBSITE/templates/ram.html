@@ -1524,7 +1524,11 @@
             </select>
         </div>
 
-        <div class="filter-group">
+        <!-- Pushed to the far right of the bar with `margin-left: auto` so it
+             doesn't wrap to a second row by itself. This leaves the
+             right-side whitespace the user noticed and turns it into
+             usable filter real estate. -->
+        <div class="filter-group" style="margin-left: auto;">
             <span class="filter-label">RAM ID</span>
             <input type="text" id="ram-id-filter" class="ram-id-input" placeholder="e.g. 189"
                    onchange="loadListings()" onkeyup="if(event.key==='Enter') loadListings()">

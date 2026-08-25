@@ -308,20 +308,35 @@
 
 
 
-/* Custom filter icon buttons */
-    .filter-icon-bar {
+/* Custom filter icon buttons.
+   These rules use `.filters .filter-icon-btn` (double selector) so they
+   win the specificity battle against the shared `.filter-icon-btn`
+   styles in base.html (which set 42×42 for the generic case). */
+    .filters .filter-icon-bar {
         display: inline-flex;
         align-items: center;
-        gap: 0.7rem;
+        /* Bug fix (2026-08-25): wrap onto 2 rows so the 5 main icons
+           fit on row 1 and the unicorn + column-settings icons
+           (moved into this bar) fall onto row 2. max-width caps
+           the bar to ~5 buttons per row (32px × 5 + 0.4rem × 4 gap
+           ≈ 186px) so the wrap is forced even though all 7 icons
+           technically fit in one row at the new 32×32 size. */
+        flex-wrap: wrap;
+        max-width: 186px;
+        gap: 0.4rem;
         margin-right: 0.8rem;
         vertical-align: middle;
     }
-    .filter-icon-btn {
+    .filters .filter-icon-btn {
         position: relative;
-        width: 42px;
-        height: 42px;
+        /* Bug fix (2026-08-25): was 42×42 (inherited from base.html's
+           shared .filter-icon-btn), way taller than the Model filter
+           pill. Shrunk to 32×32 so the icon bar can wrap onto two
+           rows and the buttons don't dominate the filter bar height. */
+        width: 32px !important;
+        height: 32px !important;
         border: 2px solid #667eea;
-        border-radius: 12px;
+        border-radius: 8px;
         background: rgba(102, 126, 234, 0.12);
         color: #667eea;
         cursor: pointer;
@@ -333,9 +348,9 @@
         padding: 0;
         flex: 0 0 auto;
     }
-    .filter-icon-btn:hover,
-    .filter-icon-btn:focus-visible {
-        transform: translateY(-3px) scale(1.1);
+    .filters .filter-icon-btn:hover,
+    .filters .filter-icon-btn:focus-visible {
+        transform: translateY(-2px) scale(1.05);
         border-color: #764ba2;
         background: rgba(118, 75, 162, 0.18);
         color: #764ba2;
@@ -347,9 +362,11 @@
         color: #fff;
         animation: iconGlow 1.6s ease-in-out infinite alternate;
     }
-    .filter-icon-btn svg {
-        width: 22px;
-        height: 22px;
+    .filters .filter-icon-btn svg {
+        /* Shrunk alongside the button so the icon stays visually balanced
+           inside the smaller 32×32 frame. */
+        width: 18px !important;
+        height: 18px !important;
         pointer-events: none;
     }
 
@@ -1187,6 +1204,34 @@ function filterByModel(vendor, model) {
                         <line x1="5" y1="12" x2="19" y2="12"/>
                     </svg>
                 </button>
+                <!-- Bug fix (2026-08-25): unicorn + column-settings used to
+                     live OUTSIDE the filter-icon-bar as standalone
+                     buttons. That pushed them onto a second row at the
+                     bottom-left of the filter bar and made the
+                     column-settings dropdown position itself off-screen
+                     to the left (left: rect.right - 250 → negative →
+                     triggered horizontal scrollbar on the page).
+                     Moved both into the icon bar so they share the
+                     wrap-into-2-rows layout. The 5 main icons (above)
+                     fit on row 1; column-settings + unicorn wrap to
+                     row 2 where the dropdown can position cleanly
+                     below the button. -->
+                <span style="position: relative; display: inline-flex;">
+                    <button type="button" id="column-settings-btn" class="filter-icon-btn" onclick="toggleColumnSettings(event)" title="Show/hide and reorder columns" aria-pressed="false">
+                        ☰
+                    </button>
+                    <div id="column-settings-dropdown" class="column-settings-dropdown" style="display: none; min-width: 240px;">
+                        <h4 style="margin: 0 0 0.5rem 0; font-size: 0.85rem; color: var(--text-color);">📋 Columns <small style="opacity: 0.7; font-weight: 400;">(drag to reorder)</small></h4>
+                        <div id="column-options-list"></div>
+                        <div style="display: flex; gap: 0.4rem; margin-top: 0.5rem; padding-top: 0.5rem; border-top: 1px solid var(--table-border);">
+                            <button type="button" class="ram-popup-btn" style="flex: 1; font-size: 0.78rem;" onclick="showAllColumns()">Show All</button>
+                            <button type="button" class="ram-popup-btn" style="flex: 1; font-size: 0.78rem;" onclick="resetColumnOrder()">Defaults</button>
+                        </div>
+                    </div>
+                </span>
+                <button type="button" id="unicorn-toggle" class="filter-icon-btn" onclick="toggleUnicorn()" title="Show only unicorn deals" aria-pressed="false">
+                    🦄
+                </button>
             </div>
             <input type="checkbox" id="active-only" checked onchange="loadListings()" class="hidden-filter">
             <input type="checkbox" id="high-confidence" checked onchange="loadListings()" class="hidden-filter">
@@ -1275,22 +1320,6 @@ function filterByModel(vendor, model) {
             <button id="compare-btn" class="btn btn-small" style="background: linear-gradient(135deg, #667eea, #764ba2); color: white; border: none; align-self: center;" onclick="goToCompare()" disabled>
                 Compare <span id="compare-count">0</span>
             </button>
-            <button type="button" id="unicorn-toggle" class="filter-icon-btn" onclick="toggleUnicorn()" title="Show only unicorn deals" aria-pressed="false">
-                🦄
-            </button>
-            <div style="position: relative; display: inline-block;">
-                <button type="button" id="column-settings-btn" class="filter-icon-btn" onclick="toggleColumnSettings(event)" title="Show/hide and reorder columns" aria-pressed="false">
-                    ☰
-                </button>
-                <div id="column-settings-dropdown" class="column-settings-dropdown" style="display: none; min-width: 240px;">
-                    <h4 style="margin: 0 0 0.5rem 0; font-size: 0.85rem; color: var(--text-color);">📋 Columns <small style="opacity: 0.7; font-weight: 400;">(drag to reorder)</small></h4>
-                    <div id="column-options-list"></div>
-                    <div style="display: flex; gap: 0.4rem; margin-top: 0.5rem; padding-top: 0.5rem; border-top: 1px solid var(--table-border);">
-                        <button type="button" class="ram-popup-btn" style="flex: 1; font-size: 0.78rem;" onclick="showAllColumns()">Show All</button>
-                        <button type="button" class="ram-popup-btn" style="flex: 1; font-size: 0.78rem;" onclick="resetColumnOrder()">Defaults</button>
-                    </div>
-                </div>
-            </div>
             <label>
                 Source:
                 <select id="source-filter" onchange="loadListings()">
@@ -3916,11 +3945,38 @@ function toggleColumnSettings(e) {
         buildColumnOptions();
         dd.style.display = 'block';
         btn.setAttribute('aria-pressed', 'true');
-        // Position below the button
+        // Position the dropdown so it sits just below the button and is
+        // anchored to the button's right edge.
+        //
+        // Important: `style.top`/`style.left` on a `position:absolute`
+        // element are interpreted RELATIVE TO THE OFFSETPARENT, not
+        // relative to the viewport. The previous version used
+        // `rect.bottom + 6` (viewport-relative) which placed the
+        // dropdown ~450px below where it should have been — effectively
+        // off-screen and looking like the button "didn't work".
+        //
+        // Use `btn.offsetTop/offsetHeight/offsetLeft` (offsetParent-
+        // relative) for top + the button's left edge, and clamp
+        // horizontal position against the viewport so we never trigger
+        // a horizontal scrollbar.
         const rect = btn.getBoundingClientRect();
+        const ddWidth = 250; // matches min-width on the dropdown
+        const parentRect = dd.offsetParent ? dd.offsetParent.getBoundingClientRect() : { left: 0, top: 0 };
         dd.style.position = 'absolute';
-        dd.style.top = (rect.bottom + 6) + 'px';
-        dd.style.left = (rect.right - 250) + 'px';
+        // Vertical: just below the button (offsetParent-relative)
+        dd.style.top = (btn.offsetTop + btn.offsetHeight + 6) + 'px';
+        // Horizontal: anchor right edge to button's right edge, then
+        // translate to offsetParent coordinates. Final value is the
+        // dropdown's left position relative to the offsetParent.
+        let leftOffset = (rect.right - ddWidth) - parentRect.left;
+        // Clamp: never go off-screen left (would trigger scrollbar) and
+        // never let the dropdown exceed the viewport's right edge.
+        const viewport = window.innerWidth || document.documentElement.clientWidth;
+        const maxLeftOffset = viewport - parentRect.left - ddWidth - 8;
+        if (leftOffset < 8) leftOffset = 8;
+        if (leftOffset > maxLeftOffset) leftOffset = Math.max(8, maxLeftOffset);
+        dd.style.left = leftOffset + 'px';
+        dd.style.right = 'auto';
         // Click outside to close
         setTimeout(() => {
             document.addEventListener('click', function closeCS(e) {

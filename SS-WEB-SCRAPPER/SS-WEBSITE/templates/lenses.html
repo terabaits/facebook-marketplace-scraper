@@ -57,20 +57,21 @@
                     <option value="">All Mounts</option>
                 </select>
             </label>
-            <label>
-                <span>Sort:</span>
-                <select id="sort-by" onchange="loadListings()">
-                    <option value="date_posted">{{ t('Date Posted') }}</option>
-                    <option value="price">{{ t('Price') }}</option>
-                </select>
-            </label>
-            <label>
-                <span>Order:</span>
-                <select id="sort-order" onchange="loadListings()">
-                    <option value="desc">{{ t('Descending') }}</option>
-                    <option value="asc">{{ t('Ascending') }}</option>
-                </select>
-            </label>
+            <!-- Bug fix (2026-08-25): removed the Sort/Order dropdowns.
+                 Sorting is now done by clicking the table column
+                 headers directly. Hidden <select>s stay for deep-link
+                 URL params (applyUrlParamsToFilters). -->
+            <select id="sort-by" style="display:none;" onchange="loadListings()">
+                <option value="date_posted" selected>{{ t('Date Posted') }}</option>
+                <option value="price">{{ t('Price') }}</option>
+                <option value="first_seen_at">First seen</option>
+                <option value="title">Lens</option>
+                <option value="location">Location</option>
+            </select>
+            <select id="sort-order" style="display:none;" onchange="loadListings()">
+                <option value="desc" selected>{{ t('Descending') }}</option>
+                <option value="asc">{{ t('Ascending') }}</option>
+            </select>
             <label>
                 <span>Time:</span>
                 <select id="time-filter" onchange="loadListings()">
@@ -171,6 +172,63 @@ let allLensListings = [];
 let brands = [];
 let mounts = [];
 let lensModels = [];
+
+// Bug fix (2026-08-25): sort state lives in JS variables (driven by
+// header clicks), not in the hidden <select>s. The <select>s stay in
+// sync so deep-link URL params (applyUrlParamsToFilters) keep working.
+let currentSort = 'date_posted';
+let currentOrder = 'desc';
+
+function setSort(col) {
+    if (currentSort === col) {
+        // Same column → flip direction
+        currentOrder = currentOrder === 'asc' ? 'desc' : 'asc';
+    } else {
+        currentSort = col;
+        // For text fields ascending A→Z; for numeric/date default to descending
+        const textCols = new Set(['title', 'location', 'brand', 'mount']);
+        currentOrder = textCols.has(col) ? 'asc' : 'desc';
+    }
+    // Sync hidden selects so URL params / deep links still work
+    const sb = document.getElementById('sort-by');
+    const so = document.getElementById('sort-order');
+    if (sb) sb.value = currentSort;
+    if (so) so.value = currentOrder;
+    updateSortArrows();
+    loadListings();
+}
+
+function updateSortArrows() {
+    document.querySelectorAll('#listings-container thead th.sortable').forEach(th => {
+        const arrow = th.querySelector('.sort-arrow');
+        if (!arrow) return;
+        arrow.textContent = (th.dataset.sort === currentSort)
+            ? (currentOrder === 'asc' ? ' ▲' : ' ▼') : '';
+    });
+}
+
+function wireSortHeaders() {
+    document.querySelectorAll('#listings-container thead th.sortable').forEach(th => {
+        th.addEventListener('click', () => {
+            const col = th.dataset.sort;
+            if (col) setSort(col);
+        });
+    });
+}
+
+function applyUrlParamsToFilters() {
+    const sp = new URLSearchParams(window.location.search);
+    if (sp.has('sort')) {
+        currentSort = sp.get('sort');
+        const sb = document.getElementById('sort-by');
+        if (sb) sb.value = currentSort;
+    }
+    if (sp.has('order')) {
+        currentOrder = sp.get('order');
+        const so = document.getElementById('sort-order');
+        if (so) so.value = currentOrder;
+    }
+}
 
 // Load lens models when brand changes
 async function onBrandFilterChange() {
@@ -419,8 +477,11 @@ async function loadListings() {
     const activeOnly = document.getElementById('active-only').checked;
     const highConfidence = document.getElementById('high-confidence').checked;
     const priceDropOnly = document.getElementById('price-drop-only').checked;
-    const sortBy = document.getElementById('sort-by').value;
-    const sortOrder = document.getElementById('sort-order').value;
+    // Bug fix (2026-08-25): read sort state from JS vars (driven by
+    // header clicks), not the hidden <select>s. The <select>s stay in
+    // sync via setSort() so deep-link URL params still work.
+    const sortBy = currentSort;
+    const sortOrder = currentOrder;
     const timeFilter = document.getElementById('time-filter').value;
     const brandFilter = document.getElementById('brand-filter').value;
     const mountFilter = document.getElementById('mount-filter').value;
@@ -478,11 +539,11 @@ async function loadListings() {
                 <thead>
                     <tr>
                         <th>Image</th>
-                        <th>Lens</th>
-                        <th>{{ t('Price') }}</th>
+                        <th class="sortable" data-sort="title">Lens<span class="sort-arrow"></span></th>
+                        <th class="sortable" data-sort="price">{{ t('Price') }}<span class="sort-arrow"></span></th>
                         <th>Brand/Mount</th>
-                        <th>Location</th>
-                        <th>Date</th>
+                        <th class="sortable" data-sort="location">Location<span class="sort-arrow"></span></th>
+                        <th class="sortable" data-sort="date_posted">Date<span class="sort-arrow"></span></th>
                         <th>Market Position</th>
                         <th>Match</th>
                         <th>Actions</th>
@@ -589,6 +650,10 @@ async function loadListings() {
 
         html += '</table>';
         container.innerHTML = html;
+        // Bug fix (2026-08-25): re-wire click handlers + repaint arrows
+        // every render, since container.innerHTML replacement wipes them.
+        wireSortHeaders();
+        updateSortArrows();
 
     } catch (error) {
         console.error('Full error:', error);
@@ -1413,6 +1478,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     await loadFilters();
     await loadLensModelsForFilter();  // Load all models initially
 
+    // Bug fix (2026-08-25): seed the JS sort state from URL params so
+    // deep links like /lenses?sort=price&order=asc actually sort that way.
+    applyUrlParamsToFilters();
+
     // Preselect model from URL if present and valid
     if (preselectedModel) {
         const modelSelect = document.getElementById('model-filter');
@@ -1455,10 +1524,43 @@ document.addEventListener('DOMContentLoaded', async () => {
 }
 .modern-panel table { width: 100%; border-collapse: collapse; font-size: 13px; }
 .modern-panel thead th {
-    text-align: left; font-size: 10.5px; font-weight: 700; text-transform: uppercase; letter-spacing: .04em;
-    color: var(--text-secondary, #6b7280); padding: 10px 12px;
-    border-bottom: 1px solid var(--card-border, #e5e7eb);
-    background: rgba(0,0,0,.02);
+    text-align: left; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em;
+    /* Bug fix (2026-08-25): 10.5px + #6b7280 combo washed out against the
+       dark card. Bumped to 12px + #fdfeff (per user feedback — even #cbd5e1
+       was still too pale). */
+    color: #fdfeff; padding: 12px 14px;
+    border-bottom: 2px solid var(--card-border, #2a2e3e);
+    background: rgba(255,255,255,.04);
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    user-select: none;
+    white-space: nowrap;
+}
+[data-theme="light"] .modern-panel thead th {
+    color: #1e293b;
+    background: #f1f5f9;
+    border-bottom-color: #cbd5e1;
+}
+/* Sortable headers */
+.modern-panel thead th.sortable { cursor: pointer; }
+.modern-panel thead th.sortable:hover {
+    background: rgba(102, 126, 234, 0.10);
+    color: #fdfeff;
+}
+[data-theme="light"] .modern-panel thead th.sortable:hover {
+    background: rgba(102, 126, 234, 0.12);
+    color: #1e293b;
+}
+.modern-panel thead th .sort-arrow {
+    display: inline-block;
+    margin-left: 4px;
+    font-size: 10px;
+    color: #818cf8;
+    opacity: 0.95;
+}
+[data-theme="light"] .modern-panel thead th .sort-arrow {
+    color: #4f46e5;
 }
 .modern-panel tbody tr {
     border-bottom: 1px solid rgba(99,102,241,.12);

@@ -3048,17 +3048,29 @@
             if (stored !== null) return stored === 'true';
             // 3. Server-injected role default
             const def = (window.userToggleDefaults || {}).hideUnmatchedListings;
-            return !!def;
+            if (def !== undefined) return !!def;
+            // 4. Bug fix (2026-08-25): anonymous visitors have no role
+            // default injected, so previously they fell through to the
+            // TOGGLE_META fallback (False = show all). The user wants
+            // non-admins — including anonymous browsers — to see only
+            // matched listings by default; admins/staff get the
+            // "Show unmatched" opt-in on each page. So default anonymous
+            // to HIDE unmatched.
+            return true;
         }
         window.shouldHideUnmatched = resolveHideUnmatched;
         window.addHideUnmatchedParam = function(url) {
-            if (!resolveHideUnmatched()) return url;
-            // Don't override an explicit hide_unmatched=0
-            if (/[?&]hide_unmatched=0(&|$)/.test(url)) return url;
-            const sep = url.includes('?') ? '&' : '?';
-            // If hide_unmatched=1 is already in the URL, leave it
-            if (/[?&]hide_unmatched=1(&|$)/.test(url)) return url;
-            return url + sep + 'hide_unmatched=1';
+            // Bug fix (2026-08-25): always pass hide_unmatched=0|1 so the
+            // server picks the same value the client computed. Previously
+            // the helper returned the URL unchanged when the user wanted
+            // to SHOW all, which meant the server fell back to its own
+            // role default (e.g. True for anonymous → still filtered).
+            // Strip any pre-existing hide_unmatched param first so we
+            // don't end up with duplicates.
+            const hide = resolveHideUnmatched();
+            let cleanUrl = url.replace(/([?&])hide_unmatched=[^&]*/g, '$1').replace(/[?&]$/, '');
+            const sep = cleanUrl.includes('?') ? '&' : '?';
+            return cleanUrl + sep + 'hide_unmatched=' + (hide ? '1' : '0');
         };
     })();
     </script>

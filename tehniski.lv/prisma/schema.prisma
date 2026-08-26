@@ -1,0 +1,371 @@
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum PostStatus {
+  draft
+  scheduled
+  published
+  archived
+}
+
+enum SourceType {
+  manual
+  newsletter
+}
+
+enum FeaturedTier {
+  big
+  medium
+}
+
+enum CommentStatus {
+  pending
+  approved
+  spam
+  deleted
+}
+
+enum CreativeKind {
+  image
+  embed
+}
+
+enum AdEventKind {
+  impression
+  click
+}
+
+enum ScrapedStatus {
+  new
+  used
+  ignored
+  failed
+}
+
+enum RunStatus {
+  in_progress
+  awaiting_editor
+  awaiting_subject
+  writing
+  published
+  failed
+}
+
+model Author {
+  id         String    @id @default(cuid())
+  name       String
+  email      String    @unique
+  bio        String?   @db.Text
+  avatar_url String?
+  is_admin   Boolean   @default(false)
+  created_at DateTime  @default(now())
+  posts      Post[]
+  comments   Comment[]
+}
+
+model Category {
+  id    String @id @default(cuid())
+  slug  String @unique
+  name  String
+  posts Post[]
+}
+
+model Post {
+  id                String          @id @default(cuid())
+  slug              String          @unique
+  title             String
+  excerpt           String          @db.Text
+  content_md        String          @db.Text
+  content_html      String          @db.Text
+  cover_image_url   String?
+  cover_image_alt   String?
+  status            PostStatus
+  publish_at        DateTime?
+  published_at      DateTime?
+  language          String          @default("lv")
+  source            SourceType      @default(manual)
+  source_scraped_id String?         @unique
+  source_url        String?
+  newsletter_run_id String?
+  author_id         String
+  category_id       String?
+  featured_tier     FeaturedTier?
+  featured_at       DateTime?
+  featured_order    Int?
+  view_count        Int             @default(0)
+  created_at        DateTime        @default(now())
+  updated_at        DateTime        @updatedAt
+  deleted_at        DateTime?
+  author            Author          @relation(fields: [author_id], references: [id])
+  category          Category?       @relation(fields: [category_id], references: [id])
+  comments          Comment[]
+  views             PostView[]
+  newsletter_run    NewsletterRun?  @relation(fields: [newsletter_run_id], references: [id])
+  ad_events         AdEvent[]
+  story_selection   StorySelection?
+
+  @@index([status, published_at(sort: Desc)])
+  @@index([featured_tier, featured_order])
+  @@index([category_id, published_at(sort: Desc)])
+}
+
+model Comment {
+  id                String        @id @default(cuid())
+  post_id           String
+  parent_id         String?
+  depth             Int           @default(0)
+  reply_count       Int           @default(0)
+  last_reply_at     DateTime?
+  author_id         String?
+  author_name       String
+  author_email_hash String
+  body              String        @db.Text
+  status            CommentStatus @default(pending)
+  is_author         Boolean       @default(false)
+  created_at        DateTime      @default(now())
+  updated_at        DateTime      @updatedAt
+  post              Post          @relation(fields: [post_id], references: [id], onDelete: Cascade)
+  author            Author?       @relation(fields: [author_id], references: [id])
+  parent            Comment?      @relation("CommentReplies", fields: [parent_id], references: [id])
+  replies           Comment[]     @relation("CommentReplies")
+
+  @@index([post_id, parent_id, status, created_at])
+  @@index([parent_id, created_at])
+}
+
+model PostView {
+  id          String   @id @default(cuid())
+  post_id     String
+  occurred_at DateTime @default(now())
+  ip_hash     String
+  referer     String?
+  user_agent  String?
+  country     String?
+  post        Post     @relation(fields: [post_id], references: [id], onDelete: Cascade)
+
+  @@index([post_id, occurred_at(sort: Desc)])
+  @@index([occurred_at(sort: Desc)])
+}
+
+model SearchQuery {
+  id           String   @id @default(cuid())
+  query        String   @db.Text
+  result_count Int
+  occurred_at  DateTime @default(now())
+  ip_hash      String?
+
+  @@index([occurred_at(sort: Desc)])
+  @@index([query])
+}
+
+model AdSlot {
+  id         String       @id @default(cuid())
+  key        String       @unique
+  name       String
+  width      Int
+  height     Int
+  active     Boolean      @default(true)
+  created_at DateTime     @default(now())
+  updated_at DateTime     @updatedAt
+  creatives  AdCreative[]
+}
+
+model AdCreative {
+  id          String       @id @default(cuid())
+  slot_id     String
+  kind        CreativeKind
+  image_url   String?
+  target_url  String?
+  alt_text    String?
+  embed_html  String?      @db.Text
+  starts_at   DateTime?
+  ends_at     DateTime?
+  weight      Int          @default(1)
+  active      Boolean      @default(true)
+  impressions Int          @default(0)
+  clicks      Int          @default(0)
+  created_at  DateTime     @default(now())
+  updated_at  DateTime     @updatedAt
+  slot        AdSlot       @relation(fields: [slot_id], references: [id], onDelete: Cascade)
+  events      AdEvent[]
+
+  @@index([slot_id, active, starts_at, ends_at])
+}
+
+model AdEvent {
+  id          String      @id @default(cuid())
+  creative_id String
+  kind        AdEventKind
+  occurred_at DateTime    @default(now())
+  ip_hash     String?
+  user_agent  String?
+  post_id     String?
+  creative    AdCreative  @relation(fields: [creative_id], references: [id], onDelete: Cascade)
+  post        Post?       @relation(fields: [post_id], references: [id], onDelete: SetNull)
+
+  @@index([creative_id, kind, occurred_at])
+}
+
+model RssSource {
+  id              String         @id @default(cuid())
+  name            String
+  feed_url        String         @unique
+  site_url        String
+  parser_config   Json           @default("{}")
+  active          Boolean        @default(true)
+  last_fetched_at DateTime?
+  last_error      String?        @db.Text
+  scrape_count    Int            @default(0)
+  created_at      DateTime       @default(now())
+  scraped_stories ScrapedStory[]
+
+  @@index([active, last_fetched_at])
+}
+
+model ScrapedStory {
+  id               String           @id @default(cuid())
+  source_id        String
+  url              String           @unique
+  url_hash         String           @unique
+  content_hash     String?
+  title            String
+  author           String?
+  published_at_src DateTime?
+  scraped_at       DateTime         @default(now())
+  language         String           @default("en")
+  markdown         String           @db.Text
+  summary          String?          @db.Text
+  word_count       Int?
+  status           ScrapedStatus    @default(new)
+  source           RssSource        @relation(fields: [source_id], references: [id])
+  story_selections StorySelection[]
+
+  @@index([scraped_at(sort: Desc)])
+  @@index([status, scraped_at(sort: Desc)])
+  @@index([content_hash])
+}
+
+model NewsletterRun {
+  id                   String           @id @default(cuid())
+  target_date          DateTime
+  previous_run_id      String?          @unique
+  started_at           DateTime         @default(now())
+  completed_at         DateTime?
+  status               RunStatus        @default(in_progress)
+  editor_feedback      String?          @db.Text
+  editor_iterations    Int              @default(0)
+  subject_main         String?
+  subject_alternatives Json?
+  selected_subject     String?
+  prompt_set           String           @default("default")
+  llm_model            String?
+  tokens_used          Int              @default(0)
+  previous_run         NewsletterRun?   @relation("PreviousRun", fields: [previous_run_id], references: [id], onDelete: SetNull)
+  next_run             NewsletterRun?   @relation("PreviousRun")
+  posts                Post[]
+  selections           StorySelection[]
+
+  @@unique([target_date])
+  @@index([target_date(sort: Desc)])
+}
+
+model StorySelection {
+  id               String        @id @default(cuid())
+  run_id           String
+  scraped_story_id String
+  rank             Int
+  approved         Boolean       @default(false)
+  notes            String?       @db.Text
+  post_id          String?       @unique
+  run              NewsletterRun @relation(fields: [run_id], references: [id], onDelete: Cascade)
+  scraped_story    ScrapedStory  @relation(fields: [scraped_story_id], references: [id])
+  post             Post?         @relation(fields: [post_id], references: [id], onDelete: SetNull)
+
+  @@index([run_id, rank])
+}
+
+model PromptTemplate {
+  id            String   @id @default(cuid())
+  key           String
+  version       Int      @default(1)
+  name          String
+  description   String?  @db.Text
+  system_prompt String   @db.Text
+  user_prompt   String   @db.Text
+  model         String   @default("unset")
+  temperature   Float    @default(0.7)
+  active        Boolean  @default(false)
+  created_at    DateTime @default(now())
+  created_by    String?
+
+  @@unique([key, version])
+  @@index([key, active])
+}
+
+model WorkerHeartbeat {
+  id         String   @id @default("singleton")
+  last_seen  DateTime @updatedAt
+  version    String?
+  started_at DateTime @default(now())
+}
+
+model Setting {
+  id    String @id @default(cuid())
+  key   String @unique
+  value String
+}
+
+// Auth.js PrismaAdapter tables (https://authjs.dev/getting-started/adapters/prisma)
+// These coexist with the Author table; the signIn callback in src/lib/auth.ts
+// upserts into Author on successful login, so Author remains the editorial record.
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime?
+  image         String?
+  accounts      Account[]
+  sessions      Session[]
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+  @@unique([identifier, token])
+}

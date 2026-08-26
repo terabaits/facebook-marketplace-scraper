@@ -180,11 +180,42 @@
 .modern-panel thead th {
     background: var(--section-bg, #f8f9fa);
     font-weight: 700;
-    color: var(--text-color, #1f2937);
-    font-size: 11.5px;
+    /* Bug fix (2026-08-25): bumped to 12px + #fdfeff for better contrast
+       in dark mode (was 11.5px + var(--text-color) which is too pale). */
+    color: #fdfeff;
+    font-size: 12px;
     text-transform: uppercase;
-    letter-spacing: 0.6px;
+    letter-spacing: 0.05em;
+    padding: 12px 14px;
     border-bottom: 2px solid var(--card-border, rgba(99,102,241,0.32));
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    user-select: none;
+    white-space: nowrap;
+}
+[data-theme="light"] .modern-panel thead th {
+    color: #1e293b;
+    background: #f1f5f9;
+}
+.modern-panel thead th.sortable { cursor: pointer; }
+.modern-panel thead th.sortable:hover {
+    background: rgba(102, 126, 234, 0.10);
+    color: #fdfeff;
+}
+[data-theme="light"] .modern-panel thead th.sortable:hover {
+    background: rgba(102, 126, 234, 0.12);
+    color: #1e293b;
+}
+.modern-panel thead th .sort-arrow {
+    display: inline-block;
+    margin-left: 4px;
+    font-size: 10px;
+    color: #818cf8;
+    opacity: 0.95;
+}
+[data-theme="light"] .modern-panel thead th .sort-arrow {
+    color: #4f46e5;
 }
 [data-theme="dark"] .modern-panel thead th {
     background: rgba(255, 255, 255, 0.04);
@@ -207,20 +238,23 @@
 <div class="section">
     <h2>🔧 Motherboard Listings</h2>
     
-    <!-- Pick a CPU to find compatible motherboards (compact, chip-style quick filter) -->
-    <div class="cpu-picker-section" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 12px; padding: 0.6rem 0.85rem; margin-bottom: 0.75rem; color: white; box-shadow: 0 4px 16px rgba(102,126,234,0.25);">
+    <!-- Pick a CPU to find compatible motherboards (compact, chip-style quick filter).
+         Layout: inline-flex on the section so it shrinks to fit content (label +
+         input + clear button) instead of stretching full width. The selected-CPU
+         card sits below inside the same section. -->
+    <div class="cpu-picker-section" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 10px; padding: 0.45rem 0.7rem; margin-bottom: 0.75rem; color: white; box-shadow: 0 4px 16px rgba(102,126,234,0.25); display: inline-flex; flex-direction: column; gap: 0.4rem; max-width: 100%;">
         <div style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
             <div style="display: flex; align-items: center; gap: 0.4rem; flex-shrink: 0;">
                 <span style="display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px; background: rgba(255,255,255,0.18); border-radius: 5px;">
                     <svg viewBox="0 0 24 24" fill="currentColor" width="13" height="13"><path d="M9 2v2H7a3 3 0 0 0-3 3v2H2v2h2v2H2v2h2v2a3 3 0 0 0 3 3h2v2h2v-2h2v2h2v-2h2v2h2v-2a3 3 0 0 0 3-3v-2h2v-2h-2v-2h2V9h-2V7a3 3 0 0 0-3-3h-2V2h-2v2h-2V2h-2v2H9V2H9zm0 4h6a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1z"/></svg>
                 </span>
-                <span style="font-size: 0.92rem; font-weight: 700; white-space: nowrap;">Pick a CPU</span>
+                <span style="font-size: 0.88rem; font-weight: 700; white-space: nowrap;">Pick a CPU</span>
             </div>
-            <div style="flex: 1; min-width: 200px; position: relative;">
-                <input type="text" id="cpu-picker-input" placeholder="e.g. i5-12600K, Ryzen 5 5600X…" style="width: 100%; padding: 0.4rem 0.7rem; border: 1px solid rgba(255,255,255,0.4); border-radius: 7px; background: rgba(255,255,255,0.95); color: #1f2937; font-size: 0.85rem;">
+            <div style="flex: 0 1 260px; min-width: 180px; position: relative;">
+                <input type="text" id="cpu-picker-input" placeholder="e.g. i5-12600K, Ryzen 5 5600X…" style="width: 100%; padding: 0.35rem 0.65rem; border: 1px solid rgba(255,255,255,0.4); border-radius: 6px; background: rgba(255,255,255,0.95); color: #1f2937; font-size: 0.82rem;">
                 <div id="cpu-picker-results" style="display: none; position: absolute; top: 100%; left: 0; right: 0; z-index: 50; background: white; color: #1f2937; border-radius: 8px; box-shadow: 0 8px 32px rgba(0,0,0,0.25); max-height: 320px; overflow-y: auto; margin-top: 4px;"></div>
             </div>
-            <button type="button" id="cpu-picker-clear" class="btn" style="background: rgba(255,255,255,0.2); color: white; border: 1px solid rgba(255,255,255,0.4); padding: 0.35rem 0.7rem; font-size: 0.8rem; display: none;">✕ Clear</button>
+            <button type="button" id="cpu-picker-clear" class="btn" style="background: rgba(255,255,255,0.2); color: white; border: 1px solid rgba(255,255,255,0.4); padding: 0.3rem 0.6rem; font-size: 0.78rem; display: none; flex-shrink: 0;">✕ Clear</button>
         </div>
         <div id="cpu-picker-selected" style="display: none; margin-top: 0.5rem; padding: 0.5rem 0.75rem; background: rgba(255,255,255,0.15); border-radius: 7px;">
             <div style="display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap;">
@@ -299,17 +333,25 @@
             <input type="checkbox" id="show-listing-id" onchange="localStorage.setItem('motherboardShowListingId', this.checked ? 'true' : 'false')">
             Show Listing ID in Popup
         </label>
-        <label>
+        <!-- Bug fix (2026-08-25): removed the Sort/Order dropdowns.
+             Sorting is now done by clicking the table column headers
+             directly. Hidden <select>s stay for deep-link URL params
+             (applyUrlParamsToFilters). -->
+        <label style="display:none;">
             <span style="font-weight: 600;">Sort:</span>
             <select id="sort-by">
-                <option value="date_posted">Date</option>
+                <option value="date_posted" selected>Date</option>
                 <option value="price">{{ t('Price') }}</option>
+                <option value="first_seen_at">First seen</option>
+                <option value="socket">Socket</option>
+                <option value="title">Listing</option>
+                <option value="location">Location</option>
             </select>
         </label>
-        <label>
+        <label style="display:none;">
             Order:
             <select id="sort-order">
-                <option value="desc">{{ t('Descending') }}</option>
+                <option value="desc" selected>{{ t('Descending') }}</option>
                 <option value="asc">{{ t('Ascending') }}</option>
             </select>
         </label>
@@ -358,6 +400,63 @@ let chipsetChart = null;
 let socketStatsChart = null;
 let allChipsets = [];
 
+// Bug fix (2026-08-25): sort state lives in JS variables (driven by
+// header clicks), not in the hidden <select>s. The <select>s stay in
+// sync so deep-link URL params (applyUrlParamsToFilters) keep working.
+let currentSort = 'date_posted';
+let currentOrder = 'desc';
+
+function setSort(col) {
+    if (currentSort === col) {
+        // Same column → flip direction
+        currentOrder = currentOrder === 'asc' ? 'desc' : 'asc';
+    } else {
+        currentSort = col;
+        // For text fields ascending A→Z; for numeric/date default to descending
+        const textCols = new Set(['title', 'location', 'socket', 'form_factor', 'chipset']);
+        currentOrder = textCols.has(col) ? 'asc' : 'desc';
+    }
+    // Sync hidden selects so URL params / deep links still work
+    const sb = document.getElementById('sort-by');
+    const so = document.getElementById('sort-order');
+    if (sb) sb.value = currentSort;
+    if (so) so.value = currentOrder;
+    updateSortArrows();
+    fetchListings();
+}
+
+function updateSortArrows() {
+    document.querySelectorAll('#listings-table thead th.sortable').forEach(th => {
+        const arrow = th.querySelector('.sort-arrow');
+        if (!arrow) return;
+        arrow.textContent = (th.dataset.sort === currentSort)
+            ? (currentOrder === 'asc' ? ' ▲' : ' ▼') : '';
+    });
+}
+
+function wireSortHeaders() {
+    document.querySelectorAll('#listings-table thead th.sortable').forEach(th => {
+        th.addEventListener('click', () => {
+            const col = th.dataset.sort;
+            if (col) setSort(col);
+        });
+    });
+}
+
+function applyUrlParamsToFilters() {
+    const sp = new URLSearchParams(window.location.search);
+    if (sp.has('sort')) {
+        currentSort = sp.get('sort');
+        const sb = document.getElementById('sort-by');
+        if (sb) sb.value = currentSort;
+    }
+    if (sp.has('order')) {
+        currentOrder = sp.get('order');
+        const so = document.getElementById('sort-order');
+        if (so) so.value = currentOrder;
+    }
+}
+
 // Fetch listings
 async function fetchListings() {
     // Show loading overlay for any user-initiated reload. The first
@@ -368,8 +467,11 @@ async function fetchListings() {
     const activeOnly = document.getElementById('active-only').checked;
     const minConfidence = document.getElementById('min-confidence').value;
     const timeFilter = document.getElementById('time-filter').value;
-    const sortBy = document.getElementById('sort-by').value;
-    const sortOrder = document.getElementById('sort-order').value;
+    // Bug fix (2026-08-25): read sort state from JS vars (driven by
+    // header clicks), not the hidden <select>s. The <select>s stay in
+    // sync via setSort() so deep-link URL params still work.
+    const sortBy = currentSort;
+    const sortOrder = currentOrder;
     const chipset = document.getElementById('chipset-filter')?.value;
     const socket = document.getElementById('socket-filter')?.value;
     const vendor = document.getElementById('vendor-filter')?.value;
@@ -555,14 +657,14 @@ function renderListings(listings) {
             <thead>
                 <tr>
                     <th style="text-align: center;">Image</th>
-                    <th style="text-align: center;">Listing</th>
+                    <th class="sortable" data-sort="title" style="text-align: center;">Listing<span class="sort-arrow"></span></th>
                     <th style="text-align: center;">Matched Model</th>
-                    <th style="text-align: center;">{{ t('Socket') }}</th>
+                    <th class="sortable" data-sort="socket" style="text-align: center;">{{ t('Socket') }}<span class="sort-arrow"></span></th>
                     <th style="text-align: center;">Form Factor</th>
                     <th style="text-align: center;">Chipset</th>
-                    <th style="text-align: center;">{{ t('Price') }}</th>
-                    <th style="text-align: center;">{{ t('Date Posted') }}</th>
-                    <th style="text-align: center;">Location</th>
+                    <th class="sortable" data-sort="price" style="text-align: center;">{{ t('Price') }}<span class="sort-arrow"></span></th>
+                    <th class="sortable" data-sort="date_posted" style="text-align: center;">{{ t('Date Posted') }}<span class="sort-arrow"></span></th>
+                    <th class="sortable" data-sort="location" style="text-align: center;">Location<span class="sort-arrow"></span></th>
                     <th style="text-align: center;">Actions</th>
                 </tr>
             </thead>
@@ -618,6 +720,10 @@ function renderListings(listings) {
     `;
 
     document.getElementById('listings-table').innerHTML = html;
+    // Bug fix (2026-08-25): re-wire click handlers + repaint arrows
+    // every render, since innerHTML replacement wipes them.
+    wireSortHeaders();
+    updateSortArrows();
 }
 
 // Render models (now showing chipsets)
@@ -1259,6 +1365,11 @@ async function flagListing(listingId, title) {
 
 // Initialize on page load
 document.addEventListener('DOMContentLoaded', function() {
+    // Bug fix (2026-08-25): seed the JS sort state from URL params so
+    // deep links like /motherboards?sort=price&order=asc actually sort
+    // that way.
+    applyUrlParamsToFilters();
+
     // Attach event listeners after functions are defined
     var socketFilter = document.getElementById('socket-filter');
     if (socketFilter) {

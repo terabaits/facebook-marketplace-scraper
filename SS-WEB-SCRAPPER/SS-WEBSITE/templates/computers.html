@@ -16,14 +16,21 @@
 
             <div class="divider"></div>
 
-            <div class="filter-group">
+            <!-- Bug fix (2026-08-25): removed the Sort/Order dropdowns.
+                 Sorting is now done by clicking the table column headers
+                 directly. Hidden <select>s stay for deep-link URL params
+                 (applyUrlParamsToFilters). -->
+            <div class="filter-group" style="display:none;">
                 <span class="filter-label">Sort</span>
                 <select id="sort-by" onchange="loadComputers()">
-                    <option value="date_posted">Date Posted</option>
+                    <option value="date_posted" selected>Date Posted</option>
                     <option value="price">Price</option>
+                    <option value="first_seen_at">First seen</option>
+                    <option value="title">Title</option>
+                    <option value="location">Location</option>
                 </select>
                 <select id="sort-order" onchange="loadComputers()">
-                    <option value="desc">Descending</option>
+                    <option value="desc" selected>Descending</option>
                     <option value="asc">Ascending</option>
                 </select>
             </div>
@@ -602,12 +609,72 @@ function toggleComputerPill(btn, key) {
     loadComputers();
 }
 
+// Bug fix (2026-08-25): sort state lives in JS variables (driven by
+// header clicks), not in the hidden <select>s. The <select>s stay in
+// sync so deep-link URL params (applyUrlParamsToFilters) keep working.
+let currentSort = 'date_posted';
+let currentOrder = 'desc';
+
+function setSort(col) {
+    if (currentSort === col) {
+        // Same column → flip direction
+        currentOrder = currentOrder === 'asc' ? 'desc' : 'asc';
+    } else {
+        currentSort = col;
+        // For text fields ascending A→Z; for numeric/date default to descending
+        const textCols = new Set(['title', 'location']);
+        currentOrder = textCols.has(col) ? 'asc' : 'desc';
+    }
+    // Sync hidden selects so URL params / deep links still work
+    const sb = document.getElementById('sort-by');
+    const so = document.getElementById('sort-order');
+    if (sb) sb.value = currentSort;
+    if (so) so.value = currentOrder;
+    updateSortArrows();
+    loadComputers();
+}
+
+function updateSortArrows() {
+    document.querySelectorAll('#listings-container thead th.sortable').forEach(th => {
+        const arrow = th.querySelector('.sort-arrow');
+        if (!arrow) return;
+        arrow.textContent = (th.dataset.sort === currentSort)
+            ? (currentOrder === 'asc' ? ' ▲' : ' ▼') : '';
+    });
+}
+
+function wireSortHeaders() {
+    document.querySelectorAll('#listings-container thead th.sortable').forEach(th => {
+        th.addEventListener('click', () => {
+            const col = th.dataset.sort;
+            if (col) setSort(col);
+        });
+    });
+}
+
+function applyUrlParamsToFilters() {
+    const sp = new URLSearchParams(window.location.search);
+    if (sp.has('sort')) {
+        currentSort = sp.get('sort');
+        const sb = document.getElementById('sort-by');
+        if (sb) sb.value = currentSort;
+    }
+    if (sp.has('order')) {
+        currentOrder = sp.get('order');
+        const so = document.getElementById('sort-order');
+        if (so) so.value = currentOrder;
+    }
+}
+
 async function loadComputers() {
     const activeOnly = document.getElementById('toggle-active') ? document.getElementById('toggle-active').classList.contains('on') : true;
     const prebuiltOnly = document.getElementById('toggle-prebuilt') ? document.getElementById('toggle-prebuilt').classList.contains('on') : false;
     const hidePrebuilt = document.getElementById('toggle-hide-prebuilt') ? document.getElementById('toggle-hide-prebuilt').classList.contains('on') : false;
-    const sortBy = document.getElementById('sort-by').value;
-    const sortOrder = document.getElementById('sort-order').value;
+    // Bug fix (2026-08-25): read sort state from JS vars (driven by
+    // header clicks), not the hidden <select>s. The <select>s stay in
+    // sync via setSort() so deep-link URL params still work.
+    const sortBy = currentSort;
+    const sortOrder = currentOrder;
     
     // Save toggle states to localStorage
     localStorage.setItem('computersPrebuiltOnly', prebuiltOnly);
@@ -639,12 +706,12 @@ async function loadComputers() {
                 <thead>
                     <tr>
                         <th>Image</th>
-                        <th>Listing</th>
-                        <th>Price</th>
+                        <th class="sortable" data-sort="title">Listing<span class="sort-arrow"></span></th>
+                        <th class="sortable" data-sort="price">Price<span class="sort-arrow"></span></th>
                         <th>Components</th>
-                        <th>Score</th>
-                        <th>Location</th>
-                        <th>Date</th>
+                        <th class="sortable" data-sort="score">Score<span class="sort-arrow"></span></th>
+                        <th class="sortable" data-sort="location">Location<span class="sort-arrow"></span></th>
+                        <th class="sortable" data-sort="date_posted">Date<span class="sort-arrow"></span></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -816,7 +883,11 @@ async function loadComputers() {
         
         html += '</tbody></table></div>';
         container.innerHTML = html;
-        
+        // Bug fix (2026-08-25): re-wire click handlers + repaint arrows
+        // every render, since innerHTML replacement wipes them.
+        wireSortHeaders();
+        updateSortArrows();
+
     } catch (error) {
         document.getElementById('listings-container').innerHTML = 
             `<div class="error">Failed to load listings: ${error.message}</div>`;
@@ -2578,10 +2649,18 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     if (savedSortBy !== null) {
         document.getElementById('sort-by').value = savedSortBy;
+        // Bug fix (2026-08-25): keep JS sort state in sync with the
+        // (now-hidden) <select>s so setSort() / loadComputers() read it.
+        currentSort = savedSortBy;
     }
     if (savedSortOrder !== null) {
         document.getElementById('sort-order').value = savedSortOrder;
+        currentOrder = savedSortOrder;
     }
+    // Bug fix (2026-08-25): URL params (?sort=…&order=…) take precedence
+    // over localStorage so deep links like /computers?sort=price&order=asc
+    // actually sort that way.
+    applyUrlParamsToFilters();
     
     // Close modals on outside click
     document.getElementById('computer-modal').addEventListener('click', function(e) {
@@ -4384,22 +4463,50 @@ document.addEventListener('DOMContentLoaded', function() {
 }
 .modern-panel table { width: 100%; border-collapse: collapse; font-size: 13px; }
 .modern-panel th, .modern-panel td { padding: 10px 12px; text-align: left; vertical-align: middle; }
-/* Bug fix: column headers were using --text-muted (#6b7280 / #9ca3af) which
-   looked washed out on both light and dark backgrounds. Use --text-color
-   (slate-800 / light-gray) at 700 weight so the labels read clearly. */
+/* Bug fix (2026-08-25): column headers were too pale in dark mode. Bumped
+   to 12px + #fdfeff (per user feedback — even #cbd5e1 was still too pale). */
 .modern-panel thead th {
     background: var(--section-bg, #f8f9fa);
     font-weight: 700;
-    color: var(--text-color, #1f2937);
-    font-size: 11px;
+    color: #fdfeff;
+    font-size: 12px;
     text-transform: uppercase;
-    letter-spacing: 0.4px;
+    letter-spacing: 0.05em;
+    padding: 12px 14px;
     border-bottom: 2px solid var(--card-border, rgba(99,102,241,0.25));
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    user-select: none;
+    white-space: nowrap;
 }
 [data-theme="dark"] .modern-panel thead th {
     background: rgba(255,255,255,0.04);
-    color: #f1f5f9;
+    color: #fdfeff;
     border-bottom-color: rgba(255,255,255,0.12);
+}
+[data-theme="light"] .modern-panel thead th {
+    color: #1e293b;
+    background: #f1f5f9;
+}
+.modern-panel thead th.sortable { cursor: pointer; }
+.modern-panel thead th.sortable:hover {
+    background: rgba(102, 126, 234, 0.10);
+    color: #fdfeff;
+}
+[data-theme="light"] .modern-panel thead th.sortable:hover {
+    background: rgba(102, 126, 234, 0.12);
+    color: #1e293b;
+}
+.modern-panel thead th .sort-arrow {
+    display: inline-block;
+    margin-left: 4px;
+    font-size: 10px;
+    color: #818cf8;
+    opacity: 0.95;
+}
+[data-theme="light"] .modern-panel thead th .sort-arrow {
+    color: #4f46e5;
 }
 .modern-panel tbody tr {
     border-bottom: 1px solid var(--card-border, rgba(99,102,241,0.08));

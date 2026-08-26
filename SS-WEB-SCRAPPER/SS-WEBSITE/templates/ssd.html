@@ -13,6 +13,11 @@
         box-shadow: 0 1px 3px rgba(0,0,0,0.08);
         border: 1px solid var(--card-border, #e5e7eb);
         overflow: hidden;
+        /* Bug fix (2026-08-25): without `width: 100%` the panel shrank
+           to fit its content (just the table's natural width) and the
+           table inside looked squeezed. The container is the full-width
+           #listings-container, so the panel should fill it. */
+        width: 100%;
     }
     [data-theme="dark"] .modern-panel {
         box-shadow: 0 1px 3px rgba(0,0,0,0.4);
@@ -86,38 +91,46 @@
        on hover. The .visually-hidden <select> underneath stays in the
        DOM so the rest of the page (loadListings, filter state) keeps
        working without rewiring. */
+    /* Bug fix (2026-08-25): the sort-direction toggle used to be a
+       pill-shaped button (rounded border + background + glow) sitting
+       OUTSIDE the "Sort:" label, between the Sort dropdown and the
+       Time dropdown. User asked to (a) remove the circle around the
+       arrow and (b) move the arrow so it sits right next to the
+       "Sort:" label. So: strip all button styling (no bg/border/radius/
+       padding/glow), make it a transparent inline clickable arrow,
+       and let the layout flow put it next to the label text. */
     .neon-sort-toggle {
         display: inline-flex;
         align-items: center;
-        gap: 0.45rem;
-        padding: 0.4rem 0.85rem;
-        background: rgba(8, 14, 30, 0.85);
+        justify-content: center;
+        gap: 0;
+        padding: 0;
+        margin: 0 0.25rem 0 0.1rem;
+        background: transparent;
         color: #5eead4;
-        border: 1.5px solid rgba(94, 234, 212, 0.55);
-        border-radius: 999px;
+        border: none;
+        border-radius: 0;
         font-weight: 700;
-        font-size: 0.8rem;
-        letter-spacing: 0.06em;
-        text-transform: uppercase;
+        font-size: 0.85rem;
+        letter-spacing: 0;
+        text-transform: none;
         cursor: pointer;
-        transition: border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease, transform 0.18s ease;
-        box-shadow: 0 0 0 rgba(94, 234, 212, 0), inset 0 0 0 rgba(94, 234, 212, 0);
-        position: relative;
-        overflow: hidden;
+        transition: color 0.2s ease, transform 0.18s ease;
+        box-shadow: none;
+        position: static;
+        overflow: visible;
+        vertical-align: middle;
     }
     .neon-sort-toggle:hover {
         color: #f0abfc;
-        border-color: rgba(240, 171, 252, 0.85);
-        box-shadow: 0 0 12px rgba(94, 234, 212, 0.45),
-                    0 0 24px rgba(240, 171, 252, 0.25),
-                    inset 0 0 6px rgba(240, 171, 252, 0.15);
+        box-shadow: none;
     }
     .neon-sort-toggle:active {
         transform: scale(0.96);
     }
     .neon-sort-toggle[data-state="asc"] {
         color: #f0abfc;
-        border-color: rgba(240, 171, 252, 0.85);
+        border-color: transparent;
     }
     .neon-sort-label { line-height: 1; }
     .neon-sort-arrow {
@@ -655,27 +668,32 @@ window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', win
             <input type="checkbox" id="active-only" checked class="hidden-filter">
             <input type="checkbox" id="high-confidence" checked class="hidden-filter">
 
-            <!-- Sort row: "Sort:" + sort-by dropdown + SORT toggle button
-                 (no "Order:" label anymore; the button is right of the
-                 dropdown and shows the word "SORT" with the rotating arrow) -->
-            <label>
+            <!-- Sort row: "Sort:" + arrow toggle + sort-by dropdown.
+                 (Bug fix 2026-08-25: arrow moved INSIDE the label,
+                 right after the "Sort:" text, and the pill-style
+                 background/border was stripped so the arrow sits
+                 as a plain inline icon next to the label. We also
+                 needed `!important` on the flex direction because
+                 base.html's `.filters label` rule forces column
+                 layout for every label — without it the arrow and
+                 dropdown wrapped onto separate lines below "Sort:".) -->
+            <label class="sort-label" style="display:inline-flex !important;flex-direction:row !important;align-items:center;gap:0.4rem;flex-wrap:nowrap !important;white-space:nowrap;">
                 Sort:
+                <button type="button" id="sort-order-toggle" class="neon-sort-toggle" data-state="desc"
+                        title="Click to flip sort direction (currently Descending)"
+                        onclick="flipSortOrder()">
+                    <span class="neon-sort-arrow" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 4v16"/>
+                            <path d="M5 13l7 7 7-7"/>
+                        </svg>
+                    </span>
+                </button>
                 <select id="sort-by" onchange="loadListings()">
                     <option value="date_posted">{{ t('Date Posted') }}</option>
                     <option value="price">{{ t('Price') }}</option>
                 </select>
             </label>
-            <button type="button" id="sort-order-toggle" class="neon-sort-toggle" data-state="desc"
-                    title="Click to flip sort direction (currently Descending)"
-                    onclick="flipSortOrder()">
-                <span class="neon-sort-label">SORT</span>
-                <span class="neon-sort-arrow" aria-hidden="true">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M12 4v16"/>
-                        <path d="M5 13l7 7 7-7"/>
-                    </svg>
-                </span>
-            </button>
             <select id="sort-order" onchange="loadListings()" class="visually-hidden" aria-hidden="true">
                 <option value="desc">{{ t('Descending') }}</option>
                 <option value="asc">{{ t('Ascending') }}</option>
@@ -684,39 +702,44 @@ window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', win
             <!-- Interface type: one icon button per option (vendor-style).
                  Each button sets the underlying <select>; the active one
                  gets the filled gradient. Layout mirrors the GPU's
-                 vendor-icon-bar so it's familiar to users. -->
-            <span class="interface-type-label">Interface:</span>
-            <div class="filter-icon-bar interface-icon-bar" id="interface-type-bar">
-                <button type="button" class="filter-icon-btn interface-all" data-interface="" title="All interfaces" data-active="true" onclick="selectInterfaceType('')">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <circle cx="12" cy="12" r="9"/>
-                        <path d="M8 12h8M12 8v8"/>
-                    </svg>
-                </button>
-                <button type="button" class="filter-icon-btn interface-sata" data-interface="SATA" title="SATA" data-active="false" onclick="selectInterfaceType('SATA')">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <rect x="2.5" y="7" width="19" height="10" rx="2"/>
-                        <path d="M6 11h12M6 14h8"/>
-                    </svg>
-                </button>
-                <button type="button" class="filter-icon-btn interface-nvme" data-interface="NVMe" title="NVMe" data-active="false" onclick="selectInterfaceType('NVMe')">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M13 2L4 14h7l-1 8 9-12h-7l1-8z"/>
-                    </svg>
-                </button>
-                <button type="button" class="filter-icon-btn interface-portable" data-interface="Portable" title="Portable" data-active="false" onclick="selectInterfaceType('Portable')">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <rect x="3" y="9" width="18" height="8" rx="1.5"/>
-                        <path d="M7 13h2M16 12v2"/>
-                    </svg>
-                </button>
-                <button type="button" class="filter-icon-btn interface-other" data-interface="Other" title="Other" data-active="false" onclick="selectInterfaceType('Other')">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <circle cx="12" cy="12" r="9"/>
-                        <path d="M9.5 9.5a2.5 2.5 0 0 1 5 0c0 1.5-2.5 2-2.5 3.5"/>
-                        <circle cx="12" cy="17" r="0.5" fill="currentColor"/>
-                    </svg>
-                </button>
+                 vendor-icon-bar so it's familiar to users.
+                 Bug fix (2026-08-25): the "Interface:" label used to sit
+                 BESIDE the icons, making the filter bar 2 rows tall.
+                 Moved the label ABOVE the icons so the row stays flat. -->
+            <div class="interface-type-wrap" style="display: flex; flex-direction: column; align-items: flex-start; gap: 0.25rem;">
+                <span class="interface-type-label" style="font-size: 0.72rem; font-weight: 600; opacity: 0.8; letter-spacing: 0.3px; text-transform: uppercase;">Interface:</span>
+                <div class="filter-icon-bar interface-icon-bar" id="interface-type-bar">
+                    <button type="button" class="filter-icon-btn interface-all" data-interface="" title="All interfaces" data-active="true" onclick="selectInterfaceType('')">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="9"/>
+                            <path d="M8 12h8M12 8v8"/>
+                        </svg>
+                    </button>
+                    <button type="button" class="filter-icon-btn interface-sata" data-interface="SATA" title="SATA" data-active="false" onclick="selectInterfaceType('SATA')">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="2.5" y="7" width="19" height="10" rx="2"/>
+                            <path d="M6 11h12M6 14h8"/>
+                        </svg>
+                    </button>
+                    <button type="button" class="filter-icon-btn interface-nvme" data-interface="NVMe" title="NVMe" data-active="false" onclick="selectInterfaceType('NVMe')">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M13 2L4 14h7l-1 8 9-12h-7l1-8z"/>
+                        </svg>
+                    </button>
+                    <button type="button" class="filter-icon-btn interface-portable" data-interface="Portable" title="Portable" data-active="false" onclick="selectInterfaceType('Portable')">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="3" y="9" width="18" height="8" rx="1.5"/>
+                            <path d="M7 13h2M16 12v2"/>
+                        </svg>
+                    </button>
+                    <button type="button" class="filter-icon-btn interface-other" data-interface="Other" title="Other" data-active="false" onclick="selectInterfaceType('Other')">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="9"/>
+                            <path d="M9.5 9.5a2.5 2.5 0 0 1 5 0c0 1.5-2.5 2-2.5 3.5"/>
+                            <circle cx="12" cy="17" r="0.5" fill="currentColor"/>
+                        </svg>
+                    </button>
+                </div>
             </div>
             <select id="interface-type-filter" onchange="loadListings()" class="visually-hidden" aria-hidden="true">
                 <option value="" selected>{{ t('All') }}</option>
@@ -1514,7 +1537,14 @@ function renderCostPerGbTimelineChart(timeSeriesData) {
     });
 }
 
-// Render simple list of capacity ranges with average prices
+// Render simple list of capacity ranges with average prices.
+//
+// Bug fix (2026-08-25): each box used to be a static div. The user
+// asked for click-to-view-price-history-over-time for that capacity.
+// We now wire each box to fetch `/api/ssd-price-history-by-capacity`
+// and render a small inline Chart.js sparkline. The chart is
+// lazily created and re-used if the user clicks the same box twice
+// (toggle the visibility instead of re-fetching).
 function renderAvgPriceList(rangedData) {
     const listEl = document.getElementById('avgPriceList');
     if (!listEl) return;
@@ -1525,12 +1555,145 @@ function renderAvgPriceList(rangedData) {
     }
 
     listEl.innerHTML = rangedData.map(d => `
-        <div class="price-list-item">
+        <div class="price-list-item" data-capacity-gb="${d.capacity_gb || ''}" data-label="${(d.label || '').replace(/"/g,'&quot;')}" role="button" tabindex="0"
+             title="Click to view ${d.label} price history over time"
+             style="cursor:pointer;">
             <div class="range-label">${d.label}</div>
             <div class="range-price">€${d.avg_price.toFixed(2)}</div>
-            <div class="range-count">${d.listing_count} listing${d.listing_count === 1 ? '' : 's'}</div>
+            <div class="range-count">${d.listing_count} listing${d.listing_count === 1 ? '' : 's'} · click for history</div>
         </div>
     `).join('');
+
+    // Wire click handlers
+    listEl.querySelectorAll('.price-list-item').forEach(item => {
+        const toggle = (e) => {
+            if (e) { e.preventDefault(); e.stopPropagation(); }
+            const cap = item.getAttribute('data-capacity-gb');
+            if (!cap) return;
+            const label = item.getAttribute('data-label') || cap + 'GB';
+            showCapacityHistory(parseInt(cap, 10), label, item);
+        };
+        item.addEventListener('click', toggle);
+        item.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') toggle(e); });
+    });
+}
+
+// Show a price-history chart for a single capacity bucket.
+// Renders an inline modal overlay (re-uses .ram-popup-history table
+// styling) so the user can see monthly avg price + listing count
+// for that capacity.
+let _capacityChart = null;
+function showCapacityHistory(capacityGb, label, anchorItem) {
+    // Toggle: if the modal is already open for THIS capacity, close it.
+    const existing = document.getElementById('capacity-history-modal');
+    if (existing) {
+        const sameCap = existing.getAttribute('data-capacity') === String(capacityGb);
+        existing.remove();
+        if (sameCap) {
+            if (_capacityChart) { try { _capacityChart.destroy(); } catch (e) {} _capacityChart = null; }
+            return;
+        }
+        if (_capacityChart) { try { _capacityChart.destroy(); } catch (e) {} _capacityChart = null; }
+    }
+
+    const wrap = document.createElement('div');
+    wrap.id = 'capacity-history-modal';
+    wrap.setAttribute('data-capacity', String(capacityGb));
+    wrap.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:3000;display:flex;align-items:center;justify-content:center;padding:1rem;';
+    wrap.innerHTML = `
+        <div style="background:var(--modal-bg,#1e293b);color:var(--text-color,#1f2937);border-radius:12px;max-width:720px;width:100%;max-height:90vh;overflow:auto;box-shadow:0 16px 48px rgba(0,0,0,0.4);">
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:1rem 1.25rem;border-bottom:1px solid var(--ram-border,#e5e7eb);">
+                <h3 style="margin:0;font-size:1.1rem;">📈 ${label} — price history</h3>
+                <button type="button" class="modal-close" style="background:none;border:none;font-size:1.4rem;cursor:pointer;color:var(--text-color);" aria-label="Close">×</button>
+            </div>
+            <div style="padding:1rem 1.25rem;">
+                <div id="capacity-history-chart-wrap" style="height:280px;margin-bottom:1rem;"><div class="loading">Loading ${label} history…</div></div>
+                <div id="capacity-history-table" style="font-size:0.82rem;color:var(--text-muted,#6b7280);"></div>
+            </div>
+        </div>
+    `;
+    document.body.appendChild(wrap);
+    document.body.classList.add('modal-open');
+    document.documentElement.classList.add('modal-open');
+
+    const close = () => {
+        wrap.remove();
+        if (_capacityChart) { try { _capacityChart.destroy(); } catch (e) {} _capacityChart = null; }
+        document.body.classList.remove('modal-open');
+        document.documentElement.classList.remove('modal-open');
+    };
+    wrap.querySelector('.modal-close').addEventListener('click', close);
+    wrap.addEventListener('click', (e) => { if (e.target === wrap) close(); });
+
+    // Fetch + draw
+    fetch(`/api/ssd-price-history-by-capacity?capacity_gb=${encodeURIComponent(capacityGb)}`)
+        .then(r => r.ok ? r.json() : null)
+        .then(data => {
+            const wrapEl = document.getElementById('capacity-history-chart-wrap');
+            const tblEl = document.getElementById('capacity-history-table');
+            if (!wrapEl || !data || !data.success || !data.history || data.history.length === 0) {
+                if (wrapEl) wrapEl.innerHTML = '<div class="loading">No history available for this capacity yet.</div>';
+                if (tblEl) tblEl.textContent = 'Once listings are re-crawled across multiple months, you\'ll see a price history here.';
+                return;
+            }
+            // Build a Chart.js line chart
+            const labels = data.history.map(h => {
+                const d = new Date(h.month);
+                return d.toLocaleDateString('en-GB', { month: 'short', year: '2-digit' });
+            });
+            const avg = data.history.map(h => h.avg_price);
+            const counts = data.history.map(h => h.listing_count);
+            wrapEl.innerHTML = '<canvas id="capacity-history-canvas"></canvas>';
+            const ctx = document.getElementById('capacity-history-canvas');
+            if (!ctx) return;
+            // Destroy any prior chart (defensive — should already be null)
+            if (_capacityChart) { try { _capacityChart.destroy(); } catch (e) {} }
+            _capacityChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: 'Avg price (€)',
+                            data: avg,
+                            borderColor: '#667eea',
+                            backgroundColor: 'rgba(102,126,234,0.15)',
+                            fill: true,
+                            tension: 0.25,
+                            yAxisID: 'y',
+                        },
+                        {
+                            label: 'Listings',
+                            data: counts,
+                            borderColor: 'rgba(118,75,162,0.6)',
+                            backgroundColor: 'rgba(118,75,162,0.0)',
+                            borderDash: [4, 4],
+                            fill: false,
+                            tension: 0.2,
+                            yAxisID: 'y1',
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    interaction: { mode: 'index', intersect: false },
+                    scales: {
+                        y: { position: 'left', title: { display: true, text: 'Avg €' } },
+                        y1: { position: 'right', grid: { drawOnChartArea: false }, title: { display: true, text: 'Listings' } },
+                    },
+                    plugins: { legend: { position: 'bottom' } }
+                }
+            });
+            if (tblEl) {
+                tblEl.innerHTML = `${data.history.length} month${data.history.length === 1 ? '' : 's'} of data. ` +
+                    `From €${Math.min(...avg).toFixed(0)} (low) to €${Math.max(...avg).toFixed(0)} (high).`;
+            }
+        })
+        .catch(() => {
+            const wrapEl = document.getElementById('capacity-history-chart-wrap');
+            if (wrapEl) wrapEl.innerHTML = '<div class="loading">Failed to load history.</div>';
+        });
 }
 
 // Existing loadListings function
@@ -2183,6 +2346,10 @@ function showSharedListingDetail(listingId) {
                     ${row.listing_url ? `<a href="${row.listing_url}" target="_blank" rel="noopener" class="ram-popup-btn primary">View on ss.com ↗</a>` : ''}
                     <button class="ram-popup-btn" onclick="showFlagModal('${row.listing_id}')">🚩 Flag</button>
                 </div>
+                ${row.description ? `
+                <h3 class="ram-popup-h" style="margin-top:14px;">📄 Description</h3>
+                <div class="ram-popup-description" style="padding:0.6rem 0.75rem;background:var(--card-bg-soft,rgba(0,0,0,0.03));border-radius:6px;border:1px solid var(--ram-border,#e5e7eb);font-size:0.82rem;line-height:1.5;white-space:pre-wrap;color:var(--text-color);max-height:200px;overflow-y:auto;">${(row.description || '').replace(/</g, '&lt;').replace(/>/g, '&gt;')}</div>
+                ` : ''}
             </div>
         </div>
 
@@ -2197,10 +2364,8 @@ function showSharedListingDetail(listingId) {
             ${capGb ? `<div class="rp-spec"><span class="rp-spec-k">Cost / GB</span><span class="rp-spec-v">€${(price / capGb).toFixed(3)}</span></div>` : ''}
         </div>
 
-        ${row.description ? `
-        <h3 class="ram-popup-h" style="margin-top:18px;">📄 Description</h3>
-        <div class="ram-popup-description" style="padding:0.75rem 1rem;background:var(--card-bg-soft,rgba(0,0,0,0.03));border-radius:6px;border:1px solid var(--ram-border,#e5e7eb);font-size:0.875rem;line-height:1.55;white-space:pre-wrap;color:var(--text-color);max-height:240px;overflow-y:auto;">${(row.description || '').replace(/</g, '&lt;').replace(/>/g, '&gt;')}</div>
-        ` : ''}
+        <h3 class="ram-popup-h" style="margin-top:18px;">📊 Price Analysis <span class="ram-popup-h-meta" id="sld-analysis-meta">loading…</span></h3>
+        <div id="sld-price-analysis" class="ram-popup-analysis"></div>
 
         <h3 class="ram-popup-h" style="margin-top:18px;">📈 Price History <span class="ram-popup-h-meta" id="sld-history-count"></span></h3>
         <div id="sld-price-history" class="ram-popup-history"></div>
@@ -2214,13 +2379,13 @@ function showSharedListingDetail(listingId) {
         .then(history => {
             if (!histEl) return;
             if (!Array.isArray(history) || history.length === 0) {
-                if (histCount) histCount.textContent = '— first price snapshot only';
+                if (histCount) histCount.textContent = '— no snapshots yet';
                 histEl.outerHTML = `
                     <div class="ram-popup-empty" style="display:flex;align-items:center;gap:0.75rem;">
                         <div style="font-size:1.5rem;">📸</div>
                         <div>
-                            <div style="font-weight:600;color:var(--ram-text,#1e293b);">No price changes recorded yet</div>
-                            <div style="font-size:0.78rem;margin-top:2px;">This listing only has one price snapshot so far. We'll show the price history here once a price change is detected.</div>
+                            <div style="font-weight:600;color:var(--ram-text,#1e293b);">No price snapshots yet</div>
+                            <div style="font-size:0.78rem;margin-top:2px;">This listing hasn't been re-crawled, so we have only the current price. Price history will appear here after the next scrape.</div>
                         </div>
                     </div>`;
                 return;
@@ -2229,12 +2394,19 @@ function showSharedListingDetail(listingId) {
             // next-older snapshot. Repeated same-price snapshots are noise
             // (re-crawls without a change). History is ordered newest-first,
             // so `history[i+1]` is the previous (older) price for row `i`.
+            //
+            // Bug fix (2026-08-25): the previous version also included the
+            // OLDEST record (which has `prev === null`) as a "change". With
+            // only 1 history record, that meant "1 price change recorded"
+            // even though nothing had actually changed. Now we only count
+            // rows where the older snapshot is non-null AND the price
+            // differs from it.
             const changedRows = [];
             for (let i = 0; i < history.length; i++) {
                 const cur = Number(history[i].price_eur);
                 const olderRow = history[i + 1];
                 const prev = olderRow ? Number(olderRow.price_eur) : null;
-                if (prev === null || prev !== cur) {
+                if (prev !== null && Number.isFinite(prev) && prev !== cur) {
                     changedRows.push({ h: history[i], prev });
                 }
             }
@@ -2253,9 +2425,19 @@ function showSharedListingDetail(listingId) {
                     prev: Number(newest.h.price_eur)
                 });
             }
+            // Bug fix (2026-08-25): the count meta was "1 price change
+            // recorded" even when the single recorded price never changed
+            // (i.e. the only row in changedRows was the oldest snapshot,
+            // and the listing's current price matched it). Now we count
+            // only the REAL change events (excluding the synthetic "current"
+            // row) and fall back to "no price changes" when there are 0.
+            const realChangeCount = changedRows.filter(r => !r.h._synthetic).length;
             if (histCount) {
-                const real = changedRows.filter(r => !r.h._synthetic).length;
-                histCount.textContent = `${real} price change${real === 1 ? '' : 's'} recorded`;
+                if (realChangeCount === 0) {
+                    histCount.textContent = `— ${history.length} snapshot${history.length === 1 ? '' : 's'}, no changes`;
+                } else {
+                    histCount.textContent = `— ${realChangeCount} change${realChangeCount === 1 ? '' : 's'} across ${history.length} snapshot${history.length === 1 ? '' : 's'}`;
+                }
             }
             if (changedRows.length === 0) {
                 histEl.innerHTML = `
@@ -2263,12 +2445,54 @@ function showSharedListingDetail(listingId) {
                         <div style="font-size:1.5rem;">📸</div>
                         <div>
                             <div style="font-weight:600;">Price has not changed since first snapshot</div>
-                            <div style="font-size:0.78rem;margin-top:2px;">All ${history.length} recorded snapshots show the same price (€${Number(history[0].price_eur).toFixed(0)}).</div>
+                            <div style="font-size:0.78rem;margin-top:2px;">All ${history.length} recorded snapshot${history.length === 1 ? '' : 's'} show${history.length === 1 ? 's' : ''} the same price (€${Number(history[0].price_eur).toFixed(0)}).</div>
                         </div>
                     </div>`;
                 return;
             }
+            // Bug fix (2026-08-25): improved the table visual — added a
+            // summary header (lowest / highest / latest), a sparkline-style
+            // mini-chart, and a horizontal price bar so the user can see
+            // the price trajectory at a glance. The data table is still
+            // below for detail.
+            const allPrices = history.map(h => Number(h.price_eur)).filter(Number.isFinite);
+            const lo = allPrices.length ? Math.min(...allPrices) : 0;
+            const hi = allPrices.length ? Math.max(...allPrices) : 0;
+            const latest = history[0] ? Number(history[0].price_eur) : 0;
+            const range = hi - lo || 1;
+            const barPct = (v) => Math.max(0, Math.min(100, ((v - lo) / range) * 100));
+            const fmtDate = (d) => d ? new Date(d).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: '2-digit' }) : '—';
             histEl.innerHTML = `
+                <div style="display:flex;gap:0.75rem;flex-wrap:wrap;margin-bottom:0.85rem;padding:0.6rem 0.75rem;background:var(--card-bg-soft,rgba(99,102,241,0.06));border:1px solid var(--ram-border,#e5e7eb);border-radius:8px;">
+                    <div style="flex:1;min-width:80px;">
+                        <div style="font-size:0.65rem;text-transform:uppercase;letter-spacing:0.4px;color:var(--text-muted,#6b7280);font-weight:600;">Lowest</div>
+                        <div style="font-size:1.05rem;font-weight:700;color:#16a34a;">€${lo.toFixed(0)}</div>
+                    </div>
+                    <div style="flex:1;min-width:80px;">
+                        <div style="font-size:0.65rem;text-transform:uppercase;letter-spacing:0.4px;color:var(--text-muted,#6b7280);font-weight:600;">Highest</div>
+                        <div style="font-size:1.05rem;font-weight:700;color:#dc2626;">€${hi.toFixed(0)}</div>
+                    </div>
+                    <div style="flex:1;min-width:80px;">
+                        <div style="font-size:0.65rem;text-transform:uppercase;letter-spacing:0.4px;color:var(--text-muted,#6b7280);font-weight:600;">Latest</div>
+                        <div style="font-size:1.05rem;font-weight:700;color:var(--text-color,#1f2937);">€${latest.toFixed(0)}</div>
+                    </div>
+                    <div style="flex:1;min-width:80px;">
+                        <div style="font-size:0.65rem;text-transform:uppercase;letter-spacing:0.4px;color:var(--text-muted,#6b7280);font-weight:600;">Snapshots</div>
+                        <div style="font-size:1.05rem;font-weight:700;color:var(--text-color,#1f2937);">${history.length}</div>
+                    </div>
+                </div>
+                <div style="margin-bottom:0.85rem;padding:0.5rem 0.75rem;background:var(--card-bg-soft,rgba(0,0,0,0.02));border:1px solid var(--ram-border,#e5e7eb);border-radius:8px;">
+                    <div style="font-size:0.7rem;color:var(--text-muted,#6b7280);margin-bottom:0.4rem;display:flex;justify-content:space-between;">
+                        <span>€${lo.toFixed(0)}</span><span>€${hi.toFixed(0)}</span>
+                    </div>
+                    <div style="position:relative;height:8px;background:linear-gradient(to right, #16a34a 0%, #fbbf24 50%, #dc2626 100%);border-radius:4px;overflow:hidden;">
+                        ${changedRows.slice(0, 12).map(({ h }) => {
+                            const v = Number(h.price_eur);
+                            if (!Number.isFinite(v)) return '';
+                            return `<div title="€${v.toFixed(0)} on ${fmtDate(h.recorded_at)}" style="position:absolute;top:0;bottom:0;left:${barPct(v)}%;width:2px;background:var(--text-color,#1f2937);opacity:0.85;"></div>`;
+                        }).join('')}
+                    </div>
+                </div>
                 <table class="ram-popup-history-table" style="width:100%;border-collapse:collapse;font-size:0.85rem;">
                     <thead>
                         <tr style="border-bottom:1px solid var(--ram-border,#e5e7eb);text-align:left;color:var(--text-muted,#6b7280);">
@@ -2289,7 +2513,7 @@ function showSharedListingDetail(listingId) {
                             const color = change < 0 ? '#16a34a' : (change > 0 ? '#dc2626' : '#6b7280');
                             return `
                                 <tr style="border-bottom:1px solid var(--ram-border,#e5e7eb);${isCur ? 'background:rgba(99,102,241,0.08);font-weight:600;' : ''}">
-                                    <td style="padding:0.4rem 0.5rem;">${h.recorded_at ? new Date(h.recorded_at).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: '2-digit' }) : '—'}${isCur ? ' <span style="font-size:0.7rem;color:#4f46e5;">(current)</span>' : ''}</td>
+                                    <td style="padding:0.4rem 0.5rem;">${fmtDate(h.recorded_at)}${isCur ? ' <span style="font-size:0.7rem;color:#4f46e5;">(current)</span>' : ''}</td>
                                     <td style="padding:0.4rem 0.5rem;text-align:right;">€${Number(h.price_eur || 0).toFixed(0)}</td>
                                     <td style="padding:0.4rem 0.5rem;text-align:right;color:${color};">
                                         ${hasPrev && change !== 0
@@ -2307,6 +2531,77 @@ function showSharedListingDetail(listingId) {
             if (histCount) histCount.textContent = '—';
             if (histEl) histEl.outerHTML = `<div class="ram-popup-empty">No price history available for this listing.</div>`;
         });
+
+    // Async price analysis (same model + same capacity comparisons)
+    const analysisEl = document.getElementById('sld-price-analysis');
+    const analysisMeta = document.getElementById('sld-analysis-meta');
+    if (analysisEl) {
+        fetch(`/api/ssds/${encodeURIComponent(listingId)}/price-analysis`)
+            .then(r => r.ok ? r.json() : null)
+            .then(data => {
+                if (!analysisEl || !data || !data.success) {
+                    if (analysisEl) analysisEl.innerHTML = '<div class="ram-popup-empty">No price comparison available.</div>';
+                    if (analysisMeta) analysisMeta.textContent = '— unavailable';
+                    return;
+                }
+                const cur = Number(data.current_price || 0);
+                const sameModel = data.sameModel;
+                const sameCap = data.sameCapacity;
+                // Build the comparison cards. We highlight the delta from
+                // the current listing's price to the comparison average
+                // (green if below, red if above).
+                const fmtEur = (n) => '€' + (Number(n) || 0).toFixed(0);
+                const fmtPct = (n) => (n >= 0 ? '+' : '') + n.toFixed(1) + '%';
+                const delta = (comp) => {
+                    if (!comp || !comp.avg || !cur) return null;
+                    return ((cur - comp.avg) / comp.avg) * 100;
+                };
+                const dModel = delta(sameModel);
+                const dCap = delta(sameCap);
+                const colorFor = (pct) => pct < 0 ? '#16a34a' : (pct > 0 ? '#dc2626' : '#6b7280');
+                const card = (title, comp, deltaPct, badge) => {
+                    if (!comp || !comp.count) return '';
+                    return `
+                        <div style="flex:1;min-width:240px;padding:0.75rem;background:var(--card-bg-soft,rgba(99,102,241,0.06));border:1px solid var(--ram-border,#e5e7eb);border-radius:8px;">
+                            <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:0.4rem;">
+                                <div style="font-size:0.78rem;font-weight:700;color:var(--text-color);text-transform:uppercase;letter-spacing:0.3px;">${title}</div>
+                                ${badge ? `<div style="font-size:0.7rem;padding:2px 6px;border-radius:8px;background:rgba(99,102,241,0.12);color:#4f46e5;font-weight:600;">${badge}</div>` : ''}
+                            </div>
+                            <div style="display:flex;align-items:baseline;gap:0.5rem;margin-bottom:0.3rem;">
+                                <div style="font-size:1.4rem;font-weight:800;color:var(--text-color);">${fmtEur(comp.avg)}</div>
+                                ${deltaPct !== null && Number.isFinite(deltaPct) ? `<div style="font-size:0.85rem;font-weight:700;color:${colorFor(deltaPct)};">${fmtPct(deltaPct)} vs this</div>` : ''}
+                            </div>
+                            <div style="display:flex;gap:0.85rem;font-size:0.75rem;color:var(--text-muted,#6b7280);">
+                                <span title="Number of other listings compared">📦 <strong style="color:var(--text-color);">${comp.count}</strong> listing${comp.count === 1 ? '' : 's'}</span>
+                                <span title="Lowest price among the comparison set">⬇ ${fmtEur(comp.min)}</span>
+                                <span title="Highest price among the comparison set">⬆ ${fmtEur(comp.max)}</span>
+                                ${comp.median != null ? `<span title="Median price">≈ ${fmtEur(comp.median)}</span>` : ''}
+                            </div>
+                        </div>
+                    `;
+                };
+                const mBadge = sameModel ? `same model` : '';
+                const cBadge = sameCap ? `${capGb ? capGb + 'GB' : 'similar capacity'}` : '';
+                const html = `
+                    <div style="display:flex;gap:0.75rem;flex-wrap:wrap;">
+                        ${card('Same model', sameModel, dModel, mBadge)}
+                        ${card('Same capacity', sameCap, dCap, cBadge)}
+                    </div>
+                    ${!sameModel && !sameCap ? '<div style="font-size:0.78rem;color:var(--text-muted,#6b7280);margin-top:0.5rem;">No comparison data — this SSD/capacity is too rare in the listings to compute a meaningful average.</div>' : ''}
+                `;
+                analysisEl.innerHTML = html;
+                if (analysisMeta) {
+                    const parts = [];
+                    if (sameModel) parts.push(`${sameModel.count} same-model`);
+                    if (sameCap) parts.push(`${sameCap.count} same-cap`);
+                    analysisMeta.textContent = parts.length ? '— ' + parts.join(' · ') : '— no comparisons';
+                }
+            })
+            .catch(() => {
+                if (analysisEl) analysisEl.innerHTML = '<div class="ram-popup-empty">Price comparison failed to load.</div>';
+                if (analysisMeta) analysisMeta.textContent = '— error';
+            });
+    }
 }
 
 // Close modal on background click

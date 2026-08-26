@@ -99,6 +99,37 @@
         font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: .06em;
         color: var(--text-mute, #6b7280); margin-bottom: 6px;
     }
+    /* Bug fix (2026-08-25): the "realistic" lib is the newest design,
+       so we make that cell stand out with a thin gradient border and
+       a small "★" badge in the source label. The other two (Original
+       / Refined) get muted treatment so the eye is drawn to v3. */
+    .icon-cell .source-badge {
+        display: inline-block;
+        font-size: 9px;
+        font-weight: 800;
+        padding: 1px 5px;
+        border-radius: 6px;
+        margin-left: 4px;
+        background: rgba(99,102,241,.18);
+        color: #a5b4fc;
+    }
+    .icon-cell[data-source="realistic"] {
+        border-color: rgba(99,102,241,.55);
+        background: rgba(99,102,241,.04);
+    }
+    .icon-cell[data-source="realistic"] .source-badge {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: #fff;
+    }
+    .icon-cell[data-source="simple"] {
+        opacity: 0.92;
+    }
+    .icon-cell .fallback-note {
+        font-size: 9px;
+        color: #94a3b8;
+        margin: 2px 0 6px;
+        font-style: italic;
+    }
     .icon-cell .icon-wrap {
         width: 100%; aspect-ratio: 1/1;
         background: #fff; border-radius: 8px;
@@ -174,6 +205,73 @@
         color: var(--text-mute, #6b7280);
     }
 
+    /* Version legend — clarifies which library is which so the user
+       knows that v3 is the newest assistant-made set, v1/v2 are older.
+       Bug fix (2026-08-25): the user couldn't tell which icon was the
+       "original" vs the "new ones I made". */
+    .version-legend {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+        margin-bottom: 8px;
+    }
+    @media (max-width: 1100px) { .version-legend { grid-template-columns: 1fr; } }
+    .vl-item {
+        background: rgba(255,255,255,.03);
+        border: 1px solid var(--card-border, #2a2e3e);
+        border-radius: 8px;
+        padding: 10px 12px;
+    }
+    .vl-v1 { border-left: 3px solid #94a3b8; }
+    .vl-v2 { border-left: 3px solid #818cf8; }
+    .vl-v3 {
+        border-left: 3px solid #6366f1;
+        background: rgba(99,102,241,.05);
+    }
+    .vl-label {
+        font-size: 11px;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: .06em;
+        color: var(--text-color, #1f2937);
+        margin-bottom: 4px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+    .vl-badge {
+        display: inline-block;
+        font-size: 9px;
+        font-weight: 800;
+        padding: 1px 5px;
+        border-radius: 6px;
+        background: rgba(99,102,241,.18);
+        color: #a5b4fc;
+    }
+    .vl-badge-star {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: #fff;
+    }
+    .vl-desc {
+        font-size: 11.5px;
+        color: var(--text-dim, #9ca3af);
+        line-height: 1.45;
+    }
+    .vl-desc b { color: var(--text-color, #1f2937); }
+    .version-legend-note {
+        font-size: 11px;
+        color: var(--text-mute, #6b7280);
+        margin-bottom: 14px;
+        padding-left: 4px;
+    }
+    .vln-fallback {
+        font-style: italic;
+        color: #94a3b8;
+        background: rgba(148,163,184,.10);
+        padding: 0 4px;
+        border-radius: 3px;
+    }
+
     /* Pending rework panel */
     .pending-panel {
         background: rgba(251,191,36,.06);
@@ -213,6 +311,30 @@
     <div style="display:flex; gap:8px;">
         <a href="/lenses" class="action-btn" style="text-decoration:none; padding:8px 14px; background:transparent; border:1px solid var(--card-border, #2a2e3e); border-radius:8px; color:var(--text-dim, #9ca3af); font-weight:600; font-size:13px;">← Back to Lenses</a>
     </div>
+</div>
+
+<!-- Bug fix (2026-08-25): the user couldn't tell which version was
+     "the original" vs "the new ones I made". This legend spells it
+     out so each card is self-explanatory. All 3 libraries were created
+     by the assistant — the difference is the design depth and the
+     date. v1/v2 are the older simple/sub-type sets, v3 is the
+     newest model-specific set (~1 week old). -->
+<div class="version-legend">
+    <div class="vl-item vl-v1">
+        <div class="vl-label">Original <span class="vl-badge">v1</span></div>
+        <div class="vl-desc"><b>Brand icons</b> — one per brand (Canon, Nikon, Sony…). 15 keys total. Made May 17, 2026.</div>
+    </div>
+    <div class="vl-item vl-v2">
+        <div class="vl-label">Refined <span class="vl-badge">v2</span></div>
+        <div class="vl-desc"><b>Sub-type variants</b> — telephoto/wide/macro/prime, etc. 15 keys total. Made May 17, 2026.</div>
+    </div>
+    <div class="vl-item vl-v3">
+        <div class="vl-label">New design <span class="vl-badge vl-badge-star">v3 ★</span></div>
+        <div class="vl-desc"><b>Model-specific</b> — exact lens models (Canon 70-200, Sony 24-70, etc.). 17 keys total. Made Aug 19, 2026 — <b>this is the newest</b>.</div>
+    </div>
+</div>
+<div class="version-legend-note">
+    A <span class="vln-fallback">~italic note</span> under a cell means the exact key isn't in that library, so it fell back to the brand or default icon.
 </div>
 
 <div class="summary-grid" id="summary-grid">
@@ -374,21 +496,62 @@ async function loadIconLib(url, slotName) {
         }
     }
 
+    // Smart icon lookup. The 3 libraries use different key namespaces
+    // (brand vs sub-type vs specific model), so a lens like
+    // "Canon_70-200" only exists in the realistic lib. Without a
+    // fallback, the user would see a "📷" placeholder for the simple
+    // and detailed cells of that card. We resolve the icon by trying
+    // the keys in order:
+    //   1. exact key (e.g. "Canon_70-200")
+    //   2. brand prefix (e.g. "Canon")
+    //   3. the library's "default" key
+    // The same fallback is applied to all 3 libraries so each card
+    // shows 3 versions of the same lens, even when the specific key
+    // only exists in one library.
+    function lookupIcon(lensKey, source) {
+        const lib = (getIconLibs())[source] || {};
+        if (lib[lensKey]) return { svg: lib[lensKey], fallback: null };
+        const brand = String(lensKey).split('_')[0];
+        if (brand && brand !== lensKey && lib[brand]) {
+            return { svg: lib[brand], fallback: brand };
+        }
+        if (lib.default) return { svg: lib.default, fallback: 'default' };
+        return { svg: null, fallback: null };
+    }
+
+    // Display labels for the 3 sources. The technical keys (simple /
+    // detailed / realistic) are still the storage keys, but the user-
+    // facing labels make the version progression obvious. The most
+    // recent design is the realistic one ("New design").
+    const SOURCE_LABELS = {
+        simple:    'Original',
+        detailed:  'Refined',
+        realistic: 'New design',
+    };
+    const SOURCE_BADGES = {
+        simple:    'v1',
+        detailed:  'v2',
+        realistic: 'v3 ★',
+    };
+
     function cellHtml(lensKey, source) {
-        const lib = getIconLibs();
-        const libSrc = lib[source] || {};
-        const svg = libSrc[lensKey];
+        const { svg, fallback } = lookupIcon(lensKey, source);
         const rev = reviews[reviewKey(lensKey, source)];
         const rating = rev ? rev.rating : null;
         const comment = rev ? (rev.comment || '') : '';
         const cellClass = rating ? `is-${rating}` : '';
         const statusDot = rating ? 'has-review' : '';
+        const fallbackNote = fallback
+            ? `<div class="fallback-note" title="Exact '${lensKey}' isn't in the ${source} lib — fell back to '${fallback}'">~${escapeHtml(fallback)}</div>`
+            : '';
+        const badge = SOURCE_BADGES[source] || '';
 
         return `
             <div class="icon-cell ${cellClass} ${statusDot}" data-lens-key="${escapeHtml(lensKey)}" data-source="${source}">
                 <span class="status-dot"></span>
-                <div class="source-label">${source}</div>
+                <div class="source-label">${SOURCE_LABELS[source] || source} <span class="source-badge">${badge}</span></div>
                 <div class="icon-wrap">${svg || '<div style="font-size:48px;color:#999;">📷</div>'}</div>
+                ${fallbackNote}
                 <div class="mark-row">
                     <button class="mark-btn ${rating === 'good' ? 'active-good' : ''}" data-mark="good" title="Looks great">👍</button>
                     <button class="mark-btn ${rating === 'bad' ? 'active-bad' : ''}" data-mark="bad" title="Looks wrong">👎</button>

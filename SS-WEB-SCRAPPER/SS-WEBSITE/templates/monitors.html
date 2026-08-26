@@ -227,11 +227,43 @@
 }
 .modern-panel table thead th {
     background: rgba(99,102,241,0.06);
-    color: var(--ram-text-dim, #64748b);
-    font-weight: 600;
+    /* Bug fix (2026-08-25): bumped to 12px + #fdfeff for better contrast. */
+    color: #fdfeff;
+    font-weight: 700;
     text-transform: uppercase;
-    font-size: 0.7rem;
-    letter-spacing: 0.4px;
+    font-size: 12px;
+    letter-spacing: 0.05em;
+    padding: 12px 14px;
+    border-bottom: 2px solid var(--card-border, #2a2e3e);
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    user-select: none;
+    white-space: nowrap;
+}
+[data-theme="light"] .modern-panel table thead th {
+    color: #1e293b;
+    background: #f1f5f9;
+    border-bottom-color: #cbd5e1;
+}
+.modern-panel table thead th.sortable { cursor: pointer; }
+.modern-panel table thead th.sortable:hover {
+    background: rgba(102, 126, 234, 0.10);
+    color: #fdfeff;
+}
+[data-theme="light"] .modern-panel table thead th.sortable:hover {
+    background: rgba(102, 126, 234, 0.12);
+    color: #1e293b;
+}
+.modern-panel table thead th .sort-arrow {
+    display: inline-block;
+    margin-left: 4px;
+    font-size: 10px;
+    color: #818cf8;
+    opacity: 0.95;
+}
+[data-theme="light"] .modern-panel table thead th .sort-arrow {
+    color: #4f46e5;
 }
 [data-theme="dark"] .modern-panel table thead th {
     background: rgba(255,255,255,0.04);
@@ -455,17 +487,24 @@
                 <option value="year">Last year</option>
             </select>
         </label>
-        <label>
+        <!-- Bug fix (2026-08-25): removed the Sort/Order dropdowns.
+             Sorting is now done by clicking the table column headers
+             directly. Hidden <select>s stay for deep-link URL params
+             (applyUrlParamsToFilters). -->
+        <label style="display:none;">
             <span style="font-weight: 600;">Sort:</span>
             <select id="sort-by">
-                <option value="date_posted">Date</option>
+                <option value="date_posted" selected>Date</option>
                 <option value="price">{{ t('Price') }}</option>
+                <option value="first_seen_at">First seen</option>
+                <option value="size">Size</option>
+                <option value="location">Location</option>
             </select>
         </label>
-        <label>
+        <label style="display:none;">
             Order:
             <select id="sort-order">
-                <option value="desc">{{ t('Descending') }}</option>
+                <option value="desc" selected>{{ t('Descending') }}</option>
                 <option value="asc">{{ t('Ascending') }}</option>
             </select>
         </label>
@@ -804,6 +843,63 @@ let refreshRateGroupingMode = localStorage.getItem('monitors_refresh_rate_groupi
 // Filter by category
 let currentCategoryFilter = 'all';
 
+// Bug fix (2026-08-25): sort state lives in JS variables (driven by
+// header clicks), not in the hidden <select>s. The <select>s stay in
+// sync so deep-link URL params (applyUrlParamsToFilters) keep working.
+let currentSort = 'date_posted';
+let currentOrder = 'desc';
+
+function setSort(col) {
+    if (currentSort === col) {
+        // Same column → flip direction
+        currentOrder = currentOrder === 'asc' ? 'desc' : 'asc';
+    } else {
+        currentSort = col;
+        // For text fields ascending A→Z; for numeric/date default to descending
+        const textCols = new Set(['location', 'title', 'panel']);
+        currentOrder = textCols.has(col) ? 'asc' : 'desc';
+    }
+    // Sync hidden selects so URL params / deep links still work
+    const sb = document.getElementById('sort-by');
+    const so = document.getElementById('sort-order');
+    if (sb) sb.value = currentSort;
+    if (so) so.value = currentOrder;
+    updateSortArrows();
+    fetchListings();
+}
+
+function updateSortArrows() {
+    document.querySelectorAll('#listings-table thead th.sortable').forEach(th => {
+        const arrow = th.querySelector('.sort-arrow');
+        if (!arrow) return;
+        arrow.textContent = (th.dataset.sort === currentSort)
+            ? (currentOrder === 'asc' ? ' ▲' : ' ▼') : '';
+    });
+}
+
+function wireSortHeaders() {
+    document.querySelectorAll('#listings-table thead th.sortable').forEach(th => {
+        th.addEventListener('click', () => {
+            const col = th.dataset.sort;
+            if (col) setSort(col);
+        });
+    });
+}
+
+function applyUrlParamsToFilters() {
+    const sp = new URLSearchParams(window.location.search);
+    if (sp.has('sort')) {
+        currentSort = sp.get('sort');
+        const sb = document.getElementById('sort-by');
+        if (sb) sb.value = currentSort;
+    }
+    if (sp.has('order')) {
+        currentOrder = sp.get('order');
+        const so = document.getElementById('sort-order');
+        if (so) so.value = currentOrder;
+    }
+}
+
 function filterByCategory(category) {
     currentCategoryFilter = category;
 
@@ -1101,8 +1197,11 @@ async function fetchListings() {
     const activeOnly = document.getElementById('active-only').checked;
     const minConfidence = document.getElementById('min-confidence').value;
     const timeFilter = document.getElementById('time-filter').value;
-    const sortBy = document.getElementById('sort-by').value;
-    const sortOrder = document.getElementById('sort-order').value;
+    // Bug fix (2026-08-25): read sort state from JS vars (driven by
+    // header clicks), not the hidden <select>s. The <select>s stay in
+    // sync via setSort() so deep-link URL params still work.
+    const sortBy = currentSort;
+    const sortOrder = currentOrder;
     const sizeFilter = document.getElementById('size-filter').value;
     const resolutionFilter = document.getElementById('resolution-filter').value;
     const refreshFilter = document.getElementById('refresh-filter').value;
@@ -1225,13 +1324,13 @@ function renderListings(listings) {
             <thead>
                 <tr>
                     <th style="width: 80px; text-align: center;">Image</th>
-                    <th style="text-align: left;">Listing</th>
+                    <th class="sortable" data-sort="title" style="text-align: left;">Listing<span class="sort-arrow"></span></th>
                     <th style="text-align: center;">Matched Model</th>
-                    <th style="width: 120px; text-align: center;">Specs</th>
+                    <th class="sortable" data-sort="size" style="width: 120px; text-align: center;">Specs<span class="sort-arrow"></span></th>
                     <th style="width: 70px; text-align: center;">Panel</th>
-                    <th style="width: 90px; text-align: center;">{{ t('Price') }}</th>
-                    <th style="width: 100px; text-align: center;">Location</th>
-                    <th style="width: 90px; text-align: center;">Date</th>
+                    <th class="sortable" data-sort="price" style="width: 90px; text-align: center;">{{ t('Price') }}<span class="sort-arrow"></span></th>
+                    <th class="sortable" data-sort="location" style="width: 100px; text-align: center;">Location<span class="sort-arrow"></span></th>
+                    <th class="sortable" data-sort="date_posted" style="width: 90px; text-align: center;">Date<span class="sort-arrow"></span></th>
                     <th style="width: 80px; text-align: center;">Actions</th>
                 </tr>
             </thead>
@@ -1284,6 +1383,10 @@ function renderListings(listings) {
     `;
 
     document.getElementById('listings-table').innerHTML = html;
+    // Bug fix (2026-08-25): re-wire click handlers + repaint arrows
+    // every render, since innerHTML replacement wipes them.
+    wireSortHeaders();
+    updateSortArrows();
 }
 
 // Render models
@@ -2233,6 +2336,9 @@ function renderMonitorTopDeals(listings) {
 
 // Initialize
 restoreCollapsedSections();
+// Bug fix (2026-08-25): seed the JS sort state from URL params so
+// deep links like /monitors?sort=price&order=asc actually sort that way.
+applyUrlParamsToFilters();
 fetchFilterOptions();
 fetchListings();
 fetchModels();

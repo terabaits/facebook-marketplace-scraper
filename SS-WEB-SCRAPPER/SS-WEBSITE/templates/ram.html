@@ -430,13 +430,45 @@
 }
 .ram-listings thead th {
     text-align: left;
-    font-size: 0.7rem;
+    /* Bug fix (2026-08-25): bumped to 12px + #fdfeff for better contrast
+       in dark mode (was 0.7rem + var(--ram-text-dim) which was too pale). */
+    font-size: 12px;
     font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
-    color: var(--ram-text-dim);
-    padding: 0.65rem 0.85rem;
+    letter-spacing: 0.05em;
+    color: #fdfeff;
+    padding: 12px 14px;
+    border-bottom: 2px solid var(--ram-border);
+    background: rgba(255,255,255,.04);
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    user-select: none;
     white-space: nowrap;
+}
+[data-theme="light"] .ram-listings thead th {
+    color: #1e293b;
+    background: #f1f5f9;
+    border-bottom-color: #cbd5e1;
+}
+.ram-listings thead th.sortable { cursor: pointer; }
+.ram-listings thead th.sortable:hover {
+    background: rgba(102, 126, 234, 0.10);
+    color: #fdfeff;
+}
+[data-theme="light"] .ram-listings thead th.sortable:hover {
+    background: rgba(102, 126, 234, 0.12);
+    color: #1e293b;
+}
+.ram-listings thead th .sort-arrow {
+    display: inline-block;
+    margin-left: 4px;
+    font-size: 10px;
+    color: #818cf8;
+    opacity: 0.95;
+}
+[data-theme="light"] .ram-listings thead th .sort-arrow {
+    color: #4f46e5;
 }
 .ram-listings tbody tr {
     border-bottom: 1px solid var(--ram-border);
@@ -1512,14 +1544,22 @@
             </select>
         </div>
 
-        <div class="filter-group">
+        <!-- Bug fix (2026-08-25): removed the Sort/Order dropdowns.
+             Sorting is now done by clicking the table column headers
+             directly. Hidden <select>s stay for deep-link URL params
+             (applyUrlParamsToFilters). -->
+        <div class="filter-group" style="display:none;">
             <span class="filter-label">Sort</span>
             <select id="sort-by" onchange="loadListings()">
-                <option value="date_posted">Date</option>
+                <option value="date_posted" selected>Date</option>
                 <option value="price">Price</option>
+                <option value="first_seen_at">First seen</option>
+                <option value="capacity">Capacity</option>
+                <option value="speed_mhz">Speed (MHz)</option>
+                <option value="location">Location</option>
             </select>
             <select id="sort-order" onchange="loadListings()">
-                <option value="desc">Desc</option>
+                <option value="desc" selected>Desc</option>
                 <option value="asc">Asc</option>
             </select>
         </div>
@@ -1585,6 +1625,63 @@ let useActiveOnly = false;      // toggled by filter pill (default OFF so all RA
 let useHighConfidence = false;   // toggled by filter pill
 let currentDDRFilter = 'all';
 let currentMHzFilter = 'all';
+
+// Bug fix (2026-08-25): sort state lives in JS variables (driven by
+// header clicks), not in the hidden <select>s. The <select>s stay in
+// sync so deep-link URL params (applyUrlParamsToFilters) keep working.
+let currentSort = 'date_posted';
+let currentOrder = 'desc';
+
+function setSort(col) {
+    if (currentSort === col) {
+        // Same column → flip direction
+        currentOrder = currentOrder === 'asc' ? 'desc' : 'asc';
+    } else {
+        currentSort = col;
+        // For text fields ascending A→Z; for numeric/date default to descending
+        const textCols = new Set(['location', 'latency']);
+        currentOrder = textCols.has(col) ? 'asc' : 'desc';
+    }
+    // Sync hidden selects so URL params / deep links still work
+    const sb = document.getElementById('sort-by');
+    const so = document.getElementById('sort-order');
+    if (sb) sb.value = currentSort;
+    if (so) so.value = currentOrder;
+    updateSortArrows();
+    loadListings();
+}
+
+function updateSortArrows() {
+    document.querySelectorAll('#listings-container thead th.sortable').forEach(th => {
+        const arrow = th.querySelector('.sort-arrow');
+        if (!arrow) return;
+        arrow.textContent = (th.dataset.sort === currentSort)
+            ? (currentOrder === 'asc' ? ' ▲' : ' ▼') : '';
+    });
+}
+
+function wireSortHeaders() {
+    document.querySelectorAll('#listings-container thead th.sortable').forEach(th => {
+        th.addEventListener('click', () => {
+            const col = th.dataset.sort;
+            if (col) setSort(col);
+        });
+    });
+}
+
+function applyUrlParamsToFilters() {
+    const sp = new URLSearchParams(window.location.search);
+    if (sp.has('sort')) {
+        currentSort = sp.get('sort');
+        const sb = document.getElementById('sort-by');
+        if (sb) sb.value = currentSort;
+    }
+    if (sp.has('order')) {
+        currentOrder = sp.get('order');
+        const so = document.getElementById('sort-order');
+        if (so) so.value = currentOrder;
+    }
+}
 let avgPriceByDDRChart = null;
 let capacityDistChart = null;
 let ramAvgPriceChart = null;
@@ -1714,17 +1811,19 @@ function renderTopDeals() {
     container.innerHTML = html;
 }
 
-// Column customization - now enabled by default
+// Column customization - now enabled by default.
+// Bug fix (2026-08-25): added `sort` key per column so the header can
+// be made clickable for sorting. Maps to API sort_by values.
 let columnOrder = [
     { id: 'col-image', label: 'Image', required: true },
-    { id: 'col-ram', label: 'RAM', required: true },
-    { id: 'col-price', label: 'Price', required: true },
-    { id: 'col-latency', label: 'Latency' },
-    { id: 'col-speed', label: 'Speed (ns)' },
+    { id: 'col-ram', label: 'RAM', required: true, sort: 'capacity' },
+    { id: 'col-price', label: 'Price', required: true, sort: 'price' },
+    { id: 'col-latency', label: 'Latency', sort: 'latency' },
+    { id: 'col-speed', label: 'Speed (ns)', sort: 'speed_mhz' },
     { id: 'col-model', label: 'Model Position' },
     { id: 'col-market', label: 'Market Position' },
-    { id: 'col-location', label: 'Location' },
-    { id: 'col-date', label: 'Date' },
+    { id: 'col-location', label: 'Location', sort: 'location' },
+    { id: 'col-date', label: 'Date', sort: 'date_posted' },
     { id: 'col-actions', label: 'Actions', required: true }
 ];
 let defaultColumnOrder = JSON.parse(JSON.stringify(columnOrder));
@@ -2512,7 +2611,9 @@ function hideModelHistoryPopup() {
 
 // Render table header with gear icon inside Actions column
 function renderTableHeader() {
-    // Build header cells
+    // Build header cells. Bug fix (2026-08-25): columns with a `sort`
+    // key are clickable — clicking calls setSort(col.sort) which flips
+    // the direction and reloads.
     const cells = columnOrder.map(col => {
         const isVisible = columnVisibility[col.id];
         const style = isVisible ? '' : 'style="display: none;"';
@@ -2524,9 +2625,12 @@ function renderTableHeader() {
                 </div>
             </th>`;
         }
+        if (col.sort) {
+            return `<th data-col="${col.id}" data-sort="${col.sort}" class="sortable" ${style}>${col.label}<span class="sort-arrow"></span></th>`;
+        }
         return `<th data-col="${col.id}" ${style}>${col.label}</th>`;
     }).join('');
-    
+
     return `
         <thead>
             <tr>${cells}</tr>
@@ -2787,9 +2891,12 @@ async function loadListings() {
     const activeOnly = useActiveOnly;
     const highConfidence = useHighConfidence;
     const capacityFilter = document.getElementById('capacity-filter').value;
-    const sortBy = document.getElementById('sort-by').value;
-    const sortOrder = document.getElementById('sort-order').value;
-    
+    // Bug fix (2026-08-25): read sort state from JS vars (driven by
+    // header clicks), not the hidden <select>s. The <select>s stay in
+    // sync via setSort() so deep-link URL params still work.
+    const sortBy = currentSort;
+    const sortOrder = currentOrder;
+
     const ramIdFilter = document.getElementById('ram-id-filter')?.value.trim() || '';
     
     const params = new URLSearchParams();
@@ -2882,8 +2989,12 @@ async function loadListings() {
             </tfoot>`;
         
         html += '</table>';
-        
+
         container.innerHTML = html;
+        // Bug fix (2026-08-25): re-wire click handlers + repaint arrows
+        // every render, since container.innerHTML replacement wipes them.
+        wireSortHeaders();
+        updateSortArrows();
 
         // Update charts and DDR stats
         const statsSource = (useAllRAMsForStats && allRAMsForStats.length > 0) ? allRAMsForStats : listings;
@@ -4269,6 +4380,18 @@ function applyUrlFilters() {
             document.querySelectorAll('#ddr-filter-chips button').forEach(b => b.classList.remove('active'));
             ddrChip.classList.add('active');
         }
+    }
+    // Bug fix (2026-08-25): seed the JS sort state from URL params so
+    // deep links like /ram?sort=price&order=asc actually sort that way.
+    if (urlParams.has('sort')) {
+        currentSort = urlParams.get('sort');
+        const sb = document.getElementById('sort-by');
+        if (sb) sb.value = currentSort;
+    }
+    if (urlParams.has('order')) {
+        currentOrder = urlParams.get('order');
+        const so = document.getElementById('sort-order');
+        if (so) so.value = currentOrder;
     }
 }
 

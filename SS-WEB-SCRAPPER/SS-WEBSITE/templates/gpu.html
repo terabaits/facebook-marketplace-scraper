@@ -22,6 +22,366 @@
     .market-position-content {
         display: inline-block;
         text-align: center;
+        min-width: 200px;
+    }
+
+    /* === Market Position gradient bar (2026-08-25) ===
+       Redesigned from a single-color "fill" bar to a full min→max
+       gradient bar with a marker showing where THIS listing sits.
+       - The gradient is NEON GREEN (cheap) → NEON PINK/RUBY (expensive)
+         so it reads as a gaming/tech "heat" spectrum. Soft outer glow
+         gives the bar a subtle lit-from-within look in both light and
+         dark mode.
+       - A small vertical "tick" shows the market average position.
+       - The current listing's position is shown as a vertical line +
+         a dot + a downward triangle pointer, so the marker reads
+         correctly even with multiple rows visually adjacent.
+       - Min/max labels under the bar so the scale is unambiguous.
+       Bar height is intentionally slim (7px) so it doesn't compete
+       with the price/listing text in the cell. */
+    /* Bug fix (2026-08-26, take 5): the avg marker + avg pill + top-row
+       MIN/MAX prices have all been removed. The Market Position cell is
+       now a clean 3-piece layout:
+         1. (no row above)
+         2. Bar with the indigo "this" pill floating ABOVE at the marker's
+            x%, centered on the bar
+         3. Below the bar: MIN value (left, green) and MAX value (right,
+            red) at the bar's visual ends
+       Pushing MIN/MAX to BELOW the bar's ends fixes the overlap that
+       used to happen when the indigo "this" pill sat near the corners
+       (it collided with the previous top-row MIN/MAX values). */
+    /* "This listing's price" pill — now floats ABOVE the bar at the
+       same x% as the marker dot. Anchored bottom-center so the arrow
+       tip sits flush on the bar edge. */
+    .mp-this-floating {
+        position: absolute;
+        bottom: calc(100% + 6px);
+        transform: translateX(-50%);
+        color: #fff;
+        background: linear-gradient(135deg, #4338ca 0%, #6366f1 100%);
+        font-weight: 800;
+        font-size: 0.78rem;
+        padding: 2px 7px;
+        border-radius: 4px;
+        border: 1px solid rgba(99, 102, 241, 0.55);
+        box-shadow: 0 2px 6px rgba(67, 56, 202, 0.45);
+        white-space: nowrap;
+        z-index: 2;
+        pointer-events: none;
+    }
+    /* (Removed in 2026-08-26 take 5: .mp-avg-floating, .mp-avg-floating-label,
+       .mp-avg-floating-value — avg is always the middle, redundant with
+       min/max. The .mp-min-max row below the bar takes its place.) */
+    /* (Removed in 2026-08-26 take 5: .mp-avg-caption, .mp-avg-caption-label,
+       .mp-avg-caption-value — replaced by .mp-min-max at the bottom of
+       the cell. Avg is redundant with min/max.) */
+    .mp-bar {
+        position: relative;
+        height: 7px;
+        border-radius: 4px;
+        overflow: visible;
+        /* Soft outer glow that makes the bar feel lit from within. We
+           use two stops (green + pink) so both ends of the spectrum
+           get a subtle halo, not just one. The bar has overflow: visible
+           so the absolutely-positioned "this" pill (above) and avg
+           caption (below) can extend beyond the 7px bar without
+           being clipped. */
+        box-shadow:
+            0 0 4px rgba(0, 255, 136, 0.35),
+            0 0 6px rgba(255, 41, 138, 0.25),
+            inset 0 0 0 1px rgba(0,0,0,0.06);
+    }
+    [data-theme="dark"] .mp-bar {
+        box-shadow:
+            0 0 6px rgba(0, 255, 136, 0.55),
+            0 0 8px rgba(255, 41, 138, 0.45),
+            inset 0 0 0 1px rgba(255,255,255,0.1);
+    }
+    .mp-bar-gradient {
+        position: absolute;
+        inset: 0;
+        border-radius: 4px;
+        /* NEON gradient: bright mint green → vivid magenta-pink with a
+           quick cyan-purple dip in the middle so the transition feels
+           electric, not muddy. 4 stops gives a more interesting read
+           than a 2-stop linear. */
+        background: linear-gradient(90deg,
+            #00ff85 0%,       /* neon green at min */
+            #00ffea 30%,      /* cyan pop */
+            #b14dff 65%,      /* electric purple */
+            #ff2d8a 100%);    /* neon ruby/pink at max */
+    }
+    /* (Removed in 2026-08-26 take 5: .mp-avg-marker, .mp-avg-marker-arrow,
+       .mp-avg-marker-dot — avg is always the middle of the bar, so a
+       second marker there would just clutter the visual. The min/max
+       values at the bar ends are now the only reference points besides
+       the current-listing marker.) */
+    /* Current-listing marker — vertical line + dot + downward triangle */
+    .mp-marker {
+        position: absolute;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 2;
+        pointer-events: none;
+    }
+    .mp-marker-arrow {
+        position: absolute;
+        top: -7px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 0;
+        height: 0;
+        border-left: 4.5px solid transparent;
+        border-right: 4.5px solid transparent;
+        border-top: 5.5px solid #4338ca;
+        filter: drop-shadow(0 0 3px rgba(99, 102, 241, 0.7));
+    }
+    .mp-marker-dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: #fff;
+        border: 2px solid #4338ca;
+        box-shadow: 0 0 0 1px rgba(0,0,0,0.15),
+                    0 0 6px rgba(99, 102, 241, 0.65);
+    }
+    [data-theme="dark"] .mp-marker-dot {
+        background: #0f172a;
+        border-color: #a5b4fc;
+    }
+    [data-theme="dark"] .mp-marker-arrow {
+        border-top-color: #a5b4fc;
+        filter: drop-shadow(0 0 3px rgba(165, 180, 252, 0.8));
+    }
+    /* Avg marker — small white dot in the middle of the bar (always the
+       middle of the range, since avg = mean). Quieter than the indigo
+       "this" marker so the eye doesn't get pulled to it, but visible
+       enough to anchor the visual. Hover the dot to see the avg price
+       in a tooltip (CSS :hover with absolute-positioned child). */
+    .mp-avg-dot {
+        position: absolute;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.85);
+        border: 1px solid rgba(15, 23, 42, 0.5);
+        box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.4),
+                    0 1px 3px rgba(0, 0, 0, 0.5);
+        cursor: help;
+        z-index: 1;
+        /* The marker grows on hover so the user gets a clear "you can
+           interact with this" cue, and the tooltip is anchored to the
+           now-larger hit area. */
+        transition: transform 0.15s ease, background 0.15s ease;
+    }
+    .mp-avg-dot:hover {
+        background: #fff;
+        transform: translate(-50%, -50%) scale(1.5);
+        z-index: 3;
+    }
+    [data-theme="dark"] .mp-avg-dot {
+        background: rgba(226, 232, 240, 0.85);
+        border-color: rgba(15, 23, 42, 0.7);
+    }
+    [data-theme="dark"] .mp-avg-dot:hover {
+        background: #e2e8f0;
+    }
+    /* Avg tooltip — shows on hover. Anchored BELOW the dot (top: 100% + 6px)
+       so it doesn't compete with the indigo "this" pill that floats ABOVE
+       the bar at the current-listing position. Quieter dark slate gradient
+       so it doesn't pull focus from the indigo pill. */
+    .mp-avg-tooltip {
+        position: absolute;
+        top: calc(100% + 8px);
+        left: 50%;
+        transform: translateX(-50%) scale(0.85);
+        transform-origin: top center;
+        opacity: 0;
+        pointer-events: none;
+        background: linear-gradient(135deg, #1f2937 0%, #4b5563 100%);
+        color: #fff;
+        font-size: 0.7rem;
+        font-weight: 700;
+        padding: 4px 8px;
+        border-radius: 4px;
+        border: 1px solid rgba(99, 102, 241, 0.4);
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+        white-space: nowrap;
+        line-height: 1.3;
+        text-align: center;
+        transition: opacity 0.15s ease, transform 0.15s ease;
+        z-index: 4;
+    }
+    .mp-avg-tooltip::before {
+        /* Small upward arrow on the tooltip pointing to the dot */
+        content: '';
+        position: absolute;
+        bottom: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 0;
+        height: 0;
+        border-left: 4px solid transparent;
+        border-right: 4px solid transparent;
+        border-bottom: 5px solid #1f2937;
+    }
+    .mp-avg-dot:hover .mp-avg-tooltip {
+        opacity: 1;
+        transform: translateX(-50%) scale(1);
+    }
+    /* Median marker — same visual language as the avg dot (small circle
+       with subtle border + drop shadow, positioned at the median
+       percentage on the bar) but YELLOW instead of white so the two
+       statistical dots are visually distinct at a glance. Both dots
+       grow on hover and reveal a tooltip with their value + label. */
+    .mp-median-dot {
+        position: absolute;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: rgba(250, 204, 21, 0.9);
+        border: 1px solid rgba(15, 23, 42, 0.55);
+        box-shadow: 0 0 0 1px rgba(250, 204, 21, 0.4),
+                    0 1px 3px rgba(0, 0, 0, 0.5);
+        cursor: help;
+        z-index: 1;
+        transition: transform 0.15s ease, background 0.15s ease;
+    }
+    .mp-median-dot:hover {
+        background: #facc15;
+        transform: translate(-50%, -50%) scale(1.5);
+        z-index: 3;
+    }
+    [data-theme="dark"] .mp-median-dot {
+        background: rgba(250, 204, 21, 0.9);
+        border-color: rgba(15, 23, 42, 0.75);
+    }
+    [data-theme="dark"] .mp-median-dot:hover {
+        background: #fbbf24;
+    }
+    /* Median tooltip — same as avg tooltip but yellow accent so it's
+       obvious which stat the value belongs to. Anchored BELOW the
+       dot (top: 100% + 8px) with an upward arrow pointing to the dot. */
+    .mp-median-tooltip {
+        position: absolute;
+        top: calc(100% + 8px);
+        left: 50%;
+        transform: translateX(-50%) scale(0.85);
+        transform-origin: top center;
+        opacity: 0;
+        pointer-events: none;
+        background: linear-gradient(135deg, #422006 0%, #78350f 100%);
+        color: #fff;
+        font-size: 0.7rem;
+        font-weight: 700;
+        padding: 4px 8px;
+        border-radius: 4px;
+        border: 1px solid rgba(250, 204, 21, 0.5);
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+        white-space: nowrap;
+        line-height: 1.3;
+        text-align: center;
+        transition: opacity 0.15s ease, transform 0.15s ease;
+        z-index: 4;
+    }
+    .mp-median-tooltip::before {
+        content: '';
+        position: absolute;
+        bottom: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 0;
+        height: 0;
+        border-left: 4px solid transparent;
+        border-right: 4px solid transparent;
+        border-bottom: 5px solid #422006;
+    }
+    .mp-median-dot:hover .mp-median-tooltip {
+        opacity: 1;
+        transform: translateX(-50%) scale(1);
+    }
+    /* MIN/MAX row — sits below the bar, values at the bar's visual ends
+       (left = MIN, right = MAX). Color-coded: green for min, pink/red
+       for max. This pushes the values out of the way of the floating
+       "this" pill above the bar, fixing the previous overlap. */
+    .mp-min-max {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        margin-top: 0.4rem;
+        font-size: 0.72rem;
+        font-weight: 700;
+        line-height: 1;
+    }
+    .mp-min { color: #00d97e; }
+    .mp-max { color: #ff2d8a; }
+    [data-theme="dark"] .mp-min { color: #00ff95; }
+    [data-theme="dark"] .mp-max { color: #ff4fa3; }
+
+    /* Bug fix (2026-08-25): column headers now have the same dark-mode
+       bright #fdfeff treatment as the rest of the site, with sticky
+       positioning + 2px bottom border. Sortable columns get a hover
+       highlight and a clickable cursor. The sort-arrow has a CSS
+       transition so the ▲↔▼ flip on re-click is animated. */
+    .gpu-listings-table thead th {
+        background: rgba(255,255,255,.04);
+        color: #fdfeff;
+        font-size: 12px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: .05em;
+        padding: 12px 14px;
+        border-bottom: 2px solid var(--card-border, #2a2e3e);
+        position: sticky;
+        top: 0;
+        z-index: 1;
+        user-select: none;
+        white-space: nowrap;
+    }
+    [data-theme="light"] .gpu-listings-table thead th {
+        color: #1e293b;
+        background: #f1f5f9;
+        border-bottom-color: #cbd5e1;
+    }
+    .gpu-listings-table thead th.sortable {
+        cursor: pointer;
+        transition: background .12s;
+    }
+    .gpu-listings-table thead th.sortable:hover {
+        background: rgba(102, 126, 234, 0.10);
+        color: #fdfeff;
+    }
+    [data-theme="light"] .gpu-listings-table thead th.sortable:hover {
+        background: rgba(102, 126, 234, 0.12);
+        color: #1e293b;
+    }
+    /* Active sort column gets a subtle accent stripe at the top so the
+       user can see at a glance which column drives the order. */
+    .gpu-listings-table thead th.sortable.sort-active {
+        background: rgba(99,102,241,0.16);
+        color: #fdfeff;
+        box-shadow: inset 0 3px 0 0 #818cf8;
+    }
+    [data-theme="light"] .gpu-listings-table thead th.sortable.sort-active {
+        background: rgba(99,102,241,0.12);
+        color: #1e293b;
+    }
+    .gpu-listings-table thead th .sort-arrow {
+        display: inline-block;
+        margin-left: 4px;
+        font-size: 11px;
+        color: #a5b4fc;
+        /* Animate the direction flip — when the JS swaps ▲↔▼ the
+           browser cross-fades the glyph. Keeps the column stable
+           while the direction changes. */
+        transition: transform .15s ease, opacity .15s ease;
+    }
+    [data-theme="light"] .gpu-listings-table thead th .sort-arrow {
+        color: #4f46e5;
     }
 
     @keyframes spin {
@@ -97,40 +457,131 @@
         background: rgba(102, 126, 234, 0.25) !important;
     }
 
+    /* Cool row hover effect (2026-08-25):
+       - Subtle indigo gradient background (left → right fade)
+       - 4px solid indigo left accent (drawn via inset box-shadow so
+         there's no layout shift and it doesn't fight the compare-checked
+         4px solid border on the same side)
+       - Soft outer indigo glow underneath the row
+       - Smooth 0.2s transition on every property
+       Cells get the gradient; the row gets the border + glow so the
+       visual is a single coherent "this row is being focused" feel. */
+    .gpu-listings-table tbody tr {
+        transition: box-shadow 0.2s ease;
+        cursor: pointer;
+        /* Bug fix (2026-08-26, take 3): always-visible row separator
+           (1px subtle line at the bottom of every row) so rows look
+           distinct at all times — not just on hover. Without this the
+           gradient hover made adjacent rows blend into one continuous
+           highlight "blob". The line is faint so it doesn't compete
+           with the row content. */
+        box-shadow: inset 0 -1px 0 0 rgba(255, 255, 255, 0.04);
+    }
+    [data-theme="light"] .gpu-listings-table tbody tr {
+        box-shadow: inset 0 -1px 0 0 rgba(15, 23, 42, 0.08);
+    }
+    .gpu-listings-table tbody tr:hover {
+        box-shadow:
+            inset 4px 0 0 0 #818cf8,
+            inset 0 -1px 0 0 rgba(99, 102, 241, 0.35),
+            0 6px 18px rgba(99, 102, 241, 0.22),
+            0 0 0 1px rgba(99, 102, 241, 0.18);
+    }
+    /* Bug fix (2026-08-26, take 4): user reported the horizontal gradient
+       still showed per-column even with `background-attachment: fixed`
+       (because each cell sits at a different X position, so each cell
+       samples a different part of the horizontal gradient). Switched to
+       a VERTICAL gradient (180deg) — all cells in the same row sit at
+       the same Y position, so every cell shows the SAME vertical
+       gradient. The eye reads it as one unified row-wide gradient
+       fading from top to bottom. Opacity stops are kept low (0.12 top
+       → 0.05 bottom) so the highlight is a subtle accent, not a
+       solid "blob" that merges with the rows above/below. */
+    .gpu-listings-table tbody tr:hover td {
+        background: linear-gradient(180deg,
+            rgba(99, 102, 241, 0.12) 0%,
+            rgba(99, 102, 241, 0.05) 100%) !important;
+        transition: background 0.2s ease;
+    }
+    /* Light theme: cooler/sky-blue accent so the gradient reads on white */
+    [data-theme="light"] .gpu-listings-table tbody tr:hover {
+        box-shadow:
+            inset 4px 0 0 0 #6366f1,
+            inset 0 -1px 0 0 rgba(99, 102, 241, 0.35),
+            0 6px 18px rgba(99, 102, 241, 0.18),
+            0 0 0 1px rgba(99, 102, 241, 0.25);
+    }
+    [data-theme="light"] .gpu-listings-table tbody tr:hover td {
+        background: linear-gradient(180deg,
+            rgba(99, 102, 241, 0.10) 0%,
+            rgba(99, 102, 241, 0.04) 100%) !important;
+    }
+    /* Subtle ripple on click — the row briefly flashes a brighter indigo
+       ring that fades out, giving a tactile "press" feedback. We toggle a
+       class via JS (see addRippleOnRowClick in JS). */
+    @keyframes rowClickRipple {
+        0%   { box-shadow: inset 4px 0 0 0 #818cf8, 0 0 0 0 rgba(129, 140, 248, 0.55); }
+        50%  { box-shadow: inset 4px 0 0 0 #a5b4fc, 0 0 0 4px rgba(129, 140, 248, 0.35); }
+        100% { box-shadow: inset 4px 0 0 0 #818cf8, 0 0 0 0 rgba(129, 140, 248, 0); }
+    }
+    .gpu-listings-table tbody tr.row-ripple {
+        animation: rowClickRipple 0.45s ease-out;
+    }
+
     .vram-mode-toggle {
         background: transparent;
-        border: 1px solid #e74c3c;
-        color: #e74c3c;
+        border: 1px dashed #6b7280;
+        color: #6b7280;
         border-radius: 50%;
-        width: 26px;
-        height: 26px;
+        width: 28px;
+        height: 28px;
         display: inline-flex;
         align-items: center;
         justify-content: center;
         cursor: pointer;
-        transition: transform 0.25s ease, background 0.2s ease, box-shadow 0.2s ease;
+        transition: transform 0.25s ease, background 0.2s ease,
+                    border-color 0.2s ease, border-style 0.2s ease,
+                    color 0.2s ease, box-shadow 0.2s ease;
         flex-shrink: 0;
         padding: 0;
     }
 
     .vram-mode-toggle:hover {
         background: rgba(231, 76, 60, 0.12);
+        border-color: #e74c3c;
+        border-style: solid;
+        color: #e74c3c;
     }
 
+    /* ACTIVE — minimum mode (≥) — solid red, pulsing glow */
     .vram-mode-toggle.min-mode {
-        background: rgba(231, 76, 60, 0.18);
-        box-shadow: 0 0 8px rgba(231, 76, 60, 0.35);
-        animation: vram-toggle-pulse 1.2s ease-in-out infinite;
+        background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+        border: 1px solid #c0392b;
+        border-style: solid;
+        color: #fff;
+        box-shadow: 0 0 10px rgba(231, 76, 60, 0.55),
+                    inset 0 0 4px rgba(255, 255, 255, 0.25);
+        animation: vram-toggle-pulse 1.4s ease-in-out infinite;
+    }
+
+    /* ACTIVE — exact mode (≤) — solid red border, red fill, no pulse
+       (the exact mode is the "off" state for the min toggle; showing it
+       on by default with a clear solid border is enough) */
+    .vram-mode-toggle:not(.min-mode) {
+        background: rgba(231, 76, 60, 0.1);
+        border: 1px solid #e74c3c;
+        border-style: solid;
+        color: #e74c3c;
     }
 
     @keyframes vram-toggle-pulse {
-        0%, 100% { transform: scale(1); }
-        50% { transform: scale(1.12); }
+        0%, 100% { transform: scale(1); box-shadow: 0 0 10px rgba(231, 76, 60, 0.55), inset 0 0 4px rgba(255, 255, 255, 0.25); }
+        50% { transform: scale(1.12); box-shadow: 0 0 16px rgba(231, 76, 60, 0.8), inset 0 0 6px rgba(255, 255, 255, 0.4); }
     }
 
     .vram-mode-toggle .vram-mode-arrow {
         font-weight: bold;
-        font-size: 0.95rem;
+        font-size: 1.05rem;
         line-height: 1;
     }
 
@@ -370,32 +821,191 @@
         pointer-events: none;
     }
 
-    /* Vendor-specific filter icon buttons */
-    .filter-icon-btn.vendor-nvidia { border-color: #76b900; color: #76b900; background: rgba(118,185,0,0.12); }
-    .filter-icon-btn.vendor-nvidia.active { background: linear-gradient(135deg, #76b900 0%, #4a7a00 100%); border-color: #4a7a00; color: #fff; }
-    .filter-icon-btn.vendor-amd { border-color: #ed1c24; color: #ed1c24; background: rgba(237,28,36,0.12); }
-    .filter-icon-btn.vendor-amd.active { background: linear-gradient(135deg, #ed1c24 0%, #9a0006 100%); border-color: #9a0006; color: #fff; }
-    .filter-icon-btn.vendor-intel { border-color: #0071c5; color: #0071c5; background: rgba(0,113,197,0.12); }
-    .filter-icon-btn.vendor-intel.active { background: linear-gradient(135deg, #0071c5 0%, #004e88 100%); border-color: #004e88; color: #fff; }
+    /* Bug fix (2026-08-25): the Compare button now lives in the filter
+       family. It uses the same .filter-icon-btn base styles (32×32,
+       indigo border, gradient when active) and adds a small red dot
+       in the top-right corner showing the currently-selected count.
+       Disabled state is muted (lower opacity, no hover lift).
 
-    /* Smaller vendor icons, shown inline next to the Model label */
+       Bug fix (2026-08-26): user complained the disabled state was
+       too greyed-out and the icon was too small. Bumped the button
+       to 36×36 with a 22×22 SVG (bigger than the 18×18 default), and
+       softened the disabled state to opacity 0.7 with a subtle indigo
+       border + bg tint — so the button is clearly still THERE and
+       interactive-looking, but obviously not ready until 2+ GPUs are
+       selected. */
+    .filters #compare-btn {
+        /* Override the base 32×32 with a slightly larger 36×36 frame so
+           the icon is more visible (matches the visual weight of an
+           action button rather than a filter toggle). */
+        align-self: center;
+        width: 36px !important;
+        height: 36px !important;
+    }
+    .filters #compare-btn svg {
+        /* Override the base 18×18 SVG sizing — bump to 22×22 so the
+           scales icon is clearly readable at a glance. */
+        width: 22px !important;
+        height: 22px !important;
+    }
+    .filters #compare-btn:disabled {
+        /* Soften the disabled look: still obviously "not ready", but
+           visible enough that the user knows the button exists and
+           can see the count badge. */
+        opacity: 0.72;
+        cursor: not-allowed;
+        border-color: rgba(99, 102, 241, 0.35);
+        background: rgba(99, 102, 241, 0.06);
+        color: rgba(129, 140, 248, 0.85);
+        animation: none;
+    }
+    .filters #compare-btn:disabled:hover {
+        transform: none;
+        box-shadow: none;
+    }
+    .compare-badge {
+        position: absolute;
+        top: -4px;
+        right: -4px;
+        min-width: 18px;
+        height: 18px;
+        padding: 0 5px;
+        background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+        color: #fff;
+        font-size: 11px;
+        font-weight: 800;
+        line-height: 18px;
+        text-align: center;
+        border-radius: 10px;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+        pointer-events: none;
+    }
+    .filters #compare-btn:disabled .compare-badge {
+        background: linear-gradient(135deg, #94a3b8 0%, #64748b 100%);
+    }
+    .filters #compare-btn:not(:disabled).active {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border-color: #764ba2;
+        color: #fff;
+        animation: iconGlow 1.6s ease-in-out infinite alternate;
+    }
+
+    /* Vendor-specific filter icon buttons (2026-08-25: brand images
+       replaced the inline SVGs; the buttons now show the actual brand
+       logos. The colored bg/border on the button itself is muted so
+       the colorful logo can carry the brand identity, while the
+       `.active` state adds a glow + lift to indicate selection.
+
+       Bug fix (2026-08-26): brand logos were always shown at full
+       saturation/brightness, making them look "static" and selected
+       even when inactive. Now unselected icons are desaturated
+       (grayscale) and dimmed (~55% opacity) so only the .active icon
+       shows full color. Hover lifts them back to full saturation
+       so the user gets clear visual feedback on which vendor they
+       would select. */
+    .filter-icon-btn.vendor-nvidia,
+    .filter-icon-btn.vendor-amd,
+    .filter-icon-btn.vendor-intel {
+        /* The logo image already has the brand color baked in, so
+           the button's own bg/border is just a thin neutral frame. */
+        background: rgba(255, 255, 255, 0.04);
+        border-color: rgba(255, 255, 255, 0.18);
+        color: inherit;
+        overflow: hidden;
+        padding: 2px;
+    }
+    /* Unselected brand icons: grayscale + dim so they read as "off"
+       — only the .active icon stands out in full color. */
+    .filter-icon-btn.vendor-nvidia .brand-icon-img,
+    .filter-icon-btn.vendor-amd .brand-icon-img,
+    .filter-icon-btn.vendor-intel .brand-icon-img {
+        filter: grayscale(75%) brightness(0.6);
+        opacity: 0.55;
+        transition: filter 0.2s ease, opacity 0.2s ease;
+    }
+    /* Hover: lift back to full color so the user can see the
+       brand identity before clicking. */
+    .filter-icon-btn.vendor-nvidia:hover .brand-icon-img,
+    .filter-icon-btn.vendor-amd:hover .brand-icon-img,
+    .filter-icon-btn.vendor-intel:hover .brand-icon-img {
+        filter: grayscale(0%) brightness(1);
+        opacity: 1;
+    }
+    .filter-icon-btn.vendor-nvidia:hover { border-color: #76b900; box-shadow: 0 0 0 2px rgba(118, 185, 0, 0.25), 0 8px 20px rgba(118, 185, 0, 0.35); }
+    .filter-icon-btn.vendor-amd:hover    { border-color: #ed1c24; box-shadow: 0 0 0 2px rgba(237, 28, 36, 0.25), 0 8px 20px rgba(237, 28, 36, 0.35); }
+    .filter-icon-btn.vendor-intel:hover  { border-color: #0071c5; box-shadow: 0 0 0 2px rgba(0, 113, 197, 0.25), 0 8px 20px rgba(0, 113, 197, 0.35); }
+    .filter-icon-btn.vendor-nvidia.active { border-color: #76b900; box-shadow: 0 0 0 2px rgba(118, 185, 0, 0.45), 0 0 18px rgba(118, 185, 0, 0.55); animation: iconGlow 1.6s ease-in-out infinite alternate; }
+    .filter-icon-btn.vendor-amd.active    { border-color: #ed1c24; box-shadow: 0 0 0 2px rgba(237, 28, 36, 0.45), 0 0 18px rgba(237, 28, 36, 0.55); animation: iconGlow 1.6s ease-in-out infinite alternate; }
+    .filter-icon-btn.vendor-intel.active  { border-color: #0071c5; box-shadow: 0 0 0 2px rgba(0, 113, 197, 0.45), 0 0 18px rgba(0, 113, 197, 0.55); animation: iconGlow 1.6s ease-in-out infinite alternate; }
+    /* Active icons also get full color */
+    .filter-icon-btn.vendor-nvidia.active .brand-icon-img,
+    .filter-icon-btn.vendor-amd.active .brand-icon-img,
+    .filter-icon-btn.vendor-intel.active .brand-icon-img {
+        filter: grayscale(0%) brightness(1);
+        opacity: 1;
+    }
+    /* Light mode: make the brand colors slightly more saturated so
+       they pop on a white background. */
+    [data-theme="light"] .filter-icon-btn.vendor-nvidia,
+    [data-theme="light"] .filter-icon-btn.vendor-amd,
+    [data-theme="light"] .filter-icon-btn.vendor-intel {
+        background: #ffffff;
+        border-color: rgba(15, 23, 42, 0.18);
+    }
+    /* Light mode: unselected brand icons should be more visible
+       than dark mode (white background washes out dark images). */
+    [data-theme="light"] .filter-icon-btn.vendor-nvidia .brand-icon-img,
+    [data-theme="light"] .filter-icon-btn.vendor-amd .brand-icon-img,
+    [data-theme="light"] .filter-icon-btn.vendor-intel .brand-icon-img {
+        filter: grayscale(50%) brightness(0.85);
+        opacity: 0.7;
+    }
+    /* The actual brand logo image — square, fills the button
+       minus the 2px padding, rounded to match the button's 8px radius. */
+    .brand-icon-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 6px;
+        display: block;
+        pointer-events: none;
+        user-select: none;
+    }
+
+    /* Smaller vendor icons, shown inline next to the Model label.
+       Bug fix (2026-08-25): the icons were 22px but the OTHER
+       .filter-icon-btn rule (`.filters .filter-icon-btn`) set
+       width/height to 32px. The vendor bar used `.vendor-icon-bar
+       .filter-icon-btn` (more specific) so it stayed at 22px — BUT
+       only when the icon wasn't also matched by the column-settings
+       rule. Result: the Model module rendered at 32px-icon height
+       while the VRAM/Price/Rank pills rendered at ~26px (their row-2
+       button is 26px). User asked for both modules to be the same
+       size. Bumped to 26×26 (matches the VRAM mode toggle) so the
+       Model pill is the same overall height as its neighbours. */
     .vendor-icon-bar.filter-icon-bar {
         gap: 4px;
         vertical-align: middle;
         display: inline-flex;
         align-items: center;
         margin: 0 0.5rem;
+        /* Bug fix (2026-08-26, take 4): with the strict-match icon also
+           in row 1, the flex container was shrinking the vendor-icon-bar
+           to fit, which caused the brand icons to wrap to a second row.
+           flex-shrink: 0 forces the bar to keep its full content width
+           (3 icons + 2 gaps = 86px) so the icons stay on a single line. */
+        flex-shrink: 0;
     }
     .vendor-icon-bar .filter-icon-btn {
-        width: 22px;
-        height: 22px;
+        width: 26px !important;
+        height: 26px !important;
         border-radius: 6px;
         border-width: 1px;
         padding: 0;
     }
     .vendor-icon-bar .filter-icon-btn svg {
-        width: 12px;
-        height: 12px;
+        width: 14px !important;
+        height: 14px !important;
     }
     .vendor-icon-bar .filter-icon-btn:hover,
     .vendor-icon-bar .filter-icon-btn:focus-visible {
@@ -429,6 +1039,23 @@
         flex-wrap: nowrap;
         box-shadow: 0 1px 2px var(--shadow);
     }
+    /* Bug fix (2026-08-26, take 3): only the model box needs a fixed
+       width (to stop it expanding when a brand is picked and the <select>
+       auto-sizes to the longest option). Apply width on the model label
+       ONLY — using a separate selector here so the .gpu-filter-pill boxes
+       (VRAM, Price Range, Rank Range, Time, Source) keep their natural
+       content width and don't get empty space on the right.
+
+       Bug fix (2026-08-26, take 4): reduced the fixed width from 220px
+       to 200px so it's closer to the other GPU filter pills (Price
+       Range and Rank Range are 195px, VRAM is 192px). 200px is wide
+       enough to fit row 1 (Model: + 3 brand icons + strict-match) on
+       a single line — the alternative 195px caused the brand icons to
+       wrap to a second row, making the box look broken. */
+    .filters label.model-filter-label,
+    .model-filter-label {
+        width: 200px;
+    }
     [data-theme="dark"] .filters label.model-filter-label,
     [data-theme="dark"] .model-filter-label,
     [data-theme="dark"] .filters label.gpu-filter-pill {
@@ -447,14 +1074,31 @@
     [data-theme="dark"] .model-filter-row1 > span:first-child { color: #00d4ff; font-weight: 500; font-size: 0.875rem; }
     [data-theme="light"] .model-filter-row1 > span:first-child { color: var(--primary); font-weight: 600; font-size: 0.875rem; }
     .model-filter-label > .filter-icon-bar { margin: 0; }
+    /* Bug fix (2026-08-26, take 3): strict-match icon lives in row 1
+       (same row as the brand icons) and is pushed to the RIGHT corner
+       with `margin-left: auto`. So the icon sits ABOVE the model
+       dropdown (which is in row 2 by itself). The icon is 26×26 to
+       match the brand icon dimensions. */
+    .strict-match-row1-icon {
+        margin-left: auto;
+        /* The 26×26 sizing + 14×14 SVG rules are already in the
+           .vendor-icon-bar .strict-match-icon-btn block; mirror them
+           here for the row1 location. */
+    }
+    /* The <select> fills the label width so it doesn't auto-grow to
+       fit the longest <option> when a brand is picked. 100% width +
+       box-sizing: border-box keeps it inside the 220px label. */
     .model-filter-label > select.model-filter-select {
-        min-width: 200px;
+        width: 100%;
+        min-width: 0;
+        box-sizing: border-box;
         background: var(--input-bg);
         border: 1px solid var(--input-border);
         color: var(--text-color);
         padding: 4px 8px;
         border-radius: 6px;
         font-size: 0.85rem;
+        margin-top: 4px;
     }
     [data-theme="dark"] .model-filter-label > select.model-filter-select {
         background: rgba(0,0,0,0.3);
@@ -587,6 +1231,24 @@ let historyChart = null;
 let mostSoldChart = null;
 let topPerformersChart = null;
 let topValueChart = null;
+// Sell-at-price histogram inside the listing detail modal. Re-rendered
+// whenever the user toggles between Active and All Time scope.
+let priceDistributionChart = null;
+// Cache of the latest /api/listing-details response so the scope toggle
+// can re-render the popup's stats boxes without re-fetching.
+let currentListingDetail = null;
+let currentPopupScope = 'active';
+// Permission flags injected by the context processor (see app.py).
+// `canSeeAllTime` controls whether the "All Time" toggle in the popup is
+// clickable — admins and active subscribers get it, everyone else sees it
+// rendered as disabled. Centralized here so the JS reads from one place
+// instead of each section re-parsing the Jinja-injected globals.
+window.popupPermissions = {
+    isStaff: {{ is_staff|tojson }},
+    isSubscriber: {{ is_subscriber|tojson }},
+    canSeeAllTime: {{ can_see_all_time|tojson }},
+    isLoggedIn: {{ (current_user is not none)|tojson }},
+};
 
 // Load additional statistics
 
@@ -1244,40 +1906,43 @@ function filterByModel(vendor, model) {
                     <span>Model:</span>
                     <span class="filter-icon-bar vendor-icon-bar" id="vendor-icon-bar">
                         <button type="button" class="filter-icon-btn vendor-nvidia" data-vendor="NVIDIA" title="NVIDIA" onclick="selectGPUVendor('NVIDIA')">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-                                <rect x="2.5" y="5" width="19" height="14" rx="2.5"/>
-                                <path d="M12 8c-3.5 0-6 2-6 4s2.5 4 6 4 6-2 6-4-2.5-4-6-4z"/>
-                                <circle cx="12" cy="12" r="2.5" fill="currentColor" stroke="none"/>
-                            </svg>
+                            <img src="/static/icons/nvidia.png" alt="NVIDIA" class="brand-icon-img" />
                         </button>
                         <button type="button" class="filter-icon-btn vendor-amd" data-vendor="AMD" title="AMD" onclick="selectGPUVendor('AMD')">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-                                <rect x="3" y="3" width="18" height="18" rx="2"/>
-                                <path d="M8 8l8 8M16 8L8 16"/>
-                            </svg>
+                            <img src="/static/icons/amd.png" alt="AMD" class="brand-icon-img" />
                         </button>
                         <button type="button" class="filter-icon-btn vendor-intel" data-vendor="Intel" title="Intel" onclick="selectGPUVendor('Intel')">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
-                                <ellipse cx="12" cy="12" rx="10" ry="6"/>
-                                <text x="12" y="15" text-anchor="middle" font-size="6.5" font-weight="700" fill="currentColor" stroke="none">Intel</text>
-                            </svg>
+                            <img src="/static/icons/intel.png" alt="Intel" class="brand-icon-img" />
                         </button>
                     </span>
+                    <!-- Bug fix (2026-08-26, take 3): strict-match icon is
+                         on the RIGHT side of row 1 (the same row as the
+                         brand icons), pushed to the far right with
+                         `margin-left: auto`. So the icon sits ABOVE the
+                         model dropdown (which is in row 2), in the
+                         right corner of the model box. -->
+                    <button type="button" id="strict-match-icon" class="filter-icon-btn strict-match-icon-btn strict-match-row1-icon"
+                            onclick="toggleStrictMatch()"
+                            aria-pressed="false"
+                            style="display: none;"
+                            title="Exact Match Only — when enabled, filters out Ti/Super variants and only shows the selected model name.">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <circle cx="12" cy="12" r="10"/>
+                            <circle cx="12" cy="12" r="6.2"/>
+                            <circle class="strict-match-bullseye" cx="12" cy="12" r="2.4" fill="currentColor" stroke="none"/>
+                        </svg>
+                    </button>
                 </span>
                 <select id="model-filter" class="model-filter-select" onchange="onModelChange()">
                     <option value="all">All Models</option>
                 </select>
-            </label>
-            <label class="strict-match-label" style="display: none;" id="strict-match-container">
-                <input type="checkbox" id="strict-match" onchange="loadListings()">
-                <span style="color: #00d4ff; font-weight: 500;">Exact Match Only</span>
-                <span style="font-size: 0.75rem; color: #888; margin-left: 4px;" title="When enabled, filters out Ti/Super variants">i</span>
+                <input type="checkbox" id="strict-match" class="hidden-filter" onchange="onStrictMatchChange()" style="display: none;">
             </label>
             <label class="gpu-filter-pill">
                 <span class="gpu-filter-label-text">💾 VRAM</span>
                 <div style="display: flex; align-items: center; gap: 0.5rem; margin-top: 4px;">
-                    <button type="button" id="vram-mode-toggle" class="vram-mode-toggle" onclick="toggleVramMode()" title="Exact size (click for ≥ selected)" aria-pressed="false">
-                        <span class="vram-mode-arrow">&lt;</span>
+                    <button type="button" id="vram-mode-toggle" class="vram-mode-toggle" onclick="toggleVramMode()" title="Click to switch between exact size (≤) and minimum size (≥)" aria-pressed="false">
+                        <span class="vram-mode-arrow">&le;</span>
                     </button>
                     <input type="checkbox" id="vram-min-mode" onchange="onVramModeChange()" style="display: none;">
                     <select id="vram-filter" onchange="loadListings()" class="gpu-filter-select" style="min-width: 110px;">
@@ -1301,42 +1966,68 @@ function filterByModel(vendor, model) {
                     <input type="number" id="rank-max" placeholder="Max" class="gpu-filter-input" onchange="loadListings()">
                 </div>
             </label>
-            <label>
-                Sort:
-                <select id="sort-by" onchange="loadListings()">
-                    <option value="date_posted">{{ t('Date Posted') }}</option>
-                    <option value="price">{{ t('Price') }}</option>
-                    <option value="performance_price">Performance/Price</option>
-                    <option value="rank">Rank</option>
-                </select>
+            <!-- Bug fix (2026-08-25): removed the Sort + Order pills entirely.
+                 Sorting is now done by clicking the table column headers
+                 directly, with an animated ▲/▼ arrow on the active column.
+                 The hidden <select>s below stay in the DOM so deep-link URL
+                 params (?sort=price&order=asc) still work. The Time dropdown
+                 remains a standalone pill (per user request). -->
+            <select id="sort-by" style="display:none;" onchange="loadListings()">
+                <option value="date_posted" selected>{{ t('Date Posted') }}</option>
+                <option value="price">{{ t('Price') }}</option>
+                <option value="performance_price">Performance/Price</option>
+                <option value="rank">Rank</option>
+                <option value="g3d">G3D Mark</option>
+                <option value="vram">VRAM</option>
+                <option value="year">Year</option>
+                <option value="msrp">MSRP</option>
+                <option value="brand">Brand</option>
+                <option value="gpu">GPU</option>
+                <option value="location">Location</option>
+            </select>
+            <select id="sort-order" style="display:none;" onchange="loadListings()">
+                <option value="desc" selected>{{ t('Descending') }}</option>
+                <option value="asc">{{ t('Ascending') }}</option>
+            </select>
+            <label class="gpu-filter-pill">
+                <span class="gpu-filter-label-text">🕒 Time</span>
+                <div style="display: flex; gap: 0.5rem; align-items: center; margin-top: 4px; min-width: 130px;">
+                    <select id="time-filter" onchange="loadListings()" title="Time filter" style="flex: 1; min-width: 0;">
+                        <option value="all_time">{{ t('All Time') }}</option>
+                        <option value="month">{{ t('Last Month') }}</option>
+                        <option value="week">{{ t('Last Week') }}</option>
+                    </select>
+                </div>
             </label>
-            <label>
-                Order:
-                <select id="sort-order" onchange="loadListings()">
-                    <option value="desc">{{ t('Descending') }}</option>
-                    <option value="asc">{{ t('Ascending') }}</option>
-                </select>
+            <label class="gpu-filter-pill">
+                <span class="gpu-filter-label-text">🗂️ Source</span>
+                <div style="display: flex; gap: 0.5rem; align-items: center; margin-top: 4px; min-width: 130px;">
+                    <select id="source-filter" onchange="loadListings()" style="flex: 1; min-width: 0;">
+                        <option value="all">{{ t('All Sources') }}</option>
+                        <option value="ss.com">SS.com</option>
+                        <option value="andelemandele">Andele Mandele</option>
+                        <option value="facebook_extension">Facebook</option>
+                    </select>
+                </div>
             </label>
-            <button id="compare-btn" class="btn btn-small" style="background: linear-gradient(135deg, #667eea, #764ba2); color: white; border: none; align-self: center;" onclick="goToCompare()" disabled>
-                Compare <span id="compare-count">0</span>
-            </button>
-            <label>
-                Source:
-                <select id="source-filter" onchange="loadListings()">
-                    <option value="all">All Sources</option>
-                    <option value="ss.com">SS.com</option>
-                    <option value="andelemandele">Andele Mandele</option>
-                    <option value="facebook_extension">Facebook</option>
-                </select>
-            </label>
-            <label>
-                Time:
-                <select id="time-filter" onchange="loadListings()">
-                    <option value="all_time">All Time</option>
-                    <option value="month">Last Month</option>
-                    <option value="week">Last Week</option>
-                </select>
-            </label>
+            <!-- Bug fix (2026-08-25): redesigned the Compare button to match
+                 the rest of the filter-icon-btn family. It's now a 32×32
+                 icon button with a tiny count badge in the corner, sits
+                 right after Source in the bar, and lights up with the
+                 indigo→purple gradient when 2–4 GPUs are selected. -->
+            <span style="position: relative; display: inline-flex; align-self: center;">
+                <button type="button" id="compare-btn" class="filter-icon-btn" onclick="goToCompare()" disabled
+                        aria-pressed="false" title="Select 2-4 GPUs">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M3 6h18"/>
+                        <path d="M6 6l-3 7a3 3 0 0 0 6 0L6 6"/>
+                        <path d="M18 6l-3 7a3 3 0 0 0 6 0L18 6"/>
+                        <path d="M12 3v3"/>
+                        <path d="M9 13h6"/>
+                    </svg>
+                    <span id="compare-badge" class="compare-badge">0</span>
+                </button>
+            </span>
         </div>
     </div>
 
@@ -1398,6 +2089,70 @@ function filterByModel(vendor, model) {
 // Cache for listing details to reduce API calls
 const listingCache = new Map();
 
+// Bug fix (2026-08-25): sort state lives in JS variables (driven by
+// header clicks), not in the hidden <select>s. The <select>s stay in
+// sync so deep-link URL params (applyUrlParamsToFilters) keep working.
+let currentSort = 'date_posted';
+let currentOrder = 'desc';
+
+function setSort(col) {
+    if (currentSort === col) {
+        // Same column → flip direction
+        currentOrder = currentOrder === 'asc' ? 'desc' : 'asc';
+    } else {
+        currentSort = col;
+        // For text fields ascending A→Z; for numeric/date default to descending
+        const textCols = new Set(['brand', 'gpu', 'location']);
+        currentOrder = textCols.has(col) ? 'asc' : 'desc';
+    }
+    // Sync hidden selects so URL params / deep links still work
+    const sb = document.getElementById('sort-by');
+    const so = document.getElementById('sort-order');
+    if (sb) sb.value = currentSort;
+    if (so) so.value = currentOrder;
+    updateSortArrows();
+    loadListings();
+}
+
+function updateSortArrows() {
+    document.querySelectorAll('.gpu-listings-table thead th.sortable').forEach(th => {
+        const arrow = th.querySelector('.sort-arrow');
+        if (!arrow) return;
+        // Animate direction flip: keep the column highlighted, swap the
+        // arrow glyph. CSS transition (below) gives a smooth rotate.
+        if (th.dataset.sort === currentSort) {
+            arrow.textContent = currentOrder === 'asc' ? '▲' : '▼';
+            th.classList.add('sort-active');
+        } else {
+            arrow.textContent = '';
+            th.classList.remove('sort-active');
+        }
+    });
+}
+
+function wireSortHeaders() {
+    document.querySelectorAll('.gpu-listings-table thead th.sortable').forEach(th => {
+        th.addEventListener('click', () => {
+            const col = th.dataset.sort;
+            if (col) setSort(col);
+        });
+    });
+}
+
+function applyUrlParamsToFilters() {
+    const sp = new URLSearchParams(window.location.search);
+    if (sp.has('sort')) {
+        currentSort = sp.get('sort');
+        const sb = document.getElementById('sort-by');
+        if (sb) sb.value = currentSort;
+    }
+    if (sp.has('order')) {
+        currentOrder = sp.get('order');
+        const so = document.getElementById('sort-order');
+        if (so) so.value = currentOrder;
+    }
+}
+
 async function getListingDetails(listingId) {
     if (listingCache.has(listingId)) {
         return listingCache.get(listingId);
@@ -1422,8 +2177,11 @@ async function loadListings() {
     const highConfidence = document.getElementById('high-confidence').checked;
     const priceDropOnly = document.getElementById('price-drop-only').checked;
     const showAvgPrice = document.getElementById('show-avg-price').checked;
-    const sortBy = document.getElementById('sort-by').value;
-    const sortOrder = document.getElementById('sort-order').value;
+    // Bug fix (2026-08-25): read sort state from JS vars (driven by
+    // header clicks), not the hidden <select>s. The <select>s stay in
+    // sync via setSort() so deep-link URL params still work.
+    const sortBy = currentSort;
+    const sortOrder = currentOrder;
     const timeFilter = document.getElementById('time-filter').value;
     const vendorFilter = document.getElementById('vendor-filter').value;
     const modelFilter = document.getElementById('model-filter').value;
@@ -1437,10 +2195,19 @@ async function loadListings() {
     const rankMin = document.getElementById('rank-min')?.value || '';
     const rankMax = document.getElementById('rank-max')?.value || '';
 
-    // Show/hide strict match checkbox based on model selection
-    const strictMatchContainer = document.getElementById('strict-match-container');
-    if (strictMatchContainer) {
-        strictMatchContainer.style.display = modelFilter !== 'all' ? 'inline-flex' : 'none';
+    // Show/hide strict match icon based on model selection (NOT vendor).
+    // Bug fix (2026-08-25): user complained that the old "Exact Match Only"
+    // label "randomly pops in when brand is picked". The trigger is now
+    // a specific model — vendor-only selection leaves it hidden.
+    // Bug fix (2026-08-26): the icon now lives inside the vendor-icon-bar
+    // (same line as the NVIDIA/AMD/Intel brand buttons). Just toggle the
+    // icon's own display — no more separate "strict-match-row" container.
+    const strictMatchIcon = document.getElementById('strict-match-icon');
+    if (strictMatchIcon) {
+        strictMatchIcon.style.display = modelFilter !== 'all' ? 'inline-flex' : 'none';
+        const on = strictMatch;
+        strictMatchIcon.classList.toggle('active', on);
+        strictMatchIcon.setAttribute('aria-pressed', on ? 'true' : 'false');
     }
 
     // Update VRAM filter options based on selected model (only when model/vendor changed)
@@ -1514,19 +2281,19 @@ async function loadListings() {
                 <thead>
                     <tr>
                         <th class="text-center" data-col-id="col-image">Image</th>
-                        <th data-col-id="col-brand">{{ t('Brand') }}</th>
-                        <th data-col-id="col-gpu">{{ t('GPU') }}</th>
-                        <th data-col-id="col-vram">{{ t('VRAM') }}</th>
-                        <th data-col-id="col-year">Year</th>
-                        <th data-col-id="col-price">{{ t('Price') }}</th>
-                        <th data-col-id="col-msrp">MSRP</th>
-                        <th data-col-id="col-g3d" title="PassMark G3D Mark">G3D</th>
-                        <th data-col-id="col-perf-price" title="Performance / Price: G3D Mark per Euro">€/G3D</th>
+                        <th class="sortable" data-sort="brand" data-col-id="col-brand">{{ t('Brand') }}<span class="sort-arrow"></span></th>
+                        <th class="sortable" data-sort="gpu" data-col-id="col-gpu">{{ t('GPU') }}<span class="sort-arrow"></span></th>
+                        <th class="sortable" data-sort="vram" data-col-id="col-vram">{{ t('VRAM') }}<span class="sort-arrow"></span></th>
+                        <th class="sortable" data-sort="year" data-col-id="col-year">Year<span class="sort-arrow"></span></th>
+                        <th class="sortable" data-sort="price" data-col-id="col-price">{{ t('Price') }}<span class="sort-arrow"></span></th>
+                        <th class="sortable" data-sort="msrp" data-col-id="col-msrp">MSRP<span class="sort-arrow"></span></th>
+                        <th class="sortable" data-sort="g3d" data-col-id="col-g3d" title="PassMark G3D Mark">G3D<span class="sort-arrow"></span></th>
+                        <th class="sortable" data-sort="performance_price" data-col-id="col-perf-price" title="Performance / Price: G3D Mark per Euro">€/G3D<span class="sort-arrow"></span></th>
                         <th data-col-id="col-g2d" title="PassMark G2D Mark">G2D</th>
-                        <th data-col-id="col-rank" title="Performance rank based on G3D">Rank</th>
+                        <th class="sortable" data-sort="rank" data-col-id="col-rank" title="Performance rank based on G3D">Rank<span class="sort-arrow"></span></th>
                         <th data-col-id="col-market">Market Position</th>
-                        <th data-col-id="col-location">Location</th>
-                        <th data-col-id="col-date">Date</th>
+                        <th class="sortable" data-sort="location" data-col-id="col-location">Location<span class="sort-arrow"></span></th>
+                        <th class="sortable" data-sort="date_posted" data-col-id="col-date">Date<span class="sort-arrow"></span></th>
                         <th data-col-id="col-actions">Actions</th>
                         <th data-col-id="col-compare" style="text-align: center;"><input type="checkbox" id="select-all-compare" title="Select all visible for compare" onclick="toggleSelectAllCompare(event)"></th>
                     </tr>
@@ -1757,16 +2524,76 @@ async function loadListings() {
                         <div class="market-position-content">
                             ${item.is_unicorn ? `
                                 <span class="unicorn-badge" title="Only one listing of this model in all history!">🦄 UNICORN</span>
-                            ` : (item.price_stats ? `
-                                <div style="font-size: 0.875rem; display: flex; align-items: center; justify-content: center; gap: 0.4rem; flex-wrap: wrap;">
-                                    <span>Avg: €${item.price_stats.avg}</span>
-                                    ${priceIndicator ? priceIndicator : ''}
-                                </div>
-                                <div style="font-size: 0.75rem; color: #6b7280;">Range: €${item.price_stats.min} - €${item.price_stats.max}</div>
-                                <div class="price-bar" title="Price percentile: ${item.price_stats.percentile}%">
-                                    <div class="price-bar-fill" style="width: ${item.price_stats.percentile}%"></div>
-                                </div>
-                            ` : (item.gpu_model ? '<small>No price data</small>' : '<small>No price data</small>'))}
+                            ` : (item.price_stats ? (() => {
+                                // Bug fix (2026-08-26, take 5): removed the
+                                // avg marker + avg pill — user pointed out
+                                // that "avg is always the middle, so it's
+                                // redundant with min/max". Also moved MIN/MAX
+                                // values from a top row (which the indigo
+                                // "this" pill overlapped with at the edges)
+                                // to a row below the bar at the bar's ends,
+                                // so there's no visual collision anywhere.
+                                //
+                                // New layout (top → bottom):
+                                //   1. (indigo "this" pill, floats ABOVE the
+                                //      bar at the marker's x%)
+                                //   2. gradient bar with the indigo marker
+                                //      + a small white avg dot in the middle
+                                //      (hover the dot to see the avg price)
+                                //   3. MIN €X (left) + MAX €Y (right) at the
+                                //      bar's ends, in their own colors
+                                const ps = item.price_stats;
+                                const mn = Number(ps.min) || 0;
+                                const mx = Number(ps.max) || 0;
+                                const av = Number(ps.avg) || 0;
+                                const md = Number(ps.median) || 0;
+                                const cur = Number(item.price_eur) || 0;
+                                let pct;
+                                if (mx > mn) {
+                                    pct = (cur - mn) / (mx - mn) * 100;
+                                } else {
+                                    pct = 50;
+                                }
+                                pct = Math.max(0, Math.min(100, pct));
+                                // Avg + median marker positions — only useful
+                                // when the market isn't flat (min != max). For
+                                // single-listing models we skip both dots to
+                                // keep the bar clean.
+                                // Bug fix (2026-08-26): added median dot alongside
+                                // the avg dot, with a different color (yellow)
+                                // so the two are visually distinct. Both dots
+                                // show their value on hover.
+                                const isFlat = mx === mn;
+                                const avgPct = isFlat
+                                    ? 50
+                                    : Math.max(0, Math.min(100, (av - mn) / (mx - mn) * 100));
+                                const medianPct = isFlat
+                                    ? 50
+                                    : Math.max(0, Math.min(100, (md - mn) / (mx - mn) * 100));
+                                const title = isFlat
+                                    ? `Only 1 listing of this model at €${mn}`
+                                    : `€${cur} this listing • range €${mn}–€${mx} • ${pct.toFixed(0)}% up the range`;
+                                return `
+                                    <div class="mp-bar" title="${title}">
+                                        <div class="mp-bar-gradient"></div>
+                                        <div class="mp-marker" style="left: ${pct.toFixed(1)}%">
+                                            <div class="mp-marker-arrow"></div>
+                                            <div class="mp-marker-dot"></div>
+                                        </div>
+                                        ${!isFlat ? `<div class="mp-avg-dot" style="left: ${avgPct.toFixed(1)}%" data-avg="€${av}">
+                                            <div class="mp-avg-tooltip">avg<br>€${av}</div>
+                                        </div>` : ''}
+                                        ${!isFlat ? `<div class="mp-median-dot" style="left: ${medianPct.toFixed(1)}%" data-median="€${md}">
+                                            <div class="mp-median-tooltip">median<br>€${md}</div>
+                                        </div>` : ''}
+                                        <div class="mp-this-floating" style="left: ${pct.toFixed(1)}%">€${cur}</div>
+                                    </div>
+                                    <div class="mp-min-max">
+                                        <span class="mp-min">€${mn}</span>
+                                        <span class="mp-max">€${mx}</span>
+                                    </div>
+                                `;
+                            })() : (item.gpu_model ? '<small>No price data</small>' : '<small>No price data</small>'))}
                         </div>
                     </td>
                     <td class="text-center">${item.source === 'andelemandele' ? 'Latvia' : (item.source === 'facebook_extension' ? (item.seller_location || 'Unknown') : (item.seller_location || 'N/A'))}</td>
@@ -1805,6 +2632,11 @@ async function loadListings() {
             </table>
         `;
         container.innerHTML = html;
+
+        // Bug fix (2026-08-25): re-wire click handlers + repaint arrows
+        // every render, since container.innerHTML replacement wipes them.
+        wireSortHeaders();
+        updateSortArrows();
 
         // Show summary row if enabled in settings
         const showSummary = localStorage.getItem('showSummaryFields') === 'true';
@@ -2605,6 +3437,557 @@ function closeModal() {
     document.getElementById('history-modal').classList.remove('active');
 }
 
+// =============================================================
+// GPU listing detail popup — render helpers
+// =============================================================
+// These functions build the inner HTML for the redesigned Price
+// Analysis / Distribution / Model Info / Competitors sections.
+// They are pure functions of (data, current, scope) so they can be
+// re-invoked on scope toggle without re-fetching from the server.
+//
+// Permission note: window.popupPermissions.canSeeAllTime gates the
+// "All Time" toggle. Helpers below are silent on permissions — the
+// template just doesn't render the "All Time" button as clickable
+// for non-subscribers, and these render functions read whichever
+// scope was passed in.
+// =============================================================
+
+function _scopeStats(data, scope) {
+    // Resolve the stats dict for the current scope. Falls back to the
+    // legacy model_price_stats if a section was added before the
+    // active/all_time split was wired up.
+    if (scope === 'all_time') return data.all_time_stats || data.model_price_stats;
+    return data.active_listings_stats || data.model_price_stats;
+}
+
+function _scopeHistogram(data, scope) {
+    if (scope === 'all_time') return (data.sell_at_price && data.sell_at_price.all_time) || [];
+    return (data.sell_at_price && data.sell_at_price.active) || [];
+}
+
+function _scopeLabel(scope) {
+    return scope === 'all_time' ? 'All Time' : 'Active';
+}
+
+function _signColor(n) {
+    // Green for negative (good for buyer), red for positive (above market),
+    // grey for zero. Mirrors the .pa-value diff color elsewhere.
+    if (n < 0) return '#16a34a';
+    if (n > 0) return '#dc2626';
+    return '#9ca3af';
+}
+
+function _formatEuro(n) {
+    const v = Number(n);
+    if (!isFinite(v)) return '—';
+    return '€' + v.toFixed(0);
+}
+
+function _formatPct(n, signed) {
+    if (!isFinite(n)) return '—';
+    const s = signed && n > 0 ? '+' : '';
+    return s + n.toFixed(1) + '%';
+}
+
+function renderPriceAnalysisRow1(data, current, scope) {
+    // Row 1 of the Price Analysis card: 4 main boxes.
+    // [ Current ] [ Lowest ] [ Avg ] [ Highest ]
+    // Each non-Current box shows both the market value AND the diff
+    // vs this listing, so the user can read the comparison at a glance
+    // (no need to scan a separate "vs" card).
+    const cur = Number(current.price_eur) || 0;
+    const stats = _scopeStats(data, scope);
+    if (!stats) {
+        return `<div class="pa-stat pa-current"><div class="pa-label">Current</div><div class="pa-value">${_formatEuro(cur)}</div></div>`
+             + `<div class="pa-stat pa-empty"><div class="pa-label">Lowest</div><div class="pa-value" style="color:#9ca3af">—</div></div>`
+             + `<div class="pa-stat pa-empty"><div class="pa-label">Avg</div><div class="pa-value" style="color:#9ca3af">—</div></div>`
+             + `<div class="pa-stat pa-empty"><div class="pa-label">Highest</div><div class="pa-value" style="color:#9ca3af">—</div></div>`;
+    }
+    const mn = Number(stats.min) || 0;
+    const av = Number(stats.avg) || 0;
+    const mx = Number(stats.max) || 0;
+    const diffLow = (mn && cur) ? cur - mn : 0;
+    const diffAvg = (av && cur) ? cur - av : 0;
+    const diffHigh = (mx && cur) ? cur - mx : 0;
+    const pctOffMax = mx ? ((mx - cur) / mx * 100) : 0;
+    // Sign-color with buyer-friendly flip for the Lowest card: when the
+    // current price is ABOVE the market's lowest, the buyer is paying
+    // more than they could elsewhere → that's BAD for the buyer, so the
+    // pill should be red. Below lowest is impossible (the listing IS the
+    // floor in that case) but if it happens, treat as green.
+    const diffLowColor = diffLow > 0 ? '#dc2626' : (diffLow < 0 ? '#16a34a' : '#9ca3af');
+    const subFor = (key) => {
+        const c = stats[key + '_count'] || 0;
+        return scope === 'all_time' ? `${c} at this` : `${c} on market`;
+    };
+    return `
+        <div class="pa-stat pa-current">
+            <div class="pa-label">Current</div>
+            <div class="pa-value">${_formatEuro(cur)}</div>
+            <div class="pa-sub">this listing</div>
+        </div>
+        <div class="pa-stat pa-min" title="Cheapest ${_scopeLabel(scope).toLowerCase()} listing for this model">
+            <div class="pa-label">Lowest</div>
+            <div class="pa-value">${_formatEuro(mn)}</div>
+            <div class="pa-sub pa-sub-combo">
+                <span class="pa-sub-pill" style="color:${diffLowColor}">${diffLow >= 0 ? '+' : ''}${_formatEuro(diffLow)}</span>
+                <span class="pa-sub-meta">${subFor('min')}</span>
+            </div>
+        </div>
+        <div class="pa-stat pa-avg" title="Market average for this model (${_scopeLabel(scope).toLowerCase()})">
+            <div class="pa-label">Avg</div>
+            <div class="pa-value">${_formatEuro(av)}</div>
+            <div class="pa-sub pa-sub-combo">
+                <span class="pa-sub-pill" style="color:${_signColor(diffAvg)}">${diffAvg >= 0 ? '+' : ''}${_formatEuro(diffAvg)}</span>
+                <span class="pa-sub-meta">${(av ? (diffAvg / av * 100) : 0).toFixed(1)}% • ${stats.avg_count || 0} listings</span>
+            </div>
+        </div>
+        <div class="pa-stat pa-max" title="Most expensive ${_scopeLabel(scope).toLowerCase()} listing for this model">
+            <div class="pa-label">Highest</div>
+            <div class="pa-value">${_formatEuro(mx)}</div>
+            <div class="pa-sub pa-sub-combo">
+                <span class="pa-sub-pill" style="color:${pctOffMax > 0 ? '#16a34a' : '#9ca3af'}">${pctOffMax.toFixed(1)}% off</span>
+                <span class="pa-sub-meta">${subFor('max')}</span>
+            </div>
+        </div>
+    `;
+}
+
+function renderPriceAnalysisRow2(data, current, scope) {
+    // Row 2 of the Price Analysis card: 4 secondary boxes.
+    // [ Range ] [ Count ] [ Max/Min ratio ] [ vs MSRP ]
+    // These are derived from the row-1 stats and the model_info MSRP, so
+    // they update with the same scope toggle.
+    const cur = Number(current.price_eur) || 0;
+    const stats = _scopeStats(data, scope);
+    if (!stats) {
+        return `<div class="pa-stat pa-empty"><div class="pa-label">Range</div><div class="pa-value" style="color:#9ca3af">—</div></div>`
+             + `<div class="pa-stat pa-empty"><div class="pa-label">Listings</div><div class="pa-value" style="color:#9ca3af">—</div></div>`
+             + `<div class="pa-stat pa-empty"><div class="pa-label">Max / Min</div><div class="pa-value" style="color:#9ca3af">—</div></div>`
+             + `<div class="pa-stat pa-empty"><div class="pa-label">vs MSRP</div><div class="pa-value" style="color:#9ca3af">—</div></div>`;
+    }
+    const mn = Number(stats.min) || 0;
+    const av = Number(stats.avg) || 0;
+    const mx = Number(stats.max) || 0;
+    const range = (mn && mx) ? (mx - mn) : 0;
+    const ratio = (mn && mx) ? (mx / mn) : 0;
+    const count = Number(stats.count) || 0;
+    const msrp = data.model_info && data.model_info.msrp_usd ? Number(data.model_info.msrp_usd) : null;
+    // Convert MSRP USD to EUR roughly (1 USD ≈ 0.92 EUR as a static estimate
+    // — this is a derived display, not a financial calculation, and the
+    // popup already shows MSRP in USD in the Model Info card).
+    const msrpEur = msrp ? msrp * 0.92 : null;
+    const vsMsrp = (msrpEur && cur) ? ((cur - msrpEur) / msrpEur * 100) : null;
+    return `
+        <div class="pa-stat pa-secondary" title="Difference between highest and lowest price">
+            <div class="pa-label">Range</div>
+            <div class="pa-value pa-value-sm">${_formatEuro(range)}</div>
+            <div class="pa-sub">market spread</div>
+        </div>
+        <div class="pa-stat pa-secondary" title="Number of listings included in this scope">
+            <div class="pa-label">Listings</div>
+            <div class="pa-value pa-value-sm">${count}</div>
+            <div class="pa-sub">${_scopeLabel(scope).toLowerCase()} ${count === 1 ? 'listing' : 'listings'}</div>
+        </div>
+        <div class="pa-stat pa-secondary" title="Ratio of highest to lowest (1.0× = no spread)">
+            <div class="pa-label">Max / Min</div>
+            <div class="pa-value pa-value-sm">${ratio ? ratio.toFixed(2) + '×' : '—'}</div>
+            <div class="pa-sub">price ratio</div>
+        </div>
+        <div class="pa-stat pa-secondary" title="Current price vs original MSRP (USD converted to EUR)">
+            <div class="pa-label">vs MSRP</div>
+            <div class="pa-value pa-value-sm" style="color:${vsMsrp == null ? '#9ca3af' : _signColor(vsMsrp)}">
+                ${vsMsrp == null ? '—' : (vsMsrp >= 0 ? '+' : '') + vsMsrp.toFixed(0) + '%'}
+            </div>
+            <div class="pa-sub">${msrp ? 'MSRP ' + _formatEuro(msrpEur) + ' (~$)' : 'no MSRP data'}</div>
+        </div>
+    `;
+}
+
+function renderModelInfo(info, current) {
+    // Build the Model Info card from gpu_reference + passmark data.
+    // We use a 3-column grid for the main specs (vendor/chip/vram/year/
+    // memory_type/msrp) and a 2-column row for the benchmark numbers.
+    const v = (info.vendor || '').trim();
+    const m = (info.model || '').trim();
+    const full = (v + ' ' + m).trim() || (current.gpu_model || 'Unknown GPU');
+    const vramGb = info.vram_gb ? Math.round(info.vram_gb / 1024 * 10) / 10 : null;
+    const year = info.year_released;
+    const msrp = info.msrp_usd ? '$' + Math.round(info.msrp_usd) : null;
+    const chip = info.gpu_chip;
+    const memType = info.memory_type;
+    const tdp = info.tdp_w ? info.tdp_w + 'W' : null;
+    const g3d = info.g3d_mark;
+    const g3dRank = info.g3d_rank;
+    const core = info.core_clock_mhz ? info.core_clock_mhz + ' MHz' : null;
+    const mem = info.mem_clock_mhz ? info.mem_clock_mhz + ' MHz' : null;
+    const samples = info.passmark_samples;
+    // Spec cell helper
+    const cell = (label, value) => value == null ? '' :
+        `<div class="mi-cell">
+            <div class="mi-label">${label}</div>
+            <div class="mi-value">${value}</div>
+        </div>`;
+    return `
+        <div class="grid-item grid-item-mi model-info-section">
+            <div class="mi-header">
+                <span class="mi-icon">🎮</span>
+                <strong class="mi-title">Model Info</strong>
+                <span class="mi-subtitle">— ${full}</span>
+            </div>
+            <div class="mi-grid">
+                ${cell('Vendor', v || null)}
+                ${cell('Chip', chip || null)}
+                ${cell('VRAM', vramGb != null ? vramGb + ' GB' : null)}
+                ${cell('Memory', memType || null)}
+                ${cell('Released', year || null)}
+                ${cell('MSRP', msrp)}
+                ${cell('TDP', tdp)}
+                ${cell('Core clock', core)}
+                ${cell('Mem clock', mem)}
+            </div>
+            ${g3d ? `
+            <div class="mi-bench">
+                <div class="mi-bench-item mi-bench-score">
+                    <div class="mi-bench-label">G3D Mark</div>
+                    <div class="mi-bench-value">${g3d.toLocaleString()}</div>
+                </div>
+                <div class="mi-bench-item">
+                    <div class="mi-bench-label">Rank</div>
+                    <div class="mi-bench-value">#${g3dRank || '—'}</div>
+                </div>
+                <div class="mi-bench-item">
+                    <div class="mi-bench-label">Samples</div>
+                    <div class="mi-bench-value">${samples ? samples.toLocaleString() : '—'}</div>
+                </div>
+                <div class="mi-bench-item">
+                    <div class="mi-bench-label">Avg price</div>
+                    <div class="mi-bench-value" id="mi-avg-price">—</div>
+                </div>
+            </div>` : ''}
+        </div>
+    `;
+}
+
+// === Better Deals Alert (2026-08-26) =====================================
+// Renders a green "💰 Better deal available" card at the top of the GPU
+// popup when the backend's `better_deals` array is non-empty. The array
+// contains active listings (from OTHER models) that have a HIGHER G3D
+// mark (better performance) AND a LOWER price than the listing the
+// user is currently viewing — i.e. "you can get a faster GPU for less
+// money elsewhere" heads-up.
+//
+// Returns an empty string when there are no better deals so the caller
+// can splice the result directly into the template without an `if`.
+//
+// Visual design:
+//   - Emerald gradient card (positive/helpful, not alarming)
+//   - Icon (💰) + title + count of deals found
+//   - Up to 3 deal rows, each clickable (opens listing in new tab)
+//   - Each row: model name, "+N G3D" badge, price, "save €X" savings
+//   - Dims gracefully (60% opacity on hover-out so user can read body)
+function renderBetterDealsAlert(deals, current) {
+    if (!deals || deals.length === 0) return '';
+    const curPrice = Number(current.price_eur) || 0;
+    // Cap at 3 so the card stays compact — the backend already limits,
+    // but a defensive cap protects against future backend changes.
+    const top = deals.slice(0, 3);
+    const items = top.map((d, i) => {
+        const dPrice = Number(d.price_eur) || 0;
+        const savings = curPrice - dPrice;
+        const savingsPct = curPrice > 0 ? (savings / curPrice) * 100 : 0;
+        // g3d_diff may be undefined if model_info didn't have g3d_mark
+        // (deals still render without the perf badge).
+        const dG3d = d.g3d_mark ? Number(d.g3d_mark) : 0;
+        const ourG3d = (window.currentListingDetail
+            && window.currentListingDetail.model_info
+            && window.currentListingDetail.model_info.g3d_mark)
+            ? Number(window.currentListingDetail.model_info.g3d_mark) : 0;
+        const g3dDiff = (dG3d && ourG3d) ? dG3d - ourG3d : 0;
+        // Show VRAM only if non-zero (some models don't have a vram row)
+        const vram = d.vram_gb ? Math.round(Number(d.vram_gb) / 1024) + 'GB' : '';
+        return `
+            <a href="${d.listing_url || '#'}" target="_blank" rel="noopener" class="bda-item" title="View this listing on ${d.source || 'ss.com'}">
+                <div class="bda-item-rank">#${i + 1}</div>
+                <div class="bda-item-info">
+                    <div class="bda-item-title">${d.vendor || ''} ${d.model || ''}</div>
+                    <div class="bda-item-sub">${vram ? vram + ' • ' : ''}G3D ${dG3d ? dG3d.toLocaleString() : '—'}</div>
+                </div>
+                <div class="bda-item-meta">
+                    ${g3dDiff > 0 ? `<span class="bda-badge bda-badge-g3d">+${g3dDiff.toLocaleString()} G3D</span>` : ''}
+                    <div class="bda-item-price">€${dPrice}</div>
+                    <div class="bda-item-savings">save €${savings.toFixed(0)} (${savingsPct >= 1 ? savingsPct.toFixed(0) + '%' : ''})</div>
+                </div>
+            </a>`;
+    }).join('');
+    return `
+        <div class="better-deals-alert" role="status" aria-live="polite">
+            <div class="bda-header">
+                <span class="bda-icon">💰</span>
+                <strong class="bda-title">Better deal available</strong>
+                <span class="bda-subtitle">— ${top.length} active listing${top.length === 1 ? '' : 's'} with a faster GPU for less</span>
+            </div>
+            <div class="bda-list">
+                ${items}
+            </div>
+        </div>`;
+}
+
+function renderClosestCompetitors(competitors, ourInfo, current) {
+    // Build the Closest Competitors card with the current model in the
+    // MIDDLE of a 5-row ladder. Backend returns [2 better, 2 worse] in
+    // that order, so we render:
+    //   row 1: better #1
+    //   row 2: better #2
+    //   row 3: THIS MODEL  (highlighted, indigo bar)
+    //   row 4: worse #1
+    //   row 5: worse #2
+    // Each row shows avg price + a horizontal bar (relative to the
+    // highest avg across all rows) so the user can compare at a
+    // glance whether THIS model is overpriced/underpriced.
+    const ourAvgPrice = (window.currentListingDetail && window.currentListingDetail.active_listings_stats)
+        ? Number(window.currentListingDetail.active_listings_stats.avg) : null;
+    const compMax = Math.max(ourAvgPrice || 0, ...competitors.map(c => c.avg_price || 0));
+    const ourG3d = ourInfo && ourInfo.g3d_mark ? Number(ourInfo.g3d_mark) : null;
+    // Split the backend list into [2 above, 2 below]
+    const above = competitors.slice(0, 2);
+    const below = competitors.slice(2, 4);
+    let html = `
+        <div class="grid-item grid-item-cc competitors-section">
+            <div class="cc-header">
+                <span class="cc-icon">🥊</span>
+                <strong class="cc-title">Closest Competitors</strong>
+                <span class="cc-subtitle">— 2 above + THIS MODEL + 2 below, by G3D mark</span>
+            </div>
+            <div class="cc-list">`;
+    // Helper: render a competitor row
+    const renderCompRow = (c, opts = {}) => {
+        const barW = compMax && c.avg_price ? (c.avg_price / compMax * 100) : 0;
+        const g3dDiff = ourG3d && c.g3d_mark ? c.g3d_mark - ourG3d : 0;
+        const pctVs = ourAvgPrice && c.avg_price ? ((c.avg_price - ourAvgPrice) / ourAvgPrice * 100) : null;
+        const pctLabel = pctVs == null ? '—'
+            : `${pctVs >= 0 ? '+' : ''}${pctVs.toFixed(0)}%`;
+        const pctColor = pctVs == null ? '#9ca3af' : (pctVs < 0 ? '#16a34a' : '#dc2626');
+        const vram = c.vram_gb ? Math.round(c.vram_gb / 1024) + 'GB' : '';
+        return `
+            <div class="cc-row${opts.cls ? ' ' + opts.cls : ''}" title="${c.vendor || ''} ${c.model || ''}">
+                <div class="cc-rank">${c.g3d_rank ? '#' + c.g3d_rank : '—'}</div>
+                <div class="cc-name">
+                    <div class="cc-name-main"><span class="cc-name-text">${c.vendor || ''} ${c.model || ''}</span></div>
+                    <div class="cc-name-sub">${vram} • G3D ${(c.g3d_mark || 0).toLocaleString()} <span class="cc-name-delta" style="color:${g3dDiff > 0 ? '#16a34a' : g3dDiff < 0 ? '#dc2626' : '#9ca3af'}">(${g3dDiff > 0 ? '+' : ''}${g3dDiff})</span></div>
+                </div>
+                <div class="cc-avg">${c.avg_price != null ? _formatEuro(c.avg_price) : '—'}</div>
+                <div class="cc-bar"><div class="cc-bar-fill" style="width:${barW.toFixed(1)}%"></div></div>
+                <div class="cc-listings">${c.active_count || 0} listings <span class="cc-pct" style="color:${pctColor}">${pctLabel}</span></div>
+            </div>`;
+    };
+    // 1) 2 ABOVE
+    above.forEach(c => { html += renderCompRow(c); });
+    // 2) THIS MODEL (in the middle)
+    if (ourInfo && ourInfo.g3d_mark) {
+        const ourBarW = compMax ? ((ourAvgPrice || 0) / compMax * 100) : 0;
+        html += `
+            <div class="cc-row cc-row-our" title="${ourInfo.vendor || ''} ${ourInfo.model || ''} (this model)">
+                <div class="cc-rank">${ourInfo.g3d_rank ? '#' + ourInfo.g3d_rank : '—'}</div>
+                <div class="cc-name">
+                    <div class="cc-name-main"><span class="cc-name-text">${ourInfo.vendor || ''} ${ourInfo.model || ''}</span><span class="cc-ours">this model</span></div>
+                    <div class="cc-name-sub">${ourInfo.vram_gb ? Math.round(ourInfo.vram_gb / 1024) + 'GB' : ''} • G3D ${ourInfo.g3d_mark.toLocaleString()}</div>
+                </div>
+                <div class="cc-avg">${ourAvgPrice != null ? _formatEuro(ourAvgPrice) : '—'}</div>
+                <div class="cc-bar"><div class="cc-bar-fill cc-bar-our" style="width:${ourBarW.toFixed(1)}%"></div></div>
+                <div class="cc-listings">${(window.currentListingDetail && window.currentListingDetail.active_listings_stats && window.currentListingDetail.active_listings_stats.count) || 0} listings</div>
+            </div>`;
+    }
+    // 3) 2 BELOW
+    below.forEach(c => { html += renderCompRow(c); });
+    html += `</div></div>`;
+    return html;
+}
+
+// Scope toggle handler — re-renders rows 1+2 of the Price Analysis card
+// AND updates the Price Distribution chart. Cheap because we already
+// have all the data in window.currentListingDetail.
+function setPopupScope(scope) {
+    if (!window.popupPermissions.canSeeAllTime && scope === 'all_time') {
+        // Defensive: shouldn't be reachable via UI, but if someone
+        // calls setPopupScope('all_time') programmatically without
+        // permission we just silently ignore.
+        return;
+    }
+    currentPopupScope = scope;
+    // Update BOTH toggle UIs (Price Analysis card and Price Distribution
+    // card). Both share the same scope, so flipping one must update the
+    // other so the user sees them in sync.
+    document.querySelectorAll('#pa-scope-toggle .pa-scope-btn, #pd-scope-toggle .pa-scope-btn').forEach(btn => {
+        const isActive = btn.dataset.scope === scope;
+        btn.classList.toggle('active', isActive);
+        btn.setAttribute('aria-selected', isActive ? 'true' : 'false');
+    });
+    // Re-render the stats rows
+    const data = window.currentListingDetail;
+    const current = data && data.current;
+    if (!current) return;
+    const row1 = document.getElementById('pa-stats-row-1');
+    const row2 = document.getElementById('pa-stats-row-2');
+    if (row1) row1.innerHTML = renderPriceAnalysisRow1(data, current, scope);
+    if (row2) row2.innerHTML = renderPriceAnalysisRow2(data, current, scope);
+    // Re-render the chart
+    renderPriceDistributionChart(scope);
+    // Update the subtitle so the user knows what they're looking at
+    const subEl = document.querySelector('#pa-scope-toggle')?.parentElement?.querySelector('.pa-subtitle-scope');
+    if (subEl) subEl.textContent = `— ${current.gpu_model || ''} (${_scopeLabel(scope)})`;
+}
+
+// Price Distribution chart — bar chart of listing count per actual
+// price (each unique price is its own bar — see app.py's adaptive
+// binning logic). Bug fix (2026-08-26): the previous WIDTH_BUCKET
+// approach placed 50 EUR in a bar at 37.5 (bin center), which
+// confused users who expected to see "how many listings at €50".
+// Now the bar at €50 is the count of listings priced at €50.
+//
+// Current price highlight: the bar at the current listing's price
+// (or the nearest bucket) is colored bright red; all other bars
+// use the neutral indigo. A vertical line marker at the current
+// price x-position reinforces it. No second "marker dataset" —
+// the user found having Listing count + Current price as
+// separate bars confusing.
+function renderPriceDistributionChart(scope) {
+    const data = window.currentListingDetail;
+    if (!data || !data.current) return;
+    const buckets = _scopeHistogram(data, scope);
+    const cur = Number(data.current.price_eur) || 0;
+    const canvas = document.getElementById('price-distribution-chart');
+    if (!canvas) return;
+    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+    const gridColor = isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.08)';
+    const textColor = isDark ? '#cbd5e1' : '#475569';
+    const barColor = isDark ? 'rgba(129, 140, 248, 0.85)' : 'rgba(99, 102, 241, 0.85)';
+    const barBorder = isDark ? '#a5b4fc' : '#6366f1';
+    const currentBarColor = '#ef4444';
+    const currentBarBorder = '#dc2626';
+    // Find the bucket whose price matches the current listing's
+    // price (or the closest one if the current price is between
+    // adaptive 5-EUR buckets).
+    let currentBucketIdx = -1;
+    if (buckets.length > 0) {
+        let bestDist = Infinity;
+        buckets.forEach((b, i) => {
+            const d = Math.abs(b.price - cur);
+            if (d < bestDist) { bestDist = d; currentBucketIdx = i; }
+        });
+    }
+    const barColors = buckets.map((b, i) => i === currentBucketIdx ? currentBarColor : barColor);
+    const barBorders = buckets.map((b, i) => i === currentBucketIdx ? currentBarBorder : barBorder);
+    const total = buckets.reduce((s, b) => s + b.count, 0);
+    // If the chart instance exists, update its data instead of creating
+    // a new one (avoids animation flash + memory leaks).
+    if (priceDistributionChart) {
+        priceDistributionChart.data.labels = buckets.map(b => '€' + b.price);
+        priceDistributionChart.data.datasets[0].data = buckets.map(b => b.count);
+        priceDistributionChart.data.datasets[0].backgroundColor = barColors;
+        priceDistributionChart.data.datasets[0].borderColor = barBorders;
+        priceDistributionChart.data.datasets[0].borderWidth = buckets.map((b, i) => i === currentBucketIdx ? 2 : 1);
+        priceDistributionChart.update();
+        const totalEl = document.getElementById('pd-total-listings');
+        if (totalEl) totalEl.textContent = `${total} listings in ${_scopeLabel(scope).toLowerCase()}`;
+        const subEl = document.getElementById('pd-subtitle');
+        if (subEl) {
+            subEl.textContent = `— ${buckets.length} unique prices, ${total} listing${total === 1 ? '' : 's'} total`;
+        }
+        return;
+    }
+    // First-time creation
+    const ctx = canvas.getContext('2d');
+    priceDistributionChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: buckets.map(b => '€' + b.price),
+            datasets: [
+                {
+                    // Bug fix (2026-08-26): removed the second "_highlight"
+                    // dataset. It was effectively a no-op (transparent
+                    // background + transparent border), BUT its different
+                    // barPercentage/categoryPercentage caused Chart.js to
+                    // render the main bars at a different x position than
+                    // the category ticks — they were offset ~52px to the
+                    // LEFT of the labels, so the bars didn't appear
+                    // aligned with the price labels below.
+                    //
+                    // The "current price" highlight is now achieved entirely
+                    // through styling of THIS dataset: red backgroundColor,
+                    // red borderColor, and a thicker borderWidth (2px vs 1px)
+                    // for the current bucket. The x-axis tick for the
+                    // current price is also rendered red and bold.
+                    label: 'Listings',
+                    data: buckets.map(b => b.count),
+                    backgroundColor: barColors,
+                    borderColor: barBorders,
+                    borderWidth: buckets.map((b, i) => i === currentBucketIdx ? 2 : 1),
+                    borderRadius: 4,
+                    barPercentage: 0.9,
+                    categoryPercentage: 0.95,
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            animation: { duration: 250 },
+            plugins: {
+                legend: { display: false },
+                tooltip: {
+                    backgroundColor: isDark ? 'rgba(15, 23, 42, 0.95)' : 'rgba(255, 255, 255, 0.95)',
+                    titleColor: textColor,
+                    bodyColor: textColor,
+                    borderColor: barBorder,
+                    borderWidth: 1,
+                    callbacks: {
+                        title: (items) => {
+                            if (!items.length) return '';
+                            const idx = items[0].dataIndex;
+                            const b = buckets[idx];
+                            if (!b) return '';
+                            const isCurrent = idx === currentBucketIdx;
+                            return `€${b.price}${isCurrent ? '  ←  current price' : ''}`;
+                        },
+                        label: (ctx) => {
+                            const c = ctx.parsed.y;
+                            return `${c} listing${c === 1 ? '' : 's'} at €${buckets[ctx.dataIndex].price}`;
+                        }
+                    }
+                }
+            },
+            scales: {
+                x: {
+                    ticks: {
+                        color: (ctx) => {
+                            // Highlight the current price tick
+                            return ctx.tick && ctx.tick.label === '€' + cur ? '#ef4444' : textColor;
+                        },
+                        maxRotation: 0,
+                        autoSkip: true,
+                        maxTicksLimit: 12,
+                        font: (ctx) => {
+                            const isCurrent = ctx.tick && ctx.tick.label === '€' + cur;
+                            return { size: isCurrent ? 12 : 10, weight: isCurrent ? 'bold' : 'normal' };
+                        }
+                    },
+                    grid: { display: false }
+                },
+                y: {
+                    beginAtZero: true,
+                    ticks: { color: textColor, precision: 0, font: { size: 10 } },
+                    grid: { color: gridColor }
+                }
+            }
+        }
+    });
+    const totalEl = document.getElementById('pd-total-listings');
+    if (totalEl) totalEl.textContent = `${total} listings in ${_scopeLabel(scope).toLowerCase()}`;
+    const subEl = document.getElementById('pd-subtitle');
+    if (subEl) subEl.textContent = `— ${buckets.length} unique prices, ${total} listing${total === 1 ? '' : 's'} total`;
+}
+
 async function showListingDetail(listingId) {
     console.log('showListingDetail called for:', listingId);
     try {
@@ -2615,6 +3998,11 @@ async function showListingDetail(listingId) {
             console.error('Error:', data.error);
             return;
         }
+
+        // Cache the response so the scope toggle can re-render the
+        // popup's stats/chart without re-fetching from the server.
+        window.currentListingDetail = data;
+        currentPopupScope = 'active';
 
         const current = data.current;
         const history = data.history || [];
@@ -2647,6 +4035,9 @@ async function showListingDetail(listingId) {
                 <img src="${detailImageUrl}" alt="${current.title}" class="listing-detail-image" style="max-height: 300px;">
             </div>
             ` : ''}
+            ${data.better_deals && data.better_deals.length > 0
+                ? renderBetterDealsAlert(data.better_deals, current)
+                : ''}
             <div style="margin-bottom: 1.5rem;">
                 <div style="display: flex; gap: 1rem; margin-bottom: 1rem; align-items: center; flex-wrap: wrap;">
                     <div style="flex: 1;">
@@ -2669,111 +4060,218 @@ async function showListingDetail(listingId) {
                 </div>
             </div>
 
-            <!-- ===== Price Analysis Section =====
-                 Shows every value the price-stats query computes (current,
-                 min, avg, max + their counts) plus a few derived metrics
-                 (range, diff vs avg, % off highest) that are cheap to
-                 compute and useful at a glance. -->
-            <div class="price-analysis-section">
+            <!-- ===== Price Analysis Section (redesigned 2026-08-25) =====
+                 Layout (top to bottom):
+                 1. Price Analysis card — header + scope toggle (Active / All Time)
+                    + 4 main boxes (Current | Lowest | Avg | Highest, each
+                    showing the diff vs this listing) + 4 secondary boxes
+                    (Range | Count | Max/Min ratio | % off MSRP)
+                 2. Price Distribution card — bar chart of how many times
+                    this model sold at each price bucket; same scope toggle
+                 3. Model Info card — specs from gpu_reference + passmark
+                 4. Closest Competitors card — 8 models with similar G3D mark
+                    and their live market avg prices for rank-based comparison
+                 5. Price History card — this listing's own price-change
+                    timeline
+
+                 LAYOUT (2026-08-26): the five cards above are laid out in
+                 a 2-column CSS grid (.popup-grid) so the popup fits more
+                 on screen:
+                   Row 1: Price Analysis (left) | Price History (right)
+                   Row 2: Price Distribution (full-width — needs horizontal
+                          space for the bar chart)
+                   Row 3: Model Info (left) | Closest Competitors (right)
+                 The DOM order is kept as PA, PD, MI, CC, PH; the grid
+                 template reorders them visually via grid-template-areas.
+
+                 Permission model for the scope toggle:
+                 - Admin / mod: can see both Active and All Time
+                 - Active subscriber / power_user: can see both
+                 - Anyone else: only Active; the "All Time" button is
+                   rendered as disabled (greyed out) so the UI doesn't
+                   pretend to support it. -->
+            <div class="popup-grid">
+            <div class="grid-item grid-item-pa price-analysis-section">
                 <div class="pa-header">
                     <span class="pa-icon">📈</span>
                     <strong class="pa-title">Price Analysis</strong>
-                    ${current.gpu_model ? `<span class="pa-subtitle">— ${current.gpu_model}</span>` : ''}
-                </div>
-                <div class="price-analysis-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 0.75rem;">
-                    <div class="pa-stat pa-current">
-                        <div class="pa-label">Current</div>
-                        <div class="pa-value">€${Number(current.price_eur).toFixed(0)}</div>
+                    <span class="pa-subtitle pa-subtitle-scope">— ${current.gpu_model || ''}</span>
+                    <div class="pa-scope-toggle" id="pa-scope-toggle" role="tablist" aria-label="Stats scope">
+                        <button type="button" class="pa-scope-btn active" data-scope="active" role="tab" aria-selected="true">
+                            <span class="pa-scope-dot"></span> Active
+                        </button>
+                        <button type="button" class="pa-scope-btn ${window.popupPermissions.canSeeAllTime ? '' : 'disabled'}"
+                                data-scope="all_time" role="tab" aria-selected="false"
+                                ${window.popupPermissions.canSeeAllTime ? '' : 'disabled aria-disabled="true"'}
+                                title="${window.popupPermissions.canSeeAllTime
+                                    ? 'Show stats for all listings of this model, including inactive/delisted ones'
+                                    : 'Sign in as a subscriber (or admin) to see all-time stats'}">
+                            <span class="pa-scope-dot"></span> All Time
+                        </button>
                     </div>
-                    ${current.price_stats ? (() => {
-                        const cur = Number(current.price_eur) || 0;
-                        const mn = Number(current.price_stats.min || 0);
-                        const av = Number(current.price_stats.avg || 0);
-                        const mx = Number(current.price_stats.max || 0);
-                        const range = (mn && mx) ? (mx - mn) : 0;
-                        const diffAvg = (av && cur) ? (cur - av) : 0;
-                        const pctAvg = av ? (diffAvg / av * 100) : 0;
-                        const pctOffMax = mx ? ((mx - cur) / mx * 100) : 0;
-                        const diffColor = (n) => n < 0 ? '#16a34a' : (n > 0 ? '#dc2626' : '#9ca3af');
-                        return `
-                            <div class="pa-stat pa-min">
-                                <div class="pa-label">Lowest ever</div>
-                                <div class="pa-value">€${mn.toFixed(0)}</div>
-                                <div class="pa-sub">${current.price_stats.min_count || 0}× seen</div>
-                            </div>
-                            <div class="pa-stat pa-avg">
-                                <div class="pa-label">Avg ever</div>
-                                <div class="pa-value">€${av.toFixed(0)}</div>
-                                <div class="pa-sub">${current.price_stats.avg_count || 0} listings</div>
-                            </div>
-                            <div class="pa-stat pa-max">
-                                <div class="pa-label">Highest ever</div>
-                                <div class="pa-value">€${mx.toFixed(0)}</div>
-                                <div class="pa-sub">${current.price_stats.max_count || 0}× seen</div>
-                            </div>
-                            <div class="pa-stat pa-range">
-                                <div class="pa-label">Range (max - min)</div>
-                                <div class="pa-value">€${range.toFixed(0)}</div>
-                                <div class="pa-sub">Historical spread</div>
-                            </div>
-                            <div class="pa-stat pa-vs-avg">
-                                <div class="pa-label">vs Avg</div>
-                                <div class="pa-value" style="color: ${diffColor(diffAvg)};">${diffAvg >= 0 ? '+' : ''}€${diffAvg.toFixed(0)}</div>
-                                <div class="pa-sub">${pctAvg >= 0 ? '+' : ''}${pctAvg.toFixed(1)}%</div>
-                            </div>
-                            <div class="pa-stat pa-vs-max">
-                                <div class="pa-label">% off Highest</div>
-                                <div class="pa-value" style="color: ${pctOffMax > 0 ? '#16a34a' : '#9ca3af'};">${pctOffMax.toFixed(1)}%</div>
-                                <div class="pa-sub">Headroom to peak</div>
-                            </div>
-                        `;
-                    })() : `
-                        <div class="pa-stat pa-min"><div class="pa-label">Lowest ever</div><div class="pa-value" style="color:#9ca3af">—</div></div>
-                        <div class="pa-stat pa-avg"><div class="pa-label">Avg ever</div><div class="pa-value" style="color:#9ca3af">—</div></div>
-                        <div class="pa-stat pa-max"><div class="pa-label">Highest ever</div><div class="pa-value" style="color:#9ca3af">—</div></div>
-                        <div class="pa-stat pa-range"><div class="pa-label">Range</div><div class="pa-value" style="color:#9ca3af">—</div></div>
-                        <div class="pa-stat pa-vs-avg"><div class="pa-label">vs Avg</div><div class="pa-value" style="color:#9ca3af">—</div></div>
-                        <div class="pa-stat pa-vs-max"><div class="pa-label">% off Highest</div><div class="pa-value" style="color:#9ca3af">—</div></div>
-                    `}
+                </div>
+                <div id="pa-stats-row-1" class="pa-stats-row pa-stats-row-main">
+                    ${renderPriceAnalysisRow1(data, current, 'active')}
+                </div>
+                <div id="pa-stats-row-2" class="pa-stats-row pa-stats-row-secondary">
+                    ${renderPriceAnalysisRow2(data, current, 'active')}
                 </div>
             </div>
 
-            <!-- Price history table — sits right after Price Analysis so
-                 users see the full pricing story (current, lowest, avg,
-                 highest, full history rows) without scrolling past the
-                 description. We render only the actual history records
-                 (the current price is already shown in the popup header
-                 and in the Price Analysis card above). -->
-            <div class="ph-wrap">
-                <h4 class="ph-title">📜 Price History <span style="font-size: 0.8rem; font-weight: 400; color: #6b7280;">— current €${Number(current.price_eur).toFixed(0)}</span></h4>
-                ${history.length === 0
-                    ? `<div class="description-box">No price changes recorded yet — this is the first snapshot.</div>`
-                    : `<table class="analytics-table price-history-table">
-                        <thead>
-                            <tr>
-                                <th>Date</th>
-                                <th>{{ t('Price') }}</th>
-                                <th>Change</th>
-                            </tr>
-                        </thead>
-                        <tbody>
+            <!-- ===== Price Distribution (histogram) card =====
+                 Bar chart: x = price bucket center (€25 width, 0..2000),
+                 y = listing count. The current listing's price is shown as
+                 a red dot if it lands on a bucket center. Follows the same
+                 Active/All Time toggle as Price Analysis above. -->
+            <div class="grid-item grid-item-pd price-distribution-section" id="price-distribution-section">
+                <div class="pd-header">
+                    <span class="pd-icon">📊</span>
+                    <strong class="pd-title">Price Distribution</strong>
+                    <span class="pd-subtitle" id="pd-subtitle">— how many times this model has sold at each price</span>
+                    {# Bug fix (2026-08-26): the Active/All Time toggle was only
+                       visible in the Price Analysis card above. Logged-in users
+                       (subscribers / staff) asked for the same toggle on the
+                       Price Distribution card so they can flip between
+                       currently-active listings and all-time (including
+                       expired/removed) without scrolling back up. We render
+                       the toggle using the same `can_see_all_time` permission
+                       that gates the Price Analysis one — anonymous users still
+                       only see Active. The two toggles share a single state
+                       via the existing `currentPopupScope` global and the
+                       `setPopupScope()` handler, so flipping either one
+                       updates both cards. #}
+                    {% if can_see_all_time %}
+                    <div class="pa-scope-toggle pd-scope-toggle" id="pd-scope-toggle" role="tablist" aria-label="Distribution scope">
+                        <button type="button" class="pa-scope-btn active" data-scope="active" role="tab" aria-selected="true">
+                            <span class="pa-scope-dot"></span> Active
+                        </button>
+                        <button type="button" class="pa-scope-btn" data-scope="all_time" role="tab" aria-selected="false">
+                            <span class="pa-scope-dot"></span> All Time
+                        </button>
+                    </div>
+                    {% else %}
+                    <span class="pd-scope-locked" title="Sign in and subscribe to see all-time data">
+                        <span class="pa-scope-dot" style="background: rgba(156, 163, 175, 0.5);"></span>
+                        <small>Active only</small>
+                    </span>
+                    {% endif %}
+                </div>
+                <div style="position: relative; height: 220px;">
+                    <canvas id="price-distribution-chart"></canvas>
+                </div>
+                <div class="pd-legend">
+                    <span class="pd-legend-item"><span class="pd-legend-swatch pd-legend-bar"></span> Listing count at each price</span>
+                    <span class="pd-legend-item"><span class="pd-legend-swatch pd-legend-current"></span> This listing's price</span>
+                    <span class="pd-legend-item" id="pd-total-listings">—</span>
+                </div>
+            </div>
+
+            <!-- ===== Model Info card =====
+                 Shows the data we have in gpu_reference + gpu_reference_passmark
+                 for this model. Helpful for context: VRAM type, chip, year,
+                 MSRP, G3D rank, TDP, etc. If we have Passmark data we show
+                 the G3D score and rank so the user can interpret the
+                 competitors section that follows. -->
+            ${data.model_info ? renderModelInfo(data.model_info, current) : ''}
+
+            <!-- ===== Closest Competitors card =====
+                 8 models with the closest G3D mark (4 above, 4 below when
+                 possible). For each: rank, model name, VRAM, G3D, current
+                 market avg price, and a visual bar comparing their avg
+                 price to the current model. This lets the user see at a
+                 glance whether THIS model is overpriced/underpriced vs
+                 its performance peers. -->
+            ${data.closest_competitors && data.closest_competitors.length > 0
+                ? renderClosestCompetitors(data.closest_competitors, data.model_info, current)
+                : ''}
+
+            <!-- ===== Price History Section =====
+                 Redesigned (2026-08-25) to match the polished card-based
+                 design language of Price Analysis above. Each snapshot is
+                 its own row with: date (muted), big price (focus), and a
+                 colored change pill (↓ green / ↑ red / — grey). The
+                 latest snapshot is highlighted with a "Current" badge.
+                 The empty state has a friendly icon instead of just a
+                 plain text "No data" message. -->
+            <div class="grid-item grid-item-ph price-history-section">
+                <div class="ph-header">
+                    <span class="ph-icon">📜</span>
+                    <strong class="ph-title">Price History</strong>
+                    <span class="ph-subtitle">— ${history.length === 0 ? '1 snapshot' : `${history.length} snapshot${history.length === 1 ? '' : 's'}`}</span>
+                </div>
+                ${
+                    history.length === 0
+                    ? `<div class="ph-empty">
+                        <div class="ph-empty-icon">🆕</div>
+                        <div class="ph-empty-title">First snapshot</div>
+                        <div class="ph-empty-sub">This is the first recorded price for this listing. Future price changes will appear here.</div>
+                       </div>`
+                    : (() => {
+                        // Compute aggregate stats up-front so we can show
+                        // them in a small summary row at the top of the list.
+                        const prices = history.map(h => Number(h.price_eur) || 0);
+                        const oldest = prices[prices.length - 1];
+                        const newest = prices[0];
+                        const overallChange = newest - oldest;
+                        const overallPct = oldest > 0 ? (overallChange / oldest) * 100 : 0;
+                        const overallDir = overallChange < 0 ? 'down' : overallChange > 0 ? 'up' : 'same';
+                        return `
+                        <div class="ph-summary">
+                            <div class="ph-summary-item">
+                                <div class="ph-summary-label">Oldest</div>
+                                <div class="ph-summary-value ph-summary-old">€${oldest.toFixed(0)}</div>
+                            </div>
+                            <div class="ph-summary-arrow ph-summary-arrow-${overallDir}">${overallDir === 'down' ? '↓' : overallDir === 'up' ? '↑' : '·'}</div>
+                            <div class="ph-summary-item">
+                                <div class="ph-summary-label">Now</div>
+                                <div class="ph-summary-value ph-summary-new">€${newest.toFixed(0)}</div>
+                            </div>
+                            <div class="ph-summary-item ph-summary-overall">
+                                <div class="ph-summary-label">Total change</div>
+                                <div class="ph-summary-value ph-diff-${overallDir}">
+                                    ${overallChange !== 0
+                                        ? `${overallChange > 0 ? '+' : ''}€${overallChange.toFixed(0)} (${overallPct >= 0 ? '+' : ''}${overallPct.toFixed(1)}%)`
+                                        : 'No change'}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ph-list">
                             ${history.map((h, i) => {
                                 const prevPrice = history[i + 1]?.price_eur;
-                                const change = prevPrice ? h.price_eur - prevPrice : 0;
-                                const changeClass = change < 0 ? 'price-diff-positive' : change > 0 ? 'price-diff-negative' : '';
+                                const price = Number(h.price_eur) || 0;
+                                const change = prevPrice ? price - Number(prevPrice) : 0;
+                                const dir = change < 0 ? 'down' : change > 0 ? 'up' : 'same';
+                                // Format the date — show "today / yesterday / X days ago"
+                                // when the snapshot is recent, otherwise show the
+                                // full date so the user can see when it happened.
+                                const recorded = h.recorded_at ? new Date(h.recorded_at) : null;
+                                const dateLabel = recorded ? recorded.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) : 'N/A';
+                                const isLatest = i === 0;
                                 return `
-                                    <tr>
-                                        <td>${h.recorded_at ? new Date(h.recorded_at).toLocaleDateString() : 'N/A'}</td>
-                                        <td>€${h.price_eur}</td>
-                                        <td class="${changeClass}">
-                                            ${change !== 0 ? `${change < 0 ? '↓' : '↑'} €${Math.abs(change).toFixed(2)}` : '-'}
-                                        </td>
-                                    </tr>
+                                    <div class="ph-row${isLatest ? ' ph-row-latest' : ''}">
+                                        <div class="ph-row-date">
+                                            <span class="ph-row-date-main">${dateLabel}</span>
+                                            ${isLatest ? '<span class="ph-row-badge">Current</span>' : ''}
+                                        </div>
+                                        <div class="ph-row-price">
+                                            €${price.toFixed(0)}
+                                        </div>
+                                        <div class="ph-row-change">
+                                            <span class="ph-diff ph-diff-${dir}">
+                                                ${change !== 0
+                                                    ? `<span class="ph-diff-arrow">${dir === 'down' ? '↓' : '↑'}</span> €${Math.abs(change).toFixed(0)}`
+                                                    : '<span class="ph-diff-arrow">·</span> No change'}
+                                            </span>
+                                        </div>
+                                    </div>
                                 `;
                             }).join('')}
-                        </tbody>
-                    </table>`}
+                        </div>
+                        `;
+                    })()
+                }
             </div>
+            </div><!-- /.popup-grid -->
 
             <div style="margin-bottom: 1rem;">
                 <strong>Description:</strong>
@@ -2825,6 +4323,30 @@ async function showListingDetail(listingId) {
 
         document.getElementById('listing-comparison').innerHTML = comparisonHtml;
         document.getElementById('listing-modal').classList.add('active');
+
+        // Wire the scope toggle buttons (Active / All Time) in BOTH the
+        // Price Analysis card AND the Price Distribution card. The two
+        // toggles share state via setPopupScope, so either one flips
+        // the whole popup. Done AFTER innerHTML is set so the canvas +
+        // button nodes exist in the DOM.
+        document.querySelectorAll('#pa-scope-toggle .pa-scope-btn, #pd-scope-toggle .pa-scope-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                if (btn.disabled) return;
+                setPopupScope(btn.dataset.scope);
+            });
+        });
+        // Populate the "Avg price" placeholder in the Model Info card
+        // (it's rendered server-side as "—" because the avg comes from
+        // the scope-toggle render, not the initial model_info shape).
+        const miAvg = document.getElementById('mi-avg-price');
+        if (miAvg && data.active_listings_stats) {
+            miAvg.textContent = _formatEuro(data.active_listings_stats.avg);
+        }
+        // Chart.js needs a frame to compute the canvas size correctly
+        // when the canvas is freshly inserted into the DOM, so we wait
+        // for requestAnimationFrame before instantiating.
+        requestAnimationFrame(() => renderPriceDistributionChart(currentPopupScope));
+
         // Lock background scroll so the page underneath doesn't move
         // when the user scrolls the modal. Save scroll position so we
         // can restore it on close.
@@ -2929,20 +4451,41 @@ function toggleDescription(currentId, prevId) {
 }
 
 function closeListingModal() {
+    // Bug fix (2026-08-25): the previous order was:
+    //   1. remove 'active' from modal
+    //   2. remove 'modal-open' from body  ← this immediately unsets `top: -1811px`
+    //   3. read getComputedStyle(body).top  ← always reads "0px" now
+    //   4. window.scrollTo(0, 0)  ← page jumps to top
+    //
+    // Fix: read the pinned position BEFORE removing the class, then
+    // remove the class, then scroll. This restores the user's exact
+    // scroll position when they closed the modal.
+    const pinned = getComputedStyle(document.body).top;  // e.g. "-1811px"
+    const m = (pinned || '').match(/(-?\d+(?:\.\d+)?)/);
+    const restoredY = m ? -parseFloat(m[1]) : 0;
+
+    // Destroy the Price Distribution chart so Chart.js doesn't keep
+    // its animation loop running on a now-detached canvas. This was
+    // added 2026-08-25 with the chart-render feature.
+    if (priceDistributionChart) {
+        try { priceDistributionChart.destroy(); } catch (e) { /* ignore */ }
+        priceDistributionChart = null;
+    }
+    // Clear the cached data so the next popup open fetches fresh
+    window.currentListingDetail = null;
+    currentPopupScope = 'active';
+
     document.getElementById('listing-modal').classList.remove('active');
     document.body.classList.remove('modal-open');
     document.documentElement.classList.remove('modal-open');
-    // Restore the saved scroll position. The body was pinned with
-    // `top: -<scrollY>px` while the modal was open, so removing the
-    // class would jump to 0; read the negative top we set and add it
-    // back to scrollY.
-    const pinned = getComputedStyle(document.body).top;  // e.g. "-1811px"
-    const m = (pinned || '').match(/(-?\d+(?:\.\d+)?)/);
-    if (m) {
-        const restoredY = -parseFloat(m[1]);
-        document.body.style.removeProperty('--modal-scroll-y');
-        window.scrollTo(0, restoredY);
-    }
+    document.body.style.removeProperty('--modal-scroll-y');
+
+    // Use requestAnimationFrame so the browser applies the class removal
+    // (which makes body position: static again) BEFORE we scroll, so
+    // the scrollTo lands at the right offset on every browser.
+    requestAnimationFrame(() => {
+        window.scrollTo({ top: restoredY, left: 0, behavior: 'instant' in window ? 'instant' : 'auto' });
+    });
 }
 
 // Close modal on outside click
@@ -2950,6 +4493,24 @@ document.getElementById('listing-modal').addEventListener('click', function(e) {
     if (e.target === this) {
         closeListingModal();
     }
+});
+
+// === Row click ripple effect (2026-08-25) ===
+// On click, add a brief .row-ripple class to the <tr> which runs the
+// rowClickRipple keyframes (0.45s). Then remove it. Event delegation on
+// document so dynamically-added rows (loadListings re-renders the table
+// every filter change) get the same behaviour without rebinding.
+document.addEventListener('click', function(e) {
+    const tr = e.target.closest('.gpu-listings-table tbody tr');
+    if (!tr) return;
+    // Skip if click came from an interactive child (button, checkbox, link)
+    // — those have their own feedback and we don't want to double-up.
+    if (e.target.closest('button, a, input, .compare-checkbox, .listing-thumb')) return;
+    tr.classList.remove('row-ripple');
+    // Force a reflow so removing+adding the class restarts the animation
+    void tr.offsetWidth;
+    tr.classList.add('row-ripple');
+    setTimeout(() => tr.classList.remove('row-ripple'), 500);
 });
 // Forward wheel events from the modal-overlay (dark backdrop) to the
 // modal content so the user can scroll the popup regardless of whether
@@ -3275,11 +4836,20 @@ function vramDisplayLabel(mb) {
 function onVramModeChange() {
     const checkbox = document.getElementById('vram-min-mode');
     const btn = document.getElementById('vram-mode-toggle');
+    const arrow = btn?.querySelector('.vram-mode-arrow');
     const isMin = checkbox && checkbox.checked;
     if (btn) {
         btn.classList.toggle('min-mode', isMin);
-        btn.setAttribute('aria-pressed', isMin);
-        btn.title = isMin ? 'Minimum size (click for exact size)' : 'Exact size (click for minimum size)';
+        btn.setAttribute('aria-pressed', isMin ? 'true' : 'false');
+        // Bug fix (2026-08-25): use ≤ (less-than-or-equal) for exact mode
+        // and ≥ (greater-than-or-equal) for min mode. The old code used
+        // the bare < character which the browser interpreted as the start
+        // of an HTML tag and rendered as nothing. Now we use the proper
+        // Unicode symbols so the user can tell which mode is active.
+        if (arrow) arrow.textContent = isMin ? '≥' : '≤';
+        btn.title = isMin
+            ? 'Minimum size (≥ selected) — click for exact size (≤ selected)'
+            : 'Exact size (≤ selected) — click for minimum size (≥ selected)';
     }
     updateVramFilter();
     loadListings();
@@ -3295,6 +4865,33 @@ function toggleVramMode() {
 // Handle model change - update VRAM options then reload listings
 function onModelChange() {
     updateVramFilter();
+    loadListings();
+}
+
+// Toggle the "Exact Match Only" filter from the new icon button inside the
+// model filter. Mirrors the old checkbox behavior — when ON, Ti/Super
+// variants are filtered out so only the exact selected model name remains.
+function toggleStrictMatch() {
+    const cb = document.getElementById('strict-match');
+    if (!cb) return;
+    cb.checked = !cb.checked;
+    onStrictMatchChange();
+}
+
+// Sync the icon's visual state with the checkbox, then reload listings.
+// Called from the checkbox onchange AND from toggleStrictMatch.
+function onStrictMatchChange() {
+    const cb = document.getElementById('strict-match');
+    const icon = document.getElementById('strict-match-icon');
+    if (cb && icon) {
+        const on = cb.checked;
+        icon.classList.toggle('active', on);
+        icon.setAttribute('aria-pressed', on ? 'true' : 'false');
+        // Update tooltip to reflect current state
+        icon.title = on
+            ? 'Exact Match Only is ON — click to disable (allow Ti/Super variants).'
+            : 'Exact Match Only — click to enable (filter out Ti/Super variants).';
+    }
     loadListings();
 }
 
@@ -3648,9 +5245,20 @@ function updateCompareSelection() {
     });
     const ids = [...savedIds];
     const count = ids.length;
-    document.getElementById('compare-count').textContent = count;
-    document.getElementById('compare-btn').disabled = count < 2 || count > 4;
-    document.getElementById('compare-btn').title = count > 4 ? 'Max 4 GPUs' : (count < 2 ? 'Select 2-4 GPUs' : 'Open compare page');
+    // Bug fix (2026-08-25): the redesigned Compare button is a 32×32
+    // filter-icon-btn with a count badge. Update the badge text and
+    // the disabled/active classes here so the button lights up
+    // exactly when 2–4 GPUs are selected.
+    const badge = document.getElementById('compare-badge');
+    const btn = document.getElementById('compare-btn');
+    if (badge) badge.textContent = count;
+    const valid = count >= 2 && count <= 4;
+    if (btn) {
+        btn.disabled = !valid;
+        btn.classList.toggle('active', valid);
+        btn.setAttribute('aria-pressed', valid ? 'true' : 'false');
+        btn.title = count > 4 ? 'Max 4 GPUs — uncheck one to compare' : (count < 2 ? 'Select 2-4 GPUs to compare' : `Compare ${count} GPUs`);
+    }
     try {
         localStorage.setItem('gpu_compare_ids', JSON.stringify(ids));
     } catch (e) {}
@@ -3713,6 +5321,12 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
     } catch (e) { console.warn('GPU URL param init failed:', e); }
+
+    // Bug fix (2026-08-25): seed the JS sort state from URL params so
+    // deep links like /gpu?sort=price&order=asc actually sort that way
+    // on the FIRST loadListings() call (not after a flash of date_posted
+    // desc). Must run BEFORE loadListings().
+    applyUrlParamsToFilters();
 
     loadListings();
     loadGpuModels();
@@ -4120,6 +5734,688 @@ body.modal-open {
     color: var(--text-muted, #6b7280);
 }
 
+/* === Popup redesign (2026-08-25) ============================
+   Sections in the listing detail modal:
+   - .price-analysis-section (header + scope toggle + 4+4 stat boxes)
+   - .price-distribution-section (bar chart)
+   - .model-info-section (gpu_reference specs)
+   - .competitors-section (closest by G3D mark)
+   - .price-history-section (price-change snapshots, 2026-08-25)
+   These follow the same design language as the existing .price-analysis-section
+   card (indigo gradient, rounded, soft border) so the popup reads as one
+   coherent story.
+
+   Bug fix (2026-08-26): the popup was very tall because all 5 sections
+   were stacked full-width. Wrapped them in a 2-column CSS grid so the
+   user sees ~2 sections per row instead of 5 in a column. DOM order is
+   unchanged (PA, PD, MI, CC, PH) — the grid template-areas reorders
+   them visually into:
+     Row 1: Price Analysis (left) | Price History (right)
+     Row 2: Price Distribution (full-width — bar chart needs horizontal space)
+     Row 3: Model Info (left) | Closest Competitors (right)
+   The grid collapses to a single column on narrow viewports (<900px) so
+   the layout stays usable on smaller screens. */
+
+/* === Better Deals Alert (2026-08-26) =================================
+   Renders the "💰 Better deal available" card at the top of the GPU
+   popup. Fires when the backend finds active listings of OTHER models
+   that have a HIGHER G3D mark AND a LOWER price than the listing the
+   user is viewing. Design language: emerald gradient (positive/helpful
+   tone, not alarming), compact card with up to 3 deal rows. Each row
+   links to the original listing in a new tab. */
+.better-deals-alert {
+    background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 50%, #a7f3d0 100%);
+    border: 1px solid #34d399;
+    border-radius: 14px;
+    padding: 1rem 1.25rem 1.1rem;
+    margin-bottom: 1.25rem;
+    box-shadow: 0 2px 8px rgba(16, 185, 129, 0.12);
+}
+[data-theme="dark"] .better-deals-alert {
+    background: linear-gradient(135deg, #064e3b 0%, #065f46 50%, #1e293b 100%);
+    border-color: rgba(52, 211, 153, 0.5);
+    box-shadow: 0 2px 10px rgba(16, 185, 129, 0.2), inset 0 0 0 1px rgba(52, 211, 153, 0.15);
+}
+.bda-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    margin-bottom: 0.7rem;
+    padding-bottom: 0.6rem;
+    border-bottom: 1px solid rgba(16, 185, 129, 0.25);
+}
+[data-theme="dark"] .bda-header {
+    border-bottom-color: rgba(52, 211, 153, 0.25);
+}
+.bda-icon {
+    font-size: 1.2rem;
+    line-height: 1;
+}
+.bda-title {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #064e3b;
+    letter-spacing: -0.01em;
+}
+[data-theme="dark"] .bda-title { color: #a7f3d0; }
+.bda-subtitle {
+    color: #047857;
+    font-weight: 500;
+    font-size: 0.85rem;
+    flex: 1;
+    min-width: 0;
+}
+[data-theme="dark"] .bda-subtitle { color: #6ee7b7; }
+.bda-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+.bda-item {
+    display: grid;
+    grid-template-columns: 28px minmax(0, 1fr) auto;
+    gap: 0.6rem;
+    align-items: center;
+    padding: 0.55rem 0.75rem;
+    background: rgba(255, 255, 255, 0.7);
+    border: 1px solid rgba(16, 185, 129, 0.3);
+    border-radius: 9px;
+    text-decoration: none;
+    color: inherit;
+    transition: background 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+}
+.bda-item:hover {
+    background: rgba(255, 255, 255, 0.95);
+    transform: translateX(2px);
+    box-shadow: 0 2px 8px rgba(16, 185, 129, 0.25);
+    border-color: rgba(16, 185, 129, 0.6);
+}
+[data-theme="dark"] .bda-item {
+    background: rgba(6, 78, 59, 0.35);
+    border-color: rgba(52, 211, 153, 0.3);
+}
+[data-theme="dark"] .bda-item:hover {
+    background: rgba(6, 78, 59, 0.6);
+    border-color: rgba(52, 211, 153, 0.7);
+}
+.bda-item-rank {
+    font-weight: 800;
+    font-size: 0.78rem;
+    color: #047857;
+    text-align: center;
+    font-variant-numeric: tabular-nums;
+    background: rgba(16, 185, 129, 0.12);
+    border-radius: 6px;
+    padding: 2px 0;
+}
+[data-theme="dark"] .bda-item-rank {
+    color: #6ee7b7;
+    background: rgba(52, 211, 153, 0.18);
+}
+.bda-item-info {
+    min-width: 0;
+}
+.bda-item-title {
+    font-weight: 700;
+    font-size: 0.88rem;
+    color: #064e3b;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1.2;
+}
+[data-theme="dark"] .bda-item-title { color: #d1fae5; }
+.bda-item-sub {
+    font-size: 0.72rem;
+    color: #047857;
+    margin-top: 1px;
+    font-weight: 500;
+}
+[data-theme="dark"] .bda-item-sub { color: #6ee7b7; }
+.bda-item-meta {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 2px;
+}
+.bda-badge {
+    font-size: 0.65rem;
+    font-weight: 700;
+    padding: 1px 6px;
+    border-radius: 4px;
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+}
+.bda-badge-g3d {
+    background: rgba(16, 185, 129, 0.18);
+    color: #047857;
+}
+[data-theme="dark"] .bda-badge-g3d {
+    background: rgba(52, 211, 153, 0.22);
+    color: #6ee7b7;
+}
+.bda-item-price {
+    font-weight: 800;
+    font-size: 1.05rem;
+    color: #047857;
+    line-height: 1.1;
+    font-variant-numeric: tabular-nums;
+}
+[data-theme="dark"] .bda-item-price { color: #6ee7b7; }
+.bda-item-savings {
+    font-size: 0.7rem;
+    color: #059669;
+    font-weight: 600;
+    line-height: 1.1;
+    white-space: nowrap;
+}
+[data-theme="dark"] .bda-item-savings { color: #34d399; }
+
+/* CSS Grid layout for the 5 popup data cards. */
+.popup-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas:
+        "pa ph"
+        "pd pd"
+        "mi cc";
+    /* Bug fix (2026-08-26): explicit `align-items: stretch` so the two
+       cards in each row (PA | PH, MI | CC) are the same height, with
+       the card backgrounds matching even if the content heights differ.
+       This was already the default but stating it explicitly so it's
+       obvious. */
+    align-items: stretch;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+.grid-item-pa, .grid-item-pd, .grid-item-mi, .grid-item-cc, .grid-item-ph {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    /* Belt-and-suspenders: `height: 100%` so the grid item fills the
+       grid row even in browsers where `align-items: stretch` (the
+       default for CSS Grid) doesn't quite reach. Without this, the
+       item was sometimes left at its content height, leaving PA
+       (333px) and PH (309px) at different heights even though they
+       share a row.
+       IMPORTANT: the JS template uses a single element with BOTH
+       classes (e.g. `<div class="grid-item grid-item-ph
+       price-history-section">`), so the earlier `.grid-item-ph >
+       .price-history-section` child-selector rule never matched.
+       This rule applies the layout props directly to the
+       grid-item-which-is-also-the-section element.
+       NOTE: `margin: 0` is set via the more-specific combined
+       selectors below (e.g. `.grid-item-ph.price-history-section`)
+       because `.price-history-section` has its own
+       `margin: 1.5rem 0 0` rule further down the file — the
+       combined selector has higher specificity (0,2,0 vs 0,1,0)
+       so it wins. */
+    height: 100%;
+}
+/* Override the per-section margins inside the grid. Using combined
+   selectors (e.g. `.grid-item-ph.price-history-section`) bumps
+   specificity to (0,2,0) so this wins over the bare
+   `.price-history-section { margin: 1.5rem 0 0 }` rule further down. */
+.grid-item-pa.price-analysis-section,
+.grid-item-pd.price-distribution-section,
+.grid-item-mi.model-info-section,
+.grid-item-cc.competitors-section,
+.grid-item-ph.price-history-section {
+    margin: 0;
+}
+.grid-item-pa { grid-area: pa; }
+.grid-item-pd { grid-area: pd; }
+.grid-item-mi { grid-area: mi; }
+.grid-item-cc { grid-area: cc; }
+.grid-item-ph { grid-area: ph; }
+/* The grid-item elements ARE the section cards (the JS template
+   applies both classes to a single `<div>`), so the layout props
+   (flex: 1, height: 100%, etc.) belong on the grid-item selectors
+   above — NOT on a child selector here. This block is kept as a
+   no-op for documentation so future readers don't reintroduce the
+   child-selector mistake that left PA (333px) and PH (309px) at
+   different heights for a day. */
+/* Collapse to single column on narrow viewports so the cards aren't
+   squeezed unreadably. */
+@media (max-width: 900px) {
+    .popup-grid {
+        grid-template-columns: 1fr;
+        grid-template-areas:
+            "pa"
+            "pd"
+            "mi"
+            "cc"
+            "ph";
+    }
+}
+
+/* Scope toggle (Active / All Time) — sits in the header on the right */
+.pa-header {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 0.9rem;
+}
+.pa-header > .pa-icon { font-size: 1.15rem; }
+.pa-header > .pa-title { font-size: 1.05rem; }
+.pa-header > .pa-subtitle {
+    color: var(--text-muted, #6b7280);
+    font-weight: 500;
+    font-size: 0.85rem;
+    flex: 1;
+    min-width: 0;
+}
+.pa-scope-toggle {
+    display: inline-flex;
+    background: rgba(99, 102, 241, 0.08);
+    border: 1px solid rgba(99, 102, 241, 0.18);
+    border-radius: 999px;
+    padding: 3px;
+    gap: 2px;
+    flex-shrink: 0;
+}
+.pa-scope-btn {
+    background: transparent;
+    border: 0;
+    color: var(--text-muted, #6b7280);
+    padding: 0.32rem 0.75rem;
+    border-radius: 999px;
+    font-size: 0.74rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    transition: background 0.18s ease, color 0.18s ease, box-shadow 0.18s ease;
+}
+.pa-scope-btn:hover:not(.active):not(.disabled) {
+    color: #4f46e5;
+    background: rgba(99, 102, 241, 0.08);
+}
+.pa-scope-btn.active {
+    background: linear-gradient(135deg, #6366f1 0%, #764ba2 100%);
+    color: #fff;
+    box-shadow: 0 1px 4px rgba(99, 102, 241, 0.35);
+}
+.pa-scope-btn.disabled,
+.pa-scope-btn[disabled] {
+    color: rgba(120, 120, 130, 0.45);
+    cursor: not-allowed;
+    background: transparent;
+    opacity: 0.55;
+}
+.pa-scope-btn.disabled:hover,
+.pa-scope-btn[disabled]:hover {
+    background: transparent;
+    color: rgba(120, 120, 130, 0.45);
+}
+.pa-scope-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: currentColor;
+    display: inline-block;
+}
+[data-theme="dark"] .pa-scope-toggle {
+    background: rgba(99, 102, 241, 0.18);
+    border-color: rgba(129, 140, 248, 0.3);
+}
+[data-theme="dark"] .pa-scope-btn:hover:not(.active):not(.disabled) {
+    background: rgba(99, 102, 241, 0.22);
+    color: #a5b4fc;
+}
+
+/* Stats row grids — 4 boxes per row, 1fr each */
+.pa-stats-row {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 0.6rem;
+    margin-top: 0.4rem;
+}
+.pa-stats-row-secondary { margin-top: 0.45rem; }
+.pa-stats-row .pa-stat {
+    /* the existing .pa-stat has padding + bg already */
+    padding: 0.7rem 0.85rem;
+}
+.pa-stat.pa-secondary { padding: 0.55rem 0.7rem; }
+.pa-stat.pa-empty { padding: 0.7rem 0.85rem; }
+.pa-value-sm { font-size: 1.05rem !important; }
+/* Sub combo: pill (the diff) + meta (count / pct). Stacks on narrow */
+.pa-sub-combo {
+    display: flex;
+    flex-direction: column;
+    gap: 0.05rem;
+    line-height: 1.15;
+    margin-top: 0.15rem;
+}
+.pa-sub-pill {
+    font-weight: 700;
+    font-size: 1.05rem;
+    letter-spacing: 0.01em;
+    line-height: 1.2;
+}
+.pa-sub-meta {
+    font-size: 0.88rem;
+    color: var(--text-muted, #6b7280);
+    font-weight: 500;
+    line-height: 1.25;
+}
+@media (max-width: 540px) {
+    .pa-stats-row { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .pa-header { flex-direction: column; align-items: flex-start; }
+    .pa-scope-toggle { align-self: flex-end; margin-top: -2.4rem; }
+}
+
+/* === Price Distribution section === */
+.price-distribution-section {
+    background: linear-gradient(135deg, #fef3c7 0%, #fef9c3 100%);
+    border: 1px solid #fde68a;
+    border-radius: 14px;
+    padding: 1.15rem 1.35rem 1rem;
+    margin: 1.25rem 0 1rem 0;
+    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+}
+[data-theme="dark"] .price-distribution-section {
+    background: linear-gradient(135deg, #422006 0%, #1e293b 100%);
+    border-color: rgba(251, 191, 36, 0.35);
+}
+.pd-header { display: flex; align-items: center; gap: 0.4rem; margin-bottom: 0.6rem; flex-wrap: wrap; }
+.pd-icon { font-size: 1.15rem; }
+.pd-title { font-size: 1.05rem; }
+/* The Price Distribution card has its own scope toggle (added 2026-08-26
+   so logged-in users can flip Active/All Time without scrolling up).
+   It reuses the .pa-scope-toggle styles, but we add a bit of left margin
+   so it sits visually apart from the title + subtitle. */
+.pd-scope-toggle { margin-left: auto; }
+.pd-scope-locked {
+    margin-left: auto;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.25rem 0.7rem;
+    background: rgba(156, 163, 175, 0.12);
+    border: 1px solid rgba(156, 163, 175, 0.3);
+    border-radius: 999px;
+    color: var(--text-muted, #6b7280);
+    font-size: 0.75rem;
+}
+.pd-subtitle {
+    color: var(--text-muted, #6b7280);
+    font-weight: 500;
+    font-size: 0.82rem;
+    flex: 1;
+}
+.pd-legend {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 0.5rem;
+    font-size: 0.75rem;
+    color: var(--text-muted, #6b7280);
+    flex-wrap: wrap;
+}
+.pd-legend-item { display: inline-flex; align-items: center; gap: 0.3rem; }
+.pd-legend-swatch {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border-radius: 3px;
+}
+.pd-legend-bar { background: rgba(99, 102, 241, 0.85); }
+.pd-legend-current { background: #ef4444; }
+
+/* === Model Info section === */
+.model-info-section {
+    background: linear-gradient(135deg, #ecfeff 0%, #f0f9ff 100%);
+    border: 1px solid #a5f3fc;
+    border-radius: 14px;
+    padding: 1.15rem 1.35rem 1.1rem;
+    margin: 0 0 1rem 0;
+    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+}
+[data-theme="dark"] .model-info-section {
+    background: linear-gradient(135deg, #083344 0%, #0c4a6e 100%);
+    border-color: rgba(34, 211, 238, 0.35);
+}
+.mi-header { display: flex; align-items: center; gap: 0.4rem; margin-bottom: 0.7rem; flex-wrap: wrap; }
+.mi-icon { font-size: 1.15rem; }
+.mi-title { font-size: 1.05rem; }
+.mi-subtitle {
+    color: var(--text-muted, #6b7280);
+    font-weight: 500;
+    font-size: 0.85rem;
+    flex: 1;
+}
+.mi-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 0.4rem 0.7rem;
+    margin-bottom: 0.6rem;
+}
+.mi-cell {
+    background: rgba(255, 255, 255, 0.45);
+    border-radius: 8px;
+    padding: 0.4rem 0.6rem;
+    border: 1px solid rgba(165, 243, 252, 0.4);
+}
+[data-theme="dark"] .mi-cell {
+    background: rgba(8, 51, 68, 0.4);
+    border-color: rgba(34, 211, 238, 0.18);
+}
+.mi-label {
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text-muted, #6b7280);
+    font-weight: 600;
+}
+.mi-value {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--text-color, #1e293b);
+    margin-top: 0.1rem;
+}
+[data-theme="dark"] .mi-value { color: #e0f2fe; }
+.mi-bench {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 0.4rem;
+    margin-top: 0.5rem;
+    padding-top: 0.6rem;
+    border-top: 1px dashed rgba(165, 243, 252, 0.5);
+}
+.mi-bench-item {
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+    border-radius: 8px;
+    padding: 0.45rem 0.6rem;
+    border: 1px solid rgba(99, 102, 241, 0.2);
+}
+.mi-bench-item.mi-bench-score { background: linear-gradient(135deg, rgba(99, 102, 241, 0.18) 0%, rgba(118, 75, 162, 0.18) 100%); }
+[data-theme="dark"] .mi-bench-item { border-color: rgba(129, 140, 248, 0.3); }
+.mi-bench-label {
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text-muted, #6b7280);
+    font-weight: 600;
+}
+.mi-bench-value {
+    font-size: 1.05rem;
+    font-weight: 800;
+    color: var(--text-color, #1e293b);
+    margin-top: 0.1rem;
+}
+[data-theme="dark"] .mi-bench-value { color: #f1f5f9; }
+
+/* === Closest Competitors section === */
+.competitors-section {
+    background: linear-gradient(135deg, #fef2f2 0%, #fff1f2 100%);
+    border: 1px solid #fecaca;
+    border-radius: 14px;
+    padding: 1.15rem 1.35rem 1.05rem;
+    margin: 0 0 1rem 0;
+    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+}
+[data-theme="dark"] .competitors-section {
+    background: linear-gradient(135deg, #450a0a 0%, #1e293b 100%);
+    border-color: rgba(248, 113, 113, 0.35);
+}
+.cc-header { display: flex; align-items: center; gap: 0.4rem; margin-bottom: 0.7rem; flex-wrap: wrap; }
+.cc-icon { font-size: 1.15rem; }
+.cc-title { font-size: 1.05rem; }
+.cc-subtitle {
+    color: var(--text-muted, #6b7280);
+    font-weight: 500;
+    font-size: 0.82rem;
+    flex: 1;
+}
+.cc-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+}
+.cc-row {
+    /* Bug fix (2026-08-26 #6): bumped name fr 3.3 → 3.5 so the
+       longest non-badge name ("NVIDIA GeForce GTX 1650 Super",
+       201.9px) fits the name column (~206px). The bar shrinks
+       to 0.35fr (~21px) — small but still a clear price-relative
+       indicator. The "this model" badge is unchanged so the badge
+       row's name is still partially truncated, but the row is
+       visually distinct anyway (purple background, indigo border). */
+    display: grid;
+    grid-template-columns: 36px minmax(0, 3.5fr) 44px 0.35fr 60px;
+    gap: 0.5rem;
+    align-items: center;
+    padding: 0.4rem 0.6rem;
+    background: rgba(255, 255, 255, 0.45);
+    border: 1px solid rgba(254, 202, 202, 0.5);
+    border-radius: 8px;
+    font-size: 0.82rem;
+}
+[data-theme="dark"] .cc-row {
+    background: rgba(69, 10, 10, 0.35);
+    border-color: rgba(248, 113, 113, 0.2);
+}
+.cc-row-our {
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.12) 0%, rgba(118, 75, 162, 0.12) 100%);
+    border-color: rgba(99, 102, 241, 0.4);
+    box-shadow: 0 0 0 1px rgba(99, 102, 241, 0.3);
+}
+.cc-rank {
+    font-weight: 800;
+    font-size: 0.78rem;
+    color: #4f46e5;
+    text-align: center;
+    font-variant-numeric: tabular-nums;
+}
+[data-theme="dark"] .cc-rank { color: #a5b4fc; }
+.cc-row-our .cc-rank { color: #6366f1; }
+.cc-name-main {
+    font-weight: 700;
+    color: var(--text-color, #1e293b);
+    display: flex;
+    /* Bug fix (2026-08-26 #5): the model name text is now wrapped in a
+       `<span class="cc-name-text">` so the flex layout can shrink the
+       text independently of the "this model" badge. Without the
+       wrapper, the text was an anonymous flex item that pushed the
+       badge outside the column and got clipped by `overflow: hidden`.
+       The wrapper gives the text `flex: 1; min-width: 0` so it shrinks
+       and the badge (`flex-shrink: 0`) stays full-width and visible. */
+    align-items: center;
+    gap: 0.4rem;
+    min-width: 0;
+}
+.cc-name-text {
+    /* Bug fix (2026-08-26): the text inside the name area. `flex: 1`
+       so it takes the available space, `min-width: 0` so it can
+       actually shrink below its content width (default flex items
+       have `min-width: auto` which prevents shrinking), and the
+       truncation props (nowrap + overflow hidden + ellipsis) so long
+       names like "NVIDIA GeForce GTX 1060 3GB" get cut to "..."
+       instead of overflowing the column. */
+    flex: 1;
+    min-width: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+[data-theme="dark"] .cc-name-main { color: #f1f5f9; }
+.cc-ours {
+    font-size: 0.6rem;
+    background: #6366f1;
+    color: #fff;
+    padding: 0 4px;
+    border-radius: 4px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    /* Bug fix (2026-08-26): keep the badge full-width even when the
+       name text needs the room — `flex-shrink: 0` ensures the badge
+       never collapses, and the text span (`.cc-name-text` with
+       `flex: 1`) is the one that truncates. */
+    flex-shrink: 0;
+    white-space: nowrap;
+    line-height: 1.4;
+}
+.cc-name-sub {
+    font-size: 0.72rem;
+    color: var(--text-muted, #6b7280);
+    margin-top: 0.1rem;
+}
+.cc-name-delta { font-weight: 700; font-size: 0.7rem; }
+.cc-avg {
+    font-weight: 800;
+    text-align: right;
+    color: var(--text-color, #1e293b);
+    font-variant-numeric: tabular-nums;
+    font-size: 0.95rem;
+}
+[data-theme="dark"] .cc-avg { color: #f1f5f9; }
+.cc-bar {
+    position: relative;
+    background: rgba(0, 0, 0, 0.06);
+    height: 8px;
+    border-radius: 4px;
+    overflow: hidden;
+}
+[data-theme="dark"] .cc-bar { background: rgba(255, 255, 255, 0.08); }
+.cc-bar-fill {
+    position: absolute;
+    inset: 0 auto 0 0;
+    background: linear-gradient(90deg, #ef4444 0%, #f97316 100%);
+    border-radius: 4px;
+    transition: width 0.4s ease;
+}
+.cc-bar-our { background: linear-gradient(90deg, #6366f1 0%, #764ba2 100%); }
+.cc-listings {
+    font-size: 0.72rem;
+    color: var(--text-muted, #6b7280);
+    text-align: right;
+    display: flex;
+    flex-direction: column;
+    gap: 0.05rem;
+    align-items: flex-end;
+}
+.cc-pct {
+    font-weight: 800;
+    font-size: 0.75rem;
+    font-variant-numeric: tabular-nums;
+}
+@media (max-width: 700px) {
+    .cc-row {
+        grid-template-columns: 40px 1fr 60px;
+        grid-template-areas: "rank name avg" "rank name bar" "listings listings listings";
+    }
+    .cc-rank { grid-area: rank; }
+    .cc-name { grid-area: name; }
+    .cc-avg { grid-area: avg; }
+    .cc-bar { grid-area: bar; }
+    .cc-listings { grid-area: listings; text-align: left; align-items: flex-start; flex-direction: row; gap: 0.5rem; }
+}
+
 /* === Price Analysis Section in listing detail modal === */
 .price-analysis-section {
     background: linear-gradient(135deg, #eef2ff 0%, #f5f3ff 100%);
@@ -4244,44 +6540,393 @@ body.modal-open {
     border: 1px solid #f39c12;
 }
 
-/* Strict Match Toggle Styling */
-.strict-match-label {
-    display: inline-flex;
+/* === Price History Section in listing detail modal ===
+   Redesigned (2026-08-25) to match the polished card design of the
+   Price Analysis section above. Each snapshot is its own row with a
+   big price, a colored change pill (↓ green / ↑ red / · grey), and a
+   subtle "Current" badge on the latest. The empty state has an icon
+   and helpful copy. A small summary row at the top shows the overall
+   trend (oldest → newest) so the user gets the headline at a glance. */
+.price-history-section {
+    background: linear-gradient(135deg, #eef2ff 0%, #f5f3ff 100%);
+    border: 1px solid #c7d2fe;
+    border-radius: 14px;
+    padding: 1.15rem 1.35rem 1.25rem;
+    margin: 1.5rem 0 0;
+    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+}
+[data-theme="dark"] .price-history-section {
+    /* Slightly different gradient than Price Analysis so the two cards
+       read as related-but-distinct siblings. Same indigo border so the
+       family resemblance is obvious. */
+    background: linear-gradient(135deg, #1e293b 0%, #312e81 50%, #1e1b4b 100%);
+    border-color: #6366f1;
+    box-shadow: inset 0 0 0 1px rgba(99, 102, 241, 0.18);
+}
+.ph-header {
+    display: flex;
     align-items: center;
     gap: 0.5rem;
-    padding: 0.5rem 1rem;
-    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-    border-radius: 20px;
-    border: 1px solid #00d4ff;
-    cursor: pointer;
-    transition: all 0.3s ease;
+    margin-bottom: 0.85rem;
+    padding-bottom: 0.65rem;
+    border-bottom: 1px solid rgba(199, 210, 254, 0.45);
+}
+[data-theme="dark"] .ph-header {
+    border-bottom-color: rgba(129, 140, 248, 0.3);
+}
+.ph-icon { font-size: 1.15rem; line-height: 1; }
+.ph-title {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #1e293b;
+    letter-spacing: -0.01em;
+}
+[data-theme="dark"] .ph-title { color: #f1f5f9; }
+.ph-subtitle {
+    color: #6b7280;
+    font-size: 0.85rem;
+    font-weight: 400;
+}
+[data-theme="dark"] .ph-subtitle { color: #94a3b8; }
+
+/* Empty state — friendly icon + copy, never just "No data" */
+.ph-empty {
+    text-align: center;
+    padding: 1.5rem 0.5rem 1.25rem;
+    color: var(--text-mute, #6b7280);
+}
+.ph-empty-icon {
+    font-size: 2.4rem;
+    line-height: 1;
+    margin-bottom: 0.4rem;
+    opacity: 0.85;
+}
+.ph-empty-title {
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: var(--text-color, #1f2937);
+    margin-bottom: 0.25rem;
+}
+[data-theme="dark"] .ph-empty-title { color: #f1f5f9; }
+.ph-empty-sub {
+    font-size: 0.82rem;
+    color: var(--text-mute, #6b7280);
+    line-height: 1.45;
+    max-width: 360px;
+    margin: 0 auto;
 }
 
-.strict-match-label:hover {
-    box-shadow: 0 0 10px rgba(0, 212, 255, 0.5);
+/* Summary row — the headline: oldest → newest with overall change.
+   Gives the user the answer in one glance before they read the rows. */
+.ph-summary {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr 1.2fr;
+    gap: 0.75rem;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.6);
+    border: 1px solid rgba(199, 210, 254, 0.55);
+    border-radius: 10px;
+    padding: 0.7rem 0.9rem;
+    margin-bottom: 0.75rem;
+}
+[data-theme="dark"] .ph-summary {
+    background: linear-gradient(180deg, rgba(99, 102, 241, 0.12) 0%, rgba(99, 102, 241, 0.04) 100%);
+    border-color: rgba(129, 140, 248, 0.35);
+}
+.ph-summary-item { min-width: 0; }
+.ph-summary-label {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #4b5563;
+    font-weight: 700;
+    margin-bottom: 2px;
+}
+[data-theme="dark"] .ph-summary-label { color: #cbd5e1; }
+.ph-summary-value {
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: #1f2937;
+    line-height: 1.1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+[data-theme="dark"] .ph-summary-value { color: #f8fafc; }
+.ph-summary-old { color: #6b7280; font-weight: 600; }
+[data-theme="dark"] .ph-summary-old { color: #94a3b8; }
+.ph-summary-arrow {
+    font-size: 1.4rem;
+    line-height: 1;
+    font-weight: 800;
+    color: #9ca3af;
+}
+.ph-summary-arrow-up { color: #ef4444; }
+.ph-summary-arrow-down { color: #16a34a; }
+[data-theme="dark"] .ph-summary-arrow-up { color: #f87171; }
+[data-theme="dark"] .ph-summary-arrow-down { color: #4ade80; }
+
+/* The list of snapshot rows. Each row is its own card so the user
+   can scan the timeline easily — date on the left, big price in the
+   middle, change pill on the right. The "Current" row gets a subtle
+   accent so the eye lands there first. */
+.ph-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    max-height: 280px;
+    overflow-y: auto;
+    padding-right: 4px;
+}
+.ph-list::-webkit-scrollbar { width: 6px; }
+.ph-list::-webkit-scrollbar-track { background: transparent; }
+.ph-list::-webkit-scrollbar-thumb {
+    background: rgba(99, 102, 241, 0.25);
+    border-radius: 3px;
+}
+.ph-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    align-items: center;
+    gap: 0.75rem;
+    background: rgba(255, 255, 255, 0.7);
+    border: 1px solid rgba(199, 210, 254, 0.5);
+    border-radius: 8px;
+    padding: 0.55rem 0.85rem;
+    transition: transform .12s ease, box-shadow .12s ease;
+}
+.ph-row:hover {
     transform: translateY(-1px);
+    box-shadow: 0 2px 6px rgba(15, 23, 42, 0.08);
+}
+[data-theme="dark"] .ph-row {
+    background: linear-gradient(180deg, rgba(99, 102, 241, 0.10) 0%, rgba(99, 102, 241, 0.02) 100%);
+    border-color: rgba(129, 140, 248, 0.3);
+}
+[data-theme="dark"] .ph-row:hover {
+    box-shadow: 0 2px 8px rgba(99, 102, 241, 0.2);
+}
+.ph-row-latest {
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.12) 0%, rgba(99, 102, 241, 0.04) 100%);
+    border-color: rgba(99, 102, 241, 0.45);
+    box-shadow: 0 0 0 1px rgba(99, 102, 241, 0.18);
+}
+[data-theme="dark"] .ph-row-latest {
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.22) 0%, rgba(99, 102, 241, 0.08) 100%);
+    border-color: rgba(129, 140, 248, 0.5);
+}
+.ph-row-date {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    min-width: 0;
+}
+.ph-row-date-main {
+    font-size: 0.82rem;
+    color: #4b5563;
+    font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+[data-theme="dark"] .ph-row-date-main { color: #cbd5e1; }
+.ph-row-badge {
+    display: inline-block;
+    font-size: 9px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 2px 7px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: #fff;
+    box-shadow: 0 1px 2px rgba(102, 126, 234, 0.4);
+    flex-shrink: 0;
+}
+.ph-row-price {
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: #1f2937;
+    text-align: center;
+    letter-spacing: -0.01em;
+    font-variant-numeric: tabular-nums;
+}
+[data-theme="dark"] .ph-row-price { color: #f8fafc; }
+.ph-row-change { display: flex; justify-content: flex-end; }
+
+/* Change pill — colored, rounded, with a directional arrow.
+   Down = green (good for buyer), Up = red (bad for buyer), Same = grey. */
+.ph-diff {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 3px 10px;
+    border-radius: 14px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+}
+.ph-diff-arrow {
+    font-size: 0.95rem;
+    line-height: 1;
+    font-weight: 800;
+}
+.ph-diff-down {
+    background: rgba(34, 197, 94, 0.15);
+    color: #15803d;
+    border: 1px solid rgba(34, 197, 94, 0.3);
+}
+.ph-diff-up {
+    background: rgba(239, 68, 68, 0.13);
+    color: #b91c1c;
+    border: 1px solid rgba(239, 68, 68, 0.3);
+}
+.ph-diff-same {
+    background: rgba(107, 114, 128, 0.12);
+    color: #4b5563;
+    border: 1px solid rgba(107, 114, 128, 0.25);
+}
+[data-theme="dark"] .ph-diff-down {
+    background: rgba(74, 222, 128, 0.18);
+    color: #4ade80;
+    border-color: rgba(74, 222, 128, 0.4);
+}
+[data-theme="dark"] .ph-diff-up {
+    background: rgba(248, 113, 113, 0.16);
+    color: #f87171;
+    border-color: rgba(248, 113, 113, 0.4);
+}
+[data-theme="dark"] .ph-diff-same {
+    background: rgba(148, 163, 184, 0.12);
+    color: #94a3b8;
+    border-color: rgba(148, 163, 184, 0.25);
 }
 
-.strict-match-label input[type="checkbox"] {
-    accent-color: #00d4ff;
-    width: 18px;
-    height: 18px;
+/* Mobile: stack the row vertically so the date / price / change
+   don't crash into each other on narrow viewports. */
+@media (max-width: 540px) {
+    .ph-summary { grid-template-columns: 1fr 1fr; }
+    .ph-summary-arrow { display: none; }
+    .ph-row { grid-template-columns: 1fr 1fr; row-gap: 0.4rem; }
+    .ph-row-change { grid-column: 1 / -1; justify-content: flex-start; }
+}
+
+/* === Exact Match Toggle (icon button inside model filter) ===
+   Bug fix (2026-08-25): was a standalone gradient pill that "randomly
+   popped in when brand is picked". Now it's a small icon button nested
+   inside the model-filter-label, ONLY visible when a specific model
+   (not just a vendor) is selected. The bullseye SVG icon has three states:
+   inactive (outline only, muted grey), hover (lift + cyan border), and
+   active (indigo fill, glow, persistent). The title attribute shows the
+   description on hover.
+
+   Bug fix (2026-08-26): removed the "Exact match" text label and moved
+   the button inline with the brand icons in the vendor-icon-bar. Now
+   it lives at 26×26 (matches NVIDIA/AMD/Intel buttons) with no text —
+   just the bullseye icon. The "off" state uses the same dashed gray
+   style as before so the user can still see it's interactive but
+   inactive. */
+.strict-match-icon-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: 1px dashed rgba(120, 130, 150, 0.45);
+    color: #6b7280;
     cursor: pointer;
+    transition: transform 0.15s ease, border-color 0.2s ease,
+                border-style 0.2s ease, background 0.2s ease,
+                color 0.2s ease, box-shadow 0.2s ease;
 }
-
-.strict-match-label span {
-    font-size: 0.875rem;
+.strict-match-icon-btn svg {
+    flex-shrink: 0;
+    transition: transform 0.2s ease, color 0.2s ease;
 }
-
-[data-theme="dark"] .strict-match-label {
-    background: linear-gradient(135deg, #0f0f1a 0%, #0d1420 100%);
+.strict-match-icon-btn:hover {
+    transform: translateY(-1px);
+    border-color: #818cf8;
+    border-style: solid;
+    color: #818cf8;
+    box-shadow: 0 2px 8px rgba(129, 140, 248, 0.25);
 }
-
-@media (max-width: 768px) {
-    .strict-match-label {
-        padding: 0.4rem 0.75rem;
-        font-size: 0.8rem;
-    }
+.strict-match-icon-btn:hover svg {
+    transform: rotate(15deg) scale(1.1);
+}
+.strict-match-icon-btn:hover .strict-match-bullseye {
+    fill: #818cf8;
+}
+/* ACTIVE state — solid indigo/purple fill, bright glow, persistent
+   animation. The solid (not dashed) border + saturated gradient + white
+   icon make the active state instantly readable from across the page. */
+.strict-match-icon-btn.active {
+    background: linear-gradient(135deg, #6366f1 0%, #764ba2 100%);
+    border: 1px solid #764ba2;
+    border-style: solid;
+    color: #fff;
+    box-shadow: 0 0 12px rgba(99, 102, 241, 0.6),
+                inset 0 1px 2px rgba(255, 255, 255, 0.25);
+    animation: strict-match-glow 1.6s ease-in-out infinite alternate;
+}
+.strict-match-icon-btn.active:hover {
+    transform: translateY(-1px);
+    border-color: #a5b4fc;
+    color: #fff;
+    box-shadow: 0 0 16px rgba(99, 102, 241, 0.85),
+                inset 0 1px 3px rgba(255, 255, 255, 0.35);
+}
+.strict-match-icon-btn.active .strict-match-bullseye {
+    fill: #fff;
+}
+.strict-match-icon-btn.active svg circle:not(.strict-match-bullseye) {
+    stroke: #fff;
+}
+@keyframes strict-match-glow {
+    0%   { box-shadow: 0 0 8px rgba(99, 102, 241, 0.4), inset 0 1px 2px rgba(255, 255, 255, 0.2); }
+    100% { box-shadow: 0 0 18px rgba(99, 102, 241, 0.85), inset 0 1px 4px rgba(255, 255, 255, 0.4); }
+}
+/* Bug fix (2026-08-26): when the strict-match icon lives inside the
+   vendor-icon-bar (next to the brand buttons), it inherits the 26×26
+   size and 14×14 SVG sizing. The .vendor-icon-bar .filter-icon-btn
+   rules already set width/height !important, so we just match the
+   border-radius and SVG dimensions here. Bug fix (2026-08-26, take 3):
+   the icon now lives in `.model-filter-row1` (right side of the
+   brand-icon row), not the vendor-icon-bar. Use a comma-separated
+   selector so the size rules apply in BOTH locations (in case the
+   layout changes again later). */
+.vendor-icon-bar .strict-match-icon-btn,
+.model-filter-row1 .strict-match-icon-btn {
+    width: 26px !important;
+    height: 26px !important;
+    border-radius: 6px;
+    border-width: 1px;
+    padding: 0;
+}
+.vendor-icon-bar .strict-match-icon-btn svg,
+.model-filter-row1 .strict-match-icon-btn svg {
+    width: 14px !important;
+    height: 14px !important;
+}
+/* Dark mode gets brighter accents to read on the dark blue background */
+[data-theme="dark"] .strict-match-icon-btn {
+    border-color: rgba(160, 170, 200, 0.25);
+    color: #9ca3af;
+}
+[data-theme="dark"] .strict-match-icon-btn:hover {
+    border-color: #00d4ff;
+    color: #00d4ff;
+    box-shadow: 0 1px 6px rgba(0, 212, 255, 0.32);
+}
+[data-theme="dark"] .strict-match-icon-btn:hover .strict-match-bullseye {
+    fill: #00d4ff;
+}
+[data-theme="dark"] .strict-match-icon-btn.active {
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.22) 0%, rgba(118, 75, 162, 0.22) 100%);
+    border-color: #a5b4fc;
+    color: #a5b4fc;
+}
+[data-theme="dark"] .strict-match-icon-btn.active .strict-match-bullseye {
+    fill: #c7d2fe;
 }
 
 

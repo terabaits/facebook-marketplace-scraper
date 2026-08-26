@@ -118,9 +118,54 @@
     /* Listings table */
     .listings-table { width: 100%; border-collapse: collapse; font-size: 13px; }
     .listings-table thead th {
-        text-align: left; font-size: 10.5px; font-weight: 700; text-transform: uppercase; letter-spacing: .04em;
-        color: var(--text-mute, #6b7280); padding: 10px 12px; border-bottom: 1px solid var(--card-border, #2a2e3e);
-        background: rgba(255,255,255,.02);
+        /* Bug fix (2026-08-25): the 10.5px + #6b7280 combo washed out
+           against the dark card. Same fix as psu.html / gpu.html —
+           bumped font + brighter color + opaque-ish background, and
+           made the headers clickable for sort (with a small ▲/▼
+           indicator next to the active column).
+           Second pass (2026-08-25): user said even #cbd5e1 was too
+           grey against the dark card. Bumped to #fdfeff (near white)
+           so the headers read as proper table headers, not captions. */
+        text-align: left;
+        font-size: 12px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: .05em;
+        color: #fdfeff;
+        padding: 12px 14px;
+        border-bottom: 2px solid var(--card-border, #2a2e3e);
+        background: rgba(255,255,255,.04);
+        position: sticky;
+        top: 0;
+        z-index: 1;
+        user-select: none;
+        white-space: nowrap;
+    }
+    [data-theme="light"] .listings-table thead th {
+        color: #1e293b;
+        background: #f1f5f9;
+        border-bottom-color: #cbd5e1;
+    }
+    /* Sortable column headers get a hover cursor + subtle bg shift so
+       users see they can click. */
+    .listings-table thead th.sortable { cursor: pointer; }
+    .listings-table thead th.sortable:hover {
+        background: rgba(102, 126, 234, 0.10);
+        color: var(--text, #f1f5f9);
+    }
+    [data-theme="light"] .listings-table thead th.sortable:hover {
+        background: rgba(102, 126, 234, 0.12);
+        color: #1e293b;
+    }
+    .listings-table thead th .sort-arrow {
+        display: inline-block;
+        margin-left: 4px;
+        font-size: 10px;
+        color: #818cf8;
+        opacity: 0.95;
+    }
+    [data-theme="light"] .listings-table thead th .sort-arrow {
+        color: #4f46e5;
     }
     .listings-table tbody tr {
         border-bottom: 1px solid rgba(255,255,255,.04);
@@ -204,6 +249,24 @@
     @media (max-width: 700px) { .detail-grid { grid-template-columns: 1fr; } }
     .detail-section { background: rgba(255,255,255,.03); border: 1px solid var(--card-border, #2a2e3e); border-radius: 10px; padding: 14px; }
     .detail-section h4 { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: var(--text-mute, #6b7280); margin: 0 0 10px; }
+    /* Bug fix (2026-08-25): the "no price changes" empty state used
+       `var(--text-mute)` which is #6b7280 in dark mode but is way too
+       pale in light mode (where --text-mute isn't re-defined, so it
+       inherits the same #6b7280 against a near-white card). The text
+       was barely readable. Use a real background + text pair with
+       explicit light-mode override. */
+    .price-history-empty {
+        color: var(--text-dim, #cbd5e1);
+        background: rgba(255,255,255,.03);
+        border: 1px dashed var(--card-border, #2a2e3e);
+        border-radius: 6px;
+        line-height: 1.45;
+    }
+    [data-theme="light"] .price-history-empty {
+        color: #475569;
+        background: #f1f5f9;
+        border-color: #cbd5e1;
+    }
     .detail-row { display: flex; justify-content: space-between; padding: 5px 0; border-bottom: 1px solid rgba(255,255,255,.05); font-size: 13px; }
     .detail-row:last-child { border-bottom: none; }
     .detail-row .k { color: var(--text-dim, #9ca3af); }
@@ -334,23 +397,23 @@
         <label>Search</label>
         <input type="search" id="filter-search" placeholder="Title or model..." oninput="loadListingsDebounced()">
     </div>
-    <div class="sep"></div>
-    <div class="fg">
-        <label>Sort</label>
-        <select id="sort-by" onchange="loadListings()">
-            <option value="first_seen_at" selected>Newest</option>
-            <option value="price">Price</option>
-            <option value="confidence">Confidence</option>
-        </select>
-    </div>
-    <div class="fg">
-        <label>Order</label>
-        <select id="sort-order" onchange="loadListings()">
-            <option value="desc" selected>↓</option>
-            <option value="asc">↑</option>
-        </select>
-    </div>
     <button class="reset-all" onclick="resetAllFilters()">↻ Reset</button>
+    <!-- Bug fix (2026-08-25): removed the "Sort:" + "Order:" dropdowns
+         from the filter bar. Sorting is now done by clicking the
+         table column headers directly (with a small ▲/▼ next to
+         the active column). The legacy <select id="sort-by"> /
+         <select id="sort-order"> are kept hidden so applyUrlParamsToFilters()
+         can still read ?sort=&order= deep links. -->
+    <select id="sort-by" style="display:none;">
+        <option value="first_seen_at" selected>Newest</option>
+        <option value="price">Price</option>
+        <option value="date_posted">Date posted</option>
+        <option value="confidence">Confidence</option>
+    </select>
+    <select id="sort-order" style="display:none;">
+        <option value="desc" selected>↓</option>
+        <option value="asc">↑</option>
+    </select>
 </div>
 
 <!-- Listings -->
@@ -423,11 +486,66 @@
 <script>
 let priceChart = null;
 let _loadTimer = null;
+// Bug fix (2026-08-25): sort state now lives in JS variables
+// (driven by header clicks), not in the hidden <select>s. The
+// <select>s stay in sync so applyUrlParamsToFilters() can still
+// pre-seed them from the URL.
+let currentSort = 'first_seen_at';
+let currentOrder = 'desc';
+
+function setSort(col) {
+    if (currentSort === col) {
+        // Same column → flip direction
+        currentOrder = currentOrder === 'asc' ? 'desc' : 'asc';
+    } else {
+        // New column → default to a sensible direction
+        currentSort = col;
+        // For text fields (case name, location, side panel, color,
+        // manufacturer) ascending A→Z is the most natural starting
+        // point. For numeric/date fields (price, first_seen_at,
+        // date_posted, confidence) we default to descending (high→low
+        // or newest→oldest) which matches the previous dropdown
+        // default.
+        const textCols = new Set(['case_name', 'manufacturer', 'location', 'color', 'side_panel']);
+        currentOrder = textCols.has(col) ? 'asc' : 'desc';
+    }
+    // Sync the hidden <select>s so the URL params / deep links stay correct
+    const sb = document.getElementById('sort-by');
+    const so = document.getElementById('sort-order');
+    if (sb) sb.value = currentSort;
+    if (so) so.value = currentOrder;
+    updateSortArrows();
+    loadListings();
+}
+
+function updateSortArrows() {
+    document.querySelectorAll('.listings-table thead th.sortable').forEach(th => {
+        const arrow = th.querySelector('.sort-arrow');
+        if (!arrow) return;
+        if (th.dataset.sort === currentSort) {
+            arrow.textContent = currentOrder === 'asc' ? ' ▲' : ' ▼';
+        } else {
+            arrow.textContent = '';
+        }
+    });
+}
+
+function wireSortHeaders() {
+    document.querySelectorAll('.listings-table thead th.sortable').forEach(th => {
+        th.addEventListener('click', () => {
+            const col = th.dataset.sort;
+            if (col) setSort(col);
+        });
+    });
+}
 
 document.addEventListener('DOMContentLoaded', async () => {
     // Apply URL search params as initial filter state (so /cases?type=ATX Mid Tower
     // pre-selects the type dropdown). Must run BEFORE loadListings() reads them.
     applyUrlParamsToFilters();
+    // Wire up clickable column headers for sort
+    wireSortHeaders();
+    updateSortArrows();
     await Promise.all([loadFilters(), loadStats(), loadListings()]);
 });
 
@@ -446,8 +564,21 @@ function applyUrlParamsToFilters() {
     // read them and pass to the API.
     if (sp.has('active')) document.getElementById('filter-active').value = sp.get('active');
     if (sp.has('first_seen')) document.getElementById('filter-first-seen').value = sp.get('first_seen');
-    if (sp.has('sort')) document.getElementById('sort-by').value = sp.get('sort');
-    if (sp.has('order')) document.getElementById('sort-order').value = sp.get('order');
+    // Bug fix (2026-08-25): the URL params now seed the JS sort
+    // variables (currentSort / currentOrder) instead of the hidden
+    // <select>s. The <select>s are kept in sync via setSort() so
+    // applyUrlParamsToFilters() can still write to them if needed,
+    // but loadListings() reads from the JS variables directly.
+    if (sp.has('sort')) {
+        currentSort = sp.get('sort');
+        const sb = document.getElementById('sort-by');
+        if (sb) sb.value = currentSort;
+    }
+    if (sp.has('order')) {
+        currentOrder = sp.get('order');
+        const so = document.getElementById('sort-order');
+        if (so) so.value = currentOrder;
+    }
 }
 
 function loadListingsDebounced() {
@@ -590,8 +721,8 @@ async function loadListings() {
         const cutoff = new Date(Date.now() - parseInt(fs, 10) * 86400 * 1000);
         params.set('first_seen_after', cutoff.toISOString());
     }
-    params.set('sort', document.getElementById('sort-by').value);
-    params.set('order', document.getElementById('sort-order').value);
+    params.set('sort', currentSort);
+    params.set('order', currentOrder);
 
     try {
         const url = addHideUnmatchedParam('/api/cases?' + params.toString());
@@ -625,7 +756,7 @@ async function loadListings() {
                 conf >= 0.7 ? `<span class="badge badge-med">${Math.round(conf*100)}%</span>` :
                               `<span class="badge badge-low">${Math.round(conf*100)}%</span>`;
             const thumbUrl = item.local_image_path
-                ? `/images/${item.local_image_path.replace(/\\\\/g, '/')}`
+                ? `/images/${item.local_image_path.replace(/\\/g, '/')}`
                 : item.image_url;
             const thumb = thumbUrl
                 ? `<img class="thumb" src="${thumbUrl}" alt="${escapeHtml(name)}" onerror="this.outerHTML='<div class=\\'thumb placeholder\\'>📦</div>'" onclick="event.stopPropagation();showImage('${thumbUrl.replace(/'/g, "\\'")}', '${escapeHtml(name).replace(/'/g, "\\'")}')">`
@@ -690,17 +821,23 @@ async function loadListings() {
                 <table class="listings-table">
                     <thead><tr>
                         <th style="width:72px;"></th>
-                        <th>Case</th>
-                        <th>Manufacturer · Type</th>
-                        <th>Color · Side Panel</th>
-                        <th>Price</th>
-                        <th>Location</th>
-                        <th>First seen</th>
+                        <th class="sortable" data-sort="case_name">Case<span class="sort-arrow"></span></th>
+                        <th class="sortable" data-sort="manufacturer">Manufacturer · Type<span class="sort-arrow"></span></th>
+                        <th class="sortable" data-sort="side_panel">Color · Side Panel<span class="sort-arrow"></span></th>
+                        <th class="sortable" data-sort="price">Price<span class="sort-arrow"></span></th>
+                        <th class="sortable" data-sort="location">Location<span class="sort-arrow"></span></th>
+                        <th class="sortable" data-sort="first_seen_at">First seen<span class="sort-arrow"></span></th>
                         <th style="width:140px;">Actions</th>
                     </tr></thead>
                     <tbody>${rows}</tbody>
                 </table>
             </div>`;
+        // Bug fix (2026-08-25): the table is re-rendered on every
+        // loadListings() call, so the click handlers and the active
+        // sort arrow are lost. Re-wire + re-paint right after the
+        // HTML is committed to the DOM.
+        wireSortHeaders();
+        updateSortArrows();
     } catch (e) {
         container.innerHTML = `<div class="empty-state"><div class="em">⚠️</div><div class="em-title">Failed to load listings</div><div class="em-sub">${escapeHtml(e.message)}</div></div>`;
     }
@@ -728,7 +865,7 @@ async function showDetail(listingId) {
         const caseName = cur.case_name || cur.title || 'Unknown Case';
         title.textContent = caseName;
         const thumbUrl = cur.local_image_path
-            ? `/images/${cur.local_image_path.replace(/\\\\/g, '/')}`
+            ? `/images/${cur.local_image_path.replace(/\\/g, '/')}`
             : cur.image_url;
 
         // Try to find the case_reference details from the listing
@@ -803,7 +940,7 @@ async function showDetail(listingId) {
                                 </div>
                             `).join('')}
                         </div>
-                        ` : `<div style="font-size:12px;color:var(--text-mute);padding:4px 0;">No price changes recorded yet — this listing has only one price snapshot.</div>`}
+                        ` : `<div class="price-history-empty" style="font-size:12.5px;padding:10px 12px;margin-top:4px;">No price changes recorded yet — this listing has only one price snapshot.</div>`}
                     </div>
                     <div class="detail-section" style="margin-top:12px;">
                         <h4>🔗 Actions</h4>

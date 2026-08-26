@@ -100,9 +100,48 @@
     /* Listings table */
     .listings-table { width: 100%; border-collapse: collapse; font-size: 13px; }
     .listings-table thead th {
-        text-align: left; font-size: 10.5px; font-weight: 700; text-transform: uppercase; letter-spacing: .04em;
-        color: var(--text-mute, #6b7280); padding: 10px 12px; border-bottom: 1px solid var(--card-border, #2a2e3e);
-        background: rgba(255,255,255,.02);
+        /* Bug fix (2026-08-25): 10.5px + #6b7280 combo washed out
+           against the dark card. Bumped to 12px + #fdfeff (per user
+           feedback — even #cbd5e1 was still too pale). */
+        text-align: left;
+        font-size: 12px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: .05em;
+        color: #fdfeff;
+        padding: 12px 14px;
+        border-bottom: 2px solid var(--card-border, #2a2e3e);
+        background: rgba(255,255,255,.04);
+        position: sticky;
+        top: 0;
+        z-index: 1;
+        user-select: none;
+        white-space: nowrap;
+    }
+    [data-theme="light"] .listings-table thead th {
+        color: #1e293b;
+        background: #f1f5f9;
+        border-bottom-color: #cbd5e1;
+    }
+    /* Sortable headers */
+    .listings-table thead th.sortable { cursor: pointer; }
+    .listings-table thead th.sortable:hover {
+        background: rgba(102, 126, 234, 0.10);
+        color: #fdfeff;
+    }
+    [data-theme="light"] .listings-table thead th.sortable:hover {
+        background: rgba(102, 126, 234, 0.12);
+        color: #1e293b;
+    }
+    .listings-table thead th .sort-arrow {
+        display: inline-block;
+        margin-left: 4px;
+        font-size: 10px;
+        color: #818cf8;
+        opacity: 0.95;
+    }
+    [data-theme="light"] .listings-table thead th .sort-arrow {
+        color: #4f46e5;
     }
     .listings-table tbody tr {
         border-bottom: 1px solid rgba(255,255,255,.04);
@@ -279,22 +318,6 @@
         </select>
     </div>
     <div class="fg">
-        <label>Sort</label>
-        <select id="filter-sort" onchange="loadListings()">
-            <option value="date_posted" selected>Date posted</option>
-            <option value="price">Price</option>
-            <option value="wattage">Wattage</option>
-            <option value="first_seen">First seen</option>
-        </select>
-    </div>
-    <div class="fg">
-        <label>Order</label>
-        <select id="filter-order" onchange="loadListings()">
-            <option value="desc" selected>↓ Desc</option>
-            <option value="asc">↑ Asc</option>
-        </select>
-    </div>
-    <div class="fg">
         <label>Time</label>
         <select id="filter-time" onchange="loadListings()">
             <option value="all_time" selected>All time</option>
@@ -302,6 +325,23 @@
             <option value="week">Last week</option>
         </select>
     </div>
+    <!-- Bug fix (2026-08-25): removed the "Sort:" + "Order:" dropdowns
+         from the filter bar. Sorting is now done by clicking the
+         table column headers directly. The hidden <select>s below
+         stay in the DOM so applyUrlParamsToFilters() can still read
+         ?sort=&order= deep links. -->
+    <select id="filter-sort" style="display:none;">
+        <option value="date_posted" selected>Date posted</option>
+        <option value="price">Price</option>
+        <option value="wattage">Wattage</option>
+        <option value="first_seen">First seen</option>
+        <option value="psu_name">PSU name</option>
+        <option value="location">Location</option>
+    </select>
+    <select id="filter-order" style="display:none;">
+        <option value="desc" selected>↓ Desc</option>
+        <option value="asc">↑ Asc</option>
+    </select>
     <div class="fg">
         <label>Wattage</label>
         <select id="filter-wattage" onchange="loadListings()">
@@ -342,6 +382,12 @@
     <div class="fg">
         <label>Search</label>
         <input type="search" id="filter-search" placeholder="title, brand, location…" oninput="loadListings()">
+    </div>
+    <div class="fg" id="show-unmatched-wrap" style="display:none;" title="Admins/staff can show all listings, not just matched ones">
+        <label style="display:flex;align-items:center;gap:6px;cursor:pointer;">
+            <input type="checkbox" id="filter-show-unmatched" style="margin:0;">
+            Show unmatched
+        </label>
     </div>
     <span id="wattage-avg-pill" class="avg-pill" style="display:none;"></span>
     <button class="reset-all" onclick="resetAllFilters()">⟲ Reset</button>
@@ -423,6 +469,49 @@
 
 let allListings = [];
 let priceChart = null;
+// Bug fix (2026-08-25): sort state lives in JS variables (driven by
+// header clicks), not in the hidden <select>s. The <select>s stay in
+// sync so deep-link URL params (applyUrlParamsToFilters) keep working.
+let currentSort = 'date_posted';
+let currentOrder = 'desc';
+
+function setSort(col) {
+    if (currentSort === col) {
+        // Same column → flip direction
+        currentOrder = currentOrder === 'asc' ? 'desc' : 'asc';
+    } else {
+        currentSort = col;
+        // For text fields ascending A→Z; for numeric/date default to descending
+        const textCols = new Set(['location', 'psu_name', 'manufacturer']);
+        currentOrder = textCols.has(col) ? 'asc' : 'desc';
+    }
+    // Sync hidden selects so URL params / deep links still work
+    const sb = document.getElementById('filter-sort');
+    const so = document.getElementById('filter-order');
+    if (sb) sb.value = currentSort;
+    if (so) so.value = currentOrder;
+    updateSortArrows();
+    loadListings();
+}
+
+function updateSortArrows() {
+    document.querySelectorAll('.listings-table thead th.sortable').forEach(th => {
+        const arrow = th.querySelector('.sort-arrow');
+        if (!arrow) return;
+        arrow.textContent = (th.dataset.sort === currentSort)
+            ? (currentOrder === 'asc' ? ' ▲' : ' ▼')
+            : '';
+    });
+}
+
+function wireSortHeaders() {
+    document.querySelectorAll('.listings-table thead th.sortable').forEach(th => {
+        th.addEventListener('click', () => {
+            const col = th.dataset.sort;
+            if (col) setSort(col);
+        });
+    });
+}
 
 function escapeHtml(s) {
     if (s == null) return '';
@@ -544,8 +633,11 @@ async function fetchAllListings() {
 
 async function loadListings() {
     const active = document.getElementById('filter-active').value;
-    const sort   = document.getElementById('filter-sort').value;
-    const order  = document.getElementById('filter-order').value;
+    // Bug fix (2026-08-25): read sort state from JS vars (driven by
+    // header clicks), not the hidden <select>s. The <select>s stay in
+    // sync via setSort() so deep-link URL params still work.
+    const sort   = currentSort;
+    const order  = currentOrder;
     const time   = document.getElementById('filter-time').value;
     const watt   = document.getElementById('filter-wattage').value;
     const wmode  = document.getElementById('filter-wattage-mode').value;
@@ -759,9 +851,19 @@ function renderTable(listings) {
                 <td>
                     <div class="psu-name">${escapeHtml(psuName)} ${confBadge}${inlineBadges}</div>
                     <div class="psu-specs">
-                        <span class="badge badge-mfr">${escapeHtml(mfr)}</span>
+                        ${/* Bug fix (2026-08-25): removed the manufacturer
+                             badge — `parseMfr()` just took the first
+                             whitespace-separated token of the PSU name,
+                             so we ended up with redundant chips like
+                             "ANTEC", "COOLER", "BE" (from "be quiet!"),
+                             "XILENCE", and even Latvian filler like
+                             "pārdodu"/"labākā" for unmatched listings
+                             where the title's first word wasn't a brand.
+                             The PSU name is right above the chip row,
+                             so the manufacturer is already visible. */
+                          ''}
                         ${eff ? `<span class="badge badge-eff">${escapeHtml(eff)}</span>` : ''}
-                        ${mod ? `<span class="badge badge-mod">${escapeHtml(mod)}</span>` : ''}
+                        ${mod && /^(full|semi|yes)/i.test(mod) ? `<span class="badge badge-mod">${escapeHtml(mod)}</span>` : ''}
                     </div>
                 </td>
                 <td><span class="wattage">${wattage}</span></td>
@@ -783,17 +885,21 @@ function renderTable(listings) {
             <thead>
                 <tr>
                     <th style="width: 80px;"></th>
-                    <th>Matched Model</th>
-                    <th style="width: 90px;">Wattage</th>
-                    <th style="width: 120px;">Price</th>
-                    <th>Location</th>
-                    <th>Date</th>
+                    <th class="sortable" data-sort="psu_name">Matched Model<span class="sort-arrow"></span></th>
+                    <th class="sortable" data-sort="wattage" style="width: 90px;">Wattage<span class="sort-arrow"></span></th>
+                    <th class="sortable" data-sort="price" style="width: 120px;">Price<span class="sort-arrow"></span></th>
+                    <th class="sortable" data-sort="location">Location<span class="sort-arrow"></span></th>
+                    <th class="sortable" data-sort="date_posted">Date<span class="sort-arrow"></span></th>
                     <th style="width: 160px;">Actions</th>
                 </tr>
             </thead>
             <tbody>${rows}</tbody>
         </table>
     `;
+    // Bug fix (2026-08-25): re-wire click handlers + repaint arrows
+    // every render, since container.innerHTML replacement wipes them.
+    wireSortHeaders();
+    updateSortArrows();
 }
 
 // -------- Detail modal --------
@@ -1012,17 +1118,98 @@ function resetAllFilters() {
     document.getElementById('filter-active').value = 'true';
     document.getElementById('filter-sort').value = 'date_posted';
     document.getElementById('filter-order').value = 'desc';
+    // Bug fix (2026-08-25): keep currentSort/currentOrder in sync with the selects
+    currentSort = 'date_posted';
+    currentOrder = 'desc';
+    updateSortArrows();
     document.getElementById('filter-time').value = 'all_time';
     document.getElementById('filter-wattage').value = '';
     document.getElementById('filter-wattage-mode').value = 'exact';
     document.getElementById('filter-efficiency').value = '';
     document.getElementById('filter-search').value = '';
+    const showUnmatched = document.getElementById('filter-show-unmatched');
+    if (showUnmatched) showUnmatched.checked = false;
+    // Also clear the localStorage override so the role default takes over
+    try { localStorage.removeItem('hideUnmatchedListings'); } catch (e) {}
     loadListings();
+}
+
+// -------- "Show unmatched" admin/staff opt-in --------
+//
+// Bug fix (2026-08-25): the page used the global
+// `addHideUnmatchedParam` helper from base.html, which respects the
+// `hideUnmatchedListings` toggle — but that toggle was hidden inside
+// the admin settings page. There was no in-page control to flip it
+// on, so non-admins were stuck with whatever the role default was
+// (True for `user`/`mod` → they only ever saw matched listings,
+// which is the desired default) and admins couldn't see unmatched
+// listings without editing localStorage.
+//
+// Now we render a "Show unmatched" checkbox that:
+// 1. Is only visible to staff (is_staff === true in the Jinja context)
+// 2. Writes/clears the same `hideUnmatchedListings` localStorage
+//    key the base.html helper reads, so it's the same toggle
+// 3. Calls loadListings() on change so the API re-fires with the
+//    updated ?hide_unmatched=0|1 param.
+function initShowUnmatchedToggle() {
+    const wrap = document.getElementById('show-unmatched-wrap');
+    if (!wrap) return;
+    // Only show to staff (template sets display:none by default; we flip
+    // it here based on the same server-injected is_staff variable).
+    const isStaff = {{ 'true' if is_staff else 'false' }};
+    if (!isStaff) return;
+    wrap.style.display = '';
+    const cb = document.getElementById('filter-show-unmatched');
+    if (!cb) return;
+    // Initialize from the same source base.html reads: localStorage,
+    // falling back to the role default injected by the server.
+    const stored = (() => { try { return localStorage.getItem('hideUnmatchedListings'); } catch (e) { return null; } })();
+    const roleDefault = !!(window.userToggleDefaults || {}).hideUnmatchedListings;
+    const hideUnmatched = stored !== null ? stored === 'true' : roleDefault;
+    // The checkbox is the INVERSE: "Show unmatched" = !hideUnmatched
+    cb.checked = !hideUnmatched;
+    cb.addEventListener('change', function() {
+        try { localStorage.setItem('hideUnmatchedListings', String(!this.checked)); } catch (e) {}
+        loadListings();
+    });
 }
 
 // -------- Init --------
 
-document.addEventListener('DOMContentLoaded', loadListings);
+// Bug fix (2026-08-25): seed the JS sort state from URL params so
+// deep links like /psu?sort=price&order=asc actually sort that way.
+// The <select>s are kept in sync for legacy callers.
+function applyUrlParamsToFilters() {
+    const sp = new URLSearchParams(window.location.search);
+    if (sp.has('sort')) {
+        currentSort = sp.get('sort');
+        const sb = document.getElementById('filter-sort');
+        if (sb) sb.value = currentSort;
+    }
+    if (sp.has('order')) {
+        currentOrder = sp.get('order');
+        const so = document.getElementById('filter-order');
+        if (so) so.value = currentOrder;
+    }
+    if (sp.has('active')) {
+        const el = document.getElementById('filter-active');
+        if (el) el.value = sp.get('active');
+    }
+    if (sp.has('time')) {
+        const el = document.getElementById('filter-time');
+        if (el) el.value = sp.get('time');
+    }
+    if (sp.has('wattage')) {
+        const el = document.getElementById('filter-wattage');
+        if (el) el.value = sp.get('wattage');
+    }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    initShowUnmatchedToggle();
+    applyUrlParamsToFilters();
+    loadListings();
+});
 
 // Escape key closes modals
 document.addEventListener('keydown', e => {

@@ -106,12 +106,27 @@ def inject_translation_helpers():
         role = user.get('role', 'user')
         for key, _label, _default, _applies_to in TOGGLE_DEFINITIONS:
             user_toggle_defaults[key] = _get_toggle_role_default(role, key)
+    is_staff_user = bool(user and user.get('role') in ('admin', 'mod', 'moderator'))
+    # Subscriber check: active subscription OR power_user role. Power users
+    # get the "all time" privilege because they pay for advanced stats.
+    is_subscriber = bool(user and (
+        user.get('subscription_status') == 'active'
+        or user.get('role') == 'power_user'
+    ))
+    # Permission gate for the GPU popup's "all time" mode:
+    # - Admins / mods: can see all time (internal tools)
+    # - Active subscribers: can see all time (paid for advanced stats)
+    # - Everyone else (anonymous, basic users): can only see "active" mode,
+    #   the "all time" toggle is rendered but greyed out.
+    can_see_all_time = is_staff_user or is_subscriber
     return dict(
         t=_t,
         translations_json=_translations_json,
         current_lang=flask_session.get('lang', 'en'),
         current_user=user,
-        is_staff=bool(user and user.get('role') in ('admin', 'mod', 'moderator')),
+        is_staff=is_staff_user,
+        is_subscriber=is_subscriber,
+        can_see_all_time=can_see_all_time,
         user_toggle_defaults=user_toggle_defaults,
         toggle_definitions=[{"key": k, "label": l, "applies_to": a, "default": d} for k, l, d, a in TOGGLE_DEFINITIONS],
     )
@@ -1997,17 +2012,26 @@ def get_gpus():
             # Add time filter
             query += get_time_filter_sql(time_filter)
 
-            # Add sorting
-            if sort_by == 'price':
-                sort_column = 'l.price_eur'
-            elif sort_by == 'performance_price':
-                sort_column = 'COALESCE(gs.g3d_mark, 0) / NULLIF(l.price_eur, 0)'
-            elif sort_by == 'rank':
-                sort_column = 'COALESCE(gs.g3d_rank, 999999)'
-            else:
-                sort_column = 'l.date_posted'
+            # Add sorting. Bug fix (2026-08-25): expanded the column map
+            # so every column header (Brand/GPU/VRAM/Year/Price/MSRP/G3D/
+            # €/G3D/Rank/Location/Date) can drive a clickable sort.
+            sort_map = {
+                'price':             'l.price_eur',
+                'date_posted':       'l.date_posted',
+                'first_seen_at':     'l.first_seen_at',
+                'performance_price': 'COALESCE(gs.g3d_mark, 0) / NULLIF(l.price_eur, 0)',
+                'rank':              'COALESCE(gs.g3d_rank, 999999)',
+                'g3d':               'COALESCE(gs.g3d_mark, 0)',
+                'vram':              'COALESCE(g.vram_gb, 0)',
+                'year':              'COALESCE(g.year_released, 0)',
+                'msrp':              'COALESCE(g.msrp_usd, 0)',
+                'brand':             'g.vendor',
+                'gpu':               'g.model',
+                'location':          'l.seller_location',
+            }
+            sort_column = sort_map.get(sort_by, 'l.date_posted')
             sort_dir = 'ASC' if sort_order == 'asc' else 'DESC'
-            query += f" ORDER BY {sort_column} {sort_dir} LIMIT %s"
+            query += f" ORDER BY {sort_column} {sort_dir} NULLS LAST LIMIT %s"
             params.append(limit)
 
             try:
@@ -2042,6 +2066,13 @@ def get_gpus():
                         ROUND(AVG(l.price_eur)::numeric, 2) as avg_price,
                         MIN(l.price_eur) as min_price,
                         MAX(l.price_eur) as max_price,
+                        -- Median (50th percentile) of the same listings. Bug fix
+                        -- (2026-08-26): the Market Position bar used to show only
+                        -- the avg dot. User asked to also show the median, with
+                        -- a different color so the two are visually distinct.
+                        -- PostgreSQL's PERCENTILE_CONT(0.5) is the standard
+                        -- continuous median. ROUND to 2 decimals to match avg.
+                        ROUND(PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY l.price_eur)::numeric, 2) as median_price,
                         COUNT(*) as listing_count
                     FROM listings l
                     JOIN gpu_versioned gv ON l.listing_id = gv.listing_id
@@ -2072,6 +2103,7 @@ def get_gpus():
                         stats = gpu_stats[listing_dict['matched_gpu_id']]
                         listing_dict['price_stats'] = {
                             'avg': stats['avg_price'],
+                            'median': stats['median_price'],
                             'min': stats['min_price'],
                             'max': stats['max_price'],
                             'below_avg': listing_dict['price_eur'] < stats['avg_price'],
@@ -2710,30 +2742,414 @@ def get_listing_details(listing_id):
         # the current listing price if no history rows exist). Returned as
         # `current.price_stats` so the popup's "Lowest ever / Avg ever /
         # Highest ever" cards can render without a second round-trip.
+        #
+        # Bug fix (2026-08-25): previously the JS would show "0× seen" for
+        # Highest ever because the backend never computed `max_count`. Also
+        # the card showed "—" when there's only one snapshot (the current
+        # price) — now we always populate min/avg/max so the cards have
+        # something useful to say even with no history.
+        cur_price_raw = current.get('price_eur')
+        cur_price = float(cur_price_raw) if cur_price_raw is not None and float(cur_price_raw) > 0 else None
         all_prices = [float(h['price_eur']) for h in history if h.get('price_eur') is not None]
-        if current.get('price_eur') is not None and float(current['price_eur']) > 0:
-            all_prices.append(float(current['price_eur']))
-        price_stats = None
+        if cur_price is not None:
+            all_prices.append(cur_price)
+        current_dict = convert_decimal_to_float(dict(current))
         if all_prices:
-            current_dict = convert_decimal_to_float(dict(current))
+            mn = min(all_prices)
+            mx = max(all_prices)
             price_stats = {
-                'min': min(all_prices),
-                'max': max(all_prices),
+                'min': mn,
+                'max': mx,
                 'avg': sum(all_prices) / len(all_prices),
                 'count': len(history),
-                'min_count': sum(1 for h in history if h.get('price_eur') is not None and float(h['price_eur']) == min(all_prices)),
-                'avg_count': len(history),
+                'min_count': sum(1 for p in all_prices if p == mn),
+                'max_count': sum(1 for p in all_prices if p == mx),
+                # Total snapshot count including the current price
+                'avg_count': len(all_prices),
             }
             current_dict['price_stats'] = price_stats
         else:
-            current_dict = convert_decimal_to_float(dict(current))
+            # No price data at all — keep price_stats = None so the JS
+            # can render the "—" fallback cards instead of NaN.
+            current_dict['price_stats'] = None
+
+        # === MODEL-WIDE STATS (for GPU popup) =================================
+        # Bug fix (2026-08-25): the popup's "Lowest ever / Avg ever / Highest
+        # ever" cards were using `price_stats` which is computed from THIS
+        # listing's own price history. For most GPU listings that history is
+        # empty (or just one snapshot), so all three numbers collapsed to the
+        # current price — making the cards look like they didn't grab real
+        # data. The label says "ever", so users expect the lowest/highest
+        # market price for this GPU model across ALL active listings of the
+        # same model, not just this one listing's history.
+        #
+        # The list endpoint already computes this in `gpu_stats`; we mirror
+        # the same query here (kept consistent with the GROUP BY at line ~2050
+        # in the list endpoint) so the popup matches what the list view shows
+        # in the "Market Position" column.
+        model_price_stats = None
+        active_listings_stats = None
+        all_time_stats = None
+        model_info = None
+        closest_competitors = []
+        sell_at_price = {'active': [], 'all_time': []}
+        if current.get('category') == 'gpu' and current.get('matched_gpu_id'):
+            gpu_id = current['matched_gpu_id']
+
+            # === ACTIVE LISTINGS STATS ===
+            # Min/avg/max/count for ACTIVE listings only (is_active=true,
+            # not flagged, price > 0). Excludes this listing from the count
+            # so the per-listing context stays consistent with the rest of
+            # the popup. Includes this listing in min/avg/max so the user
+            # sees how their price compares to the live market.
+            cursor.execute("""
+                SELECT
+                    COUNT(*) FILTER (WHERE price_eur IS NOT NULL AND price_eur > 0) as active_count,
+                    MIN(price_eur) FILTER (WHERE price_eur IS NOT NULL AND price_eur > 0) as active_min,
+                    MAX(price_eur) FILTER (WHERE price_eur IS NOT NULL AND price_eur > 0) as active_max,
+                    ROUND(AVG(price_eur) FILTER (WHERE price_eur IS NOT NULL AND price_eur > 0)::numeric, 2) as active_avg
+                FROM listings l
+                WHERE l.matched_gpu_id = %s
+                  AND l.is_active = true
+                  AND l.listing_id != %s
+                  AND NOT EXISTS (SELECT 1 FROM flagged_listings fl WHERE fl.listing_id = l.listing_id)
+            """, (gpu_id, listing_id))
+            row = cursor.fetchone()
+            if row and row['active_min'] is not None:
+                # Fetch all active prices so we can compute min_count/max_count
+                # accurately. The single query above gives us min/max but
+                # doesn't tell us how many listings share that extreme.
+                cursor.execute("""
+                    SELECT price_eur
+                    FROM listings l
+                    WHERE l.matched_gpu_id = %s
+                      AND l.is_active = true
+                      AND l.listing_id != %s
+                      AND l.price_eur IS NOT NULL AND l.price_eur > 0
+                      AND NOT EXISTS (SELECT 1 FROM flagged_listings fl WHERE fl.listing_id = l.listing_id)
+                """, (gpu_id, listing_id))
+                active_prices = [float(r['price_eur']) for r in cursor.fetchall()]
+                if cur_price is not None:
+                    active_prices.append(cur_price)
+                if active_prices:
+                    amin = min(active_prices)
+                    amax = max(active_prices)
+                    active_listings_stats = {
+                        'min': amin,
+                        'max': amax,
+                        'avg': float(row['active_avg']) if row['active_avg'] is not None else (sum(active_prices) / len(active_prices)),
+                        'count': int(row['active_count']) + (1 if cur_price is not None else 0),
+                        'min_count': sum(1 for p in active_prices if p == amin),
+                        'max_count': sum(1 for p in active_prices if p == amax),
+                        'avg_count': len(active_prices),
+                    }
+                    # === model_price_stats = ACTIVE stats, for the default popup ===
+                    # (legacy name preserved; the popup now also has
+                    # active_listings_stats + all_time_stats so the user can
+                    # toggle between "live" and "all-time" views.)
+                    model_price_stats = dict(active_listings_stats)
+
+            # === ALL-TIME STATS ===
+            # Includes inactive listings too — useful for understanding
+            # long-term price trends. Permission-gated on the frontend
+            # (only admins / active subscribers see this option).
+            cursor.execute("""
+                SELECT
+                    COUNT(*) FILTER (WHERE price_eur IS NOT NULL AND price_eur > 0) as all_count,
+                    MIN(price_eur) FILTER (WHERE price_eur IS NOT NULL AND price_eur > 0) as all_min,
+                    MAX(price_eur) FILTER (WHERE price_eur IS NOT NULL AND price_eur > 0) as all_max,
+                    ROUND(AVG(price_eur) FILTER (WHERE price_eur IS NOT NULL AND price_eur > 0)::numeric, 2) as all_avg
+                FROM listings l
+                WHERE l.matched_gpu_id = %s
+                  AND l.listing_id != %s
+                  AND NOT EXISTS (SELECT 1 FROM flagged_listings fl WHERE fl.listing_id = l.listing_id)
+            """, (gpu_id, listing_id))
+            row = cursor.fetchone()
+            if row and row['all_min'] is not None:
+                cursor.execute("""
+                    SELECT price_eur
+                    FROM listings l
+                    WHERE l.matched_gpu_id = %s
+                      AND l.listing_id != %s
+                      AND l.price_eur IS NOT NULL AND l.price_eur > 0
+                      AND NOT EXISTS (SELECT 1 FROM flagged_listings fl WHERE fl.listing_id = l.listing_id)
+                """, (gpu_id, listing_id))
+                all_prices = [float(r['price_eur']) for r in cursor.fetchall()]
+                if cur_price is not None:
+                    all_prices.append(cur_price)
+                if all_prices:
+                    amin2 = min(all_prices)
+                    amax2 = max(all_prices)
+                    all_time_stats = {
+                        'min': amin2,
+                        'max': amax2,
+                        'avg': float(row['all_avg']) if row['all_avg'] is not None else (sum(all_prices) / len(all_prices)),
+                        'count': int(row['all_count']) + (1 if cur_price is not None else 0),
+                        'min_count': sum(1 for p in all_prices if p == amin2),
+                        'max_count': sum(1 for p in all_prices if p == amax2),
+                        'avg_count': len(all_prices),
+                    }
+
+            # === MODEL INFO (from gpu_reference + passmark) ===
+            cursor.execute("""
+                SELECT
+                    g.id, g.vendor, g.model, g.gpu_chip, g.vram_gb, g.memory_type,
+                    g.year_released, g.msrp_usd, g.normalized_name, g.raw_model,
+                    pm.g3d_mark, pm.g2d_mark, pm.tdp_w, pm.rank as g3d_rank,
+                    pm.category, pm.bus_interface, pm.max_memory_mb,
+                    pm.core_clock_mhz, pm.mem_clock_mhz, pm.samples as passmark_samples
+                FROM gpu_reference g
+                LEFT JOIN gpu_reference_passmark pm ON pm.gpu_reference_id = g.id
+                    AND pm.g3d_mark IS NOT NULL
+                WHERE g.id = %s
+                ORDER BY pm.g3d_mark DESC NULLS LAST
+                LIMIT 1
+            """, (gpu_id,))
+            info_row = cursor.fetchone()
+            if info_row:
+                model_info = {
+                    'id': info_row['id'],
+                    'vendor': info_row['vendor'],
+                    'model': info_row['model'],
+                    'full_name': f"{info_row['vendor'] or ''} {info_row['model'] or ''}".strip(),
+                    'gpu_chip': info_row['gpu_chip'],
+                    'vram_gb': info_row['vram_gb'],
+                    'memory_type': info_row['memory_type'],
+                    'year_released': info_row['year_released'],
+                    'msrp_usd': float(info_row['msrp_usd']) if info_row['msrp_usd'] is not None else None,
+                    'normalized_name': info_row['normalized_name'],
+                    'raw_model': info_row['raw_model'],
+                    'g3d_mark': info_row['g3d_mark'],
+                    'g2d_mark': info_row['g2d_mark'],
+                    'tdp_w': info_row['tdp_w'],
+                    'g3d_rank': info_row['g3d_rank'],
+                    'category': info_row['category'],
+                    'bus_interface': info_row['bus_interface'],
+                    'max_memory_mb': info_row['max_memory_mb'],
+                    'core_clock_mhz': info_row['core_clock_mhz'],
+                    'mem_clock_mhz': info_row['mem_clock_mhz'],
+                    'passmark_samples': info_row['passmark_samples'],
+                }
+
+            # === CLOSEST COMPETITORS ===
+            # Find 8 models with the closest G3D mark (above and below).
+            # We use ABS() of the G3D mark difference to rank them.
+            # Then for each, fetch the live avg price on the market so the
+            # user can compare on a per-rank basis (the relative price
+            # tells you if THIS model is overpriced/underpriced vs its
+            # performance peers).
+            if info_row and info_row['g3d_mark']:
+                our_g3d = info_row['g3d_mark']
+                # Closest Competitors: 2 above + 2 below (4 total) ranked
+                # by G3D mark distance from the current model. Frontend
+                # inserts "THIS MODEL" in the middle so the user sees a
+                # 5-row ladder: worse | worse | THIS | better | better.
+                comps = []
+                # 2 with higher G3D mark (ranked "better than" us, ASC by g3d_mark so closest to ours first)
+                cursor.execute("""
+                    SELECT
+                        g.id, g.vendor, g.model, g.vram_gb, g.year_released, g.msrp_usd,
+                        pm.g3d_mark, pm.g2d_mark, pm.tdp_w, pm.rank as g3d_rank
+                    FROM gpu_reference g
+                    JOIN gpu_reference_passmark pm ON pm.gpu_reference_id = g.id
+                        AND pm.g3d_mark IS NOT NULL
+                    WHERE g.id != %s
+                      AND pm.g3d_mark > %s
+                    ORDER BY pm.g3d_mark ASC, g.model ASC
+                    LIMIT 2
+                """, (gpu_id, our_g3d))
+                comps.extend([dict(r) for r in cursor.fetchall()])
+                # 2 with lower G3D mark (ranked "worse than" us, DESC so closest to ours first)
+                cursor.execute("""
+                    SELECT
+                        g.id, g.vendor, g.model, g.vram_gb, g.year_released, g.msrp_usd,
+                        pm.g3d_mark, pm.g2d_mark, pm.tdp_w, pm.rank as g3d_rank
+                    FROM gpu_reference g
+                    JOIN gpu_reference_passmark pm ON pm.gpu_reference_id = g.id
+                        AND pm.g3d_mark IS NOT NULL
+                    WHERE g.id != %s
+                      AND pm.g3d_mark < %s
+                    ORDER BY pm.g3d_mark DESC, g.model ASC
+                    LIMIT 2
+                """, (gpu_id, our_g3d))
+                comps.extend([dict(r) for r in cursor.fetchall()])
+                # For each competitor, fetch live avg price
+                for c in comps:
+                    cursor.execute("""
+                        SELECT
+                            COUNT(*) FILTER (WHERE l.price_eur IS NOT NULL AND l.price_eur > 0) as active_count,
+                            ROUND(AVG(l.price_eur) FILTER (WHERE l.price_eur IS NOT NULL AND l.price_eur > 0)::numeric, 2) as avg_price
+                        FROM listings l
+                        WHERE l.matched_gpu_id = %s
+                          AND l.is_active = true
+                          AND NOT EXISTS (SELECT 1 FROM flagged_listings fl WHERE fl.listing_id = l.listing_id)
+                    """, (c['id'],))
+                    cstat = cursor.fetchone()
+                    c['avg_price'] = float(cstat['avg_price']) if cstat and cstat['avg_price'] is not None else None
+                    c['active_count'] = int(cstat['active_count']) if cstat and cstat['active_count'] is not None else 0
+                    c['msrp_usd'] = float(c['msrp_usd']) if c.get('msrp_usd') is not None else None
+                    c['g3d_mark'] = int(c['g3d_mark']) if c.get('g3d_mark') is not None else None
+                closest_competitors = comps
+
+            # === BETTER DEALS ALERT (2026-08-26) =================================
+            # Heads-up: are there active listings of OTHER GPU models that
+            # (a) have a HIGHER G3D mark (better performance) AND
+            # (b) are listed at a LOWER price (cheaper)
+            # than the listing the user is currently viewing?
+            # If yes, the popup shows a green "💰 Better deal available"
+            # card at the top with the top 3 such listings. This is the
+            # classic "you can get a faster GPU for less" alert — useful
+            # when the user is about to overpay for a low-tier card.
+            #
+            # Implementation notes:
+            # - `cur_price > 0` is required (filter out €0 placeholder rows)
+            # - `info_row['g3d_mark']` must exist (we need to know what
+            #   "better" means for this listing's model)
+            # - The G3D comparison is done against `gpu_reference_passmark`,
+            #   which has the Passmark 3D mark for each GPU model. Models
+            #   without a Passmark row are excluded (no fair comparison).
+            # - We exclude the current listing itself via `l.listing_id != %s`
+            # - We exclude flagged listings (same as elsewhere)
+            # - Result is sorted by g3d_mark DESC (most performance gain
+            #   first) then price_eur ASC (cheapest first within tie).
+            # - LIMIT 3 — keeps the alert compact; the user can dig deeper
+            #   via the "View All" button.
+            better_deals = []
+            if (cur_price is not None and cur_price > 0
+                    and info_row and info_row.get('g3d_mark')):
+                our_g3d = int(info_row['g3d_mark'])
+                cursor.execute("""
+                    SELECT
+                        l.listing_id,
+                        l.title,
+                        l.price_eur,
+                        l.source,
+                        l.listing_url,
+                        l.image_url,
+                        l.local_image_path,
+                        l.seller_location,
+                        l.matched_gpu_id,
+                        g.vendor,
+                        g.model,
+                        pm.g3d_mark,
+                        pm.rank as g3d_rank,
+                        g.vram_gb
+                    FROM listings l
+                    JOIN gpu_reference g ON l.matched_gpu_id = g.id
+                    JOIN gpu_reference_passmark pm ON pm.gpu_reference_id = g.id
+                        AND pm.g3d_mark IS NOT NULL
+                    WHERE l.is_active = true
+                      AND l.listing_id != %s
+                      AND l.price_eur IS NOT NULL AND l.price_eur > 0
+                      AND l.price_eur < %s
+                      AND pm.g3d_mark > %s
+                      AND NOT EXISTS (
+                          SELECT 1 FROM flagged_listings fl
+                          WHERE fl.listing_id = l.listing_id
+                      )
+                    ORDER BY pm.g3d_mark DESC, l.price_eur ASC
+                    LIMIT 3
+                """, (listing_id, cur_price, our_g3d))
+                better_deals = [convert_decimal_to_float(dict(r)) for r in cursor.fetchall()]
+
+            # === SELL-AT-PRICE HISTOGRAM ===
+            # Bug fix (2026-08-26): old implementation used WIDTH_BUCKET
+            # with 80 bins of €25 over 0-2000 EUR. For small ranges (e.g.
+            # GTX 1060 3GB €45-60) this gave 25-EUR bars at centers 37.5 /
+            # 62.5 — far from the actual price values, which the user
+            # found confusing. New approach: each integer price_eur value
+            # is its own bucket, so the chart shows "how many listings
+            # exist at each price" with the x-axis labels at the actual
+            # prices. For dense data (e.g. 100+ unique prices) we group
+            # by 5-EUR buckets starting from a round anchor to keep the
+            # chart readable. Empty buckets are NOT included in the
+            # response so the chart is dense with signal.
+            cursor.execute("""
+                WITH data AS (
+                    SELECT
+                        price_eur,
+                        -- Adaptive binning: if range is wide, group by 5 EUR.
+                        -- If tight, every price is its own bucket.
+                        CASE
+                            WHEN (SELECT MAX(price_eur) - MIN(price_eur)
+                                  FROM listings
+                                  WHERE matched_gpu_id = %s
+                                    AND is_active = true
+                                    AND price_eur > 0
+                                    AND NOT EXISTS (SELECT 1 FROM flagged_listings fl WHERE fl.listing_id = listings.listing_id)) > 200
+                            THEN (FLOOR(price_eur / 5.0) * 5)::int
+                            ELSE FLOOR(price_eur)::int
+                        END AS price_bucket
+                    FROM listings l
+                    WHERE l.matched_gpu_id = %s
+                      AND l.is_active = true
+                      AND l.price_eur IS NOT NULL AND l.price_eur > 0
+                      AND NOT EXISTS (SELECT 1 FROM flagged_listings fl WHERE fl.listing_id = l.listing_id)
+                )
+                SELECT price_bucket AS price, COUNT(*) AS count
+                FROM data
+                WHERE price_bucket > 0
+                GROUP BY price_bucket
+                ORDER BY price_bucket
+            """, (gpu_id, gpu_id))
+            sell_at_price['active'] = [{'price': int(r['price']), 'count': int(r['count'])} for r in cursor.fetchall()]
+
+            cursor.execute("""
+                WITH data AS (
+                    SELECT
+                        price_eur,
+                        CASE
+                            WHEN (SELECT MAX(price_eur) - MIN(price_eur)
+                                  FROM listings
+                                  WHERE matched_gpu_id = %s
+                                    AND price_eur > 0
+                                    AND NOT EXISTS (SELECT 1 FROM flagged_listings fl WHERE fl.listing_id = listings.listing_id)) > 200
+                            THEN (FLOOR(price_eur / 5.0) * 5)::int
+                            ELSE FLOOR(price_eur)::int
+                        END AS price_bucket
+                    FROM listings l
+                    WHERE l.matched_gpu_id = %s
+                      AND l.price_eur IS NOT NULL AND l.price_eur > 0
+                      AND NOT EXISTS (SELECT 1 FROM flagged_listings fl WHERE fl.listing_id = l.listing_id)
+                )
+                SELECT price_bucket AS price, COUNT(*) AS count
+                FROM data
+                WHERE price_bucket > 0
+                GROUP BY price_bucket
+                ORDER BY price_bucket
+            """, (gpu_id, gpu_id))
+            sell_at_price['all_time'] = [{'price': int(r['price']), 'count': int(r['count'])} for r in cursor.fetchall()]
 
         cursor.close()
 
         return jsonify({
             'current': current_dict,
-            'history': [convert_decimal_to_float(dict(row)) for row in history]
+            'history': [convert_decimal_to_float(dict(row)) for row in history],
+            'model_price_stats': convert_decimal_to_float(model_price_stats) if model_price_stats else None,
+            'active_listings_stats': convert_decimal_to_float(active_listings_stats) if active_listings_stats else None,
+            'all_time_stats': convert_decimal_to_float(all_time_stats) if all_time_stats else None,
+            'model_info': convert_decimal_to_float(model_info) if model_info else None,
+            'closest_competitors': [convert_decimal_to_float(c) if c else None for c in closest_competitors],
+            'sell_at_price': sell_at_price,
+            'better_deals': better_deals,
         })
+
+
+def _histogram_buckets_to_centers(buckets, lo, hi, nbuckets):
+    """Convert Postgres WIDTH_BUCKET output [{bucket, count}] to
+    [{price_center, count}] with proper price centers.
+    bucket is 1..nbuckets, or 0 for below range, nbuckets+1 for above.
+    We skip the overflow buckets since they're rare and confusing.
+    """
+    bin_width = (hi - lo) / nbuckets
+    out = []
+    for b in buckets:
+        bk = b['bucket']
+        if bk is None or bk < 1 or bk > nbuckets:
+            continue
+        center = lo + (bk - 0.5) * bin_width
+        out.append({'price': round(center, 0), 'count': int(b['count'])})
+    return out
 
 
 @app.route('/api/model-history/<model_type>/<int:model_id>')
@@ -3379,6 +3795,67 @@ def get_ssd_cost_per_gb_timeline():
             return jsonify({'error': str(e)}), 500
 
 
+@app.route('/api/ssd-price-history-by-capacity')
+@cache_control(max_age=30)
+def get_ssd_price_history_by_capacity():
+    """Price history for one SSD capacity bucket (e.g. 1TB).
+
+    Returns monthly {avg_price, listing_count} for ACTIVE, non-flagged
+    listings whose `capacity_gb` falls in the same bucket as
+    `?capacity_gb=N`. The frontend uses this to draw a "price over time"
+    chart when the user clicks a box in the Average Price by Capacity
+    Range list.
+    """
+    with get_db_connection() as conn:
+        cursor = conn.cursor(cursor_factory=RealDictCursor)
+        try:
+            cap = request.args.get('capacity_gb', type=int)
+            if not cap:
+                return jsonify({'success': False, 'error': 'capacity_gb query param required'}), 400
+
+            # Map capacity to a bucket (matches the bucket boundaries
+            # used in the frontend's renderAvgPriceList). Buckets are
+            # 128 / 256 / 512 / 1024 / 2048 / 4096 / 8192 / 16384 GB
+            # and we match exact equality (the listing's capacity_gb
+            # column already stores the bucket value, not the raw GB).
+            cursor.execute("""
+                SELECT
+                    DATE_TRUNC('month', COALESCE(l.date_posted, l.first_seen_at, l.created_at))::date as month,
+                    COUNT(*) as listing_count,
+                    ROUND(AVG(l.price_eur)::numeric, 2) as avg_price,
+                    MIN(l.price_eur) as min_price,
+                    MAX(l.price_eur) as max_price
+                FROM listings l
+                WHERE l.category = 'ssd'
+                  AND l.is_active = true
+                  AND l.capacity_gb = %s
+                  AND l.price_eur IS NOT NULL
+                  AND l.price_eur > 0
+                  AND NOT EXISTS (
+                      SELECT 1 FROM flagged_listings f
+                      WHERE f.listing_id = l.listing_id AND f.is_active = true
+                  )
+                GROUP BY month
+                ORDER BY month ASC
+            """, (cap,))
+            rows = cursor.fetchall()
+            return jsonify({
+                'success': True,
+                'capacity_gb': cap,
+                'history': [{
+                    'month': str(r['month']),
+                    'listing_count': int(r['listing_count']),
+                    'avg_price': float(r['avg_price']) if r['avg_price'] is not None else 0,
+                    'min_price': float(r['min_price']) if r['min_price'] is not None else 0,
+                    'max_price': float(r['max_price']) if r['max_price'] is not None else 0,
+                } for r in rows],
+            })
+        except Exception as e:
+            return jsonify({'success': False, 'error': str(e)}), 500
+        finally:
+            cursor.close()
+
+
 @app.route('/api/ssds/<listing_id>')
 @cache_control(max_age=30)
 def get_ssd_detail(listing_id):
@@ -3425,6 +3902,130 @@ def get_ssd_detail(listing_id):
                 return jsonify({'success': False, 'error': 'Listing not found'}), 404
 
             return jsonify({'success': True, 'listing': dict(listing)})
+
+        except Exception as e:
+            return jsonify({'success': False, 'error': str(e)}), 500
+        finally:
+            cursor.close()
+
+
+@app.route('/api/ssds/<listing_id>/price-analysis')
+@cache_control(max_age=30)
+def get_ssd_price_analysis(listing_id):
+    """Price analysis for a single SSD listing.
+
+    Returns two comparison sets so the popup can show "how this listing
+    compares":
+
+    * `sameModel` — avg/min/max price + count for all ACTIVE listings of
+      the same `matched_ssd_id` (i.e. the same reference row in
+      `ssd_reference`). Excludes the current listing. Returns null if
+      there are fewer than 2 such listings (need at least 1 other to
+      compute a real "average").
+    * `sameCapacity` — avg/min/max price + count for all ACTIVE listings
+      with the same `capacity_gb` (regardless of model). Excludes the
+      current listing. Returns null if there are fewer than 3 such
+      listings (1-2 isn't enough to be representative).
+
+    Both queries exclude `flagged_listings` and only count active
+    listings (`is_active = true`).
+    """
+    with get_db_connection() as conn:
+        cursor = conn.cursor(cursor_factory=RealDictCursor)
+
+        try:
+            # First load the listing so we know the model + capacity.
+            cursor.execute("""
+                SELECT listing_id, matched_ssd_id, capacity_gb
+                FROM listings
+                WHERE listing_id = %s AND category = 'ssd'
+            """, (listing_id,))
+            listing = cursor.fetchone()
+            if not listing:
+                return jsonify({'success': False, 'error': 'Listing not found'}), 404
+
+            result = {
+                'success': True,
+                'listing_id': listing_id,
+                'current_price': None,
+                'sameModel': None,
+                'sameCapacity': None,
+            }
+
+            # Current price
+            cursor.execute("""
+                SELECT price_eur FROM listings
+                WHERE listing_id = %s AND category = 'ssd'
+            """, (listing_id,))
+            cur = cursor.fetchone()
+            if cur and cur.get('price_eur') is not None:
+                result['current_price'] = float(cur['price_eur'])
+
+            # Same model
+            mid = listing.get('matched_ssd_id')
+            if mid:
+                cursor.execute("""
+                    SELECT
+                        COUNT(*) AS n,
+                        AVG(price_eur) AS avg,
+                        MIN(price_eur) AS min,
+                        MAX(price_eur) AS max,
+                        PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY price_eur) AS median
+                    FROM listings l
+                    WHERE l.matched_ssd_id = %s
+                      AND l.category = 'ssd'
+                      AND l.is_active = true
+                      AND l.listing_id != %s
+                      AND l.price_eur IS NOT NULL AND l.price_eur > 0
+                      AND NOT EXISTS (
+                          SELECT 1 FROM flagged_listings f
+                          WHERE f.listing_id = l.listing_id AND f.is_active = true
+                      )
+                """, (mid, listing_id))
+                row = cursor.fetchone()
+                if row and row.get('n', 0) >= 1:
+                    result['sameModel'] = {
+                        'ssd_id': mid,
+                        'count': int(row['n']),
+                        'avg': float(row['avg']) if row.get('avg') is not None else None,
+                        'min': float(row['min']) if row.get('min') is not None else None,
+                        'max': float(row['max']) if row.get('max') is not None else None,
+                        'median': float(row['median']) if row.get('median') is not None else None,
+                    }
+
+            # Same capacity
+            cap = listing.get('capacity_gb')
+            if cap:
+                cursor.execute("""
+                    SELECT
+                        COUNT(*) AS n,
+                        AVG(price_eur) AS avg,
+                        MIN(price_eur) AS min,
+                        MAX(price_eur) AS max,
+                        PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY price_eur) AS median
+                    FROM listings l
+                    WHERE l.capacity_gb = %s
+                      AND l.category = 'ssd'
+                      AND l.is_active = true
+                      AND l.listing_id != %s
+                      AND l.price_eur IS NOT NULL AND l.price_eur > 0
+                      AND NOT EXISTS (
+                          SELECT 1 FROM flagged_listings f
+                          WHERE f.listing_id = l.listing_id AND f.is_active = true
+                      )
+                """, (cap, listing_id))
+                row = cursor.fetchone()
+                if row and row.get('n', 0) >= 2:
+                    result['sameCapacity'] = {
+                        'capacity_gb': int(cap),
+                        'count': int(row['n']),
+                        'avg': float(row['avg']) if row.get('avg') is not None else None,
+                        'min': float(row['min']) if row.get('min') is not None else None,
+                        'max': float(row['max']) if row.get('max') is not None else None,
+                        'median': float(row['median']) if row.get('median') is not None else None,
+                    }
+
+            return jsonify(result)
 
         except Exception as e:
             return jsonify({'success': False, 'error': str(e)}), 500
@@ -4024,6 +4625,24 @@ def get_computers():
             """)
             ram_table_exists = cursor.fetchone()['exists']
 
+            # Bug fix (2026-08-25): read sort state from query string
+            # (set by header clicks via JS sort variables). Default to
+            # date_posted desc which matches the previous hardcoded
+            # ORDER BY cl.date_posted DESC behaviour.
+            sort_by = request.args.get('sort', 'date_posted')
+            sort_order = request.args.get('order', 'desc')
+            sort_map = {
+                'price':           'cl.price_eur',
+                'date_posted':     'cl.date_posted',
+                'first_seen_at':   'cl.first_seen_at',
+                'title':           'cl.title',
+                'location':        'cl.seller_location',
+                'score':           'cl.components_total_eur',
+            }
+            sort_column = sort_map.get(sort_by, 'cl.date_posted')
+            sort_dir = 'ASC' if sort_order == 'asc' else 'DESC'
+            order_by_clause = f"ORDER BY {sort_column} {sort_dir} NULLS LAST LIMIT 100"
+
             # Apply prebuilt filter from query string
             prebuilt_filter = request.args.get('prebuilt')
             prebuilt_clause = ""
@@ -4082,8 +4701,7 @@ def get_computers():
                     LEFT JOIN ram_reference ram ON cl.matched_ram_id = ram.id
                     LEFT JOIN ssd_reference ssd ON cl.matched_ssd_id = ssd.id
                     WHERE cl.is_active = true {prebuilt_clause}{computer_unmatched_clause}
-                    ORDER BY cl.date_posted DESC
-                    LIMIT 100
+                    {order_by_clause}
                 """
             else:
                 query = f"""
@@ -4130,8 +4748,7 @@ def get_computers():
                     LEFT JOIN cpu_benchmarks_r23 cr23 ON cpu.normalized_name = cr23.cpu_name
                     LEFT JOIN ssd_reference ssd ON cl.matched_ssd_id = ssd.id
                     WHERE cl.is_active = true {prebuilt_clause}{computer_unmatched_clause}
-                    ORDER BY cl.date_posted DESC
-                    LIMIT 100
+                    {order_by_clause}
                 """
 
             cursor.execute(query)
@@ -6321,9 +6938,16 @@ def get_cameras():
                 query += " AND c.sensor ILIKE %s"
                 params.append(f'%{sensor_filter}%')
 
-            sort_column = 'l.price_eur' if sort_by == 'price' else 'l.date_posted'
+            sort_map = {
+                'price':           'l.price_eur',
+                'date_posted':     'l.date_posted',
+                'first_seen_at':   'l.first_seen_at',
+                'title':           'l.title',
+                'location':        'l.seller_location',
+            }
+            sort_column = sort_map.get(sort_by, 'l.date_posted')
             sort_dir = 'ASC' if sort_order == 'asc' else 'DESC'
-            query += f" ORDER BY {sort_column} {sort_dir} LIMIT 100"
+            query += f" ORDER BY {sort_column} {sort_dir} NULLS LAST LIMIT 100"
 
             cursor.execute(query, params)
             listings = cursor.fetchall()
@@ -7050,9 +7674,16 @@ def get_lenses():
                 query += " AND l.source = %s"
                 params.append(source_filter)
 
-            sort_column = 'l.price_eur' if sort_by == 'price' else 'l.date_posted'
+            sort_map = {
+                'price':           'l.price_eur',
+                'date_posted':     'l.date_posted',
+                'first_seen_at':   'l.first_seen_at',
+                'title':           'l.title',
+                'location':        'l.seller_location',
+            }
+            sort_column = sort_map.get(sort_by, 'l.date_posted')
             sort_dir = 'ASC' if sort_order == 'asc' else 'DESC'
-            query += f" ORDER BY {sort_column} {sort_dir}"
+            query += f" ORDER BY {sort_column} {sort_dir} NULLS LAST"
 
             cursor.execute(query, params)
             listings = cursor.fetchall()
@@ -7443,9 +8074,17 @@ def get_motherboards():
 
             query += get_time_filter_sql(time_filter, 'l')
 
-            sort_column = 'l.price_eur' if sort_by == 'price' else 'l.date_posted'
+            sort_map = {
+                'price':           'l.price_eur',
+                'date_posted':     'l.date_posted',
+                'first_seen_at':   'l.first_seen_at',
+                'socket':          'm.socket',
+                'title':           'l.title',
+                'location':        'l.seller_location',
+            }
+            sort_column = sort_map.get(sort_by, 'l.date_posted')
             sort_dir = 'ASC' if sort_order == 'asc' else 'DESC'
-            query += f" ORDER BY {sort_column} {sort_dir} LIMIT 100"
+            query += f" ORDER BY {sort_column} {sort_dir} NULLS LAST LIMIT 100"
 
             cursor.execute(query, params)
             listings = cursor.fetchall()
@@ -8450,9 +9089,17 @@ def get_monitors():
 
             query += get_time_filter_sql(time_filter, 'l')
 
-            sort_column = 'l.price_eur' if sort_by == 'price' else 'l.date_posted'
+            sort_map = {
+                'price':           'l.price_eur',
+                'date_posted':     'l.date_posted',
+                'first_seen_at':   'l.first_seen_at',
+                'size':            'm.size',
+                'title':           'l.title',
+                'location':        'l.seller_location',
+            }
+            sort_column = sort_map.get(sort_by, 'l.date_posted')
             sort_dir = 'ASC' if sort_order == 'asc' else 'DESC'
-            query += f" ORDER BY {sort_column} {sort_dir} LIMIT 100"
+            query += f" ORDER BY {sort_column} {sort_dir} NULLS LAST LIMIT 100"
 
             cursor.execute(query, params)
             listings = cursor.fetchall()
@@ -9029,9 +9676,18 @@ def get_ram():
 
             query += get_time_filter_sql(time_filter, 'l')
 
-            sort_column = 'l.price_eur' if sort_by == 'price' else "COALESCE(l.date_posted, l.first_seen_at, l.created_at)"
+            sort_map = {
+                'price':           'l.price_eur',
+                'date_posted':     "COALESCE(l.date_posted, l.first_seen_at, l.created_at)",
+                'first_seen_at':   'l.first_seen_at',
+                'capacity':        'r.capacity_gb',
+                'speed_mhz':       'r.speed_mhz',
+                'latency':         'r.cas_latency',
+                'location':        'l.seller_location',
+            }
+            sort_column = sort_map.get(sort_by, "COALESCE(l.date_posted, l.first_seen_at, l.created_at)")
             sort_dir = 'ASC' if sort_order == 'asc' else 'DESC'
-            query += f" ORDER BY {sort_column} {sort_dir}"
+            query += f" ORDER BY {sort_column} {sort_dir} NULLS LAST"
 
             cursor.execute(query, params)
             listings = cursor.fetchall()
@@ -9606,9 +10262,17 @@ def get_psus():
             # Add time filter
             query += get_time_filter_sql(time_filter)
 
-            sort_column = 'l.price_eur' if sort_by == 'price' else 'l.date_posted'
+            sort_map = {
+                'price':        'l.price_eur',
+                'date_posted':  'l.date_posted',
+                'first_seen':   'l.first_seen_at',
+                'wattage':      'p.wattage',
+                'psu_name':     'p.name',
+                'location':     'l.seller_location',
+            }
+            sort_column = sort_map.get(sort_by, 'l.date_posted')
             sort_dir = 'ASC' if sort_order == 'asc' else 'DESC'
-            query += f" ORDER BY {sort_column} {sort_dir} LIMIT 100"
+            query += f" ORDER BY {sort_column} {sort_dir} NULLS LAST LIMIT 100"
 
             cursor.execute(query, params)
             listings = cursor.fetchall()
@@ -10179,11 +10843,21 @@ def get_cases():
                 params.append(first_seen_after)
 
             # Sort
+            # Bug fix (2026-08-25): added more sort columns so the new
+            # clickable column headers in the UI can actually sort by
+            # what they show. Old map only had price / first_seen_at /
+            # date_posted / confidence; the page now lets users click
+            # Case / Manufacturer / Location / Color / Side panel too.
             sort_map = {
-                'price': 'l.price_eur',
-                'first_seen_at': 'l.first_seen_at',
-                'date_posted': 'l.date_posted',
-                'confidence': 'l.case_confidence_score',
+                'price':           'l.price_eur',
+                'first_seen_at':   'l.first_seen_at',
+                'date_posted':     'l.date_posted',
+                'confidence':      'l.case_confidence_score',
+                'case_name':       'c.name',
+                'manufacturer':    'c.name',     # sort by the reference name (mfr is the first token of name)
+                'location':        'l.seller_location',
+                'color':           'c.color',
+                'side_panel':      'c.side_panel',
             }
             sort_column = sort_map.get(sort_by, 'l.first_seen_at')
             sort_dir = 'ASC' if sort_order == 'asc' else 'DESC'

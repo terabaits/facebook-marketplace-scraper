@@ -1,0 +1,2 @@
+WARNING: FLASK_SECRET_KEY not set; using dev fallback. Set a strong key for production.
+404 GET /favicon.ico (::1) 7.45ms
